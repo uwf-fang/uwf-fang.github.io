@@ -1,0 +1,327 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>GNU Make &#8212; IanFang docs  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/cpp-env/make.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Remote Linux Server Tutorial" href="../uwf/cs-ssh-server.html" />
+    <link rel="prev" title="GNU g++" href="gpp.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../uwf/cs-ssh-server.html" title="Remote Linux Server Tutorial"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="gpp.html" title="GNU g++"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang docs  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../course/3530_index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../course/3530_env.html" accesskey="U">Development Environment</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">GNU Make</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="gnu-make">
+<h1>GNU Make<a class="headerlink" href="#gnu-make" title="Permalink to this headline">¶</a></h1>
+<p>The GNU Make project provides a command-line tool and a configuration system to
+facilitate the building of complex projects and generate executables. It is also
+employed to automate command-line tasks. Read the the <a class="reference external" href="https://www.gnu.org/software/make/manual/html_node/index.html">official documentation</a>
+for a more detailed view.</p>
+<section id="make-command">
+<h2>make command<a class="headerlink" href="#make-command" title="Permalink to this headline">¶</a></h2>
+<p>The command-line tool <code class="docutils literal notranslate"><span class="pre">make</span></code> is how you run all tasks.</p>
+</section>
+<section id="makefile">
+<h2>makefile<a class="headerlink" href="#makefile" title="Permalink to this headline">¶</a></h2>
+<p>A makefile is the configuration file for the make command. It contains all the logics to guide the make to build the executables.</p>
+<p>A makefile is usually named <code class="docutils literal notranslate"><span class="pre">makefile</span></code> or <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> and locate in top-level
+directory in a project. When you run the <code class="docutils literal notranslate"><span class="pre">make</span></code> command, it will search for
+<code class="docutils literal notranslate"><span class="pre">makefile</span></code> or <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> in the current directory. You can use a
+command-line argument <code class="docutils literal notranslate"><span class="pre">-f</span> <span class="pre">FILENAME</span></code> for the <code class="docutils literal notranslate"><span class="pre">make</span></code> command to specify the
+makefile in another name or in another directory.</p>
+<p>The core components in a makefile looked like this</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>target: prerequisites
+    recipe
+</pre></div>
+</div>
+<dl class="glossary simple">
+<dt id="term-target">target<a class="headerlink" href="#term-target" title="Permalink to this term">¶</a></dt><dd><p>It is usually the file you want to generate. However, virtual targets
+such as <code class="docutils literal notranslate"><span class="pre">main</span></code>, <code class="docutils literal notranslate"><span class="pre">clean</span></code> are extensively used in many makefiles. They
+do not bind to a real file but can be used in the make command-line like
+<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">main</span></code> or <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code></p>
+</dd>
+<dt id="term-prerequisites">prerequisites<a class="headerlink" href="#term-prerequisites" title="Permalink to this term">¶</a></dt><dd><p>It is a list of dependent files/targets needed to build the target. When
+any of the files or targets are updated, the target will be re-built.</p>
+</dd>
+<dt id="term-recipe">recipe<a class="headerlink" href="#term-recipe" title="Permalink to this term">¶</a></dt><dd><p>An indented block including command-line commands in each line in order
+to generate the target.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The indentation for commands must be a single <code class="docutils literal notranslate"><span class="pre">tab</span></code> character for older
+version of GNU make. The newer versions can take spaces for indentation.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you do not know g++ command well, refer to the
+<a class="reference internal" href="gpp.html"><span class="doc">g++ document</span></a>. One important thing to remember is <strong>never list header files in the g++ command-line!</strong> Provide cpp files only!</p>
+</div>
+<section id="example">
+<h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<p>Let’s assume that we are writing a makefile for a project with multiple files.
+The relationship among files are demonstrated in the diagram. Arrows means
+include relationship: <code class="docutils literal notranslate"><span class="pre">main.cpp</span> <span class="pre">-&gt;</span> <span class="pre">student.hpp</span></code> means the <code class="docutils literal notranslate"><span class="pre">student.hpp</span></code> file
+is included by the <code class="docutils literal notranslate"><span class="pre">main.cpp</span></code> so the <code class="docutils literal notranslate"><span class="pre">main.cpp</span></code> is depending on the
+<code class="docutils literal notranslate"><span class="pre">student.hpp</span></code> file.</p>
+<div class="graphviz"><img src="../_images/graphviz-42e486b09e88ecb4b94cc3c577183c15f06761b5.png" alt="digraph dep {
+    &quot;main.cpp&quot; -&gt; {&quot;grade-book.hpp&quot;, &quot;student.hpp&quot;};
+    &quot;student.cpp&quot; -&gt; &quot;student.hpp&quot;;
+    &quot;grade-book.cpp&quot; -&gt; {&quot;grade-book.hpp&quot;, &quot;student.hpp&quot;, &quot;grades.hpp&quot;};
+    &quot;grades.cpp&quot; -&gt; &quot;grades.hpp&quot;;
+}" class="graphviz" /></div>
+<p>For projects with multiple files, modular compilation is usually preferred. In
+this approach, .cpp source code files are compiled to .o object files first and
+then all object files are linked to provide the executable(s). It has many
+benefits over direct compilation to output executables from source code files:</p>
+<ul class="simple">
+<li><p>Specify different g++ flags</p></li>
+<li><p>Easier to debug</p></li>
+<li><p>No need to recompile everything after a small modification</p></li>
+</ul>
+<p>A simple makefile with hard coded g++ commands:</p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="c"># declare virtual targets</span>
+<span class="nf">.PHONY</span><span class="o">:</span> <span class="n">clean</span>
+
+<span class="c"># Linking to provide the executable</span>
+<span class="nf">main</span><span class="o">:</span> <span class="n">main</span>.<span class="n">o</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">o</span> <span class="n">student</span>.<span class="n">o</span> <span class="n">grades</span>.<span class="n">o</span>
+    g++ -o main main.o grade-book.o student.o grades.o
+
+<span class="c"># Compile. One cpp file a time.</span>
+<span class="nf">main.o</span><span class="o">:</span> <span class="n">main</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span>
+    g++ -std<span class="o">=</span>c++11 -Wall -g -c main.cpp
+
+<span class="nf">student.o</span><span class="o">:</span> <span class="n">student</span>.<span class="n">cpp</span> <span class="n">student</span>.<span class="n">hpp</span>
+    g++ -std<span class="o">=</span>c++11 -Wall -g -c student.cpp
+
+<span class="nf">grades.o</span><span class="o">:</span> <span class="n">grades</span>.<span class="n">cpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
+    g++ -std<span class="o">=</span>c++11 -Wall -g -c grades.cpp
+
+<span class="nf">grade-book.o</span><span class="o">:</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
+    g++ -std<span class="o">=</span>c++11 -Wall -g -c grade-book.cpp
+
+<span class="c"># the &#39;clean&#39; virtual target to remove temporary files</span>
+<span class="nf">clean</span><span class="o">:</span>
+    rm -rf *.o main *.gc* *.dSYM
+</pre></div>
+</div>
+<p>The first rule is to produce the <code class="docutils literal notranslate"><span class="pre">main</span></code> executable. It calls g++ to link a
+list of object files to build the final program. The targets of .o files are
+compilations rules to generate every object file. The clean target is used to
+remove generated temporary files and the executable.</p>
+<p>You may now build your executable <code class="docutils literal notranslate"><span class="pre">main</span></code> by the command <code class="docutils literal notranslate"><span class="pre">make</span></code> or <code class="docutils literal notranslate"><span class="pre">make</span>
+<span class="pre">main</span></code>. The <code class="docutils literal notranslate"><span class="pre">make</span></code> command without parameters will take the first target in
+the makefile as the target to make.</p>
+<p>You may noticed a lot of redundant texts such as the g++ flags (<code class="docutils literal notranslate"><span class="pre">-std=c++11</span>
+<span class="pre">-Wall</span> <span class="pre">-g</span></code>), list of file names, etc. Many of the redundancy can be remove by
+introducing variables. With variables, you can also extract configurations out
+of the commands for efficient management of configurations.</p>
+<p>A makefile using variables:</p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">$(CXX)</span><span class="o">=</span>g++
+<span class="nv">$(FLAGS)</span><span class="o">=</span>-std<span class="o">=</span>c++11 -Wall -g
+<span class="nv">$(RM)</span><span class="o">=</span>rm
+
+<span class="nf">.PHONY</span><span class="o">:</span> <span class="n">clean</span>
+
+<span class="nf">main</span><span class="o">:</span> <span class="n">main</span>.<span class="n">o</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">o</span> <span class="n">student</span>.<span class="n">o</span> <span class="n">grades</span>.<span class="n">o</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> -o main main.o grade-book.o student.o grades.o
+
+<span class="nf">main.o</span><span class="o">:</span> <span class="n">main</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>FLAGS<span class="k">)</span> -c main.cpp
+
+<span class="nf">student.o</span><span class="o">:</span> <span class="n">student</span>.<span class="n">cpp</span> <span class="n">student</span>.<span class="n">hpp</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>FLAGS<span class="k">)</span> -c student.cpp
+
+<span class="nf">grades.o</span><span class="o">:</span> <span class="n">grades</span>.<span class="n">cpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>FLAGS<span class="k">)</span> -c grades.cpp
+
+<span class="nf">grade-book.o</span><span class="o">:</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>FLAGS<span class="k">)</span> -c grade-book.cpp
+
+<span class="nf">clean</span><span class="o">:</span>
+    <span class="k">$(</span>RM<span class="k">)</span> -rf *.o main *.gc* *.dSYM
+</pre></div>
+</div>
+<p>Now we can change compiler from g++ to clang++ by modifying the CXX variable. We
+can also change the C++ standard from 11 to 17 by modifying the FLAGS variable.</p>
+<p>We still have redundancy here. The file names listed as part of the target or
+dependencies are hard-coded in the g++ commands. It can be improved using the
+<em>automatic variables</em> like $&#64;, $^, $&lt;.</p>
+<dl class="glossary simple">
+<dt id="term-0">$&#64;<a class="headerlink" href="#term-0" title="Permalink to this term">¶</a></dt><dd><p>the target</p>
+</dd>
+<dt id="term-1">$^<a class="headerlink" href="#term-1" title="Permalink to this term">¶</a></dt><dd><p>all prerequisites</p>
+</dd>
+<dt id="term-2">$&lt;<a class="headerlink" href="#term-2" title="Permalink to this term">¶</a></dt><dd><p>the first prerequisite</p>
+</dd>
+</dl>
+<p>The simplified makefile:</p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">$(CXX)</span><span class="o">=</span>g++
+<span class="nv">$(FLAGS)</span><span class="o">=</span>-std<span class="o">=</span>c++11 -Wall -g
+<span class="nv">$(RM)</span><span class="o">=</span>rm
+
+<span class="nf">.PHONY</span><span class="o">:</span> <span class="n">clean</span>
+
+<span class="nf">main</span><span class="o">:</span> <span class="n">main</span>.<span class="n">o</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">o</span> <span class="n">student</span>.<span class="n">o</span> <span class="n">grades</span>.<span class="n">o</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> -o <span class="nv">$@</span> $^
+
+<span class="nf">main.o</span><span class="o">:</span> <span class="n">main</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>FLAGS<span class="k">)</span> -c $&lt;
+
+<span class="nf">student.o</span><span class="o">:</span> <span class="n">student</span>.<span class="n">cpp</span> <span class="n">student</span>.<span class="n">hpp</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>FLAGS<span class="k">)</span> -c $&lt;
+
+<span class="nf">grades.o</span><span class="o">:</span> <span class="n">grades</span>.<span class="n">cpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>FLAGS<span class="k">)</span> -c $&lt;
+
+<span class="nf">grade-book.o</span><span class="o">:</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>FLAGS<span class="k">)</span> -c $&lt;
+
+<span class="nf">clean</span><span class="o">:</span>
+    <span class="k">$(</span>RM<span class="k">)</span> -rf *.o main *.gc* *.dSYM
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The commands for the .o objects used $&lt; to avoid including header files in
+the g++ command-line. Make sure to put the .cpp file as the first dependency
+in the list!</p>
+</div>
+<p>It is still verbose. By sacrificing the header prerequisites in the object file
+rules, we can merge these rules into one:</p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">$(CXX)</span><span class="o">=</span>g++
+<span class="nv">$(FLAGS)</span><span class="o">=</span>-std<span class="o">=</span>c++11 -Wall -g
+<span class="nv">$(RM)</span><span class="o">=</span>rm
+
+<span class="nf">.PHONY</span><span class="o">:</span> <span class="n">clean</span>
+
+<span class="nf">main</span><span class="o">:</span> <span class="n">main</span>.<span class="n">o</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">o</span> <span class="n">student</span>.<span class="n">o</span> <span class="n">grades</span>.<span class="n">o</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> -o <span class="nv">$@</span> $^
+
+<span class="nf">%.o</span><span class="o">:</span> %.<span class="n">cpp</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>FLAGS<span class="k">)</span> -c $&lt;
+
+<span class="nf">clean</span><span class="o">:</span>
+    <span class="k">$(</span>RM<span class="k">)</span> -rf *.o main *.gc* *.dSYM
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The drawback is that the .o file will not depend on certain header files and
+the modification of the header files will not trigger the recompilation of
+the .o file. You can force recompilation by running <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code> before
+running <code class="docutils literal notranslate"><span class="pre">make</span></code>. Or just combine them <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span> <span class="pre">&amp;&amp;</span> <span class="pre">make</span></code>.</p>
+</div>
+<p>Now we have a good makefile.</p>
+<p>You can learn potential improvement from the :</p>
+<ul class="simple">
+<li><p>Store generated files in a subdirectory</p></li>
+<li><p>Use wildcard to catch file names</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">GNU Make</a><ul>
+<li><a class="reference internal" href="#make-command">make command</a></li>
+<li><a class="reference internal" href="#makefile">makefile</a><ul>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="gpp.html"
+                        title="previous chapter">GNU g++</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../uwf/cs-ssh-server.html"
+                        title="next chapter">Remote Linux Server Tutorial</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/cpp-env/make.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../uwf/cs-ssh-server.html" title="Remote Linux Server Tutorial"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="gpp.html" title="GNU g++"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang docs  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../course/3530_index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../course/3530_env.html" >Development Environment</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">GNU Make</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+    </div>
+  </body>
+</html>

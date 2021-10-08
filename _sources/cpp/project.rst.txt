@@ -1,0 +1,115 @@
+****************
+Project Workflow
+****************
+
+C++ Project Workflow
+====================
+
+In this document I will recommend some to for the programming projects.
+This document is beginner oriented. Students may develop their own workflow as
+they gain experience in programming. However, it is still something even the
+experienced students can learn from.
+
+All workflows assume that you start from a problem description to finish an
+application or a library to solve the problem. In the real-world projects, many
+steps are already finished and you will be asked to start from implementation
+specification such as UML class diagrams, detailed descriptions of functions or
+classes. You will be skipping the design/modeling step in these cases.
+
+#. Understand the problem
+
+   Read the description carefully! Clarify obscure or ambiguous descriptions.
+   Estimate the complexity of the whole project.
+
+#. Analyse and model the problem (two approaches)
+
+   + use top-down design to break the questions into functions (tasks)
+   + use object-oriented design to break the question into classes
+
+#. Plan your project
+
+   Consider the directory structure of the project, the files to create, the
+   makefile to write, etc.
+
+#. Make a skeleton
+
+   Create all files including cpp files, hpp files, supporting
+   data/configuration files, and a makefile. Fill them with empty functions,
+   empty classes, header guards, know includes, etc.
+
+#. Code in iterations
+
+   #. Backup your files (three options)
+
+      + best with a version control system like git. Just add and commit
+      + compress the directory and give it a serial number
+      + duplicate the directory and give it a serial number
+
+   #. Pick a unit to work with
+
+      + start from the simple units first (simple means simple in logic and not
+        depending on other units)
+      + move on to units depending on finished units
+
+   #. Write code in small units (function, class, class method)
+   #. Write a test driver (with or w/o a testing framework)
+   #. Write rules in makefile to build the tests
+   #. Run tests
+   #. Debug
+   #. Proceed to the next iteration
+
+#. Perform a final test (two options)
+
+   + push to GitHub classroom and check the results
+   + transfer your file to the SSH server and test run
+
+#. Submission
+
+   + GitHub classroom
+
+     Simply ``git push origin master``. You may have already done that during
+     tests.
+
+  + Canvas file upload
+
+     #. Duplicate your directory
+     #. Remove files not needed in the submission
+     #. Compress your file using either zip or tar.gz (tgz) format
+     #. Find the Canvas assignment page and upload
+     #. Visit the page again to confirm the uploaded file is there
+
+
+.. note::
+
+  This workflow is designed for C/C++ project but is applicable to projects
+  written in other general purpose languages such as Python and Java. The
+  major difference is that the building system is no longer GNU make. You will
+  be using setup.py, wheel or poetry for Python, and Maven, Gradle, or Ant for
+  Java.
+
+Common mistakes
+===============
+
+1. Avoid over-engineering
+
+   + Work toward a just-enough solution (follow the instruction) rather than a
+     perfect solution
+   + Choose the simplest (simple to use) data structures, not the fastest or
+     coolest ones (e.g. choose vector over C array, string over C string)
+
+2. Avoid writing code without testing
+
+   + any project beyond a certain size should be finished in an incremental
+     manner and tested in every step
+   + In the future, you may want to learn a testing framework but for now tests
+     can be as simple as an extra .cpp file with a main function to run the
+     classes or functions you just finished. Just feed the object with some
+     input data and check the outcome. Testing code should be in a separate
+     cpp file.
+   + Testing framework (e.g. Catch2) is the future
+
+3. Work without any back ups
+
+   + backup your changes frequently (archive files, duplicate directories, etc)
+   + keep a log of your progress
+   + version control system is the best solution

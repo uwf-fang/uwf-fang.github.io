@@ -1,0 +1,88 @@
+.. highlight:: shell
+
+*******
+GNU g++
+*******
+
+
+The g++ command
+===============
+
+g++ is the GNU C++ compiler invocation command. It builds C/C++ projects to
+produce libraries or executables. It performs three main tasks: :ref:`pre-processing, compilation, and linking <gpp-gloss>`.
+
+The three steps can be performed all at once or separately. The pre-processing
+step are usually merged into the compilation step. Thus, typical step-wise
+compilations involve separation of the compilation step from the linking step.
+
+One step compilation
+--------------------
+
+You may use a single g++ command to produce the executable from the source code
+file when all three tasks are performed implicitly.
+
+You can list all cpp files in the command line as arguments and specify the
+output file name as main::
+
+  g++ -o main main.cpp lib1.cpp lib2.cpp
+
+You may also use wildcard to match all cpp files::
+
+  g++ -o main *.cpp
+
+.. note::
+
+  It will fail if you have multiple main functions in your cpp files.
+
+Modular compilation
+-------------------
+
+In the modular compilation approach, the compilation and linking steps are performed separately to provide fine control over arguments and fine grained error handling.
+
+Use the same example with a ``main.cpp``, a ``lib1.cpp``, and a ``lib2.cpp`` with several headers. You can build your ``main`` executable in steps::
+
+  g++ -c main.cpp
+  g++ -c lib1.cpp
+  g++ -c lib2.cpp
+  g++ -o main main.o lib1.o lib2.o
+
+The first three lines compiles all source code files to the corresponding object
+files respectively. The last line links all object files into an executable
+named ``main``.
+
+Every step may trigger errors and they are easier to discover with separated
+steps.
+
+Useful g++ options
+------------------
+
+:-c:  Compile only option. g++ will try to link without seeing this option
+:-std: Specify the C++ standards like ``-std=c++11`` for C++ 2011 standard
+:-o:  Followed by a file name to specify the output file name; Use for both
+  compilation and linking; e.g. ``-o main``, ``-o main.o``
+:-W:  Specify warning related options; e.g. ``-Wall``, ``-Wextra``
+:-g:  Enable GDB support; Keep extra information to be used by the debugger
+
+Pitfalls
+========
+
++ NEVER include header files in the g++ command line
++ Wrong usage of options. E.g. ``g++ -c -o main.cpp``
+
+..  _gpp-gloss:
+
+Glossary
+========
+
+.. glossary::
+
+  pre-process
+    Process pre-processing directive like #include, #define, etc. Textual
+    manipulation mostly.
+
+  compile
+    Translate the source code files to object files.
+
+  link
+    Take object files to produce executables or libraries
+

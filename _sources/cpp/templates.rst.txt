@@ -1,0 +1,133 @@
+****************
+Templates in C++
+****************
+
+Template is a method in C++ language to generalize functions/classes to be used
+with various base types. It allows a same function or class to work with various
+data types.
+
++ E.g. STL containers like ``vector<int>``, ``vector<string>``, ``set<int>``,
+  ``map<int, double>``, etc.
++ Similar idea to Java generics with different details
+
+Alternatives
+============
+
++ function overloading
+
+  * Define many functions like ``min(int, int)``, ``min(double, double)``,
+    ``min(char, char)``, etc.
+  * CON: Similar logics may be repeated many times.
+
++ implicit type casting
+
+  * A function ``min(double, double)`` can handle calls like ``min(2, 3)``,
+    ``min(2.0, 3)``, ``min('a', 66)``, etc.
+  * May cause confusion
+  * Not work with complex data types
+
+Syntax
+======
+
++ Refer to :ref:`code samples<example>`
++ General syntax to define a template
+
+  * a line above the first line of a function/class declaration/definition
+  * ``template<typename TypeName>`` or ``template<class TypeName>``
+  * ``TypeName`` refers to a user-defined name for the base type
+
+    - ``TypeName`` used as a type in the function/class
+
+  * takes multiple types, e.g. ``template<typename Type1, typename Type2>``
+  * may have a default value for the type ``template<typename Type1=int>``
+  * IMPORTANT! Every declaration/definition containing the type name must have
+    a ``template`` clause to define the type name
+
++ To use a template or template class)
+
+  * call the function directly (function template)
+  * add types in the variable declaration of the class type (class template)
+
+Template Instantiation
+======================
+
+- instantiation is a process to provide really parameter to a template
+
+ e.g. ``vector<int>`` is an instantiation of the ``vector`` template
+
+- a template itself cannot be compiled
+- a template must be instantiated to generate code to be compiled
+- when you instantiate a template in your cpp file, the compiler will look
+  for the template to instantiate from the same cpp file, all included header
+  files, etc.
+- if the template code (not instantiated) is in another cpp file, compiler
+  cannot find it
+
+Split header/implementation file
+================================
+
+A template must be instantiated to provided the compilable source code. The
+instantiation of templates is lazy. Only when a templated entity is used with
+base type(s) specified, the template will be instantiated. e.g. ``vector<int>``
+is an instantiation of the ``vector`` template.
+
+- a template itself cannot be compiled
+- a template must be instantiated to generate code to be compiled
+- when you instantiate a template in your cpp file, the compiler will look
+  for the template to instantiate from the same cpp file, all included header
+  files, etc.
+- if the template code (not instantiated) is in another cpp file, compiler
+  cannot find it
+
+Thus, it is natural to have a templated function/class in a single header file
+so that when a cpp file uses the template, the compiler can find all the
+template code in the header. This method is recommended in most of the
+scenarios.
+
+If the implementation portion of a template is split into a cpp file like we
+normal do with un-templated code. This portion of code cannot be found when
+compiling the header with another cpp file that included the header.
+
+There are two work-around methods when the split is preferred:
+
+1. split implementations in a separate file and include it in the header file
+   after the declarations
+2. split implementations into a cpp file, declare all possible instantiations of
+   the template in the cpp file; Thus, when other cpp needs to use the template
+   the instantiated codes have already been instantiated and ready for use.
+
+.. _example:
+
+Examples
+========
+
+.. highlight:: c++
+
+::
+
+  template<typename T>
+  T func1(T param1);
+
+  template<typename T>
+  class MyClass{
+   public:
+    bool::method1(T param1);
+  }
+
+  // important to notice that MyClass is followed by <T> here!
+  template<typename T>
+  bool MyClass<T>::method1(T param1) {
+    // logics
+    return true;
+  }
+
+.. literalinclude:: /_static/cpp/template-demo.hpp
+  :caption: template-demo.hpp
+  :language: cpp
+  :linenos:
+
+.. literalinclude:: /_static/cpp/template-test.cpp
+  :caption: template-test.cpp
+  :language: cpp
+  :linenos:
+
