@@ -1,0 +1,238 @@
+.. highlight:: makefile
+
+********
+GNU Make
+********
+
+The GNU Make project provides a command-line tool and a configuration system to
+facilitate the building of complex projects and generate executables. It is also
+employed to automate command-line tasks. Read the the `official documentation`_
+for a more detailed view.
+
+.. _official documentation: https://www.gnu.org/software/make/manual/html_node/index.html
+
+make command
+============
+
+The command-line tool ``make`` is how you run all tasks.
+
+makefile
+========
+
+A makefile is the configuration file for the make command. It contains all the logics to guide the make to build the executables.
+
+A makefile is usually named ``makefile`` or ``Makefile`` and locate in top-level
+directory in a project. When you run the ``make`` command, it will search for
+``makefile`` or ``Makefile`` in the current directory. You can use a
+command-line argument ``-f FILENAME`` for the ``make`` command to specify the
+makefile in another name or in another directory.
+
+The core components in a makefile looked like this
+
+.. code-block:: text
+
+    target: prerequisites
+        recipe
+
+.. glossary::
+
+    target
+        It is usually the file you want to generate. However, virtual targets
+        such as ``main``, ``clean`` are extensively used in many makefiles. They
+        do not bind to a real file but can be used in the make command-line like
+        ``make main`` or ``make clean``
+
+    prerequisites
+        It is a list of dependent files/targets needed to build the target. When
+        any of the files or targets are updated, the target will be re-built.
+
+    recipe
+        An indented block including command-line commands in each line in order
+        to generate the target.
+
+.. note::
+
+    The indentation for commands must be a single ``tab`` character for older
+    version of GNU make. The newer versions can take spaces for indentation.
+
+.. note::
+
+    If you do not know g++ command well, refer to the
+    :doc:`g++ document</workflow/gpp>`. One important thing to remember is **never list header files in the g++ command-line!** Provide cpp files only!
+
+Example
+-------
+
+Let's assume that we are writing a makefile for a project with multiple files.
+The relationship among files are demonstrated in the diagram. Arrows means
+include relationship: ``main.cpp -> student.hpp`` means the ``student.hpp`` file
+is included by the ``main.cpp`` so the ``main.cpp`` is depending on the
+``student.hpp`` file.
+
+.. graphviz::
+
+    digraph dep {
+        "main.cpp" -> {"grade-book.hpp", "student.hpp"};
+        "student.cpp" -> "student.hpp";
+        "grade-book.cpp" -> {"grade-book.hpp", "student.hpp", "grades.hpp"};
+        "grades.cpp" -> "grades.hpp";
+    }
+
+For projects with multiple files, modular compilation is usually preferred. In
+this approach, .cpp source code files are compiled to .o object files first and
+then all object files are linked to provide the executable(s). It has many
+benefits over direct compilation to output executables from source code files:
+
++ Specify different g++ flags
++ Easier to debug
++ No need to recompile everything after a small modification
+
+A simple makefile with hard coded g++ commands::
+
+    # declare virtual targets
+    .PHONY: clean
+
+    # Linking to provide the executable
+    main: main.o grade-book.o student.o grades.o
+        g++ -o main main.o grade-book.o student.o grades.o
+
+    # Compile. One cpp file a time.
+    main.o: main.cpp grade-book.hpp student.hpp
+        g++ -std=c++11 -Wall -g -c main.cpp
+
+    student.o: student.cpp student.hpp
+        g++ -std=c++11 -Wall -g -c student.cpp
+
+    grades.o: grades.cpp grades.hpp
+        g++ -std=c++11 -Wall -g -c grades.cpp
+
+    grade-book.o: grade-book.cpp grade-book.hpp student.hpp grades.hpp
+        g++ -std=c++11 -Wall -g -c grade-book.cpp
+
+    # the 'clean' virtual target to remove temporary files
+    clean:
+        rm -rf *.o main *.gc* *.dSYM
+
+The first rule is to produce the ``main`` executable. It calls g++ to link a
+list of object files to build the final program. The targets of .o files are
+compilations rules to generate every object file. The clean target is used to
+remove generated temporary files and the executable.
+
+You may now build your executable ``main`` by the command ``make`` or ``make
+main``. The ``make`` command without parameters will take the first target in
+the makefile as the target to make.
+
+You may noticed a lot of redundant texts such as the g++ flags (``-std=c++11
+-Wall -g``), list of file names, etc. Many of the redundancy can be remove by
+introducing variables. With variables, you can also extract configurations out
+of the commands for efficient management of configurations.
+
+A makefile using variables::
+
+    $(CXX)=g++
+    $(FLAGS)=-std=c++11 -Wall -g
+    $(RM)=rm
+
+    .PHONY: clean
+
+    main: main.o grade-book.o student.o grades.o
+        $(CXX) -o main main.o grade-book.o student.o grades.o
+
+    main.o: main.cpp grade-book.hpp student.hpp
+        $(CXX) $(FLAGS) -c main.cpp
+
+    student.o: student.cpp student.hpp
+        $(CXX) $(FLAGS) -c student.cpp
+
+    grades.o: grades.cpp grades.hpp
+        $(CXX) $(FLAGS) -c grades.cpp
+
+    grade-book.o: grade-book.cpp grade-book.hpp student.hpp grades.hpp
+        $(CXX) $(FLAGS) -c grade-book.cpp
+
+    clean:
+        $(RM) -rf *.o main *.gc* *.dSYM
+
+Now we can change compiler from g++ to clang++ by modifying the CXX variable. We
+can also change the C++ standard from 11 to 17 by modifying the FLAGS variable.
+
+We still have redundancy here. The file names listed as part of the target or
+dependencies are hard-coded in the g++ commands. It can be improved using the
+*automatic variables* like $@, $^, $<.
+
+.. glossary::
+
+    $@
+        the target
+
+    $^
+        all prerequisites
+
+    $<
+        the first prerequisite
+
+The simplified makefile::
+
+    $(CXX)=g++
+    $(FLAGS)=-std=c++11 -Wall -g
+    $(RM)=rm
+
+    .PHONY: clean
+
+    main: main.o grade-book.o student.o grades.o
+        $(CXX) -o $@ $^
+
+    main.o: main.cpp grade-book.hpp student.hpp
+        $(CXX) $(FLAGS) -c $<
+
+    student.o: student.cpp student.hpp
+        $(CXX) $(FLAGS) -c $<
+
+    grades.o: grades.cpp grades.hpp
+        $(CXX) $(FLAGS) -c $<
+
+    grade-book.o: grade-book.cpp grade-book.hpp student.hpp grades.hpp
+        $(CXX) $(FLAGS) -c $<
+
+    clean:
+        $(RM) -rf *.o main *.gc* *.dSYM
+
+.. note::
+
+    The commands for the .o objects used $< to avoid including header files in
+    the g++ command-line. Make sure to put the .cpp file as the first dependency
+    in the list!
+
+It is still verbose. By sacrificing the header prerequisites in the object file
+rules, we can merge these rules into one::
+
+    $(CXX)=g++
+    $(FLAGS)=-std=c++11 -Wall -g
+    $(RM)=rm
+
+    .PHONY: clean
+
+    main: main.o grade-book.o student.o grades.o
+        $(CXX) -o $@ $^
+
+    %.o: %.cpp
+        $(CXX) $(FLAGS) -c $<
+
+    clean:
+        $(RM) -rf *.o main *.gc* *.dSYM
+
+.. note::
+
+    The drawback is that the .o file will not depend on certain header files and
+    the modification of the header files will not trigger the recompilation of
+    the .o file. A workaround is to force recompilation by running ``make clean
+    main``. This will be slow if your project is huge. No easy solution without
+    heavy coding. It is a limitation of make any.
+
+
+Now we have a good makefile.
+
+You can learn potential improvement from the :
+
++ Store generated files in a subdirectory
++ Use wildcard to catch file names

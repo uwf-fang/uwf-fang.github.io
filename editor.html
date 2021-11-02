@@ -1,0 +1,48 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>A Basic Text Editor</title>
+    <script>
+        function copyToClipboard() {
+            var el = document.getElementById("text");
+            var text = el.value;
+            console.log(text);
+            el.select();
+            document.execCommand('copy');
+            el.value = 'Copied!';
+            setTimeout(function () {
+                el.value = text;
+            }, 1500);
+        }
+    </script>
+</head>
+<form style="position: relative; margin-top: .5em; margin-left: 10%;">
+    <h2>Write your code here and click the button to copy to the clipboard. The tab key can be used here to indent 2 spaces. Standard copy/paste keyboard shortcuts works here too.</h2>
+    <button style="font-size: 1.2em; display: block; margin: 10px" onclick="copyToClipboard()">Copy to clipboard</button>
+    <textarea rows=30 style="font-size:1.2em; width:80%;" id="text"></textarea>
+</form>
+<script>
+    document.getElementById('text').addEventListener('keydown', function (e) {
+        if (e.key == 'Tab') {
+            e.preventDefault();
+            var start = this.selectionStart;
+            var end = this.selectionEnd;
+
+            // set textarea value to: text before caret + tab + text after caret
+            this.value = this.value.substring(0, start) +
+                "  " + this.value.substring(end);
+
+            // put caret at right position again
+            this.selectionStart =
+                this.selectionEnd = start + 2;
+        }
+    });
+</script>
+
+<body>
+</body>
+
+</html>
