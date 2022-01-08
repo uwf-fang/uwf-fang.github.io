@@ -1,3 +1,4 @@
+
 ********************
 Class identification
 ********************
@@ -34,12 +35,12 @@ My Recommended Method
      being the subject or object of the behaviors, a.k.a. coherence);
    + An attribute may also be an object as an object can own another object;
    + Make sure the keywords are within the boundary of the software; Sometimes
-     you will need to discard keywords that are actually inter-actor from
-     outside of your software;
+     you will need to discard keywords that are actually actors from outside of
+     your software;
 
 4. Identify the relationships among all keywords (concepts)
 
-5. Generalize objects to classes (C++ is a class-based OOP language)
+5. Generalize objects to classes (for class-based OOP languages)
 
    + Objects that share same attributes and behaviors can be described as a
      class;
@@ -59,68 +60,132 @@ How to learn
 Just practice. Imagine realistic problems to solve and practice class
 identifications on these problems.
 
-Related Topics
-==============
+Notations
+=========
 
-+ UML class diagram
+Part of the UML (unified modeling language) class diagram notations are used in
+class for an efficient communication.
+
++ A box with three sections to represent a class
+
+  - class name
+  - list of data members (mostly instance variables)
+  - list of methods
+
++ Arrows with various arrowhead style to represent the relationship between
+  classes
++ ``+`` to represent public class members
++ ``-`` to represent public class members
++ ``name: type`` to indicate an instance variable with a ``name`` and a
+  ``type``
++ ``methodName(parameterName: parameterType, ...): returnType`` to represent a
+  method ``methodName`` with a ``returnType``. Return type can be omitted for
+  void method or constructors.
 
 Example
 =======
 
+.. WIP
+
 1. Story
 
-   Implement a software to manage restaurants. A restaurant has a simple name. A
-   restaurant has a menu which lists many items for order. When a client visit
-   the restaurant, he will read (be shown) the menu and place an order. The item
-   will be delivered to the client later.
+   Develop a software to manage a restaurant. When a customer visit the
+   restaurant, he review the menu first and place an order. The order will be
+   delivered first and then paid. Menu holds menu items with prices listed. The
+   customer can order multiple servings of a same item. The manager can add,
+   remove, modify items in the menu.
 
-2. Keywords
+   Some assumption: Restaurant has a unique name. Only one menu is used. The
+   items in an order is delivered together.
 
-   + nouns: restaurant, menu, client, name, order, food(item)
-   + verbs: visit, read(show), place, deliver
+2. Keywords/Concepts
+
+   + nouns: restaurant, menu, customer, order, food(item), price, quantity
+   + verbs: visit, read(show), place, deliver, pay
 
 3. Categorize
 
-   + out of boundary: client, visit
-   + objects: Restaurant, Order, Menu, Item
-   + attributes: name(restaurant), name(item)
+   + out of boundary: customer, visit
+   + classes: Restaurant, Order, Menu, MenuItem, Item
+   + attributes: name(restaurant), name(item), price, quantity
    + behaviors: show (menu), place (order), deliver (food)
 
 4. Relationships
 
-   + A restaurant owns a name, a menu, many orders
-   + A restaurant show menu, place order
-   + A menu owns items
-   + An order owns items
-   + An order delivers items (finalize the order, it should not belong to
-     restaurant object)
+   + A restaurant manages a name, a menu, many orders; manages orders
+   + A menu owns menu items, shows itself, adds/removes/modifies menu items
+   + A menu item owns name, and price
+   + An order owns order items, adds/removes/modify quantities of items
+   + An order can be placed, delivered and paid
+   + An order item owns reference to the menu item and quantity
 
 5. Generalize to class (plural form noun means a vector, an array or a
    collection)
 
    + Restaurant class
 
-     * instance variables: name, menu, orders
-     * methods: showMenu(), placeOrder(vector of items)
+     * - menu: Menu
+     * - name: string
+     * - pendingOrders: list/array/vector of Order objects
+     * - finishedOrders: list/array/vector of Order objects
+     * + Restaurant()
+     * + Restaurant(name: string)
+     * + setName(name: string)
+     * + getName(): string
+     * + setMenu(menu: Menu)
+     * + showMenu(): string
+     * + place(orderId: int)
+     * + pay(orderId: int)
+     * + deliver(orderId: int)
 
    + Menu class
 
-     * instance variables: items
-     * methods:
+     * - items: array or vector of Item objects
+     * - count: int (optional for items types carries its owns size)
+     * + add(name: string, price: double)
+     * + remove(id: int)
+     * + show(): string
+     * + find(name: string): int
 
    + Order class
 
-     * instance variables: items
-     * methods: deliver(item)
+     * - id: int
+     * - items: array or vector of Item objects
+     * - count: int (optional for items types carries its owns size)
+     * - ready: bool
+     * - delivered: bool
+     * - paid: bool
+     * + Order()
+     * + add(name: string, quantity: int)
+     * + remove(name: string, quantity: int): bool (may fail)
+     * + deliver()
+     * + pay()
+     * + show(): string
 
-6. review and improve
+   + Item class
 
-   + Missing parts
+     * - menuItemId: int
+     * - quantity: int
+     * + Item()
+     * + Item(menuItemId: int, quantity = 1: int)
+     * + show(): string
 
-     * menu or item can carry a price
-     * menu may allow administration of items (add, drop, change)
-     * order should carry quantity of each items
-     * order may be canceled
-     * you may find even more ...
-     * try adding them to the class generalization
+   + MenuItem class
+
+     * - id: int
+     * - name: string
+     * - price: double
+     * + Item()
+     * + Item(name: string, price: double)
+     * + show(): string
+
+6. Review and improve
+
+   + missing parts
+
+     * order item may need to report item name
+
+   + improve implementation
+
+     * naming like show() can be changed to to_str() to align to the convention
 

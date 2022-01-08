@@ -1,0 +1,180 @@
+.. highlight:: shell
+
+*********************
+Compilation Using g++
+*********************
+
+Compilation
+===========
+
+Compilation is a process to translate source codes into executables or
+libraries. A compiled programming language requires source codes to be compiled
+before they can be executed. C++ is typical compiled compiled programming
+language.
+
+There are many mainstream C/C++ compilers available to various operating
+systems:
+
++ Linux native, Mac OS, Windows: gcc/g++
++ Mac OS native: Xcode clang/clang++
++ Windows native: Visual C++
+
+They are not compatible to each other so you need to stick to one for
+consistency. In our course, the GNU g++ is chosen as the standard compiler and
+you must stick to it so your code can be correctly compile and executed by your
+instructor or grader.
+
+The g++ command
+===============
+
+g++ is the GNU C++ compiler invocation command. It builds C++ projects to
+produce libraries or executables. It performs three main tasks:
+preprocessing, compilation, and linking.
+
+.. glossary::
+
+  preprocessing
+    Process pre-processing directives like #include, #define, etc. Performs
+    textual manipulations mostly.
+
+  compilation
+    Translate the source code files to object files.
+
+  linking
+    Take object files to produce executables or libraries
+
+The three steps can be performed all at once or separately. The pre-processing
+step are usually merged into the compilation step. Thus, typical step-wise
+compilations involve separation of the compilation step from the linking step.
+
+Pre-processor directives
+------------------------
+
+Pre-processor directives are instructions that direct how the pre-processor will
+manipulate the text of the source codes files before they are actually compiled.
+They are instructions started with a hash symbol ``#``.
+
+.. warning::
+
+  Pre-processor directives are not statements and no semicolons are needed as
+  the termination of directives. They are line based instead.
+
++ ``#include``
+
+  It is used to copy and paste texts from another file to the location of the
+  directive. You can use either angular brackets ``<>`` or double quotation marks ``""`` to include system headers or user headers:
+
+  .. code-block:: c++
+
+    // user header
+    #include "mylib.hpp"
+    // system header
+    #include <iostream>
+
+  .. note::
+
+    The order of inclusion matters and it is recommended to to start from local
+    headers to system headers. Refer to the best practices documents for more
+    details.
+
++ ``#define``
+
+  It is used to define macros. Un-parameterized macros without values are
+  pre-processor only flags. Un-parameterized macros with values can be used like
+  a text replacement token or a constant. Parameterized macros work like
+  functions. It is not preferred in the courses! Use functions instead!
+
+  .. code-block:: c++
+
+    // pre-processor only flags
+    #define HEADER_HPP
+    // constant like macro
+    #define PI 3.14159
+
++ conditional compilation ``#if``, ``#elif``, ``#else``, ``#ifdef``, ``#ifndef``, ``#endif``
+
+  They can be used to direct the pre-processor to include code blocks
+  conditionally. These directives may greatly improve efficiency of the
+  compilation process in large projects in trade of the readability and thus
+  maintainability. In our course, we only use them in header guards.
+
+  .. code-block:: c++
+
+    #ifndef MYHEADER_HPP
+    #define MYHEADER_HPP
+
+    // header contents
+
+    #endif // MYHEADER_HPP
+
+  The header guards prevent the content in a header to be included multiple
+  times.
+
+  .. warning::
+
+    You must add header guards to all user headers!
+
+
+One step compilation
+--------------------
+
+You may use a single g++ command to produce the executable from the source code
+file when all three tasks are performed implicitly.
+
+You can list all cpp files in the command line as arguments and specify the
+output file name as main::
+
+  g++ -o main main.cpp lib1.cpp lib2.cpp
+
+You may also use wildcard to match all cpp files::
+
+  g++ -o main *.cpp
+
+.. note::
+
+  It will fail if you have multiple main functions in your cpp files.
+
+Modular compilation
+-------------------
+
+In the modular compilation approach, the compilation and linking steps are
+performed separately to provide fine control over arguments and fine grained
+error handling.
+
+Use the same example with a ``main.cpp``, a ``lib1.cpp``, and a ``lib2.cpp``
+with several headers. You can build your ``main`` executable in steps::
+
+  g++ -c main.cpp
+  g++ -c lib1.cpp
+  g++ -c lib2.cpp
+  g++ -o main main.o lib1.o lib2.o
+
+The first three lines compiles all source code files to the corresponding object
+files respectively. The last line links all object files into an executable
+named ``main``.
+
+Every step may trigger errors and they are easier to discover with separated
+steps.
+
+Useful g++ options
+------------------
+
+:-c:  Compile only option. g++ will try to link without seeing this option
+:-std: Specify the C++ standards like ``-std=c++11`` for C++ 2011 standard
+:-o:  Followed by a file name to specify the output file name; Use for both
+  compilation and linking; e.g. ``-o main``, ``-o main.o``
+:-Wall: Turn on the most common warning flags, recommended
+:-Wextra: Turn on more warning flags, recommended
+:-g:  Enable GDB support; Keep extra information to be used by the debugger
+
+.. warning::
+
+  NEVER include header files in the g++ command line
+
+Pitfalls
+--------
+
+::
+
+  # wrong! including header files in the command
+  g++ -o main main.cpp lib1.hpp lib1.cpp

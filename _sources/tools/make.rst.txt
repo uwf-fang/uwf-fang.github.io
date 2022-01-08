@@ -24,10 +24,10 @@ A makefile is the configuration file for the make command. It contains all the l
 A makefile is usually named ``makefile`` or ``Makefile`` and locate in top-level
 directory in a project. When you run the ``make`` command, it will search for
 ``makefile`` or ``Makefile`` in the current directory. You can use a
-command-line argument ``-f FILENAME`` for the ``make`` command to specify the
-makefile in another name or in another directory.
+command-line argument ``-f <filename>`` with the ``make`` command to specify the
+makefile of another name or in another directory.
 
-The core components in a makefile looked like this
+The core component called rule in a makefile looked like this
 
 .. code-block:: text
 
@@ -53,15 +53,16 @@ The core components in a makefile looked like this
 .. note::
 
     The indentation for commands must be a single ``tab`` character for older
-    version of GNU make. The newer versions can take spaces for indentation.
+    versions of GNU make. The newer versions can take spaces for indentation.
 
-.. note::
+.. warning::
 
     If you do not know g++ command well, refer to the
-    :doc:`g++ document</workflow/gpp>`. One important thing to remember is **never list header files in the g++ command-line!** Provide cpp files only!
+    :doc:``g++ document</cpp/gpp>``. One important thing to remember is
+    **never list header files in the g++ command-line!** Provide cpp files only!
 
-Example
--------
+Modular Compilation
+===================
 
 Let's assume that we are writing a makefile for a project with multiple files.
 The relationship among files are demonstrated in the diagram. Arrows means
@@ -85,7 +86,7 @@ benefits over direct compilation to output executables from source code files:
 
 + Specify different g++ flags
 + Easier to debug
-+ No need to recompile everything after a small modification
++ No need to recompile everything after a partial modification
 
 A simple makefile with hard coded g++ commands::
 
@@ -131,7 +132,7 @@ A makefile using variables::
 
     $(CXX)=g++
     $(FLAGS)=-std=c++11 -Wall -g
-    $(RM)=rm
+    $(RM)=rm -rf
 
     .PHONY: clean
 
@@ -151,7 +152,7 @@ A makefile using variables::
         $(CXX) $(FLAGS) -c grade-book.cpp
 
     clean:
-        $(RM) -rf *.o main *.gc* *.dSYM
+        $(RM) *.o main *.gc* *.dSYM
 
 Now we can change compiler from g++ to clang++ by modifying the CXX variable. We
 can also change the C++ standard from 11 to 17 by modifying the FLAGS variable.
@@ -171,11 +172,11 @@ dependencies are hard-coded in the g++ commands. It can be improved using the
     $<
         the first prerequisite
 
-The simplified makefile::
+The further simplified makefile::
 
     $(CXX)=g++
     $(FLAGS)=-std=c++11 -Wall -g
-    $(RM)=rm
+    $(RM)=rm -rf
 
     .PHONY: clean
 
@@ -195,7 +196,7 @@ The simplified makefile::
         $(CXX) $(FLAGS) -c $<
 
     clean:
-        $(RM) -rf *.o main *.gc* *.dSYM
+        $(RM) *.o main *.gc* *.dSYM
 
 .. note::
 
@@ -235,4 +236,21 @@ Now we have a good makefile.
 You can learn potential improvement from the :
 
 + Store generated files in a subdirectory
-+ Use wildcard to catch file names
++ Use wildcard to catch file names automatically
+
+Pitfalls
+========
+
+::
+
+  # use the wrong variable
+  # the use of $^ will include the hpp file in the g++ command
+  # use $< to only include the first prerequisite, which should be the cpp file
+  lib1.o: lib1.cpp lib1.hpp
+      g++ -o $@ $^
+
+  # the order of prerequisites are wrong
+  # it will cause the g++ to run with hpp file as its argument
+  # the cpp file should go first so $< will refer to it
+  lib1.o: lib1.hpp lib1.cpp
+      g++ -o $@ $<

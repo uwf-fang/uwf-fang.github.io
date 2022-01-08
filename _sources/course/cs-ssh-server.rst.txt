@@ -1,0 +1,130 @@
+.. highlight:: shell
+
+****************************
+Remote Linux Server Tutorial
+****************************
+
+There are several Linux servers available to CS students for teaching purposes.
+The servers can be accessed through secure shell (SSH). The host name for the
+servers is **ssh.cs.uwf.edu** (or **cs-ssh.uwf.edu**).
+
+SSH client
+==========
+
+You will need an SSH client to connect to the remote server. The standard
+command-line environments mostly come with a ``ssh`` command that you can invoke
+to connect to servers providing ssh service. These environments include the
+**terminal** app available on Linux, Mac OS and Windows Subsystem for Linux
+(WSL).
+
+To connect to an SSH server on Windows without a terminal, you will need a
+standalone SSH client software. The most popular SSH client on Windows is Putty.
+You can find it free online and install it.
+
+SSH command
+===========
+
+You need to know the basic SSH command usage to connect to a remote server in
+your terminal. The syntax looked like::
+
+  ssh ssh.cs.uwf.edu
+
+Or the following if you have a different username (uname in the example) on the
+remote server compared to your local username::
+
+  ssh uname@ssh.cs.uwf.edu
+
+You will be asked if the server looked safe in your first attempt to connect.
+Just type yes. Then, input your password to log into the Linux. You may add your
+public key to the server to avoid future hustle to input passwords. Do your
+research on how to set up a key pair to use with SSH for instant login.
+
+Linux server
+============
+
+Once you are logged in. You will be manipulating the remote Linux the same way
+as you can do with your local Linux in its terminal. You need some knowledge of
+basic Linux commands to do your work on the server. The common Linux command can
+be found here.
+
+.. glossary::
+
+  ls
+    List all objects in a directory. Add the ``-l`` option to list in a
+    long format. Add the ``-a`` option to list all including hidden objects.
+    This command can be followed by a list of objects to be listed. Listing a
+    directory will show objects in the directory. Listing a file object will
+    list a single file.
+
+  cd
+    Change the working directory to a new location. You can use ``cd ..`` to
+    change to the parent directory. ``..`` represents the parent directory in
+    Linux. Learn Linux directory structure for more information. A typical Linux
+    path looked like ``/usr/lib/lab.so`` in which the slash symbol is the
+    delimiter.
+
+  mkdir
+    Followed by a directory name to make a directory or a list of names to make
+    several directories.
+
+  rm
+    Remove objects. Can remove files or directories. Add ``-r`` to remove a directory recursively.
+
+  man
+    Show the manual of a command. E.g. ``man ls`` to show the manual for the
+    ``ls`` command.
+
+  ./main
+    Run a program called ``main`` in the current directory. Must provide ``./``
+    before the name. ``.`` represent the current directory in Linux. You can
+    change main to the name of any program in the current directory to run it.
+
+Refer to this :download:``Linux cheat sheet</_static/linux_cheatsheet.pdf>`` for
+more information.
+
+Edit in the SSH window
+======================
+
+To edit a remote file directly in the terminal or SSH client window. You must
+use a command-line editor like ``vi``, ``vim``, ``nano``, etc. ``vim`` is an
+enhanced ``vi`` editor and is widely used as a command-line text based editor.
+``vim`` is extremely powerful, but at the same time hard to learn and
+master. Many programmers found it worth the time to learn it, including myself.
+You can learn several most basic operations in ``vim`` to get it started to edit
+your code.
+
+When you type the command ``vim main.cpp`` in the command line, you will enter
+the full screen edit mode and your main.cpp file will be opened. You can press
+``i`` key (case sensitive) to enter the *insert mode* and type your content.
+Press ``Esc`` to exit the *insert mode* and type ``:wq`` to save and quit.
+
+To learn more about vim, check out the
+:download:``introduction to VI</_static/intro_vi.pdf>`` and
+:download:``VI cheatsheet</_static/vi_ref.pdf>`` documents.
+
+The ``nano`` command can invoke a simpler text editor. You can learn how to use
+nano if you prefer a simpler editor.
+
+.. note::
+
+  You always have the option to edit your code on your own computer and transfer to the server. So you do not have to edit in the terminal window.
+
+File Transfer
+=============
+
+As mentioned above, you can transfer locally edited files to the server instead
+of creating and editing in the terminal window. There are many tools supporting
+file transferring through an SSH connection (SFTP):
+
++ Command line tools: ``scp``, ``rsync``
++ GUI tools: **WinSCP**, **FileZilla**
+
+.. warning::
+
+  If you are transferring a file generated on Windows using certain editors, you
+  may experience line ending problem. The transferred file cannot be compiled
+  because of the Windows line ending. You have to use a tool called ``dos2unix``
+  to convert the line ending characters. Unfortunately, this tool is not
+  pre-installed on many Linux servers. One solution is to use an editor on
+  Windows that can save files using the Unix line ending. It is know to work in
+  VS code and you can perform a web search to see if your favorite editor will provide the option.

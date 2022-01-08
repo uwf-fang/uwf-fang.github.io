@@ -17,8 +17,8 @@
     <link rel="canonical" href="https://uwf-fang.github.io/tools/make.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Templates in C++" href="../cpp/10-templates/templates.html" />
-    <link rel="prev" title="GNU g++" href="gpp.html" /> 
+    <link rel="next" title="Testing in C++" href="../cpp/testing/testing.html" />
+    <link rel="prev" title="Compilation Using g++" href="../cpp/gpp.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -27,15 +27,14 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../cpp/10-templates/templates.html" title="Templates in C++"
+          <a href="../cpp/testing/testing.html" title="Testing in C++"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="gpp.html" title="GNU g++"
+          <a href="../cpp/gpp.html" title="Compilation Using g++"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">IanFang docs  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../course/cop3530/topics.html" >Course Notes By Topics</a> &#187;</li>
-          <li class="nav-item nav-item-3"><a href="../cpp/05-modular/modular.html" accesskey="U">Modular Development</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../cpp/modular.html" accesskey="U">Modular Development</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">GNU Make</a></li> 
       </ul>
     </div>  
@@ -61,9 +60,9 @@ for a more detailed view.</p>
 <p>A makefile is usually named <code class="docutils literal notranslate"><span class="pre">makefile</span></code> or <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> and locate in top-level
 directory in a project. When you run the <code class="docutils literal notranslate"><span class="pre">make</span></code> command, it will search for
 <code class="docutils literal notranslate"><span class="pre">makefile</span></code> or <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> in the current directory. You can use a
-command-line argument <code class="docutils literal notranslate"><span class="pre">-f</span> <span class="pre">FILENAME</span></code> for the <code class="docutils literal notranslate"><span class="pre">make</span></code> command to specify the
-makefile in another name or in another directory.</p>
-<p>The core components in a makefile looked like this</p>
+command-line argument <code class="docutils literal notranslate"><span class="pre">-f</span> <span class="pre">&lt;filename&gt;</span></code> with the <code class="docutils literal notranslate"><span class="pre">make</span></code> command to specify the
+makefile of another name or in another directory.</p>
+<p>The core component called rule in a makefile looked like this</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>target: prerequisites
     recipe
 </pre></div>
@@ -84,15 +83,17 @@ to generate the target.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The indentation for commands must be a single <code class="docutils literal notranslate"><span class="pre">tab</span></code> character for older
-version of GNU make. The newer versions can take spaces for indentation.</p>
+versions of GNU make. The newer versions can take spaces for indentation.</p>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
 <p>If you do not know g++ command well, refer to the
-<span class="xref std std-doc">g++ document</span>. One important thing to remember is <strong>never list header files in the g++ command-line!</strong> Provide cpp files only!</p>
+:doc:<code class="docutils literal notranslate"><span class="pre">g++</span> <span class="pre">document&lt;/cpp/gpp&gt;</span></code>. One important thing to remember is
+<strong>never list header files in the g++ command-line!</strong> Provide cpp files only!</p>
 </div>
-<section id="example">
-<h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="modular-compilation">
+<h2>Modular Compilation<a class="headerlink" href="#modular-compilation" title="Permalink to this headline">¶</a></h2>
 <p>Let’s assume that we are writing a makefile for a project with multiple files.
 The relationship among files are demonstrated in the diagram. Arrows means
 include relationship: <code class="docutils literal notranslate"><span class="pre">main.cpp</span> <span class="pre">-&gt;</span> <span class="pre">student.hpp</span></code> means the <code class="docutils literal notranslate"><span class="pre">student.hpp</span></code> file
@@ -111,7 +112,7 @@ benefits over direct compilation to output executables from source code files:</
 <ul class="simple">
 <li><p>Specify different g++ flags</p></li>
 <li><p>Easier to debug</p></li>
-<li><p>No need to recompile everything after a small modification</p></li>
+<li><p>No need to recompile everything after a partial modification</p></li>
 </ul>
 <p>A simple makefile with hard coded g++ commands:</p>
 <div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="c"># declare virtual targets</span>
@@ -153,7 +154,7 @@ of the commands for efficient management of configurations.</p>
 <p>A makefile using variables:</p>
 <div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">$(CXX)</span><span class="o">=</span>g++
 <span class="nv">$(FLAGS)</span><span class="o">=</span>-std<span class="o">=</span>c++11 -Wall -g
-<span class="nv">$(RM)</span><span class="o">=</span>rm
+<span class="nv">$(RM)</span><span class="o">=</span>rm -rf
 
 <span class="nf">.PHONY</span><span class="o">:</span> <span class="n">clean</span>
 
@@ -173,7 +174,7 @@ of the commands for efficient management of configurations.</p>
     <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>FLAGS<span class="k">)</span> -c grade-book.cpp
 
 <span class="nf">clean</span><span class="o">:</span>
-    <span class="k">$(</span>RM<span class="k">)</span> -rf *.o main *.gc* *.dSYM
+    <span class="k">$(</span>RM<span class="k">)</span> *.o main *.gc* *.dSYM
 </pre></div>
 </div>
 <p>Now we can change compiler from g++ to clang++ by modifying the CXX variable. We
@@ -189,10 +190,10 @@ dependencies are hard-coded in the g++ commands. It can be improved using the
 <dt id="term-2">$&lt;<a class="headerlink" href="#term-2" title="Permalink to this term">¶</a></dt><dd><p>the first prerequisite</p>
 </dd>
 </dl>
-<p>The simplified makefile:</p>
+<p>The further simplified makefile:</p>
 <div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">$(CXX)</span><span class="o">=</span>g++
 <span class="nv">$(FLAGS)</span><span class="o">=</span>-std<span class="o">=</span>c++11 -Wall -g
-<span class="nv">$(RM)</span><span class="o">=</span>rm
+<span class="nv">$(RM)</span><span class="o">=</span>rm -rf
 
 <span class="nf">.PHONY</span><span class="o">:</span> <span class="n">clean</span>
 
@@ -212,7 +213,7 @@ dependencies are hard-coded in the g++ commands. It can be improved using the
     <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>FLAGS<span class="k">)</span> -c $&lt;
 
 <span class="nf">clean</span><span class="o">:</span>
-    <span class="k">$(</span>RM<span class="k">)</span> -rf *.o main *.gc* *.dSYM
+    <span class="k">$(</span>RM<span class="k">)</span> *.o main *.gc* *.dSYM
 </pre></div>
 </div>
 <div class="admonition note">
@@ -251,9 +252,24 @@ heavy coding. It is a limitation of make any.</p>
 <p>You can learn potential improvement from the :</p>
 <ul class="simple">
 <li><p>Store generated files in a subdirectory</p></li>
-<li><p>Use wildcard to catch file names</p></li>
+<li><p>Use wildcard to catch file names automatically</p></li>
 </ul>
 </section>
+<section id="pitfalls">
+<h2>Pitfalls<a class="headerlink" href="#pitfalls" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="c"># use the wrong variable</span>
+<span class="c"># the use of $^ will include the hpp file in the g++ command</span>
+<span class="c"># use $&lt; to only include the first prerequisite, which should be the cpp file</span>
+<span class="nf">lib1.o</span><span class="o">:</span> <span class="n">lib</span>1.<span class="n">cpp</span> <span class="n">lib</span>1.<span class="n">hpp</span>
+    g++ -o <span class="nv">$@</span> $^
+
+<span class="c"># the order of prerequisites are wrong</span>
+<span class="c"># it will cause the g++ to run with hpp file as its argument</span>
+<span class="c"># the cpp file should go first so $&lt; will refer to it</span>
+<span class="nf">lib1.o</span><span class="o">:</span> <span class="n">lib</span>1.<span class="n">hpp</span> <span class="n">lib</span>1.<span class="n">cpp</span>
+    g++ -o <span class="nv">$@</span> $&lt;
+</pre></div>
+</div>
 </section>
 </section>
 
@@ -268,20 +284,19 @@ heavy coding. It is a limitation of make any.</p>
   <ul>
 <li><a class="reference internal" href="#">GNU Make</a><ul>
 <li><a class="reference internal" href="#make-command">make command</a></li>
-<li><a class="reference internal" href="#makefile">makefile</a><ul>
-<li><a class="reference internal" href="#example">Example</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#makefile">makefile</a></li>
+<li><a class="reference internal" href="#modular-compilation">Modular Compilation</a></li>
+<li><a class="reference internal" href="#pitfalls">Pitfalls</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="gpp.html"
-                        title="previous chapter">GNU g++</a></p>
+  <p class="topless"><a href="../cpp/gpp.html"
+                        title="previous chapter">Compilation Using g++</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="../cpp/10-templates/templates.html"
-                        title="next chapter">Templates in C++</a></p>
+  <p class="topless"><a href="../cpp/testing/testing.html"
+                        title="next chapter">Testing in C++</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -310,21 +325,20 @@ heavy coding. It is a limitation of make any.</p>
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../cpp/10-templates/templates.html" title="Templates in C++"
+          <a href="../cpp/testing/testing.html" title="Testing in C++"
              >next</a> |</li>
         <li class="right" >
-          <a href="gpp.html" title="GNU g++"
+          <a href="../cpp/gpp.html" title="Compilation Using g++"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">IanFang docs  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../course/cop3530/topics.html" >Course Notes By Topics</a> &#187;</li>
-          <li class="nav-item nav-item-3"><a href="../cpp/05-modular/modular.html" >Modular Development</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../cpp/modular.html" >Modular Development</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">GNU Make</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
     </div>
   </body>
 </html>

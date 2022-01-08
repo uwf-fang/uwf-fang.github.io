@@ -1,0 +1,285 @@
+.. highlight:: c++
+  :linenothreshold: 5
+
+************
+Control Flow
+************
+
+Control flow, a.k.a. flow of control, is the order of the instruction execution
+in an imperative program.
+
+Types
+=====
+
++ Sequential
+
+  The fundamental control flow is the execution of instructions one by another
+  in the natural order of the instructions.
+
++ Branch/Selection/Conditional
+
+  Execution of different sets of instructions according to a condition.
+
++ Loop/Iteration
+
+  Repeated executions of a sequence of instructions
+
+Branch
+======
+
+Branch Statements
+-----------------
+
++ if-else
+
+  * boolean expression
+  * optional else
+  * optional {}
+  * if, else pairing
+  * negating logic to swap if and else blocks
+
++ switch
+
+  * expression types: int, char, etc.
+  * mandatory {}
+  * default case
+  * use of break statements
+  * merged cases
+
++ break
+
+Branch Pitfalls
+---------------
+
++ switch on double/float values
++ missing break statements in switch
++ bad boolean expression in if
++ incorrect use of {}
+
+::
+
+  // ==== branch ====
+
+  // ---- correct ----
+  if (a > 10);
+    cout << "a is greater than 10\n";
+
+  // ---- wrong ----
+
+  // will run but cout is no longer part of the if
+  // the if statement has an empty body and does nothing
+  if (a > 10);
+    cout << "a is greater than 10\n";
+
+  // will run but does not mean a is between 1 and 10
+  if (1 < a < 10)
+    cout << "a is between 1 and 10\n";
+
+  // switch on double
+  // double value is not exact
+  // this snippet may work and may cause problem
+  double a;
+  cin << a;
+  switch (a) {
+    //...
+  }
+
+  // missing break
+  // will also display "case 2" when input is 1
+  switch (input) {
+    case 1:
+      cout << "Case 1" << endl;
+    case 2:
+      cout << "Case 2" << endl;
+    // ...
+  }
+
+  // ---- poor ----
+
+  bool flag;
+  // calculate flag
+  if (flag == true)  // should be if (flag)
+    cout << "True\n";
+
+Branch Patterns
+---------------
+
++ Multi-way branching
+
+  * if-else if-...-else
+  * nested if-else
+  * standalone if-else
+  * switch
+
+  ::
+
+    // switch version
+    // use integer division
+    // not a general solution
+    // why no break statements are needed here?
+    char percentToLetterGrade1(int percentGrade) {
+      switch (percentGrade / 10) {
+        case 10:
+        case 9:
+          return 'A';
+        case 8:
+          return 'B';
+        case 7:
+          return 'C';
+        case 6:
+          return 'D';
+        default:
+          return 'F';
+      }
+    }
+
+    // nested if-else version
+    // implicit conditions
+    // least comparison in the worst case
+    char percentToLetterGrade2(int percentGrade) {
+      if (percentGrade >= 70)
+        if (percentGrade >= 90)
+          return 'A';
+        else if (percentGrade >= 80)
+          return 'B';
+        else
+          return 'C';
+      else if (percentGrade >= 60)
+        return 'D';
+      else
+        return 'F';
+    }
+
+    // flat if-else version
+    // nested only in else block
+    // implicit conditions
+    // most readable
+    char percentToLetterGrade3(int percentGrade) {
+      if (percentGrade >= 90)
+        return 'A';
+      else if (percentGrade >= 80)
+        return 'B';
+      else if (percentGrade >= 70)
+        return 'C';
+      else if (percentGrade >= 60)
+        return 'D';
+      else
+        return 'F';
+    }
+
+    // flat if version
+    // no implicit condition
+    // also most readable
+    // more comparisons
+    char percentToLetterGrade4(int percentGrade) {
+      if (percentGrade >= 90)
+        return 'A';
+      if (percentGrade < 90 && percentGrade >= 80)
+        return 'B';
+      if (percentGrade < 80 && percentGrade >= 70)
+        return 'C';
+      if (percentGrade < 70 && percentGrade >= 60)
+        return 'D';
+      if (percentGrade < 60)
+        return 'F';
+    }
+
+Loop
+====
+
+Loop Statements
+---------------
+
++ while
+
+  * boolean expression
+  * optional {}
+
++ do-while
+
+  * boolean expression
+  * optional {}
+  * at least run once
+
++ for
+
+  * boolean expression
+  * optional {}
+  * at least run once
+
++ break
++ continue
+
+Break, Continue and Return
+--------------------------
+
+Modify the flow of control in a loop
+
+:break: jump out of the inner most loop
+:continue: jump to the start of the next round in the loop
+:return: jump out of the function
+
+Loop Pitfalls
+-------------
+
++ bad initial value
++ exit conditions are not checked right after they are changed
+
+  ::
+
+    // wrong! The last negative input as the terminator
+    // will be added to the sum
+    int input = -1;
+    int sum = 0;  // do not forget to initialization to 0
+    while (input > 0) {  // where the condition is checked
+      cout << "Please input a positive value to sum up (negative value to exit): ";
+      cin >> input;  // where the condition changed!
+      sum += input;  // where the mistake happens
+    }
+
+    // correct way
+    int input;
+    int sum = 0;
+    while (true) {
+      cout << "Please input a positive value to sum up (negative value to exit): ";
+      cin >> input;  // where the condition changed!
+      if (input < 0)
+        break;  // where the condition is checked
+      sum += input;
+    }
+
++ bad border conditions
+
+  * check first run
+  * check last run
+
+  ::
+
+    // expect print 0 to 5
+    for (int i = 0; i < 5; i++)  // last round wrong should be i <= 5 or i < 6
+      cout << i << " ";
+
+    // expect to get a positive integer
+    int input;
+    while (input < 0) {  // first round wrong! input has no initial value!
+      cout << "Please input a positive value (negative value to exit): ";
+      cin >> input;
+    }
+
++ variable scope problem
+
+  ::
+
+    for (int i = 0; i < 5; i++)
+      cout << i << " ";
+    cout << i;  // wrong! variable i is out of scope
+
+Loop Patterns
+-------------
+
+Check the code samples repository.
+
+* input validation
+* input validation with error message
+* text menu operation
+* statistical analysis

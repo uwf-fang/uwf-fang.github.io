@@ -1,0 +1,245 @@
+.. highlight:: c++
+  :linenothreshold: 5
+
+**********************
+User-defined Functions
+**********************
+
+Concepts
+========
+
+.. glossary::
+
+  function name
+    The name to a function given by the user. Same naming convention as
+    variables. You cannot use a same name for a function and a variable either.
+
+  parentheses
+    A pair of parentheses must be present to differentiate a function name from
+    a variable name.
+
+  formal parameters
+    Sometimes referred as parameters. Are the names listed in the parentheses
+    in the function definition.
+
+  actual parameters
+    Are the rvalues provided in the parentheses of the function call.
+
+  function declaration
+    A specification of the return type, function name and parameter types. How
+    a function can be called and what you can expect from the call.
+
+  function definition
+    The implementation of the function. How is the work done in a function.
+
+Purpose
+=======
+
++ readability
+
+  * shorter function body
+  * unique name for a code block
+
++ code reuse, write once, use many times
++ affect outside world
+
+  * return value
+  * modify parameter (reference or pointer parameters)
+  * input/output
+  * modify global variables (AVOID!)
+
+Syntax
+======
+
++ declaration
+
+  * optional but strongly recommended
+  * may omit parameter names
+  * default value for parameters
+  * add documentation
+  * call a function before its implementation (definition)
+  * public function declarations
+
+    - functions to be used by other cpp files
+    - prefer to put in the header
+
+  * private function declarations
+
+    - functions to be used only in the current cpp file
+    - prefer to put in the cpp file
+
++ definition (implementation)
+
+  * prefer to put in the cpp file
+  * must have parameter names
+  * default values are ignored
+  * must align to declaration
+
++ call
+
+  * matching mechanism
+
++ example
+
+  * function.hpp
+
+    ::
+
+      /**
+        * some functions
+        * documentation for the function.hpp/function.cpp pair
+        */
+
+      /**
+        * function to double a value
+        * myParam: the input value to be doubled
+        * return: a double value
+        */
+      // int doubleValue(int = 10);  // default value, no name
+      int doubleValue(int myParam = 10);  // default value, with name
+
+
+  * function.cpp
+
+    ::
+
+      /**
+        * some functions
+        * documentation for the function.cpp file
+        */
+
+      #include <iostream>
+
+      #include "function.hpp"
+
+      using namespace std;
+
+      /**
+       * local function documentation
+       */
+      int localFunc();
+
+      int doubleValue(int param1){ // parameter name can be different
+        return param1 * 2;
+      }
+
+      int localFunc() {
+        cout << "This is local" << endl;
+        return 0;
+      }
+
+      int main() {
+        // function calls
+        cout << "double_value() gives " << doubleValue() << endl;  // get 20
+        cout << "double_value(5) gives " << doubleValue(5) << endl; // get 10
+
+        return EXIT_SUCCESS;
+      }
+
+
+Scope
+=====
+
++ The life span of an entity (variable, function, type, etc.)
++ local scope to a function: local variables and formal parameters
+
+  * NEVER return a local variable by reference or pointer!
+  * NEVER return a local array (only pointer will be passed out, the array
+    content will not)! Return a dynamic array instead.
+
++ Code block based scope
+
+  ::
+
+    // example 1, out-of-scope access
+    for (int i = 0; i < size; i++)
+        cout << i << endl;
+    cout << i << endl;  // will fail because i is not declared here
+
+    // example 2, shadowed name
+    int i = 100;
+    {
+        int i = 10;  // treated as another variable, valid in this block only
+    }
+    cout << i << endl;  // get 100
+
+    // returning an dynamic array
+    // should be deleted after use
+    int *makeArray(int size) {
+      return new int[size];
+    }
+
+    // ---- Wrong ----
+    // returning local array
+    int *makeArray(int size) {
+      int array[size];
+      return array;
+    }
+
+Overloading
+===========
+
+Same name but different parameters (type, order, number) so the function call
+can match the correct function. Because the return type and formal parameter
+names does not affect the function call, differences in return type and formal
+parameter names will not be valid overloading.
+
+::
+
+  // ==== Function Overloading ====
+
+  // given this function
+  int func1(int name);  // func1(3);
+
+  // ---- Correct ----
+  int func1(double);  // func1(3.0);
+  int func1(int, int);  // func1(3, 3);
+  int func1(int, double);  // func1(3, 3,0);
+  int func1(double, int);  // func1(3.0, 3);
+  int func1(double, double);  // func1(3.0, 3.0);
+
+  // ---- Wrong ----
+  double func1(int);  // return type differs, also matches func1(3);
+  double func1(int name1);  // parameter names differ, also matches func1(3);
+
+Pass by reference
+=================
+
++ formal parameter vs actual parameter
++ allow modifications of the actual parameters
++ avoid duplication of the value (reduce overhead when the value is huge)
+
+Pass-by-ref vs Pass-by-pointer
+------------------------------
+
+::
+
+  // swap pointer version
+  // called like swap(&a, &b);
+  void swap(int * ptr1, int * ptr2) {
+    int tmp = *ptr1;
+    *ptr1 = *ptr2;
+    *ptr2 = tmp;
+  }
+
+  // swap ref version
+  // cleaner syntax
+  // called like swap(a, b);
+  void swap(int & ref1, int & ref2) {
+    int tmp = ref1;
+    ref1 = ref2;
+    ref2 = tmp;
+  }
+
+Returning a Reference
+=====================
+
+Returning a reference allows a function call to be used as a lvalue.
+
+Passing arrays around
+=====================
+
++ pass an array is passing a pointer by value (memory address)
++ only the first part (pointer part) is passed, data part stays
++ as parameter
++ returned value

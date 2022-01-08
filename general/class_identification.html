@@ -17,8 +17,8 @@
     <link rel="canonical" href="https://uwf-fang.github.io/general/class_identification.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Prerequisite Contents" href="../course/cop3530/prerequisites.html" />
-    <link rel="prev" title="Testing in C++" href="../cpp/11-testing/testing.html" /> 
+    <link rel="next" title="COP 3530 Data Structure and Algorithm Design" href="../course/cop3530/index.html" />
+    <link rel="prev" title="Testing in C++" href="../cpp/testing/testing.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -27,14 +27,13 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../course/cop3530/prerequisites.html" title="Prerequisite Contents"
+          <a href="../course/cop3530/index.html" title="COP 3530 Data Structure and Algorithm Design"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="../cpp/11-testing/testing.html" title="Testing in C++"
+          <a href="../cpp/testing/testing.html" title="Testing in C++"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">IanFang docs  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../course/cop3530/topics.html" accesskey="U">Course Notes By Topics</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../course/cop3014/index.html" accesskey="U">COP 3014 Algorithm and Program Design</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Class identification</a></li> 
       </ul>
     </div>  
@@ -79,12 +78,12 @@ attributes and behaviors;</p>
 being the subject or object of the behaviors, a.k.a. coherence);</p></li>
 <li><p>An attribute may also be an object as an object can own another object;</p></li>
 <li><p>Make sure the keywords are within the boundary of the software; Sometimes
-you will need to discard keywords that are actually inter-actor from
-outside of your software;</p></li>
+you will need to discard keywords that are actually actors from outside of
+your software;</p></li>
 </ul>
 </li>
 <li><p>Identify the relationships among all keywords (concepts)</p></li>
-<li><p>Generalize objects to classes (C++ is a class-based OOP language)</p>
+<li><p>Generalize objects to classes (for class-based OOP languages)</p>
 <ul class="simple">
 <li><p>Objects that share same attributes and behaviors can be described as a
 class;</p></li>
@@ -107,43 +106,63 @@ check carefully;</p></li>
 <p>Just practice. Imagine realistic problems to solve and practice class
 identifications on these problems.</p>
 </section>
-<section id="related-topics">
-<h2>Related Topics<a class="headerlink" href="#related-topics" title="Permalink to this headline">¶</a></h2>
+<section id="notations">
+<h2>Notations<a class="headerlink" href="#notations" title="Permalink to this headline">¶</a></h2>
+<p>Part of the UML (unified modeling language) class diagram notations are used in
+class for an efficient communication.</p>
 <ul class="simple">
-<li><p>UML class diagram</p></li>
+<li><p>A box with three sections to represent a class</p>
+<ul>
+<li><p>class name</p></li>
+<li><p>list of data members (mostly instance variables)</p></li>
+<li><p>list of methods</p></li>
+</ul>
+</li>
+<li><p>Arrows with various arrowhead style to represent the relationship between
+classes</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">+</span></code> to represent public class members</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-</span></code> to represent public class members</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name:</span> <span class="pre">type</span></code> to indicate an instance variable with a <code class="docutils literal notranslate"><span class="pre">name</span></code> and a
+<code class="docutils literal notranslate"><span class="pre">type</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">methodName(parameterName:</span> <span class="pre">parameterType,</span> <span class="pre">...):</span> <span class="pre">returnType</span></code> to represent a
+method <code class="docutils literal notranslate"><span class="pre">methodName</span></code> with a <code class="docutils literal notranslate"><span class="pre">returnType</span></code>. Return type can be omitted for
+void method or constructors.</p></li>
 </ul>
 </section>
 <section id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic">
 <li><p>Story</p>
-<p>Implement a software to manage restaurants. A restaurant has a simple name. A
-restaurant has a menu which lists many items for order. When a client visit
-the restaurant, he will read (be shown) the menu and place an order. The item
-will be delivered to the client later.</p>
+<p>Develop a software to manage a restaurant. When a customer visit the
+restaurant, he review the menu first and place an order. The order will be
+delivered first and then paid. Menu holds menu items with prices listed. The
+customer can order multiple servings of a same item. The manager can add,
+remove, modify items in the menu.</p>
+<p>Some assumption: Restaurant has a unique name. Only one menu is used. The
+items in an order is delivered together.</p>
 </li>
-<li><p>Keywords</p>
+<li><p>Keywords/Concepts</p>
 <ul class="simple">
-<li><p>nouns: restaurant, menu, client, name, order, food(item)</p></li>
-<li><p>verbs: visit, read(show), place, deliver</p></li>
+<li><p>nouns: restaurant, menu, customer, order, food(item), price, quantity</p></li>
+<li><p>verbs: visit, read(show), place, deliver, pay</p></li>
 </ul>
 </li>
 <li><p>Categorize</p>
 <ul class="simple">
-<li><p>out of boundary: client, visit</p></li>
-<li><p>objects: Restaurant, Order, Menu, Item</p></li>
-<li><p>attributes: name(restaurant), name(item)</p></li>
+<li><p>out of boundary: customer, visit</p></li>
+<li><p>classes: Restaurant, Order, Menu, MenuItem, Item</p></li>
+<li><p>attributes: name(restaurant), name(item), price, quantity</p></li>
 <li><p>behaviors: show (menu), place (order), deliver (food)</p></li>
 </ul>
 </li>
 <li><p>Relationships</p>
 <ul class="simple">
-<li><p>A restaurant owns a name, a menu, many orders</p></li>
-<li><p>A restaurant show menu, place order</p></li>
-<li><p>A menu owns items</p></li>
-<li><p>An order owns items</p></li>
-<li><p>An order delivers items (finalize the order, it should not belong to
-restaurant object)</p></li>
+<li><p>A restaurant manages a name, a menu, many orders; manages orders</p></li>
+<li><p>A menu owns menu items, shows itself, adds/removes/modifies menu items</p></li>
+<li><p>A menu item owns name, and price</p></li>
+<li><p>An order owns order items, adds/removes/modify quantities of items</p></li>
+<li><p>An order can be placed, delivered and paid</p></li>
+<li><p>An order item owns reference to the menu item and quantity</p></li>
 </ul>
 </li>
 <li><p>Generalize to class (plural form noun means a vector, an array or a
@@ -151,34 +170,204 @@ collection)</p>
 <ul class="simple">
 <li><p>Restaurant class</p>
 <ul>
-<li><p>instance variables: name, menu, orders</p></li>
-<li><p>methods: showMenu(), placeOrder(vector of items)</p></li>
+<li><ul>
+<li><p>menu: Menu</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>name: string</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>pendingOrders: list/array/vector of Order objects</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>finishedOrders: list/array/vector of Order objects</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>Restaurant()</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>Restaurant(name: string)</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>setName(name: string)</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>getName(): string</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>setMenu(menu: Menu)</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>showMenu(): string</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>place(orderId: int)</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>pay(orderId: int)</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>deliver(orderId: int)</p></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><p>Menu class</p>
 <ul>
-<li><p>instance variables: items</p></li>
-<li><p>methods:</p></li>
+<li><ul>
+<li><p>items: array or vector of Item objects</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>count: int (optional for items types carries its owns size)</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>add(name: string, price: double)</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>remove(id: int)</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>show(): string</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>find(name: string): int</p></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><p>Order class</p>
 <ul>
-<li><p>instance variables: items</p></li>
-<li><p>methods: deliver(item)</p></li>
+<li><ul>
+<li><p>id: int</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>items: array or vector of Item objects</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>count: int (optional for items types carries its owns size)</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>ready: bool</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>delivered: bool</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>paid: bool</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>Order()</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>add(name: string, quantity: int)</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>remove(name: string, quantity: int): bool (may fail)</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>deliver()</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>pay()</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>show(): string</p></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p>review and improve</p>
-<ul class="simple">
-<li><p>Missing parts</p>
+<li><p>Item class</p>
 <ul>
-<li><p>menu or item can carry a price</p></li>
-<li><p>menu may allow administration of items (add, drop, change)</p></li>
-<li><p>order should carry quantity of each items</p></li>
-<li><p>order may be canceled</p></li>
-<li><p>you may find even more …</p></li>
-<li><p>try adding them to the class generalization</p></li>
+<li><ul>
+<li><p>menuItemId: int</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>quantity: int</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>Item()</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>Item(menuItemId: int, quantity = 1: int)</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>show(): string</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>MenuItem class</p>
+<ul>
+<li><ul>
+<li><p>id: int</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>name: string</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>price: double</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>Item()</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>Item(name: string, price: double)</p></li>
+</ul>
+</li>
+<li><ul>
+<li><p>show(): string</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Review and improve</p>
+<ul class="simple">
+<li><p>missing parts</p>
+<ul>
+<li><p>order item may need to report item name</p></li>
+</ul>
+</li>
+<li><p>improve implementation</p>
+<ul>
+<li><p>naming like show() can be changed to to_str() to align to the convention</p></li>
 </ul>
 </li>
 </ul>
@@ -200,18 +389,18 @@ collection)</p>
 <li><a class="reference internal" href="#introduction">Introduction</a></li>
 <li><a class="reference internal" href="#my-recommended-method">My Recommended Method</a></li>
 <li><a class="reference internal" href="#how-to-learn">How to learn</a></li>
-<li><a class="reference internal" href="#related-topics">Related Topics</a></li>
+<li><a class="reference internal" href="#notations">Notations</a></li>
 <li><a class="reference internal" href="#example">Example</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="../cpp/11-testing/testing.html"
+  <p class="topless"><a href="../cpp/testing/testing.html"
                         title="previous chapter">Testing in C++</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="../course/cop3530/prerequisites.html"
-                        title="next chapter">Prerequisite Contents</a></p>
+  <p class="topless"><a href="../course/cop3530/index.html"
+                        title="next chapter">COP 3530 Data Structure and Algorithm Design</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -240,20 +429,19 @@ collection)</p>
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../course/cop3530/prerequisites.html" title="Prerequisite Contents"
+          <a href="../course/cop3530/index.html" title="COP 3530 Data Structure and Algorithm Design"
              >next</a> |</li>
         <li class="right" >
-          <a href="../cpp/11-testing/testing.html" title="Testing in C++"
+          <a href="../cpp/testing/testing.html" title="Testing in C++"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">IanFang docs  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../course/cop3530/topics.html" >Course Notes By Topics</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Class identification</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
     </div>
   </body>
 </html>

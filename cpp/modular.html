@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Modular Development &#8212; IanFang docs  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/cpp/modular.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Compilation Using g++" href="gpp.html" />
+    <link rel="prev" title="Objects and Classes in C++" href="class.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="gpp.html" title="Compilation Using g++"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="class.html" title="Objects and Classes in C++"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang docs  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../course/cop3014/index.html" accesskey="U">COP 3014 Algorithm and Program Design</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Modular Development</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="modular-development">
+<h1>Modular Development<a class="headerlink" href="#modular-development" title="Permalink to this headline">¶</a></h1>
+<p>Modular development is the process of subdividing a program into separate
+sub-units known as modules. A module is a separate software component. It can
+often be used in a variety of applications and functions with other components
+of the system.</p>
+<p>The advantage of modular development include:</p>
+<ol class="arabic simple">
+<li><p>Ease of code organization/management</p></li>
+<li><p>Reusability</p></li>
+<li><p>Ease of maintenance (testing, collaboration, etc.)</p></li>
+</ol>
+<section id="multi-file-organization-in-c">
+<h2>Multi-file Organization in C++<a class="headerlink" href="#multi-file-organization-in-c" title="Permalink to this headline">¶</a></h2>
+<p>The key component that allows the modular compilation in C++ is the <code class="docutils literal notranslate"><span class="pre">#include</span></code>
+directive which copies all contents from one file and paste at the location at
+the directive.</p>
+<p>As a convention, the sharable components are stored in the header files (hpp
+files) and the private components are stored in the source files (cpp files).
+Other textual files like .inc files are also used (not covered in our courses).</p>
+<dl class="glossary simple">
+<dt id="term-header-files">header files<a class="headerlink" href="#term-header-files" title="Permalink to this term">¶</a></dt><dd><p>Public declarations (functions and classes), Public configurations</p>
+</dd>
+<dt id="term-source-files">source files<a class="headerlink" href="#term-source-files" title="Permalink to this term">¶</a></dt><dd><p>Definitions (functions, methods), private declarations, private
+configurations</p>
+</dd>
+</dl>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Permalink to this headline">¶</a></h2>
+<p>These are general rules. They should be followed most of the time especially for
+beginners. They can be violate when you have a good reason and know what you are
+doing.</p>
+<ul class="simple">
+<li><p>Sort the <code class="docutils literal notranslate"><span class="pre">#include</span></code> directive correctly</p>
+<ol class="arabic simple">
+<li><p>own header (paired header)</p></li>
+<li><p>headers in the same project</p></li>
+<li><p>third-party library headers</p></li>
+<li><p>system library headers</p></li>
+</ol>
+</li>
+<li><p>Only include headers as needed, avoid include-all headers like bits/stdc++.h</p></li>
+<li><p>Always add header guards</p></li>
+<li><p>Minimize your header (move out contents to the cpp file as much as possible)</p></li>
+<li><p>Follow a consistent naming convention for all files</p></li>
+</ul>
+</section>
+<section id="pitfalls">
+<h2>Pitfalls<a class="headerlink" href="#pitfalls" title="Permalink to this headline">¶</a></h2>
+<p>Many of these pitfalls are not wrong, but just not recommended at lease for
+beginners. C++ is very flexible but following a good convention is more
+beginner-friendly.</p>
+<ul class="simple">
+<li><p>Not using header guards</p></li>
+<li><p>Put all declarations in the header file even though they are private</p></li>
+<li><p>Not following a strict naming convention of files</p></li>
+<li><p>Use .h extension for C++ header files</p></li>
+</ul>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>Please refer to :doc:<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">document&lt;/tools/make&gt;</span></code> for examples.</p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Related Readings:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gpp.html">Compilation Using g++</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/make.html">GNU Make</a></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Modular Development</a><ul>
+<li><a class="reference internal" href="#multi-file-organization-in-c">Multi-file Organization in C++</a></li>
+<li><a class="reference internal" href="#best-practices">Best Practices</a></li>
+<li><a class="reference internal" href="#pitfalls">Pitfalls</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="class.html"
+                        title="previous chapter">Objects and Classes in C++</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="gpp.html"
+                        title="next chapter">Compilation Using g++</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/cpp/modular.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="gpp.html" title="Compilation Using g++"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="class.html" title="Objects and Classes in C++"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang docs  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Modular Development</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+    </div>
+  </body>
+</html>

@@ -1,19 +1,38 @@
-***
-Git
-***
+******************************
+Version Control System and Git
+******************************
 
 Version control systems (VCS) are a group of tools that tracks modifications to
 files. A VCS is essential to modern software development processes. It can
 facilitate modification tracking, context switching, codebase management, team
 cooperation, team communication, software quality controls, etc.
 
-Git is the most widely used distributed version control system. It enables
-efficient workflows to work with source codes and other textual documents. The
-``git`` command is the main command to invoke the functionalities of the git
-system in a command-line environment. Because git is extremely feature-rich,
-some workflows can be very complicated. We will start with some simple ones.
+Git is the most widely used distributed version control system (dVCS). It
+enables efficient workflows to work with source code and other textual
+documents. The ``git`` command is the main command to invoke the functionalities
+of the git system in a command-line environment. Because git is extremely
+feature-rich, workflows can be very complicated. We will start with some simple
+ones.
 
-.. _linear-wf:
+Setup before the first use
+==========================
+
+Before you can commit any changes, you must add your name and email to identify yourself::
+
+  git config --global user.name "Your Name"
+  git config --global user.email id@uwf.edu
+
+It is recommended to use your student email address
+
+CLI vs GUI
+==========
+
+The git tools itself is a command-line interface (CLI) based tool and you can
+access all features through CLI. However, because of the popularity, there are
+many GUI-based standalone tools and editor/IDE extensions available. My
+recommendations is to use the CLI based version first because it will work
+anywhere. After you have some good understanding of git, you can make use of the
+GUI tools/extensions for convenience.
 
 linear workflow
 ===============
@@ -25,14 +44,14 @@ logging features of git. In this workflow you will:
 
 #. Start your repository by either:
 
-   * clone a repository: ``git clone <URI>``
+   * clone an existing repository: ``git clone <URI>``
    * initiate a new repository: ``git init``
 
 #. Follow the incremental development approach to develop the project in units
    iteratively
 
-   a. write a small unit (function, class, etc.)
-   #. write tests
+   a. write code of a small unit (function, class, etc.)
+   #. write tests (can also be written before the code)
    #. run tests
    #. iterate until the unit passed all tests
    #. take snapshot and log it using a commit message.
@@ -58,6 +77,12 @@ Many tutorials available for anyone who is interested:
 
 Subcommands and Concepts
 ========================
+
+You can download the
+:download:`git cheatsheet</_static/git-cheat-sheet-education.pdf>`. Or learn
+from the `official git documentation`__
+
+.. __: https://git-scm.com/doc
 
 .. glossary::
 
@@ -91,7 +116,7 @@ Subcommands and Concepts
     A text file to specify the patterns of files to ignore by git. Used to avoid temporary files or large binary files to be included in the database.
 
   git clone
-    Clones a repository from a remotely hosted repository.
+    Clones a repository from a remotely hosted repository to a local directory.
 
   git init
     Create an empty git repository in the current directory.
@@ -111,8 +136,13 @@ Subcommands and Concepts
     area to the database with a message.
 
   git push
-    Run ``git push origin master`` to push to the remote repository named
-    ``origin`` with the remote branch being ``master``.
+    Run ``git push origin master`` to push local commits to the remote
+    repository named ``origin`` with the remote branch being ``master``.
+
+  git pull
+    Run ``git pull origin master`` to pull commits from the remote repository
+    named ``origin`` with the remote branch being ``master``. The remotes
+    commits will be merged to the local repository.
 
   git log
     Run ``git log`` to see the history of the past commits.
@@ -120,4 +150,4 @@ Subcommands and Concepts
   git config
     Run ``git config`` to change the configurations. The most common
     configurations are the name and email address of the user. You must provide
-    them to be able to start.l
+    them to be able to start.

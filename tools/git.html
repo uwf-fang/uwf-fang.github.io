@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Git &#8212; IanFang docs  documentation</title>
+    <title>Version Control System and Git &#8212; IanFang docs  documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
@@ -16,7 +16,9 @@
     <script src="../_static/doctools.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/tools/git.html" />
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="GitHub and GitHub Classroom" href="../course/github-classroom.html" />
+    <link rel="prev" title="Development Environment" href="../course/cop3530/env.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -24,8 +26,16 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../course/github-classroom.html" title="GitHub and GitHub Classroom"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../course/cop3530/env.html" title="Development Environment"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">IanFang docs  documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Git</a></li> 
+          <li class="nav-item nav-item-1"><a href="../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../course/cop3530/env.html" accesskey="U">Development Environment</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Version Control System and Git</a></li> 
       </ul>
     </div>  
 
@@ -34,19 +44,38 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="git">
-<h1>Git<a class="headerlink" href="#git" title="Permalink to this headline">¶</a></h1>
+  <section id="version-control-system-and-git">
+<h1>Version Control System and Git<a class="headerlink" href="#version-control-system-and-git" title="Permalink to this headline">¶</a></h1>
 <p>Version control systems (VCS) are a group of tools that tracks modifications to
 files. A VCS is essential to modern software development processes. It can
 facilitate modification tracking, context switching, codebase management, team
 cooperation, team communication, software quality controls, etc.</p>
-<p>Git is the most widely used distributed version control system. It enables
-efficient workflows to work with source codes and other textual documents. The
-<code class="docutils literal notranslate"><span class="pre">git</span></code> command is the main command to invoke the functionalities of the git
-system in a command-line environment. Because git is extremely feature-rich,
-some workflows can be very complicated. We will start with some simple ones.</p>
+<p>Git is the most widely used distributed version control system (dVCS). It
+enables efficient workflows to work with source code and other textual
+documents. The <code class="docutils literal notranslate"><span class="pre">git</span></code> command is the main command to invoke the functionalities
+of the git system in a command-line environment. Because git is extremely
+feature-rich, workflows can be very complicated. We will start with some simple
+ones.</p>
+<section id="setup-before-the-first-use">
+<h2>Setup before the first use<a class="headerlink" href="#setup-before-the-first-use" title="Permalink to this headline">¶</a></h2>
+<p>Before you can commit any changes, you must add your name and email to identify yourself:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">config</span> <span class="o">--</span><span class="k">global</span> <span class="n">user</span><span class="o">.</span><span class="n">name</span> <span class="s2">&quot;Your Name&quot;</span>
+<span class="n">git</span> <span class="n">config</span> <span class="o">--</span><span class="k">global</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span> <span class="nb">id</span><span class="nd">@uwf</span><span class="o">.</span><span class="n">edu</span>
+</pre></div>
+</div>
+<p>It is recommended to use your student email address</p>
+</section>
+<section id="cli-vs-gui">
+<h2>CLI vs GUI<a class="headerlink" href="#cli-vs-gui" title="Permalink to this headline">¶</a></h2>
+<p>The git tools itself is a command-line interface (CLI) based tool and you can
+access all features through CLI. However, because of the popularity, there are
+many GUI-based standalone tools and editor/IDE extensions available. My
+recommendations is to use the CLI based version first because it will work
+anywhere. After you have some good understanding of git, you can make use of the
+GUI tools/extensions for convenience.</p>
+</section>
 <section id="linear-workflow">
-<span id="linear-wf"></span><h2>linear workflow<a class="headerlink" href="#linear-workflow" title="Permalink to this headline">¶</a></h2>
+<h2>linear workflow<a class="headerlink" href="#linear-workflow" title="Permalink to this headline">¶</a></h2>
 <p>For beginners such as students learning VCS for the first time. You can stick
 with the linear workflow without branching. In this workflow: You will stick to
 a single <code class="docutils literal notranslate"><span class="pre">master</span></code> branch and only take advantage of the snapshot and history
@@ -54,15 +83,15 @@ logging features of git. In this workflow you will:</p>
 <ol class="arabic simple">
 <li><p>Start your repository by either:</p>
 <ul class="simple">
-<li><p>clone a repository: <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">&lt;URI&gt;</span></code></p></li>
+<li><p>clone an existing repository: <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">&lt;URI&gt;</span></code></p></li>
 <li><p>initiate a new repository: <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">init</span></code></p></li>
 </ul>
 </li>
 <li><p>Follow the incremental development approach to develop the project in units
 iteratively</p>
 <ol class="loweralpha simple">
-<li><p>write a small unit (function, class, etc.)</p></li>
-<li><p>write tests</p></li>
+<li><p>write code of a small unit (function, class, etc.)</p></li>
+<li><p>write tests (can also be written before the code)</p></li>
 <li><p>run tests</p></li>
 <li><p>iterate until the unit passed all tests</p></li>
 <li><p>take snapshot and log it using a commit message.</p>
@@ -89,6 +118,9 @@ repository).</p></li>
 </section>
 <section id="subcommands-and-concepts">
 <h2>Subcommands and Concepts<a class="headerlink" href="#subcommands-and-concepts" title="Permalink to this headline">¶</a></h2>
+<p>You can download the
+<a class="reference download internal" download="" href="../_downloads/c86225fb6e1b492c44742074e8c1a110/git-cheat-sheet-education.pdf"><code class="xref download docutils literal notranslate"><span class="pre">git</span> <span class="pre">cheatsheet</span></code></a>. Or learn
+from the <a class="reference external" href="https://git-scm.com/doc">official git documentation</a></p>
 <dl class="glossary simple">
 <dt id="term-Working-directory">Working directory<a class="headerlink" href="#term-Working-directory" title="Permalink to this term">¶</a></dt><dd><p>The directory where the repository is stored.</p>
 </dd>
@@ -113,7 +145,7 @@ who are interested in it.</p>
 </dd>
 <dt id="term-.gitignore">.gitignore<a class="headerlink" href="#term-.gitignore" title="Permalink to this term">¶</a></dt><dd><p>A text file to specify the patterns of files to ignore by git. Used to avoid temporary files or large binary files to be included in the database.</p>
 </dd>
-<dt id="term-git-clone">git clone<a class="headerlink" href="#term-git-clone" title="Permalink to this term">¶</a></dt><dd><p>Clones a repository from a remotely hosted repository.</p>
+<dt id="term-git-clone">git clone<a class="headerlink" href="#term-git-clone" title="Permalink to this term">¶</a></dt><dd><p>Clones a repository from a remotely hosted repository to a local directory.</p>
 </dd>
 <dt id="term-git-init">git init<a class="headerlink" href="#term-git-init" title="Permalink to this term">¶</a></dt><dd><p>Create an empty git repository in the current directory.</p>
 </dd>
@@ -128,14 +160,18 @@ area yet, as well as files added in the staging area.</p>
 <dt id="term-git-commit">git commit<a class="headerlink" href="#term-git-commit" title="Permalink to this term">¶</a></dt><dd><p>Run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">commit</span> <span class="pre">-m</span> <span class="pre">&quot;commit</span> <span class="pre">message&quot;</span></code> to store everything in the staging
 area to the database with a message.</p>
 </dd>
-<dt id="term-git-push">git push<a class="headerlink" href="#term-git-push" title="Permalink to this term">¶</a></dt><dd><p>Run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">master</span></code> to push to the remote repository named
-<code class="docutils literal notranslate"><span class="pre">origin</span></code> with the remote branch being <code class="docutils literal notranslate"><span class="pre">master</span></code>.</p>
+<dt id="term-git-push">git push<a class="headerlink" href="#term-git-push" title="Permalink to this term">¶</a></dt><dd><p>Run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">master</span></code> to push local commits to the remote
+repository named <code class="docutils literal notranslate"><span class="pre">origin</span></code> with the remote branch being <code class="docutils literal notranslate"><span class="pre">master</span></code>.</p>
+</dd>
+<dt id="term-git-pull">git pull<a class="headerlink" href="#term-git-pull" title="Permalink to this term">¶</a></dt><dd><p>Run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">pull</span> <span class="pre">origin</span> <span class="pre">master</span></code> to pull commits from the remote repository
+named <code class="docutils literal notranslate"><span class="pre">origin</span></code> with the remote branch being <code class="docutils literal notranslate"><span class="pre">master</span></code>. The remotes
+commits will be merged to the local repository.</p>
 </dd>
 <dt id="term-git-log">git log<a class="headerlink" href="#term-git-log" title="Permalink to this term">¶</a></dt><dd><p>Run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">log</span></code> to see the history of the past commits.</p>
 </dd>
 <dt id="term-git-config">git config<a class="headerlink" href="#term-git-config" title="Permalink to this term">¶</a></dt><dd><p>Run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">config</span></code> to change the configurations. The most common
 configurations are the name and email address of the user. You must provide
-them to be able to start.l</p>
+them to be able to start.</p>
 </dd>
 </dl>
 </section>
@@ -150,7 +186,9 @@ them to be able to start.l</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Git</a><ul>
+<li><a class="reference internal" href="#">Version Control System and Git</a><ul>
+<li><a class="reference internal" href="#setup-before-the-first-use">Setup before the first use</a></li>
+<li><a class="reference internal" href="#cli-vs-gui">CLI vs GUI</a></li>
 <li><a class="reference internal" href="#linear-workflow">linear workflow</a></li>
 <li><a class="reference internal" href="#other-workflows">Other Workflows</a></li>
 <li><a class="reference internal" href="#subcommands-and-concepts">Subcommands and Concepts</a></li>
@@ -158,6 +196,12 @@ them to be able to start.l</p>
 </li>
 </ul>
 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../course/cop3530/env.html"
+                        title="previous chapter">Development Environment</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../course/github-classroom.html"
+                        title="next chapter">GitHub and GitHub Classroom</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -185,13 +229,21 @@ them to be able to start.l</p>
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="../course/github-classroom.html" title="GitHub and GitHub Classroom"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../course/cop3530/env.html" title="Development Environment"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">IanFang docs  documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Git</a></li> 
+          <li class="nav-item nav-item-1"><a href="../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../course/cop3530/env.html" >Development Environment</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Version Control System and Git</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
     </div>
   </body>
 </html>

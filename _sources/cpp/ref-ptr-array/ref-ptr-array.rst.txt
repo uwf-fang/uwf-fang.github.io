@@ -1,0 +1,202 @@
+.. highlight:: c++
+  :linenothreshold: 5
+
+***************************************
+Reference, Pointer and Array Data Types
+***************************************
+
+.. _ref-type:
+
+Reference Type
+==============
+
++ A derived type to alias other types (including pointer type).
++ & symbol after type to make a derived type
++ syntax ``BaseType &name = lvalue``
+
+  * must have an lvalue on the right!
+  * must be initialized!
+  * must happen during initialization! later assignment will have different
+    meaning!
+
++ pitfalls
+
+  * confusing ref type with pointer type syntaxes
+  * declaration without initialization
+  * a reference to reference does not exist
+
+::
+
+  // ==== Reference type ====
+
+  // ---- correct ----
+  int a = 10;
+  int b = 100;
+
+  // the type is "int &"
+  // reference variable can only be assigned once to refer to another variable
+  // any later assignments will be redirected to the referred variable
+
+  int &myRef1 = a; // initialization, myRef1 is now an alias of a
+  myRef1 = b; // assignment, myRef1 will not refer to b, it is same as a = b; value of a become 10
+
+  int *ptr1 = &a;
+  int *&aliasPtr = ptr1;  // reference/alias to a pointer
+
+  // ---- wrong ----
+  int a;
+  int &alias;  // no initialization
+
+  int &alias = &a;  // alias is not a pointer, it takes a lvalue, not a memory address
+
+  int &&alias1 = alias;  // there is no ref to ref type!
+
+  cout << *alias;  // not a pointer, no need of * to dereference
+
+.. _ptr-type:
+
+Pointer Type
+============
+
++ A derived type to store the memory address of an lvalue
++ \* symbol after type to make a derived type ``BaseType *ptr;``
++ \* operator to dereference a pointer ``*ptr``
++ & operator to reference an lvalue ``&lvalue``
++ syntax
+
+::
+
+  int value = 10;
+  int *ptr1;
+  ptr1 = &value;  // reference, now you can use *ptr1 as an alias of value
+  (*ptr1)++;  // value increased by 1 and become 11
+  cout << "The value is " << *ptr1 << endl;  // dereference
+  // type cast to void * type to be displayed correctly
+  cout << "The memory address is " << static_cast<void *>(ptr1) << endl;
+
++ Pitfalls
+
+  * confusing pointer syntaxes with reference syntaxes
+
+ref type vs pointer type
+------------------------
+
+* ref cannot be re-assigned
+* ref cannot be empty or undefined, not flexible
+* ref is easier to use with no ref/deref operations
+* ref is safer to use
+* pointer is more powerful and allows many algorithms
+* array is also a pointer
+* new and delete only work with pointer
+
+.. _arr-type:
+
+Array Type
+==========
+
++ A derived type to store a sequentially stored list of values of the same base
+  type
++ A local array is a pointer with a pre-allocated continuous block of memory
++ A dynamic array is a pointer
++ [] after variable name with size to declare a local array ``int arr[10];``
+
+  * size must be specified (empty [] not allowed) except with initialization
+  * size must be known during the compilation
+
++ [] operator to refer to an element in the list ``arr[0]``
+
+  * no out-of-range check
+  * segmentation fault (memory violation)
+
++ size handling
+
+  * Easy and clean method: store in a separate variable
+  * Call ``sizeof()`` function
+
+    - ``size = sizeof(arr) / sizeof(arr[0])``
+    - will fail after the array variable is passed/assigned
+    - not recommended!
+
++ initialization {} syntax
+
+  * automatic size inference by compiler ``int arr[] = {1, 2, 3}``
+  * fill with 0 if provided values are not enough
+
++ Pitfalls
+
+  * out-of-range index
+  * incorrect size handling
+  * Java syntax ``int [] arr`` or ``int arr[]``
+  * returning a local array from a function
+
+::
+
+  // ==== Array ====
+
+  // ---- Correct ----
+
+  // size must be a compilation time constant
+  #define SIZE1 4
+  const int SIZE2 = 4;
+  int arr1[4];
+  int arr2[SIZE1];
+  int arr3[SIZE2];
+
+  // local array arr4
+  // pointer in stack
+  // 10 continuous int in stack allocated at the same time
+  int arr4[10];
+
+  // dynamic array arr5
+  // declared as a pointer
+  // pointer in stack, allocated when declared
+  int *arr5;
+  // 10 continuous int in heap, allocated by the new operator
+  arr5 = new int[10];
+  // must delete later to release the heap memory
+  delete [] arr5;
+
+  // initialization
+  int arr6[10] = {};  // all elements to 0
+  int arr7[] = {1, 2, 3, 4};  // size will be inferred by the compiler
+  int size = sizeof(arr7) / sizeof(arr7[0]);
+  // int size = sizeof(arr7) / sizeof(int);
+  int arr8[4] = {1, 2}; // get contents 1, 2, 0, 0
+
+
+  // ---- Wrong ----
+
+  // size not known during compilation
+  // WARNING: This is allowed with g++ but not allowed in standard C++
+  //          g++ support variable length array as an extension
+  int size;
+  cin >> size;
+  int arr[size];
+
+  // Java syntax
+  int [] arr1;
+  int arr1[];
+
+  // out-of-range
+  int arr[100];
+  cout << arr[100];
+
+
+Pointer vs array syntaxes
+-------------------------
+
++ the array variable holds the memory address to the first element
++ first element: ``*arr`` is the same as ``arr[0]``
++ n th element: ``*(arr + n)`` the same as ``arr[n]``
+
+::
+
+  int arr1[4] = {1, 2, 3, 4};
+  int *arr2 = arr1 + 1;
+
+  // &arr1[0] is same as arr1
+  // arr2 is an array sharing data with arr1
+  // arr2 have a max size of 3
+  // arr2[0] is the same as arr1[1]
+  cout << arr1[1] << endl;  // get 2
+  cout << arr2[0] << endl;  // get 2

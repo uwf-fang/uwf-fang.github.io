@@ -1,0 +1,105 @@
+.. highlight:: cpp
+
+**************
+Testing in C++
+**************
+
+As the size and complexity of a software project scales, manual testing and
+debugging become less and less effective. A more systematic testing method is
+desirable.
+
+The modular development of large projects breaks codes into smaller modules and
+units such as functions, and classes. Within in this context, Unit Testing and
+Integration Testing are extremely effective. Both of them are designed to be
+automated with the help of testing frameworks. It is a huge boost to the quality
+of the produced codes.
+
+.. glossary::
+
+  Unit test
+    It is a type of testing strategy to test software units individually in
+    isolation. To ensure *isolation*, techniques like mocking, stubbing, and
+    faking are introduced.
+
+  Integration test
+    It is a type of testing strategy to test how a group of units works
+    together. Isolation can also be reinforced, similar to unit testing.
+
+  Acceptance test
+    It is a final integration test that runs the whole software system all
+    together.
+
+  Testing framework
+    A library/software to facilitate the testing process.
+
+Simple Test Run
+===============
+
+As a beginner taking entry-level courses, you should learn testing as soon as
+possible to build a correct workflow on project. You can start writing tests by
+simply add ``cout`` and ``if``
+statements to check whether your function or class is doing its job as expected.
+These codes can be kept in separate cpp files with its own main function or as
+functions in your driver file, such as main.cpp.
+
+For example, assume that we have two classes ``StoreItem`` and ``Store`` to
+test. A test driver may look like this:
+
+.. literalinclude:: test-driver.cpp
+  :caption: test-driver.cpp
+  :language: cpp
+  :linenos:
+
+Assertions
+==========
+
+The ``assert`` macro function (similar to a function when used) allows a more
+efficient way to run tests. This macro takes a bool parameter and abort your
+program when the bool expression evaluates to false. You can add as many as you
+like in your program during debugging and disable all of them by adding a line
+of ``#define NDEBUG`` before the ``#include <cassert>`` directive.
+
+.. literalinclude:: test.cpp
+  :caption: test.cpp
+  :language: cpp
+  :linenos:
+
+Testing Frameworks
+==================
+
+Choosing a good testing framework is more effective in terms of easier test
+writing and creation, better test organization, and better test result
+presentations. We choose the Catch2 framework to write tests in some projects.
+It is simple but feature-rich. The syntax to write tests are simple:
+
+.. literalinclude:: test-catch.cpp
+  :caption: test-catch.cpp
+  :language: cpp
+  :linenos:
+
+
+The ``TEST_CASE`` macro defines a test case with a description and a tag string.
+The ``REQUIRE`` macro will check the condition in the parenthesis. It will pass
+if the condition is true.
+
+A comprehensive `tutorial`__ is available online.
+
+.. __: https://catch2.docsforge.com/v2.13.2/tutorial/
+
+Testability
+===========
+
+Some codes are easier to test than others. In most of the cases, a more testable
+code base has better quality than something not very testable. Testable codes
+are usually well-designed.
+
+There are many principles in how to write testable codes. Here are some simple
+rules we can follow:
+
+#. keep the size of each unit small
+#. keep each unit coherent
+#. keep each unit focusing on one responsibility
+#. keep the units decoupled (each unit *knows* minimal numbers of other units)
+#. keep units deterministic (same inputs always give the same results)
+#. keep most units side effect free if possible
+
