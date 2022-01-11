@@ -1,0 +1,146 @@
+.. highlight:: c++
+  :linenothreshold: 5
+
+*****************
+Memory Management
+*****************
+
+Memory regions
+==============
+
+:code: code
+:static: global and static variables
+:stack: local variables and function formal parameters
+:heap: dynamic data (allocated by new)
+
+Dynamic Memory Allocation
+=========================
+
+* ``new`` creates the data structure in heap memory and returns a pointer (or
+  array)
+
+  .. code-block:: c++
+
+    int *intPtr = new int;  // single variable
+    int *array = new int[10];  // array
+    MyClass *myObjPtr = new MyClass();  // object
+
+* ``delete`` destruct the data structure the pointer is pointing to and release
+  the memory
+
+  - always call delete on a pointer (array is a pointer)
+  - add [] if the pointer is pointing to a list of memory blocks (array)
+
+  .. code-block:: c++
+
+    delete intPtr;
+    delete [] array1;
+    delete myObjPtr;
+
+* The allocated data in heap are know as **dynamic data**
+
+
+Memory leak
+===========
+
+* Generally anything new'ed should be deleted
+* only happens in the heap memory
+* dynamic data allocated (new) but not released (delete)
+* likely to be overlooked in function and class definitions when the flow of
+  control is not obvious
+
+
+Dynamic Data in Class
+=====================
+
++ Dynamic data in class
+
+  * pointer-typed instance variables
+  * variable or array allocated using ``new``
+  * dynamic data passed in as parameters
+
++ Potential problems
+
+  * memory leak - fail to ``delete``
+
+    - bad or no destructor
+
+  * shallow copy - fail to copy the dynamic data in the heap memory
+
+    - bad or no copy constructor
+    - bad or no copy assignment operator overload
+    - **may not be a problem if objects are never copied or copy assigned**
+    - will consequently causing destructor to ``delete`` multiple times
+
++ Rule of three
+
+  * The **big three** methods needed for classes with dynamic data.
+  * destructor
+
+    - **mandatory** because it will always be triggered
+    - when an object is destroyed
+
+      * local object going out of scope
+      * dynamic object being ``delete`` d
+
+    - place to ``delete`` dynamic data
+
+  * copy constructor
+
+    - explicit triggering ``MyClass obj1; MyClass obj2(obj1);``
+    - implicit triggering
+
+      + in initialization
+      + ``MyClass obj1; MyClass obj2 = obj1;``
+
+    - place to perform deep copy
+
+  * copy assignment operator overload
+
+    - triggering ``MyClass obj1; MyClass obj2; obj2 = obj1;``
+    - implicit assignment
+
+      + parameter passing by value
+      + return as value
+
+    - clean up old data
+    - perform deep copy
+    - ``return *this;``
+
+  * you may omit both if never triggered (not recommended)
+
+
+Ownership of Dynamic Data
+=========================
+
+A dynamic data can be created and passed. As the ownership changed. The last
+owner should take the responsibility to release the memory.
+
+::
+
+  class DataType {
+    // ...
+  };
+
+  class MyClass {
+   private:
+    DataType *myDynamicData;
+   public:
+    MyClass(DataType *initialData = nullptr) {
+      myDynamicData = initialData;
+    }
+    ~MyClass() {
+      // delete here although it is not new'ed in the class
+      delete myDynamicData;
+    }
+  };
+
+  int main() {
+    DataType *initData = new DataType();  // main function owns it
+    MyClass obj1(initData);  // obj1 owns it now
+
+    return 0;
+  }
+
+You can also choose to remove the destructor and let the main function to delete
+initData. The use of destructor usually works better in more complex projects.
