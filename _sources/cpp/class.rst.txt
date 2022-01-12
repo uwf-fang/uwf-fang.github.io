@@ -1,3 +1,6 @@
+.. highlight:: c++
+  :linenothreshold: 5
+
 **************************
 Objects and Classes in C++
 **************************
@@ -19,7 +22,7 @@ map to C++ concepts
 Class declaration
 =================
 
-+ class keyword or struct keyword
++ class keyword (or struct keyword)
 + visibility (access specifier)
 
   * as section (different from Java)
@@ -28,9 +31,10 @@ Class declaration
   * protected, etc.: not discussed here
   * always prefer information hiding
 
-+ const methods: methods that cannot not modify any class variables
++ const methods: methods that cannot not modify any instance variable
 
   - ``print() const {cout << "Hello!\n";}``
+  - ``int size() const { return this->size;}``
 
 + data initialization
 
@@ -42,18 +46,180 @@ Method definition
   * separate
   * in-line
 
-+ scope resolution operator ``::``
-+ ``this`` pointer
-+ type of methods
++ scope resolution operator ``::`` to specify the owner of the method (the
+  class)
++ ``this`` pointer as a pointer pointing to the current object
++ type of special methods
 
-  - constructor
-  - destructor
-  - accessor
-  - mutator
-  - private helper
+  .. glossary::
+
+    Constructor
+      The methods to be triggered when the object is created. Same name as the
+      class. No return type (because they always return the new object). May be
+      overloaded.
+
+    Destructor
+      The method to be triggered when the object is destroyed. No parameter. One
+      per class.
+
+    Accessor
+      A.k.a getter. A simple method to return the value of an instance variable.
+      Should be const methods in most cases.
+
+    Mutator
+      A.k.a setter. Takes one const parameter and set an instance variable to the value passed in.
+
+    Private helper
+      A general name of all private methods as they are usually used to *help*
+      other methods.
+
++ Constructor
+
+  * initializer list
+
+    - constructor only
+    - initializes values of instance variables
+
+  * default constructor
+
+    - no parameter
+    - when omitted, the compiler will make one for you
+    - should not omit if you want to define some different initial value
+
+  * parameterized constructor
+
+    - more than one parameters
+
+  * other constructors (discussed in the memory management chapter)
+
+    - copy constructor
+    - move constructor
 
 Using class/object
 ==================
 
-- declare variable of class type
-- ``.`` member accessing operator
++ declare a variable of a class type
+
+  * initialization using the constructor::
+
+      MyClass myObj1(10);
+      MyClass myObj1 = 10;
+      MyClass myObj1{10}; // since C++11
+
++ ``.`` member accessing operator::
+
+    MyClass obj;
+    cout << obj.getValue() << endl;
+
++ ``->`` member accessing operator from pointer::
+
+    // pointer to class
+    MyClass *objPtr;
+    // objPtr->getValue() is same as (*objPtr).getValue()
+    cout << objPtr->getValue() << endl;
+
+
+Class Example
+=============
+
+.. code-block:: c++
+  :caption: my-class.hpp
+
+  #ifndef MY_CLASS_HPP
+  #define MY_CLASS_HPP
+
+  class MyClass {
+   private:  // optional, anything not in the public section is private
+    int value;
+    void doubleVal();  // private helper
+   public:
+    MyClass();  // default constructor
+    MyClass(int value);  // parameterized constructor
+    int getValue() const;  // accessor/getter
+    void setValue(int value);  // mutator/setter
+    int getDoubledValue();  // general public method
+  };  // WARNING: must have ; here
+
+  #endif // MY_CLASS_HPP
+
+.. code-block:: c++
+  :caption: my-class.cpp
+
+  #include "my-class.hpp"
+
+  void MyClass::doubleVal() {
+    value *= 2;
+  }
+
+  int MyClass::getDoubledValue() {
+    doubleVal();
+    return value;
+  }
+
+  // default constructor
+  // with initializer list to set value to 0
+  MyClass::MyClass(): value(0) {}
+
+  // parameterized constructor
+  // using initializer list
+  // MyClass::MyClass(int value): value(value) {}
+
+  // not using initializer list
+  MyClass::MyClass(int value) {
+    // this->value refers to the instance variable
+    // must add this-> when names conflict
+    this->value = value;
+  }
+
+  int MyClass::getValue() const {
+    return value;
+  }
+
+  // cannot use the initializer list because this is not a constructor
+  void MyClass::setValue(int value) {
+    this->value = value;
+  }
+
+.. code-block:: c++
+  :caption: main.cpp
+
+  // pay attention to the order
+  // user header first
+  // system header last
+  #include "my-class.hpp"
+  #include <iostream>
+
+  using namespace std;
+
+  int main() {
+    // trigger the default constructor
+    MyClass obj1;
+    cout << obj1.getValue() << endl;  // get 0
+
+    // trigger the parameterized constructor
+    MyClass obj2(10);
+    // alternatives
+    // MyClass obj2{10};  // since c++11
+    // MyClass obj2 = 10;
+    cout << obj2.getValue() << endl;  // get 10
+
+    MyClass *ptr1;
+    ptr1 = new MyClass(15);  // use new to call the constructor
+    cout << ptr1->getValue() << endl;  // get 15
+    cout << (*ptr1).getValue() << endl;  // get 15
+  }
+
+.. code-block:: makefile
+  :caption: makefile
+
+  main: main.o my-class.o
+      g++ -o $@ $^
+
+  main.o: main.cpp my-class.hpp
+      g++ -std=c++11 -Wall -c -o $@ $<
+
+  my-class.o: my-class.cpp my-class.hpp
+      g++ -std=c++11 -Wall -c -o $@ $<
+
+  clean:
+      rm -f *.o main
