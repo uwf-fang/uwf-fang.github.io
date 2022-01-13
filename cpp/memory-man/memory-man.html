@@ -17,8 +17,8 @@
     <link rel="canonical" href="https://uwf-fang.github.io/cpp/memory-man/memory-man.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Templates in C++" href="../templates/templates.html" />
-    <link rel="prev" title="Chapter 3 Memory Management, Rule of Three" href="../../course/cop3530/ch03.html" /> 
+    <link rel="next" title="COP 3530 Data Structure and Algorithm Design" href="../../course/cop3530/index.html" />
+    <link rel="prev" title="Chapter 5 Pointer and Memory Management" href="../../course/cop3014/ch05.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -27,14 +27,14 @@
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../templates/templates.html" title="Templates in C++"
+          <a href="../../course/cop3530/index.html" title="COP 3530 Data Structure and Algorithm Design"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="../../course/cop3530/ch03.html" title="Chapter 3 Memory Management, Rule of Three"
+          <a href="../../course/cop3014/ch05.html" title="Chapter 5 Pointer and Memory Management"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../../course/cop3530/ch03.html" accesskey="U">Chapter 3 Memory Management, Rule of Three</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch05.html" accesskey="U">Chapter 5 Pointer and Memory Management</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Memory Management</a></li> 
       </ul>
     </div>  
@@ -66,6 +66,7 @@
 <section id="dynamic-memory-allocation">
 <h2>Dynamic Memory Allocation<a class="headerlink" href="#dynamic-memory-allocation" title="Permalink to this headline">¶</a></h2>
 <ul>
+<li><p>Data in heap</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">new</span></code> creates the data structure in heap memory and returns a pointer (or
 array)</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">intPtr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="p">;</span><span class="w">  </span><span class="c1">// single variable</span>
@@ -99,110 +100,15 @@ the memory</p>
 control is not obvious</p></li>
 </ul>
 </section>
-<section id="dynamic-data-in-class">
-<h2>Dynamic Data in Class<a class="headerlink" href="#dynamic-data-in-class" title="Permalink to this headline">¶</a></h2>
+<section id="other-memory-problems">
+<h2>Other Memory Problems<a class="headerlink" href="#other-memory-problems" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Dynamic data in class</p>
-<ul>
-<li><p>pointer-typed instance variables</p></li>
-<li><p>variable or array allocated using <code class="docutils literal notranslate"><span class="pre">new</span></code></p></li>
-<li><p>dynamic data passed in as parameters</p></li>
+<li><p>Stack overflow because of massive function calls</p></li>
+<li><p>Out-of-boundary array indexing</p></li>
+<li><p>Oversized C string copying</p></li>
+<li><p>Uninitialized pointer</p></li>
+<li><p>Deleting the same pointer multiple times</p></li>
 </ul>
-</li>
-<li><p>Potential problems</p>
-<ul>
-<li><p>memory leak - fail to <code class="docutils literal notranslate"><span class="pre">delete</span></code></p>
-<ul>
-<li><p>bad or no destructor</p></li>
-</ul>
-</li>
-<li><p>shallow copy - fail to copy the dynamic data in the heap memory</p>
-<ul>
-<li><p>bad or no copy constructor</p></li>
-<li><p>bad or no copy assignment operator overload</p></li>
-<li><p><strong>may not be a problem if objects are never copied or copy assigned</strong></p></li>
-<li><p>will consequently causing destructor to <code class="docutils literal notranslate"><span class="pre">delete</span></code> multiple times</p></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Rule of three</p>
-<ul>
-<li><p>The <strong>big three</strong> methods needed for classes with dynamic data.</p></li>
-<li><p>destructor</p>
-<ul>
-<li><p><strong>mandatory</strong> because it will always be triggered</p></li>
-<li><p>when an object is destroyed</p>
-<ul>
-<li><p>local object going out of scope</p></li>
-<li><p>dynamic object being <code class="docutils literal notranslate"><span class="pre">delete</span></code> d</p></li>
-</ul>
-</li>
-<li><p>place to <code class="docutils literal notranslate"><span class="pre">delete</span></code> dynamic data</p></li>
-</ul>
-</li>
-<li><p>copy constructor</p>
-<ul>
-<li><p>explicit triggering <code class="docutils literal notranslate"><span class="pre">MyClass</span> <span class="pre">obj1;</span> <span class="pre">MyClass</span> <span class="pre">obj2(obj1);</span></code></p></li>
-<li><p>implicit triggering</p>
-<ul>
-<li><p>in initialization</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">MyClass</span> <span class="pre">obj1;</span> <span class="pre">MyClass</span> <span class="pre">obj2</span> <span class="pre">=</span> <span class="pre">obj1;</span></code></p></li>
-</ul>
-</li>
-<li><p>place to perform deep copy</p></li>
-</ul>
-</li>
-<li><p>copy assignment operator overload</p>
-<ul>
-<li><p>triggering <code class="docutils literal notranslate"><span class="pre">MyClass</span> <span class="pre">obj1;</span> <span class="pre">MyClass</span> <span class="pre">obj2;</span> <span class="pre">obj2</span> <span class="pre">=</span> <span class="pre">obj1;</span></code></p></li>
-<li><p>implicit assignment</p>
-<ul>
-<li><p>parameter passing by value</p></li>
-<li><p>return as value</p></li>
-</ul>
-</li>
-<li><p>clean up old data</p></li>
-<li><p>perform deep copy</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">*this;</span></code></p></li>
-</ul>
-</li>
-<li><p>you may omit both if never triggered (not recommended)</p></li>
-</ul>
-</li>
-</ul>
-</section>
-<section id="ownership-of-dynamic-data">
-<h2>Ownership of Dynamic Data<a class="headerlink" href="#ownership-of-dynamic-data" title="Permalink to this headline">¶</a></h2>
-<p>A dynamic data can be created and passed. As the ownership changed. The last
-owner should take the responsibility to release the memory.</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span> <span class="nc">DataType</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 2</span><span class="w">  </span><span class="c1">// ...</span>
-<span class="linenos"> 3</span><span class="p">};</span><span class="w"></span>
-<span class="linenos"> 4</span>
-<span class="linenos"> 5</span><span class="k">class</span> <span class="nc">MyClass</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 6</span><span class="w"> </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
-<span class="linenos"> 7</span><span class="w">  </span><span class="n">DataType</span><span class="w"> </span><span class="o">*</span><span class="n">myDynamicData</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 8</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="linenos"> 9</span><span class="w">  </span><span class="n">MyClass</span><span class="p">(</span><span class="n">DataType</span><span class="w"> </span><span class="o">*</span><span class="n">initialData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">10</span><span class="w">    </span><span class="n">myDynamicData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">initialData</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">11</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="linenos">12</span><span class="w">  </span><span class="o">~</span><span class="n">MyClass</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">13</span><span class="w">    </span><span class="c1">// delete here although it is not new&#39;ed in the class</span>
-<span class="linenos">14</span><span class="w">    </span><span class="k">delete</span><span class="w"> </span><span class="n">myDynamicData</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">15</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="linenos">16</span><span class="p">};</span><span class="w"></span>
-<span class="linenos">17</span>
-<span class="linenos">18</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">19</span><span class="w">  </span><span class="n">DataType</span><span class="w"> </span><span class="o">*</span><span class="n">initData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">DataType</span><span class="p">();</span><span class="w">  </span><span class="c1">// main function owns it</span>
-<span class="linenos">20</span><span class="w">  </span><span class="n">MyClass</span><span class="w"> </span><span class="n">obj1</span><span class="p">(</span><span class="n">initData</span><span class="p">);</span><span class="w">  </span><span class="c1">// obj1 owns it now</span>
-<span class="linenos">21</span>
-<span class="linenos">22</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">23</span><span class="p">}</span><span class="w"></span>
-</pre></div>
-</div>
-<p>You can also choose to remove the destructor and let the main function to delete
-initData. The method using destructor usually works better in more complex projects.</p>
 </section>
 </section>
 
@@ -219,18 +125,17 @@ initData. The method using destructor usually works better in more complex proje
 <li><a class="reference internal" href="#memory-regions">Memory regions</a></li>
 <li><a class="reference internal" href="#dynamic-memory-allocation">Dynamic Memory Allocation</a></li>
 <li><a class="reference internal" href="#memory-leak">Memory leak</a></li>
-<li><a class="reference internal" href="#dynamic-data-in-class">Dynamic Data in Class</a></li>
-<li><a class="reference internal" href="#ownership-of-dynamic-data">Ownership of Dynamic Data</a></li>
+<li><a class="reference internal" href="#other-memory-problems">Other Memory Problems</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="../../course/cop3530/ch03.html"
-                        title="previous chapter">Chapter 3 Memory Management, Rule of Three</a></p>
+  <p class="topless"><a href="../../course/cop3014/ch05.html"
+                        title="previous chapter">Chapter 5 Pointer and Memory Management</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="../templates/templates.html"
-                        title="next chapter">Templates in C++</a></p>
+  <p class="topless"><a href="../../course/cop3530/index.html"
+                        title="next chapter">COP 3530 Data Structure and Algorithm Design</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -259,14 +164,14 @@ initData. The method using destructor usually works better in more complex proje
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../templates/templates.html" title="Templates in C++"
+          <a href="../../course/cop3530/index.html" title="COP 3530 Data Structure and Algorithm Design"
              >next</a> |</li>
         <li class="right" >
-          <a href="../../course/cop3530/ch03.html" title="Chapter 3 Memory Management, Rule of Three"
+          <a href="../../course/cop3014/ch05.html" title="Chapter 5 Pointer and Memory Management"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../../course/cop3530/ch03.html" >Chapter 3 Memory Management, Rule of Three</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch05.html" >Chapter 5 Pointer and Memory Management</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Memory Management</a></li> 
       </ul>
     </div>
