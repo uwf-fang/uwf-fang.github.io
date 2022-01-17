@@ -243,3 +243,45 @@ Passing arrays around
 + only the first part (pointer part) is passed, data part stays
 + as parameter
 + returned value
+
+  ::
+
+    // ==== Array parameter ====
+    // ---- Correct ----
+
+    // ignore the size
+    double average(double arr[], int size);
+    double average(double *arr, int size);
+
+    // ---- Wrong ----
+    double average(double arr[size], int size);  // not compile
+    double average(double arr[3], int size);  // compile but 3 is ignored
+
+    // ---- to call ----
+    double arr1[3] = {1.0, 2.0, 3.0};
+    cout << average(arr1, 3) << endl;
+    // cout << average(arr1[], 3) << endl;  // wrong!
+
+    // ==== Array as returned value ====
+
+    // ---- Correct ----
+    // return a dynamic array
+    int *makeSequence(int size) {
+      int *sequence;
+      sequence = new int[size];
+      for (int i = 0; i < size; i++)
+        sequence[i] = i + 1;
+      return sequence;
+    }
+
+    // ---- Wrong ----
+    int *makeSequence(int size) {
+      int sequence[size];
+      for (int i = 0; i < size; i++)
+        sequence[i] = i + 1;
+      return sequence;
+    }
+
+    // ---- to call ----
+    int *seq = makeSequence(10);
+    delete [] seq;

@@ -65,6 +65,52 @@ Dynamic data in class
 
   * you may omit the last two if they are never triggered (not recommended)
 
+::
+
+  class MyClass {
+   private:
+    int *arr;
+    int size;
+   public:
+    MyClass();
+    MyClass(int size);
+    MyClass(const MyClass& other);
+    MyClass & operator=(const MyClass& other);
+    ~MyClass();
+  }
+
+  MyClass::MyClass() {
+    size = 0;
+    arr = nullptr;
+  }
+
+  MyClass::MyClass(int size) {
+    this->size = size;
+    arr = new int[size];
+  }
+
+  MyClass::MyClass(const MyClass& other) {
+    // you can access private member of other directly!
+    size = other.size;
+    arr = new int[size];
+    for (int i = 0; i < size; i++)
+      arr[i] = other.arr[i];
+  }
+
+  MyClass & MyClass::operator=(const MyClass& other) {
+    size = other.size;
+    // must release memory of the old dynamic data first!
+    if (arr != nullptr)
+      delete [] arr;
+    arr = new int[size];
+    for (int i=0; i<size; i++)
+      arr[i] = other.arr[i];
+    return *this;  // IMPORTANT! return the current object by reference
+  }
+
+  ~MyClass::MyClass() {
+    delete [] arr;
+  }
 
 Ownership of Dynamic Data
 =========================
