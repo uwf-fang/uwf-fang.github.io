@@ -236,13 +236,38 @@ Returning a Reference
 
 Returning a reference allows a function call to be used as a lvalue.
 
+::
+
+  class MyArr {
+   private:
+    int *arr;
+    int size;
+   public:
+    MyArr();
+    MyArr(int size, int value);
+    ~MyArr();
+    int &at(int i);
+  };
+
+  int & MyArr::at(int i) {
+    return arr[i];  // the reference to arr[i] is passed out
+  }
+
+  int main() {
+    // declare and initialize MyArr myArr1;
+    myArr1.at(0) = 10;  // you can assign a value to a function call now
+                        // because myArr1.at() is an alias of myArr1.arr[i]
+  }
+
+.. _pass-array:
+
 Passing arrays around
 =====================
 
 + pass an array is passing a pointer by value (memory address)
 + only the first part (pointer part) is passed, data part stays
 + as parameter
-+ returned value
++ as returned value
 
   ::
 

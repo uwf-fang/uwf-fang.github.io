@@ -18,6 +18,7 @@ Dynamic data in class
   * memory leak - fail to ``delete``
 
     - bad or no destructor
+    - dynamic data passed around without correct handling
 
   * shallow copy - fail to copy the dynamic data in the heap memory
 
@@ -63,7 +64,7 @@ Dynamic data in class
     - perform deep copy
     - ``return *this;``
 
-  * you may omit the last two if they are never triggered (not recommended)
+  * you may omit the last two if they are never triggered
 
 ::
 
@@ -112,11 +113,51 @@ Dynamic data in class
     delete [] arr;
   }
 
++ Rule of five
+
+  * Two more methods
+
+    - Move constructor
+    - Move assignment operator overloading
+
+  * Not mandatory but will improve efficiency
+  * New syntax since c++ 11 using ``&&``
+  * Mutable parameter
+
+::
+
+  // the parameter is no longer 'const' because you will modify it
+  MyClass::MyClass(MyClass && other) {
+    // you can access private member of other directly!
+    size = other.size;
+    arr = other.arr;
+    // must make the other object ready for destruction
+    // without this step the destructor may try to delete the moved data
+    other.arr = null;
+    other.size = 0;
+  }
+
+  // the parameter is no longer 'const' because you will modify it
+  MyClass & MyClass::operator=(MyClass && other) {
+    // Swap both the size and arr with the other object
+    // the destructor of the other object will destroy the data
+    int tempSize = size;
+    size = other.size;
+    other.size = tempSize;
+    int *tempArr = arr;
+    arr = other.arr;
+    other.arr = tempArr;
+    return *this;
+  }
+
 Ownership of Dynamic Data
 =========================
 
 A dynamic data can be created and passed. As the ownership changed. The last
 owner should take the responsibility to release the memory.
+
+Passing dynamic data created outside as a parameter. The recipient owns the data
+after.
 
 ::
 
@@ -144,5 +185,104 @@ owner should take the responsibility to release the memory.
     return 0;
   }
 
-You can also choose to remove the destructor and let the main function to delete
-initData. The method using destructor usually works better in more complex projects.
+You may also choose to remove the destructor and let the main function to delete
+if you feel it make more sense that the recipients are only users of the dynamic
+data. Sometimes the dynamic data is shared.
+
+::
+
+  class Configuration {
+    // ...
+  };
+
+  class MyClass {
+   private:
+    Configuration *config;
+   public:
+    MyClass(Configuration *config = nullptr) {
+      this->config = config;
+    }
+  };
+
+  int main() {
+
+    Configuration *config1 = new Configuration();  // main function owns it
+    MyClass obj1(config1);  // obj1 uses it
+    MyClass obj2(config1);  // obj2 uses it
+
+    delete config1;
+    return 0;
+  }
+
+The dynamic data can also be passed as a returned value.
+
+Example: The object always owns the data. The recipient just used it.
+
+::
+
+  class MyClass {
+   private:
+    int * array;  // always owned by the object
+    int size;
+   public:
+    // ... other methods
+    // array is new'ed in some methods
+    ~MyClass() {delete [] array;}
+    int *getArray() {return array;}  // expose to outside
+    int getSize() {return size;}
+  };
+
+  int main() {
+    // declare and initialize data in MyClass obj1;
+    int size = obj1.getSize();
+    int *arr = obj1.getArray();
+    for (int i = 0; i < size; i++)
+      cout << arr[i] << " ";
+    return 0;
+  }
+
+Example: The ownership changed to the recipient.
+
+::
+
+  class MyClass {
+   private:
+    int * array;  // always owned by the object
+    int size;
+   public:
+    // ... other methods
+    // array is new'ed in some methods
+    int *getPositiveValues();
+    int getPositiveCount();
+  };
+
+  int * MyClass::getPositiveValues() {
+    int posCount = getPositiveCount();
+    int *arr = new int[posCount];  // dynamic data, not meant to be owned
+    int j = 0;
+    for (int i = 0; i < size; i++)
+      if (array[i] > 0) {
+        arr[j] = array[i];
+        j++;
+      }
+    return arr;
+  }
+
+  int MyClass::getPositiveCount() {
+    int count = 0;
+    for (int i = 0; i < size; i++)
+      if (array[i] > 0)
+        count++;
+    return count;
+  }
+
+  int main() {
+    // declare and initialize data in MyClass obj1;
+    int *positiveArray = obj1.getPositiveValues();
+    int size = obj1.getPositiveCount();
+    for (int i = 0; i < size; i++)
+      cout << positiveArray[i] << " ";
+    delete [] positiveArray;  // positiveArray owned by the main function
+    return 0;
+  }
+
