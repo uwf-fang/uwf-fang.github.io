@@ -76,24 +76,52 @@
 </section>
 <section id="class-declaration">
 <h2>Class declaration<a class="headerlink" href="#class-declaration" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
+<ul>
 <li><p>class keyword (or struct keyword)</p></li>
 <li><p>visibility (access specifier)</p>
+<ul class="simple">
+<li><p>as section (different from Java)</p>
 <ul>
-<li><p>as section (different from Java)</p></li>
 <li><p>public:  accessible anywhere</p></li>
 <li><p>private:  accessible only within objects of the same class</p></li>
-<li><p>protected, etc.: not discussed here</p></li>
+<li><p>protected, etc.: not discussed in the courses</p></li>
+</ul>
+</li>
 <li><p>always prefer information hiding</p></li>
 </ul>
 </li>
 <li><p>const methods: methods that cannot not modify any instance variable</p>
-<ul>
+<ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">print()</span> <span class="pre">const</span> <span class="pre">{cout</span> <span class="pre">&lt;&lt;</span> <span class="pre">&quot;Hello!\n&quot;;}</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">size()</span> <span class="pre">const</span> <span class="pre">{</span> <span class="pre">return</span> <span class="pre">this-&gt;size;}</span></code></p></li>
 </ul>
 </li>
-<li><p>data initialization</p></li>
+<li><p>data initialization of instance variables</p>
+<ol class="arabic simple">
+<li><p>initialization during declaration (since c++11 for non-static variables)</p></li>
+<li><p>initializer list in the constructor (preferred)</p></li>
+</ol>
+<p>Two methods can be mixed. Use the first method for initial values shared among
+multiple constructors; Use the second method for values that differs among
+various constructors.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// 1. in-class initializer</span>
+<span class="linenos"> 2</span><span class="k">class</span> <span class="nc">MyClass</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 3</span><span class="w"> </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="w">  </span><span class="n">MyClass</span><span class="p">()</span><span class="w"> </span><span class="p">{};</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="p">};</span><span class="w"></span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="c1">// 2. constructor member initializer list</span>
+<span class="linenos">10</span><span class="k">class</span> <span class="nc">MyClass</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">11</span><span class="w"> </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="linenos">12</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">13</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="linenos">14</span><span class="w">  </span><span class="n">MyClass</span><span class="p">()</span><span class="o">:</span><span class="w"> </span><span class="n">value</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">{};</span><span class="w"></span>
+<span class="linenos">15</span><span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
 </ul>
 </section>
 <section id="method-definition">
@@ -166,6 +194,21 @@ other methods.</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">MyClass</span><span class="w"> </span><span class="nf">myObj1</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
 <span class="n">MyClass</span><span class="w"> </span><span class="n">myObj1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
 <span class="n">MyClass</span><span class="w"> </span><span class="n">myObj1</span><span class="p">{</span><span class="mi">10</span><span class="p">};</span><span class="w"> </span><span class="c1">// since C++11</span>
+</pre></div>
+</div>
+</li>
+<li><p>disposable object:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kt">int</span><span class="w"> </span><span class="nf">myFunction</span><span class="p">(</span><span class="n">MyClass</span><span class="w"> </span><span class="n">obj</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="w">  </span><span class="c1">// as parameter</span>
+<span class="linenos"> 5</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">myFunction</span><span class="p">(</span><span class="n">MyClass</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="w">  </span><span class="c1">// assign to another object</span>
+<span class="linenos"> 8</span><span class="w">  </span><span class="c1">// copy constructor or copy assignment operator will be triggered</span>
+<span class="linenos"> 9</span><span class="w">  </span><span class="n">MyClass</span><span class="w"> </span><span class="n">objArray</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span><span class="w">  </span><span class="c1">// object array, default constructor called</span>
+<span class="linenos">10</span><span class="w">  </span><span class="n">objArray</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MyClass</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">11</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </li>
@@ -267,8 +310,8 @@ other methods.</p>
 <span class="linenos">14</span><span class="w">  </span><span class="c1">// trigger the parameterized constructor</span>
 <span class="linenos">15</span><span class="w">  </span><span class="n">MyClass</span><span class="w"> </span><span class="n">obj2</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
 <span class="linenos">16</span><span class="w">  </span><span class="c1">// alternatives</span>
-<span class="linenos">17</span><span class="w">  </span><span class="c1">// MyClass obj2{10};  // since c++11</span>
-<span class="linenos">18</span><span class="w">  </span><span class="c1">// MyClass obj2 = 10;</span>
+<span class="linenos">17</span><span class="w">  </span><span class="c1">// MyClass obj2{10};  // since c++11, preferred</span>
+<span class="linenos">18</span><span class="w">  </span><span class="c1">// MyClass obj2 = 10;  // trigger the parameterized constructor</span>
 <span class="linenos">19</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">obj2</span><span class="p">.</span><span class="n">getValue</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w">  </span><span class="c1">// get 10</span>
 <span class="linenos">20</span>
 <span class="linenos">21</span><span class="w">  </span><span class="n">MyClass</span><span class="w"> </span><span class="o">*</span><span class="n">ptr1</span><span class="p">;</span><span class="w"></span>

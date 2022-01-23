@@ -26,9 +26,11 @@ Class declaration
 + visibility (access specifier)
 
   * as section (different from Java)
-  * public:  accessible anywhere
-  * private:  accessible only within objects of the same class
-  * protected, etc.: not discussed here
+
+    - public:  accessible anywhere
+    - private:  accessible only within objects of the same class
+    - protected, etc.: not discussed in the courses
+
   * always prefer information hiding
 
 + const methods: methods that cannot not modify any instance variable
@@ -36,7 +38,32 @@ Class declaration
   - ``print() const {cout << "Hello!\n";}``
   - ``int size() const { return this->size;}``
 
-+ data initialization
++ data initialization of instance variables
+
+  #. initialization during declaration (since c++11 for non-static variables)
+  #. initializer list in the constructor (preferred)
+
+  Two methods can be mixed. Use the first method for initial values shared among
+  multiple constructors; Use the second method for values that differs among
+  various constructors.
+
+  ::
+
+    // 1. in-class initializer
+    class MyClass {
+     private:
+      int value = 10;
+     public:
+      MyClass() {};
+    };
+
+    // 2. constructor member initializer list
+    class MyClass {
+     private:
+      int value;
+     public:
+      MyClass(): value(10) {};
+    };
 
 Method definition
 =================
@@ -105,6 +132,20 @@ Using class/object
       MyClass myObj1(10);
       MyClass myObj1 = 10;
       MyClass myObj1{10}; // since C++11
+
+  * disposable object::
+
+      int myFunction(MyClass obj);
+
+      int main() {
+        // as parameter
+        cout << myFunction(MyClass(10)) << endl;
+
+        // assign to another object
+        // copy constructor or copy assignment operator will be triggered
+        MyClass objArray[10];  // object array, default constructor called
+        objArray[0] = MyClass(10);
+      }
 
 + ``.`` member accessing operator::
 
@@ -199,8 +240,8 @@ Class Example
     // trigger the parameterized constructor
     MyClass obj2(10);
     // alternatives
-    // MyClass obj2{10};  // since c++11
-    // MyClass obj2 = 10;
+    // MyClass obj2{10};  // since c++11, preferred
+    // MyClass obj2 = 10;  // trigger the parameterized constructor
     cout << obj2.getValue() << endl;  // get 10
 
     MyClass *ptr1;
