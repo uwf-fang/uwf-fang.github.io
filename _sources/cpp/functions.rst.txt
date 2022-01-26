@@ -78,64 +78,43 @@ Syntax
 + call
 
   * matching mechanism
+  * parameter passing is like initialization
+
+    - type conversion will happen
 
 + example
 
-  * function.hpp
+  ::
 
-    ::
+    #include <iostream>
 
-      /**
-        * some functions
-        * documentation for the function.hpp/function.cpp pair
-        */
+    using namespace std;
 
-      /**
-        * function to double a value
-        * myParam: the input value to be doubled
-        * return: a double value
-        */
-      // int doubleValue(int = 10);  // default value, no name
-      int doubleValue(int myParam = 10);  // default value, with name
+    /**
+      * function to double a value
+      * myParam: the input value to be doubled
+      * return: a double value
+      * documentations should be above the declaration
+      */
+    // int doubleValue(int = 10);  // default value, no name
+    int doubleValue(int myParam = 10);  // default value, with name
 
+    int doubleValue(int param1){ // parameter name can even be different
+      return param1 * 2;
+    }
 
-  * function.cpp
+    int localFunc() {
+      cout << "This is local" << endl;
+      return 0;
+    }
 
-    ::
+    int main() {
+      // function calls
+      cout << "double_value() gives " << doubleValue() << endl;  // get 20
+      cout << "double_value(5) gives " << doubleValue(5) << endl; // get 10
 
-      /**
-        * some functions
-        * documentation for the function.cpp file
-        */
-
-      #include <iostream>
-
-      #include "function.hpp"
-
-      using namespace std;
-
-      /**
-       * local function documentation
-       */
-      int localFunc();
-
-      int doubleValue(int param1){ // parameter name can be different
-        return param1 * 2;
-      }
-
-      int localFunc() {
-        cout << "This is local" << endl;
-        return 0;
-      }
-
-      int main() {
-        // function calls
-        cout << "double_value() gives " << doubleValue() << endl;  // get 20
-        cout << "double_value(5) gives " << doubleValue(5) << endl; // get 10
-
-        return EXIT_SUCCESS;
-      }
-
+      return EXIT_SUCCESS;
+    }
 
 Scope
 =====
@@ -152,14 +131,16 @@ Scope
   ::
 
     // example 1, out-of-scope access
+    // for loop is a block even without {}
     for (int i = 0; i < size; i++)
-        cout << i << endl;
+      cout << i << endl;
     cout << i << endl;  // will fail because i is not declared here
 
     // example 2, shadowed name
     int i = 100;
     {
-        int i = 10;  // treated as another variable, valid in this block only
+      int i = 10;  // treated as another variable, valid in this block only
+      cout << i << endl;  // get 10, outside i is shadowed
     }
     cout << i << endl;  // get 100
 
@@ -174,6 +155,13 @@ Scope
     int *makeArray(int size) {
       int array[size];
       return array;
+    }
+
+    // ---- Wrong ----
+    // returning local variable by reference/pointer
+    string *func() {
+      string str = "abc";
+      return &str;  // memory address is passed out, str will be destroyed
     }
 
 Overloading
@@ -199,8 +187,35 @@ parameter names will not be valid overloading.
   int func1(double, double);  // func1(3.0, 3.0);
 
   // ---- Wrong ----
-  double func1(int);  // return type differs, also matches func1(3);
-  double func1(int name1);  // parameter names differ, also matches func1(3);
+  double func1(int);  // return type differs, also matches func1(3); call
+  int func1(int name1);  // parameter names differ, also matches func1(3); call
+
+Function call matching
+======================
+
+Function name overloading, default value, and implicit type conversion will all
+affect function call matching. Any ambiguous function call will cause an syntax
+error. Calls that need type conversion will not conflict with calls that do not
+need conversion.
+
+::
+
+  // both do not need type conversion.
+  // func1(1); call is ambiguous with
+  void func1(int);
+  void func1(int, int = 1);
+
+  // both need type conversion
+  // func2(2, 3); call is ambiguous with
+  void func2(int, double);
+  void func2(double, int);
+
+  // first do not need type conversion
+  // second need type conversion
+  // func2(2, 3.0); call is fine with
+  void func2(int, double);
+  void func2(double, double);
+
 
 Pass by reference
 =================

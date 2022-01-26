@@ -122,63 +122,45 @@ a function can be called and what you can expect from the call.</p>
 <li><p>call</p>
 <ul class="simple">
 <li><p>matching mechanism</p></li>
+<li><p>parameter passing is like initialization</p>
+<ul>
+<li><p>type conversion will happen</p></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><p>example</p>
-<ul>
-<li><p>function.hpp</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cm">/**</span>
-<span class="linenos"> 2</span><span class="cm">  * some functions</span>
-<span class="linenos"> 3</span><span class="cm">  * documentation for the function.hpp/function.cpp pair</span>
-<span class="linenos"> 4</span><span class="cm">  */</span><span class="w"></span>
-<span class="linenos"> 5</span>
-<span class="linenos"> 6</span><span class="cm">/**</span>
-<span class="linenos"> 7</span><span class="cm">  * function to double a value</span>
-<span class="linenos"> 8</span><span class="cm">  * myParam: the input value to be doubled</span>
-<span class="linenos"> 9</span><span class="cm">  * return: a double value</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="cm">/**</span>
+<span class="linenos"> 6</span><span class="cm">  * function to double a value</span>
+<span class="linenos"> 7</span><span class="cm">  * myParam: the input value to be doubled</span>
+<span class="linenos"> 8</span><span class="cm">  * return: a double value</span>
+<span class="linenos"> 9</span><span class="cm">  * documentations should be above the declaration</span>
 <span class="linenos">10</span><span class="cm">  */</span><span class="w"></span>
 <span class="linenos">11</span><span class="c1">// int doubleValue(int = 10);  // default value, no name</span>
 <span class="linenos">12</span><span class="kt">int</span><span class="w"> </span><span class="nf">doubleValue</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">myParam</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span><span class="w">  </span><span class="c1">// default value, with name</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="kt">int</span><span class="w"> </span><span class="nf">doubleValue</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">param1</span><span class="p">){</span><span class="w"> </span><span class="c1">// parameter name can even be different</span>
+<span class="linenos">15</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">param1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">16</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">17</span>
+<span class="linenos">18</span><span class="kt">int</span><span class="w"> </span><span class="nf">localFunc</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">19</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;This is local&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">20</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">21</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">22</span>
+<span class="linenos">23</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">24</span><span class="w">  </span><span class="c1">// function calls</span>
+<span class="linenos">25</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;double_value() gives &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">doubleValue</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w">  </span><span class="c1">// get 20</span>
+<span class="linenos">26</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;double_value(5) gives &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">doubleValue</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"> </span><span class="c1">// get 10</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">EXIT_SUCCESS</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">29</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
-</li>
-<li><p>function.cpp</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cm">/**</span>
-<span class="linenos"> 2</span><span class="cm">  * some functions</span>
-<span class="linenos"> 3</span><span class="cm">  * documentation for the function.cpp file</span>
-<span class="linenos"> 4</span><span class="cm">  */</span><span class="w"></span>
-<span class="linenos"> 5</span>
-<span class="linenos"> 6</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
-<span class="linenos"> 7</span>
-<span class="linenos"> 8</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;function.hpp&quot;</span><span class="cp"></span>
-<span class="linenos"> 9</span>
-<span class="linenos">10</span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">11</span>
-<span class="linenos">12</span><span class="cm">/**</span>
-<span class="linenos">13</span><span class="cm"> * local function documentation</span>
-<span class="linenos">14</span><span class="cm"> */</span><span class="w"></span>
-<span class="linenos">15</span><span class="kt">int</span><span class="w"> </span><span class="nf">localFunc</span><span class="p">();</span><span class="w"></span>
-<span class="linenos">16</span>
-<span class="linenos">17</span><span class="kt">int</span><span class="w"> </span><span class="nf">doubleValue</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">param1</span><span class="p">){</span><span class="w"> </span><span class="c1">// parameter name can be different</span>
-<span class="linenos">18</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">param1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">19</span><span class="p">}</span><span class="w"></span>
-<span class="linenos">20</span>
-<span class="linenos">21</span><span class="kt">int</span><span class="w"> </span><span class="nf">localFunc</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">22</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;This is local&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">23</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">24</span><span class="p">}</span><span class="w"></span>
-<span class="linenos">25</span>
-<span class="linenos">26</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">27</span><span class="w">  </span><span class="c1">// function calls</span>
-<span class="linenos">28</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;double_value() gives &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">doubleValue</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w">  </span><span class="c1">// get 20</span>
-<span class="linenos">29</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;double_value(5) gives &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">doubleValue</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"> </span><span class="c1">// get 10</span>
-<span class="linenos">30</span>
-<span class="linenos">31</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">EXIT_SUCCESS</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">32</span><span class="p">}</span><span class="w"></span>
-</pre></div>
-</div>
-</li>
-</ul>
 </li>
 </ul>
 </section>
@@ -195,29 +177,38 @@ content will not)! Return a dynamic array instead.</p></li>
 </li>
 <li><p>Code block based scope</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// example 1, out-of-scope access</span>
-<span class="linenos"> 2</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
-<span class="linenos"> 3</span><span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 4</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w">  </span><span class="c1">// will fail because i is not declared here</span>
-<span class="linenos"> 5</span>
-<span class="linenos"> 6</span><span class="c1">// example 2, shadowed name</span>
-<span class="linenos"> 7</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 8</span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 9</span><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">  </span><span class="c1">// treated as another variable, valid in this block only</span>
-<span class="linenos">10</span><span class="p">}</span><span class="w"></span>
-<span class="linenos">11</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w">  </span><span class="c1">// get 100</span>
-<span class="linenos">12</span>
-<span class="linenos">13</span><span class="c1">// returning an dynamic array</span>
-<span class="linenos">14</span><span class="c1">// should be deleted after use</span>
-<span class="linenos">15</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="nf">makeArray</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">16</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="p">[</span><span class="n">size</span><span class="p">];</span><span class="w"></span>
-<span class="linenos">17</span><span class="p">}</span><span class="w"></span>
-<span class="linenos">18</span>
-<span class="linenos">19</span><span class="c1">// ---- Wrong ----</span>
-<span class="linenos">20</span><span class="c1">// returning local array</span>
-<span class="linenos">21</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="nf">makeArray</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">22</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">array</span><span class="p">[</span><span class="n">size</span><span class="p">];</span><span class="w"></span>
-<span class="linenos">23</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">array</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">24</span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 2</span><span class="c1">// for loop is a block even without {}</span>
+<span class="linenos"> 3</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w">  </span><span class="c1">// will fail because i is not declared here</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="c1">// example 2, shadowed name</span>
+<span class="linenos"> 8</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="p">{</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">  </span><span class="c1">// treated as another variable, valid in this block only</span>
+<span class="linenos">11</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w">  </span><span class="c1">// get 10, outside i is shadowed</span>
+<span class="linenos">12</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">13</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w">  </span><span class="c1">// get 100</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span><span class="c1">// returning an dynamic array</span>
+<span class="linenos">16</span><span class="c1">// should be deleted after use</span>
+<span class="linenos">17</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="nf">makeArray</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">18</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="p">[</span><span class="n">size</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">19</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">20</span>
+<span class="linenos">21</span><span class="c1">// ---- Wrong ----</span>
+<span class="linenos">22</span><span class="c1">// returning local array</span>
+<span class="linenos">23</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="nf">makeArray</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">24</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">array</span><span class="p">[</span><span class="n">size</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">25</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">array</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">26</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">27</span>
+<span class="linenos">28</span><span class="c1">// ---- Wrong ----</span>
+<span class="linenos">29</span><span class="c1">// returning local variable by reference/pointer</span>
+<span class="linenos">30</span><span class="n">string</span><span class="w"> </span><span class="o">*</span><span class="nf">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">31</span><span class="w">  </span><span class="n">string</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;abc&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">32</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="o">&amp;</span><span class="n">str</span><span class="p">;</span><span class="w">  </span><span class="c1">// memory address is passed out, str will be destroyed</span>
+<span class="linenos">33</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </li>
@@ -242,8 +233,32 @@ parameter names will not be valid overloading.</p>
 <span class="linenos">11</span><span class="kt">int</span><span class="w"> </span><span class="nf">func1</span><span class="p">(</span><span class="kt">double</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="p">);</span><span class="w">  </span><span class="c1">// func1(3.0, 3.0);</span>
 <span class="linenos">12</span>
 <span class="linenos">13</span><span class="c1">// ---- Wrong ----</span>
-<span class="linenos">14</span><span class="kt">double</span><span class="w"> </span><span class="nf">func1</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span><span class="w">  </span><span class="c1">// return type differs, also matches func1(3);</span>
-<span class="linenos">15</span><span class="kt">double</span><span class="w"> </span><span class="nf">func1</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">name1</span><span class="p">);</span><span class="w">  </span><span class="c1">// parameter names differ, also matches func1(3);</span>
+<span class="linenos">14</span><span class="kt">double</span><span class="w"> </span><span class="nf">func1</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span><span class="w">  </span><span class="c1">// return type differs, also matches func1(3); call</span>
+<span class="linenos">15</span><span class="kt">int</span><span class="w"> </span><span class="nf">func1</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">name1</span><span class="p">);</span><span class="w">  </span><span class="c1">// parameter names differ, also matches func1(3); call</span>
+</pre></div>
+</div>
+</section>
+<section id="function-call-matching">
+<h2>Function call matching<a class="headerlink" href="#function-call-matching" title="Permalink to this headline">¶</a></h2>
+<p>Function name overloading, default value, and implicit type conversion will all
+affect function call matching. Any ambiguous function call will cause an syntax
+error. Calls that need type conversion will not conflict with calls that do not
+need conversion.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// both do not need type conversion.</span>
+<span class="linenos"> 2</span><span class="c1">// func1(1); call is ambiguous with</span>
+<span class="linenos"> 3</span><span class="kt">void</span><span class="w"> </span><span class="nf">func1</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="kt">void</span><span class="w"> </span><span class="nf">func1</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="c1">// both need type conversion</span>
+<span class="linenos"> 7</span><span class="c1">// func2(2, 3); call is ambiguous with</span>
+<span class="linenos"> 8</span><span class="kt">void</span><span class="w"> </span><span class="nf">func2</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="kt">void</span><span class="w"> </span><span class="nf">func2</span><span class="p">(</span><span class="kt">double</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="c1">// first do not need type conversion</span>
+<span class="linenos">12</span><span class="c1">// second need type conversion</span>
+<span class="linenos">13</span><span class="c1">// func2(2, 3.0); call is fine with</span>
+<span class="linenos">14</span><span class="kt">void</span><span class="w"> </span><span class="nf">func2</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">15</span><span class="kt">void</span><span class="w"> </span><span class="nf">func2</span><span class="p">(</span><span class="kt">double</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
@@ -370,6 +385,7 @@ parameter names will not be valid overloading.</p>
 <li><a class="reference internal" href="#syntax">Syntax</a></li>
 <li><a class="reference internal" href="#scope">Scope</a></li>
 <li><a class="reference internal" href="#overloading">Overloading</a></li>
+<li><a class="reference internal" href="#function-call-matching">Function call matching</a></li>
 <li><a class="reference internal" href="#pass-by-reference">Pass by reference</a><ul>
 <li><a class="reference internal" href="#pass-by-ref-vs-pass-by-pointer">Pass-by-ref vs Pass-by-pointer</a></li>
 </ul>
