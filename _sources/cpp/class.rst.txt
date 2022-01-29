@@ -23,9 +23,21 @@ Class declaration
 =================
 
 + class keyword (or struct keyword)
++ Usually in header file
++ Members
+
+  * data member - instance variable
+  * function member - method (member function)
+
++ static members
+
+  * one per class vs one per object for non-static
+  * data shared among objects
+  * functions that do not rely on any instance variables
+
 + visibility (access specifier)
 
-  * as section (different from Java)
+  * as sections (different from Java)
 
     - public:  accessible anywhere
     - private:  accessible only within objects of the same class
@@ -33,49 +45,6 @@ Class declaration
 
   * always prefer information hiding
 
-+ const methods: methods that cannot not modify any instance variable
-
-  - ``print() const {cout << "Hello!\n";}``
-  - ``int size() const { return this->size;}``
-
-+ data initialization of instance variables
-
-  #. initialization during declaration (since c++11 for non-static variables)
-  #. initializer list in the constructor (preferred)
-
-  Two methods can be mixed. Use the first method for initial values shared among
-  multiple constructors; Use the second method for values that differs among
-  various constructors.
-
-  ::
-
-    // 1. in-class initializer
-    class MyClass {
-     private:
-      int value = 10;
-     public:
-      MyClass() {};
-    };
-
-    // 2. constructor member initializer list
-    class MyClass {
-     private:
-      int value;
-     public:
-      MyClass(): value(10) {};
-    };
-
-Method definition
-=================
-
-+ location
-
-  * separate
-  * in-line
-
-+ scope resolution operator ``::`` to specify the owner of the method (the
-  class)
-+ ``this`` pointer as a pointer pointing to the current object
 + type of special methods
 
   .. glossary::
@@ -100,6 +69,18 @@ Method definition
       A general name of all private methods as they are usually used to *help*
       other methods.
 
++ Method definition
+
+  * inline: in the class declaration
+  * separate: in a separate cpp file
+
+    - scope resolution operator ``::`` to specify the owner of the method
+      (the class)
+    - ``this`` pointer as a pointer pointing to the current object in method
+      definition
+
+      + use of ``->`` operator
+
 + Constructor
 
   * initializer list
@@ -111,16 +92,81 @@ Method definition
 
     - no parameter
     - when omitted, the compiler will make one for you
-    - should not omit if you want to define some different initial value
+    - when you want to define some different initial value
+    - to trigger
+
+      ::
+
+        MyClass obj;
+        MyClass obj();
+        MyClass obj{};
+        MyClass obj[10]; // every element created using the default constructor
 
   * parameterized constructor
-
-    - more than one parameters
-
-  * other constructors (discussed in the memory management chapter)
+  * duplication constructors (discussed in the memory management topic)
 
     - copy constructor
     - move constructor
+
++ const methods: methods that cannot not modify any instance variable
+
+  * **any other method called in a const method must be const too**
+
+  ::
+
+    class MyClass {
+      int size;
+     public:
+      void print() const {
+        cout << "Hello!\n";
+      }
+      int size() const {
+        return size;
+      }
+    };
+
++ data initialization of non-static instance variable
+
+  #. in-class initializer (since c++11)
+  #. initializer list in the constructor (preferred)
+
+  .. note::
+
+    Two methods can be mixed. Use the first method for initial values shared
+    among multiple constructors; Use the second method for values that differs
+    among various constructors. When used together, the first will be ignored.
+
+  ::
+
+    // 1. in-class initializer
+    class MyClass {
+     private:
+      int value = 10;
+     public:
+      MyClass() {};
+    };
+
+    // 2. constructor member initializer list
+    class MyClass {
+     private:
+      int value;
+     public:
+      MyClass(): value(10) {};
+    };
+
++ data initialization of static instance variable::
+
+    // my-class.hpp
+    class MyClass {
+     private:
+      static int count;
+     public:
+      // ...
+    };
+
+    // my-class.cpp
+    // omit the static keyword
+    int MyClass::count = 10;
 
 Using class/object
 ==================
@@ -130,7 +176,7 @@ Using class/object
   * initialization using the constructor::
 
       MyClass myObj1(10);
-      MyClass myObj1 = 10;
+      MyClass myObj1 = 10;  // same as the above example
       MyClass myObj1{10}; // since C++11
 
   * disposable object::
