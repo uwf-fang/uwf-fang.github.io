@@ -1,0 +1,263 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Input/Output (I/O) &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/cpp/io.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Input/Output (I/O)</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="input-output-i-o">
+<h1>Input/Output (I/O)<a class="headerlink" href="#input-output-i-o" title="Permalink to this headline">¶</a></h1>
+<section id="general-information">
+<h2>General Information<a class="headerlink" href="#general-information" title="Permalink to this headline">¶</a></h2>
+<p>Input/output related logics are essential components in many computational tasks
+including interaction with users, file read/write, string parsing/generation</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is always a good practice to group I/O related logics in a minimal number
+of classes/functions because they are not testable with automatic testing.</p>
+</div>
+<section id="stream">
+<h3>Stream<a class="headerlink" href="#stream" title="Permalink to this headline">¶</a></h3>
+<p>All I/O covered in this section is about stream based I/O which handles data as
+sequential structures.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There are many other I/O patterns. For instance, with block I/O the program
+read/write data as blocks.</p>
+</div>
+</section>
+</section>
+<section id="standard-i-o">
+<h2>Standard I/O<a class="headerlink" href="#standard-i-o" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Input/output in command-line context</p>
+<ul>
+<li><p>keyboard input as standard input</p></li>
+<li><p>terminal character print/display as standard output</p></li>
+</ul>
+</li>
+<li><p>iostream - the input/output stream library header</p></li>
+<li><p>Standard input</p>
+<ul>
+<li><p>std::cin</p></li>
+<li><p>an instance/object of the istream class</p></li>
+</ul>
+</li>
+<li><p>Standard output</p>
+<ul>
+<li><p>std::cout</p></li>
+<li><p>an instance/object of the ostream class</p></li>
+</ul>
+</li>
+<li><p>istream class</p>
+<ul>
+<li><p>Extraction operator <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code></p>
+<ul>
+<li><p>can be chained</p></li>
+<li><p>read and convert to desired type</p></li>
+<li><p>will leave <code class="docutils literal notranslate"><span class="pre">'\n'/endl</span></code> character in buffer</p></li>
+</ul>
+</li>
+<li><p>getline function</p>
+<ul>
+<li><p>read in a line as string: <code class="docutils literal notranslate"><span class="pre">getline(cin,</span> <span class="pre">inputString);</span></code></p></li>
+<li><p>string only</p></li>
+<li><p>may read in empty string</p></li>
+<li><p><strong>special handling when used after extraction</strong></p></li>
+<li><p>may use other delimiter <code class="docutils literal notranslate"><span class="pre">getline(cin,</span> <span class="pre">inputString,</span> <span class="pre">',');</span></code></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>ostream class</p>
+<ul>
+<li><p>Insertion operator <code class="docutils literal notranslate"><span class="pre">&lt;&lt;</span></code></p>
+<ul>
+<li><p>can be chained</p></li>
+<li><p>buffered, display upon flushing</p>
+<ul>
+<li><p>inserting <code class="docutils literal notranslate"><span class="pre">'\n'/endl</span></code> character will trigger flush</p></li>
+<li><p>syntax like <code class="docutils literal notranslate"><span class="pre">cin.flush()</span></code> to force flush</p></li>
+</ul>
+</li>
+<li><p>formatting</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&lt;iomanip&gt;</span></code> header</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fixed</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scientific</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">setprecision()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">setw()</span></code></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="string-i-o">
+<h2>String I/O<a class="headerlink" href="#string-i-o" title="Permalink to this headline">¶</a></h2>
+<p>Used for text parsing or formatted string generation</p>
+<ul class="simple">
+<li><p>sstream header</p></li>
+<li><p>istringstream class</p>
+<ul>
+<li><p>an input stream based on the content of a string</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code> extraction</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">getline()</span></code></p></li>
+<li><p>constructor to take a string as parameter</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.str()</span></code> to take a string as the content</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.clear()</span></code> to clear all contents</p></li>
+<li><p>end of file check</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">.eof()</span></code> call after every read (extraction, getline)</p></li>
+<li><p>Extraction operation as bool value <code class="docutils literal notranslate"><span class="pre">while</span> <span class="pre">(inSS</span> <span class="pre">&gt;&gt;</span> <span class="pre">value)</span> <span class="pre">...</span></code></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>ostringstream class</p>
+<ul>
+<li><p>an output stream accept formatted output and generate a string</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;&lt;</span></code> insertion</p></li>
+<li><p>all formatting tools from iomanip will work</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.str()</span></code> method to generate a string containing the content in the stream</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="file-i-o">
+<h2>File I/O<a class="headerlink" href="#file-i-o" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>fstream header</p></li>
+<li><p>ifstream class</p>
+<ul>
+<li><p>read from a file</p></li>
+</ul>
+</li>
+<li><p>ofstream class</p>
+<ul>
+<li><p>write to a file</p></li>
+</ul>
+</li>
+<li><p>bind to a file</p>
+<ul>
+<li><p>pass the path to the constructor</p></li>
+<li><p>call <code class="docutils literal notranslate"><span class="pre">.open()</span></code> method</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">open()</span></code></p>
+<ul>
+<li><p>check open status</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_open()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fail()</span></code></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">close()</span></code></p></li>
+<li><p>end of file check</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">.eof()</span></code> function call after every read (extraction, getline)</p></li>
+<li><p>check the status of reading</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">while</span> <span class="pre">(inFS</span> <span class="pre">&gt;&gt;</span> <span class="pre">value)</span> <span class="pre">{</span> <span class="pre">...</span> <span class="pre">}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">while</span> <span class="pre">(getline(inFS,</span> <span class="pre">line))</span> <span class="pre">{</span> <span class="pre">...</span> <span class="pre">}</span></code></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Input/Output (I/O)</a><ul>
+<li><a class="reference internal" href="#general-information">General Information</a><ul>
+<li><a class="reference internal" href="#stream">Stream</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#standard-i-o">Standard I/O</a></li>
+<li><a class="reference internal" href="#string-i-o">String I/O</a></li>
+<li><a class="reference internal" href="#file-i-o">File I/O</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/cpp/io.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Input/Output (I/O)</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,135 @@
+.. highlight:: c++
+  :linenothreshold: 5
+
+******************
+Input/Output (I/O)
+******************
+
+General Information
+===================
+Input/output related logics are essential components in many computational tasks
+including interaction with users, file read/write, string parsing/generation
+
+.. note::
+
+  It is always a good practice to group I/O related logics in a minimal number
+  of classes/functions because they are not testable with automatic testing.
+
+Stream
+------
+All I/O covered in this section is about stream based I/O which handles data as
+sequential structures.
+
+.. note::
+
+  There are many other I/O patterns. For instance, with block I/O the program
+  read/write data as blocks.
+
+Standard I/O
+============
++ Input/output in command-line context
+
+  * keyboard input as standard input
+  * terminal character print/display as standard output
+
++ iostream - the input/output stream library header
++ Standard input
+
+  * std::cin
+  * an instance/object of the istream class
+
++ Standard output
+
+  * std::cout
+  * an instance/object of the ostream class
+
++ istream class
+
+  * Extraction operator ``>>``
+
+    - can be chained
+    - read and convert to desired type
+    - will leave ``'\n'/endl`` character in buffer
+
+  * getline function
+
+    - read in a line as string: ``getline(cin, inputString);``
+    - string only
+    - may read in empty string
+    - **special handling when used after extraction**
+    - may use other delimiter ``getline(cin, inputString, ',');``
+
++ ostream class
+
+  * Insertion operator ``<<``
+
+    - can be chained
+    - buffered, display upon flushing
+
+      + inserting ``'\n'/endl`` character will trigger flush
+      + syntax like ``cin.flush()`` to force flush
+
+    - formatting
+
+      + ``#include <iomanip>`` header
+      + ``fixed``
+      + ``scientific``
+      + ``setprecision()``
+      + ``setw()``
+
+String I/O
+==========
+Used for text parsing or formatted string generation
+
+* sstream header
+* istringstream class
+
+  - an input stream based on the content of a string
+  - ``>>`` extraction
+  - ``getline()``
+  - constructor to take a string as parameter
+  - ``.str()`` to take a string as the content
+  - ``.clear()`` to clear all contents
+  - end of file check
+
+    + ``.eof()`` call after every read (extraction, getline)
+    + Extraction operation as bool value ``while (inSS >> value) ...``
+
+* ostringstream class
+
+  - an output stream accept formatted output and generate a string
+  - ``<<`` insertion
+  - all formatting tools from iomanip will work
+  - ``.str()`` method to generate a string containing the content in the stream
+
+File I/O
+========
++ fstream header
++ ifstream class
+
+  * read from a file
+
++ ofstream class
+
+  * write to a file
+
++ bind to a file
+
+  * pass the path to the constructor
+  * call ``.open()`` method
+
++ ``open()``
+
+  * check open status
+
+    - ``is_open()``
+    - ``fail()``
+
++ ``close()``
++ end of file check
+
+  * ``.eof()`` function call after every read (extraction, getline)
+  * check the status of reading
+
+    - ``while (inFS >> value) { ... }``
+    - ``while (getline(inFS, line)) { ... }``
