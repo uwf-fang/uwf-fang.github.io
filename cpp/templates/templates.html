@@ -4,7 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Templates in C++ &#8212; IanFang Course Note Hosting  documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
@@ -52,6 +52,7 @@ data types.</p>
 <ul class="simple">
 <li><p>E.g. STL containers like <code class="docutils literal notranslate"><span class="pre">vector&lt;int&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">vector&lt;string&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">set&lt;int&gt;</span></code>,
 <code class="docutils literal notranslate"><span class="pre">map&lt;int,</span> <span class="pre">double&gt;</span></code>, etc. are templates.</p></li>
+<li><p>E.g. type cast functions like <code class="docutils literal notranslate"><span class="pre">static_cast&lt;int&gt;(3.5)</span></code></p></li>
 <li><p>Similar idea to Java generics but with different implementation details</p></li>
 </ul>
 <section id="alternatives">
@@ -80,29 +81,68 @@ In these cases, template is the only solution.</p>
 </section>
 <section id="syntax">
 <h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>Define a template</p>
 <ul class="simple">
-<li><p>Refer to <a class="reference internal" href="#example"><span class="std std-ref">code samples</span></a></p></li>
-<li><p>General syntax to define a template</p>
-<ul>
 <li><p>A line above the first line of a function/class declaration/definition</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">template&lt;typename</span> <span class="pre">TypeName&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">template&lt;class</span> <span class="pre">TypeName&gt;</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TypeName</span></code> refers to a user-defined name for the base type</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">template&lt;typename</span> <span class="pre">T&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">template&lt;class</span> <span class="pre">T&gt;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code> refers to a user-defined name for the base type</p>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">TypeName</span></code> used as a type in the function/class</p></li>
+<li><p>known as <strong>template argument</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code> used as a type in the following function/class</p></li>
 </ul>
 </li>
-<li><p>Takes multiple types, e.g. <code class="docutils literal notranslate"><span class="pre">template&lt;typename</span> <span class="pre">Type1,</span> <span class="pre">typename</span> <span class="pre">Type2&gt;</span></code></p></li>
-<li><p>May have a default value for the type <code class="docutils literal notranslate"><span class="pre">template&lt;typename</span> <span class="pre">Type1=int&gt;</span></code></p></li>
-<li><p>IMPORTANT! Every declaration/definition containing the type name must have
-a <code class="docutils literal notranslate"><span class="pre">template</span></code> clause to define the type name</p></li>
+<li><p>Takes multiple types, e.g. <code class="docutils literal notranslate"><span class="pre">template&lt;typename</span> <span class="pre">T1,</span> <span class="pre">typename</span> <span class="pre">T2&gt;</span></code></p></li>
+<li><p>May have a default value for the type <code class="docutils literal notranslate"><span class="pre">template&lt;typename</span> <span class="pre">T1=int&gt;</span></code></p></li>
+<li><p>IMPORTANT! Every declaration/definition containing the <code class="docutils literal notranslate"><span class="pre">T</span></code> must
+have a <code class="docutils literal notranslate"><span class="pre">template</span></code> clause</p></li>
 <li><p>The keyword <code class="docutils literal notranslate"><span class="pre">typename</span></code> and <code class="docutils literal notranslate"><span class="pre">class</span></code> in the <code class="docutils literal notranslate"><span class="pre">template</span></code> clause are
 interchangeable</p></li>
 </ul>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="linenos"> 2</span><span class="n">T</span><span class="w"> </span><span class="n">func1</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">param1</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">method1</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">param1</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="c1">// important to notice that MyClass is followed by &lt;T&gt; here!</span>
+<span class="linenos">11</span><span class="c1">// MyClass is the name of the template while MyClass&lt;T&gt; is the</span>
+<span class="linenos">12</span><span class="c1">//     name of the class</span>
+<span class="linenos">13</span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="linenos">14</span><span class="kt">bool</span><span class="w"> </span><span class="n">MyClass</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">method1</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">param1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">15</span><span class="w">  </span><span class="c1">// core logics</span>
+<span class="linenos">16</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">17</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
 </li>
-<li><p>To use a function template or a class template</p>
+<li><p>To use a template</p>
 <ul>
-<li><p>call the function directly (function template)</p></li>
-<li><p>add types in the variable declaration of the class type (class template)</p></li>
+<li><p>Specify the template argument to <strong>instantiate</strong> the template:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1">// function template</span>
+<span class="linenos">2</span><span class="kt">int</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">func1</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">3</span>
+<span class="linenos">4</span><span class="c1">// class template</span>
+<span class="linenos">5</span><span class="n">MyClass</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">obj1</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">6</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">obj1</span><span class="p">.</span><span class="n">method1</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span><span class="w"></span>
+<span class="linenos">7</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;True&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Template argument deduction</strong> for function template:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">func1</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w">  </span><span class="c1">// T will be int</span>
+<span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">func1</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w">  </span><span class="c1">// T will be int</span>
+<span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">func1</span><span class="p">(</span><span class="mf">10.0</span><span class="p">);</span><span class="w">  </span><span class="c1">// T will be double</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Template argument deduction for class template not available until C++ 17</p>
+</aside>
+</li>
 </ul>
 </li>
 </ul>
@@ -154,7 +194,7 @@ the instantiated codes have already been instantiated and ready for use.</p></li
 <span class="linenos"> 4</span><span class="w"> </span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
 <span class="linenos"> 5</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="p">{</span><span class="w"></span>
 <span class="linenos"> 6</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="linenos"> 7</span><span class="w">   </span><span class="kt">bool</span><span class="o">::</span><span class="n">method1</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">param1</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="w">   </span><span class="kt">bool</span><span class="w"> </span><span class="n">method1</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">param1</span><span class="p">);</span><span class="w"></span>
 <span class="linenos"> 8</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
 <span class="linenos"> 9</span>
 <span class="linenos">10</span><span class="w"> </span><span class="c1">// important to notice that MyClass is followed by &lt;T&gt; here!</span>

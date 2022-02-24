@@ -11,6 +11,7 @@ data types.
 
 + E.g. STL containers like ``vector<int>``, ``vector<string>``, ``set<int>``,
   ``map<int, double>``, etc. are templates.
++ E.g. type cast functions like ``static_cast<int>(3.5)``
 + Similar idea to Java generics but with different implementation details
 
 Alternatives
@@ -37,27 +38,64 @@ In these cases, template is the only solution.
 
 Syntax
 ======
-
-+ Refer to :ref:`code samples<example>`
-+ General syntax to define a template
++ Define a template
 
   * A line above the first line of a function/class declaration/definition
-  * ``template<typename TypeName>`` or ``template<class TypeName>``
-  * ``TypeName`` refers to a user-defined name for the base type
+  * ``template<typename T>`` or ``template<class T>``
+  * ``T`` refers to a user-defined name for the base type
 
-    - ``TypeName`` used as a type in the function/class
+    - known as **template argument**
+    - ``T`` used as a type in the following function/class
 
-  * Takes multiple types, e.g. ``template<typename Type1, typename Type2>``
-  * May have a default value for the type ``template<typename Type1=int>``
-  * IMPORTANT! Every declaration/definition containing the type name must have
-    a ``template`` clause to define the type name
+  * Takes multiple types, e.g. ``template<typename T1, typename T2>``
+  * May have a default value for the type ``template<typename T1=int>``
+  * IMPORTANT! Every declaration/definition containing the ``T`` must
+    have a ``template`` clause
   * The keyword ``typename`` and ``class`` in the ``template`` clause are
     interchangeable
 
-+ To use a function template or a class template
+  ::
 
-  * call the function directly (function template)
-  * add types in the variable declaration of the class type (class template)
+    template<typename T>
+    T func1(T param1);
+
+    template<typename T>
+    class MyClass{
+     public:
+      bool method1(T param1);
+    }
+
+    // important to notice that MyClass is followed by <T> here!
+    // MyClass is the name of the template while MyClass<T> is the
+    //     name of the class
+    template<typename T>
+    bool MyClass<T>::method1(T param1) {
+      // core logics
+      return true;
+    }
+
++ To use a template
+
+  * Specify the template argument to **instantiate** the template::
+
+      // function template
+      int result = func1<int>(10);
+
+      // class template
+      MyClass<int> obj1;
+      if (obj1.method1(10))
+        cout << "True" << endl;
+
+  * **Template argument deduction** for function template::
+
+      result = func1(10);  // T will be int
+      result = func1<>(10);  // T will be int
+      result = func1(10.0);  // T will be double
+
+    .. note::
+
+      Template argument deduction for class template not available until C++ 17
+
 
 Split header/implementation file
 ================================
@@ -113,7 +151,7 @@ Examples
     template<typename T>
     class MyClass{
     public:
-      bool::method1(T param1);
+      bool method1(T param1);
     }
 
     // important to notice that MyClass is followed by <T> here!
