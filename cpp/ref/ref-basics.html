@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Reference Type Basics &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/cpp/ref/ref-basics.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Array Basics" href="../array/array-basics.html" />
+    <link rel="prev" title="Type, Variable, Assignment, and Expression" href="../variable-type/variable-type.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../array/array-basics.html" title="Array Basics"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../variable-type/variable-type.html" title="Type, Variable, Assignment, and Expression"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch02.html" accesskey="U">Chapter 2 Variables, Expressions and Control Structures</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Reference Type Basics</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="reference-type-basics">
+<span id="ref-basics"></span><h1>Reference Type Basics<a class="headerlink" href="#reference-type-basics" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p>A derived type to alias other types (including pointer type).</p></li>
+<li><p>&amp; symbol after type to make a derived type</p></li>
+<li><p>Syntax <code class="docutils literal notranslate"><span class="pre">BaseType</span> <span class="pre">&amp;name</span> <span class="pre">=</span> <span class="pre">lvalue</span></code></p>
+<ul>
+<li><p>lvalue only!</p></li>
+<li><p>Must be initialized!</p></li>
+<li><p>Later access/modification will only affect the variable bound to it</p></li>
+</ul>
+</li>
+<li><p>Misc. hints</p>
+<ul>
+<li><p>Name after the variable to be bound. e.g. choose <code class="docutils literal notranslate"><span class="pre">myValue</span></code> over
+<code class="docutils literal notranslate"><span class="pre">myValueRef</span></code></p></li>
+<li><p>Not useful unless passed around as parameters or returned value</p></li>
+</ul>
+</li>
+<li><p>Pitfalls</p>
+<ul>
+<li><p>confusing ref type with pointer type syntaxes</p></li>
+<li><p>declaration without initialization</p></li>
+</ul>
+</li>
+</ul>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// ==== Reference type ====</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="c1">// ---- correct ----</span>
+<span class="linenos"> 4</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="c1">// the type is &quot;int &amp;&quot;</span>
+<span class="linenos"> 8</span><span class="c1">// reference variable can only be assigned once to be bound to a lvalue</span>
+<span class="linenos"> 9</span><span class="c1">// any later assignment will be redirected to the bound variable</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="kt">int</span><span class="w"> </span><span class="o">&amp;</span><span class="n">myRef1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"> </span><span class="c1">// initialization, myRef1 is now an alias of a</span>
+<span class="linenos">12</span><span class="n">myRef1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w"> </span><span class="c1">// assignment, myRef1 will not refer to b, it is same as a = b; value of a become 10</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="c1">// ---- wrong ----</span>
+<span class="linenos">15</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">16</span><span class="kt">int</span><span class="w"> </span><span class="o">&amp;</span><span class="n">alias</span><span class="p">;</span><span class="w">  </span><span class="c1">// no initialization</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span><span class="kt">int</span><span class="w"> </span><span class="o">&amp;</span><span class="n">alias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">a</span><span class="p">;</span><span class="w">  </span><span class="c1">// alias is not a pointer, it takes a lvalue, not a memory address</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span><span class="kt">int</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="n">alias1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alias</span><span class="p">;</span><span class="w">  </span><span class="c1">// there is no ref to ref type!</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="o">*</span><span class="n">alias</span><span class="p">;</span><span class="w">  </span><span class="c1">// not a pointer, no need of * to dereference</span>
+</pre></div>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../variable-type/variable-type.html"
+                          title="previous chapter">Type, Variable, Assignment, and Expression</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../array/array-basics.html"
+                          title="next chapter">Array Basics</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/cpp/ref/ref-basics.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../array/array-basics.html" title="Array Basics"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../variable-type/variable-type.html" title="Type, Variable, Assignment, and Expression"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch02.html" >Chapter 2 Variables, Expressions and Control Structures</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Reference Type Basics</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

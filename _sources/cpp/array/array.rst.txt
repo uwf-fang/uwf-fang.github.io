@@ -1,0 +1,150 @@
+.. highlight:: c++
+  :linenothreshold: 5
+
+.. _arr-type:
+
+Array Type
+==========
+
++ A derived type to store a sequentially stored list of values of the same base
+  type
++ Advantage:
+
+  * simple native syntax
+  * fast random access by index
+  * minimal memory usage
+
++ disadvantage:
+
+  * not easy to use
+  * fixed size
+  * not secure, allows out-of-range access
+  * causing memory errors
+
++ Memory allocation
+
+  * local array
+
+    - pointer in stack
+    - continuous memory block in stack
+
+  * dynamic array
+
+    - pointer in stack
+    - continuous memory block in heap
+
++ [] operator
+
+  * to declare a local array ``int arr[10];``
+
+    - size must be specified (empty [] not allowed) except size inference with
+      initialization
+    - size must be compilation time constant
+
+  + to refer to an element in the list ``arr[n]``
+
+    - no out-of-range check
+    - a simplified syntax of the pointer syntax ``*(arr + n)`` is same as
+      ``arr[n]``
+
++ size handling
+
+  * store in a separate variable
+  * Call ``sizeof()`` function
+
+    - ``size = sizeof(arr) / sizeof(arr[0])``
+
+    .. warning::
+      Not recommended! It will fail after the array variable is passed/assigned
+
++ initialization
+
+  * automatic size inference by compiler ``int arr[] = {1, 2, 3}``
+  * fill with 0 if provided values are not enough
+
++ Pitfalls
+
+  * out-of-range index
+  * incorrect size handling
+  * Java syntax ``int [] arr`` or ``int arr[]``
+  * returning a local array from a function
+
+Example
+=======
+
+::
+
+  // ==== Array ====
+
+  // ---- Correct ----
+
+  // size must be a compilation time constant
+  #define SIZE1 4  // macro
+  const int SIZE2 = 4;  // constant
+  int arr1[4];  // literal
+  int arr2[SIZE1];
+  int arr3[SIZE2];
+
+  // local array arr4
+  // pointer in stack
+  // 10 continuous int in stack allocated at the same time
+  int arr4[10];
+
+  // dynamic array arr5
+  // declared as a pointer
+  // pointer in stack, allocated when declared
+  int *arr5;
+  // 10 continuous int in heap, allocated by the new operator
+  arr5 = new int[10];
+  // must delete later to release the heap memory
+  delete [] arr5;
+
+  // initialization
+  int arr6[10] = {};  // all elements to 0
+  int arr7[] = {1, 2, 3, 4};  // size will be inferred by the compiler
+  int size = sizeof(arr7) / sizeof(arr7[0]);  // get 4
+  // int size = sizeof(arr7) / sizeof(int);  // get 4
+  int arr8[4] = {1, 2}; // get contents 1, 2, 0, 0
+
+  // new syntax of initialization
+  int arr9[4]{};  // all 0
+  int arr10[]{1, 2, 3, 4};  // size 4
+
+
+  // ---- Wrong ----
+
+  // size not known during compilation
+  // WARNING: This is allowed with g++ but not allowed in standard C++
+  //          g++ support variable length array as an extension
+  int size;
+  cin >> size;
+  int arr[size];
+
+  // Java syntax
+  int [] arr1;
+  int arr1[];
+
+  // out-of-range
+  int arr[100];
+  cout << arr[100];
+
+.. _ptr-array:
+
+Pointer syntaxes for array
+==========================
+
++ the array variable holds the memory address to the first element
++ first element: ``*arr`` is the same as ``arr[0]``
++ n th element: ``*(arr + n)`` the same as ``arr[n]``
+
+::
+
+  int arr1[4] = {1, 2, 3, 4};
+  int *arr2 = arr1 + 1;
+
+  // &arr1[0] is same as arr1
+  // arr2 is an array sharing data with arr1
+  // arr2 have a max size of 3
+  // arr2[0] is the same as arr1[1]
+  cout << arr1[1] << endl;  // get 2
+  cout << arr2[0] << endl;  // get 2

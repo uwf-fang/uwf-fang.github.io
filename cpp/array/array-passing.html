@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Passing Arrays To/From Functions &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/cpp/array/array-passing.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Passing References To/From Functions" href="../ref/ref-passing.html" />
+    <link rel="prev" title="User-defined Functions" href="../functions.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../ref/ref-passing.html" title="Passing References To/From Functions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../functions.html" title="User-defined Functions"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch03.html" accesskey="U">Chapter 3 User-defined Functions</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Passing Arrays To/From Functions</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="passing-arrays-to-from-functions">
+<span id="array-passing"></span><h1>Passing Arrays To/From Functions<a class="headerlink" href="#passing-arrays-to-from-functions" title="Permalink to this headline">¶</a></h1>
+<section id="array-parameters">
+<h2>Array Parameters<a class="headerlink" href="#array-parameters" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>pass an array is passing a pointer by value (memory address)</p></li>
+<li><p>only the first part (pointer part) is passed, data part stays</p></li>
+<li><p>use [] syntax or * syntax</p></li>
+<li><p>the dimension can/should be omitted</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// ==== Array parameter ====</span>
+<span class="linenos"> 2</span><span class="c1">// ---- Correct ----</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="c1">// ignore the size</span>
+<span class="linenos"> 5</span><span class="kt">double</span><span class="w"> </span><span class="nf">average</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">arr</span><span class="p">[],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="kt">double</span><span class="w"> </span><span class="nf">average</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="n">arr</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1">// ---- Wrong ----</span>
+<span class="linenos"> 9</span><span class="kt">double</span><span class="w"> </span><span class="nf">average</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="n">size</span><span class="p">],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w">  </span><span class="c1">// not compile</span>
+<span class="linenos">10</span><span class="kt">double</span><span class="w"> </span><span class="nf">average</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w">  </span><span class="c1">// compile but 3 is ignored</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="c1">// ---- to call ----</span>
+<span class="linenos">13</span><span class="kt">double</span><span class="w"> </span><span class="n">arr1</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="mf">3.0</span><span class="p">};</span><span class="w"></span>
+<span class="linenos">14</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">average</span><span class="p">(</span><span class="n">arr1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">15</span><span class="c1">// cout &lt;&lt; average(arr1[], 3) &lt;&lt; endl;  // wrong!</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="return-an-array">
+<h2>Return an Array<a class="headerlink" href="#return-an-array" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>returning an array is returning a pointer by value (memory address)</p></li>
+<li><p>only the first part (pointer part) is passed to outside, data part stays</p></li>
+<li><p>the return type should use pointer syntax</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// ==== Array as returned value ====</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="c1">// ---- Correct ----</span>
+<span class="linenos"> 4</span><span class="c1">// return a dynamic array</span>
+<span class="linenos"> 5</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="nf">makeSequence</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">sequence</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="w">  </span><span class="n">sequence</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="p">[</span><span class="n">size</span><span class="p">];</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="n">sequence</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">sequence</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">11</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="c1">// ---- Wrong ----</span>
+<span class="linenos">14</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="nf">makeSequence</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">15</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">sequence</span><span class="p">[</span><span class="n">size</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">16</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">17</span><span class="w">    </span><span class="n">sequence</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">18</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">sequence</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">19</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">20</span>
+<span class="linenos">21</span><span class="c1">// ---- to call ----</span>
+<span class="linenos">22</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">makeSequence</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">23</span><span class="k">delete</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="n">seq</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Passing Arrays To/From Functions</a><ul>
+<li><a class="reference internal" href="#array-parameters">Array Parameters</a></li>
+<li><a class="reference internal" href="#return-an-array">Return an Array</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../functions.html"
+                          title="previous chapter">User-defined Functions</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../ref/ref-passing.html"
+                          title="next chapter">Passing References To/From Functions</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/cpp/array/array-passing.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../ref/ref-passing.html" title="Passing References To/From Functions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../functions.html" title="User-defined Functions"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch03.html" >Chapter 3 User-defined Functions</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Passing Arrays To/From Functions</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

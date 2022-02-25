@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>C String &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/cpp/array/c-string.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="String (C++ class)" href="../string.html" />
+    <link rel="prev" title="1D Array Based Algorithms" href="arr-algorithms.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../string.html" title="String (C++ class)"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="arr-algorithms.html" title="1D Array Based Algorithms"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch0607.html" accesskey="U">Chapter 6, 7 Algorithm design with Sequential Data Structure</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">C String</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="c-string">
+<h1>C String<a class="headerlink" href="#c-string" title="Permalink to this headline">¶</a></h1>
+<p>The C string data structure is outdated. It is hard and insecure to use. C++
+string is recommended to be used almost all the time.</p>
+<ul class="simple">
+<li><p>A partially filed char array with a ‘0’ (null) char to mark the end</p></li>
+<li><p>not a class type. no methods!</p></li>
+<li><p>[] syntax</p>
+<ul>
+<li><p>no out-of-range check</p></li>
+</ul>
+</li>
+</ul>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">str1[100]</span> <span class="pre">=</span> <span class="pre">&quot;abc&quot;</span></code></p>
+<ul>
+<li><p>The C string can hold 99 characters without overflowing</p></li>
+<li><p>The string length is 3 (not include the tailing ‘0’)</p></li>
+<li><p>The spaces filled is 4 (include the tailing ‘0’)</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">str1[]</span> <span class="pre">=</span> <span class="pre">&quot;abc&quot;</span></code></p>
+<ul>
+<li><p>The string length is 3</p></li>
+<li><p>The array length is 4 (include the tailing ‘0’)</p></li>
+<li><p>The array is all filled</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="pitfalls">
+<h2>Pitfalls<a class="headerlink" href="#pitfalls" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cout</span> <span class="pre">&lt;&lt;</span> <span class="pre">myString.size();</span></code> C string has no method at all</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">str1[10]</span> <span class="pre">=</span> <span class="pre">{0};</span> <span class="pre">cout</span> <span class="pre">&lt;&lt;</span> <span class="pre">str1[10];</span></code> out-of-range access</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">str2[3]</span> <span class="pre">=</span> <span class="pre">&quot;abc&quot;;</span></code> overflows, the str2 can have at most two chars</p></li>
+</ul>
+</section>
+<section id="c-string-related-functions">
+<h2>C String Related Functions<a class="headerlink" href="#c-string-related-functions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>c-string header <code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&lt;cstring&gt;</span></code></p></li>
+<li><p>strcpy</p></li>
+<li><p>strncpy</p></li>
+<li><p>strcat</p></li>
+<li><p>strncat</p></li>
+<li><p>strchar</p></li>
+<li><p>strlen</p></li>
+<li><p>strcmp</p></li>
+</ul>
+</section>
+<section id="char-functions">
+<h2>char Functions<a class="headerlink" href="#char-functions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>cctype header (not typo, two c) <code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&lt;cctype&gt;</span></code></p></li>
+<li><p>isalpha</p></li>
+<li><p>isdigit</p></li>
+<li><p>isspace</p></li>
+<li><p>islower</p></li>
+<li><p>isupper</p></li>
+<li><p>toupper</p></li>
+<li><p>tolower</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">C String</a><ul>
+<li><a class="reference internal" href="#example">Example</a></li>
+<li><a class="reference internal" href="#pitfalls">Pitfalls</a></li>
+<li><a class="reference internal" href="#c-string-related-functions">C String Related Functions</a></li>
+<li><a class="reference internal" href="#char-functions">char Functions</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="arr-algorithms.html"
+                          title="previous chapter">1D Array Based Algorithms</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../string.html"
+                          title="next chapter">String (C++ class)</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/cpp/array/c-string.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../string.html" title="String (C++ class)"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="arr-algorithms.html" title="1D Array Based Algorithms"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch0607.html" >Chapter 6, 7 Algorithm design with Sequential Data Structure</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">C String</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

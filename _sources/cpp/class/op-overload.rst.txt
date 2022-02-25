@@ -1,0 +1,121 @@
+.. highlight:: c++
+  :linenothreshold: 5
+
+********************
+Operator Overloading
+********************
+
+Syntax
+======
+
++ ``a`` and ``b`` are operands
++ ``@`` is the placeholder for the operator, does not mean the ``@`` operator
+
+.. list-table:: Operator Overloading Syntax
+  :header-rows: 1
+  :widths: 10 30 30
+
+  * - Expression
+    - As method
+    - As function
+  * - ``@a``
+    - ``(a).operator@()``
+    - ``operator@(a)``
+  * - ``a@b``
+    - ``(a).operator@(b)``
+    - ``operator@(a, b)``
+
++ Operators that can be overloaded
+
+  ``+ - * / % ^ & | ~ ! = < > += -= *= /= %= ^= &= |= << >> >>= <<= == != <= >= && || ++ -- , ->* ->``
+
+Operator overloading as methods
+===============================
++ Only when ``a`` is a class-typed object
++ Declare as a method in the class of the object ``a``
++ Declare as ``const`` method to make ``a`` const
++ Declare ``b`` as a const formal parameter to make ``b``
+
+::
+
+  class Point {
+    int x;
+    int y;
+   public:
+    Point()=default;
+    Point(int x, int y): x(x), y(y) {}
+    Point operator+(const Point& other) const {
+      return Point(x + other.x, y + other.y);
+    }
+    Point operator-() const {
+      return Point(-x, -y);
+    }
+    void print() const {
+      cout << "X: " << x << " Y: " << y << endl;
+    }
+  };
+
+  int main() {
+    Point p1(10, 5), p2(2, 1);
+    Point p3 = p1 + p2;
+    p3.print();
+    (-p3).print();
+    return EXIT_SUCCESS;
+  }
+
+Operator overloading as functions
+=================================
++ ``a`` and ``b`` can be any type
++ Declare ``a`` and ``b`` as a const formal parameters to make them const
++ may be declared as a ``friend`` function of a class
+
+::
+
+  class Point {
+    int x;
+    int y;
+   public:
+    Point()=default;
+    Point(int x, int y): x(x), y(y) {}
+    void print() const {
+      cout << "X: " << x << " Y: " << y << endl;
+    }
+    friend Point operator+(const Point& p1, const Point & p2) {
+      // will need public getter for x and y if not defined as a friend method
+      // return Point(p1.getX() + p2.getX(), p1.getY(), p2.getY()
+      return Point(p1.x + p2.x, p1.y + p2.y);
+    }
+    friend Point operator-(const Point &p1) {
+      return Point(-p1.x, -p1.y);
+    }
+  };
+
+  int main() {
+    Point p1(10, 5), p2(2, 1);
+    Point p3 = p1 + p2;
+    p3.print();
+    (-p3).print();
+    return EXIT_SUCCESS;
+  }
+
+Const
+=====
+It is a great practice to make everything ``const`` if possible. For instance,
+operators like arithmetic, relational, logical operators can usually be made
+const. Some operators like ``++/--``, ``=``, ``+=``, etc. cannot be const as
+they must modify the internal state of the object.
+
+.. warning::
+
+  ``==`` operator used in Catch2 tests with ``REQUIRE`` or ``CHECK`` macros
+  must be const. Unless it is protected with extra pair of parenthesis.
+
+  ::
+
+    CHECK(p1 == p2);  // requires == operator to be const
+    CHECK((p1 == p2));  // does not require == operator to be const
+
+Best Practice
+=============
+Do not abuse operator overloading. Only use it when it is logically making
+sense. Anything that may surprise the user should be avoided.

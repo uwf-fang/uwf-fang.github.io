@@ -17,7 +17,7 @@
     <link rel="canonical" href="https://uwf-fang.github.io/cpp/functions.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Modular Development" href="modular.html" />
+    <link rel="next" title="Passing Arrays To/From Functions" href="array/array-passing.html" />
     <link rel="prev" title="Chapter 3 User-defined Functions" href="../course/cop3014/ch03.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -27,7 +27,7 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="modular.html" title="Modular Development"
+          <a href="array/array-passing.html" title="Passing Arrays To/From Functions"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="../course/cop3014/ch03.html" title="Chapter 3 User-defined Functions"
@@ -262,112 +262,6 @@ need conversion.</p>
 </pre></div>
 </div>
 </section>
-<section id="pass-by-reference">
-<h2>Pass by reference<a class="headerlink" href="#pass-by-reference" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>formal parameter vs actual parameter</p></li>
-<li><p>allow modifications of the actual parameters</p></li>
-<li><p>avoid duplication of the value (reduce overhead when the value is huge)</p></li>
-</ul>
-<section id="pass-by-ref-vs-pass-by-pointer">
-<h3>Pass-by-ref vs Pass-by-pointer<a class="headerlink" href="#pass-by-ref-vs-pass-by-pointer" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// swap pointer version</span>
-<span class="linenos"> 2</span><span class="c1">// called like swap(&amp;a, &amp;b);</span>
-<span class="linenos"> 3</span><span class="kt">void</span><span class="w"> </span><span class="nf">swap</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ptr1</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ptr2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 4</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">ptr1</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 5</span><span class="w">  </span><span class="o">*</span><span class="n">ptr1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">ptr2</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 6</span><span class="w">  </span><span class="o">*</span><span class="n">ptr2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmp</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 7</span><span class="p">}</span><span class="w"></span>
-<span class="linenos"> 8</span>
-<span class="linenos"> 9</span><span class="c1">// swap ref version</span>
-<span class="linenos">10</span><span class="c1">// cleaner syntax</span>
-<span class="linenos">11</span><span class="c1">// called like swap(a, b);</span>
-<span class="linenos">12</span><span class="kt">void</span><span class="w"> </span><span class="nf">swap</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">ref1</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">ref2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">13</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ref1</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">14</span><span class="w">  </span><span class="n">ref1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ref2</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">15</span><span class="w">  </span><span class="n">ref2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmp</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">16</span><span class="p">}</span><span class="w"></span>
-</pre></div>
-</div>
-</section>
-</section>
-<section id="returning-a-reference">
-<h2>Returning a Reference<a class="headerlink" href="#returning-a-reference" title="Permalink to this headline">¶</a></h2>
-<p>Returning a reference allows a function call to be used as a lvalue.</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">MyArr</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 2</span><span class="w"> </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
-<span class="linenos"> 3</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">arr</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 4</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 5</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="linenos"> 6</span><span class="w">  </span><span class="n">MyArr</span><span class="p">();</span><span class="w"></span>
-<span class="linenos"> 7</span><span class="w">  </span><span class="n">MyArr</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w"></span>
-<span class="linenos"> 8</span><span class="w">  </span><span class="o">~</span><span class="n">MyArr</span><span class="p">();</span><span class="w"></span>
-<span class="linenos"> 9</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="o">&amp;</span><span class="nf">at</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">10</span><span class="p">};</span><span class="w"></span>
-<span class="linenos">11</span>
-<span class="linenos">12</span><span class="kt">int</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nf">MyArr::at</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">13</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w">  </span><span class="c1">// the reference to arr[i] is passed out</span>
-<span class="linenos">14</span><span class="p">}</span><span class="w"></span>
-<span class="linenos">15</span>
-<span class="linenos">16</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">17</span><span class="w">  </span><span class="c1">// declare and initialize MyArr myArr1;</span>
-<span class="linenos">18</span><span class="w">  </span><span class="n">myArr1</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">  </span><span class="c1">// you can assign a value to a function call now</span>
-<span class="linenos">19</span><span class="w">                      </span><span class="c1">// because myArr1.at() is an alias of myArr1.arr[i]</span>
-<span class="linenos">20</span><span class="p">}</span><span class="w"></span>
-</pre></div>
-</div>
-</section>
-<section id="passing-arrays-around">
-<span id="pass-array"></span><h2>Passing arrays around<a class="headerlink" href="#passing-arrays-around" title="Permalink to this headline">¶</a></h2>
-<ul>
-<li><p>pass an array is passing a pointer by value (memory address)</p></li>
-<li><p>only the first part (pointer part) is passed, data part stays</p></li>
-<li><p>as parameter</p></li>
-<li><p>as returned value</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// ==== Array parameter ====</span>
-<span class="linenos"> 2</span><span class="c1">// ---- Correct ----</span>
-<span class="linenos"> 3</span>
-<span class="linenos"> 4</span><span class="c1">// ignore the size</span>
-<span class="linenos"> 5</span><span class="kt">double</span><span class="w"> </span><span class="nf">average</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">arr</span><span class="p">[],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w"></span>
-<span class="linenos"> 6</span><span class="kt">double</span><span class="w"> </span><span class="nf">average</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="n">arr</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w"></span>
-<span class="linenos"> 7</span>
-<span class="linenos"> 8</span><span class="c1">// ---- Wrong ----</span>
-<span class="linenos"> 9</span><span class="kt">double</span><span class="w"> </span><span class="nf">average</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="n">size</span><span class="p">],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w">  </span><span class="c1">// not compile</span>
-<span class="linenos">10</span><span class="kt">double</span><span class="w"> </span><span class="nf">average</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w">  </span><span class="c1">// compile but 3 is ignored</span>
-<span class="linenos">11</span>
-<span class="linenos">12</span><span class="c1">// ---- to call ----</span>
-<span class="linenos">13</span><span class="kt">double</span><span class="w"> </span><span class="n">arr1</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="mf">3.0</span><span class="p">};</span><span class="w"></span>
-<span class="linenos">14</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">average</span><span class="p">(</span><span class="n">arr1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">15</span><span class="c1">// cout &lt;&lt; average(arr1[], 3) &lt;&lt; endl;  // wrong!</span>
-<span class="linenos">16</span>
-<span class="linenos">17</span><span class="c1">// ==== Array as returned value ====</span>
-<span class="linenos">18</span>
-<span class="linenos">19</span><span class="c1">// ---- Correct ----</span>
-<span class="linenos">20</span><span class="c1">// return a dynamic array</span>
-<span class="linenos">21</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="nf">makeSequence</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">22</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">sequence</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">23</span><span class="w">  </span><span class="n">sequence</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="p">[</span><span class="n">size</span><span class="p">];</span><span class="w"></span>
-<span class="linenos">24</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">25</span><span class="w">    </span><span class="n">sequence</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">26</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">sequence</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">27</span><span class="p">}</span><span class="w"></span>
-<span class="linenos">28</span>
-<span class="linenos">29</span><span class="c1">// ---- Wrong ----</span>
-<span class="linenos">30</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="nf">makeSequence</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">31</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">sequence</span><span class="p">[</span><span class="n">size</span><span class="p">];</span><span class="w"></span>
-<span class="linenos">32</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">33</span><span class="w">    </span><span class="n">sequence</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">34</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">sequence</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">35</span><span class="p">}</span><span class="w"></span>
-<span class="linenos">36</span>
-<span class="linenos">37</span><span class="c1">// ---- to call ----</span>
-<span class="linenos">38</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">makeSequence</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">39</span><span class="k">delete</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="n">seq</span><span class="p">;</span><span class="w"></span>
-</pre></div>
-</div>
-</li>
-</ul>
-</section>
 </section>
 
 
@@ -387,12 +281,6 @@ need conversion.</p>
 <li><a class="reference internal" href="#scope">Scope</a></li>
 <li><a class="reference internal" href="#overloading">Overloading</a></li>
 <li><a class="reference internal" href="#function-call-matching">Function call matching</a></li>
-<li><a class="reference internal" href="#pass-by-reference">Pass by reference</a><ul>
-<li><a class="reference internal" href="#pass-by-ref-vs-pass-by-pointer">Pass-by-ref vs Pass-by-pointer</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#returning-a-reference">Returning a Reference</a></li>
-<li><a class="reference internal" href="#passing-arrays-around">Passing arrays around</a></li>
 </ul>
 </li>
 </ul>
@@ -405,8 +293,8 @@ need conversion.</p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="modular.html"
-                          title="next chapter">Modular Development</a></p>
+    <p class="topless"><a href="array/array-passing.html"
+                          title="next chapter">Passing Arrays To/From Functions</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -436,7 +324,7 @@ need conversion.</p>
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="modular.html" title="Modular Development"
+          <a href="array/array-passing.html" title="Passing Arrays To/From Functions"
              >next</a> |</li>
         <li class="right" >
           <a href="../course/cop3014/ch03.html" title="Chapter 3 User-defined Functions"

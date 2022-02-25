@@ -1,0 +1,70 @@
+.. highlight:: c++
+  :linenothreshold: 5
+
+.. _ref-passing:
+
+************************************
+Passing References To/From Functions
+************************************
+
+.. _pass-by-ref:
+
+Pass by reference
+=================
++ Allows modifications of the actual parameters::
+
+    // modifies the actual parameter
+    // no return value
+    void addOne(int &var) {
+      var++;
+    }
+
+    int main() {
+      int a = 10;
+      addOne(a);  // the actual parameter is a, must be an lvalue
+      return 0;
+    }
+
++ Avoid duplication of the value (reduce overhead when the value is huge)::
+
+    string parseText(const string &largeText) {
+      // process the text
+    }
+
+    int main() {
+      string inputText;
+      // set the content
+      string result = parseText(inputText);
+      cout << result << endl;
+    }
+
+Returning a Reference
+=====================
+
+Returning a reference allows a function call to be used as a lvalue. It allows
+modifications to the result of a function call.
+
+::
+
+  class MyArr {
+   private:
+    int *arr;
+    int size;
+   public:
+    MyArr();
+    MyArr(int size, int value);
+    ~MyArr();
+    int &at(int i);
+  };
+
+  // returns a reference
+  int & MyArr::at(int i) {
+    return arr[i];  // the reference to arr[i] is passed out
+  }
+
+  int main() {
+    MyArr myArr1(10, 10);
+    myArr1.at(0) = 10;  // you can assign a value to a function call now
+                        // because myArr1.at() is an alias of myArr1.arr[i]
+    myArr1.at(1)++;
+  }

@@ -1,0 +1,51 @@
+.. highlight:: c++
+  :linenothreshold: 5
+
+.. _ref-basics:
+
+Reference Type Basics
+=====================
++ A derived type to alias other types (including pointer type).
++ & symbol after type to make a derived type
++ Syntax ``BaseType &name = lvalue``
+
+  * lvalue only!
+  * Must be initialized!
+  * Later access/modification will only affect the variable bound to it
+
++ Misc. hints
+
+  * Name after the variable to be bound. e.g. choose ``myValue`` over
+    ``myValueRef``
+  * Not useful unless passed around as parameters or returned value
+
++ Pitfalls
+
+  * confusing ref type with pointer type syntaxes
+  * declaration without initialization
+
+::
+
+  // ==== Reference type ====
+
+  // ---- correct ----
+  int a = 10;
+  int b = 100;
+
+  // the type is "int &"
+  // reference variable can only be assigned once to be bound to a lvalue
+  // any later assignment will be redirected to the bound variable
+
+  int &myRef1 = a; // initialization, myRef1 is now an alias of a
+  myRef1 = b; // assignment, myRef1 will not refer to b, it is same as a = b; value of a become 10
+
+  // ---- wrong ----
+  int a;
+  int &alias;  // no initialization
+
+  int &alias = &a;  // alias is not a pointer, it takes a lvalue, not a memory address
+
+  int &&alias1 = alias;  // there is no ref to ref type!
+
+  cout << *alias;  // not a pointer, no need of * to dereference
+
