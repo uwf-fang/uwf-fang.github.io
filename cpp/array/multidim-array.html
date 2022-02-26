@@ -46,13 +46,8 @@
             
   <section id="multidimensional-array">
 <h1>Multidimensional Array<a class="headerlink" href="#multidimensional-array" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><p>Multidimensional arrays</p>
 <ul>
-<li><p>arrays of arrays</p></li>
-</ul>
-</li>
-</ul>
+<li><p>Multidimensional arrays - arrays of arrays</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span><span class="w">  </span><span class="c1">// 1d local array</span>
 <span class="kt">int</span><span class="w"> </span><span class="n">a1</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">];</span><span class="w">  </span><span class="c1">// 2d local array</span>
 <span class="kt">int</span><span class="w"> </span><span class="n">a2</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">][</span><span class="mi">4</span><span class="p">];</span><span class="w">  </span><span class="c1">// 3d local array</span>
@@ -60,7 +55,7 @@
 <span class="kt">int</span><span class="w"> </span><span class="o">***</span><span class="n">a4</span><span class="p">;</span><span class="w">  </span><span class="c1">// pointer of pointer of pointer to int, used for 3D dynamic array</span>
 </pre></div>
 </div>
-<ul>
+</li>
 <li><p>2d local array</p>
 <p>Example: a local array a1 with 2 rows, 3 columns</p>
 <ul>
@@ -73,6 +68,7 @@
 <span class="c1">// a1[0] is {1, 2, 3}, a1[1] is {4, 5, 6}</span>
 <span class="kt">int</span><span class="w"> </span><span class="n">a1</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">}};</span><span class="w"></span>
 <span class="kt">int</span><span class="w"> </span><span class="n">a2</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">};</span><span class="w"></span>
+<span class="kt">int</span><span class="w"> </span><span class="n">a3</span><span class="p">[][</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">};</span><span class="w">  </span><span class="c1">// first dimension can be inferred</span>
 </pre></div>
 </div>
 </li>
@@ -103,11 +99,9 @@
 </div>
 </li>
 <li><p>2d array as a function parameter</p>
-<ol class="arabic simple">
-<li><p>pass a 2 x 3 matrix as a local array</p></li>
-</ol>
-<blockquote>
-<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// ---- wrong ----</span>
+<ol class="arabic">
+<li><p>pass a 2 x 3 matrix as a local array</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// ---- wrong ----</span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">matrixOp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">matrix</span><span class="p">[</span><span class="n">rows</span><span class="p">][</span><span class="n">cols</span><span class="p">],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">);</span><span class="w"></span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">matrixOp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">matrix</span><span class="p">[][],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">);</span><span class="w"></span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">matrixOp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">matrix</span><span class="p">[</span><span class="mi">2</span><span class="p">][],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">);</span><span class="w"></span>
@@ -128,12 +122,9 @@
 <span class="n">matrixOp</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
-</div></blockquote>
-<ol class="arabic simple">
-<li><p>passing a dynamic array, a much nicer solution</p></li>
-</ol>
-<blockquote>
-<div><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">matrixOp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="n">matrix</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+</li>
+<li><p>passing a dynamic array, a much nicer solution</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">matrixOp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="n">matrix</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">rows</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
 <span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">cols</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
 <span class="w">      </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">;</span><span class="w">  </span><span class="c1">// same syntax as local array</span>
@@ -142,7 +133,8 @@
 <span class="n">matrixOp</span><span class="p">(</span><span class="n">dynArr1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
-</div></blockquote>
+</li>
+</ol>
 </li>
 <li><p>Returning a Multidimensional array from a function</p>
 <p>Just make dynamic array and return the pointer.</p>

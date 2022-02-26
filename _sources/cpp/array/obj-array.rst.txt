@@ -10,70 +10,70 @@ there are several data structures to choose from:
 
 #. Multiple arrays
 
-  + store data in ``M`` arrays, each with size ``N``, same index means same
-    record
+   + store data in ``M`` arrays, each with size ``N``, same index means same
+     record
 
-    E.g. grades[i] and names[i] refers to the grade and name of a same student
+     E.g. grades[i] and names[i] refers to the grade and name of a same student
 
-    ::
+     ::
 
-      const int NUM_STUDENT = 100; // max number of students
-      double grades[NUM_STUDENT];
-      string names[NUM_STUDENT];
+       const int NUM_STUDENT = 100; // max number of students
+       double grades[NUM_STUDENT];
+       string names[NUM_STUDENT];
 
-      names[4] = "John Smith";
-      grades[4] = 100;
-      cout << "The 5th student in the list " << names[4];
-      cout << " has a grade of " << grades[4];
+       names[4] = "John Smith";
+       grades[4] = 100;
+       cout << "The 5th student in the list " << names[4];
+       cout << " has a grade of " << grades[4];
 
-  + old-fashion approach inherited from C language
+   + old-fashion approach inherited from C language
 
 #. Array of objects (instance of a class or a struct)
 
-  + Better than the multiple array approach
-  + Pre-allocate ``N`` objects
-  + Each object has ``M`` fields
+   + Better than the multiple array approach
+   + Pre-allocate ``N`` objects
+   + Each object has ``M`` fields
 
-  ::
+   ::
 
-    // struct example
-    struct Student {
-      double grade;
-      string name;
-    };
+     // struct example
+     struct Student {
+       double grade;
+       string name;
+     };
 
-    Student students[NUM_STUDENT];
-    students[4].name = "John Smith";
-    students[4].grade = 100;
-    cout << "The 5th student in the list " << students[4].name;
-    cout << " has a grade of " << students[4].grade;
+     Student students[NUM_STUDENT];
+     students[4].name = "John Smith";
+     students[4].grade = 100;
+     cout << "The 5th student in the list " << students[4].name;
+     cout << " has a grade of " << students[4].grade;
 
-    // class example
-    class Student1 {
-      double grade;
-      string name;
-    public:
-      Student1(): name(""), grade(0) {}
-      Student1(string name, double grade): name(name), grade(grade) {}
-      string getName() { return name;}
-      double getGrade() { return grade;}
-    };
+     // class example
+     class Student1 {
+       double grade;
+       string name;
+     public:
+       Student1(): name(""), grade(0) {}
+       Student1(string name, double grade): name(name), grade(grade) {}
+       string getName() { return name;}
+       double getGrade() { return grade;}
+     };
 
-    Student1 students1[NUM_STUDENT];  // default constructor called 100 times
-    students1[4] = Student1("John Smith", 100);  // temporary object assignment
-    cout << "The 5th student in the list " << students1[4].getName() << " has a grade of " << students1[4].getGrade();
+     Student1 students1[NUM_STUDENT];  // default constructor called 100 times
+     students1[4] = Student1("John Smith", 100);  // temporary object assignment
+     cout << "The 5th student in the list " << students1[4].getName() << " has a grade of " << students1[4].getGrade();
 
 #. Array of pointers to objects
 
-  + Pre-allocate ``N`` pointers
-  + Efficient when the array is partially filled
-  + Complex syntax
+   + Pre-allocate ``N`` pointers
+   + Efficient when the array is partially filled
+   + Complex syntax
 
-  ::
+   ::
 
-    Student1 *students2[NUM_STUDENT];  // 100 pointers
-    for (int i = 0; i < NUM_STUDENT; i++)
-      students2[i] = nullptr;
-    students[4] = new Student1("John Smith", 100);
-    cout << "The 5th student in the list " << students2[4]->getName();
-    cout << " has a grade of " << students2[4]->getGrade();
+     Student1 *students2[NUM_STUDENT];  // 100 pointers
+     for (int i = 0; i < NUM_STUDENT; i++)
+       students2[i] = nullptr;
+     students[4] = new Student1("John Smith", 100);
+     cout << "The 5th student in the list " << students2[4]->getName();
+     cout << " has a grade of " << students2[4]->getGrade();

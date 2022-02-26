@@ -1,17 +1,15 @@
 
 Multidimensional Array
 ======================
-+ Multidimensional arrays
++ Multidimensional arrays - arrays of arrays
 
-  * arrays of arrays
+  .. code-block:: c++
 
-.. code-block:: c++
-
-  int a[10];  // 1d local array
-  int a1[2][3];  // 2d local array
-  int a2[2][3][4];  // 3d local array
-  int **a3;  // pointer of pointer to int, used for 2D dynamic array
-  int ***a4;  // pointer of pointer of pointer to int, used for 3D dynamic array
+    int a[10];  // 1d local array
+    int a1[2][3];  // 2d local array
+    int a2[2][3][4];  // 3d local array
+    int **a3;  // pointer of pointer to int, used for 2D dynamic array
+    int ***a4;  // pointer of pointer of pointer to int, used for 3D dynamic array
 
 + 2d local array
 
@@ -29,6 +27,7 @@ Multidimensional Array
       // a1[0] is {1, 2, 3}, a1[1] is {4, 5, 6}
       int a1[2][3] = {{1, 2, 3}, {4, 5, 6}};
       int a2[2][3] = {1, 2, 3, 4, 5, 6};
+      int a3[][3] = {1, 2, 3, 4, 5, 6};  // first dimension can be inferred
 
 + 2d dynamic array
 
@@ -58,41 +57,41 @@ Multidimensional Array
 
 + 2d array as a function parameter
 
-  1. pass a 2 x 3 matrix as a local array
+  #. pass a 2 x 3 matrix as a local array
 
-    .. code-block:: c++
+     .. code-block:: c++
 
-      // ---- wrong ----
-      void matrixOp(int matrix[rows][cols], int rows, int cols);
-      void matrixOp(int matrix[][], int rows, int cols);
-      void matrixOp(int matrix[2][], int rows, int cols);
+       // ---- wrong ----
+       void matrixOp(int matrix[rows][cols], int rows, int cols);
+       void matrixOp(int matrix[][], int rows, int cols);
+       void matrixOp(int matrix[2][], int rows, int cols);
 
-      // ---- correct ----
-      // only the first dimension can be empty, use int literals
-      // or const variable for other dimensions
-      void matrixOp(int matrix[][3], int rows, int cols);
+       // ---- correct ----
+       // only the first dimension can be empty, use int literals
+       // or const variable for other dimensions
+       void matrixOp(int matrix[][3], int rows, int cols);
 
-      // using const variables
-      const int ROWS = 2;
-      const int COLS = 3;
-      void matrixOp(int matrix[ROWS][COLS], int rows, int cols);
-      void matrixOp(int matrix[][COLS], int rows, int cols);
+       // using const variables
+       const int ROWS = 2;
+       const int COLS = 3;
+       void matrixOp(int matrix[ROWS][COLS], int rows, int cols);
+       void matrixOp(int matrix[][COLS], int rows, int cols);
 
-      // to call
-      int a1[2][3] = {{1, 2, 3}, {4, 5, 6}};
-      matrixOp(a1, 2, 3)
+       // to call
+       int a1[2][3] = {{1, 2, 3}, {4, 5, 6}};
+       matrixOp(a1, 2, 3)
 
-  1. passing a dynamic array, a much nicer solution
+  #. passing a dynamic array, a much nicer solution
 
-    .. code-block:: c++
+     .. code-block:: c++
 
-      void matrixOp(int ** matrix, int rows, int cols) {
-        for (int i = 0; i < rows ; i++)
-          for (int j = 0; j < cols; j++)
-            cout << matrix[i][j] << " ";  // same syntax as local array
-      }
-      // to call the function
-      matrixOp(dynArr1, 2, 3);
+       void matrixOp(int ** matrix, int rows, int cols) {
+         for (int i = 0; i < rows ; i++)
+           for (int j = 0; j < cols; j++)
+             cout << matrix[i][j] << " ";  // same syntax as local array
+       }
+       // to call the function
+       matrixOp(dynArr1, 2, 3);
 
 + Returning a Multidimensional array from a function
 
