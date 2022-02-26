@@ -19,15 +19,27 @@ Example
 
 * ``char str1[100] = "abc"``
 
-  - The C string can hold 99 characters without overflowing
+  - The C string can hold up to 99 characters (not 100)
   - The string length is 3 (not include the tailing '\0')
-  - The spaces filled is 4 (include the tailing '\0')
+  - The occupied spaces is 4 (include the tailing '\0')
 
 * ``char str1[] = "abc"``
 
   - The string length is 3
   - The array length is 4 (include the tailing '\0')
-  - The array is all filled
+  - The array is filled
+
+* loop through a C string::
+
+    // scan through the C string once
+    char cstr1[] = "abcde";
+    for (int i = 0; cstr1[i] != '\0'; i++)
+      cout << cstr1[i];
+
+    // strlen will scan through the array once
+    // scan through the C string twice
+    for (int i = 0; i < strlen(cstr1); i++)
+      cout << cstr1[i];
 
 Pitfalls
 ========
@@ -39,22 +51,22 @@ Pitfalls
 C String Related Functions
 ==========================
 * c-string header ``#include <cstring>``
-* strcpy
-* strncpy
-* strcat
-* strncat
-* strchar
-* strlen
-* strcmp
+* ``strcpy`` copy
+* ``strncpy`` copy with cut off
+* ``strcat`` concatenate
+* ``strncat`` concatenate with cut off
+* ``strchar`` search a char in a C string
+* ``strlen`` get length
+* ``strcmp`` compare two C strings
 
 char Functions
 ==============
 
 * cctype header (not typo, two c) ``#include <cctype>``
-* isalpha
-* isdigit
-* isspace
-* islower
-* isupper
-* toupper
-* tolower
+* ``isalpha``
+* ``isdigit``
+* ``isspace``
+* ``islower``
+* ``isupper``
+* ``toupper``
+* ``tolower``
