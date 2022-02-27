@@ -1,0 +1,106 @@
+.. highlight:: c++
+  :linenothreshold: 5
+
+******
+Vector
+******
+
+Vector Abstract Data Type (ADT)
+===============================
++ An ADT only defines the behaviors. Implementations are not defined.
++ Vector: A sequential ADT
++ Behaviors
+
+  * push_back
+  * pop_back
+  * insert
+  * erase
+  * size
+
+C++ std::vector
+===============
+
++ A C++ implementation of the Vector ADT
++ A STL container
++ ``#include <vector>``
++ vector is a class template, not a type! vector<int> is a class type
++ Based on a dynamic array internally
+
+  * fast access by indexing
+  * slow erase/insert in the middle
+  * may re-allocate memory when out of space
+
+    - create a larger array
+    - duplicate/move all elements from existing array
+    - delete the existing array
+
++ Variable length
++ Out-of-boundary check with ``.at(n)`` method
++ automatic memory management
+
++ Methods
+
+  * Constructors
+
+    - default -> empty vector
+    - ``(n)`` -> vector of size n, default values
+    - ``(n, v)`` -> vector of size n, fill values as v
+    - ``(aVectorOfSameType)`` -> copy another vector, must be same base type
+
+  * ``at()``
+
+    - can assign value like ``v.at(0) = 10;``
+    - with boundary check. Triggers out_of_boundary exception
+    - preferred over ``[]`` syntax
+
+  * ``clear()`` clear the content
+  * ``empty()`` check empty
+  * ``size()``
+  * ``push_back()``
+
+    - push the value as the last element
+    - does not return value
+
+  * ``pop_back()``
+
+    - removes the last element
+    - **does not return value! Be careful! Many pop methods in other languages
+      returns a value.**
+
+  * ``back()``
+
+    - returns the value of the last element
+
+  * ``resize()``
+
+    - may or may not re-allocate memory
+    - does not erase data if downsized
+
+  * ``insert()`` requires the use of iterators
+  * ``erase()`` requires the use of iterators
+
+Initialization
+--------------
+
+* `vector<int> v{1, 2, 3, 4, 5}` size 5 vector with values
+* `vector<int> v = {1, 2, 3, 4, 5}` size 5 vector with values
+* `vector<int> v(5)` size 5 vector with 0s
+* `vector<int> v(5, 1)` size 5 vector with 1s
+* `vector<int> v1(v)` make a copy of v
+
+.. vector-pitfalls:
+
+Pitfalls
+--------
+
+* use []
+* ``int a = v.pop_back();`` should be ``int a = v.back(); v.pop_back()``
+* ``for (int i = 0; i < v.size(); i++)`` this works but better to put the size
+  in a variable before this for loop to avoid calling the .size() n times.
+* ``cout << v.length();`` there is no length() method
+
+  - a string object has both .size() and .length()
+
+* ``if (v.size() == 0)`` this works but better use ``if (v.empty())``
+
+.. vec_algors:

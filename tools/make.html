@@ -18,7 +18,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Testing in C++" href="../cpp/testing/testing.html" />
-    <link rel="prev" title="Compilation Using g++" href="../cpp/build/gpp.html" /> 
+    <link rel="prev" title="Compilation Using g++" href="../cpp/building/gpp.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,12 +30,12 @@
           <a href="../cpp/testing/testing.html" title="Testing in C++"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="../cpp/build/gpp.html" title="Compilation Using g++"
+          <a href="../cpp/building/gpp.html" title="Compilation Using g++"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../course/cop3014/ch03.html" >Chapter 3 User-defined Functions</a> &#187;</li>
-          <li class="nav-item nav-item-3"><a href="../cpp/build/modular.html" accesskey="U">Modular Development</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="../cpp/building/modular.html" accesskey="U">Modular Development</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">GNU Make</a></li> 
       </ul>
     </div>  
@@ -69,27 +69,24 @@ makefile of another name or in another directory.</p>
 </pre></div>
 </div>
 <dl class="simple glossary">
-<dt id="term-target">target<a class="headerlink" href="#term-target" title="Permalink to this term">¶</a></dt><dd><p>It is usually the file you want to generate. However, virtual targets
+<dt id="term-Target">Target<a class="headerlink" href="#term-Target" title="Permalink to this term">¶</a></dt><dd><p>It is usually the file you want to generate. However, virtual targets
 such as <code class="docutils literal notranslate"><span class="pre">main</span></code>, <code class="docutils literal notranslate"><span class="pre">clean</span></code> are extensively used in many makefiles. They
 do not bind to a real file but can be used in the make command-line like
 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">main</span></code> or <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code></p>
 </dd>
-<dt id="term-prerequisites">prerequisites<a class="headerlink" href="#term-prerequisites" title="Permalink to this term">¶</a></dt><dd><p>It is a list of dependent files/targets needed to build the target. When
+<dt id="term-Prerequisites">Prerequisites<a class="headerlink" href="#term-Prerequisites" title="Permalink to this term">¶</a></dt><dd><p>It is a list of dependent files/targets needed to build the target. When
 any of the files or targets are updated, the target will be re-built.</p>
 </dd>
-<dt id="term-recipe">recipe<a class="headerlink" href="#term-recipe" title="Permalink to this term">¶</a></dt><dd><p>An indented block including command-line commands in each line in order
+<dt id="term-Recipe">Recipe<a class="headerlink" href="#term-Recipe" title="Permalink to this term">¶</a></dt><dd><p>An indented block including command-line commands in each line in order
 to generate the target.</p>
 </dd>
 </dl>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>The indentation for commands must be a single <code class="docutils literal notranslate"><span class="pre">tab</span></code> character for older
+<p>The indentation for commands <strong>must be a single &lt;tab&gt; character</strong> for older
 versions of GNU make. The newer versions can take spaces for indentation.</p>
-</aside>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
 <p>If you do not know g++ command well, refer to the
-<a class="reference internal" href="../cpp/build/gpp.html"><span class="doc">g++ document</span></a>. One important thing to remember is
+<a class="reference internal" href="../cpp/building/gpp.html"><span class="doc">g++ document</span></a>. One important thing to remember is
 <strong>never list header files in the g++ command-line!</strong> Provide cpp files only!</p>
 </aside>
 </section>
@@ -110,17 +107,20 @@ is included by the <code class="docutils literal notranslate"><span class="pre">
 this approach, .cpp source code files are compiled to .o object files first and
 then all object files are linked to provide the executable(s). It has many
 benefits over direct compilation to output executables from source code files:</p>
-<ul class="simple">
+<ul>
 <li><p>Specify different g++ flags</p></li>
 <li><p>Easier to debug</p></li>
-<li><p>No need to recompile everything after a partial modification</p></li>
-</ul>
+<li><p>No need to recompile everything after a partial modification</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Examples in this pages has all indentations as spaces. It is due to the
 limitation of the website generating system. You should change them to real
 <code class="docutils literal notranslate"><span class="pre">tab</span></code> characters to ensure the backward compatibility.</p>
 </aside>
+</li>
+</ul>
+<section id="hard-coded-rules">
+<h3>Hard-coded rules<a class="headerlink" href="#hard-coded-rules" title="Permalink to this headline">¶</a></h3>
 <p>A simple makefile with hard coded g++ commands:</p>
 <div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="c"># declare virtual targets</span>
 <span class="nf">.PHONY</span><span class="o">:</span> <span class="n">clean</span>
@@ -154,13 +154,16 @@ remove generated temporary files and the executable.</p>
 <p>You may now build your executable <code class="docutils literal notranslate"><span class="pre">main</span></code> by the command <code class="docutils literal notranslate"><span class="pre">make</span></code> or <code class="docutils literal notranslate"><span class="pre">make</span>
 <span class="pre">main</span></code>. The <code class="docutils literal notranslate"><span class="pre">make</span></code> command without parameters will take the first target in
 the makefile as the target to make.</p>
+</section>
+<section id="introducing-variables">
+<h3>Introducing variables<a class="headerlink" href="#introducing-variables" title="Permalink to this headline">¶</a></h3>
 <p>You may noticed a lot of redundant texts such as the g++ flags (<code class="docutils literal notranslate"><span class="pre">-std=c++11</span>
 <span class="pre">-Wall</span> <span class="pre">-g</span></code>), list of file names, etc. Many of the redundancy can be remove by
 introducing variables. With variables, you can also extract configurations out
 of the commands for efficient management of configurations.</p>
 <p>A makefile using variables:</p>
 <div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">CXX</span><span class="o">=</span>g++
-<span class="nv">FLAGS</span><span class="o">=</span>-std<span class="o">=</span>c++11 -Wall -g
+<span class="nv">CXXFLAGS</span><span class="o">=</span>-std<span class="o">=</span>c++11 -Wall -g
 <span class="nv">RM</span><span class="o">=</span>rm -rf
 
 <span class="nf">.PHONY</span><span class="o">:</span> <span class="n">clean</span>
@@ -169,26 +172,28 @@ of the commands for efficient management of configurations.</p>
     <span class="k">$(</span>CXX<span class="k">)</span> -o main main.o grade-book.o student.o grades.o
 
 <span class="nf">main.o</span><span class="o">:</span> <span class="n">main</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span>
-    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>FLAGS<span class="k">)</span> -c main.cpp
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>CXXFLAGS<span class="k">)</span> -c main.cpp
 
 <span class="nf">student.o</span><span class="o">:</span> <span class="n">student</span>.<span class="n">cpp</span> <span class="n">student</span>.<span class="n">hpp</span>
-    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>FLAGS<span class="k">)</span> -c student.cpp
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>CXXFLAGS<span class="k">)</span> -c student.cpp
 
 <span class="nf">grades.o</span><span class="o">:</span> <span class="n">grades</span>.<span class="n">cpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
-    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>FLAGS<span class="k">)</span> -c grades.cpp
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>CXXFLAGS<span class="k">)</span> -c grades.cpp
 
 <span class="nf">grade-book.o</span><span class="o">:</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
-    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>FLAGS<span class="k">)</span> -c grade-book.cpp
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>CXXFLAGS<span class="k">)</span> -c grade-book.cpp
 
 <span class="nf">clean</span><span class="o">:</span>
     <span class="k">$(</span>RM<span class="k">)</span> *.o main *.gc* *.dSYM
 </pre></div>
 </div>
-<p>Now we can change compiler from g++ to clang++ by modifying the CXX variable. We
-can also change the C++ standard from 11 to 17 by modifying the FLAGS variable.</p>
-<p>We still have redundancy here. The file names listed as part of the target or
-dependencies are hard-coded in the g++ commands. It can be improved using the
-<em>automatic variables</em> like $&#64;, $^, $&lt;.</p>
+<p>With variables, we can easily make modifications to the compiler command and compilation flags by modifying variables.</p>
+</section>
+<section id="introducing-automatic-variables">
+<h3>Introducing automatic variables<a class="headerlink" href="#introducing-automatic-variables" title="Permalink to this headline">¶</a></h3>
+<p>You may notice that we still have redundancy. The file names listed as part of
+the target or dependencies are hard-coded in the g++ commands. It can be
+improved using the <strong>automatic variables</strong> like $&#64;, $^, $&lt;.</p>
 <dl class="simple glossary">
 <dt id="term-0">$&#64;<a class="headerlink" href="#term-0" title="Permalink to this term">¶</a></dt><dd><p>the target</p>
 </dd>
@@ -199,7 +204,7 @@ dependencies are hard-coded in the g++ commands. It can be improved using the
 </dl>
 <p>The further simplified makefile:</p>
 <div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">CXX</span><span class="o">=</span>g++
-<span class="nv">FLAGS</span><span class="o">=</span>-std<span class="o">=</span>c++11 -Wall -g
+<span class="nv">CXXFLAGS</span><span class="o">=</span>-std<span class="o">=</span>c++11 -Wall -g
 <span class="nv">RM</span><span class="o">=</span>rm -rf
 
 <span class="nf">.PHONY</span><span class="o">:</span> <span class="n">clean</span>
@@ -208,16 +213,16 @@ dependencies are hard-coded in the g++ commands. It can be improved using the
     <span class="k">$(</span>CXX<span class="k">)</span> -o <span class="nv">$@</span> $^
 
 <span class="nf">main.o</span><span class="o">:</span> <span class="n">main</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span>
-    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>FLAGS<span class="k">)</span> -c $&lt;
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>CXXFLAGS<span class="k">)</span> -c $&lt;
 
 <span class="nf">student.o</span><span class="o">:</span> <span class="n">student</span>.<span class="n">cpp</span> <span class="n">student</span>.<span class="n">hpp</span>
-    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>FLAGS<span class="k">)</span> -c $&lt;
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>CXXFLAGS<span class="k">)</span> -c $&lt;
 
 <span class="nf">grades.o</span><span class="o">:</span> <span class="n">grades</span>.<span class="n">cpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
-    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>FLAGS<span class="k">)</span> -c $&lt;
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>CXXFLAGS<span class="k">)</span> -c $&lt;
 
 <span class="nf">grade-book.o</span><span class="o">:</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
-    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>FLAGS<span class="k">)</span> -c $&lt;
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>CXXFLAGS<span class="k">)</span> -c $&lt;
 
 <span class="nf">clean</span><span class="o">:</span>
     <span class="k">$(</span>RM<span class="k">)</span> *.o main *.gc* *.dSYM
@@ -225,14 +230,17 @@ dependencies are hard-coded in the g++ commands. It can be improved using the
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The commands for the .o objects used $&lt; to avoid including header files in
+<p>The commands in the .o file rules used $&lt; to avoid including header files in
 the g++ command-line. Make sure to put the .cpp file as the first dependency
 in the list!</p>
 </aside>
+</section>
+<section id="use-pattern-match">
+<h3>Use Pattern Match<a class="headerlink" href="#use-pattern-match" title="Permalink to this headline">¶</a></h3>
 <p>It is still verbose. By sacrificing the header prerequisites in the object file
 rules, we can merge these rules into one:</p>
 <div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">CXX</span><span class="o">=</span>g++
-<span class="nv">FLAGS</span><span class="o">=</span>-std<span class="o">=</span>c++11 -Wall -g
+<span class="nv">CXXFLAGS</span><span class="o">=</span>-std<span class="o">=</span>c++11 -Wall -g
 <span class="nv">RM</span><span class="o">=</span>rm
 
 <span class="nf">.PHONY</span><span class="o">:</span> <span class="n">clean</span>
@@ -241,7 +249,7 @@ rules, we can merge these rules into one:</p>
     <span class="k">$(</span>CXX<span class="k">)</span> -o <span class="nv">$@</span> $^
 
 <span class="nf">%.o</span><span class="o">:</span> %.<span class="n">cpp</span>
-    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>FLAGS<span class="k">)</span> -c $&lt;
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>CXXFLAGS<span class="k">)</span> -c $&lt;
 
 <span class="nf">clean</span><span class="o">:</span>
     <span class="k">$(</span>RM<span class="k">)</span> -rf *.o main *.gc* *.dSYM
@@ -255,12 +263,16 @@ the .o file. A workaround is to force recompilation by running <code class="docu
 <span class="pre">main</span></code>. This will be slow if your project is huge. No easy solution without
 heavy coding. It is a limitation of make any.</p>
 </aside>
-<p>Now we have a good makefile.</p>
+</section>
+<section id="further-improvement">
+<h3>Further Improvement<a class="headerlink" href="#further-improvement" title="Permalink to this headline">¶</a></h3>
+<p>Now we have a very concise makefile.</p>
 <p>You can learn potential improvement from the :</p>
 <ul class="simple">
 <li><p>Store generated files in a subdirectory</p></li>
 <li><p>Use wildcard to catch file names automatically</p></li>
 </ul>
+</section>
 </section>
 <section id="pitfalls">
 <h2>Pitfalls<a class="headerlink" href="#pitfalls" title="Permalink to this headline">¶</a></h2>
@@ -275,6 +287,10 @@ heavy coding. It is a limitation of make any.</p>
 <span class="c"># the cpp file should go first so $&lt; will refer to it</span>
 <span class="nf">lib1.o</span><span class="o">:</span> <span class="n">lib</span>1.<span class="n">hpp</span> <span class="n">lib</span>1.<span class="n">cpp</span>
     g++ -o <span class="nv">$@</span> $&lt;
+
+<span class="c"># Typo in variables</span>
+<span class="nf">main.o</span><span class="o">:</span> <span class="n">main</span>.<span class="n">cpp</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>CXXFLAG<span class="k">)</span> -c <span class="nv">$@</span> $&lt;
 </pre></div>
 </div>
 </section>
@@ -293,7 +309,14 @@ heavy coding. It is a limitation of make any.</p>
 <li><a class="reference internal" href="#">GNU Make</a><ul>
 <li><a class="reference internal" href="#make-command">make command</a></li>
 <li><a class="reference internal" href="#makefile">makefile</a></li>
-<li><a class="reference internal" href="#modular-compilation">Modular Compilation</a></li>
+<li><a class="reference internal" href="#modular-compilation">Modular Compilation</a><ul>
+<li><a class="reference internal" href="#hard-coded-rules">Hard-coded rules</a></li>
+<li><a class="reference internal" href="#introducing-variables">Introducing variables</a></li>
+<li><a class="reference internal" href="#introducing-automatic-variables">Introducing automatic variables</a></li>
+<li><a class="reference internal" href="#use-pattern-match">Use Pattern Match</a></li>
+<li><a class="reference internal" href="#further-improvement">Further Improvement</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#pitfalls">Pitfalls</a></li>
 </ul>
 </li>
@@ -302,7 +325,7 @@ heavy coding. It is a limitation of make any.</p>
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="../cpp/build/gpp.html"
+    <p class="topless"><a href="../cpp/building/gpp.html"
                           title="previous chapter">Compilation Using g++</a></p>
   </div>
   <div>
@@ -341,12 +364,12 @@ heavy coding. It is a limitation of make any.</p>
           <a href="../cpp/testing/testing.html" title="Testing in C++"
              >next</a> |</li>
         <li class="right" >
-          <a href="../cpp/build/gpp.html" title="Compilation Using g++"
+          <a href="../cpp/building/gpp.html" title="Compilation Using g++"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../course/cop3014/ch03.html" >Chapter 3 User-defined Functions</a> &#187;</li>
-          <li class="nav-item nav-item-3"><a href="../cpp/build/modular.html" >Modular Development</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="../cpp/building/modular.html" >Modular Development</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">GNU Make</a></li> 
       </ul>
     </div>

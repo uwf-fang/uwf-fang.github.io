@@ -1,0 +1,281 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Sorting Algorithms &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/cpp/algorithm/sorting.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="About" href="../../about/about.html" />
+    <link rel="prev" title="Chapter 9 Sorting" href="../../course/cop3530/ch09.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../about/about.html" title="About"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../../course/cop3530/ch09.html" title="Chapter 9 Sorting"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3530/ch09.html" accesskey="U">Chapter 9 Sorting</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Sorting Algorithms</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="sorting-algorithms">
+<h1>Sorting Algorithms<a class="headerlink" href="#sorting-algorithms" title="Permalink to this headline">¶</a></h1>
+<section id="general-info">
+<h2>General info<a class="headerlink" href="#general-info" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>Visualizations</p>
+<p>Due to the complexity of the sorting algorithms. Visualizations may greatly
+enhance the learning process. Below are two useful websites providing
+visualizations of common algorithms and data structures.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://visualgo.net/en/sorting">visualgo.net</a></p></li>
+<li><p><a class="reference external" href="https://www.cs.usfca.edu/~galles/visualization/Algorithms.html">Data Structure Visualization</a></p></li>
+</ul>
+</li>
+<li><p>Categories</p>
+<p>All algorithms not mentioned in the book is for your information only.</p>
+<ul class="simple">
+<li><p>Comparison based - Best algorithm complexity <span class="math notranslate nohighlight">\(O(nlog(n))\)</span></p>
+<ul>
+<li><p>selection</p></li>
+<li><p>insertion</p></li>
+<li><p>bubble</p></li>
+<li><p>quick</p></li>
+<li><p>merge</p></li>
+<li><p>shell</p></li>
+</ul>
+</li>
+<li><p>Other</p>
+<ul>
+<li><p>Heap</p></li>
+<li><p>Bucket</p></li>
+<li><p>Radix</p></li>
+<li><p>Counting</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Complexity</p>
+<ul class="simple">
+<li><p>simple <span class="math notranslate nohighlight">\(O(n^{2})\)</span>: insert, selection, bubble</p></li>
+<li><p>fast <span class="math notranslate nohighlight">\(O(nlog(n))\)</span>: quick, merge, heap</p></li>
+<li><p>linear: radix <span class="math notranslate nohighlight">\(O(nk)\)</span>, bucket <span class="math notranslate nohighlight">\(O(n + k)\)</span></p></li>
+</ul>
+</li>
+<li><p>Storage Space</p>
+<ul class="simple">
+<li><p>in-place</p>
+<ul>
+<li><p>most sorting algorithms</p></li>
+</ul>
+</li>
+<li><p>not-in-place (out-of-place)</p>
+<ul>
+<li><p>merge sort</p></li>
+<li><p>bucket sort</p></li>
+<li><p>radix sort</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="insertion-sort">
+<h2>Insertion Sort<a class="headerlink" href="#insertion-sort" title="Permalink to this headline">¶</a></h2>
+<p>Repeatedly take one element from the unsorted section and insert into the sorted
+section.</p>
+<ul class="simple">
+<li><p>Complexity: <span class="math notranslate nohighlight">\(O(n^{2})\)</span></p></li>
+</ul>
+</section>
+<section id="quick-sort">
+<h2>Quick Sort<a class="headerlink" href="#quick-sort" title="Permalink to this headline">¶</a></h2>
+<p>Select one element (pivot), use this element to partition the whole list to
+obtain two partitions. Repeat the same process on the two partitions
+respectively.</p>
+<ul class="simple">
+<li><p>Complexity: not stable</p>
+<ul>
+<li><p>average <span class="math notranslate nohighlight">\(O(nlog(n))\)</span></p></li>
+<li><p>worst <span class="math notranslate nohighlight">\(O(n^{2})\)</span></p></li>
+</ul>
+</li>
+<li><p>Pivot selection</p>
+<ul>
+<li><p>fixed: first, last or middle</p></li>
+<li><p>random</p></li>
+</ul>
+</li>
+<li><p>Partitioning algorithm</p>
+<ul>
+<li><p>Hoare’s Scheme (preferred)</p></li>
+<li><p>Lomuto’s Scheme</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="merge-sort">
+<h2>Merge Sort<a class="headerlink" href="#merge-sort" title="Permalink to this headline">¶</a></h2>
+<p>Take two sorted list and merge into a larger sorted list recursively.</p>
+<ul class="simple">
+<li><p>Complexity: stable <span class="math notranslate nohighlight">\(O(nlog(n))\)</span></p></li>
+<li><p>Variations</p>
+<ul>
+<li><p>top-down</p>
+<ul>
+<li><p>usually recursive</p></li>
+<li><p>stop repetition when the size of section is 1 or 0</p></li>
+<li><p>in each round</p>
+<ul>
+<li><p>sort first half</p></li>
+<li><p>sort second half</p></li>
+<li><p>merge</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>bottom-up (not mentioned in the book)</p>
+<ul>
+<li><p>usually iterative</p></li>
+<li><p>merge all n size 1 sections (single element) into n/2 size 2 sections</p></li>
+<li><p>merge all size 2 lists to size 4 lists</p></li>
+<li><p>continue until done</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="radix-sort">
+<h2>Radix Sort<a class="headerlink" href="#radix-sort" title="Permalink to this headline">¶</a></h2>
+<p>Not comparison based. Collect elements into buckets multiple times. Dependant on
+the semantic of the content. Example: use digits on each position of decimal
+numbers as buckets; starting from the right most digit; collect numbers into
+buckets, flatten, collect again to sort.</p>
+</section>
+<section id="implementation-notes">
+<h2>Implementation Notes<a class="headerlink" href="#implementation-notes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Array based</p>
+<ul>
+<li><p>fast access by index</p></li>
+</ul>
+</li>
+<li><p>Linked-list based</p>
+<ul>
+<li><p>slow access by index</p></li>
+<li><p>fast access to neighboring nodes</p></li>
+<li><p>fast reconstruction of new list</p></li>
+<li><p>best fit: out-of-space algorithms like merge sort and bucket sort</p></li>
+<li><p>other choices: algorithms that scan through elements one by one like
+insertion sort, quick sort, bubble sort</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Sorting Algorithms</a><ul>
+<li><a class="reference internal" href="#general-info">General info</a></li>
+<li><a class="reference internal" href="#insertion-sort">Insertion Sort</a></li>
+<li><a class="reference internal" href="#quick-sort">Quick Sort</a></li>
+<li><a class="reference internal" href="#merge-sort">Merge Sort</a></li>
+<li><a class="reference internal" href="#radix-sort">Radix Sort</a></li>
+<li><a class="reference internal" href="#implementation-notes">Implementation Notes</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../../course/cop3530/ch09.html"
+                          title="previous chapter">Chapter 9 Sorting</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../../about/about.html"
+                          title="next chapter">About</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/cpp/algorithm/sorting.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../about/about.html" title="About"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../../course/cop3530/ch09.html" title="Chapter 9 Sorting"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3530/ch09.html" >Chapter 9 Sorting</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Sorting Algorithms</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

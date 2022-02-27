@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Vector &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/cpp/stl/vector.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Operator Overloading" href="../class/op-overload.html" />
+    <link rel="prev" title="Chapter 11 Vector" href="../../course/cop3014/ch11.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../class/op-overload.html" title="Operator Overloading"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../../course/cop3014/ch11.html" title="Chapter 11 Vector"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch11.html" accesskey="U">Chapter 11 Vector</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Vector</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="vector">
+<h1>Vector<a class="headerlink" href="#vector" title="Permalink to this headline">¶</a></h1>
+<section id="vector-abstract-data-type-adt">
+<h2>Vector Abstract Data Type (ADT)<a class="headerlink" href="#vector-abstract-data-type-adt" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>An ADT only defines the behaviors. Implementations are not defined.</p></li>
+<li><p>Vector: A sequential ADT</p></li>
+<li><p>Behaviors</p>
+<ul>
+<li><p>push_back</p></li>
+<li><p>pop_back</p></li>
+<li><p>insert</p></li>
+<li><p>erase</p></li>
+<li><p>size</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="c-std-vector">
+<h2>C++ std::vector<a class="headerlink" href="#c-std-vector" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>A C++ implementation of the Vector ADT</p></li>
+<li><p>A STL container</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&lt;vector&gt;</span></code></p></li>
+<li><p>vector is a class template, not a type! vector&lt;int&gt; is a class type</p></li>
+<li><p>Based on a dynamic array internally</p>
+<ul>
+<li><p>fast access by indexing</p></li>
+<li><p>slow erase/insert in the middle</p></li>
+<li><p>may re-allocate memory when out of space</p>
+<ul>
+<li><p>create a larger array</p></li>
+<li><p>duplicate/move all elements from existing array</p></li>
+<li><p>delete the existing array</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Variable length</p></li>
+<li><p>Out-of-boundary check with <code class="docutils literal notranslate"><span class="pre">.at(n)</span></code> method</p></li>
+<li><p>automatic memory management</p></li>
+<li><p>Methods</p>
+<ul>
+<li><p>Constructors</p>
+<ul>
+<li><p>default -&gt; empty vector</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(n)</span></code> -&gt; vector of size n, default values</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">v)</span></code> -&gt; vector of size n, fill values as v</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(aVectorOfSameType)</span></code> -&gt; copy another vector, must be same base type</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">at()</span></code></p>
+<ul>
+<li><p>can assign value like <code class="docutils literal notranslate"><span class="pre">v.at(0)</span> <span class="pre">=</span> <span class="pre">10;</span></code></p></li>
+<li><p>with boundary check. Triggers out_of_boundary exception</p></li>
+<li><p>preferred over <code class="docutils literal notranslate"><span class="pre">[]</span></code> syntax</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">clear()</span></code> clear the content</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">empty()</span></code> check empty</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">push_back()</span></code></p>
+<ul>
+<li><p>push the value as the last element</p></li>
+<li><p>does not return value</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pop_back()</span></code></p>
+<ul>
+<li><p>removes the last element</p></li>
+<li><p><strong>does not return value! Be careful! Many pop methods in other languages
+returns a value.</strong></p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">back()</span></code></p>
+<ul>
+<li><p>returns the value of the last element</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">resize()</span></code></p>
+<ul>
+<li><p>may or may not re-allocate memory</p></li>
+<li><p>does not erase data if downsized</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">insert()</span></code> requires the use of iterators</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">erase()</span></code> requires the use of iterators</p></li>
+</ul>
+</li>
+</ul>
+<section id="initialization">
+<h3>Initialization<a class="headerlink" href="#initialization" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><cite>vector&lt;int&gt; v{1, 2, 3, 4, 5}</cite> size 5 vector with values</p></li>
+<li><p><cite>vector&lt;int&gt; v = {1, 2, 3, 4, 5}</cite> size 5 vector with values</p></li>
+<li><p><cite>vector&lt;int&gt; v(5)</cite> size 5 vector with 0s</p></li>
+<li><p><cite>vector&lt;int&gt; v(5, 1)</cite> size 5 vector with 1s</p></li>
+<li><p><cite>vector&lt;int&gt; v1(v)</cite> make a copy of v</p></li>
+</ul>
+</section>
+<section id="pitfalls">
+<h3>Pitfalls<a class="headerlink" href="#pitfalls" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>use []</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">a</span> <span class="pre">=</span> <span class="pre">v.pop_back();</span></code> should be <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">a</span> <span class="pre">=</span> <span class="pre">v.back();</span> <span class="pre">v.pop_back()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">(int</span> <span class="pre">i</span> <span class="pre">=</span> <span class="pre">0;</span> <span class="pre">i</span> <span class="pre">&lt;</span> <span class="pre">v.size();</span> <span class="pre">i++)</span></code> this works but better to put the size
+in a variable before this for loop to avoid calling the .size() n times.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cout</span> <span class="pre">&lt;&lt;</span> <span class="pre">v.length();</span></code> there is no length() method</p>
+<ul>
+<li><p>a string object has both .size() and .length()</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">(v.size()</span> <span class="pre">==</span> <span class="pre">0)</span></code> this works but better use <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">(v.empty())</span></code></p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Vector</a><ul>
+<li><a class="reference internal" href="#vector-abstract-data-type-adt">Vector Abstract Data Type (ADT)</a></li>
+<li><a class="reference internal" href="#c-std-vector">C++ std::vector</a><ul>
+<li><a class="reference internal" href="#initialization">Initialization</a></li>
+<li><a class="reference internal" href="#pitfalls">Pitfalls</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../../course/cop3014/ch11.html"
+                          title="previous chapter">Chapter 11 Vector</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../class/op-overload.html"
+                          title="next chapter">Operator Overloading</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/cpp/stl/vector.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../class/op-overload.html" title="Operator Overloading"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../../course/cop3014/ch11.html" title="Chapter 11 Vector"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch11.html" >Chapter 11 Vector</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Vector</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>
