@@ -1,3 +1,140 @@
+.. highlight:: c++
+  :linenothreshold: 5
+
 *****************
 Hash Table in C++
 *****************
+
+Hash table uses hashing to implement a data structure that maps a key to an
+index so the value can be stored in the corresponding location (a bucket) in a
+sequential data structure like an array.
+
+Question to think: why linked list is not a good way to store values in a hash
+table?
+
++ Characteristics
+
+  * fast lookup/insertion/removal :math:`O(1)`
+  * redundant storage (empty buckets)
+
++ hash function for hash tables :math:`h(x)`
+
+  * any key type mapping to unsigned int (type of indices)
+  * modulo operator on any integer generating hash function
+
++ Collision resolution
+
+  * chaining: each bucket is a linked list to store multiple values (chained)
+
+    - unlimited storage space
+
+  * probing: find another available bucket to store the value
+
+    - probing sequence: the sequence of the buckets to check
+    - linear probing:
+
+      :math:`(h1(key) + C_{1} * i)) \% NUM\_BUCKETS, i = 0, 1, 2, 3 ...`
+
+    - quadratic probing:
+
+      :math:`(h1(key) + C_{1} * i + C_{2} * i^2)) \% NUM\_BUCKETS, i = 0, 1, 2, 3 ...`
+
+    - double hashing probing:
+
+      :math:`(h1(key) + i * h2(key)) \% NUM\_BUCKETS, i = 0, 1, 2, 3 ...`
+
+    - lookup/insertion/removal implementation
+
+      * each bucket keeps both key and value
+      * differentiate **empty-since-start** vs **empty-after-removal**
+
++ Applications
+
+  * hash map
+
+    - implementation of the **Map ADT**
+    - key and value are different
+    - stores key-value pairs in a hash table
+    - key is unique (no duplication)
+    - behaviors
+
+      + ``ValueType lookup(key)``
+      + ``bool remove(key)``
+      + ``bool set(key, value)``
+
+  * hash set
+
+    - implementation of the **Set ADT**
+    - key is same as value
+    - stores only keys in a hash table
+    - key is unique (no duplication)
+    - behaviors
+
+      + ``void add(value)``
+      + ``void remove(value)``
+      + ``bool exist(value)``
+      + ``void intersect(anotherSet)``
+      + ``void union(anotherSet)``
+
++ Chaining example::
+
+    class Node {
+      int key;
+      int value;
+      Node *next;
+    public:
+      Node(int key, int value);
+      int getKey() const;
+      int getValue() const;
+      void setNext(Node *next);
+      Node *getNext() const;
+    };
+
+    // HashTable
+    // chaining
+    class HashTable {
+      int capacity;
+      Node **buckets;  // 1D array of pointers to linked lists
+      int hashFunction(int key);
+    public:
+      HashTable(int capacity = 100);
+      ~HashTable();
+      void set(int key, int value);
+      bool remove(int key);
+      int lookUp(int key);
+    };
+
+
++ Open chain example::
+
+    class Bucket {
+      int key;
+      int value;
+      bool emptySinceStart;
+      bool emptySinceRemoval;
+     public:
+      Bucket();
+      void set(int key, int value);
+      void remove();
+      bool isEmptySinceStart() const;
+      bool isEmptySinceRemoval() const;
+      bool isEmpty() const;
+      int getKey() const;
+      int getValue() const;
+    };
+
+    // HashTable
+    // Linear probing
+    class HashTable {
+      int capacity;
+      Bucket *buckets;
+      int hashFunction(int key);
+      // probing algorithm
+      int probe(int hash, int probed);
+     public:
+      HashTable(int capacity = 100);
+      ~HashTable();
+      bool set(int key, int value);
+      bool remove(int key);
+      int lookUp(int key);
+    };

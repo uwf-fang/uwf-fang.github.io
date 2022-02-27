@@ -4,7 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
     <title>Hash Table in C++ &#8212; IanFang Course Note Hosting  documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
@@ -14,9 +14,12 @@
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/cpp/hash-table.html" />
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Chapter 11 Tree" href="../course/cop3530/ch11.html" />
+    <link rel="prev" title="Hashing" href="../general/hashing.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -24,7 +27,15 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../course/cop3530/ch11.html" title="Chapter 11 Tree"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../general/hashing.html" title="Hashing"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../course/cop3530/ch10.html" accesskey="U">Chapter 10 Hashing</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Hash Table in C++</a></li> 
       </ul>
     </div>  
@@ -36,6 +47,154 @@
             
   <section id="hash-table-in-c">
 <h1>Hash Table in C++<a class="headerlink" href="#hash-table-in-c" title="Permalink to this headline">¶</a></h1>
+<p>Hash table uses hashing to implement a data structure that maps a key to an
+index so the value can be stored in the corresponding location (a bucket) in a
+sequential data structure like an array.</p>
+<p>Question to think: why linked list is not a good way to store values in a hash
+table?</p>
+<ul>
+<li><p>Characteristics</p>
+<ul class="simple">
+<li><p>fast lookup/insertion/removal <span class="math notranslate nohighlight">\(O(1)\)</span></p></li>
+<li><p>redundant storage (empty buckets)</p></li>
+</ul>
+</li>
+<li><p>hash function for hash tables <span class="math notranslate nohighlight">\(h(x)\)</span></p>
+<ul class="simple">
+<li><p>any key type mapping to unsigned int (type of indices)</p></li>
+<li><p>modulo operator on any integer generating hash function</p></li>
+</ul>
+</li>
+<li><p>Collision resolution</p>
+<ul>
+<li><p>chaining: each bucket is a linked list to store multiple values (chained)</p>
+<ul class="simple">
+<li><p>unlimited storage space</p></li>
+</ul>
+</li>
+<li><p>probing: find another available bucket to store the value</p>
+<ul>
+<li><p>probing sequence: the sequence of the buckets to check</p></li>
+<li><p>linear probing:</p>
+<p><span class="math notranslate nohighlight">\((h1(key) + C_{1} * i)) \% NUM\_BUCKETS, i = 0, 1, 2, 3 ...\)</span></p>
+</li>
+<li><p>quadratic probing:</p>
+<p><span class="math notranslate nohighlight">\((h1(key) + C_{1} * i + C_{2} * i^2)) \% NUM\_BUCKETS, i = 0, 1, 2, 3 ...\)</span></p>
+</li>
+<li><p>double hashing probing:</p>
+<p><span class="math notranslate nohighlight">\((h1(key) + i * h2(key)) \% NUM\_BUCKETS, i = 0, 1, 2, 3 ...\)</span></p>
+</li>
+<li><p>lookup/insertion/removal implementation</p>
+<ul class="simple">
+<li><p>each bucket keeps both key and value</p></li>
+<li><p>differentiate <strong>empty-since-start</strong> vs <strong>empty-after-removal</strong></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Applications</p>
+<ul class="simple">
+<li><p>hash map</p>
+<ul>
+<li><p>implementation of the <strong>Map ADT</strong></p></li>
+<li><p>key and value are different</p></li>
+<li><p>stores key-value pairs in a hash table</p></li>
+<li><p>key is unique (no duplication)</p></li>
+<li><p>behaviors</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">ValueType</span> <span class="pre">lookup(key)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">remove(key)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">set(key,</span> <span class="pre">value)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>hash set</p>
+<ul>
+<li><p>implementation of the <strong>Set ADT</strong></p></li>
+<li><p>key is same as value</p></li>
+<li><p>stores only keys in a hash table</p></li>
+<li><p>key is unique (no duplication)</p></li>
+<li><p>behaviors</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">add(value)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">remove(value)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">exist(value)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">intersect(anotherSet)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">union(anotherSet)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Chaining example:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">Node</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 2</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 3</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">next</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="w">  </span><span class="n">Node</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">getKey</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">getValue</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setNext</span><span class="p">(</span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">next</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="nf">getNext</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">11</span><span class="p">};</span><span class="w"></span>
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="c1">// HashTable</span>
+<span class="linenos">14</span><span class="c1">// chaining</span>
+<span class="linenos">15</span><span class="k">class</span><span class="w"> </span><span class="nc">HashTable</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">16</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">capacity</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">17</span><span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">**</span><span class="n">buckets</span><span class="p">;</span><span class="w">  </span><span class="c1">// 1D array of pointers to linked lists</span>
+<span class="linenos">18</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">hashFunction</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">19</span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="linenos">20</span><span class="w">  </span><span class="n">HashTable</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">21</span><span class="w">  </span><span class="o">~</span><span class="n">HashTable</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">22</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">23</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">remove</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">24</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">lookUp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">25</span><span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Open chain example:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">Bucket</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 2</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 3</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">emptySinceStart</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">emptySinceRemoval</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="w">  </span><span class="n">Bucket</span><span class="p">();</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">remove</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">isEmptySinceStart</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">11</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">isEmptySinceRemoval</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">12</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">isEmpty</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">13</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">getKey</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">14</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">getValue</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">15</span><span class="p">};</span><span class="w"></span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="c1">// HashTable</span>
+<span class="linenos">18</span><span class="c1">// Linear probing</span>
+<span class="linenos">19</span><span class="k">class</span><span class="w"> </span><span class="nc">HashTable</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">20</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">capacity</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">21</span><span class="w">  </span><span class="n">Bucket</span><span class="w"> </span><span class="o">*</span><span class="n">buckets</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">22</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">hashFunction</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">23</span><span class="w">  </span><span class="c1">// probing algorithm</span>
+<span class="linenos">24</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">probe</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">hash</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">probed</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">25</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="linenos">26</span><span class="w">  </span><span class="n">HashTable</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">27</span><span class="w">  </span><span class="o">~</span><span class="n">HashTable</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">28</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">29</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">remove</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">30</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">lookUp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">31</span><span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+</ul>
 </section>
 
 
@@ -45,6 +204,16 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../general/hashing.html"
+                          title="previous chapter">Hashing</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../course/cop3530/ch11.html"
+                          title="next chapter">Chapter 11 Tree</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -72,7 +241,15 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="../course/cop3530/ch11.html" title="Chapter 11 Tree"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../general/hashing.html" title="Hashing"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../course/cop3530/ch10.html" >Chapter 10 Hashing</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Hash Table in C++</a></li> 
       </ul>
     </div>
