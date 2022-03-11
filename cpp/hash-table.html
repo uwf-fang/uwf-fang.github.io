@@ -50,31 +50,42 @@
 <p>Hash table uses hashing to implement a data structure that maps a key to an
 index so the value can be stored in the corresponding location (a bucket) in a
 sequential data structure like an array.</p>
-<p>Question to think: why linked list is not a good way to store values in a hash
+<p><strong>Quick question:</strong> why linked list is not a good way to store values in a hash
 table?</p>
-<ul>
-<li><p>Characteristics</p>
+<section id="characteristics">
+<h2>Characteristics<a class="headerlink" href="#characteristics" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>fast lookup/insertion/removal <span class="math notranslate nohighlight">\(O(1)\)</span></p></li>
-<li><p>redundant storage (empty buckets)</p></li>
+<li><p>fast lookup <span class="math notranslate nohighlight">\(O(1)\)</span></p></li>
+<li><p>redundant storage (certain ratio of empty buckets)</p>
+<ul>
+<li><p>performance degradation</p></li>
 </ul>
 </li>
-<li><p>hash function for hash tables <span class="math notranslate nohighlight">\(h(x)\)</span></p>
+</ul>
+</section>
+<section id="hash-function-for-hash-tables">
+<h2>Hash function for hash tables<a class="headerlink" href="#hash-function-for-hash-tables" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>any key type mapping to unsigned int (type of indices)</p></li>
+<li><p><span class="math notranslate nohighlight">\(h(x)\)</span></p></li>
+<li><p>any key type mapping to integer from 0 to N - 1 (indices)</p></li>
 <li><p>modulo operator on any integer generating hash function</p></li>
 </ul>
-</li>
-<li><p>Collision resolution</p>
-<ul>
-<li><p>chaining: each bucket is a linked list to store multiple values (chained)</p>
+</section>
+<section id="collision-resolution">
+<h2>Collision resolution<a class="headerlink" href="#collision-resolution" title="Permalink to this headline">¶</a></h2>
+<section id="chaining">
+<h3>Chaining<a class="headerlink" href="#chaining" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
+<li><p>each bucket is a linked list to store multiple values (chained)</p></li>
+<li><p>Nodes in the linked-list keeps key, value and next pointer</p></li>
 <li><p>unlimited storage space</p></li>
 </ul>
-</li>
-<li><p>probing: find another available bucket to store the value</p>
+</section>
+<section id="open-addressing">
+<h3>Open addressing<a class="headerlink" href="#open-addressing" title="Permalink to this headline">¶</a></h3>
 <ul>
-<li><p>probing sequence: the sequence of the buckets to check</p></li>
+<li><p>find another available bucket to store the value</p></li>
+<li><p>probing sequence: the sequence of the buckets to check when collision happens</p></li>
 <li><p>linear probing:</p>
 <p><span class="math notranslate nohighlight">\((h1(key) + C_{1} * i)) \% NUM\_BUCKETS, i = 0, 1, 2, 3 ...\)</span></p>
 </li>
@@ -91,13 +102,13 @@ table?</p>
 </ul>
 </li>
 </ul>
-</li>
-</ul>
-</li>
-<li><p>Applications</p>
+</section>
+</section>
+<section id="applications">
+<h2>Applications<a class="headerlink" href="#applications" title="Permalink to this headline">¶</a></h2>
+<section id="hash-map">
+<h3>Hash map<a class="headerlink" href="#hash-map" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p>hash map</p>
-<ul>
 <li><p>implementation of the <strong>Map ADT</strong></p></li>
 <li><p>key and value are different</p></li>
 <li><p>stores key-value pairs in a hash table</p></li>
@@ -110,9 +121,10 @@ table?</p>
 </ul>
 </li>
 </ul>
-</li>
-<li><p>hash set</p>
-<ul>
+</section>
+<section id="hash-set">
+<h3>Hash set<a class="headerlink" href="#hash-set" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
 <li><p>implementation of the <strong>Set ADT</strong></p></li>
 <li><p>key is same as value</p></li>
 <li><p>stores only keys in a hash table</p></li>
@@ -127,10 +139,10 @@ table?</p>
 </ul>
 </li>
 </ul>
-</li>
-</ul>
-</li>
-<li><p>Chaining example:</p>
+</section>
+</section>
+<section id="chaining-example">
+<h2>Chaining Example<a class="headerlink" href="#chaining-example" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">Node</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="linenos"> 2</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">;</span><span class="w"></span>
 <span class="linenos"> 3</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"></span>
@@ -158,8 +170,9 @@ table?</p>
 <span class="linenos">25</span><span class="p">};</span><span class="w"></span>
 </pre></div>
 </div>
-</li>
-<li><p>Open chain example:</p>
+</section>
+<section id="open-addressing-example">
+<h2>Open addressing example<a class="headerlink" href="#open-addressing-example" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">Bucket</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="linenos"> 2</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">;</span><span class="w"></span>
 <span class="linenos"> 3</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"></span>
@@ -193,8 +206,39 @@ table?</p>
 <span class="linenos">31</span><span class="p">};</span><span class="w"></span>
 </pre></div>
 </div>
-</li>
-</ul>
+</section>
+<section id="hash-table-glossary">
+<h2>Hash Table Glossary<a class="headerlink" href="#hash-table-glossary" title="Permalink to this headline">¶</a></h2>
+<dl class="glossary simple">
+<dt id="term-Hash-Table">Hash Table<a class="headerlink" href="#term-Hash-Table" title="Permalink to this term">¶</a></dt><dd><p>An associative data structure that models mapping from keys to values. It is
+usually implemented as an array. A hash function is employed to map the key
+to the index of the array element where the value is stored</p>
+</dd>
+<dt id="term-Key-hash-table">Key (hash table)<a class="headerlink" href="#term-Key-hash-table" title="Permalink to this term">¶</a></dt><dd><p>The input to the hash function to calculate the index of the buckets in the
+hash table</p>
+</dd>
+<dt id="term-Value-hash-table">Value (hash table)<a class="headerlink" href="#term-Value-hash-table" title="Permalink to this term">¶</a></dt><dd><p>The values stored in the buckets in tha hash table</p>
+</dd>
+<dt id="term-Collision-hash-table">Collision (hash table)<a class="headerlink" href="#term-Collision-hash-table" title="Permalink to this term">¶</a></dt><dd><p>A collision occurs when multiple key inputs result in the same index in the
+array</p>
+</dd>
+<dt id="term-Collision-resolution">Collision resolution<a class="headerlink" href="#term-Collision-resolution" title="Permalink to this term">¶</a></dt><dd><p>The approach to resolve collisions in hash tables</p>
+</dd>
+<dt id="term-Chaining">Chaining<a class="headerlink" href="#term-Chaining" title="Permalink to this term">¶</a></dt><dd><p>A collision resolution approach in which every element in an array is a
+linked-list</p>
+</dd>
+<dt id="term-Open-addressing">Open addressing<a class="headerlink" href="#term-Open-addressing" title="Permalink to this term">¶</a></dt><dd><p>A collision resolution approach in which an empty bucket elsewhere in the
+hash table is used when collision happens</p>
+</dd>
+<dt id="term-Probing">Probing<a class="headerlink" href="#term-Probing" title="Permalink to this term">¶</a></dt><dd><p>The mechanism to determine the next index of bucket to check in the open
+addressing collision resolution approach</p>
+</dd>
+<dt id="term-Hash-map">Hash map<a class="headerlink" href="#term-Hash-map" title="Permalink to this term">¶</a></dt><dd><p>An implementation of the Map ADT based on the hash table data structure</p>
+</dd>
+<dt id="term-Hash-set">Hash set<a class="headerlink" href="#term-Hash-set" title="Permalink to this term">¶</a></dt><dd><p>An implementation of the Set ADT based on the hash table data structure</p>
+</dd>
+</dl>
+</section>
 </section>
 
 
@@ -204,6 +248,30 @@ table?</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Hash Table in C++</a><ul>
+<li><a class="reference internal" href="#characteristics">Characteristics</a></li>
+<li><a class="reference internal" href="#hash-function-for-hash-tables">Hash function for hash tables</a></li>
+<li><a class="reference internal" href="#collision-resolution">Collision resolution</a><ul>
+<li><a class="reference internal" href="#chaining">Chaining</a></li>
+<li><a class="reference internal" href="#open-addressing">Open addressing</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#applications">Applications</a><ul>
+<li><a class="reference internal" href="#hash-map">Hash map</a></li>
+<li><a class="reference internal" href="#hash-set">Hash set</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#chaining-example">Chaining Example</a></li>
+<li><a class="reference internal" href="#open-addressing-example">Open addressing example</a></li>
+<li><a class="reference internal" href="#hash-table-glossary">Hash Table Glossary</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
   <div>
     <h4>Previous topic</h4>
     <p class="topless"><a href="../general/hashing.html"

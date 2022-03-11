@@ -9,74 +9,87 @@ Hash table uses hashing to implement a data structure that maps a key to an
 index so the value can be stored in the corresponding location (a bucket) in a
 sequential data structure like an array.
 
-Question to think: why linked list is not a good way to store values in a hash
+**Quick question:** why linked list is not a good way to store values in a hash
 table?
 
-+ Characteristics
+Characteristics
+===============
++ fast lookup :math:`O(1)`
++ redundant storage (certain ratio of empty buckets)
 
-  * fast lookup/insertion/removal :math:`O(1)`
-  * redundant storage (empty buckets)
+  * performance degradation
 
-+ hash function for hash tables :math:`h(x)`
+Hash function for hash tables
+=============================
++ :math:`h(x)`
++ any key type mapping to integer from 0 to N - 1 (indices)
++ modulo operator on any integer generating hash function
 
-  * any key type mapping to unsigned int (type of indices)
-  * modulo operator on any integer generating hash function
+Collision resolution
+====================
 
-+ Collision resolution
+Chaining
+--------
++ each bucket is a linked list to store multiple values (chained)
++ Nodes in the linked-list keeps key, value and next pointer
++ unlimited storage space
 
-  * chaining: each bucket is a linked list to store multiple values (chained)
+Open addressing
+---------------
++ find another available bucket to store the value
++ probing sequence: the sequence of the buckets to check when collision happens
++ linear probing:
 
-    - unlimited storage space
+  :math:`(h1(key) + C_{1} * i)) \% NUM\_BUCKETS, i = 0, 1, 2, 3 ...`
 
-  * probing: find another available bucket to store the value
++ quadratic probing:
 
-    - probing sequence: the sequence of the buckets to check
-    - linear probing:
+  :math:`(h1(key) + C_{1} * i + C_{2} * i^2)) \% NUM\_BUCKETS, i = 0, 1, 2, 3 ...`
 
-      :math:`(h1(key) + C_{1} * i)) \% NUM\_BUCKETS, i = 0, 1, 2, 3 ...`
++ double hashing probing:
 
-    - quadratic probing:
+  :math:`(h1(key) + i * h2(key)) \% NUM\_BUCKETS, i = 0, 1, 2, 3 ...`
 
-      :math:`(h1(key) + C_{1} * i + C_{2} * i^2)) \% NUM\_BUCKETS, i = 0, 1, 2, 3 ...`
++ lookup/insertion/removal implementation
 
-    - double hashing probing:
+  * each bucket keeps both key and value
+  * differentiate **empty-since-start** vs **empty-after-removal**
 
-      :math:`(h1(key) + i * h2(key)) \% NUM\_BUCKETS, i = 0, 1, 2, 3 ...`
+Applications
+============
 
-    - lookup/insertion/removal implementation
+Hash map
+--------
 
-      * each bucket keeps both key and value
-      * differentiate **empty-since-start** vs **empty-after-removal**
+- implementation of the **Map ADT**
+- key and value are different
+- stores key-value pairs in a hash table
+- key is unique (no duplication)
+- behaviors
 
-+ Applications
+  + ``ValueType lookup(key)``
+  + ``bool remove(key)``
+  + ``bool set(key, value)``
 
-  * hash map
+Hash set
+--------
 
-    - implementation of the **Map ADT**
-    - key and value are different
-    - stores key-value pairs in a hash table
-    - key is unique (no duplication)
-    - behaviors
+- implementation of the **Set ADT**
+- key is same as value
+- stores only keys in a hash table
+- key is unique (no duplication)
+- behaviors
 
-      + ``ValueType lookup(key)``
-      + ``bool remove(key)``
-      + ``bool set(key, value)``
+  + ``void add(value)``
+  + ``void remove(value)``
+  + ``bool exist(value)``
+  + ``void intersect(anotherSet)``
+  + ``void union(anotherSet)``
 
-  * hash set
+Chaining Example
+================
 
-    - implementation of the **Set ADT**
-    - key is same as value
-    - stores only keys in a hash table
-    - key is unique (no duplication)
-    - behaviors
-
-      + ``void add(value)``
-      + ``void remove(value)``
-      + ``bool exist(value)``
-      + ``void intersect(anotherSet)``
-      + ``void union(anotherSet)``
-
-+ Chaining example::
+::
 
     class Node {
       int key;
@@ -105,7 +118,10 @@ table?
     };
 
 
-+ Open chain example::
+Open addressing example
+=======================
+
+::
 
     class Bucket {
       int key;
@@ -138,3 +154,44 @@ table?
       bool remove(int key);
       int lookUp(int key);
     };
+
+Hash Table Glossary
+===================
+.. glossary::
+
+  Hash Table
+    An associative data structure that models mapping from keys to values. It is
+    usually implemented as an array. A hash function is employed to map the key
+    to the index of the array element where the value is stored
+
+  Key (hash table)
+    The input to the hash function to calculate the index of the buckets in the
+    hash table
+
+  Value (hash table)
+    The values stored in the buckets in tha hash table
+
+  Collision (hash table)
+    A collision occurs when multiple key inputs result in the same index in the
+    array
+
+  Collision resolution
+    The approach to resolve collisions in hash tables
+
+  Chaining
+    A collision resolution approach in which every element in an array is a
+    linked-list
+
+  Open addressing
+    A collision resolution approach in which an empty bucket elsewhere in the
+    hash table is used when collision happens
+
+  Probing
+    The mechanism to determine the next index of bucket to check in the open
+    addressing collision resolution approach
+
+  Hash map
+    An implementation of the Map ADT based on the hash table data structure
+
+  Hash set
+    An implementation of the Set ADT based on the hash table data structure

@@ -1,0 +1,305 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Graph &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/cpp/adt/graph.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="About" href="../../about/about.html" />
+    <link rel="prev" title="Chapter 13 Graph" href="../../course/cop3530/ch13.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../about/about.html" title="About"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../../course/cop3530/ch13.html" title="Chapter 13 Graph"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3530/ch13.html" accesskey="U">Chapter 13 Graph</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Graph</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="graph">
+<h1>Graph<a class="headerlink" href="#graph" title="Permalink to this headline">¶</a></h1>
+<p>An ADT to model complex, non-linear relationships among entities.</p>
+<section id="concepts">
+<h2>Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Vertex/Node</p>
+<ul>
+<li><p>degree</p></li>
+</ul>
+</li>
+<li><p>Edge/Arc</p>
+<ul>
+<li><p>directed</p></li>
+<li><p>undirected</p></li>
+<li><p>weighted</p></li>
+</ul>
+</li>
+<li><p>Connectivity</p>
+<ul>
+<li><p>path between two vertices</p>
+<ul>
+<li><p>length</p></li>
+</ul>
+</li>
+<li><p>distance between two vertices</p></li>
+<li><p>adjacent</p></li>
+<li><p>connected</p></li>
+<li><p>cyclic</p></li>
+<li><p>acyclic</p></li>
+</ul>
+</li>
+<li><p>Graph properties</p>
+<ul>
+<li><p>directed/undirected</p></li>
+<li><p>weighted/unweighted</p></li>
+<li><p>cyclic/acyclic</p></li>
+<li><p>connected/unconnected</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Tree - a undirected connected acyclic graph</p></li>
+<li><p>Directed acyclic graph (DAG)</p></li>
+<li><p>Complex network</p></li>
+</ul>
+</section>
+<section id="internal-representations">
+<h2>Internal Representations<a class="headerlink" href="#internal-representations" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>Adjacency list</p>
+<p>An adjacency list is a 1d array in which every element in the array represents
+a vertex and points to a list of its neighbors.</p>
+</li>
+<li><p>Adjacency matrix</p>
+<p>An adjacency matrix is a 2d array in which each row represents a source vertex
+and each column represents a destination vertex. The elements in the matrix
+represents the edge between the two vertices.</p>
+</li>
+</ul>
+<section id="complexity">
+<h3>Complexity<a class="headerlink" href="#complexity" title="Permalink to this headline">¶</a></h3>
+<p>Assume that we have a graph with <span class="math notranslate nohighlight">\(title
+titleV\)</span> vertices and <span class="math notranslate nohighlight">\(E\)</span> edges. The
+average number of neighbors is <span class="math notranslate nohighlight">\(N\)</span>. For a full graph, <span class="math notranslate nohighlight">\(N = V - 1\)</span>.
+For a sparse matrix, <span class="math notranslate nohighlight">\(N &lt;&lt; V\)</span>.</p>
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text">Adjacency list vs Adjacency Matrix</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub"></th>
+<th class="head"><p>Adjacency list</p></th>
+<th class="head"><p>Adjacency matrix</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><th class="stub"><p>Space</p></th>
+<td><p><span class="math notranslate nohighlight">\(O(V*N)\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(O(V*V)\)</span></p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>Check adjacency of two vertices</p></th>
+<td><p><span class="math notranslate nohighlight">\(O(V)\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(O(1)\)</span></p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>Find all neighbors of a vertex</p></th>
+<td><p><span class="math notranslate nohighlight">\(O(N)\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(O(V)\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="graph-traversal">
+<h2>Graph Traversal<a class="headerlink" href="#graph-traversal" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>Depth-first search (DFS)</p>
+<p>Starting from one vertex, visit all vertices along the path started from the
+starting vertex till then end of the path (no unvisited neighbors) and then
+backtrack.</p>
+<ul class="simple">
+<li><p>iterative using a stack</p></li>
+<li><p>recursive</p></li>
+</ul>
+</li>
+<li><p>Breadth-first search (BFS)</p>
+<p>Starting from one vertex, visit all other vertices in the order of the
+distances to the starting vertex.</p>
+<ul class="simple">
+<li><p>iterative using a queue</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="algorithms">
+<h2>Algorithms<a class="headerlink" href="#algorithms" title="Permalink to this headline">¶</a></h2>
+<section id="dijkstra-s-shortest-path">
+<h3>Dijkstra’s shortest path<a class="headerlink" href="#dijkstra-s-shortest-path" title="Permalink to this headline">¶</a></h3>
+<p>Find the shortest path given a source and a destination vertex. Can be solved
+using BFS. However, Dijkstra’s approach is better. See <a class="reference external" href="https://visualgo.net/en/sssp">visualization</a></p>
+<ul class="simple">
+<li><p>invented by Edsger Dijkstra</p></li>
+<li><p>employs a priority queue ADT</p></li>
+</ul>
+</section>
+</section>
+<section id="graph-glossary">
+<h2>Graph Glossary<a class="headerlink" href="#graph-glossary" title="Permalink to this headline">¶</a></h2>
+<dl class="glossary simple">
+<dt id="term-Vertex-Node-Graph">Vertex/Node (Graph)<a class="headerlink" href="#term-Vertex-Node-Graph" title="Permalink to this term">¶</a></dt><dd><p>Entities that are interconnected</p>
+</dd>
+<dt id="term-Edge-Arc-Graph">Edge/Arc (Graph)<a class="headerlink" href="#term-Edge-Arc-Graph" title="Permalink to this term">¶</a></dt><dd><p>The connection between two vertices</p>
+</dd>
+<dt id="term-Adjacency">Adjacency<a class="headerlink" href="#term-Adjacency" title="Permalink to this term">¶</a></dt><dd><p>Two vertices are adjacent if connected by an edge</p>
+</dd>
+<dt id="term-Neighbors-Graph">Neighbors (Graph)<a class="headerlink" href="#term-Neighbors-Graph" title="Permalink to this term">¶</a></dt><dd><p>All vertices that are adjacent</p>
+</dd>
+<dt id="term-Path-Graph">Path (Graph)<a class="headerlink" href="#term-Path-Graph" title="Permalink to this term">¶</a></dt><dd><p>A sequence of edges from one vertex to another</p>
+</dd>
+<dt id="term-Length-of-path-Graph">Length of path (Graph)<a class="headerlink" href="#term-Length-of-path-Graph" title="Permalink to this term">¶</a></dt><dd><p>The number of edges along a path</p>
+</dd>
+<dt id="term-Distance-Graph">Distance (Graph)<a class="headerlink" href="#term-Distance-Graph" title="Permalink to this term">¶</a></dt><dd><p>The length of the <strong>shortest</strong> path between two vertices</p>
+</dd>
+<dt id="term-Full-graph">Full graph<a class="headerlink" href="#term-Full-graph" title="Permalink to this term">¶</a></dt><dd><p>A graph in which all vertices are connected to other vertices</p>
+</dd>
+<dt id="term-Sparse-graph">Sparse graph<a class="headerlink" href="#term-Sparse-graph" title="Permalink to this term">¶</a></dt><dd><p>A graph in which the number of edge is way fewer than the number for a full graph with the same number of vertices</p>
+</dd>
+<dt id="term-Directed-graph">Directed graph<a class="headerlink" href="#term-Directed-graph" title="Permalink to this term">¶</a></dt><dd><p>A graph in which every edge has a direction from one vertex to another</p>
+</dd>
+<dt id="term-Undirected-graph">Undirected graph<a class="headerlink" href="#term-Undirected-graph" title="Permalink to this term">¶</a></dt><dd><p>A graph in which every edge is symmetric</p>
+</dd>
+<dt id="term-Cyclic-Graph">Cyclic Graph<a class="headerlink" href="#term-Cyclic-Graph" title="Permalink to this term">¶</a></dt><dd><p>A graph in which you can always find at least a path that starts and ends on
+a same vertex</p>
+</dd>
+<dt id="term-Acyclic-Graph">Acyclic Graph<a class="headerlink" href="#term-Acyclic-Graph" title="Permalink to this term">¶</a></dt><dd><p>Can not find any path that starts and ends on a same vertex</p>
+</dd>
+<dt id="term-Weighted-graph">Weighted graph<a class="headerlink" href="#term-Weighted-graph" title="Permalink to this term">¶</a></dt><dd><p>A graph in which every edge has a weight</p>
+</dd>
+<dt id="term-Depth-first-search-DFS-Graph">Depth-first search (DFS, Graph)<a class="headerlink" href="#term-Depth-first-search-DFS-Graph" title="Permalink to this term">¶</a></dt><dd><p>Starting from one vertex, visit all vertices along the path started from the
+starting vertex till then end of the path (no unvisited neighbors) and then
+backtrack.</p>
+</dd>
+<dt id="term-Breadth-first-search-BFS">Breadth-first search (BFS)<a class="headerlink" href="#term-Breadth-first-search-BFS" title="Permalink to this term">¶</a></dt><dd><p>Starting from one vertex, visit all other vertices in the order of the
+distances to the starting vertex.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Graph</a><ul>
+<li><a class="reference internal" href="#concepts">Concepts</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+<li><a class="reference internal" href="#internal-representations">Internal Representations</a><ul>
+<li><a class="reference internal" href="#complexity">Complexity</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#graph-traversal">Graph Traversal</a></li>
+<li><a class="reference internal" href="#algorithms">Algorithms</a><ul>
+<li><a class="reference internal" href="#dijkstra-s-shortest-path">Dijkstra’s shortest path</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#graph-glossary">Graph Glossary</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../../course/cop3530/ch13.html"
+                          title="previous chapter">Chapter 13 Graph</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../../about/about.html"
+                          title="next chapter">About</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/cpp/adt/graph.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../about/about.html" title="About"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../../course/cop3530/ch13.html" title="Chapter 13 Graph"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3530/ch13.html" >Chapter 13 Graph</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Graph</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

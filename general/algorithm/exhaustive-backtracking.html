@@ -1,0 +1,213 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Backtracking and Exhaustive Algorithms &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/general/algorithm/exhaustive-backtracking.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Chapter 13 Graph" href="../../course/cop3530/ch13.html" />
+    <link rel="prev" title="Heap and Heap Sort" href="../../cpp/heap.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../course/cop3530/ch13.html" title="Chapter 13 Graph"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../../cpp/heap.html" title="Heap and Heap Sort"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3530/ch12.html" accesskey="U">Chapter 12 Heap and Exhaustive Search</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Backtracking and Exhaustive Algorithms</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="backtracking-and-exhaustive-algorithms">
+<h1>Backtracking and Exhaustive Algorithms<a class="headerlink" href="#backtracking-and-exhaustive-algorithms" title="Permalink to this headline">¶</a></h1>
+<section id="backtracking">
+<h2>Backtracking<a class="headerlink" href="#backtracking" title="Permalink to this headline">¶</a></h2>
+<p>An algorithm that incrementally build candidates toward the solution and reject
+candidates as soon as it is known not to lead to a solution. It searches paths
+in a decision tree space and allows early pruning of branches. When a candidate
+is abandoned it <strong>backtracks</strong> to a prior state and search for the next
+candidate.</p>
+<ul class="simple">
+<li><p>Try one option and search further, when done/rejected, backtrack and try next
+option</p></li>
+<li><p>Iterative approach uses a stack to store states</p></li>
+<li><p>Recursive approach implicitly uses a stack (the stack frame)</p></li>
+<li><p>Variations according to the goal</p>
+<ul>
+<li><p>find one solution</p></li>
+<li><p>find all solutions</p></li>
+</ul>
+</li>
+</ul>
+<section id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Sudoku</p></li>
+<li><p>Eight queens</p></li>
+<li><p>Cross-word</p></li>
+</ul>
+</section>
+</section>
+<section id="exhaustive-algorithm">
+<h2>Exhaustive Algorithm<a class="headerlink" href="#exhaustive-algorithm" title="Permalink to this headline">¶</a></h2>
+<p>Explore all possible combinations from a set of choices and values. Sometimes
+also called recursive enumeration because it is usually implemented as recursive
+structures. It is also referred as brutal-force search.</p>
+<ul class="simple">
+<li><p>Recursive</p></li>
+<li><p>Helper function</p></li>
+<li><p>Book-keeping parameter</p></li>
+</ul>
+<section id="id1">
+<h3>Examples<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Permutation</p></li>
+<li><p>All binary numbers in a range</p></li>
+<li><p>All decimal numbers in a range</p></li>
+<li><p>Eight queens</p></li>
+</ul>
+</section>
+</section>
+<section id="comparison">
+<h2>Comparison<a class="headerlink" href="#comparison" title="Permalink to this headline">¶</a></h2>
+<table class="colwidths-given docutils align-default" id="id2">
+<caption><span class="caption-text">Backtracking vs Exhaustive</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 38%" />
+<col style="width: 38%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head stub"></th>
+<th class="head"><p>Backtracking</p></th>
+<th class="head"><p>Exhaustive</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><th class="stub"><p>Search space</p></th>
+<td><p>Generate part of the intermediate and final states</p></td>
+<td><p>Generate all intermediate and final states</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>Constraint application</p></th>
+<td><p>Reject partial solutions</p></td>
+<td><p>Validate final states</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>Run-time</p></th>
+<td><p>fast</p></td>
+<td><p>slow</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>Implementation</p></th>
+<td><p>Stack/Recursion</p></td>
+<td><p>Nested Loops/Recursion</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Backtracking and Exhaustive Algorithms</a><ul>
+<li><a class="reference internal" href="#backtracking">Backtracking</a><ul>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#exhaustive-algorithm">Exhaustive Algorithm</a><ul>
+<li><a class="reference internal" href="#id1">Examples</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#comparison">Comparison</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../../cpp/heap.html"
+                          title="previous chapter">Heap and Heap Sort</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../../course/cop3530/ch13.html"
+                          title="next chapter">Chapter 13 Graph</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/general/algorithm/exhaustive-backtracking.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../course/cop3530/ch13.html" title="Chapter 13 Graph"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../../cpp/heap.html" title="Heap and Heap Sort"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3530/ch12.html" >Chapter 12 Heap and Exhaustive Search</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Backtracking and Exhaustive Algorithms</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+    </div>
+  </body>
+</html>

@@ -5,36 +5,8 @@
 User-defined Functions
 **********************
 
-Concepts
-========
-
-.. glossary::
-
-  Function name
-    The name to a function given by the user. Same naming convention as
-    variables. You cannot use a same name for a function and a variable either.
-
-  Function Parentheses
-    A pair of parentheses must be present to differentiate a function name from
-    a variable name.
-
-  Formal parameters
-    Sometimes referred as parameters. Are the names listed in the parentheses
-    in the function definition.
-
-  Actual parameters
-    Are the rvalues provided in the parentheses of the function call.
-
-  Function declaration
-    A specification of the return type, function name and parameter types. How
-    a function can be called and what you can expect from the call.
-
-  Function definition
-    The implementation of the function. How is the work done in a function.
-
 Purpose
 =======
-
 + readability
 
   * shorter function body
@@ -50,76 +22,76 @@ Purpose
 
 Syntax
 ======
+Declaration
+-----------
+* optional but strongly recommended
+* may omit parameter names
+* default value for parameters
+* add documentation
+* call a function before its implementation (definition)
+* public function declarations
 
-+ declaration
+  - functions to be used by other cpp files
+  - prefer to put in the header
 
-  * optional but strongly recommended
-  * may omit parameter names
-  * default value for parameters
-  * add documentation
-  * call a function before its implementation (definition)
-  * public function declarations
+* private function declarations
 
-    - functions to be used by other cpp files
-    - prefer to put in the header
+  - functions to be used only in the current cpp file
+  - prefer to put in the cpp file
 
-  * private function declarations
+Definition (implementation)
+---------------------------
 
-    - functions to be used only in the current cpp file
-    - prefer to put in the cpp file
+* prefer to put in the cpp file
+* must have parameter names
+* default values are ignored
+* must align to declaration
 
-+ definition (implementation)
+Function call
+-------------
+* matching mechanism
+* parameter passing is like initialization
 
-  * prefer to put in the cpp file
-  * must have parameter names
-  * default values are ignored
-  * must align to declaration
+  - type conversion will happen
 
-+ call
+Function examples
+=================
 
-  * matching mechanism
-  * parameter passing is like initialization
+::
 
-    - type conversion will happen
+  #include <iostream>
 
-+ example
+  using namespace std;
 
-  ::
+  /**
+    * function to double a value
+    * myParam: the input value to be doubled
+    * return: a double value
+    * documentations should be above the declaration
+    */
+  // int doubleValue(int = 10);  // default value, no name
+  int doubleValue(int myParam = 10);  // default value, with name
 
-    #include <iostream>
+  int doubleValue(int param1){ // parameter name can even be different
+    return param1 * 2;
+  }
 
-    using namespace std;
+  int localFunc() {
+    cout << "This is local" << endl;
+    return 0;
+  }
 
-    /**
-      * function to double a value
-      * myParam: the input value to be doubled
-      * return: a double value
-      * documentations should be above the declaration
-      */
-    // int doubleValue(int = 10);  // default value, no name
-    int doubleValue(int myParam = 10);  // default value, with name
+  int main() {
+    // function calls
+    cout << "double_value() gives " << doubleValue() << endl;  // get 20
+    cout << "double_value(5) gives " << doubleValue(5) << endl; // get 10
 
-    int doubleValue(int param1){ // parameter name can even be different
-      return param1 * 2;
-    }
-
-    int localFunc() {
-      cout << "This is local" << endl;
-      return 0;
-    }
-
-    int main() {
-      // function calls
-      cout << "double_value() gives " << doubleValue() << endl;  // get 20
-      cout << "double_value(5) gives " << doubleValue(5) << endl; // get 10
-
-      return EXIT_SUCCESS;
-    }
+    return EXIT_SUCCESS;
+  }
 
 Scope
 =====
-
-+ The life span of an entity (variable, function, type, etc.)
++ Definition: The life span of an entity (variable, function, type, etc.)
 + local scope to a function: local variables and formal parameters
 
   * NEVER return a local variable by reference or pointer!
@@ -166,7 +138,6 @@ Scope
 
 Overloading
 ===========
-
 Same name but different parameters (type, order, number) so the function call
 can match the correct function. Because the return type and formal parameter
 names does not affect the function call, differences in return type and formal
@@ -192,7 +163,6 @@ parameter names will not be valid overloading.
 
 Function call matching
 ======================
-
 Function name overloading, default value, and implicit type conversion will all
 affect function call matching. Any ambiguous function call will cause an syntax
 error. Calls that need type conversion will not conflict with calls that do not
@@ -215,3 +185,41 @@ need conversion.
   // func2(2, 3.0); call is fine with
   void func2(int, double);
   void func2(double, double);
+
+Function Glossary
+=================
+.. glossary::
+
+  Function name
+    The name to a function given by the user. Same naming convention as
+    variables. You cannot use a same name for a function and a variable either.
+
+  Function Parentheses
+    A pair of parentheses must be present to differentiate a function name from
+    a variable name.
+
+  Formal parameters
+    Sometimes referred as parameters. Are the names listed in the parentheses
+    in the function definition.
+
+  Actual parameters
+    Are the rvalues provided in the parentheses of the function call.
+
+  Function declaration
+    A specification of the return type, function name and parameter types. How
+    a function can be called and what you can expect from the call.
+
+  Function definition
+    The implementation of the function. How is the work done in a function.
+
+  Function call
+    The syntaxes to invoke the function by providing actual parameters and
+    optionally receive the returned value
+
+  Scope
+    The lifespan of names of entities in C++(variables, functions, types, etc.)
+    The C++ language has a block-based scope
+
+  Function name overloading
+    The mechanism that allows multiple declarations using a same function name but different parameter list. Also applies to methods
+
