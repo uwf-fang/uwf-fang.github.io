@@ -23,7 +23,7 @@ C++ std::vector
 + A C++ implementation of the Vector ADT
 + A STL container
 + ``#include <vector>``
-+ vector is a class template, not a type! vector<int> is a class type
++ vector is a class template, not a type! ``vector<int>`` is a class type
 + Based on a dynamic array internally
 
   * fast access by indexing
@@ -34,18 +34,23 @@ C++ std::vector
     - duplicate/move all elements from existing array
     - delete the existing array
 
-+ Variable length
++ Variable length allowed
 + Out-of-boundary check with ``.at(n)`` method
-+ automatic memory management
-
++ automatic memory re-allocation
 + Methods
 
   * Constructors
 
-    - default -> empty vector
-    - ``(n)`` -> vector of size n, default values
-    - ``(n, v)`` -> vector of size n, fill values as v
-    - ``(aVectorOfSameType)`` -> copy another vector, must be same base type
+    - default:  empty vector
+    - ``(n)``:  vector of size n, default values
+    - ``(n, v)``:  vector of size n, fill values as v
+    - ``(aVectorOfSameType)``:  copy another vector, must be same base type
+    - ``{item1, item2, ...}``:  fill items from index 0
+
+  * Operator =
+
+    - ``v1 = {1, 2, 3}``: initializer_list assignment
+    - ``v1 = v2``: duplication assignment
 
   * ``at()``
 
@@ -81,25 +86,26 @@ C++ std::vector
 
 Initialization
 --------------
+When the braces are used, the initialization will use the values as items. Must
+use parentheses when triggering other constructors.
 
-* `vector<int> v{1, 2, 3, 4, 5}` size 5 vector with values
-* `vector<int> v = {1, 2, 3, 4, 5}` size 5 vector with values
-* `vector<int> v(5)` size 5 vector with 0s
-* `vector<int> v(5, 1)` size 5 vector with 1s
-* `vector<int> v1(v)` make a copy of v
+* ``vector<int> v{1, 2, 3, 4, 5}`` size 5 vector with values
+* ``vector<int> v = {1, 2, 3, 4, 5}`` size 5 vector with values
+* ``vector<int> v(5)`` size 5 vector with 0s, ``v{5}`` will make a size 1 vector
+* ``vector<int> v(5, 1)`` size 5 vector with 1s, ``v{5, 1}`` will make a size 2
+  vector
+* ``vector<int> v1(v)`` make a copy of v
 
 .. vector-pitfalls:
 
 Pitfalls
 --------
-
-* use []
+* use [] rather than at()
 * ``int a = v.pop_back();`` should be ``int a = v.back(); v.pop_back()``
-* ``for (int i = 0; i < v.size(); i++)`` this works but better to put the size
-  in a variable before this for loop to avoid calling the .size() n times.
-* ``cout << v.length();`` there is no length() method
-
-  - a string object has both .size() and .length()
-
+* ``cout << v.length();`` Wrong! There is no length() method
 * ``if (v.size() == 0)`` this works but better use ``if (v.empty())``
 
+Extended Readings
+-----------------
+* Use ``.emplace_back()`` with object vector
+* Use for each loop with vectors
