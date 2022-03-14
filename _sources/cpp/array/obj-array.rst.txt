@@ -1,79 +1,135 @@
 .. highlight:: c++
   :linenothreshold: 5
 
+************
 Object Array
-============
+************
+
+Motivation
+==========
+Array of objects is an efficient method to model a list of records. Compared to
+other alternative methods to model multiple records, object array excels in many
+aspects.
+
+Example: 1D Array of Objects
+============================
 
 When modeling a list of ``N`` records with ``M`` fields (a ``N * M`` 2D table),
 there are several data structures to choose from:
 
+Multiple arrays
+---------------
 
-#. Multiple arrays
++ store data in ``M`` arrays, each with size ``N``, same index means same
+  record
 
-   + store data in ``M`` arrays, each with size ``N``, same index means same
-     record
+  E.g. grades[i] and names[i] refers to the grade and name of a same student
 
-     E.g. grades[i] and names[i] refers to the grade and name of a same student
+  ::
 
-     ::
+    const int NUM_STUDENT = 100; // max number of students
+    double grades[NUM_STUDENT];
+    string names[NUM_STUDENT];
 
-       const int NUM_STUDENT = 100; // max number of students
-       double grades[NUM_STUDENT];
-       string names[NUM_STUDENT];
+    names[4] = "John Smith";
+    grades[4] = 100;
+    cout << "The 5th student in the list " << names[4];
+    cout << " has a grade of " << grades[4];
 
-       names[4] = "John Smith";
-       grades[4] = 100;
-       cout << "The 5th student in the list " << names[4];
-       cout << " has a grade of " << grades[4];
++ old-fashion approach inherited from the C language
 
-   + old-fashion approach inherited from C language
+Array of objects
+----------------
++ Pre-allocate ``N`` objects
++ Each object has ``M`` fields
++ To update the fields of the object after the initial allocation of empty
+  objects
 
-#. Array of objects (instance of a class or a struct)
+  #. use assignment or setters::
 
-   + Better than the multiple array approach
-   + Pre-allocate ``N`` objects
-   + Each object has ``M`` fields
+      Student student[40];
 
-   ::
+      // if name and grade fields are public
+      students[4].name = "John Smith";
+      students[4].grade = 100;
 
-     // struct example
-     struct Student {
-       double grade;
-       string name;
-     };
+      // if name and grade fields are accessible only through setters
+      students[4].setName("John Smith");
+      students[4].setGrade(100);
 
-     Student students[NUM_STUDENT];
-     students[4].name = "John Smith";
-     students[4].grade = 100;
-     cout << "The 5th student in the list " << students[4].name;
-     cout << " has a grade of " << students[4].grade;
+  #. assign temporary object::
 
-     // class example
-     class Student1 {
-       double grade;
-       string name;
-     public:
-       Student1(): name(""), grade(0) {}
-       Student1(string name, double grade): name(name), grade(grade) {}
-       string getName() { return name;}
-       double getGrade() { return grade;}
-     };
+      Student student[40];
+      students[2] = Student("John Smith", 100);
 
-     Student1 students1[NUM_STUDENT];  // default constructor called 100 times
-     students1[4] = Student1("John Smith", 100);  // temporary object assignment
-     cout << "The 5th student in the list " << students1[4].getName() << " has a grade of " << students1[4].getGrade();
++ Local array example::
 
-#. Array of pointers to objects
+    // struct example
+    struct Student {
+      double grade;
+      string name;
+    };
 
-   + Pre-allocate ``N`` pointers
-   + Efficient when the array is partially filled
-   + Complex syntax
+    Student students[NUM_STUDENT];
+    students[4].name = "John Smith";
+    students[4].grade = 100;
+    cout << "The 5th student in the list " << students[4].name;
+    cout << " has a grade of " << students[4].grade;
 
-   ::
+    // class example
+    class Student1 {
+      double grade;
+      string name;
+    public:
+      Student1(): name(""), grade(0) {}
+      Student1(string name, double grade): name(name), grade(grade) {}
+      string getName() { return name;}
+      double getGrade() { return grade;}
+    };
 
-     Student1 *students2[NUM_STUDENT];  // 100 pointers
-     for (int i = 0; i < NUM_STUDENT; i++)
-       students2[i] = nullptr;
-     students[4] = new Student1("John Smith", 100);
-     cout << "The 5th student in the list " << students2[4]->getName();
-     cout << " has a grade of " << students2[4]->getGrade();
+    Student1 students1[NUM_STUDENT];  // default constructor called 100 times
+    students1[4] = Student1("John Smith", 100);  // temporary object assignment
+    cout << "The 5th student in the list " << students1[4].getName() << " has a grade of " << students1[4].getGrade();
+
++ Dynamic array example::
+
+    Student1 *students2;
+    students2 = new Student1[NUM_STUDENT];
+    students1[4] = Student1("John Smith", 100);  // temporary object assignment
+    cout << "The 5th student in the list " << students1[4].getName() << " has a grade of " << students1[4].getGrade();
+    delete [] students2;
+
+
+Array of pointers to objects
+============================
++ Pre-allocate ``N`` pointers
++ Use ``new`` operator to allocate objects as needed
++ Each object has ``M`` fields
++ Complex syntax than array of objects
++ Local array example::
+
+    Student1 *students3[NUM_STUDENT];  // 100 pointers
+    for (int i = 0; i < NUM_STUDENT; i++)
+      students3[i] = nullptr;
+    students3[4] = new Student1("John Smith", 100);
+    cout << "The 5th student in the list " << students3[4]->getName();
+    cout << " has a grade of " << students3[4]->getGrade();
+
+    // release memory
+    for (int i = 0; i < NUM_STUDENT; i++)
+      if (students3[i] != nullptr) delete students3[i];  // delete objects, no []
+
++ Dynamic array example::
+
+    Student1 **students4;  // do not confuse with 2D array of objects
+    students4 = new Student1 *[NUM_STUDENT];  // 100 pointers
+    for (int i = 0; i < NUM_STUDENT; i++)
+      students4[i] = nullptr;
+    students4[4] = new Student1("John Smith", 100);
+    cout << "The 5th student in the list " << students4[4]->getName();
+    cout << " has a grade of " << students4[4]->getGrade();
+
+    // release memory
+    for (int i = 0; i < NUM_STUDENT; i++)
+      if (students4[i] != nullptr) delete students4[i];  // delete objects, no []
+    delete [] students4;

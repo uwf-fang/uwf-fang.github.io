@@ -5,13 +5,35 @@
 Memory Management in Classes
 ****************************
 
+Implicitly-declared Methods
+===========================
+Some methods can be used without explicit declarations. They are usually methods
+that are essential to the object including the default constructor, destructor,
+copy constructor, copy assignment operator overloading, etc.
+
++ Default constructor
+
+  * available to be used without explicit declaration when no constructor is
+    present
+  * must declare and define explicitly if any other constructor is present
+  * use ``MyClass::MyClass()=default;`` if the default behavior is needed
+
++ Destructor
++ Copy constructor
++ Copy assignment operator overloading
+
+.. note::
+
+  Any implicitly-declared method can only handle non-dynamic instance variables.
+  They must be explicitly declared and defined when they are triggered in
+  objects containing dynamic data.
+
 Dynamic data in class
 =====================
-
 + pointer-typed instance variables
 
   * holding a single value or an array
-  * allocated using ``new`` or passed in as parameters
+  * allocated using ``new``
 
 + Potential memory problems
 
@@ -25,13 +47,13 @@ Dynamic data in class
     - only the memory address are copied by default constructor/assignment
     - bad or no copy constructor
     - bad or no copy assignment operator overload
-    - **may not be a problem if objects are never copied or copy assigned**
+    - **only happens when objects are copied or copy assigned**
     - will consequently cause the destructor to ``delete`` a same memory
       block in heap multiple times
 
 + Rule of three
 
-  * The **big three** methods needed for classes with dynamic data.
+  * The **big three** methods needed for classes with dynamic data
   * destructor
 
     - **mandatory** because it will always be triggered
@@ -64,7 +86,9 @@ Dynamic data in class
     - perform deep copy
     - ``return *this;``
 
-  * you may omit the last two if they are never triggered
+  .. note::
+
+    Even in classes with dynamic data, the implementation of the big three is not always mandatory. Only the destructor will always be triggered. Thus, **the copy constructor and the copy assignment operator overloading implementations can be omitted** if they are never triggered.
 
 ::
 
@@ -152,7 +176,6 @@ Dynamic data in class
 
 Ownership of Dynamic Data
 =========================
-
 A dynamic data can be created and passed. As the ownership changed. The last
 owner should take the responsibility to release the memory.
 

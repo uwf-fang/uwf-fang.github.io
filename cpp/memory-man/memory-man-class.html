@@ -46,17 +46,42 @@
             
   <section id="memory-management-in-classes">
 <h1>Memory Management in Classes<a class="headerlink" href="#memory-management-in-classes" title="Permalink to this headline">¶</a></h1>
+<section id="implicitly-declared-methods">
+<h2>Implicitly-declared Methods<a class="headerlink" href="#implicitly-declared-methods" title="Permalink to this headline">¶</a></h2>
+<p>Some methods can be used without explicit declarations. They are usually methods
+that are essential to the object including the default constructor, destructor,
+copy constructor, copy assignment operator overloading, etc.</p>
+<ul class="simple">
+<li><p>Default constructor</p>
+<ul>
+<li><p>available to be used without explicit declaration when no constructor is
+present</p></li>
+<li><p>must declare and define explicitly if any other constructor is present</p></li>
+<li><p>use <code class="docutils literal notranslate"><span class="pre">MyClass::MyClass()=default;</span></code> if the default behavior is needed</p></li>
+</ul>
+</li>
+<li><p>Destructor</p></li>
+<li><p>Copy constructor</p></li>
+<li><p>Copy assignment operator overloading</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Any implicitly-declared method can only handle non-dynamic instance variables.
+They must be explicitly declared and defined when they are triggered in
+objects containing dynamic data.</p>
+</div>
+</section>
 <section id="dynamic-data-in-class">
 <h2>Dynamic data in class<a class="headerlink" href="#dynamic-data-in-class" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>pointer-typed instance variables</p>
 <ul>
+<li><p>pointer-typed instance variables</p>
+<ul class="simple">
 <li><p>holding a single value or an array</p></li>
-<li><p>allocated using <code class="docutils literal notranslate"><span class="pre">new</span></code> or passed in as parameters</p></li>
+<li><p>allocated using <code class="docutils literal notranslate"><span class="pre">new</span></code></p></li>
 </ul>
 </li>
 <li><p>Potential memory problems</p>
-<ul>
+<ul class="simple">
 <li><p>memory leak - fail to <code class="docutils literal notranslate"><span class="pre">delete</span></code></p>
 <ul>
 <li><p>bad or no destructor</p></li>
@@ -68,7 +93,7 @@
 <li><p>only the memory address are copied by default constructor/assignment</p></li>
 <li><p>bad or no copy constructor</p></li>
 <li><p>bad or no copy assignment operator overload</p></li>
-<li><p><strong>may not be a problem if objects are never copied or copy assigned</strong></p></li>
+<li><p><strong>only happens when objects are copied or copy assigned</strong></p></li>
 <li><p>will consequently cause the destructor to <code class="docutils literal notranslate"><span class="pre">delete</span></code> a same memory
 block in heap multiple times</p></li>
 </ul>
@@ -76,8 +101,8 @@ block in heap multiple times</p></li>
 </ul>
 </li>
 <li><p>Rule of three</p>
-<ul>
-<li><p>The <strong>big three</strong> methods needed for classes with dynamic data.</p></li>
+<ul class="simple">
+<li><p>The <strong>big three</strong> methods needed for classes with dynamic data</p></li>
 <li><p>destructor</p>
 <ul>
 <li><p><strong>mandatory</strong> because it will always be triggered</p></li>
@@ -116,8 +141,11 @@ block in heap multiple times</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">*this;</span></code></p></li>
 </ul>
 </li>
-<li><p>you may omit the last two if they are never triggered</p></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Even in classes with dynamic data, the implementation of the big three is not always mandatory. Only the destructor will always be triggered. Thus, <strong>the copy constructor and the copy assignment operator overloading implementations can be omitted</strong> if they are never triggered.</p>
+</div>
 </li>
 </ul>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
@@ -346,6 +374,7 @@ data. Sometimes the dynamic data is shared.</p>
     <h3><a href="../../index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">Memory Management in Classes</a><ul>
+<li><a class="reference internal" href="#implicitly-declared-methods">Implicitly-declared Methods</a></li>
 <li><a class="reference internal" href="#dynamic-data-in-class">Dynamic data in class</a></li>
 <li><a class="reference internal" href="#ownership-of-dynamic-data">Ownership of Dynamic Data</a></li>
 </ul>

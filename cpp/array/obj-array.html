@@ -46,10 +46,18 @@
             
   <section id="object-array">
 <h1>Object Array<a class="headerlink" href="#object-array" title="Permalink to this headline">¶</a></h1>
+<section id="motivation">
+<h2>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">¶</a></h2>
+<p>Array of objects is an efficient method to model a list of records. Compared to
+other alternative methods to model multiple records, object array excels in many
+aspects.</p>
+</section>
+<section id="example-1d-array-of-objects">
+<h2>Example: 1D Array of Objects<a class="headerlink" href="#example-1d-array-of-objects" title="Permalink to this headline">¶</a></h2>
 <p>When modeling a list of <code class="docutils literal notranslate"><span class="pre">N</span></code> records with <code class="docutils literal notranslate"><span class="pre">M</span></code> fields (a <code class="docutils literal notranslate"><span class="pre">N</span> <span class="pre">*</span> <span class="pre">M</span></code> 2D table),
 there are several data structures to choose from:</p>
-<ol class="arabic">
-<li><p>Multiple arrays</p>
+<section id="multiple-arrays">
+<h3>Multiple arrays<a class="headerlink" href="#multiple-arrays" title="Permalink to this headline">¶</a></h3>
 <ul>
 <li><p>store data in <code class="docutils literal notranslate"><span class="pre">M</span></code> arrays, each with size <code class="docutils literal notranslate"><span class="pre">N</span></code>, same index means same
 record</p>
@@ -65,15 +73,39 @@ record</p>
 </pre></div>
 </div>
 </li>
-<li><p>old-fashion approach inherited from C language</p></li>
+<li><p>old-fashion approach inherited from the C language</p></li>
 </ul>
-</li>
-<li><p>Array of objects (instance of a class or a struct)</p>
-<ul class="simple">
-<li><p>Better than the multiple array approach</p></li>
+</section>
+<section id="array-of-objects">
+<h3>Array of objects<a class="headerlink" href="#array-of-objects" title="Permalink to this headline">¶</a></h3>
+<ul>
 <li><p>Pre-allocate <code class="docutils literal notranslate"><span class="pre">N</span></code> objects</p></li>
 <li><p>Each object has <code class="docutils literal notranslate"><span class="pre">M</span></code> fields</p></li>
-</ul>
+<li><p>To update the fields of the object after the initial allocation of empty
+objects</p>
+<ol class="arabic">
+<li><p>use assignment or setters:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">Student</span><span class="w"> </span><span class="n">student</span><span class="p">[</span><span class="mi">40</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="c1">// if name and grade fields are public</span>
+<span class="linenos">4</span><span class="n">students</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;John Smith&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">5</span><span class="n">students</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="n">grade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">6</span>
+<span class="linenos">7</span><span class="c1">// if name and grade fields are accessible only through setters</span>
+<span class="linenos">8</span><span class="n">students</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="n">setName</span><span class="p">(</span><span class="s">&quot;John Smith&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">9</span><span class="n">students</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="n">setGrade</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>assign temporary object:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Student</span><span class="w"> </span><span class="n">student</span><span class="p">[</span><span class="mi">40</span><span class="p">];</span><span class="w"></span>
+<span class="n">students</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Student</span><span class="p">(</span><span class="s">&quot;John Smith&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+<li><p>Local array example:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// struct example</span>
 <span class="linenos"> 2</span><span class="k">struct</span><span class="w"> </span><span class="nc">Student</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="linenos"> 3</span><span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="n">grade</span><span class="p">;</span><span class="w"></span>
@@ -103,22 +135,57 @@ record</p>
 </pre></div>
 </div>
 </li>
-<li><p>Array of pointers to objects</p>
-<ul class="simple">
-<li><p>Pre-allocate <code class="docutils literal notranslate"><span class="pre">N</span></code> pointers</p></li>
-<li><p>Efficient when the array is partially filled</p></li>
-<li><p>Complex syntax</p></li>
-</ul>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">Student1</span><span class="w"> </span><span class="o">*</span><span class="n">students2</span><span class="p">[</span><span class="n">NUM_STUDENT</span><span class="p">];</span><span class="w">  </span><span class="c1">// 100 pointers</span>
-<span class="linenos">2</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NUM_STUDENT</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">3</span><span class="w">  </span><span class="n">students2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">4</span><span class="n">students</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Student1</span><span class="p">(</span><span class="s">&quot;John Smith&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">5</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;The 5th student in the list &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">students2</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">getName</span><span class="p">();</span><span class="w"></span>
-<span class="linenos">6</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; has a grade of &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">students2</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">getGrade</span><span class="p">();</span><span class="w"></span>
+<li><p>Dynamic array example:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">Student1</span><span class="w"> </span><span class="o">*</span><span class="n">students2</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">2</span><span class="n">students2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Student1</span><span class="p">[</span><span class="n">NUM_STUDENT</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">3</span><span class="n">students1</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Student1</span><span class="p">(</span><span class="s">&quot;John Smith&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span><span class="w">  </span><span class="c1">// temporary object assignment</span>
+<span class="linenos">4</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;The 5th student in the list &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">students1</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="n">getName</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; has a grade of &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">students1</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="n">getGrade</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">5</span><span class="k">delete</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="n">students2</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 </li>
-</ol>
+</ul>
+</section>
+</section>
+<section id="array-of-pointers-to-objects">
+<h2>Array of pointers to objects<a class="headerlink" href="#array-of-pointers-to-objects" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>Pre-allocate <code class="docutils literal notranslate"><span class="pre">N</span></code> pointers</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">new</span></code> operator to allocate objects as needed</p></li>
+<li><p>Each object has <code class="docutils literal notranslate"><span class="pre">M</span></code> fields</p></li>
+<li><p>Complex syntax than array of objects</p></li>
+<li><p>Local array example:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">Student1</span><span class="w"> </span><span class="o">*</span><span class="n">students3</span><span class="p">[</span><span class="n">NUM_STUDENT</span><span class="p">];</span><span class="w">  </span><span class="c1">// 100 pointers</span>
+<span class="linenos"> 2</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NUM_STUDENT</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="linenos"> 3</span><span class="w">  </span><span class="n">students3</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="n">students3</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Student1</span><span class="p">(</span><span class="s">&quot;John Smith&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;The 5th student in the list &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">students3</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">getName</span><span class="p">();</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; has a grade of &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">students3</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">getGrade</span><span class="p">();</span><span class="w"></span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1">// release memory</span>
+<span class="linenos"> 9</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NUM_STUDENT</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">students3</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)</span><span class="w"> </span><span class="k">delete</span><span class="w"> </span><span class="n">students3</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w">  </span><span class="c1">// delete objects, no []</span>
+</pre></div>
+</div>
+</li>
+<li><p>Dynamic array example:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">Student1</span><span class="w"> </span><span class="o">**</span><span class="n">students4</span><span class="p">;</span><span class="w">  </span><span class="c1">// do not confuse with 2D array of objects</span>
+<span class="linenos"> 2</span><span class="n">students4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Student1</span><span class="w"> </span><span class="o">*</span><span class="p">[</span><span class="n">NUM_STUDENT</span><span class="p">];</span><span class="w">  </span><span class="c1">// 100 pointers</span>
+<span class="linenos"> 3</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NUM_STUDENT</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="w">  </span><span class="n">students4</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="n">students4</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Student1</span><span class="p">(</span><span class="s">&quot;John Smith&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;The 5th student in the list &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">students4</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">getName</span><span class="p">();</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; has a grade of &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">students4</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">getGrade</span><span class="p">();</span><span class="w"></span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="c1">// release memory</span>
+<span class="linenos">10</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NUM_STUDENT</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">11</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">students4</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)</span><span class="w"> </span><span class="k">delete</span><span class="w"> </span><span class="n">students4</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w">  </span><span class="c1">// delete objects, no []</span>
+<span class="linenos">12</span><span class="k">delete</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="n">students4</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
 </section>
 
 
@@ -128,6 +195,22 @@ record</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Object Array</a><ul>
+<li><a class="reference internal" href="#motivation">Motivation</a></li>
+<li><a class="reference internal" href="#example-1d-array-of-objects">Example: 1D Array of Objects</a><ul>
+<li><a class="reference internal" href="#multiple-arrays">Multiple arrays</a></li>
+<li><a class="reference internal" href="#array-of-objects">Array of objects</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#array-of-pointers-to-objects">Array of pointers to objects</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
   <div>
     <h4>Previous topic</h4>
     <p class="topless"><a href="multidim-array.html"
