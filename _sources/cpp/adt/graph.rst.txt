@@ -38,9 +38,47 @@ Concepts
 
 Examples
 ========
-+ Tree - a undirected connected acyclic graph
-+ Directed acyclic graph (DAG)
-+ Complex network
+.. graphviz::
+  :caption: Directed connected cyclic graph
+
+  digraph G {
+    node[shape=circle]
+    a -> {b, c, d}
+    b -> {a, d}
+  }
+
+.. graphviz::
+  :caption: Undirected connected cyclic weighted graph
+
+  graph G {
+    node[shape=circle]
+    Atlanta -- Dallas [label=4]
+    Atlanta -- Miami [label=4]
+    Atlanta -- Orlando [label=3]
+    Dallas -- Austin [label=1]
+    Dallas -- Orlando [label=6]
+  }
+
+.. graphviz::
+  :caption: Undirected connected acyclic graph (Tree)
+
+  graph G {
+    node[shape=circle]
+    b -- a
+    a -- {c, d}
+    b -- {e, f}
+  }
+
+.. graphviz::
+  :caption: Directed acyclic graph (DAG) task planning
+
+  digraph G {
+    rankdir=LR;
+    node[shape=box];
+    task1 -> task2;
+    task2 -> {task3, task4};
+    task3 -> {task5, task6};
+  }
 
 Internal Representations
 ========================
