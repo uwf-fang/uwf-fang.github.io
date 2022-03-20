@@ -1,6 +1,13 @@
+.. highlight:: c++
+  :linenothreshold: 5
 
+
+**********************
 Multidimensional Array
-======================
+**********************
+
+General Concepts
+================
 + Multidimensional arrays - arrays of arrays
 
   .. code-block:: c++
@@ -11,6 +18,42 @@ Multidimensional Array
     int **a3;  // pointer of pointer to int, used for 2D dynamic array
     int ***a4;  // pointer of pointer of pointer to int, used for 3D dynamic array
 
+.. graphviz::
+
+  digraph G {
+    nodesep=.05;
+    rankdir=LR;
+    matrix[shape=box];
+    node[shape=record,width=0.1,height=0.1];
+    first[label="<f0>|<f1>|<f2>|<f3>|<f4>|<f5>|<f6>|<f7>|<f8>|<f9>"];
+    matrix -> first:f0;
+
+    sec0[label="{<s0>||||||||}"];
+    sec1[label="{<s0>||||||||}"];
+    sec2[label="{<s0>||||||||}"];
+    sec3[label="{<s0>||||||||}"];
+    sec4[label="{<s0>||||||||}"];
+    sec5[label="{<s0>||||||||}"];
+    sec6[label="{<s0>||||||||}"];
+    sec7[label="{<s0>||||||||}"];
+    sec8[label="{<s0>||||||||}"];
+    sec9[label="{<s0>||||||||}"];
+
+    first:f0 -> sec0:s0;
+    first:f1 -> sec1:s0;
+    first:f2 -> sec2:s0;
+    first:f3 -> sec3:s0;
+    first:f4 -> sec4:s0;
+    first:f5 -> sec5:s0;
+    first:f6 -> sec6:s0;
+    first:f7 -> sec7:s0;
+    first:f8 -> sec8:s0;
+    first:f9 -> sec9:s0;
+  }
+
+
+Two dimensional array
+=====================
 + 2d local array
 
   Example: a local array a1 with 2 rows, 3 columns
@@ -95,4 +138,32 @@ Multidimensional Array
 
 + Returning a Multidimensional array from a function
 
-  Just make dynamic array and return the pointer.
+  Just make dynamic array and return the pointer::
+
+    int **createMatrix(int rows, int cols, int value);
+
+    int **createMatrix(int rows, int cols, int value) {
+      int **result;
+      result = new int *[rows];
+      for (int i = 0; i < rows; i++) {
+        result[i] = new int[cols];
+        for (int j = 0; j < cols; j++)
+          result[i][j] = value;
+      }
+      return result;
+    }
+
+    int main() {
+      int **matrix = createMatrix(3, 5, 1);
+
+      // work on the matrix
+
+      // release memory
+      for (int i = 0; i < rows; i++)
+        delete [] matrix[i];
+      delete [] matrix;
+    }
+
+.. warning::
+
+  Never forget to delete dynamic array(s)!

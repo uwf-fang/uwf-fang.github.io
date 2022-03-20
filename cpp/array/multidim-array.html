@@ -46,16 +46,53 @@
             
   <section id="multidimensional-array">
 <h1>Multidimensional Array<a class="headerlink" href="#multidimensional-array" title="Permalink to this headline">¶</a></h1>
+<section id="general-concepts">
+<h2>General Concepts<a class="headerlink" href="#general-concepts" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p>Multidimensional arrays - arrays of arrays</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span><span class="w">  </span><span class="c1">// 1d local array</span>
-<span class="kt">int</span><span class="w"> </span><span class="n">a1</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">];</span><span class="w">  </span><span class="c1">// 2d local array</span>
-<span class="kt">int</span><span class="w"> </span><span class="n">a2</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">][</span><span class="mi">4</span><span class="p">];</span><span class="w">  </span><span class="c1">// 3d local array</span>
-<span class="kt">int</span><span class="w"> </span><span class="o">**</span><span class="n">a3</span><span class="p">;</span><span class="w">  </span><span class="c1">// pointer of pointer to int, used for 2D dynamic array</span>
-<span class="kt">int</span><span class="w"> </span><span class="o">***</span><span class="n">a4</span><span class="p">;</span><span class="w">  </span><span class="c1">// pointer of pointer of pointer to int, used for 3D dynamic array</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span><span class="w">  </span><span class="c1">// 1d local array</span>
+<span class="linenos">2</span><span class="kt">int</span><span class="w"> </span><span class="n">a1</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">];</span><span class="w">  </span><span class="c1">// 2d local array</span>
+<span class="linenos">3</span><span class="kt">int</span><span class="w"> </span><span class="n">a2</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">][</span><span class="mi">4</span><span class="p">];</span><span class="w">  </span><span class="c1">// 3d local array</span>
+<span class="linenos">4</span><span class="kt">int</span><span class="w"> </span><span class="o">**</span><span class="n">a3</span><span class="p">;</span><span class="w">  </span><span class="c1">// pointer of pointer to int, used for 2D dynamic array</span>
+<span class="linenos">5</span><span class="kt">int</span><span class="w"> </span><span class="o">***</span><span class="n">a4</span><span class="p">;</span><span class="w">  </span><span class="c1">// pointer of pointer of pointer to int, used for 3D dynamic array</span>
 </pre></div>
 </div>
 </li>
+</ul>
+<div class="graphviz"><img src="../../_images/graphviz-08c440578f58b5fb1b8dd8263807fe5e44f0a813.png" alt="digraph G {
+  nodesep=.05;
+  rankdir=LR;
+  matrix[shape=box];
+  node[shape=record,width=0.1,height=0.1];
+  first[label=&quot;&lt;f0&gt;|&lt;f1&gt;|&lt;f2&gt;|&lt;f3&gt;|&lt;f4&gt;|&lt;f5&gt;|&lt;f6&gt;|&lt;f7&gt;|&lt;f8&gt;|&lt;f9&gt;&quot;];
+  matrix -&gt; first:f0;
+
+  sec0[label=&quot;{&lt;s0&gt;||||||||}&quot;];
+  sec1[label=&quot;{&lt;s0&gt;||||||||}&quot;];
+  sec2[label=&quot;{&lt;s0&gt;||||||||}&quot;];
+  sec3[label=&quot;{&lt;s0&gt;||||||||}&quot;];
+  sec4[label=&quot;{&lt;s0&gt;||||||||}&quot;];
+  sec5[label=&quot;{&lt;s0&gt;||||||||}&quot;];
+  sec6[label=&quot;{&lt;s0&gt;||||||||}&quot;];
+  sec7[label=&quot;{&lt;s0&gt;||||||||}&quot;];
+  sec8[label=&quot;{&lt;s0&gt;||||||||}&quot;];
+  sec9[label=&quot;{&lt;s0&gt;||||||||}&quot;];
+
+  first:f0 -&gt; sec0:s0;
+  first:f1 -&gt; sec1:s0;
+  first:f2 -&gt; sec2:s0;
+  first:f3 -&gt; sec3:s0;
+  first:f4 -&gt; sec4:s0;
+  first:f5 -&gt; sec5:s0;
+  first:f6 -&gt; sec6:s0;
+  first:f7 -&gt; sec7:s0;
+  first:f8 -&gt; sec8:s0;
+  first:f9 -&gt; sec9:s0;
+}" class="graphviz" /></div>
+</section>
+<section id="two-dimensional-array">
+<h2>Two dimensional array<a class="headerlink" href="#two-dimensional-array" title="Permalink to this headline">¶</a></h2>
+<ul>
 <li><p>2d local array</p>
 <p>Example: a local array a1 with 2 rows, 3 columns</p>
 <ul>
@@ -64,11 +101,11 @@
 <li><p>a1 is an array of 2 element, and each element is an array of 3 int</p></li>
 <li><p>memory allocated on <strong>stack</strong> memory region</p></li>
 <li><p>initialization syntax</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// initialization of 2d array</span>
-<span class="c1">// a1[0] is {1, 2, 3}, a1[1] is {4, 5, 6}</span>
-<span class="kt">int</span><span class="w"> </span><span class="n">a1</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">}};</span><span class="w"></span>
-<span class="kt">int</span><span class="w"> </span><span class="n">a2</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">};</span><span class="w"></span>
-<span class="kt">int</span><span class="w"> </span><span class="n">a3</span><span class="p">[][</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">};</span><span class="w">  </span><span class="c1">// first dimension can be inferred</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1">// initialization of 2d array</span>
+<span class="linenos">2</span><span class="c1">// a1[0] is {1, 2, 3}, a1[1] is {4, 5, 6}</span>
+<span class="linenos">3</span><span class="kt">int</span><span class="w"> </span><span class="n">a1</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">}};</span><span class="w"></span>
+<span class="linenos">4</span><span class="kt">int</span><span class="w"> </span><span class="n">a2</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">};</span><span class="w"></span>
+<span class="linenos">5</span><span class="kt">int</span><span class="w"> </span><span class="n">a3</span><span class="p">[][</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">};</span><span class="w">  </span><span class="c1">// first dimension can be inferred</span>
 </pre></div>
 </div>
 </li>
@@ -76,70 +113,100 @@
 </li>
 <li><p>2d dynamic array</p>
 <p>Example: a dynamic array dynArr1 with 2 rows, 3 columns</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// declaration</span>
-<span class="kt">int</span><span class="w"> </span><span class="o">**</span><span class="n">dynArr1</span><span class="p">;</span><span class="w"></span>
-
-<span class="c1">// allocate memory (on Heap)</span>
-<span class="n">dynArr1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="w"></span>
-<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="n">dynArr1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span><span class="w"></span>
-<span class="c1">//now you can access element using array syntax like dynArr1[0][0]</span>
-
-<span class="c1">// put values into the array</span>
-<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">dynArr1</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
-<span class="c1">// now dynArr1 is {{1, 2, 3}, {4, 5, 6}}</span>
-
-<span class="c1">// release memory</span>
-<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">delete</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="n">dynArr1</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"></span>
-<span class="k">delete</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="n">dynArr1</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// declaration</span>
+<span class="linenos"> 2</span><span class="kt">int</span><span class="w"> </span><span class="o">**</span><span class="n">dynArr1</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="c1">// allocate memory (on Heap)</span>
+<span class="linenos"> 5</span><span class="n">dynArr1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="w">  </span><span class="n">dynArr1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="c1">//now you can access element using array syntax like dynArr1[0][0]</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="c1">// put values into the array</span>
+<span class="linenos">11</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">12</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">13</span><span class="w">    </span><span class="n">dynArr1</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">14</span><span class="c1">// now dynArr1 is {{1, 2, 3}, {4, 5, 6}}</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="c1">// release memory</span>
+<span class="linenos">17</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">18</span><span class="w">  </span><span class="k">delete</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="n">dynArr1</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">19</span><span class="k">delete</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="n">dynArr1</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 </li>
 <li><p>2d array as a function parameter</p>
 <ol class="arabic">
 <li><p>pass a 2 x 3 matrix as a local array</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// ---- wrong ----</span>
-<span class="kt">void</span><span class="w"> </span><span class="nf">matrixOp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">matrix</span><span class="p">[</span><span class="n">rows</span><span class="p">][</span><span class="n">cols</span><span class="p">],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">);</span><span class="w"></span>
-<span class="kt">void</span><span class="w"> </span><span class="nf">matrixOp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">matrix</span><span class="p">[][],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">);</span><span class="w"></span>
-<span class="kt">void</span><span class="w"> </span><span class="nf">matrixOp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">matrix</span><span class="p">[</span><span class="mi">2</span><span class="p">][],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">);</span><span class="w"></span>
-
-<span class="c1">// ---- correct ----</span>
-<span class="c1">// only the first dimension can be empty, use int literals</span>
-<span class="c1">// or const variable for other dimensions</span>
-<span class="kt">void</span><span class="w"> </span><span class="nf">matrixOp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">matrix</span><span class="p">[][</span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">);</span><span class="w"></span>
-
-<span class="c1">// using const variables</span>
-<span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ROWS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
-<span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">COLS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
-<span class="kt">void</span><span class="w"> </span><span class="nf">matrixOp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">matrix</span><span class="p">[</span><span class="n">ROWS</span><span class="p">][</span><span class="n">COLS</span><span class="p">],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">);</span><span class="w"></span>
-<span class="kt">void</span><span class="w"> </span><span class="nf">matrixOp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">matrix</span><span class="p">[][</span><span class="n">COLS</span><span class="p">],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">);</span><span class="w"></span>
-
-<span class="c1">// to call</span>
-<span class="kt">int</span><span class="w"> </span><span class="n">a1</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">}};</span><span class="w"></span>
-<span class="n">matrixOp</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// ---- wrong ----</span>
+<span class="linenos"> 2</span><span class="kt">void</span><span class="w"> </span><span class="nf">matrixOp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">matrix</span><span class="p">[</span><span class="n">rows</span><span class="p">][</span><span class="n">cols</span><span class="p">],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 3</span><span class="kt">void</span><span class="w"> </span><span class="nf">matrixOp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">matrix</span><span class="p">[][],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="kt">void</span><span class="w"> </span><span class="nf">matrixOp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">matrix</span><span class="p">[</span><span class="mi">2</span><span class="p">][],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="c1">// ---- correct ----</span>
+<span class="linenos"> 7</span><span class="c1">// only the first dimension can be empty, use int literals</span>
+<span class="linenos"> 8</span><span class="c1">// or const variable for other dimensions</span>
+<span class="linenos"> 9</span><span class="kt">void</span><span class="w"> </span><span class="nf">matrixOp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">matrix</span><span class="p">[][</span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="c1">// using const variables</span>
+<span class="linenos">12</span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ROWS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">13</span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">COLS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">14</span><span class="kt">void</span><span class="w"> </span><span class="nf">matrixOp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">matrix</span><span class="p">[</span><span class="n">ROWS</span><span class="p">][</span><span class="n">COLS</span><span class="p">],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">15</span><span class="kt">void</span><span class="w"> </span><span class="nf">matrixOp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">matrix</span><span class="p">[][</span><span class="n">COLS</span><span class="p">],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="c1">// to call</span>
+<span class="linenos">18</span><span class="kt">int</span><span class="w"> </span><span class="n">a1</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">}};</span><span class="w"></span>
+<span class="linenos">19</span><span class="n">matrixOp</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
 </li>
 <li><p>passing a dynamic array, a much nicer solution</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">matrixOp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="n">matrix</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">rows</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">cols</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">;</span><span class="w">  </span><span class="c1">// same syntax as local array</span>
-<span class="p">}</span><span class="w"></span>
-<span class="c1">// to call the function</span>
-<span class="n">matrixOp</span><span class="p">(</span><span class="n">dynArr1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kt">void</span><span class="w"> </span><span class="nf">matrixOp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="n">matrix</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">2</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">rows</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">3</span><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">cols</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">4</span><span class="w">      </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">;</span><span class="w">  </span><span class="c1">// same syntax as local array</span>
+<span class="linenos">5</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">6</span><span class="c1">// to call the function</span>
+<span class="linenos">7</span><span class="n">matrixOp</span><span class="p">(</span><span class="n">dynArr1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 </li>
 </ol>
 </li>
 <li><p>Returning a Multidimensional array from a function</p>
-<p>Just make dynamic array and return the pointer.</p>
+<p>Just make dynamic array and return the pointer:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kt">int</span><span class="w"> </span><span class="o">**</span><span class="nf">createMatrix</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="kt">int</span><span class="w"> </span><span class="o">**</span><span class="nf">createMatrix</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="o">**</span><span class="n">result</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="w">  </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="p">[</span><span class="n">rows</span><span class="p">];</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">rows</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="w">    </span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="p">[</span><span class="n">cols</span><span class="p">];</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">cols</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="w">      </span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">11</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">12</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">15</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="o">**</span><span class="n">matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">createMatrix</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="w">  </span><span class="c1">// work on the matrix</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="w">  </span><span class="c1">// release memory</span>
+<span class="linenos">20</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">rows</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">21</span><span class="w">    </span><span class="k">delete</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">22</span><span class="w">  </span><span class="k">delete</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="n">matrix</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">23</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
 </li>
 </ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Never forget to delete dynamic array(s)!</p>
+</div>
+</section>
 </section>
 
 
@@ -149,6 +216,17 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Multidimensional Array</a><ul>
+<li><a class="reference internal" href="#general-concepts">General Concepts</a></li>
+<li><a class="reference internal" href="#two-dimensional-array">Two dimensional array</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
   <div>
     <h4>Previous topic</h4>
     <p class="topless"><a href="../../course/cop3014/ch08.html"
