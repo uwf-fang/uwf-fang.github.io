@@ -40,62 +40,65 @@ Multiple arrays
 
 Array of objects
 ----------------
-+ Pre-allocate ``N`` objects
++ Pre-allocate ``N`` objects using the default constructor
 + Each object has ``M`` fields
-+ To update the fields of the object after the initial allocation of empty
-  objects
-
-  #. use assignment or setters::
-
-      Student student[40];
-
-      // if name and grade fields are public
-      students[4].name = "John Smith";
-      students[4].grade = 100;
-
-      // if name and grade fields are accessible only through setters
-      students[4].setName("John Smith");
-      students[4].setGrade(100);
-
-  #. assign temporary object::
-
-      Student student[40];
-      students[2] = Student("John Smith", 100);
-
 + Local array example::
 
     // struct example
-    struct Student {
+    struct StudentStruct {
       double grade;
       string name;
     };
 
-    Student students[NUM_STUDENT];
+    StudentStruct students[NUM_STUDENT];
     students[4].name = "John Smith";
     students[4].grade = 100;
     cout << "The 5th student in the list " << students[4].name;
     cout << " has a grade of " << students[4].grade;
 
     // class example
-    class Student1 {
+    class StudentClass {
       double grade;
       string name;
     public:
-      Student1(): name(""), grade(0) {}
-      Student1(string name, double grade): name(name), grade(grade) {}
+      StudentClass(): name(""), grade(0) {}
+      StudentClass(string name, double grade): name(name), grade(grade) {}
       string getName() { return name;}
       double getGrade() { return grade;}
     };
 
-    Student1 students1[NUM_STUDENT];  // default constructor called 100 times
-    students1[4] = Student1("John Smith", 100);  // temporary object assignment
+    StudentClass students1[NUM_STUDENT];  // default constructor called 100 times
+    students1[4] = StudentClass("John Smith", 100);  // temporary object assignment
     cout << "The 5th student in the list " << students1[4].getName() << " has a grade of " << students1[4].getGrade();
+
++ To update the fields of the object after the initial allocation of empty
+  objects, you can either
+
+  #. use assignment or setters::
+
+      // if name and grade fields are public
+      students[4].name = "John Smith";
+      students[4].grade = 100;
+
+      // if name and grade fields are accessible only through setters
+      students1[4].setName("John Smith");
+      students1[4].setGrade(100);
+
+    * fast, modifying existing objects
+    * can be very verbose given large number of fields
+
+  #. assign temporary object::
+
+      students1[4] = Student("John Smith", 100);
+
+    * overhead of creating and duplicating temporary objects
+    * cleaner syntax
 
 + Dynamic array example::
 
-    Student1 *students2;
-    students2 = new Student1[NUM_STUDENT];
-    students1[4] = Student1("John Smith", 100);  // temporary object assignment
+    StudentClass *students2;
+    students2 = new StudentClass[NUM_STUDENT];
+    students1[4] = StudentClass("John Smith", 100);  // temporary object assignment
     cout << "The 5th student in the list " << students1[4].getName() << " has a grade of " << students1[4].getGrade();
     delete [] students2;
 
@@ -108,10 +111,10 @@ Array of pointers to objects
 + Complex syntax than array of objects
 + Local array example::
 
-    Student1 *students3[NUM_STUDENT];  // 100 pointers
+    StudentClass *students3[NUM_STUDENT];  // 100 pointers
     for (int i = 0; i < NUM_STUDENT; i++)
       students3[i] = nullptr;
-    students3[4] = new Student1("John Smith", 100);
+    students3[4] = new StudentClass("John Smith", 100);
     cout << "The 5th student in the list " << students3[4]->getName();
     cout << " has a grade of " << students3[4]->getGrade();
 
@@ -121,11 +124,11 @@ Array of pointers to objects
 
 + Dynamic array example::
 
-    Student1 **students4;  // do not confuse with 2D array of objects
-    students4 = new Student1 *[NUM_STUDENT];  // 100 pointers
+    StudentClass **students4;  // do not confuse with 2D array of objects
+    students4 = new StudentClass *[NUM_STUDENT];  // 100 pointers
     for (int i = 0; i < NUM_STUDENT; i++)
       students4[i] = nullptr;
-    students4[4] = new Student1("John Smith", 100);
+    students4[4] = new StudentClass("John Smith", 100);
     cout << "The 5th student in the list " << students4[4]->getName();
     cout << " has a grade of " << students4[4]->getGrade();
 
@@ -133,3 +136,56 @@ Array of pointers to objects
     for (int i = 0; i < NUM_STUDENT; i++)
       if (students4[i] != nullptr) delete students4[i];  // delete objects, no []
     delete [] students4;
+
+.. graphviz::
+
+  digraph G {
+    nodesep=.05;
+    rankdir=LR;
+    objArray[shape=box,height=0.1];
+    node[shape=record,width=0.1,height=0.1];
+    first[label="<f0>|<f1>|<f2>|<f3>|<f4>|<f5>|<f6>|<f7>|<f8>|<f9>"];
+    objArray -> first:f0;
+
+    sec0[label=""];
+    sec1[label=""];
+    sec2[label=""];
+    sec3[label=""];
+    sec4[label=""];
+    sec5[label=""];
+    sec6[label=""];
+    sec7[label=""];
+    sec8[label=""];
+    sec9[label=""];
+
+    first:f0 -> sec0:w;
+    first:f1 -> sec1:w;
+    first:f2 -> sec2:w;
+    first:f3 -> sec3:w;
+    first:f4 -> sec4:w;
+    first:f5 -> sec5:w;
+    first:f6 -> sec6:w;
+    first:f7 -> sec7:w;
+    first:f8 -> sec8:w;
+    first:f9 -> sec9:w;
+  }
+
+.. obj-array-pitfalls:
+
+Pitfalls
+========
++ mismatched assignment::
+
+    StudentClass students[10];
+    students[4] = new StudentClass("Mary Johnson", 100);
+    // should have no 'new' operator
+
++ wrong member accessing operator::
+
+    StudentClass *students[10];
+    students[4] = new StudentClass("Mary Johnson", 100);
+    cout << students[4].getName() << endl;
+    // should use -> given students[4] as a pointer
+
++ confused ``delete`` and ``delete []``
++ not checking nullptr before delete
