@@ -4,6 +4,8 @@
 ****************************
 Memory Management in Classes
 ****************************
+When a class owns dynamic data, special handling is required to avoid common
+memory problems.
 
 Implicitly-declared Methods
 ===========================
@@ -13,10 +15,13 @@ copy constructor, copy assignment operator overloading, etc.
 
 + Default constructor
 
-  * available to be used without explicit declaration when no constructor is
-    present
-  * must declare and define explicitly if any other constructor is present
-  * use ``MyClass::MyClass()=default;`` if the default behavior is needed
+  * must declare and define explicitly if other constructor is present
+  * use ``MyClass::MyClass()=default;`` if the default behavior is desirable
+
+.. warning::
+
+  Implicitly-declared default constructor will not set initial value to
+  non-class-typed instance variables and the values are undefined.
 
 + Destructor
 + Copy constructor
@@ -28,25 +33,52 @@ copy constructor, copy assignment operator overloading, etc.
   They must be explicitly declared and defined when they are triggered in
   objects containing dynamic data.
 
+::
+
+  // Operations you can perform without defining any methods
+  // works with classes containing no dynamic data
+  // all instance variables can be duplicated using simple assignment
+  class Example {
+    string name;
+    int age;
+   public:
+    string getName() {return name;}
+    void setName(string name) {this->name = name;}
+    int getAge() {return age;}
+    void setAge(int age) {this->age = age;}
+  };
+
+  int main() {
+    // allowed without explicit declaration
+    Example exp;  // trigger default constructor
+    exp.setName("John");
+    exp.setAge(14);
+    Example exp1(exp);  // trigger copy constructor
+    Example exp2;
+    exp2 = exp;  // trigger copy assignment operator overload
+    // both exp1 and exp2 will have name as "John" and age as 14
+  }
+
 Dynamic data in class
 =====================
 + pointer-typed instance variables
 
-  * holding a single value or an array
+  * holding a single value/object or an array
   * allocated using ``new``
+  * simple assignment will cause **shallow copy**
 
 + Potential memory problems
 
   * memory leak - fail to ``delete``
 
-    - bad or no destructor
+    - bad or no explicit destructor
     - dynamic data passed around without correct handling
 
   * shallow copy - fail to copy the dynamic data in the heap memory
 
     - only the memory address are copied by default constructor/assignment
-    - bad or no copy constructor
-    - bad or no copy assignment operator overload
+    - bad or no explicit copy constructor
+    - bad or no explicit copy assignment operator overload
     - **only happens when objects are copied or copy assigned**
     - will consequently cause the destructor to ``delete`` a same memory
       block in heap multiple times
@@ -67,24 +99,23 @@ Dynamic data in class
   * copy constructor
 
     - explicit triggering ``MyClass obj1; MyClass obj2(obj1);``
-    - implicit triggering
-
-      + in initialization
-      + ``MyClass obj1; MyClass obj2 = obj1;``
-
-    - place to perform deep copy
+    - implicit triggering ``MyClass obj1; MyClass obj2 = obj1;``
+    - **take a const reference parameter to avoid pass-by-value**
+    - perform deep copy here
 
   * copy assignment operator overload
 
-    - triggering ``MyClass obj1; MyClass obj2; obj2 = obj1;``
-    - implicit assignment
+    - explicit triggering ``MyClass obj1; MyClass obj2; obj2 = obj1;``
+    - implicit triggering **Easy to miss**
 
-      + parameter passing by value
-      + return as value
+      + parameter passed by value
+      + returned value
 
-    - clean up old data
-    - perform deep copy
-    - ``return *this;``
+    - must clean up old data
+    - **take a const reference parameter to avoid pass-by-value**
+    - perform deep copy here
+    - ``return *this;`` to return a reference of its own class type ``MyClass
+      &``
 
   .. note::
 
@@ -115,7 +146,7 @@ Dynamic data in class
   }
 
   MyClass::MyClass(const MyClass& other) {
-    // you can access private member of other directly!
+    // you can access private members of other directly in C++!
     size = other.size;
     arr = new int[size];
     for (int i = 0; i < size; i++)
@@ -134,7 +165,8 @@ Dynamic data in class
   }
 
   ~MyClass::MyClass() {
-    delete [] arr;
+    if (arr != nullptr)
+      delete [] arr;
   }
 
 + Rule of five
@@ -146,31 +178,26 @@ Dynamic data in class
 
   * Not mandatory but will improve efficiency
   * New syntax since c++ 11 using ``&&``
-  * Mutable parameter
+  * Mutable(non-const) parameter to allow modification
 
 ::
 
   // the parameter is no longer 'const' because you will modify it
   MyClass::MyClass(MyClass && other) {
-    // you can access private member of other directly!
     size = other.size;
     arr = other.arr;
     // must make the other object ready for destruction
     // without this step the destructor may try to delete the moved data
     other.arr = null;
-    other.size = 0;
+    other.size = 0;  // this is not necessary unless your destructor rely on the size
   }
 
   // the parameter is no longer 'const' because you will modify it
   MyClass & MyClass::operator=(MyClass && other) {
     // Swap both the size and arr with the other object
-    // the destructor of the other object will destroy the data
-    int tempSize = size;
-    size = other.size;
-    other.size = tempSize;
-    int *tempArr = arr;
-    arr = other.arr;
-    other.arr = tempArr;
+    // the destructor of the other object will destroy the old data
+    swap(size, other.size);
+    swap(arr, other.arr);
     return *this;
   }
 
@@ -264,7 +291,8 @@ Example: The object always owns the data. The recipient just used it.
     return 0;
   }
 
-Example: The ownership changed to the recipient.
+Example: The ownership is not clear. You can either let the object or the main
+function to delete the dynamic data. Both are reasonable.
 
 ::
 
