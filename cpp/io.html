@@ -65,50 +65,99 @@ read/write data as blocks.</p>
 </section>
 <section id="standard-i-o">
 <h2>Standard I/O<a class="headerlink" href="#standard-i-o" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>Input/output in command-line context</p>
 <ul>
+<li><p>Input/output in the command-line context</p>
+<ul class="simple">
 <li><p>keyboard input as standard input</p></li>
 <li><p>terminal character print/display as standard output</p></li>
 </ul>
 </li>
 <li><p>iostream - the input/output stream library header</p></li>
 <li><p>Standard input</p>
-<ul>
+<ul class="simple">
 <li><p>std::cin</p></li>
+<li><p>a global variable that you can use anywhere in your program</p></li>
 <li><p>an instance/object of the istream class</p></li>
 </ul>
 </li>
 <li><p>Standard output</p>
-<ul>
+<ul class="simple">
 <li><p>std::cout</p></li>
+<li><p>a global variable that you can use anywhere in your program</p></li>
 <li><p>an instance/object of the ostream class</p></li>
 </ul>
 </li>
-<li><p>istream class</p>
+<li><p>Standard Error</p>
+<ul class="simple">
+<li><p>std::cerr</p></li>
+<li><p>a global variable that you can use anywhere in your program</p></li>
+<li><p>an instance/object of the ostream class</p></li>
+<li><p>used to display error messages</p></li>
+</ul>
+</li>
+<li><p>Redirection</p>
+<p>In UNIX shells, you can redirect standard I/O using operators like <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">|</span></code>.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;</span></code> to redirect standard input from a file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&gt;</span></code> to redirect standard output to a file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">|</span></code> to pipeline the standard output of the last command as the standard
+input of the next program</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./main &lt; input.txt
+./main &gt; output.txt
+./main &lt; input.txt &gt; output.txt
+./cat input.txt <span class="p">|</span> ./main
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="input-output-operations">
+<h2>Input/Output Operations<a class="headerlink" href="#input-output-operations" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>Input operations</p>
 <ul>
 <li><p>Extraction operator <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code></p>
-<ul>
+<ul class="simple">
+<li><p>work with any input stream including cin</p></li>
 <li><p>can be chained</p></li>
+<li><p>can be used as a boolean value (true if the operation succeed, false
+otherwise)</p></li>
 <li><p>read and convert to desired type</p></li>
 <li><p>will leave <code class="docutils literal notranslate"><span class="pre">'\n'``(``endl</span></code>) character in buffer</p></li>
 </ul>
 </li>
-<li><p>getline function</p>
-<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">getline()</span></code> function</p>
+<ul class="simple">
 <li><p>read in a line as string: <code class="docutils literal notranslate"><span class="pre">getline(cin,</span> <span class="pre">inputString);</span></code></p></li>
-<li><p>string only</p></li>
+<li><p>work with any input stream including cin</p></li>
+<li><p>read in string only</p></li>
 <li><p>may read in empty string</p></li>
 <li><p><strong>special handling when used after extraction</strong></p></li>
-<li><p>may use other delimiter <code class="docutils literal notranslate"><span class="pre">getline(cin,</span> <span class="pre">inputString,</span> <span class="pre">',');</span></code></p></li>
+<li><p>may use other delimiter i.e. <code class="docutils literal notranslate"><span class="pre">getline(cin,</span> <span class="pre">inputString,</span> <span class="pre">',');</span></code></p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>differentiate it from the <code class="docutils literal notranslate"><span class="pre">cin.getline()</span></code> function!</p>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ignore()</span></code> method</p>
+<ul class="simple">
+<li><p>any input stream has this method</p></li>
+<li><p>ignore characters until the first delimiter</p></li>
+<li><p>default delimiter is <cite>n</cite></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::cin.ignore(std::numeric_limits&lt;std::streamsize&gt;::max(),</span> <span class="pre">'\n');</span></code> to
+be used after <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code> to remove the rest of the line</p></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p>ostream class</p>
-<ul>
+<li><p>Output operations</p>
+<ul class="simple">
 <li><p>Insertion operator <code class="docutils literal notranslate"><span class="pre">&lt;&lt;</span></code></p>
 <ul>
+<li><p>work with any output stream including cout</p></li>
 <li><p>can be chained</p></li>
 <li><p>buffered, display upon flushing</p>
 <ul>
@@ -120,9 +169,13 @@ read/write data as blocks.</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&lt;iomanip&gt;</span></code> header</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">fixed</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">showpoint</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">scientific</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">setprecision()</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">setw()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">setfill()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">left</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">right</span></code></p></li>
 </ul>
 </li>
 </ul>
@@ -161,6 +214,11 @@ read/write data as blocks.</p>
 </ul>
 </li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can also manipulate strings using string methods. Check the <a class="reference internal" href="string.html#adv-string"><span class="std std-ref">string
+document</span></a> for more information.</p>
+</div>
 </section>
 <section id="file-i-o">
 <h2>File I/O<a class="headerlink" href="#file-i-o" title="Permalink to this headline">¶</a></h2>
@@ -222,6 +280,7 @@ read/write data as blocks.</p>
 <li><a class="reference internal" href="#general-info">General Info</a></li>
 <li><a class="reference internal" href="#stream-based-i-o">Stream Based I/O</a></li>
 <li><a class="reference internal" href="#standard-i-o">Standard I/O</a></li>
+<li><a class="reference internal" href="#input-output-operations">Input/Output Operations</a></li>
 <li><a class="reference internal" href="#string-i-o">String I/O</a></li>
 <li><a class="reference internal" href="#file-i-o">File I/O</a></li>
 </ul>

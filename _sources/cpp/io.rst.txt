@@ -25,7 +25,7 @@ read/write data as blocks.
 
 Standard I/O
 ============
-+ Input/output in command-line context
++ Input/output in the command-line context
 
   * keyboard input as standard input
   * terminal character print/display as standard output
@@ -34,33 +34,79 @@ Standard I/O
 + Standard input
 
   * std::cin
+  * a global variable that you can use anywhere in your program
   * an instance/object of the istream class
 
 + Standard output
 
   * std::cout
+  * a global variable that you can use anywhere in your program
   * an instance/object of the ostream class
 
-+ istream class
++ Standard Error
+
+  * std::cerr
+  * a global variable that you can use anywhere in your program
+  * an instance/object of the ostream class
+  * used to display error messages
+
++ Redirection
+
+  In UNIX shells, you can redirect standard I/O using operators like ``<``,
+  ``>``, ``|``.
+
+  * ``<`` to redirect standard input from a file
+  * ``>`` to redirect standard output to a file
+  * ``|`` to pipeline the standard output of the last command as the standard
+    input of the next program
+
+
+  .. code-block:: bash
+
+    ./main < input.txt
+    ./main > output.txt
+    ./main < input.txt > output.txt
+    ./cat input.txt | ./main
+
+Input/Output Operations
+=======================
++ Input operations
 
   * Extraction operator ``>>``
 
+    - work with any input stream including cin
     - can be chained
+    - can be used as a boolean value (true if the operation succeed, false
+      otherwise)
     - read and convert to desired type
     - will leave ``'\n'``(``endl``) character in buffer
 
-  * getline function
+  * ``getline()`` function
 
     - read in a line as string: ``getline(cin, inputString);``
-    - string only
+    - work with any input stream including cin
+    - read in string only
     - may read in empty string
     - **special handling when used after extraction**
-    - may use other delimiter ``getline(cin, inputString, ',');``
+    - may use other delimiter i.e. ``getline(cin, inputString, ',');``
 
-+ ostream class
+    .. warning::
+
+      differentiate it from the ``cin.getline()`` function!
+
+  * ``ignore()`` method
+
+    - any input stream has this method
+    - ignore characters until the first delimiter
+    - default delimiter is `\n`
+    - ``std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');`` to
+      be used after ``>>`` to remove the rest of the line
+
++ Output operations
 
   * Insertion operator ``<<``
 
+    - work with any output stream including cout
     - can be chained
     - buffered, display upon flushing
 
@@ -71,9 +117,13 @@ Standard I/O
 
       + ``#include <iomanip>`` header
       + ``fixed``
+      + ``showpoint``
       + ``scientific``
       + ``setprecision()``
       + ``setw()``
+      + ``setfill()``
+      + ``left``
+      + ``right``
 
 String I/O
 ==========
@@ -99,6 +149,11 @@ Used for text parsing or formatted string generation
   - ``<<`` insertion
   - all formatting tools from iomanip will work
   - ``.str()`` method to generate a string containing the content in the stream
+
+.. note::
+
+  You can also manipulate strings using string methods. Check the :ref:`string
+  document <adv-string>` for more information.
 
 File I/O
 ========
