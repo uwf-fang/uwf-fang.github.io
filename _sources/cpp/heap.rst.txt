@@ -17,6 +17,10 @@ Heap
 
   * find parent/children by arithmetic calculation of indices
 
+    - given the node :math:`i`
+    - the index of the parent node is :math:`(i-1)/2`
+    - the indices of the children nodes are :math:`i*2+1` and :math:`i*2+2`
+
 + type
 
   * max heap
@@ -40,13 +44,39 @@ Heap
 
     - move one element up/down in an existing heap
 
+.. graphviz::
+  :caption: A max heap (tree form)
+
+  digraph tree {
+    26 -> {25 17}[color=red];
+    25 -> {7 19}[color=green];
+    17 -> {2, 4}[color=blue];
+    7 -> {1 5}[color=violet];
+  }
+
+.. graphviz::
+  :caption: A max heap (array form)
+
+  digraph arr {
+    node[shape=record];
+    arr[label="<f0> 26|<f1> 25|<f2> 17|<f3> 7|<f4> 19|<f5> 2|<f6> 4|<f7> 1|<f8> 5"];
+    arr:f0:n -> arr:f1:n[color=red];
+    arr:f0:n -> arr:f2:n[color=red];
+    arr:f1:s -> arr:f3:s[color=green];
+    arr:f1:s -> arr:f4:s[color=green];
+    arr:f2:s -> arr:f5:s[color=blue];
+    arr:f2:s -> arr:f6:s[color=blue];
+    arr:f3:n -> arr:f7:n[color=violet];
+    arr:f3:n -> arr:f8:n[color=violet];
+  }
+
 Heap sort
 =========
 #. heapify the array (turn randomly ordered array into a heap)
 
    * percolate repeatedly
 
-     - index ranged from size / 2 to 0
+     - index ranged from :math:`size/2-1` to :math:`0`
 
 #. removing the root node repeatedly from a heap
 

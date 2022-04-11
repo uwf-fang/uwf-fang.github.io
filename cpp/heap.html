@@ -14,6 +14,7 @@
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/cpp/heap.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -56,7 +57,13 @@ heap) or equal (if allow overlapped values) than its children</p>
 <li><p>Logically a complete tree</p></li>
 <li><p>physically an array</p>
 <ul class="simple">
-<li><p>find parent/children by arithmetic calculation of indices</p></li>
+<li><p>find parent/children by arithmetic calculation of indices</p>
+<ul>
+<li><p>given the node <span class="math notranslate nohighlight">\(i\)</span></p></li>
+<li><p>the index of the parent node is <span class="math notranslate nohighlight">\((i-1)/2\)</span></p></li>
+<li><p>the indices of the children nodes are <span class="math notranslate nohighlight">\(i*2+1\)</span> and <span class="math notranslate nohighlight">\(i*2+2\)</span></p></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><p>type</p>
@@ -89,6 +96,34 @@ until the leaf node is reached (percolate down)</p></li>
 </ul>
 </li>
 </ul>
+<figure class="align-default" id="id1">
+<div class="graphviz"><img src="../_images/graphviz-484cfd1cc7502596d991a6a7f406ce34060df322.png" alt="digraph tree {
+  26 -&gt; {25 17}[color=red];
+  25 -&gt; {7 19}[color=green];
+  17 -&gt; {2, 4}[color=blue];
+  7 -&gt; {1 5}[color=violet];
+}" class="graphviz" /></div>
+<figcaption>
+<p><span class="caption-text">A max heap (tree form)</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id2">
+<div class="graphviz"><img src="../_images/graphviz-54a679a04cd23fac2db629e983bb02e20b962da8.png" alt="digraph arr {
+  node[shape=record];
+  arr[label=&quot;&lt;f0&gt; 26|&lt;f1&gt; 25|&lt;f2&gt; 17|&lt;f3&gt; 7|&lt;f4&gt; 19|&lt;f5&gt; 2|&lt;f6&gt; 4|&lt;f7&gt; 1|&lt;f8&gt; 5&quot;];
+  arr:f0:n -&gt; arr:f1:n[color=red];
+  arr:f0:n -&gt; arr:f2:n[color=red];
+  arr:f1:s -&gt; arr:f3:s[color=green];
+  arr:f1:s -&gt; arr:f4:s[color=green];
+  arr:f2:s -&gt; arr:f5:s[color=blue];
+  arr:f2:s -&gt; arr:f6:s[color=blue];
+  arr:f3:n -&gt; arr:f7:n[color=violet];
+  arr:f3:n -&gt; arr:f8:n[color=violet];
+}" class="graphviz" /></div>
+<figcaption>
+<p><span class="caption-text">A max heap (array form)</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 </section>
 <section id="heap-sort">
 <h2>Heap sort<a class="headerlink" href="#heap-sort" title="Permalink to this headline">¶</a></h2>
@@ -97,7 +132,7 @@ until the leaf node is reached (percolate down)</p></li>
 <ul class="simple">
 <li><p>percolate repeatedly</p>
 <ul>
-<li><p>index ranged from size / 2 to 0</p></li>
+<li><p>index ranged from <span class="math notranslate nohighlight">\(size/2-1\)</span> to <span class="math notranslate nohighlight">\(0\)</span></p></li>
 </ul>
 </li>
 </ul>
