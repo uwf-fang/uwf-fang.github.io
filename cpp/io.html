@@ -182,6 +182,24 @@ be used after <code class="docutils literal notranslate"><span class="pre">&gt;&
 </li>
 </ul>
 </li>
+<li><p>Error handling</p>
+<p>Stream operations are likely to fail. Error handling is essential.</p>
+<ul class="simple">
+<li><p>Methods</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">eof()</span></code> if the last successful read hit the end of the file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fail()</span></code> if the last read fail</p></li>
+</ul>
+</li>
+<li><p>Reading errors</p>
+<ul>
+<li><p>check <code class="docutils literal notranslate"><span class="pre">eof()</span></code> if read errors are not expected to happen</p></li>
+<li><p>check <code class="docutils literal notranslate"><span class="pre">fail()</span></code> if read errors are likely to happen</p></li>
+</ul>
+</li>
+<li><p>Writing errors</p></li>
+</ul>
+</li>
 </ul>
 </section>
 <section id="string-i-o">
@@ -236,25 +254,33 @@ document</span></a> for more information.</p>
 </li>
 <li><p>bind to a file</p>
 <ul>
-<li><p>pass the path to the constructor</p></li>
-<li><p>call <code class="docutils literal notranslate"><span class="pre">.open()</span></code> method</p></li>
+<li><p>pass the path string to the constructor</p></li>
+<li><p>call <code class="docutils literal notranslate"><span class="pre">.open()</span></code> method with the path string</p></li>
 </ul>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">open()</span></code></p>
 <ul>
-<li><p>check open status</p>
+<li><p>methods to check open status</p>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">is_open()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_open()</span></code> is preferred</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">fail()</span></code></p></li>
 </ul>
 </li>
+<li><p>very likely to fail so must check status after opening</p>
+<ul>
+<li><p>read a non-existing file</p></li>
+<li><p>write a existing file</p></li>
+<li><p>other file system problems</p></li>
 </ul>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">close()</span></code></p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">close()</span></code> should be called when the file stream is no longer needed</p></li>
 <li><p>end of file check</p>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">.eof()</span></code> function call after every read (extraction, getline)</p></li>
-<li><p>check the status of reading</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">.eof()</span></code> or <code class="docutils literal notranslate"><span class="pre">fail()</span></code> function call after read operations (extraction,
+getline)</p></li>
+<li><p>simplified syntax to check the status of reading (same as check fail())</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">while</span> <span class="pre">(inFS</span> <span class="pre">&gt;&gt;</span> <span class="pre">value)</span> <span class="pre">{</span> <span class="pre">...</span> <span class="pre">}</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">while</span> <span class="pre">(getline(inFS,</span> <span class="pre">line))</span> <span class="pre">{</span> <span class="pre">...</span> <span class="pre">}</span></code></p></li>
@@ -263,6 +289,12 @@ document</span></a> for more information.</p>
 </ul>
 </li>
 </ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code class="docutils literal notranslate"><span class="pre">while</span> <span class="pre">(inFS</span> <span class="pre">&gt;&gt;</span> <span class="pre">value)</span></code> will work but <code class="docutils literal notranslate"><span class="pre">while</span> <span class="pre">(inFS</span> <span class="pre">&gt;&gt;</span> <span class="pre">value</span> <span class="pre">==</span> <span class="pre">true)</span></code> will
+fail! The expression must be directly used in the parenthesis. Same rule
+applies to <code class="docutils literal notranslate"><span class="pre">getline(inFS,</span> <span class="pre">line)</span></code> call.</p>
+</div>
 </section>
 </section>
 

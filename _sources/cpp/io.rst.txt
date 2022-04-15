@@ -125,6 +125,22 @@ Input/Output Operations
       + ``left``
       + ``right``
 
++ Error handling
+
+  Stream operations are likely to fail. Error handling is essential.
+
+  * Methods
+
+    - ``eof()`` if the last successful read hit the end of the file
+    - ``fail()`` if the last read fail
+
+  * Reading errors
+
+    - check ``eof()`` if read errors are not expected to happen
+    - check ``fail()`` if read errors are likely to happen
+
+  * Writing errors
+
 String I/O
 ==========
 Used for text parsing or formatted string generation
@@ -168,21 +184,34 @@ File I/O
 
 + bind to a file
 
-  * pass the path to the constructor
-  * call ``.open()`` method
+  * pass the path string to the constructor
+  * call ``.open()`` method with the path string
 
 + ``open()``
 
-  * check open status
+  * methods to check open status
 
-    - ``is_open()``
+    - ``is_open()`` is preferred
     - ``fail()``
 
-+ ``close()``
+  * very likely to fail so must check status after opening
+
+    - read a non-existing file
+    - write a existing file
+    - other file system problems
+
++ ``close()`` should be called when the file stream is no longer needed
 + end of file check
 
-  * ``.eof()`` function call after every read (extraction, getline)
-  * check the status of reading
+  * ``.eof()`` or ``fail()`` function call after read operations (extraction,
+    getline)
+  * simplified syntax to check the status of reading (same as check fail())
 
     - ``while (inFS >> value) { ... }``
     - ``while (getline(inFS, line)) { ... }``
+
+.. warning::
+
+  ``while (inFS >> value)`` will work but ``while (inFS >> value == true)`` will
+  fail! The expression must be directly used in the parenthesis. Same rule
+  applies to ``getline(inFS, line)`` call.
