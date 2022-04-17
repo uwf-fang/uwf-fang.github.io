@@ -154,6 +154,67 @@ vector</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">vector&lt;int&gt;</span> <span class="pre">v1(v)</span></code> make a copy of v</p></li>
 </ul>
 </section>
+<section id="passing-vector-around">
+<h3>Passing vector around<a class="headerlink" href="#passing-vector-around" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p>As parameter</p>
+<ul>
+<li><p>by-value (object duplication): <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">func1(vector&lt;int&gt;</span> <span class="pre">vec);</span></code></p></li>
+<li><p>read-only reference: <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">func1(const</span> <span class="pre">vector&lt;int&gt;</span> <span class="pre">&amp;vec);</span></code></p></li>
+<li><p>by-reference (allow modification of the actual parameter):
+<code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">func1(vector&lt;int&gt;</span> <span class="pre">&amp;vec);</span></code></p></li>
+<li><p>example:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// read data from a csv file and create the vector of Patient objects</span>
+<span class="linenos"> 2</span><span class="n">loadData</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Patient</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">patients</span><span class="p">,</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="n">filename</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="k">class</span><span class="w"> </span><span class="nc">TextMenuApp</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="w">  </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Patient</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">patients</span><span class="p">;</span><span class="w">  </span><span class="c1">// takes a reference to avoid copy overhead</span>
+<span class="linenos"> 6</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="w">  </span><span class="n">TextMenuApp</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Patient</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">patients</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="n">patients</span><span class="p">(</span><span class="n">patients</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">run</span><span class="p">();</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="w">  </span><span class="c1">// ...</span>
+<span class="linenos">10</span><span class="p">};</span><span class="w"></span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">13</span><span class="w">  </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Patient</span><span class="o">&gt;</span><span class="w"> </span><span class="n">patients</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">14</span><span class="w">  </span><span class="n">loadData</span><span class="p">(</span><span class="n">patients</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;patients.csv&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">15</span><span class="w">  </span><span class="n">TextMenuApp</span><span class="w"> </span><span class="n">app</span><span class="p">(</span><span class="n">patients</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">16</span><span class="w">  </span><span class="n">app</span><span class="p">.</span><span class="n">run</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">17</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">18</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="algorithms">
+<h3>Algorithms<a class="headerlink" href="#algorithms" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p>Works with all algorithms on arrays</p>
+<ul class="simple">
+<li><p>change <code class="docutils literal notranslate"><span class="pre">arr[i]</span></code> to <code class="docutils literal notranslate"><span class="pre">vec.at(i)</span></code></p></li>
+<li><p>no longer need to pass a separate size variable</p></li>
+</ul>
+</li>
+<li><p>Particularly good for out-of-place algorithms with variable length output</p>
+<ul>
+<li><p>filter type of algorithm, i.e. find all positive value in a sequence:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">positiveOnly</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">2</span><span class="w">  </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">result</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">3</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">4</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">5</span><span class="w">      </span><span class="n">result</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">i</span><span class="p">));</span><span class="w"></span>
+<span class="linenos">6</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">7</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+</section>
 <section id="pitfalls">
 <h3>Pitfalls<a class="headerlink" href="#pitfalls" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
@@ -187,6 +248,8 @@ vector</p></li>
 <li><a class="reference internal" href="#vector-abstract-data-type-adt">Vector Abstract Data Type (ADT)</a></li>
 <li><a class="reference internal" href="#c-std-vector">C++ std::vector</a><ul>
 <li><a class="reference internal" href="#initialization">Initialization</a></li>
+<li><a class="reference internal" href="#passing-vector-around">Passing vector around</a></li>
+<li><a class="reference internal" href="#algorithms">Algorithms</a></li>
 <li><a class="reference internal" href="#pitfalls">Pitfalls</a></li>
 <li><a class="reference internal" href="#extended-readings">Extended Readings</a></li>
 </ul>

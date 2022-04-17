@@ -96,6 +96,55 @@ use parentheses when triggering other constructors.
   vector
 * ``vector<int> v1(v)`` make a copy of v
 
+Passing vector around
+---------------------
++ As parameter
+
+  * by-value (object duplication): ``void func1(vector<int> vec);``
+  * read-only reference: ``void func1(const vector<int> &vec);``
+  * by-reference (allow modification of the actual parameter):
+    ``void func1(vector<int> &vec);``
+
+  * example::
+
+      // read data from a csv file and create the vector of Patient objects
+      loadData(vector<Patient> &patients, string filename);
+
+      class TextMenuApp {
+        vector<Patient> &patients;  // takes a reference to avoid copy overhead
+       public:
+        TextMenuApp(vector<Patient> &patients): patients(patients) {}
+        void run();
+        // ...
+      };
+
+      int main() {
+        vector<Patient> patients;
+        loadData(patients, "patients.csv");
+        TextMenuApp app(patients);
+        app.run();
+        return 0;
+      }
+
+Algorithms
+----------
++ Works with all algorithms on arrays
+
+  * change ``arr[i]`` to ``vec.at(i)``
+  * no longer need to pass a separate size variable
+
++ Particularly good for out-of-place algorithms with variable length output
+
+  * filter type of algorithm, i.e. find all positive value in a sequence::
+
+      vector<int> positiveOnly(const vector<int> &v) {
+        vector<int> result;
+        for (int i = 0; i < v.size(); i++)
+          if (v.at(i) > 0)
+            result.push_back(v.at(i));
+        return result;
+      }
+
 .. vector-pitfalls:
 
 Pitfalls
