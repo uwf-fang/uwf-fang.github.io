@@ -102,11 +102,12 @@ Passing vector around
 
   * by-value (object duplication): ``void func1(vector<int> vec);``
   * read-only reference: ``void func1(const vector<int> &vec);``
-  * by-reference (allow modification of the actual parameter):
+  * by-reference (allow modifications of the actual parameter):
     ``void func1(vector<int> &vec);``
 
   * example::
 
+      // Assume that the Patient class is ready for use
       // read data from a csv file and create the vector of Patient objects
       loadData(vector<Patient> &patients, string filename);
 
@@ -119,12 +120,20 @@ Passing vector around
       };
 
       int main() {
+        // Only one vector is created in the scope of the main function
+        // Its reference is passed around
         vector<Patient> patients;
         loadData(patients, "patients.csv");
         TextMenuApp app(patients);
         app.run();
-        return 0;
+        return EXIT_SUCCESS;
       }
+
++ As returned value
+
+  * return by value (object not necessary duplicated, some optimization will
+    happen)
+  * see the :ref:`filter example<filter-example>`
 
 Algorithms
 ----------
@@ -135,7 +144,9 @@ Algorithms
 
 + Particularly good for out-of-place algorithms with variable length output
 
-  * filter type of algorithm, i.e. find all positive value in a sequence::
+  .. filter-example:
+
+  * filter type of algorithm, i.e. find all positive value in a vector::
 
       vector<int> positiveOnly(const vector<int> &v) {
         vector<int> result;
