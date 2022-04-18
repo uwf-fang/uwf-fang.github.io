@@ -24,6 +24,35 @@ Basics
     - ``>>`` extraction
     - getline
 
+      ::
+
+        // when a getline is used after >>
+        // to avoid reading in an empty string
+
+        int val1;
+        string restOfTheLine;
+
+        // method 1, recommended in projects
+        cin >> val1;
+        do {
+          getline(cin, restOfTheLine);
+        } while (restOfTheLine.empty());
+
+        // method 2, cin.ignore()
+        cin >> val1;
+        // cin.ignore();  // usually enough, clear up to 1 character till the new line
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');  // clear all till the new line
+        getline(cin, restOfTheLine);
+
+        // method 3, the std::ws manipulate
+        cin >> val1;
+        getline(cin >> ws, restOfTheLine);
+
+        // method 3a
+        cin >> val1 >> ws;
+        getline(cin, restOfTheLine);
+
+
   * write to terminal
 
     - ``<<`` insertion
@@ -38,8 +67,44 @@ Advanced
 ========
 + More methods
 
-  * ``find()``  find the first occurrence of a character or a sub-string
-  * ``substr()``  extract a sub-string
-  * ``push_back()``  add a character at the end
-  * ``insert()``  insert a string to a position
-  * ``replace()``  replace a sub-string with a string
+  * ``string::find()``  find the first occurrence of a character or a sub-string
+  * ``string::substr()``  extract a sub-string
+  * ``string::push_back()``  add a character at the end
+  * ``string::insert()``  insert a string to a position
+  * ``string::replace()``  replace a sub-string with a string
+  * ``std::to_string()``  convert a numeric value to a string
+  * ``std::stoi()``, ``std::stod()`` convert a string to an int or double value
+
++ Extract data from a string (parsing)
+
+  * alternative method: istringstream
+
++ Generate (formatted) text based on data
+
+  * alternative method: ostringstream
+
+::
+
+  // Patient data with name, age and gender formatted as a string like
+  //   John Smith, 21, Male
+
+  class Patient {
+    string name;
+    age int;
+    string gender;
+   public:
+    void parse(const string &text);
+    string toStr();
+  }
+
+  void Patient::parse(const string &text) {
+    int firstComma = text.find(',');
+    int secondComma = text.find(',', firstComma + 1);
+    name = text.substr(0, firstComma);
+    age = stoi(text.substr(firstComma + 2, secondComma - firstComma - 2));
+    gender = text.substr(secondComma + 2, text.length() - secondComma -2);
+  }
+
+  void Patient::toStr() {
+    return "Name: " + name + " | Age: " + to_string(age) + " | Gender: " + gender";
+  }
