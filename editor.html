@@ -4,45 +4,40 @@
 
 <head>
     <meta charset="utf-8">
-    <title>A Basic Text Editor</title>
-    <script>
-        function copyToClipboard() {
-            var el = document.getElementById("text");
-            var text = el.value;
-            console.log(text);
-            el.select();
-            document.execCommand('copy');
-            el.value = 'Copied!';
-            setTimeout(function () {
-                el.value = text;
-            }, 500);
-        }
-    </script>
+    <title>A Basic Code Editor</title>
+    <link rel="stylesheet" href="editor.css">
 </head>
-<form style="position: relative; margin-top: .5em; margin-left: 10%;">
-    <h2>Write your code here and click the button to copy to the clipboard. The tab key can be used here to indent 2 spaces. Standard copy/paste keyboard shortcuts works here too.</h2>
-    <button type="button" style="font-size: 1.2em; display: block; margin: 10px" onclick="copyToClipboard();">Copy to clipboard</button>
-    <textarea rows=30 style="font-size:1.2em; width:80%;" id="text"></textarea>
-</form>
-<script>
-    document.getElementById('text').addEventListener('keydown', function (e) {
-        if (e.key == 'Tab') {
-            e.preventDefault();
-            var start = this.selectionStart;
-            var end = this.selectionEnd;
-
-            // set textarea value to: text before caret + tab + text after caret
-            this.value = this.value.substring(0, start) +
-                "  " + this.value.substring(end);
-
-            // put caret at right position again
-            this.selectionStart =
-                this.selectionEnd = start + 2;
-        }
-    });
-</script>
 
 <body>
+    <div id="main">
+        <h2 id="title">Basic Code editor</h2>
+        <div id="instruction">
+            <p>Available keyboard shortcuts:</p>
+            <ul>
+                <li>Tab key to indent two spaces (with or w/o selection)</li>
+                <li>Ctrl-A to select all</li>
+                <li>Ctrl-C to copy</li>
+                <li>Ctrl-X to cut</li>
+                <li>Ctrl-V to paste</li>
+                <li>Ctrl-Z to undo</li>
+                <li>Ctrl-Shift-Z to redo</li>
+            </ul>
+            <p>Copy the finished text and paste in the text input box. Check the "Raw HTML" checkbox if you want to paste in the raw html mode for better appearance of code. </p>
+        </div>
+        <form>
+            <div id="button-group">
+                <input type="checkbox" id="html-check">
+                <label for="pre">Raw HTML</label>
+                <button type="button" id="copy">Copy to clipboard</button>
+                <button type="button" id="clear">Clear Content</button>
+            </div>
+            <textarea rows=30 id="text"></textarea>
+        </form>
+        <div id="footer">
+            <p>Copyright Ian Fang, 2022</p>
+        </div>
+        <script src="editor.js"> </script>
+    </div>
 </body>
 
 </html>
