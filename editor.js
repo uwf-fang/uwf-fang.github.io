@@ -6,6 +6,7 @@ function escapeHtml(unsafe) {
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
 }
+
 function copyToClipboard() {
     var el = document.getElementById("text");
     var text = el.value;
@@ -19,10 +20,12 @@ function copyToClipboard() {
         el.value = text;
     }, 500);
 }
+
 function clearContent() {
     var el = document.getElementById("text");
     el.value = "";
 }
+
 function textAreaKeyHandler(e) {
     if (e.key == 'Tab') {
         e.preventDefault();
@@ -43,6 +46,7 @@ function textAreaKeyHandler(e) {
             this.selectionEnd = start + 2;
     }
 }
+
 document.getElementById('copy').addEventListener('click', copyToClipboard);
 document.getElementById('clear').addEventListener('click', clearContent);
 document.getElementById('text').addEventListener('keydown', textAreaKeyHandler);
