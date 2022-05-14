@@ -271,3 +271,23 @@ Pitfalls
   # Typo in variables
   main.o: main.cpp
       $(CXX) $(CXXFLAG) -c $@ $<
+
+Common Errors
+=============
++ **No rule to make target `xxx'.** or **No rule to make target `xxx', needed by
+  `yyy'.**
+
+  It means the make system found a target but cannot identify any rule in your
+  makefile. It is common that you have provided a wrong target name or the rule
+  for intermediate targets (like .o files) are not present.
+
++ **missing separator. Stop.**
+
+  This can happen for many reason but one common reason is that you have used
+  the space characters for indentation. It is not supported in some old version
+  of make. **Use tab for indentation for best compatibility!**
+
++ **warning: overriding recipe for target `xxx'**
+
+  It means that you have multiple rules for a same target. It can be dangerous
+  if you do not know which one is finally employed to build your target.
