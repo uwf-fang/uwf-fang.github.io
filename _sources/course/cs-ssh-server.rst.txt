@@ -90,6 +90,9 @@ more information.
 Edit in the SSH window
 ======================
 
+Use vim editor
+--------------
+
 To edit a remote file directly in the terminal or SSH client window. You must
 use a command-line editor like ``vi``, ``vim``, ``nano``, etc. ``vim`` is an
 enhanced ``vi`` editor and is widely used as a command-line text based editor.
@@ -111,7 +114,32 @@ nano if you prefer a simpler editor.
 
 .. note::
 
-  You always have the option to edit your code on your own computer and transfer to the server. So you do not have to edit in the terminal window.
+  You always have the option to edit your code on your own computer and transfer
+  to the server. So you do not have to edit in the terminal window.
+
+Use Linux Heredoc
+-----------------
+
+There is a concept called "heredoc" in Linux that allows user to pass a
+multiline block of text to a command. You can use it to paste code into a file
+using the following command.
+
+Assuming that we are creating a file called main.cpp. We can use the following
+snippet. The first line and the last line is part of the command while
+everything in the middle is the content to be saved in the file. The content can
+be either typed or pasted.
+
+::
+
+  cat << EOF > main.cpp
+  #include <iostream>
+  using namespace std;
+
+  int main() {
+    cout << "Hello World!" << endl;
+    return 0;
+  }
+  EOF
 
 File Transfer
 =============
