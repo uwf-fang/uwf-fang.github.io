@@ -1,0 +1,53 @@
+.. highlight:: c++
+  :linenothreshold: 5
+
+******************************
+Using getline after extraction
+******************************
+
+The Problem
+===========
+When using the ``getline`` function to read in text all the way to the delimiter
+(default to the new line character), the text may be empty after the read if the
+delimiter is the first character in the string. It causes the problem that if
+you call this function after an extraction ``>>`` operation, you may potentially
+read in an empty string.
+
+The Solution
+============
++ Option 1: skip if get an empty read
++ Option 2: clean up after inputs with leftovers such as extraction operations
++ A formal way: make a function to do the work
+
+Code Example
+============
+
+::
+
+  // ==== Wrong ====
+  int input;
+  string line;
+
+  cout << "Input an int";
+  cin >> input;  // leaves a new line character as the first char in the stream
+  cout << "Input a line of text (may contain spaces)";
+  getline(cin, line);  // the line will be empty
+
+  // ==== Correct ====
+  // option 1: replace the getline with:
+  do {
+    getline(cin, line);
+  } while (line.empty());
+
+  // option 2: add after the last >> to clear the leftover
+  cin.ignore();
+
+  // recommended: make a function
+  void readline() {
+    string text;
+    // text is initially empty so a while loop works here
+    while (text.empty())
+      getline(cin, line);
+    return text;
+  }
+  line = readline();

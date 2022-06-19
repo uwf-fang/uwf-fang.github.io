@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Using getline after extraction &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/cpp/getline.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Operator Overloading" href="class/op-overload.html" />
+    <link rel="prev" title="Vector" href="stl/vector.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="class/op-overload.html" title="Operator Overloading"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="stl/vector.html" title="Vector"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../course/cop3014/index.html" accesskey="U">COP 3014 Algorithm and Program Design</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Using getline after extraction</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="using-getline-after-extraction">
+<h1>Using getline after extraction<a class="headerlink" href="#using-getline-after-extraction" title="Permalink to this headline">¶</a></h1>
+<section id="the-problem">
+<h2>The Problem<a class="headerlink" href="#the-problem" title="Permalink to this headline">¶</a></h2>
+<p>When using the <code class="docutils literal notranslate"><span class="pre">getline</span></code> function to read in text all the way to the delimiter
+(default to the new line character), the text may be empty after the read if the
+delimiter is the first character in the string. It causes the problem that if
+you call this function after an extraction <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code> operation, you may potentially
+read in an empty string.</p>
+</section>
+<section id="the-solution">
+<h2>The Solution<a class="headerlink" href="#the-solution" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Option 1: skip if get an empty read</p></li>
+<li><p>Option 2: clean up after inputs with leftovers such as extraction operations</p></li>
+<li><p>A formal way: make a function to do the work</p></li>
+</ul>
+</section>
+<section id="code-example">
+<h2>Code Example<a class="headerlink" href="#code-example" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// ==== Wrong ====</span>
+<span class="linenos"> 2</span><span class="kt">int</span><span class="w"> </span><span class="n">input</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 3</span><span class="n">string</span><span class="w"> </span><span class="n">line</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Input an int&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="n">cin</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">input</span><span class="p">;</span><span class="w">  </span><span class="c1">// leaves a new line character as the first char in the stream</span>
+<span class="linenos"> 7</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Input a line of text (may contain spaces)&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="n">getline</span><span class="p">(</span><span class="n">cin</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="p">);</span><span class="w">  </span><span class="c1">// the line will be empty</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="c1">// ==== Correct ====</span>
+<span class="linenos">11</span><span class="c1">// option 1: replace the getline with:</span>
+<span class="linenos">12</span><span class="k">do</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">13</span><span class="w">  </span><span class="n">getline</span><span class="p">(</span><span class="n">cin</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">14</span><span class="p">}</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">line</span><span class="p">.</span><span class="n">empty</span><span class="p">());</span><span class="w"></span>
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="c1">// option 2: add after the last &gt;&gt; to clear the leftover</span>
+<span class="linenos">17</span><span class="n">cin</span><span class="p">.</span><span class="n">ignore</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="c1">// recommended: make a function</span>
+<span class="linenos">20</span><span class="kt">void</span><span class="w"> </span><span class="nf">readline</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">21</span><span class="w">  </span><span class="n">string</span><span class="w"> </span><span class="n">text</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">22</span><span class="w">  </span><span class="c1">// text is initially empty so a while loop works here</span>
+<span class="linenos">23</span><span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">text</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span><span class="w"></span>
+<span class="linenos">24</span><span class="w">    </span><span class="n">getline</span><span class="p">(</span><span class="n">cin</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">25</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">text</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">26</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">27</span><span class="n">line</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readline</span><span class="p">();</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Using getline after extraction</a><ul>
+<li><a class="reference internal" href="#the-problem">The Problem</a></li>
+<li><a class="reference internal" href="#the-solution">The Solution</a></li>
+<li><a class="reference internal" href="#code-example">Code Example</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="stl/vector.html"
+                          title="previous chapter">Vector</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="class/op-overload.html"
+                          title="next chapter">Operator Overloading</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/cpp/getline.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="class/op-overload.html" title="Operator Overloading"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="stl/vector.html" title="Vector"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Using getline after extraction</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+    </div>
+  </body>
+</html>
