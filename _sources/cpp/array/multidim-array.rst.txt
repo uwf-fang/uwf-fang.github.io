@@ -101,7 +101,7 @@ Two dimensional array
 
 + 2d array as a function parameter
 
-  #. pass a 2 x 3 matrix as a local array
+  #. pass a 2 x 3 local array
 
      .. code-block:: c++
 
@@ -112,7 +112,8 @@ Two dimensional array
 
        // ---- correct ----
        // only the first dimension can be empty, use int literals
-       // or const variable for other dimensions
+       // or const variables for other dimensions
+       void matrixOp(int matrix[2][3], int rows, int cols);
        void matrixOp(int matrix[][3], int rows, int cols);
 
        // using const variables
@@ -125,17 +126,29 @@ Two dimensional array
        int a1[2][3] = {{1, 2, 3}, {4, 5, 6}};
        matrixOp(a1, 2, 3)
 
-  #. passing a dynamic array, a much nicer solution
+  #. passing a dynamic array, a much nicer solution  ``int **dyArr1``
 
      .. code-block:: c++
 
+       // correct version 1
        void matrixOp(int ** matrix, int rows, int cols) {
          for (int i = 0; i < rows ; i++)
            for (int j = 0; j < cols; j++)
              cout << matrix[i][j] << " ";  // same syntax as local array
        }
+       // correct version 2
+       void matrixOp(int *matrix[], int rows, int cols) {
+
        // to call the function
+       int **dyArr1;
+       dyArr1 = new int *[2];
+       for (int i = 0; i < 2; ++i) {
+         dyArr1[i] = new int[3]
+         // initialize values
+       }
        matrixOp(dynArr1, 2, 3);
+       // for loop delete []
+
 
 + Returning a Multidimensional array from a function
 
