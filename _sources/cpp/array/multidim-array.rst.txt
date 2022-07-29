@@ -6,8 +6,8 @@
 Multidimensional Array
 **********************
 
-General Concepts
-================
+General Multidimensional Array
+==============================
 + Multidimensional arrays - arrays of arrays
 
   .. code-block:: c++
@@ -19,7 +19,7 @@ General Concepts
     int ***a4;  // pointer of pointer of pointer to int, used for 3D dynamic array
 
 .. graphviz::
-  :caption: int matrix[10][10]
+  :caption: int matrix[10][10];  // a local 10 x 10 2D array
 
   digraph G {
     nodesep=.05;
@@ -101,7 +101,10 @@ Two dimensional array
 
 + 2d array as a function parameter
 
-  #. pass a 2 x 3 local array
+  #. pass a 2 x 3 **local** array
+
+     + Declared like ``int a1[2][3];``
+     + Not useful in real projects because of the limitation on dimension
 
      .. code-block:: c++
 
@@ -126,7 +129,8 @@ Two dimensional array
        int a1[2][3] = {{1, 2, 3}, {4, 5, 6}};
        matrixOp(a1, 2, 3)
 
-  #. passing a dynamic array, a much nicer solution  ``int **dyArr1``
+  #. passing a **dynamic** array, a much nicer solution
+     + declared like ``int **dyArr1``
 
      .. code-block:: c++
 
@@ -137,7 +141,7 @@ Two dimensional array
              cout << matrix[i][j] << " ";  // same syntax as local array
        }
        // correct version 2
-       void matrixOp(int *matrix[], int rows, int cols) {
+       void matrixOp(int *matrix[], int rows, int cols);
 
        // to call the function
        int **dyArr1;
@@ -154,7 +158,7 @@ Two dimensional array
 
 + Returning a Multidimensional array from a function
 
-  Just make dynamic array and return the pointer::
+  Just make a dynamic array and return the pointer::
 
     int **createMatrix(int rows, int cols, int value);
 
@@ -182,4 +186,38 @@ Two dimensional array
 
 .. warning::
 
+  This is the only option to return an array! Never return a local array!
+
+
+.. warning::
+
   Never forget to delete dynamic array(s)!
+
+.. _md-arr-pitfall:
+
+Pitfalls
+========
+
+::
+
+  // bad local array declaration
+  int arr[rows][cols];  // rows and cols are not compilation-time constants
+  int arr[][];
+  int arr[2][];
+  int arr[][3];
+
+  // bad dynamic array related
+  int **arr = new int[2][3];  // cannot use more than one pair of [] with new
+  delete arr;  // missing []
+  delete [2][3] arr;
+  delete [][] arr;
+  delete arr[2][3];
+
+  // bad function declarations that take local array parameters
+  void func1(int arr[][], int rows, int cols);
+  void func1(int arr[2][], int rows, int cols);
+  void func1(int arr[rows][cols], int rows, int cols);
+
+
+  // bad function declarations that take dynamic array parameters
+  void func1(int *arr[], int rows, int cols);

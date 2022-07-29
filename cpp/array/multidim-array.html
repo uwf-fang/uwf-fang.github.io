@@ -46,8 +46,8 @@
             
   <section id="multidimensional-array">
 <h1>Multidimensional Array<a class="headerlink" href="#multidimensional-array" title="Permalink to this headline">¶</a></h1>
-<section id="general-concepts">
-<h2>General Concepts<a class="headerlink" href="#general-concepts" title="Permalink to this headline">¶</a></h2>
+<section id="general-multidimensional-array">
+<h2>General Multidimensional Array<a class="headerlink" href="#general-multidimensional-array" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p>Multidimensional arrays - arrays of arrays</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span><span class="w">  </span><span class="c1">// 1d local array</span>
@@ -91,7 +91,7 @@
   first:f9 -&gt; sec9:s0:w;
 }" class="graphviz" /></div>
 <figcaption>
-<p><span class="caption-text">int matrix[10][10]</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<p><span class="caption-text">int matrix[10][10];  // a local 10 x 10 2D array</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 </section>
@@ -142,7 +142,11 @@
 </li>
 <li><p>2d array as a function parameter</p>
 <ol class="arabic">
-<li><p>pass a 2 x 3 local array</p>
+<li><p>pass a 2 x 3 <strong>local</strong> array</p>
+<ul class="simple">
+<li><p>Declared like <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">a1[2][3];</span></code></p></li>
+<li><p>Not useful in real projects because of the limitation on dimension</p></li>
+</ul>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// ---- wrong ----</span>
 <span class="linenos"> 2</span><span class="kt">void</span><span class="w"> </span><span class="nf">matrixOp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">matrix</span><span class="p">[</span><span class="n">rows</span><span class="p">][</span><span class="n">cols</span><span class="p">],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">);</span><span class="w"></span>
 <span class="linenos"> 3</span><span class="kt">void</span><span class="w"> </span><span class="nf">matrixOp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">matrix</span><span class="p">[][],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">);</span><span class="w"></span>
@@ -166,7 +170,8 @@
 </pre></div>
 </div>
 </li>
-<li><p>passing a dynamic array, a much nicer solution  <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">**dyArr1</span></code></p>
+<li><p>passing a <strong>dynamic</strong> array, a much nicer solution
++ declared like <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">**dyArr1</span></code></p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// correct version 1</span>
 <span class="linenos"> 2</span><span class="kt">void</span><span class="w"> </span><span class="nf">matrixOp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="n">matrix</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="linenos"> 3</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">rows</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
@@ -174,7 +179,7 @@
 <span class="linenos"> 5</span><span class="w">      </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">;</span><span class="w">  </span><span class="c1">// same syntax as local array</span>
 <span class="linenos"> 6</span><span class="p">}</span><span class="w"></span>
 <span class="linenos"> 7</span><span class="c1">// correct version 2</span>
-<span class="linenos"> 8</span><span class="kt">void</span><span class="w"> </span><span class="nf">matrixOp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">matrix</span><span class="p">[],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="kt">void</span><span class="w"> </span><span class="nf">matrixOp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">matrix</span><span class="p">[],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">);</span><span class="w"></span>
 <span class="linenos"> 9</span>
 <span class="linenos">10</span><span class="c1">// to call the function</span>
 <span class="linenos">11</span><span class="kt">int</span><span class="w"> </span><span class="o">**</span><span class="n">dyArr1</span><span class="p">;</span><span class="w"></span>
@@ -194,7 +199,7 @@
 </ol>
 </li>
 <li><p>Returning a Multidimensional array from a function</p>
-<p>Just make dynamic array and return the pointer:</p>
+<p>Just make a dynamic array and return the pointer:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kt">int</span><span class="w"> </span><span class="o">**</span><span class="nf">createMatrix</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w"></span>
 <span class="linenos"> 2</span>
 <span class="linenos"> 3</span><span class="kt">int</span><span class="w"> </span><span class="o">**</span><span class="nf">createMatrix</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
@@ -224,7 +229,37 @@
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
+<p>This is the only option to return an array! Never return a local array!</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
 <p>Never forget to delete dynamic array(s)!</p>
+</div>
+</section>
+<section id="pitfalls">
+<span id="md-arr-pitfall"></span><h2>Pitfalls<a class="headerlink" href="#pitfalls" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// bad local array declaration</span>
+<span class="linenos"> 2</span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="n">rows</span><span class="p">][</span><span class="n">cols</span><span class="p">];</span><span class="w">  </span><span class="c1">// rows and cols are not compilation-time constants</span>
+<span class="linenos"> 3</span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[][];</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="mi">2</span><span class="p">][];</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[][</span><span class="mi">3</span><span class="p">];</span><span class="w"></span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="c1">// bad dynamic array related</span>
+<span class="linenos"> 8</span><span class="kt">int</span><span class="w"> </span><span class="o">**</span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">];</span><span class="w">  </span><span class="c1">// cannot use more than one pair of [] with new</span>
+<span class="linenos"> 9</span><span class="k">delete</span><span class="w"> </span><span class="n">arr</span><span class="p">;</span><span class="w">  </span><span class="c1">// missing []</span>
+<span class="linenos">10</span><span class="k">delete</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="n">arr</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">11</span><span class="k">delete</span><span class="w"> </span><span class="p">[][]</span><span class="w"> </span><span class="n">arr</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">12</span><span class="k">delete</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="c1">// bad function declarations that take local array parameters</span>
+<span class="linenos">15</span><span class="kt">void</span><span class="w"> </span><span class="nf">func1</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[][],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">16</span><span class="kt">void</span><span class="w"> </span><span class="nf">func1</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="mi">2</span><span class="p">][],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">17</span><span class="kt">void</span><span class="w"> </span><span class="nf">func1</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="n">rows</span><span class="p">][</span><span class="n">cols</span><span class="p">],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">18</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span><span class="c1">// bad function declarations that take dynamic array parameters</span>
+<span class="linenos">21</span><span class="kt">void</span><span class="w"> </span><span class="nf">func1</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">arr</span><span class="p">[],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">rows</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">cols</span><span class="p">);</span><span class="w"></span>
+</pre></div>
 </div>
 </section>
 </section>
@@ -240,8 +275,9 @@
     <h3><a href="../../index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">Multidimensional Array</a><ul>
-<li><a class="reference internal" href="#general-concepts">General Concepts</a></li>
+<li><a class="reference internal" href="#general-multidimensional-array">General Multidimensional Array</a></li>
 <li><a class="reference internal" href="#two-dimensional-array">Two dimensional array</a></li>
+<li><a class="reference internal" href="#pitfalls">Pitfalls</a></li>
 </ul>
 </li>
 </ul>
