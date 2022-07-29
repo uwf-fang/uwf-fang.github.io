@@ -90,10 +90,12 @@ When the braces are used, the initialization will use the values as items. Must
 use parentheses when triggering other constructors.
 
 * ``vector<int> v{1, 2, 3, 4, 5}`` size 5 vector with values
-* ``vector<int> v = {1, 2, 3, 4, 5}`` size 5 vector with values
-* ``vector<int> v(5)`` size 5 vector with 0s, ``v{5}`` will make a size 1 vector
-* ``vector<int> v(5, 1)`` size 5 vector with 1s, ``v{5, 1}`` will make a size 2
+* ``vector<int> v = {1, 2, 3, 4, 5}`` size 5 vector with values, **preferred
+  for sequence initialization**
+* ``vector<int> v(5)`` size 5 vector with 0s, ``v{5}`` will make a size 1
   vector
+* ``vector<int> v(5, 1)`` size 5 vector with 1s, **warning:** ``v{5, 1}`` will
+  make a size 2 vector instead
 * ``vector<int> v1(v)`` make a copy of v
 
 Passing vector around
@@ -156,7 +158,7 @@ Algorithms
         return result;
       }
 
-.. vector-pitfalls:
+.. _vector-pitfalls:
 
 Pitfalls
 --------

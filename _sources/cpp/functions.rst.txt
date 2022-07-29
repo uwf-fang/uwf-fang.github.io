@@ -13,12 +13,12 @@ Purpose
   * unique name for a code block
 
 + code reuse, write once, use many times
-+ affect outside world
++ affect the outside world
 
   * return value
   * modify parameter (reference or pointer parameters)
   * input/output
-  * modify global variables (AVOID!)
+  * modify global variables (**AVOID!**)
 
 Syntax
 ======
@@ -41,7 +41,6 @@ Declaration
 
 Definition (implementation)
 ---------------------------
-
 * prefer to put in the cpp file
 * must have parameter names
 * default values are ignored
@@ -49,10 +48,30 @@ Definition (implementation)
 
 Function call
 -------------
+* must be either declared or defined before the function call
 * matching mechanism
 * parameter passing is like initialization
 
   - type conversion will happen
+
+Function Pitfalls
+-----------------
+* Declaration/definition after call
+* Default value in definition
+* No parameter name in definition
+* Type of parameter in function call
+
+::
+
+    // ==== functions ====
+
+    // ---- wrong definitions ----
+    void func1(int val = 10) { ... }
+    void func1(int) { ... }
+
+    // ---- wrong function calls ----
+    func1(int a);
+
 
 Function examples
 =================
@@ -94,9 +113,9 @@ Scope
 + Definition: The life span of an entity (variable, function, type, etc.)
 + local scope to a function: local variables and formal parameters
 
-  * NEVER return a local variable by reference or pointer!
-  * NEVER return a local array (only pointer will be passed out, the array
-    content will not)! Return a dynamic array instead.
+  * **NEVER return a local variable by reference or pointer!**
+  * **NEVER return a local array (only pointer will be passed out, the array
+    content will not)! Return a dynamic array instead.**
 
 + Code block based scope
 
@@ -170,16 +189,19 @@ need conversion.
 
 ::
 
+  // Wrong
   // both do not need type conversion.
   // func1(1); call is ambiguous with
   void func1(int);
   void func1(int, int = 1);
 
+  // Wrong
   // both need type conversion
   // func2(2, 3); call is ambiguous with
   void func2(int, double);
   void func2(double, int);
 
+  // Correct
   // first do not need type conversion
   // second need type conversion
   // func2(2, 3.0); call is fine with

@@ -38,15 +38,14 @@ Array Type
 
   * to declare a local array ``int arr[10];``
 
-    - size must be specified (empty [] not allowed) except size inference with
-      initialization
-    - size must be compilation time constant
+    - size must be specified (empty [] not allowed) except with size inference
+      with initialization
+    - size must be a compilation time constant (check :ref:`arr-example`)
 
   + to refer to an element in the list ``arr[n]``
 
     - no out-of-range check
-    - a simplified syntax of the pointer syntax ``*(arr + n)`` is same as
-      ``arr[n]``
+    - it is a simplified syntax of the equivalent pointer syntax ``*(arr + n)``
 
 + size handling
 
@@ -60,15 +59,17 @@ Array Type
 
 + initialization
 
-  * automatic size inference by compiler ``int arr[] = {1, 2, 3}``
-  * fill with 0 if provided values are not enough
+  * automatic size inference by the compiler ``int arr[] = {1, 2, 3}``
+  * **fill with 0** if provided values are less than the size
 
-+ Pitfalls
++ Array pitfalls
 
   * out-of-range index
   * incorrect size handling
   * Java syntax ``int [] arr`` or ``int arr[]``
   * returning a local array from a function
+
+.. _arr-example:
 
 Example
 =======
@@ -123,11 +124,14 @@ Example
   cin >> size;
   int arr[size];
 
+  // bad/no size
+  int arr[3.0];
+
   // Java syntax
   int [] arr1;
   int arr1[];
 
-  // out-of-range
+  // out-of-range access
   int arr[100];
   cout << arr[100];
 
@@ -146,7 +150,7 @@ Pointer syntaxes for array
   int *arr2 = arr1 + 1;
 
   // &arr1[0] is same as arr1
-  // arr2 is an array sharing data with arr1
+  // arr2 can be used as an array sharing data with arr1
   // arr2 have a max size of 3
   // arr2[0] is the same as arr1[1]
   cout << arr1[1] << endl;  // get 2

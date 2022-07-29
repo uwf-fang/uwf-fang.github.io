@@ -42,12 +42,13 @@ Types
 + Derived types - Types that are derived from other data-types.
 
   * :doc:`pointer type </cpp/variable-type/pointer>`
-  * :doc:`array type </cpp/array/array>`
+  * :doc:`array type </cpp/array/array-basics>`
   * :doc:`reference type </cpp/ref/ref-basics>`
 
 + Class templates
 
-  Class templates can be instantiated by specifying the template arguments to generate class types.
+  Class templates can be instantiated by specifying the template arguments to
+  generate class types.
 
   * The template itself is not a type or class
   * E.g. ``vector`` is a template while ``vector<int>`` is a type
@@ -85,7 +86,7 @@ Variables
     double count = 1.5;  // name not matches the purpose
     int NUMBER;  // not following naming convention
 
-+ declaration
++ declaration - must be declared before being referred
 + initialization
 
   * assignment during declaration
@@ -131,19 +132,20 @@ Assignment
 ==========
 
 + ``=`` operator
-+ lvalue - something that points to a stable memory address
++ lvalue - something that binds to a stable memory address
 
   * variables
   * references
 
-+ rvalue - something that does not point to a stable memory address
++ rvalue - something that does not bind to a stable memory address
 
   * temporary and short-lived
   * literals
   * compound expressions e.g. ``x + y``
-  * temporary object
+  * temporary object e.g. ``string(argv[0])``
 
-+ assignment operation requires an lvalue on the left and an rvalue on the right
++ assignment operation requires an lvalue on the left and an rvalue on the
+  right
 + short-handed assignment operators
 
   * ``+=``
@@ -187,6 +189,7 @@ Conversion and Type casting
 + Type casting (explicit)
 
   * explicit type casting ``static_cast<NewType>(variable)``
+  * **Avoid C style type conversion** like ``(int) doubleValue``
 
 ::
 
@@ -235,11 +238,23 @@ Expressions
     - assignment
     - other: ``::``, ``<<``, ``>>``, ``&``, ``*``, ``.``, ``->``
 
++ Precedence rule (order of evaluation, arithmetic, relational, and logic only)
+
+  #. ``()``
+  #. ``!`` logical negation
+  #. ``-`` arithmetic negation
+  #. ``*, /, %`` arithmetic multiplication, division, and modulo
+  #. ``+, -`` arithmetic addition, subtraction
+  #. ``>, <, >=, <=`` relational
+  #. ``==, !=`` relational
+  #. ``&&`` logical and
+  #. ``||`` logical or
+
 + Pitfalls
 
   * ``=`` vs ``==``
   * relational ``&& ||`` vs bit-wise ``& |``
-  * % on non-int
+  * ``%`` on non-int
   * lose precision in integer division
   * chained range check ``1 < a < 10``
   * bool vs int, asymmetric interconversion
@@ -316,3 +331,14 @@ Expressions
       ">" -- {"c", "\'b\'"};
       "\%" -- {"d", "2"};
     }
+
+.. glossary::
+
+  lvalue
+    An expression that binds to a specific memory address
+
+  rvalue
+    An expression that does not bind to any specific memory address
+
+  expression
+    Text representations in source code of something that evaluates to a value

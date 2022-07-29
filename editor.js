@@ -36,14 +36,19 @@ function textAreaKeyHandler(e) {
         var indentedText = '  ';
         var lines;
         // add indentation to each selected lines
-        selectedText = this.value.substring(start, end + 1);
-        lines = selectedText.split('\n');
-        indentedText = lines.map(x => '  ' + x).join('\n');
-        this.value = this.value.substring(0, start) +
+        if (start === end) {
+            this.value = this.value.substring(0, start) +
             indentedText + this.value.substring(end);
+        }
+        else {
+            selectedText = this.value.substring(start, end + 1);
+            lines = selectedText.split('\n');
+            indentedText = lines.map(x => '  ' + x).join('\n');
+            this.value = this.value.substring(0, start) +
+                indentedText + this.value.substring(end);
+        }
         // put caret at right position again
-        this.selectionStart =
-            this.selectionEnd = start + 2;
+        this.selectionStart = this.selectionEnd = start + indentedText.length;
     }
 }
 

@@ -56,12 +56,12 @@
 </ul>
 </li>
 <li><p>code reuse, write once, use many times</p></li>
-<li><p>affect outside world</p>
+<li><p>affect the outside world</p>
 <ul>
 <li><p>return value</p></li>
 <li><p>modify parameter (reference or pointer parameters)</p></li>
 <li><p>input/output</p></li>
-<li><p>modify global variables (AVOID!)</p></li>
+<li><p>modify global variables (<strong>AVOID!</strong>)</p></li>
 </ul>
 </li>
 </ul>
@@ -102,6 +102,7 @@
 <section id="function-call">
 <h3>Function call<a class="headerlink" href="#function-call" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
+<li><p>must be either declared or defined before the function call</p></li>
 <li><p>matching mechanism</p></li>
 <li><p>parameter passing is like initialization</p>
 <ul>
@@ -109,6 +110,25 @@
 </ul>
 </li>
 </ul>
+</section>
+<section id="function-pitfalls">
+<h3>Function Pitfalls<a class="headerlink" href="#function-pitfalls" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Declaration/definition after call</p></li>
+<li><p>Default value in definition</p></li>
+<li><p>No parameter name in definition</p></li>
+<li><p>Type of parameter in function call</p></li>
+</ul>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1">// ==== functions ====</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="c1">// ---- wrong definitions ----</span>
+<span class="linenos">4</span><span class="kt">void</span><span class="w"> </span><span class="nf">func1</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">5</span><span class="kt">void</span><span class="w"> </span><span class="nf">func1</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">6</span>
+<span class="linenos">7</span><span class="c1">// ---- wrong function calls ----</span>
+<span class="linenos">8</span><span class="n">func1</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
 </section>
 </section>
 <section id="function-examples">
@@ -151,9 +171,9 @@
 <li><p>Definition: The life span of an entity (variable, function, type, etc.)</p></li>
 <li><p>local scope to a function: local variables and formal parameters</p>
 <ul class="simple">
-<li><p>NEVER return a local variable by reference or pointer!</p></li>
-<li><p>NEVER return a local array (only pointer will be passed out, the array
-content will not)! Return a dynamic array instead.</p></li>
+<li><p><strong>NEVER return a local variable by reference or pointer!</strong></p></li>
+<li><p><strong>NEVER return a local array (only pointer will be passed out, the array
+content will not)! Return a dynamic array instead.</strong></p></li>
 </ul>
 </li>
 <li><p>Code block based scope</p>
@@ -225,21 +245,24 @@ parameter names will not be valid overloading.</p>
 affect function call matching. Any ambiguous function call will cause an syntax
 error. Calls that need type conversion will not conflict with calls that do not
 need conversion.</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// both do not need type conversion.</span>
-<span class="linenos"> 2</span><span class="c1">// func1(1); call is ambiguous with</span>
-<span class="linenos"> 3</span><span class="kt">void</span><span class="w"> </span><span class="nf">func1</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span><span class="w"></span>
-<span class="linenos"> 4</span><span class="kt">void</span><span class="w"> </span><span class="nf">func1</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<span class="linenos"> 5</span>
-<span class="linenos"> 6</span><span class="c1">// both need type conversion</span>
-<span class="linenos"> 7</span><span class="c1">// func2(2, 3); call is ambiguous with</span>
-<span class="linenos"> 8</span><span class="kt">void</span><span class="w"> </span><span class="nf">func2</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="p">);</span><span class="w"></span>
-<span class="linenos"> 9</span><span class="kt">void</span><span class="w"> </span><span class="nf">func2</span><span class="p">(</span><span class="kt">double</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">10</span>
-<span class="linenos">11</span><span class="c1">// first do not need type conversion</span>
-<span class="linenos">12</span><span class="c1">// second need type conversion</span>
-<span class="linenos">13</span><span class="c1">// func2(2, 3.0); call is fine with</span>
-<span class="linenos">14</span><span class="kt">void</span><span class="w"> </span><span class="nf">func2</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">15</span><span class="kt">void</span><span class="w"> </span><span class="nf">func2</span><span class="p">(</span><span class="kt">double</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// Wrong</span>
+<span class="linenos"> 2</span><span class="c1">// both do not need type conversion.</span>
+<span class="linenos"> 3</span><span class="c1">// func1(1); call is ambiguous with</span>
+<span class="linenos"> 4</span><span class="kt">void</span><span class="w"> </span><span class="nf">func1</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="kt">void</span><span class="w"> </span><span class="nf">func1</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="c1">// Wrong</span>
+<span class="linenos"> 8</span><span class="c1">// both need type conversion</span>
+<span class="linenos"> 9</span><span class="c1">// func2(2, 3); call is ambiguous with</span>
+<span class="linenos">10</span><span class="kt">void</span><span class="w"> </span><span class="nf">func2</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">11</span><span class="kt">void</span><span class="w"> </span><span class="nf">func2</span><span class="p">(</span><span class="kt">double</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="c1">// Correct</span>
+<span class="linenos">14</span><span class="c1">// first do not need type conversion</span>
+<span class="linenos">15</span><span class="c1">// second need type conversion</span>
+<span class="linenos">16</span><span class="c1">// func2(2, 3.0); call is fine with</span>
+<span class="linenos">17</span><span class="kt">void</span><span class="w"> </span><span class="nf">func2</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">18</span><span class="kt">void</span><span class="w"> </span><span class="nf">func2</span><span class="p">(</span><span class="kt">double</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
@@ -290,6 +313,7 @@ The C++ language has a block-based scope</p>
 <li><a class="reference internal" href="#declaration">Declaration</a></li>
 <li><a class="reference internal" href="#definition-implementation">Definition (implementation)</a></li>
 <li><a class="reference internal" href="#function-call">Function call</a></li>
+<li><a class="reference internal" href="#function-pitfalls">Function Pitfalls</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#function-examples">Function examples</a></li>

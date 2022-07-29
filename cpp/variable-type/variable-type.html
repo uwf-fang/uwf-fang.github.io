@@ -100,12 +100,13 @@
 <li><p>Derived types - Types that are derived from other data-types.</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="pointer.html"><span class="doc">pointer type</span></a></p></li>
-<li><p><a class="reference internal" href="../array/array.html"><span class="doc">array type</span></a></p></li>
+<li><p><a class="reference internal" href="../array/array-basics.html"><span class="doc">array type</span></a></p></li>
 <li><p><a class="reference internal" href="../ref/ref-basics.html"><span class="doc">reference type</span></a></p></li>
 </ul>
 </li>
 <li><p>Class templates</p>
-<p>Class templates can be instantiated by specifying the template arguments to generate class types.</p>
+<p>Class templates can be instantiated by specifying the template arguments to
+generate class types.</p>
 <ul class="simple">
 <li><p>The template itself is not a type or class</p></li>
 <li><p>E.g. <code class="docutils literal notranslate"><span class="pre">vector</span></code> is a template while <code class="docutils literal notranslate"><span class="pre">vector&lt;int&gt;</span></code> is a type</p></li>
@@ -145,7 +146,7 @@
 </pre></div>
 </div>
 </li>
-<li><p>declaration</p></li>
+<li><p>declaration - must be declared before being referred</p></li>
 <li><p>initialization</p>
 <ul class="simple">
 <li><p>assignment during declaration</p></li>
@@ -193,21 +194,22 @@ string literal</p></li>
 <h2>Assignment<a class="headerlink" href="#assignment" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">=</span></code> operator</p></li>
-<li><p>lvalue - something that points to a stable memory address</p>
+<li><p>lvalue - something that binds to a stable memory address</p>
 <ul>
 <li><p>variables</p></li>
 <li><p>references</p></li>
 </ul>
 </li>
-<li><p>rvalue - something that does not point to a stable memory address</p>
+<li><p>rvalue - something that does not bind to a stable memory address</p>
 <ul>
 <li><p>temporary and short-lived</p></li>
 <li><p>literals</p></li>
 <li><p>compound expressions e.g. <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">+</span> <span class="pre">y</span></code></p></li>
-<li><p>temporary object</p></li>
+<li><p>temporary object e.g. <code class="docutils literal notranslate"><span class="pre">string(argv[0])</span></code></p></li>
 </ul>
 </li>
-<li><p>assignment operation requires an lvalue on the left and an rvalue on the right</p></li>
+<li><p>assignment operation requires an lvalue on the left and an rvalue on the
+right</p></li>
 <li><p>short-handed assignment operators</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">+=</span></code></p></li>
@@ -254,6 +256,7 @@ lager range, a.k.a. widen)</p></li>
 <li><p>Type casting (explicit)</p>
 <ul>
 <li><p>explicit type casting <code class="docutils literal notranslate"><span class="pre">static_cast&lt;NewType&gt;(variable)</span></code></p></li>
+<li><p><strong>Avoid C style type conversion</strong> like <code class="docutils literal notranslate"><span class="pre">(int)</span> <span class="pre">doubleValue</span></code></p></li>
 </ul>
 </li>
 </ul>
@@ -308,11 +311,24 @@ lager range, a.k.a. widen)</p></li>
 </li>
 </ul>
 </li>
+<li><p>Precedence rule (order of evaluation, arithmetic, relational, and logic only)</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">!</span></code> logical negation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-</span></code> arithmetic negation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">*,</span> <span class="pre">/,</span> <span class="pre">%</span></code> arithmetic multiplication, division, and modulo</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">+,</span> <span class="pre">-</span></code> arithmetic addition, subtraction</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&gt;,</span> <span class="pre">&lt;,</span> <span class="pre">&gt;=,</span> <span class="pre">&lt;=</span></code> relational</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">==,</span> <span class="pre">!=</span></code> relational</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code> logical and</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">||</span></code> logical or</p></li>
+</ol>
+</li>
 <li><p>Pitfalls</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">=</span></code> vs <code class="docutils literal notranslate"><span class="pre">==</span></code></p></li>
 <li><p>relational <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span> <span class="pre">||</span></code> vs bit-wise <code class="docutils literal notranslate"><span class="pre">&amp;</span> <span class="pre">|</span></code></p></li>
-<li><p>% on non-int</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">%</span></code> on non-int</p></li>
 <li><p>lose precision in integer division</p></li>
 <li><p>chained range check <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">&lt;</span> <span class="pre">a</span> <span class="pre">&lt;</span> <span class="pre">10</span></code></p></li>
 <li><p>bool vs int, asymmetric interconversion</p>
@@ -387,6 +403,14 @@ lager range, a.k.a. widen)</p></li>
 }" class="graphviz" /></div>
 </li>
 </ul>
+<dl class="glossary simple">
+<dt id="term-lvalue">lvalue<a class="headerlink" href="#term-lvalue" title="Permalink to this term">¶</a></dt><dd><p>An expression that binds to a specific memory address</p>
+</dd>
+<dt id="term-rvalue">rvalue<a class="headerlink" href="#term-rvalue" title="Permalink to this term">¶</a></dt><dd><p>An expression that does not bind to any specific memory address</p>
+</dd>
+<dt id="term-expression">expression<a class="headerlink" href="#term-expression" title="Permalink to this term">¶</a></dt><dd><p>Text representations in source code of something that evaluates to a value</p>
+</dd>
+</dl>
 </section>
 </section>
 

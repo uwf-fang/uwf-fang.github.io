@@ -16,7 +16,9 @@
     <script src="../../_static/doctools.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/cpp/array/array.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Ref type vs pointer type" href="../ref/ref-vs-ptr.html" />
+    <link rel="prev" title="Pointer Type" href="../variable-type/pointer.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -24,7 +26,15 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../ref/ref-vs-ptr.html" title="Ref type vs pointer type"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../variable-type/pointer.html" title="Pointer Type"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch05.html" accesskey="U">Chapter 5 Pointer and Memory Management</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Array Type</a></li> 
       </ul>
     </div>  
@@ -75,9 +85,9 @@ type</p></li>
 <ul class="simple">
 <li><p>to declare a local array <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">arr[10];</span></code></p>
 <ul>
-<li><p>size must be specified (empty [] not allowed) except size inference with
-initialization</p></li>
-<li><p>size must be compilation time constant</p></li>
+<li><p>size must be specified (empty [] not allowed) except with size inference
+with initialization</p></li>
+<li><p>size must be a compilation time constant (check <a class="reference internal" href="#arr-example"><span class="std std-ref">Example</span></a>)</p></li>
 </ul>
 </li>
 </ul>
@@ -85,8 +95,7 @@ initialization</p></li>
 <li><p>to refer to an element in the list <code class="docutils literal notranslate"><span class="pre">arr[n]</span></code></p>
 <ul>
 <li><p>no out-of-range check</p></li>
-<li><p>a simplified syntax of the pointer syntax <code class="docutils literal notranslate"><span class="pre">*(arr</span> <span class="pre">+</span> <span class="pre">n)</span></code> is same as
-<code class="docutils literal notranslate"><span class="pre">arr[n]</span></code></p></li>
+<li><p>it is a simplified syntax of the equivalent pointer syntax <code class="docutils literal notranslate"><span class="pre">*(arr</span> <span class="pre">+</span> <span class="pre">n)</span></code></p></li>
 </ul>
 </li>
 </ul>
@@ -107,11 +116,11 @@ initialization</p></li>
 </li>
 <li><p>initialization</p>
 <ul class="simple">
-<li><p>automatic size inference by compiler <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">arr[]</span> <span class="pre">=</span> <span class="pre">{1,</span> <span class="pre">2,</span> <span class="pre">3}</span></code></p></li>
-<li><p>fill with 0 if provided values are not enough</p></li>
+<li><p>automatic size inference by the compiler <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">arr[]</span> <span class="pre">=</span> <span class="pre">{1,</span> <span class="pre">2,</span> <span class="pre">3}</span></code></p></li>
+<li><p><strong>fill with 0</strong> if provided values are less than the size</p></li>
 </ul>
 </li>
-<li><p>Pitfalls</p>
+<li><p>Array pitfalls</p>
 <ul class="simple">
 <li><p>out-of-range index</p></li>
 <li><p>incorrect size handling</p></li>
@@ -122,7 +131,7 @@ initialization</p></li>
 </ul>
 </section>
 <section id="example">
-<h1>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h1>
+<span id="arr-example"></span><h1>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h1>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// ==== Array ====</span>
 <span class="linenos"> 2</span>
 <span class="linenos"> 3</span><span class="c1">// ---- Correct ----</span>
@@ -171,13 +180,16 @@ initialization</p></li>
 <span class="linenos">46</span><span class="n">cin</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"></span>
 <span class="linenos">47</span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="n">size</span><span class="p">];</span><span class="w"></span>
 <span class="linenos">48</span>
-<span class="linenos">49</span><span class="c1">// Java syntax</span>
-<span class="linenos">50</span><span class="kt">int</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="n">arr1</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">51</span><span class="kt">int</span><span class="w"> </span><span class="n">arr1</span><span class="p">[];</span><span class="w"></span>
-<span class="linenos">52</span>
-<span class="linenos">53</span><span class="c1">// out-of-range</span>
-<span class="linenos">54</span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span><span class="w"></span>
-<span class="linenos">55</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">49</span><span class="c1">// bad/no size</span>
+<span class="linenos">50</span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="mf">3.0</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">51</span>
+<span class="linenos">52</span><span class="c1">// Java syntax</span>
+<span class="linenos">53</span><span class="kt">int</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="n">arr1</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">54</span><span class="kt">int</span><span class="w"> </span><span class="n">arr1</span><span class="p">[];</span><span class="w"></span>
+<span class="linenos">55</span>
+<span class="linenos">56</span><span class="c1">// out-of-range access</span>
+<span class="linenos">57</span><span class="kt">int</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">58</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
@@ -192,7 +204,7 @@ initialization</p></li>
 <span class="linenos">2</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">arr2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arr1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
 <span class="linenos">3</span>
 <span class="linenos">4</span><span class="c1">// &amp;arr1[0] is same as arr1</span>
-<span class="linenos">5</span><span class="c1">// arr2 is an array sharing data with arr1</span>
+<span class="linenos">5</span><span class="c1">// arr2 can be used as an array sharing data with arr1</span>
 <span class="linenos">6</span><span class="c1">// arr2 have a max size of 3</span>
 <span class="linenos">7</span><span class="c1">// arr2[0] is the same as arr1[1]</span>
 <span class="linenos">8</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">arr1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w">  </span><span class="c1">// get 2</span>
@@ -216,6 +228,16 @@ initialization</p></li>
 <li><a class="reference internal" href="#pointer-syntaxes-for-array">Pointer syntaxes for array</a></li>
 </ul>
 
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../variable-type/pointer.html"
+                          title="previous chapter">Pointer Type</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../ref/ref-vs-ptr.html"
+                          title="next chapter">Ref type vs pointer type</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -244,7 +266,15 @@ initialization</p></li>
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="../ref/ref-vs-ptr.html" title="Ref type vs pointer type"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../variable-type/pointer.html" title="Pointer Type"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch05.html" >Chapter 5 Pointer and Memory Management</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Array Type</a></li> 
       </ul>
     </div>
