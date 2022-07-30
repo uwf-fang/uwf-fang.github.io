@@ -39,6 +39,7 @@ function textAreaKeyHandler(e) {
         if (start === end) {
             this.value = this.value.substring(0, start) +
             indentedText + this.value.substring(end);
+            this.selectionStart = start + indentedText.length;
         }
         else {
             selectedText = this.value.substring(start, end + 1);
@@ -46,9 +47,10 @@ function textAreaKeyHandler(e) {
             indentedText = lines.map(x => '  ' + x).join('\n');
             this.value = this.value.substring(0, start) +
                 indentedText + this.value.substring(end);
+            this.selectionStart = start;
         }
         // put caret at right position again
-        this.selectionStart = this.selectionEnd = start + indentedText.length;
+        this.selectionEnd = start + indentedText.length;
     }
 }
 
