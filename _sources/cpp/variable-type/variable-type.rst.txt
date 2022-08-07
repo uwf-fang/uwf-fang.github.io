@@ -132,13 +132,15 @@ Assignment
 ==========
 
 + ``=`` operator
-+ lvalue - something that binds to a stable memory address
++ lvalue
 
+  * something that binds to a defined memory address
   * variables
   * references
 
-+ rvalue - something that does not bind to a stable memory address
++ rvalue
 
+  * something that does not bind to a defined memory address
   * temporary and short-lived
   * literals
   * compound expressions e.g. ``x + y``
@@ -224,19 +226,25 @@ Expressions
 ===========
 + operators
 
-  * types
+  * arithmetic
+  * increase, decrease: ``++``, ``--``
 
-    - arithmetic
-    - increase, decrease: ``++``, ``--``
+    - prefix vs suffix
+    - requires an lvalue
 
-      * prefix vs suffix
-      * requires an lvalue
+  * relational
+  * logic
 
-    - relational
-    - logic
-    - bit-wise
-    - assignment
-    - other: ``::``, ``<<``, ``>>``, ``&``, ``*``, ``.``, ``->``
+    - short circuit evaluation
+
+      In the evaluation of logical expression with binary logical operators
+      (&& and ||), the operands are evaluated from left to right. If the
+      value of the right operand does not affect the result, it will be
+      skipped in the evaluation.
+
+  * bit-wise
+  * assignment
+  * other operator: ``::``, ``<<``, ``>>``, ``&``, ``*``, ``.``, ``->``
 
 + Precedence rule (order of evaluation, arithmetic, relational, and logic only)
 
@@ -332,13 +340,37 @@ Expressions
       "\%" -- {"d", "2"};
     }
 
+Core Concepts
+=============
+
 .. glossary::
 
-  lvalue
-    An expression that binds to a specific memory address
+  Identifier
+    User defined names
 
-  rvalue
-    An expression that does not bind to any specific memory address
+  Reserved word (keyword)
+    Names used by the language
 
-  expression
+  Variable
+    A named container to store a value
+
+  Type
+    Storage format supported by the language
+
+  Variable initialization
+    Providing initial value to a variable when it is declared
+
+  Literal
+    Textual representation of fixed-values used in source code
+
+  Lvalue
+    An expression that binds to a defined memory address
+
+  Rvalue
+    An expression that does not bind to any defined memory address
+
+  Expression
     Text representations in source code of something that evaluates to a value
+
+  Precedence rule
+    The order of evaluation of operators in an expression

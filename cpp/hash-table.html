@@ -50,8 +50,9 @@
 <p>Hash table uses hashing to implement a data structure that maps a key to an
 index so the value can be stored in the corresponding location (a bucket) in a
 sequential data structure like an array.</p>
-<p><strong>Quick question:</strong> why linked list is not a good way to store buckets in a hash
-table?</p>
+<p><strong>Quick question:</strong> why linked-list is not a good way to store buckets in a
+hash table? (Because the most frequent usage is to access by index, which is
+slow with linked-list data structure)</p>
 <section id="characteristics">
 <h2>Characteristics<a class="headerlink" href="#characteristics" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
@@ -67,33 +68,36 @@ table?</p>
 <h2>Hash function for hash tables<a class="headerlink" href="#hash-function-for-hash-tables" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(h(x)\)</span></p></li>
-<li><p>any key type mapping to integer from 0 to N - 1 (indices)</p></li>
+<li><p>any key type mapping to integer from 0 to N - 1 (indices in a size N array)</p></li>
 <li><p>modulo operator on any integer generating hash function</p></li>
 </ul>
 </section>
 <section id="collision-resolution">
 <h2>Collision resolution<a class="headerlink" href="#collision-resolution" title="Permalink to this headline">¶</a></h2>
+<p>Methods to handle collision when multiple keys are mapped to a same bucket.</p>
 <section id="chaining">
 <h3>Chaining<a class="headerlink" href="#chaining" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>each bucket is a linked list to store multiple values (chained)</p></li>
 <li><p>Nodes in the linked-list keeps key, value and next pointer</p></li>
 <li><p>unlimited storage space</p></li>
+<li><p>Performance degradation when over-filled</p></li>
 </ul>
 </section>
 <section id="open-addressing">
 <h3>Open addressing<a class="headerlink" href="#open-addressing" title="Permalink to this headline">¶</a></h3>
 <ul>
-<li><p>find another available bucket to store the value</p></li>
+<li><p>find another available bucket to store the value when a collision occurs</p></li>
 <li><p>probing sequence: the sequence of the buckets to check when collision happens</p></li>
 <li><p>linear probing:</p>
-<p><span class="math notranslate nohighlight">\((h1(key) + C_{1} * i)) \% NUM\_BUCKETS, i = 0, 1, 2, 3 ...\)</span></p>
+<p><span class="math notranslate nohighlight">\((h1(key) + C_{1} * i) \% NUM\_BUCKETS, i = 0, 1, 2, 3 \dots\)</span></p>
 </li>
 <li><p>quadratic probing:</p>
-<p><span class="math notranslate nohighlight">\((h1(key) + C_{1} * i + C_{2} * i^2)) \% NUM\_BUCKETS, i = 0, 1, 2, 3 ...\)</span></p>
+<p><span class="math notranslate nohighlight">\((h1(key) + C_{1} * i + C_{2} * i^2) \% NUM\_BUCKETS, i = 0, 1, 2,
+3 \dots\)</span></p>
 </li>
 <li><p>double hashing probing:</p>
-<p><span class="math notranslate nohighlight">\((h1(key) + i * h2(key)) \% NUM\_BUCKETS, i = 0, 1, 2, 3 ...\)</span></p>
+<p><span class="math notranslate nohighlight">\((h1(key) + i * h2(key)) \% NUM\_BUCKETS, i = 0, 1, 2, 3 \dots\)</span></p>
 </li>
 <li><p>lookup/insertion/removal implementation</p>
 <ul class="simple">
@@ -126,7 +130,7 @@ table?</p>
 <h3>Hash set<a class="headerlink" href="#hash-set" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>implementation of the <strong>Set ADT</strong></p></li>
-<li><p>key is same as value</p></li>
+<li><p>the key is treated as value</p></li>
 <li><p>stores only keys in a hash table</p></li>
 <li><p>key is unique (no duplication)</p></li>
 <li><p>behaviors</p>
@@ -147,7 +151,7 @@ table?</p>
 <span class="linenos"> 2</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">;</span><span class="w"></span>
 <span class="linenos"> 3</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"></span>
 <span class="linenos"> 4</span><span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">next</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 5</span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
 <span class="linenos"> 6</span><span class="w">  </span><span class="n">Node</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w"></span>
 <span class="linenos"> 7</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">getKey</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w"></span>
 <span class="linenos"> 8</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">getValue</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w"></span>
@@ -155,15 +159,15 @@ table?</p>
 <span class="linenos">10</span><span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="nf">getNext</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w"></span>
 <span class="linenos">11</span><span class="p">};</span><span class="w"></span>
 <span class="linenos">12</span>
-<span class="linenos">13</span><span class="c1">// HashTable</span>
+<span class="linenos">13</span><span class="c1">// HashMap</span>
 <span class="linenos">14</span><span class="c1">// chaining</span>
-<span class="linenos">15</span><span class="k">class</span><span class="w"> </span><span class="nc">HashTable</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">15</span><span class="k">class</span><span class="w"> </span><span class="nc">HashMap</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="linenos">16</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">capacity</span><span class="p">;</span><span class="w"></span>
 <span class="linenos">17</span><span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">**</span><span class="n">buckets</span><span class="p">;</span><span class="w">  </span><span class="c1">// 1D array of pointers to linked lists</span>
 <span class="linenos">18</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">hashFunction</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">19</span><span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="linenos">20</span><span class="w">  </span><span class="n">HashTable</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">21</span><span class="w">  </span><span class="o">~</span><span class="n">HashTable</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">19</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="linenos">20</span><span class="w">  </span><span class="n">HashMap</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">21</span><span class="w">  </span><span class="o">~</span><span class="n">HashMap</span><span class="p">();</span><span class="w"></span>
 <span class="linenos">22</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w"></span>
 <span class="linenos">23</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">remove</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">);</span><span class="w"></span>
 <span class="linenos">24</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">lookUp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">);</span><span class="w"></span>
@@ -189,17 +193,17 @@ table?</p>
 <span class="linenos">14</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">getValue</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w"></span>
 <span class="linenos">15</span><span class="p">};</span><span class="w"></span>
 <span class="linenos">16</span>
-<span class="linenos">17</span><span class="c1">// HashTable</span>
+<span class="linenos">17</span><span class="c1">// HashMap</span>
 <span class="linenos">18</span><span class="c1">// Linear probing</span>
-<span class="linenos">19</span><span class="k">class</span><span class="w"> </span><span class="nc">HashTable</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">19</span><span class="k">class</span><span class="w"> </span><span class="nc">HashMap</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="linenos">20</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">capacity</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">21</span><span class="w">  </span><span class="n">Bucket</span><span class="w"> </span><span class="o">*</span><span class="n">buckets</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">21</span><span class="w">  </span><span class="n">Bucket</span><span class="w"> </span><span class="o">*</span><span class="n">buckets</span><span class="p">;</span><span class="w">  </span><span class="c1">// 1D array of buckets</span>
 <span class="linenos">22</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">hashFunction</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">);</span><span class="w"></span>
 <span class="linenos">23</span><span class="w">  </span><span class="c1">// probing algorithm</span>
 <span class="linenos">24</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">probe</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">hash</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">probed</span><span class="p">);</span><span class="w"></span>
 <span class="linenos">25</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="linenos">26</span><span class="w">  </span><span class="n">HashTable</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">27</span><span class="w">  </span><span class="o">~</span><span class="n">HashTable</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">26</span><span class="w">  </span><span class="n">HashMap</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">27</span><span class="w">  </span><span class="o">~</span><span class="n">HashMap</span><span class="p">();</span><span class="w"></span>
 <span class="linenos">28</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w"></span>
 <span class="linenos">29</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">remove</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">);</span><span class="w"></span>
 <span class="linenos">30</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">lookUp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">);</span><span class="w"></span>
@@ -219,8 +223,7 @@ hash table</p>
 </dd>
 <dt id="term-Value-hash-table">Value (hash table)<a class="headerlink" href="#term-Value-hash-table" title="Permalink to this term">¶</a></dt><dd><p>The values stored in the buckets in tha hash table</p>
 </dd>
-<dt id="term-Collision-hash-table">Collision (hash table)<a class="headerlink" href="#term-Collision-hash-table" title="Permalink to this term">¶</a></dt><dd><p>A collision occurs when multiple key inputs result in the same index in the
-array</p>
+<dt id="term-Collision-hash-table">Collision (hash table)<a class="headerlink" href="#term-Collision-hash-table" title="Permalink to this term">¶</a></dt><dd><p>A collision occurs when multiple keys result in the same index in the array</p>
 </dd>
 <dt id="term-Collision-resolution">Collision resolution<a class="headerlink" href="#term-Collision-resolution" title="Permalink to this term">¶</a></dt><dd><p>The approach to resolve collisions in hash tables</p>
 </dd>

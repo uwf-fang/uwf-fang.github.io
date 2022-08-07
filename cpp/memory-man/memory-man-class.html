@@ -134,10 +134,10 @@ block in heap multiple times</p></li>
 </ul>
 </li>
 <li><p>Rule of three</p>
-<ul class="simple">
+<ul>
 <li><p>The <strong>big three</strong> methods needed for classes with dynamic data</p></li>
 <li><p>destructor</p>
-<ul>
+<ul class="simple">
 <li><p><strong>mandatory</strong> because it will always be triggered</p></li>
 <li><p>when an object is destroyed</p>
 <ul>
@@ -152,12 +152,22 @@ block in heap multiple times</p></li>
 <ul>
 <li><p>explicit triggering <code class="docutils literal notranslate"><span class="pre">MyClass</span> <span class="pre">obj1;</span> <span class="pre">MyClass</span> <span class="pre">obj2(obj1);</span></code></p></li>
 <li><p>implicit triggering <code class="docutils literal notranslate"><span class="pre">MyClass</span> <span class="pre">obj1;</span> <span class="pre">MyClass</span> <span class="pre">obj2</span> <span class="pre">=</span> <span class="pre">obj1;</span></code></p></li>
+<li><p>implicit triggering in parameter passing:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1">// declaration</span>
+<span class="linenos">2</span><span class="kt">void</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span><span class="n">MyClass</span><span class="w"> </span><span class="n">myObj</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">3</span>
+<span class="linenos">4</span><span class="c1">// call</span>
+<span class="linenos">5</span><span class="n">MyClass</span><span class="w"> </span><span class="n">myObj1</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">6</span><span class="n">function</span><span class="p">(</span><span class="n">myObj1</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
 <li><p><strong>take a const reference parameter to avoid pass-by-value</strong></p></li>
 <li><p>perform deep copy here</p></li>
 </ul>
 </li>
 <li><p>copy assignment operator overload</p>
-<ul>
+<ul class="simple">
 <li><p>explicit triggering <code class="docutils literal notranslate"><span class="pre">MyClass</span> <span class="pre">obj1;</span> <span class="pre">MyClass</span> <span class="pre">obj2;</span> <span class="pre">obj2</span> <span class="pre">=</span> <span class="pre">obj1;</span></code></p></li>
 <li><p>implicit triggering <strong>Easy to miss</strong></p>
 <ul>
@@ -175,7 +185,10 @@ block in heap multiple times</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Even in classes with dynamic data, the implementation of the big three is not always mandatory. Only the destructor will always be triggered. Thus, <strong>the copy constructor and the copy assignment operator overloading implementations can be omitted</strong> if they are never triggered.</p>
+<p>Even in classes with dynamic data, the implementation of the big three is
+not always all mandatory. Only the destructor will mostly be triggered.
+Thus, <strong>the copy constructor or the copy assignment operator overloading
+implementations can be omitted</strong> if they are never triggered.</p>
 </div>
 </li>
 </ul>
@@ -236,7 +249,7 @@ block in heap multiple times</p></li>
 </ul>
 </li>
 <li><p>Not mandatory but will improve efficiency</p></li>
-<li><p>New syntax since c++ 11 using <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code></p></li>
+<li><p>New syntax since c++ 11 using <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code> to refer to a rvalue reference</p></li>
 <li><p>Mutable(non-const) parameter to allow modification</p></li>
 </ul>
 </li>
@@ -266,8 +279,8 @@ block in heap multiple times</p></li>
 <h2>Ownership of Dynamic Data<a class="headerlink" href="#ownership-of-dynamic-data" title="Permalink to this headline">¶</a></h2>
 <p>A dynamic data can be created and passed. As the ownership changed. The last
 owner should take the responsibility to release the memory.</p>
-<p>Passing dynamic data created outside as a parameter. The recipient owns the data
-after.</p>
+<p>Passing dynamic data created outside as a parameter. The recipient owns the
+data after.</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">DataType</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="linenos"> 2</span><span class="w">  </span><span class="c1">// ...</span>
 <span class="linenos"> 3</span><span class="p">};</span><span class="w"></span>
@@ -293,9 +306,9 @@ after.</p>
 <span class="linenos">23</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
-<p>You may also choose to remove the destructor and let the main function to delete
-if you feel it make more sense that the recipients are only users of the dynamic
-data. Sometimes the dynamic data is shared.</p>
+<p>You may also choose to remove the destructor and let the main function to
+delete if you feel it make more sense that the recipients are only users of the
+dynamic data. Sometimes the dynamic data is shared.</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">Configuration</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="linenos"> 2</span><span class="w">  </span><span class="c1">// ...</span>
 <span class="linenos"> 3</span><span class="p">};</span><span class="w"></span>

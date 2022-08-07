@@ -100,6 +100,15 @@ Dynamic data in class
 
     - explicit triggering ``MyClass obj1; MyClass obj2(obj1);``
     - implicit triggering ``MyClass obj1; MyClass obj2 = obj1;``
+    - implicit triggering in parameter passing::
+
+        // declaration
+        void function(MyClass myObj);
+
+        // call
+        MyClass myObj1;
+        function(myObj1);
+
     - **take a const reference parameter to avoid pass-by-value**
     - perform deep copy here
 
@@ -119,7 +128,10 @@ Dynamic data in class
 
   .. note::
 
-    Even in classes with dynamic data, the implementation of the big three is not always mandatory. Only the destructor will always be triggered. Thus, **the copy constructor and the copy assignment operator overloading implementations can be omitted** if they are never triggered.
+    Even in classes with dynamic data, the implementation of the big three is
+    not always all mandatory. Only the destructor will mostly be triggered.
+    Thus, **the copy constructor or the copy assignment operator overloading
+    implementations can be omitted** if they are never triggered.
 
 ::
 
@@ -177,7 +189,7 @@ Dynamic data in class
     - Move assignment operator overloading
 
   * Not mandatory but will improve efficiency
-  * New syntax since c++ 11 using ``&&``
+  * New syntax since c++ 11 using ``&&`` to refer to a rvalue reference
   * Mutable(non-const) parameter to allow modification
 
 ::
@@ -206,8 +218,8 @@ Ownership of Dynamic Data
 A dynamic data can be created and passed. As the ownership changed. The last
 owner should take the responsibility to release the memory.
 
-Passing dynamic data created outside as a parameter. The recipient owns the data
-after.
+Passing dynamic data created outside as a parameter. The recipient owns the
+data after.
 
 ::
 
@@ -235,9 +247,9 @@ after.
     return 0;
   }
 
-You may also choose to remove the destructor and let the main function to delete
-if you feel it make more sense that the recipients are only users of the dynamic
-data. Sometimes the dynamic data is shared.
+You may also choose to remove the destructor and let the main function to
+delete if you feel it make more sense that the recipients are only users of the
+dynamic data. Sometimes the dynamic data is shared.
 
 ::
 

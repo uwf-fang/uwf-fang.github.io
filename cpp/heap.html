@@ -61,15 +61,16 @@ heap) or equal (if allow overlapped values) than its children</p>
 <ul>
 <li><p>given the node <span class="math notranslate nohighlight">\(i\)</span></p></li>
 <li><p>the index of the parent node is <span class="math notranslate nohighlight">\((i-1)/2\)</span></p></li>
-<li><p>the indices of the children nodes are <span class="math notranslate nohighlight">\(i*2+1\)</span> and <span class="math notranslate nohighlight">\(i*2+2\)</span></p></li>
+<li><p>the indices of the children nodes are left: <span class="math notranslate nohighlight">\(i*2+1\)</span> and right:
+<span class="math notranslate nohighlight">\(i*2+2\)</span></p></li>
 </ul>
 </li>
 </ul>
 </li>
 <li><p>type</p>
 <ul class="simple">
-<li><p>max heap</p></li>
-<li><p>min heap</p></li>
+<li><p>max heap - root being the greatest value</p></li>
+<li><p>min heap - root being the smallest value</p></li>
 </ul>
 </li>
 <li><p>behaviors</p>
@@ -93,21 +94,31 @@ until the leaf node is reached (percolate down)</p></li>
 <li><p>move one element up/down in an existing heap</p></li>
 </ul>
 </li>
-<li><p>heapify (heap creation)</p>
+<li><p>Heap creation</p>
 <ol class="arabic simple">
-<li><p>Insert element one after another <span class="math notranslate nohighlight">\(O(N)\)</span></p></li>
-<li><p>Percolate down all internal nodes from the last to the root
-<span class="math notranslate nohighlight">\(O(logN)\)</span></p></li>
+<li><p>Insert element one after another <span class="math notranslate nohighlight">\(O(N)\)</span> to a heap. To insert:</p>
+<ol class="arabic simple">
+<li><p>insert as the last</p></li>
+<li><p>swap with the first (root)</p></li>
+<li><p>percolate down the root</p></li>
+</ol>
+</li>
+<li><p>Heapify: Percolate down all internal nodes from the last to the root
+<span class="math notranslate nohighlight">\(O(logN)\)</span></p>
+<ul>
+<li><p>repeatedly percolate from the index <span class="math notranslate nohighlight">\(size/2-1\)</span> to <span class="math notranslate nohighlight">\(0\)</span></p></li>
+</ul>
+</li>
 </ol>
 </li>
 </ul>
 </li>
 </ul>
 <figure class="align-default" id="id1">
-<div class="graphviz"><img src="../_images/graphviz-484cfd1cc7502596d991a6a7f406ce34060df322.png" alt="digraph tree {
+<div class="graphviz"><img src="../_images/graphviz-bb1cd51e48a3a277f6012cec171e1f3a463025e7.png" alt="digraph tree {
   26 -&gt; {25 17}[color=red];
   25 -&gt; {7 19}[color=green];
-  17 -&gt; {2, 4}[color=blue];
+  17 -&gt; {2 4}[color=blue];
   7 -&gt; {1 5}[color=violet];
 }" class="graphviz" /></div>
 <figcaption>
@@ -135,15 +146,7 @@ until the leaf node is reached (percolate down)</p></li>
 <section id="heap-sort">
 <h2>Heap sort<a class="headerlink" href="#heap-sort" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
-<li><p>heapify the array (turn randomly ordered array into a heap)</p>
-<ul class="simple">
-<li><p>percolate repeatedly</p>
-<ul>
-<li><p>index ranged from <span class="math notranslate nohighlight">\(size/2-1\)</span> to <span class="math notranslate nohighlight">\(0\)</span></p></li>
-</ul>
-</li>
-</ul>
-</li>
+<li><p>heapify the array (turn randomly ordered array into a heap)</p></li>
 <li><p>removing the root node repeatedly from a heap</p>
 <ul class="simple">
 <li><p>move root to the sorted region by swapping it with the last leaf</p></li>
@@ -159,7 +162,7 @@ until the leaf node is reached (percolate down)</p></li>
 <li><p>Not really a queue or stack because the dequeue order is not related to the
 enqueue order</p></li>
 <li><p>any in min/max out</p></li>
-<li><p>behaviors mostly same as a queue or a stack</p>
+<li><p>behaviors mostly same as a queue</p>
 <ul>
 <li><p>enqueue</p></li>
 <li><p>dequeue</p></li>

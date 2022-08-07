@@ -8,8 +8,9 @@ Hash table uses hashing to implement a data structure that maps a key to an
 index so the value can be stored in the corresponding location (a bucket) in a
 sequential data structure like an array.
 
-**Quick question:** why linked list is not a good way to store buckets in a hash
-table?
+**Quick question:** why linked-list is not a good way to store buckets in a
+hash table? (Because the most frequent usage is to access by index, which is
+slow with linked-list data structure)
 
 Characteristics
 ===============
@@ -21,33 +22,37 @@ Characteristics
 Hash function for hash tables
 =============================
 + :math:`h(x)`
-+ any key type mapping to integer from 0 to N - 1 (indices)
++ any key type mapping to integer from 0 to N - 1 (indices in a size N array)
 + modulo operator on any integer generating hash function
 
 Collision resolution
 ====================
+
+Methods to handle collision when multiple keys are mapped to a same bucket.
 
 Chaining
 --------
 + each bucket is a linked list to store multiple values (chained)
 + Nodes in the linked-list keeps key, value and next pointer
 + unlimited storage space
++ Performance degradation when over-filled
 
 Open addressing
 ---------------
-+ find another available bucket to store the value
++ find another available bucket to store the value when a collision occurs
 + probing sequence: the sequence of the buckets to check when collision happens
 + linear probing:
 
-  :math:`(h1(key) + C_{1} * i)) \% NUM\_BUCKETS, i = 0, 1, 2, 3 ...`
+  :math:`(h1(key) + C_{1} * i) \% NUM\_BUCKETS, i = 0, 1, 2, 3 \dots`
 
 + quadratic probing:
 
-  :math:`(h1(key) + C_{1} * i + C_{2} * i^2)) \% NUM\_BUCKETS, i = 0, 1, 2, 3 ...`
+  :math:`(h1(key) + C_{1} * i + C_{2} * i^2) \% NUM\_BUCKETS, i = 0, 1, 2,
+  3 \dots`
 
 + double hashing probing:
 
-  :math:`(h1(key) + i * h2(key)) \% NUM\_BUCKETS, i = 0, 1, 2, 3 ...`
+  :math:`(h1(key) + i * h2(key)) \% NUM\_BUCKETS, i = 0, 1, 2, 3 \dots`
 
 + lookup/insertion/removal implementation
 
@@ -56,7 +61,6 @@ Open addressing
 
 Applications
 ============
-
 Hash map
 --------
 
@@ -74,7 +78,7 @@ Hash set
 --------
 
 - implementation of the **Set ADT**
-- key is same as value
+- the key is treated as value
 - stores only keys in a hash table
 - key is unique (no duplication)
 - behaviors
@@ -94,7 +98,7 @@ Chaining Example
       int key;
       int value;
       Node *next;
-    public:
+     public:
       Node(int key, int value);
       int getKey() const;
       int getValue() const;
@@ -102,15 +106,15 @@ Chaining Example
       Node *getNext() const;
     };
 
-    // HashTable
+    // HashMap
     // chaining
-    class HashTable {
+    class HashMap {
       int capacity;
       Node **buckets;  // 1D array of pointers to linked lists
       int hashFunction(int key);
-    public:
-      HashTable(int capacity = 100);
-      ~HashTable();
+     public:
+      HashMap(int capacity = 100);
+      ~HashMap();
       void set(int key, int value);
       bool remove(int key);
       int lookUp(int key);
@@ -138,17 +142,17 @@ Open addressing example
       int getValue() const;
     };
 
-    // HashTable
+    // HashMap
     // Linear probing
-    class HashTable {
+    class HashMap {
       int capacity;
-      Bucket *buckets;
+      Bucket *buckets;  // 1D array of buckets
       int hashFunction(int key);
       // probing algorithm
       int probe(int hash, int probed);
      public:
-      HashTable(int capacity = 100);
-      ~HashTable();
+      HashMap(int capacity = 100);
+      ~HashMap();
       bool set(int key, int value);
       bool remove(int key);
       int lookUp(int key);
@@ -171,8 +175,7 @@ Hash Table Glossary
     The values stored in the buckets in tha hash table
 
   Collision (hash table)
-    A collision occurs when multiple key inputs result in the same index in the
-    array
+    A collision occurs when multiple keys result in the same index in the array
 
   Collision resolution
     The approach to resolve collisions in hash tables

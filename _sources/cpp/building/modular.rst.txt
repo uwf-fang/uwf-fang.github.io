@@ -16,29 +16,44 @@ The advantage of modular development include:
 Multi-file Organization in C++
 ==============================
 
-The key component that allows the modular compilation in C++ is the ``#include``
-directive which copies all contents from one file and paste at the location at
-the directive.
+The key component that allows the modular compilation in C++ is the
+``#include`` directive which copies all contents from one file and paste at the
+location at the directive.
 
 As a convention, the sharable components are stored in the header files (hpp
 files) and the private components are stored in the source files (cpp files).
 Other textual files like .inc files are also used (not covered in our courses).
 
+Public/sharable components
+--------------------------
+
+#. Declarations of functions to be used in multiple cpp files
+#. Declarations of classes to be used in multiple cpp files
+#. Global variables (should avoid mutable global in most cases)
+#. Declarations of types, type alias, macros, etc.
+#. Class templates
+
+Private components
+------------------
+#. Declarations of everything that will be only used in the current cpp file
+#. Function/method definitions
+
 .. glossary::
 
-  header files
-    Public declarations (functions and classes), Public configurations
+  Header file (hpp file)
+    The textual file to be included by other files to share public contents including public declarations of functions and classes, and public
+    configurations(variables, macros, type alias, etc.).
 
-  source files
-    Definitions (functions, methods), private declarations, private
-    configurations
+  Source file (cpp file)
+    The textual file to be compiled to create object file. They typically
+    include private declarations, private configurations, and definitions of
+    functions and methods,
 
 Best Practices
 ==============
-
-These are general rules. They should be followed most of the time especially for
-beginners. They can be violate when you have a good reason and know what you are
-doing.
+These are general rules. They should be followed most of the time especially
+for beginners. They can be violate when you have a good reason and know what
+you are doing.
 
 + Sort the ``#include`` directive correctly
 
@@ -47,20 +62,21 @@ doing.
   3. third-party library headers
   4. system library headers
 
-+ Only include headers as needed, avoid include-all headers like bits/stdc++.h
++ Only include headers as needed
++ Avoid include-all headers like bits/stdc++.h
 + Always add header guards
 + Minimize your header (move out contents to the cpp file as much as possible)
 + Follow a consistent naming convention for all files
 
 Pitfalls
 ========
-
 Many of these pitfalls are not wrong, but just not recommended at lease for
 beginners. C++ is very flexible but following a good convention is more
 beginner-friendly.
 
 + Not using header guards
-+ Put all declarations in the header file even though they are private
++ Put all declarations in the header file even though they are not shared
++ Wrong cases in the file names
 + Not following a strict naming convention of files
 + Use .h extension for C++ header files
 + Include cpp files

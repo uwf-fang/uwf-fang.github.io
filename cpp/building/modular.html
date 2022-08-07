@@ -58,25 +58,44 @@ of the system.</p>
 </ol>
 <section id="multi-file-organization-in-c">
 <h2>Multi-file Organization in C++<a class="headerlink" href="#multi-file-organization-in-c" title="Permalink to this headline">¶</a></h2>
-<p>The key component that allows the modular compilation in C++ is the <code class="docutils literal notranslate"><span class="pre">#include</span></code>
-directive which copies all contents from one file and paste at the location at
-the directive.</p>
+<p>The key component that allows the modular compilation in C++ is the
+<code class="docutils literal notranslate"><span class="pre">#include</span></code> directive which copies all contents from one file and paste at the
+location at the directive.</p>
 <p>As a convention, the sharable components are stored in the header files (hpp
 files) and the private components are stored in the source files (cpp files).
 Other textual files like .inc files are also used (not covered in our courses).</p>
+<section id="public-sharable-components">
+<h3>Public/sharable components<a class="headerlink" href="#public-sharable-components" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Declarations of functions to be used in multiple cpp files</p></li>
+<li><p>Declarations of classes to be used in multiple cpp files</p></li>
+<li><p>Global variables (should avoid mutable global in most cases)</p></li>
+<li><p>Declarations of types, type alias, macros, etc.</p></li>
+<li><p>Class templates</p></li>
+</ol>
+</section>
+<section id="private-components">
+<h3>Private components<a class="headerlink" href="#private-components" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Declarations of everything that will be only used in the current cpp file</p></li>
+<li><p>Function/method definitions</p></li>
+</ol>
 <dl class="glossary simple">
-<dt id="term-header-files">header files<a class="headerlink" href="#term-header-files" title="Permalink to this term">¶</a></dt><dd><p>Public declarations (functions and classes), Public configurations</p>
+<dt id="term-Header-file-hpp-file">Header file (hpp file)<a class="headerlink" href="#term-Header-file-hpp-file" title="Permalink to this term">¶</a></dt><dd><p>The textual file to be included by other files to share public contents including public declarations of functions and classes, and public
+configurations(variables, macros, type alias, etc.).</p>
 </dd>
-<dt id="term-source-files">source files<a class="headerlink" href="#term-source-files" title="Permalink to this term">¶</a></dt><dd><p>Definitions (functions, methods), private declarations, private
-configurations</p>
+<dt id="term-Source-file-cpp-file">Source file (cpp file)<a class="headerlink" href="#term-Source-file-cpp-file" title="Permalink to this term">¶</a></dt><dd><p>The textual file to be compiled to create object file. They typically
+include private declarations, private configurations, and definitions of
+functions and methods,</p>
 </dd>
 </dl>
 </section>
+</section>
 <section id="best-practices">
 <h2>Best Practices<a class="headerlink" href="#best-practices" title="Permalink to this headline">¶</a></h2>
-<p>These are general rules. They should be followed most of the time especially for
-beginners. They can be violate when you have a good reason and know what you are
-doing.</p>
+<p>These are general rules. They should be followed most of the time especially
+for beginners. They can be violate when you have a good reason and know what
+you are doing.</p>
 <ul class="simple">
 <li><p>Sort the <code class="docutils literal notranslate"><span class="pre">#include</span></code> directive correctly</p>
 <ol class="arabic simple">
@@ -86,7 +105,8 @@ doing.</p>
 <li><p>system library headers</p></li>
 </ol>
 </li>
-<li><p>Only include headers as needed, avoid include-all headers like bits/stdc++.h</p></li>
+<li><p>Only include headers as needed</p></li>
+<li><p>Avoid include-all headers like bits/stdc++.h</p></li>
 <li><p>Always add header guards</p></li>
 <li><p>Minimize your header (move out contents to the cpp file as much as possible)</p></li>
 <li><p>Follow a consistent naming convention for all files</p></li>
@@ -99,7 +119,8 @@ beginners. C++ is very flexible but following a good convention is more
 beginner-friendly.</p>
 <ul class="simple">
 <li><p>Not using header guards</p></li>
-<li><p>Put all declarations in the header file even though they are private</p></li>
+<li><p>Put all declarations in the header file even though they are not shared</p></li>
+<li><p>Wrong cases in the file names</p></li>
 <li><p>Not following a strict naming convention of files</p></li>
 <li><p>Use .h extension for C++ header files</p></li>
 <li><p>Include cpp files</p></li>
@@ -129,7 +150,11 @@ beginner-friendly.</p>
     <h3><a href="../../index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">Modular Development</a><ul>
-<li><a class="reference internal" href="#multi-file-organization-in-c">Multi-file Organization in C++</a></li>
+<li><a class="reference internal" href="#multi-file-organization-in-c">Multi-file Organization in C++</a><ul>
+<li><a class="reference internal" href="#public-sharable-components">Public/sharable components</a></li>
+<li><a class="reference internal" href="#private-components">Private components</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#best-practices">Best Practices</a></li>
 <li><a class="reference internal" href="#pitfalls">Pitfalls</a></li>
 <li><a class="reference internal" href="#examples">Examples</a></li>

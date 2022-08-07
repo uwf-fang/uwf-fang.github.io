@@ -56,7 +56,7 @@ you may potentially read in an empty string.</p>
 <section id="the-solution">
 <h2>The Solution<a class="headerlink" href="#the-solution" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Option 1: skip if get an empty read</p></li>
+<li><p>Option 1: keep calling getline until you get a non-empty read</p></li>
 <li><p>Option 2: clean up after inputs with leftovers such as extraction operations</p></li>
 <li><p>A formal way: make a function to do the work</p></li>
 </ul>
@@ -67,10 +67,10 @@ you may potentially read in an empty string.</p>
 <span class="linenos"> 2</span><span class="kt">int</span><span class="w"> </span><span class="n">input</span><span class="p">;</span><span class="w"></span>
 <span class="linenos"> 3</span><span class="n">string</span><span class="w"> </span><span class="n">line</span><span class="p">;</span><span class="w"></span>
 <span class="linenos"> 4</span>
-<span class="linenos"> 5</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Input an int&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Input an int: &quot;</span><span class="p">;</span><span class="w"></span>
 <span class="linenos"> 6</span><span class="n">cin</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">input</span><span class="p">;</span><span class="w">  </span><span class="c1">// leaves a new line character as the first char in the stream</span>
-<span class="linenos"> 7</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Input a line of text (may contain spaces)&quot;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 8</span><span class="n">getline</span><span class="p">(</span><span class="n">cin</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="p">);</span><span class="w">  </span><span class="c1">// the line will be empty</span>
+<span class="linenos"> 7</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Input a line of text (may contain spaces): &quot;</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="n">getline</span><span class="p">(</span><span class="n">cin</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="p">);</span><span class="w">  </span><span class="c1">// the line variable will be an empty string</span>
 <span class="linenos"> 9</span>
 <span class="linenos">10</span><span class="c1">// ==== Correct ====</span>
 <span class="linenos">11</span><span class="c1">// option 1: protect the getline and replace the getline with:</span>
@@ -78,19 +78,19 @@ you may potentially read in an empty string.</p>
 <span class="linenos">13</span><span class="w">  </span><span class="n">getline</span><span class="p">(</span><span class="n">cin</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="p">);</span><span class="w"></span>
 <span class="linenos">14</span><span class="p">}</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">line</span><span class="p">.</span><span class="n">empty</span><span class="p">());</span><span class="w"></span>
 <span class="linenos">15</span>
-<span class="linenos">16</span><span class="c1">// option 2: protect the extraction add after the last &gt;&gt;</span>
+<span class="linenos">16</span><span class="c1">// option 2: protect the extraction add after the last &gt;&gt; before getline</span>
 <span class="linenos">17</span><span class="c1">// to clear the leftover</span>
 <span class="linenos">18</span><span class="n">cin</span><span class="p">.</span><span class="n">ignore</span><span class="p">();</span><span class="w"></span>
 <span class="linenos">19</span><span class="n">cin</span><span class="p">.</span><span class="n">ignore</span><span class="p">(</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="n">streamsize</span><span class="o">&gt;::</span><span class="n">max</span><span class="p">(),</span><span class="w"> </span><span class="sc">&#39;\n&#39;</span><span class="p">);</span><span class="w"> </span><span class="c1">// a safer version</span>
 <span class="linenos">20</span>
 <span class="linenos">21</span><span class="c1">// recommended: make a function</span>
-<span class="linenos">22</span><span class="kt">void</span><span class="w"> </span><span class="nf">readline</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">22</span><span class="n">string</span><span class="w"> </span><span class="nf">readline</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="linenos">23</span><span class="w">  </span><span class="n">string</span><span class="w"> </span><span class="n">text</span><span class="p">;</span><span class="w"></span>
 <span class="linenos">24</span><span class="w">  </span><span class="c1">// text is initially empty so a while loop works here</span>
-<span class="linenos">25</span><span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">text</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span><span class="w"></span>
-<span class="linenos">26</span><span class="w">    </span><span class="n">getline</span><span class="p">(</span><span class="n">cin</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">27</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">text</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">28</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">25</span><span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">text</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span><span class="w"> </span><span class="n">getline</span><span class="p">(</span><span class="n">cin</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">26</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">text</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">27</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">28</span><span class="c1">// to call:</span>
 <span class="linenos">29</span><span class="n">line</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readline</span><span class="p">();</span><span class="w"></span>
 </pre></div>
 </div>

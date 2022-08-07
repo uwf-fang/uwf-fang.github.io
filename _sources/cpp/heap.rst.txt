@@ -19,12 +19,13 @@ Heap
 
     - given the node :math:`i`
     - the index of the parent node is :math:`(i-1)/2`
-    - the indices of the children nodes are :math:`i*2+1` and :math:`i*2+2`
+    - the indices of the children nodes are left: :math:`i*2+1` and right:
+      :math:`i*2+2`
 
 + type
 
-  * max heap
-  * min heap
+  * max heap - root being the greatest value
+  * min heap - root being the smallest value
 
 + behaviors
 
@@ -44,11 +45,18 @@ Heap
 
     - move one element up/down in an existing heap
 
-  * heapify (heap creation)
+  * Heap creation
 
-    #. Insert element one after another :math:`O(N)`
-    #. Percolate down all internal nodes from the last to the root
+    #. Insert element one after another :math:`O(N)` to a heap. To insert:
+
+       #. insert as the last
+       #. swap with the first (root)
+       #. percolate down the root
+
+    #. Heapify: Percolate down all internal nodes from the last to the root
        :math:`O(logN)`
+
+       * repeatedly percolate from the index :math:`size/2-1` to :math:`0`
 
 .. graphviz::
   :caption: A max heap (tree form)
@@ -56,7 +64,7 @@ Heap
   digraph tree {
     26 -> {25 17}[color=red];
     25 -> {7 19}[color=green];
-    17 -> {2, 4}[color=blue];
+    17 -> {2 4}[color=blue];
     7 -> {1 5}[color=violet];
   }
 
@@ -80,11 +88,6 @@ Heap
 Heap sort
 =========
 #. heapify the array (turn randomly ordered array into a heap)
-
-   * percolate repeatedly
-
-     - index ranged from :math:`size/2-1` to :math:`0`
-
 #. removing the root node repeatedly from a heap
 
    * move root to the sorted region by swapping it with the last leaf
@@ -96,7 +99,7 @@ Priority queue
 * Not really a queue or stack because the dequeue order is not related to the
   enqueue order
 * any in min/max out
-* behaviors mostly same as a queue or a stack
+* behaviors mostly same as a queue
 
   - enqueue
   - dequeue
