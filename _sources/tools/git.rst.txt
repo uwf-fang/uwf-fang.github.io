@@ -2,44 +2,148 @@
 Version Control System and Git
 ******************************
 
-Version control systems (VCS) are a group of tools that tracks modifications to
-files. A VCS is essential to modern software development processes. It can
-facilitate modification tracking, context switching, codebase management, team
-cooperation, team communication, software quality controls, etc.
+Version control systems (VCS) are a group of tools that tracks the history of
+modifications to files. A VCS is essential to modern software development
+processes. It can facilitate tasks such as modification tracking, context
+switching, codebase management, team cooperation, team communication, software
+quality controls, etc.
 
 Git is the most widely used distributed version control system (dVCS). It
 enables efficient workflows to work with source code and other textual
-documents. The ``git`` command is the main command to invoke the functionalities
-of the git system in a command-line environment. Because git is extremely
-feature-rich, workflows can be very complicated. We will start with some simple
-ones.
+documents. The ``git`` command is the main command to invoke the
+functionalities of the git system in a command-line environment.
+
+The git tool is a command-line interface (CLI) based tool and you can access
+all features through CLI. We will be focusing on CLI based usage of git in the
+courses.
+
+Due to its popularity, there are numerous editor/IDE extensions and GUI-based
+applications available for git. Use the GUI tools and extensions for
+convenience once you have a solid understanding of git.
+
+.. note::
+
+  GUI is short for Graphical User Interface
+
+Learn git
+=========
+You can download the
+:download:`git cheatsheet</_static/git-cheat-sheet-education.pdf>`. Or learn
+from the `official git documentation`__
+
+.. __: https://git-scm.com/doc
+
+Installation
+============
+You may refer to the :doc:`development environment doc</cpp/cpp-env>` to learn
+how to install git on various operating systems.
 
 Setup before the first use
 ==========================
-
-Before you can commit any changes, you must add your name and email to identify yourself::
+Before you can use git to track changes, you must add your name and email to
+identify yourself::
 
   git config --global user.name "Your Name"
   git config --global user.email id@uwf.edu
 
-It is recommended to use your student email address
+Substitute ``Your Name`` with your real name and substitute ``id@uwf.edu`` with
+your email address. It is recommended to use your student email address in this
+course.
 
-CLI vs GUI
-==========
+Git Concepts
+============
 
-The git tools itself is a command-line interface (CLI) based tool and you can
-access all features through CLI. However, because of the popularity, there are
-many GUI-based standalone tools and editor/IDE extensions available. My
-recommendations is to use the CLI based version first because it will work
-anywhere. After you have some good understanding of git, you can make use of the
-GUI tools/extensions for convenience.
+.. glossary::
+
+  Working directory (git)
+    The directory where the repository is stored. A hidden .git directory is
+    usually present in the working directory to store the database used by git.
+
+  Staging area
+    A temporary storage to keep files you wish to add to the database. It is
+    used to temporary hold the changes that you plan to commit to the database.
+    Run ``git add`` to add file to the staging area and use ``git commit`` to
+    store everything in the staging area to the repository.
+
+  Repository
+    The database used by git to keep track of the history of modifications.
+
+  Commit
+    A commit is a snapshot of the working directory stored in the database; Each
+    commit has a commit message and a unique hash value (ID) bound to it.
+
+  Remote
+    When you push or pull changes to or from the remote repository (e.g. on
+    GitHub.com), you will give a name to each remote repository. It is called
+    ``remote`` in git. The default remote is named ``origin`` with the URI
+    specified in the ``git clone <URI>`` command. For any repository started
+    from scratch, you will need to set the URI for a remote using ``git remote
+    add <name> <URI>`` command before you can perform ``git push <remote>
+    main``
+
+  Branch
+    Git support branching to allow users to work on various lines simultaneously
+    without inferring each other. It is essential in many workflows. In the
+    linear workflow we use in the course, you will stay in the ``main``
+    branch. Extended reading on the git branching topic can be done by students
+    who are interested in it.
+
+  .gitignore
+    A text file to specify the patterns of files to ignore by git. Used to
+    prevent temporary files or large binary files from being included in the
+    database.
+
+Subcommands
+===========
+
+All git features can be accessed using git subcommands. The common subcommands
+are listed below:
+
+.. glossary::
+
+  git clone <URI>
+    Clones a repository from a remotely hosted repository to a local directory.
+
+  git init
+    Create an empty git repository in the current directory.
+
+  git add
+    Add files to the staging area of git. ``git add -A`` is the most useful
+    command to add all changes to the staging area. You can run ``git add .``
+    to add everything recursively in the current directory. Run ``git add
+    list-of-paths`` to add specific files or directories.
+
+  git status
+    Run ``git status`` to check the status of the current repository. It will
+    show you the updated, deleted and new untracked files not in the staging
+    area yet, as well as files added in the staging area.
+
+  git commit
+    Run ``git commit -m "commit message"`` to store everything in the staging
+    area to the database with a commit message.
+
+  git push
+    Run ``git push origin main`` to push local commits to the remote
+    repository named ``origin`` with the remote branch being ``main``.
+
+  git pull
+    Run ``git pull origin main`` to pull commits from the remote repository
+    named ``origin`` with the remote branch being ``main``. The remotes
+    commits will be merged to the local repository.
+
+  git log
+    Run ``git log`` to see the history of the past commits.
+
+  git config
+    Run ``git config`` to change the configurations. The most common
+    configurations are the name and email address of the user. You must provide
+    them to be able to start.
 
 linear workflow
 ===============
-
 For beginners such as students learning VCS for the first time. You can stick
 with the linear workflow without branching. In this workflow: You will stick to
-a single ``master`` branch and only take advantage of the snapshot and history
+a single ``main`` branch and only take advantage of the snapshot and history
 logging features of git. In this workflow you will:
 
 #. Start your repository by either:
@@ -50,19 +154,15 @@ logging features of git. In this workflow you will:
 #. Follow the incremental development approach to develop the project in units
    iteratively
 
-   a. write code of a small unit (function, class, etc.)
-   #. write tests (can also be written before the code)
-   #. run tests
-   #. iterate until the unit passed all tests
-   #. take snapshot and log it using a commit message.
+   a. Write code of a small unit (function, class, etc.)
+   #. Test it until working
+   #. Take a snapshot and log it using a commit message.
 
-      #. ``git add .`` to add the current directory.
+      #. ``git add -A`` to add all changes to the staging area.
       #. ``git commit -m "commit message"`` to take a snapshot (commit) and add
          a commit message for the commit.
 
-#. Push to the server ``git push origin master`` to synchronize with others
-   (optional if you do not collaborate/backup/submit assignment using a hosted
-   repository).
+#. Push to the server ``git push origin main`` to synchronize to the server.
 
 Other Workflows
 ===============
@@ -75,79 +175,3 @@ Many tutorials available for anyone who is interested:
 .. _`Altlassian/Bitbucket tutorial`: https://www.atlassian.com/git/tutorials/comparing-workflows
 .. _`Zepel.io 5 Workflows`: https://zepel.io/blog/5-git-workflows-to-improve-development
 
-Subcommands and Concepts
-========================
-
-You can download the
-:download:`git cheatsheet</_static/git-cheat-sheet-education.pdf>`. Or learn
-from the `official git documentation`__
-
-.. __: https://git-scm.com/doc
-
-.. glossary::
-
-  Working directory (git)
-    The directory where the repository is stored.
-
-  Staging area
-    A temporary storage to keep files you wish to add to the database. Run ``git add`` to add file to the staging area and use ``git commit`` to store everything in the staging area to the database.
-
-  Commit
-    A commit is a snapshot of the working directory stored in the database; Each
-    commit has a commit message and a unique hash value bound to it.
-
-  Remote
-    When you push or pull changes to or from the remote repository (e.g. on
-    GitHub), you will give a name to each remote repository. It is called
-    ``remote`` in git. The default remote is named ``origin`` with the URI
-    specified in the ``git clone <URI>`` command. For any repository started
-    from scratch, you will need to set the URI for a remote using ``git remote
-    add <name> <URI>`` command before you can perform ``git push <remote>
-    master``
-
-  Branch
-    Git support branching to allow users to work on various lines simultaneously
-    without inferring each other. It is essential in many workflows. In the
-    linear workflow we use in the course, you will stay in the ``master``
-    branch. Extended reading on the git branching topic can be done by students
-    who are interested in it.
-
-  .gitignore
-    A text file to specify the patterns of files to ignore by git. Used to avoid temporary files or large binary files to be included in the database.
-
-  git clone
-    Clones a repository from a remotely hosted repository to a local directory.
-
-  git init
-    Create an empty git repository in the current directory.
-
-  git add
-    Add files to the staging area of git. You can run ``git add .`` to add
-    everything recursively in the current directory. Run ``git add
-    list-of-paths`` to add specific files or directories.
-
-  git status
-    Run ``git status`` to check the status of the current repository. It will
-    show you the updated, deleted and new untracked files not in the staging
-    area yet, as well as files added in the staging area.
-
-  git commit
-    Run ``git commit -m "commit message"`` to store everything in the staging
-    area to the database with a message.
-
-  git push
-    Run ``git push origin master`` to push local commits to the remote
-    repository named ``origin`` with the remote branch being ``master``.
-
-  git pull
-    Run ``git pull origin master`` to pull commits from the remote repository
-    named ``origin`` with the remote branch being ``master``. The remotes
-    commits will be merged to the local repository.
-
-  git log
-    Run ``git log`` to see the history of the past commits.
-
-  git config
-    Run ``git config`` to change the configurations. The most common
-    configurations are the name and email address of the user. You must provide
-    them to be able to start.
