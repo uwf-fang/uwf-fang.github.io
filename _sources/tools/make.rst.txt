@@ -18,7 +18,6 @@ The command-line tool ``make`` is how you run all tasks.
 
 makefile
 ========
-
 A makefile is the configuration file for the make command. It contains all the
 logics to guide the make to build the executables.
 
@@ -61,7 +60,6 @@ The core component called rule in a makefile looked like this
 
 Modular Compilation
 ===================
-
 Let's assume that we are writing a makefile for a project with multiple files.
 The relationship among files are demonstrated in the diagram. Arrows means
 include relationship: ``main.cpp -> student.hpp`` means the ``student.hpp``
@@ -105,16 +103,16 @@ A simple makefile with hard coded g++ commands::
 
   # Compile. One cpp file a time.
   main.o: main.cpp grade-book.hpp student.hpp
-      g++ -std=c++11 -Wall -g -c main.cpp
+      g++ -std=c++14 -Wall -g -c main.cpp
 
   student.o: student.cpp student.hpp
-      g++ -std=c++11 -Wall -g -c student.cpp
+      g++ -std=c++14 -Wall -g -c student.cpp
 
   grades.o: grades.cpp grades.hpp
-      g++ -std=c++11 -Wall -g -c grades.cpp
+      g++ -std=c++14 -Wall -g -c grades.cpp
 
   grade-book.o: grade-book.cpp grade-book.hpp student.hpp grades.hpp
-      g++ -std=c++11 -Wall -g -c grade-book.cpp
+      g++ -std=c++14 -Wall -g -c grade-book.cpp
 
   # the 'clean' virtual target to remove temporary files
   clean:
@@ -131,7 +129,7 @@ the makefile as the target to make.
 
 Introducing variables
 ---------------------
-You may noticed a lot of redundant texts such as the g++ flags (``-std=c++11
+You may noticed a lot of redundant texts such as the g++ flags (``-std=c++14
 -Wall -g``), list of file names, etc. Many of the redundancy can be remove by
 introducing variables. With variables, you can also extract configurations out
 of the commands for efficient management of configurations.
@@ -139,7 +137,7 @@ of the commands for efficient management of configurations.
 A makefile using variables::
 
   CXX=g++
-  CXXFLAGS=-std=c++11 -Wall -g
+  CXXFLAGS=-std=c++14 -Wall -g
   RM=rm -rf
 
   .PHONY: clean
@@ -185,7 +183,7 @@ improved using the **automatic variables** like $@, $^, $<.
 The further simplified makefile::
 
   CXX=g++
-  CXXFLAGS=-std=c++11 -Wall -g
+  CXXFLAGS=-std=c++14 -Wall -g
   RM=rm -rf
 
   .PHONY: clean
@@ -220,7 +218,7 @@ It is still verbose. By sacrificing the header prerequisites in the object file
 rules, we can merge these rules into one::
 
   CXX=g++
-  CXXFLAGS=-std=c++11 -Wall -g
+  CXXFLAGS=-std=c++14 -Wall -g
   RM=rm
 
   .PHONY: clean
@@ -272,8 +270,8 @@ Pitfalls
   main.o: main.cpp
       $(CXX) $(CXXFLAG) -c $@ $<
 
-Common Errors
-=============
+Common Error Messages
+=====================
 + **No rule to make target `xxx'.** or **No rule to make target `xxx', needed by
   `yyy'.**
 

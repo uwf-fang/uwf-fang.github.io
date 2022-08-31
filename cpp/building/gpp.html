@@ -58,7 +58,7 @@ systems:</p>
 <ul class="simple">
 <li><p>Cross-platform (Linux native, Mac OS, Windows, etc.): gcc/g++</p></li>
 <li><p>Mac OS native: Xcode clang/clang++</p></li>
-<li><p>Windows native: Visual C/C++</p></li>
+<li><p>Windows native: Visual C++</p></li>
 </ul>
 <p>They are not compatible to each other so you need to stick to one for
 consistency. In our course, the GNU g++ is chosen as the standard compiler and
@@ -71,7 +71,7 @@ instructor or grader.</p>
 produce libraries or executables. It performs three main tasks:
 preprocessing, compilation, and linking.</p>
 <dl class="glossary simple">
-<dt id="term-Preprocessing-step">Preprocessing step<a class="headerlink" href="#term-Preprocessing-step" title="Permalink to this term">¶</a></dt><dd><p>Process pre-processing directives like #include, #define, etc. Performs
+<dt id="term-Preprocessing-step">Preprocessing step<a class="headerlink" href="#term-Preprocessing-step" title="Permalink to this term">¶</a></dt><dd><p>Process preprocessing directives like #include, #define, etc. Performs
 textual manipulations mostly.</p>
 </dd>
 <dt id="term-Compilation-step">Compilation step<a class="headerlink" href="#term-Compilation-step" title="Permalink to this term">¶</a></dt><dd><p>Translate the source code files to object files.</p>
@@ -79,17 +79,17 @@ textual manipulations mostly.</p>
 <dt id="term-Linking-step">Linking step<a class="headerlink" href="#term-Linking-step" title="Permalink to this term">¶</a></dt><dd><p>Take object files to produce executables or libraries</p>
 </dd>
 </dl>
-<p>The three steps can be performed all at once or separately. The pre-processing
+<p>The three steps can be performed all at once or separately. The preprocessing
 step are usually merged into the compilation step. Thus, typical step-wise
 compilations involve separation of the compilation step from the linking step.</p>
-<section id="pre-processor-directives">
-<h3>Pre-processor directives<a class="headerlink" href="#pre-processor-directives" title="Permalink to this headline">¶</a></h3>
-<p>Pre-processor directives are instructions that direct how the pre-processor will
-manipulate the text of the source codes files before they are actually compiled.
-They are instructions started with a hash symbol <code class="docutils literal notranslate"><span class="pre">#</span></code>.</p>
+<section id="preprocessor-directives">
+<h3>preprocessor directives<a class="headerlink" href="#preprocessor-directives" title="Permalink to this headline">¶</a></h3>
+<p>Preprocessor directives are instructions that direct how the preprocessor
+will manipulate the text of the source codes files before they are actually
+compiled. They are instructions started with a hash symbol <code class="docutils literal notranslate"><span class="pre">#</span></code>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Pre-processor directives are not statements and no semicolons are needed as
+<p>Preprocessor directives are not statements and no semicolons are needed as
 the termination of directives. They are line based instead.</p>
 </div>
 <ul>
@@ -111,21 +111,25 @@ details.</p>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">#define</span></code></p>
 <p>It is used to define macros. Un-parameterized macros without values are
-pre-processor only flags. Un-parameterized macros with values can be used like
-a text replacement token or a constant. Parameterized macros work like
+preprocessor only flags. Un-parameterized macros with values can be used
+like a text replacement token or a constant. Parameterized macros work like
 functions. It is not preferred in the courses! Use functions instead!</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// pre-processor only flags</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// preprocessor only flags</span>
 <span class="cp">#define HEADER_HPP</span>
 <span class="c1">// constant like macro</span>
 <span class="cp">#define PI 3.14159</span>
 </pre></div>
 </div>
 </li>
-<li><p>conditional compilation <code class="docutils literal notranslate"><span class="pre">#if</span></code>, <code class="docutils literal notranslate"><span class="pre">#elif</span></code>, <code class="docutils literal notranslate"><span class="pre">#else</span></code>, <code class="docutils literal notranslate"><span class="pre">#ifdef</span></code>, <code class="docutils literal notranslate"><span class="pre">#ifndef</span></code>, <code class="docutils literal notranslate"><span class="pre">#endif</span></code></p>
-<p>They can be used to direct the pre-processor to include code blocks
+<li><p>conditional compilation <code class="docutils literal notranslate"><span class="pre">#if</span></code>, <code class="docutils literal notranslate"><span class="pre">#elif</span></code>, <code class="docutils literal notranslate"><span class="pre">#else</span></code>, <code class="docutils literal notranslate"><span class="pre">#ifdef</span></code>,
+<code class="docutils literal notranslate"><span class="pre">#ifndef</span></code>, <code class="docutils literal notranslate"><span class="pre">#endif</span></code></p>
+<p>They can be used to direct the preprocessor to include code blocks
 conditionally. These directives may greatly improve efficiency of the
 compilation process in large projects in trade of the readability and thus
 maintainability. In our course, we only use them in header guards.</p>
+<p>Header guards are the preferred way to prevent header contents from being
+included more than once. It is preferred over the alternative way using
+<code class="docutils literal notranslate"><span class="pre">#progma</span> <span class="pre">once</span></code>, which is a non-standard C++ directive.</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#ifndef MYHEADER_HPP</span>
 <span class="cp">#define MYHEADER_HPP</span>
 
@@ -134,8 +138,6 @@ maintainability. In our course, we only use them in header guards.</p>
 <span class="cp">#endif </span><span class="c1">// MYHEADER_HPP</span>
 </pre></div>
 </div>
-<p>The header guards prevent the content in a header to be included multiple
-times.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>You must add header guards to all user headers!</p>
@@ -146,14 +148,15 @@ times.</p>
 <section id="one-step-compilation">
 <h3>One step compilation<a class="headerlink" href="#one-step-compilation" title="Permalink to this headline">¶</a></h3>
 <p>You may use a single g++ command to produce the executable from the source code
-file when all three tasks are performed implicitly.</p>
+files. In this method, all three tasks are performed in one step.</p>
 <p>You can list all cpp files in the command line as arguments and specify the
 output file name as main:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>g++ -o main main.cpp lib1.cpp lib2.cpp
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>g++ -std<span class="o">=</span>c++14 -o main main.cpp lib1.cpp lib2.cpp
 </pre></div>
 </div>
-<p>You may also use wildcard to match all cpp files:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>g++ -o main *.cpp
+<p>You may also use wildcard to match all cpp files if only one cpp file contains
+a main function:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>g++ -std<span class="o">=</span>c++14 -o main *.cpp
 </pre></div>
 </div>
 <div class="admonition note">
@@ -163,21 +166,21 @@ output file name as main:</p>
 </section>
 <section id="modular-compilation">
 <h3>Modular compilation<a class="headerlink" href="#modular-compilation" title="Permalink to this headline">¶</a></h3>
-<p>In the modular compilation approach, the compilation and linking steps are
-performed separately to provide fine control over arguments and fine grained
-error handling.</p>
+<p>In the modular compilation approach, the compilation(include the preprocessing
+step) and linking steps are performed separately to provide fine control over
+arguments and fine grained error handling.</p>
 <p>Use the same example with a <code class="docutils literal notranslate"><span class="pre">main.cpp</span></code>, a <code class="docutils literal notranslate"><span class="pre">lib1.cpp</span></code>, and a <code class="docutils literal notranslate"><span class="pre">lib2.cpp</span></code>
 with several headers. You can build your <code class="docutils literal notranslate"><span class="pre">main</span></code> executable in steps:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>g++ -c main.cpp
-g++ -c lib1.cpp
-g++ -c lib2.cpp
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>g++ -std<span class="o">=</span>c++14 -c main.cpp
+g++ -std<span class="o">=</span>c++14 -c lib1.cpp
+g++ -std<span class="o">=</span>c++14 -c lib2.cpp
 g++ -o main main.o lib1.o lib2.o
 </pre></div>
 </div>
-<p>The first three lines compiles all source code files to the corresponding object
-files respectively. The last line links all object files into an executable
-named <code class="docutils literal notranslate"><span class="pre">main</span></code>.</p>
-<p>Every step may trigger errors and they are easier to discover with separated
+<p>The first three lines compiles all source code files to the corresponding
+object files respectively. The last line links all object files into an
+executable named <code class="docutils literal notranslate"><span class="pre">main</span></code>.</p>
+<p>Every step may trigger errors and they are easier to fix with separated
 steps.</p>
 </section>
 <section id="useful-g-options">
@@ -187,7 +190,7 @@ steps.</p>
 <dd class="field-odd"><p>Compile only option. g++ will try to link without seeing this option</p>
 </dd>
 <dt class="field-even">-std</dt>
-<dd class="field-even"><p>Specify the C++ standards like <code class="docutils literal notranslate"><span class="pre">-std=c++11</span></code> for C++ 2011 standard</p>
+<dd class="field-even"><p>Specify the C++ standards like <code class="docutils literal notranslate"><span class="pre">-std=c++14</span></code> for C++ 2014 standard</p>
 </dd>
 <dt class="field-odd">-o</dt>
 <dd class="field-odd"><p>Followed by a file name to specify the output file name; Use for both
@@ -205,7 +208,7 @@ compilation and linking; e.g. <code class="docutils literal notranslate"><span c
 </dl>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>NEVER include header files in the g++ command line</p>
+<p><strong>NEVER include header files in the g++ commands</strong></p>
 </div>
 </section>
 <section id="pitfalls">
@@ -231,7 +234,7 @@ g++ -o main main.cpp lib1.hpp lib1.cpp
 <li><a class="reference internal" href="#">Compilation Using g++</a><ul>
 <li><a class="reference internal" href="#compilation">Compilation</a></li>
 <li><a class="reference internal" href="#the-g-command">The g++ command</a><ul>
-<li><a class="reference internal" href="#pre-processor-directives">Pre-processor directives</a></li>
+<li><a class="reference internal" href="#preprocessor-directives">preprocessor directives</a></li>
 <li><a class="reference internal" href="#one-step-compilation">One step compilation</a></li>
 <li><a class="reference internal" href="#modular-compilation">Modular compilation</a></li>
 <li><a class="reference internal" href="#useful-g-options">Useful g++ options</a></li>

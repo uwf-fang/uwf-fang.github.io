@@ -132,16 +132,16 @@ limitation of the website generating system. You should change them to real
 
 <span class="c"># Compile. One cpp file a time.</span>
 <span class="nf">main.o</span><span class="o">:</span> <span class="n">main</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span>
-    g++ -std<span class="o">=</span>c++11 -Wall -g -c main.cpp
+    g++ -std<span class="o">=</span>c++14 -Wall -g -c main.cpp
 
 <span class="nf">student.o</span><span class="o">:</span> <span class="n">student</span>.<span class="n">cpp</span> <span class="n">student</span>.<span class="n">hpp</span>
-    g++ -std<span class="o">=</span>c++11 -Wall -g -c student.cpp
+    g++ -std<span class="o">=</span>c++14 -Wall -g -c student.cpp
 
 <span class="nf">grades.o</span><span class="o">:</span> <span class="n">grades</span>.<span class="n">cpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
-    g++ -std<span class="o">=</span>c++11 -Wall -g -c grades.cpp
+    g++ -std<span class="o">=</span>c++14 -Wall -g -c grades.cpp
 
 <span class="nf">grade-book.o</span><span class="o">:</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
-    g++ -std<span class="o">=</span>c++11 -Wall -g -c grade-book.cpp
+    g++ -std<span class="o">=</span>c++14 -Wall -g -c grade-book.cpp
 
 <span class="c"># the &#39;clean&#39; virtual target to remove temporary files</span>
 <span class="nf">clean</span><span class="o">:</span>
@@ -158,13 +158,13 @@ the makefile as the target to make.</p>
 </section>
 <section id="introducing-variables">
 <h3>Introducing variables<a class="headerlink" href="#introducing-variables" title="Permalink to this headline">¶</a></h3>
-<p>You may noticed a lot of redundant texts such as the g++ flags (<code class="docutils literal notranslate"><span class="pre">-std=c++11</span>
+<p>You may noticed a lot of redundant texts such as the g++ flags (<code class="docutils literal notranslate"><span class="pre">-std=c++14</span>
 <span class="pre">-Wall</span> <span class="pre">-g</span></code>), list of file names, etc. Many of the redundancy can be remove by
 introducing variables. With variables, you can also extract configurations out
 of the commands for efficient management of configurations.</p>
 <p>A makefile using variables:</p>
 <div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">CXX</span><span class="o">=</span>g++
-<span class="nv">CXXFLAGS</span><span class="o">=</span>-std<span class="o">=</span>c++11 -Wall -g
+<span class="nv">CXXFLAGS</span><span class="o">=</span>-std<span class="o">=</span>c++14 -Wall -g
 <span class="nv">RM</span><span class="o">=</span>rm -rf
 
 <span class="nf">.PHONY</span><span class="o">:</span> <span class="n">clean</span>
@@ -206,7 +206,7 @@ improved using the <strong>automatic variables</strong> like $&#64;, $^, $&lt;.<
 </dl>
 <p>The further simplified makefile:</p>
 <div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">CXX</span><span class="o">=</span>g++
-<span class="nv">CXXFLAGS</span><span class="o">=</span>-std<span class="o">=</span>c++11 -Wall -g
+<span class="nv">CXXFLAGS</span><span class="o">=</span>-std<span class="o">=</span>c++14 -Wall -g
 <span class="nv">RM</span><span class="o">=</span>rm -rf
 
 <span class="nf">.PHONY</span><span class="o">:</span> <span class="n">clean</span>
@@ -242,7 +242,7 @@ in the list!</p>
 <p>It is still verbose. By sacrificing the header prerequisites in the object file
 rules, we can merge these rules into one:</p>
 <div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">CXX</span><span class="o">=</span>g++
-<span class="nv">CXXFLAGS</span><span class="o">=</span>-std<span class="o">=</span>c++11 -Wall -g
+<span class="nv">CXXFLAGS</span><span class="o">=</span>-std<span class="o">=</span>c++14 -Wall -g
 <span class="nv">RM</span><span class="o">=</span>rm
 
 <span class="nf">.PHONY</span><span class="o">:</span> <span class="n">clean</span>
@@ -296,8 +296,8 @@ heavy coding. It is a limitation of make any.</p>
 </pre></div>
 </div>
 </section>
-<section id="common-errors">
-<h2>Common Errors<a class="headerlink" href="#common-errors" title="Permalink to this headline">¶</a></h2>
+<section id="common-error-messages">
+<h2>Common Error Messages<a class="headerlink" href="#common-error-messages" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p><strong>No rule to make target `xxx’.</strong> or <strong>No rule to make target `xxx’, needed by
 `yyy’.</strong></p>
@@ -345,7 +345,7 @@ E.g. <cite>make -d main</cite> to show the details about target and rule matchin
 </ul>
 </li>
 <li><a class="reference internal" href="#pitfalls">Pitfalls</a></li>
-<li><a class="reference internal" href="#common-errors">Common Errors</a></li>
+<li><a class="reference internal" href="#common-error-messages">Common Error Messages</a></li>
 <li><a class="reference internal" href="#debug-makefile">Debug makefile</a></li>
 </ul>
 </li>
