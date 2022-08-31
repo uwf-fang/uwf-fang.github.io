@@ -146,7 +146,7 @@ generate class types.</p>
 </pre></div>
 </div>
 </li>
-<li><p>declaration - must be declared before being referred</p></li>
+<li><p>variable declaration - must be declared before being referred</p></li>
 <li><p>initialization</p>
 <ul class="simple">
 <li><p>assignment during declaration</p></li>
@@ -169,6 +169,28 @@ generate class types.</p>
 <span class="linenos">15</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
+<ul>
+<li><p>constant variable</p>
+<ul class="simple">
+<li><p>must be initialized!</p></li>
+<li><p>can never be changed later!</p></li>
+<li><p>all uppercase with under score</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">const</span></code> keyword can be before or after the type</p></li>
+</ul>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// ---- correct ----</span>
+<span class="linenos"> 2</span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">CONSTANT1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 3</span><span class="kt">int</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">CONSTANT2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1">// --- Wrong ----</span>
+<span class="linenos"> 6</span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">CONSTANT3</span><span class="p">;</span><span class="w">  </span><span class="c1">// no initialization</span>
+<span class="linenos"> 7</span><span class="n">CONSTANT1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span><span class="w">  </span><span class="c1">// modification not allowed</span>
+<span class="linenos"> 8</span><span class="n">cin</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">CONSTANT2</span><span class="p">;</span><span class="w">  </span><span class="c1">// modification not allowed</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="c1">// ---- bad ----</span>
+</pre></div>
+</div>
+</li>
+</ul>
 </li>
 </ul>
 </section>
@@ -178,9 +200,6 @@ generate class types.</p>
 <ul class="simple">
 <li><p>int <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">100</span></code></p></li>
 <li><p>double <code class="docutils literal notranslate"><span class="pre">3.0</span></code>, <code class="docutils literal notranslate"><span class="pre">3e2</span></code>, <code class="docutils literal notranslate"><span class="pre">3.0e-1</span></code></p></li>
-<li><p>long <code class="docutils literal notranslate"><span class="pre">1000l</span></code></p></li>
-<li><p>float <code class="docutils literal notranslate"><span class="pre">1.0f</span></code></p></li>
-<li><p>unsigned int <code class="docutils literal notranslate"><span class="pre">100u</span></code></p></li>
 <li><p>char <code class="docutils literal notranslate"><span class="pre">'a'</span></code></p></li>
 <li><p>string <code class="docutils literal notranslate"><span class="pre">&quot;abc&quot;</span></code></p>
 <ul>
@@ -188,12 +207,17 @@ generate class types.</p>
 string literal</p></li>
 </ul>
 </li>
+<li><p>long <code class="docutils literal notranslate"><span class="pre">1000l</span></code></p></li>
+<li><p>float <code class="docutils literal notranslate"><span class="pre">1.0f</span></code></p></li>
+<li><p>unsigned int <code class="docutils literal notranslate"><span class="pre">100u</span></code></p></li>
 </ul>
 </section>
 <section id="assignment">
 <h2>Assignment<a class="headerlink" href="#assignment" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">=</span></code> operator</p></li>
+<li><p>assignment operation requires an lvalue on the left and an rvalue on the
+right</p></li>
 <li><p>lvalue</p>
 <ul>
 <li><p>something that binds to a defined memory address</p></li>
@@ -203,15 +227,13 @@ string literal</p></li>
 </li>
 <li><p>rvalue</p>
 <ul>
-<li><p>something that does not bind to a defined memory address</p></li>
+<li><p>anything that does or does not bind to a defined memory address</p></li>
 <li><p>temporary and short-lived</p></li>
 <li><p>literals</p></li>
 <li><p>compound expressions e.g. <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">+</span> <span class="pre">y</span></code></p></li>
 <li><p>temporary object e.g. <code class="docutils literal notranslate"><span class="pre">string(argv[0])</span></code></p></li>
 </ul>
 </li>
-<li><p>assignment operation requires an lvalue on the left and an rvalue on the
-right</p></li>
 <li><p>short-handed assignment operators</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">+=</span></code></p></li>
@@ -234,7 +256,7 @@ right</p></li>
 <span class="linenos">10</span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">c</span><span class="p">;</span><span class="w"></span>
 <span class="linenos">11</span>
 <span class="linenos">12</span><span class="c1">// ---- wrong ----</span>
-<span class="linenos">13</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span><span class="w">  </span><span class="c1">// rvalue on the left</span>
+<span class="linenos">13</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span><span class="w">  </span><span class="c1">// non-lvalue on the left</span>
 <span class="linenos">14</span><span class="n">a</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">  </span><span class="c1">// wrong operator</span>
 <span class="linenos">15</span>
 <span class="linenos">16</span><span class="c1">// use without initial value</span>
@@ -249,10 +271,10 @@ right</p></li>
 <ul class="simple">
 <li><p>Type conversion (implicit)</p>
 <ol class="arabic simple">
-<li><p>assignment forces type casting</p></li>
+<li><p>assignment <strong>forces</strong> any type casting</p></li>
 <li><p>implicit conversion happens in operations between mixed types (the
 value of the type with smaller range will be converted to the type with
-lager range, a.k.a. widen)</p></li>
+lager range, a.k.a. widened)</p></li>
 </ol>
 </li>
 <li><p>Type casting (explicit)</p>
@@ -269,24 +291,30 @@ lager range, a.k.a. widen)</p></li>
 <span class="linenos"> 5</span><span class="kt">double</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w"></span>
 <span class="linenos"> 6</span><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;L&#39;</span><span class="p">;</span><span class="w"></span>
 <span class="linenos"> 7</span>
-<span class="linenos"> 8</span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 9</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">10</span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">11</span>
-<span class="linenos">12</span><span class="c1">// average without losing precision</span>
-<span class="linenos">13</span><span class="kt">int</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">14</span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">15</span><span class="kt">double</span><span class="w"> </span><span class="n">average</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">total</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">16</span>
-<span class="linenos">17</span><span class="c1">// convert to 3.210000</span>
-<span class="linenos">18</span><span class="kt">double</span><span class="w"> </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.213</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">19</span><span class="kt">double</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">val</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">100.0</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">20</span>
-<span class="linenos">21</span><span class="c1">// ---- wrong ----</span>
-<span class="linenos">22</span><span class="kt">int</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">23</span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">24</span><span class="kt">double</span><span class="w"> </span><span class="n">average</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w">  </span><span class="c1">// lose precision, get 2.0, expect 2.3333...</span>
-<span class="linenos">25</span><span class="kt">double</span><span class="w"> </span><span class="n">average</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">total</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">count</span><span class="p">);</span><span class="w"> </span><span class="c1">// cast too late</span>
+<span class="linenos"> 8</span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"> </span><span class="c1">// a converted to double</span>
+<span class="linenos"> 9</span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w"> </span><span class="c1">// b converted to int</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="c1">// c converted to int and added to a;</span>
+<span class="linenos">12</span><span class="c1">// the resulting int converted to double when assigned to b</span>
+<span class="linenos">13</span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">c</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">14</span>
+<span class="linenos">15</span><span class="c1">// average without losing precision</span>
+<span class="linenos">16</span><span class="kt">int</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">17</span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">18</span><span class="kt">double</span><span class="w"> </span><span class="n">average</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">total</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">19</span>
+<span class="linenos">20</span><span class="c1">// convert to 3.210000</span>
+<span class="linenos">21</span><span class="kt">double</span><span class="w"> </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.213</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">22</span><span class="kt">double</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">val</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">100.0</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">23</span>
+<span class="linenos">24</span><span class="c1">// ---- wrong ----</span>
+<span class="linenos">25</span><span class="kt">int</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">26</span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">27</span><span class="kt">double</span><span class="w"> </span><span class="n">average</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w">  </span><span class="c1">// lose precision, get 2.0, expect 2.3333...</span>
+<span class="linenos">28</span><span class="kt">double</span><span class="w"> </span><span class="n">average</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">total</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">count</span><span class="p">);</span><span class="w"> </span><span class="c1">// cast too late</span>
+<span class="linenos">29</span>
+<span class="linenos">30</span><span class="c1">// ---- bad ----</span>
+<span class="linenos">31</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="p">((</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="mf">3.5</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w">  </span><span class="c1">// C-style type casting</span>
 </pre></div>
 </div>
 </section>
@@ -295,15 +323,17 @@ lager range, a.k.a. widen)</p></li>
 <ul>
 <li><p>operators</p>
 <ul>
-<li><p>arithmetic</p></li>
+<li><p>arithmetic <code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">-</span> <span class="pre">*</span> <span class="pre">/</span> <span class="pre">%</span></code></p></li>
 <li><p>increase, decrease: <code class="docutils literal notranslate"><span class="pre">++</span></code>, <code class="docutils literal notranslate"><span class="pre">--</span></code></p>
 <ul class="simple">
-<li><p>prefix vs suffix</p></li>
 <li><p>requires an lvalue</p></li>
+<li><p>similar to <code class="docutils literal notranslate"><span class="pre">+=</span> <span class="pre">1</span></code> or <code class="docutils literal notranslate"><span class="pre">-=</span> <span class="pre">1</span></code></p></li>
+<li><p>prefix vs suffix</p></li>
+<li><p>prefer prefix if possible (run faster, save memory)</p></li>
 </ul>
 </li>
-<li><p>relational</p></li>
-<li><p>logic</p>
+<li><p>relational <code class="docutils literal notranslate"><span class="pre">==</span> <span class="pre">!=</span> <span class="pre">&lt;</span> <span class="pre">&gt;</span> <span class="pre">&lt;=</span> <span class="pre">&gt;=</span></code></p></li>
+<li><p>logic <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span> <span class="pre">||</span> <span class="pre">!</span></code></p>
 <ul>
 <li><p>short circuit evaluation</p>
 <p>In the evaluation of logical expression with binary logical operators
@@ -313,8 +343,8 @@ skipped in the evaluation.</p>
 </li>
 </ul>
 </li>
-<li><p>bit-wise</p></li>
-<li><p>assignment</p></li>
+<li><p>bit-wise <code class="docutils literal notranslate"><span class="pre">&amp;</span> <span class="pre">|</span> <span class="pre">!</span></code></p></li>
+<li><p>assignment <code class="docutils literal notranslate"><span class="pre">=</span></code></p></li>
 <li><p>other operator: <code class="docutils literal notranslate"><span class="pre">::</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&amp;</span></code>, <code class="docutils literal notranslate"><span class="pre">*</span></code>, <code class="docutils literal notranslate"><span class="pre">.</span></code>, <code class="docutils literal notranslate"><span class="pre">-&gt;</span></code></p></li>
 </ul>
 </li>

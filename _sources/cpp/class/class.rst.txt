@@ -138,20 +138,20 @@ Class declaration
 
   ::
 
-    // 1. in-class initializer
+    // 1. in-class initializer, always effective
     class MyClass {
      private:
-      int value = 10;
+      int value = 10;  // <-- here
      public:
       MyClass() {};
     };
 
-    // 2. constructor member initializer list
+    // 2. constructor member initializer list, only affect one constructor
     class MyClass {
      private:
       int value;
      public:
-      MyClass(): value(10) {};
+      MyClass(): value(10) {};  // <-- here
     };
 
 + data initialization of static instance variable::
@@ -159,7 +159,7 @@ Class declaration
     // my-class.hpp
     class MyClass {
      private:
-      static int count;
+      static int count;  // NEVER initialize here!
      public:
       // ...
     };
@@ -179,16 +179,18 @@ Using class/object
       MyClass myObj1 = 10;  // same as the above example
       MyClass myObj1{10}; // since C++11
 
-  * disposable object::
+  * disposable object (Class name followed by parenthesis to trigger the
+    constructor)::
 
       int myFunction(MyClass obj);
 
       int main() {
-        // as parameter
+        // as parameter, MyClass(10) is a temp object
         cout << myFunction(MyClass(10)) << endl;
 
         // assign to another object
         // copy constructor or copy assignment operator will be triggered
+        // MyClass(10) is a temp object
         MyClass objArray[10];  // object array, default constructor called
         objArray[0] = MyClass(10);
       }
@@ -205,6 +207,31 @@ Using class/object
     // objPtr->getValue() is same as (*objPtr).getValue()
     cout << objPtr->getValue() << endl;
 
+Class modeling
+==============
+UML Class Diagrams
+------------------
+The Unified Modeling Language is a general-purpose modeling language used in
+software engineering. The class diagram is one type of UML diagram used to
+model classes and relationships among them in object-oriented programming.
+
+The class diagrams used here is in the PlantUML format. You can check this
+`document`__ for more information.
+
+.. __: https://plantuml.com/class-diagram#3644720244dd6c6a
+
+.. uml::
+  :caption: Example: User Class
+  :align: center
+
+  class User {
+  -string id
+  -string name
+  +User()
+  +User(string id, string name)
+  +string getName()
+  +string getID()
+  }
 
 Class Example
 =============

@@ -202,20 +202,20 @@ among multiple constructors; Use the second method for values that differs
 among various constructors. When used together, the first will be ignored.</p>
 </div>
 </div></blockquote>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// 1. in-class initializer</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// 1. in-class initializer, always effective</span>
 <span class="linenos"> 2</span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="linenos"> 3</span><span class="w"> </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
-<span class="linenos"> 4</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">  </span><span class="c1">// &lt;-- here</span>
 <span class="linenos"> 5</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
 <span class="linenos"> 6</span><span class="w">  </span><span class="n">MyClass</span><span class="p">()</span><span class="w"> </span><span class="p">{};</span><span class="w"></span>
 <span class="linenos"> 7</span><span class="p">};</span><span class="w"></span>
 <span class="linenos"> 8</span>
-<span class="linenos"> 9</span><span class="c1">// 2. constructor member initializer list</span>
+<span class="linenos"> 9</span><span class="c1">// 2. constructor member initializer list, only affect one constructor</span>
 <span class="linenos">10</span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="linenos">11</span><span class="w"> </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
 <span class="linenos">12</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"></span>
 <span class="linenos">13</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="linenos">14</span><span class="w">  </span><span class="n">MyClass</span><span class="p">()</span><span class="o">:</span><span class="w"> </span><span class="n">value</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">{};</span><span class="w"></span>
+<span class="linenos">14</span><span class="w">  </span><span class="n">MyClass</span><span class="p">()</span><span class="o">:</span><span class="w"> </span><span class="n">value</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">{};</span><span class="w">  </span><span class="c1">// &lt;-- here</span>
 <span class="linenos">15</span><span class="p">};</span><span class="w"></span>
 </pre></div>
 </div>
@@ -224,7 +224,7 @@ among various constructors. When used together, the first will be ignored.</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// my-class.hpp</span>
 <span class="linenos"> 2</span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="linenos"> 3</span><span class="w"> </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
-<span class="linenos"> 4</span><span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w">  </span><span class="c1">// NEVER initialize here!</span>
 <span class="linenos"> 5</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
 <span class="linenos"> 6</span><span class="w">  </span><span class="c1">// ...</span>
 <span class="linenos"> 7</span><span class="p">};</span><span class="w"></span>
@@ -249,18 +249,20 @@ among various constructors. When used together, the first will be ignored.</p>
 </pre></div>
 </div>
 </li>
-<li><p>disposable object:</p>
+<li><p>disposable object (Class name followed by parenthesis to trigger the
+constructor):</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kt">int</span><span class="w"> </span><span class="nf">myFunction</span><span class="p">(</span><span class="n">MyClass</span><span class="w"> </span><span class="n">obj</span><span class="p">);</span><span class="w"></span>
 <span class="linenos"> 2</span>
 <span class="linenos"> 3</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 4</span><span class="w">  </span><span class="c1">// as parameter</span>
+<span class="linenos"> 4</span><span class="w">  </span><span class="c1">// as parameter, MyClass(10) is a temp object</span>
 <span class="linenos"> 5</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">myFunction</span><span class="p">(</span><span class="n">MyClass</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
 <span class="linenos"> 6</span>
 <span class="linenos"> 7</span><span class="w">  </span><span class="c1">// assign to another object</span>
 <span class="linenos"> 8</span><span class="w">  </span><span class="c1">// copy constructor or copy assignment operator will be triggered</span>
-<span class="linenos"> 9</span><span class="w">  </span><span class="n">MyClass</span><span class="w"> </span><span class="n">objArray</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span><span class="w">  </span><span class="c1">// object array, default constructor called</span>
-<span class="linenos">10</span><span class="w">  </span><span class="n">objArray</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MyClass</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">11</span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="w">  </span><span class="c1">// MyClass(10) is a temp object</span>
+<span class="linenos">10</span><span class="w">  </span><span class="n">MyClass</span><span class="w"> </span><span class="n">objArray</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span><span class="w">  </span><span class="c1">// object array, default constructor called</span>
+<span class="linenos">11</span><span class="w">  </span><span class="n">objArray</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MyClass</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">12</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </li>
@@ -282,10 +284,36 @@ among various constructors. When used together, the first will be ignored.</p>
 </li>
 </ul>
 </section>
+<section id="class-modeling">
+<h2>Class modeling<a class="headerlink" href="#class-modeling" title="Permalink to this headline">¶</a></h2>
+<section id="uml-class-diagrams">
+<h3>UML Class Diagrams<a class="headerlink" href="#uml-class-diagrams" title="Permalink to this headline">¶</a></h3>
+<p>The Unified Modeling Language is a general-purpose modeling language used in
+software engineering. The class diagram is one type of UML diagram used to
+model classes and relationships among them in object-oriented programming.</p>
+<p>The class diagrams used here is in the PlantUML format. You can check this
+<a class="reference external" href="https://plantuml.com/class-diagram#3644720244dd6c6a">document</a> for more information.</p>
+<figure class="align-center" id="id2">
+<p class="plantuml">
+<img src="../../_images/plantuml-1643d20352a188b60caa70e41ec00fb910e7fa03.png" alt="class User {
+-string id
+-string name
++User()
++User(string id, string name)
++string getName()
++string getID()
+}"/>
+</p>
+<figcaption>
+<p><span class="caption-text">Example: User Class</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
 <section id="class-example">
 <h2>Class Example<a class="headerlink" href="#class-example" title="Permalink to this headline">¶</a></h2>
-<div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">my-class.hpp</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">my-class.hpp</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">#ifndef MY_CLASS_HPP</span>
 <span class="linenos"> 2</span><span class="cp">#define MY_CLASS_HPP</span>
 <span class="linenos"> 3</span>
@@ -305,8 +333,8 @@ among various constructors. When used together, the first will be ignored.</p>
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">my-class.cpp</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">my-class.cpp</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;my-class.hpp&quot;</span><span class="cp"></span>
 <span class="linenos"> 2</span>
 <span class="linenos"> 3</span><span class="kt">void</span><span class="w"> </span><span class="nf">MyClass::doubleVal</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
@@ -344,8 +372,8 @@ among various constructors. When used together, the first will be ignored.</p>
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-text">main.cpp</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">main.cpp</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// pay attention to the order</span>
 <span class="linenos"> 2</span><span class="c1">// user header first</span>
 <span class="linenos"> 3</span><span class="c1">// system header last</span>
@@ -374,8 +402,8 @@ among various constructors. When used together, the first will be ignored.</p>
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-text">makefile</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">makefile</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
 <div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="nf">main</span><span class="o">:</span> <span class="n">main</span>.<span class="n">o</span> <span class="n">my</span>-<span class="n">class</span>.<span class="n">o</span>
 <span class="linenos"> 2</span>    g++ -o <span class="nv">$@</span> $^
 <span class="linenos"> 3</span>
@@ -410,6 +438,10 @@ among various constructors. When used together, the first will be ignored.</p>
 </li>
 <li><a class="reference internal" href="#class-declaration">Class declaration</a></li>
 <li><a class="reference internal" href="#using-class-object">Using class/object</a></li>
+<li><a class="reference internal" href="#class-modeling">Class modeling</a><ul>
+<li><a class="reference internal" href="#uml-class-diagrams">UML Class Diagrams</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#class-example">Class Example</a></li>
 </ul>
 </li>

@@ -86,7 +86,7 @@ Variables
     double count = 1.5;  // name not matches the purpose
     int NUMBER;  // not following naming convention
 
-+ declaration - must be declared before being referred
++ variable declaration - must be declared before being referred
 + initialization
 
   * assignment during declaration
@@ -110,6 +110,25 @@ Variables
     a = 10;
     int a;
 
+  * constant variable
+
+    - must be initialized!
+    - can never be changed later!
+    - all uppercase with under score
+    - ``const`` keyword can be before or after the type
+
+    ::
+
+      // ---- correct ----
+      const int CONSTANT1 = 100;
+      int const CONSTANT2 = 200;
+
+      // --- Wrong ----
+      const int CONSTANT3;  // no initialization
+      CONSTANT1 = 200;  // modification not allowed
+      cin >> CONSTANT2;  // modification not allowed
+
+      // ---- bad ----
 
 Literal
 =======
@@ -118,20 +137,23 @@ How values are represented in the source code.
 
 + int ``1``, ``100``
 + double ``3.0``, ``3e2``, ``3.0e-1``
-+ long ``1000l``
-+ float ``1.0f``
-+ unsigned int ``100u``
 + char ``'a'``
 + string ``"abc"``
 
   * escape sequence ``\n``, ``\t``, ``\"``, ``\'``, ``\\`` etc. in char or
     string literal
 
++ long ``1000l``
++ float ``1.0f``
++ unsigned int ``100u``
+
 
 Assignment
 ==========
 
 + ``=`` operator
++ assignment operation requires an lvalue on the left and an rvalue on the
+  right
 + lvalue
 
   * something that binds to a defined memory address
@@ -140,14 +162,12 @@ Assignment
 
 + rvalue
 
-  * something that does not bind to a defined memory address
+  * anything that does or does not bind to a defined memory address
   * temporary and short-lived
   * literals
   * compound expressions e.g. ``x + y``
   * temporary object e.g. ``string(argv[0])``
 
-+ assignment operation requires an lvalue on the left and an rvalue on the
-  right
 + short-handed assignment operators
 
   * ``+=``
@@ -170,7 +190,7 @@ Assignment
   b = a * c;
 
   // ---- wrong ----
-  a + b = 20;  // rvalue on the left
+  a + b = 20;  // non-lvalue on the left
   a == 10;  // wrong operator
 
   // use without initial value
@@ -183,10 +203,10 @@ Conversion and Type casting
 ===========================
 + Type conversion (implicit)
 
-  1. assignment forces type casting
+  1. assignment **forces** any type casting
   2. implicit conversion happens in operations between mixed types (the
      value of the type with smaller range will be converted to the type with
-     lager range, a.k.a. widen)
+     lager range, a.k.a. widened)
 
 + Type casting (explicit)
 
@@ -202,8 +222,11 @@ Conversion and Type casting
   double b;
   char c = 'L';
 
-  b = a;
-  a = b;
+  b = a; // a converted to double
+  a = b; // b converted to int
+
+  // c converted to int and added to a;
+  // the resulting int converted to double when assigned to b
   b = a + c;
 
   // average without losing precision
@@ -221,19 +244,23 @@ Conversion and Type casting
   double average = total / count;  // lose precision, get 2.0, expect 2.3333...
   double average = static_cast<double>(total / count); // cast too late
 
+  // ---- bad ----
+  cout << ((int) 3.5) << endl;  // C-style type casting
 
 Expressions
 ===========
 + operators
 
-  * arithmetic
+  * arithmetic ``+ - * / %``
   * increase, decrease: ``++``, ``--``
 
-    - prefix vs suffix
     - requires an lvalue
+    - similar to ``+= 1`` or ``-= 1``
+    - prefix vs suffix
+    - prefer prefix if possible (run faster, save memory)
 
-  * relational
-  * logic
+  * relational ``== != < > <= >=``
+  * logic ``&& || !``
 
     - short circuit evaluation
 
@@ -242,8 +269,8 @@ Expressions
       value of the right operand does not affect the result, it will be
       skipped in the evaluation.
 
-  * bit-wise
-  * assignment
+  * bit-wise ``& | !``
+  * assignment ``=``
   * other operator: ``::``, ``<<``, ``>>``, ``&``, ``*``, ``.``, ``->``
 
 + Precedence rule (order of evaluation, arithmetic, relational, and logic only)
