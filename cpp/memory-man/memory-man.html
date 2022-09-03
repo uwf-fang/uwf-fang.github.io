@@ -48,27 +48,29 @@
 <h1>Memory Management<a class="headerlink" href="#memory-management" title="Permalink to this headline">¶</a></h1>
 <section id="memory-regions">
 <h2>Memory regions<a class="headerlink" href="#memory-regions" title="Permalink to this headline">¶</a></h2>
+<p>When a program written with C++ is executed, a section of physical memory is
+allocated to the program. The program will then partition the memory into
+regions.</p>
 <dl class="field-list simple">
-<dt class="field-odd">code</dt>
-<dd class="field-odd"><p>code</p>
+<dt class="field-odd">code region</dt>
+<dd class="field-odd"><p>code (binary)</p>
 </dd>
-<dt class="field-even">static</dt>
+<dt class="field-even">static region</dt>
 <dd class="field-even"><p>global and static variables</p>
 </dd>
-<dt class="field-odd">stack</dt>
+<dt class="field-odd">stack region</dt>
 <dd class="field-odd"><p>local variables and function formal parameters</p>
 </dd>
-<dt class="field-even">heap</dt>
-<dd class="field-even"><p>dynamic data (allocated by new)</p>
+<dt class="field-even">heap region</dt>
+<dd class="field-even"><p>dynamic data (allocated by <strong>new</strong> operator)</p>
 </dd>
 </dl>
 </section>
 <section id="dynamic-memory-allocation">
 <h2>Dynamic Memory Allocation<a class="headerlink" href="#dynamic-memory-allocation" title="Permalink to this headline">¶</a></h2>
 <ul>
-<li><p>Data in heap</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">new</span></code> creates the data structure in heap memory and returns a pointer (or
-array)</p>
+<li><p>Data stored in heap</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">new</span></code> creates the data structure in heap memory and returns a pointer</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">intPtr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="p">;</span><span class="w">  </span><span class="c1">// single variable</span>
 <span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">array</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span><span class="w">  </span><span class="c1">// array</span>
 <span class="n">MyClass</span><span class="w"> </span><span class="o">*</span><span class="n">myObjPtr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MyClass</span><span class="p">();</span><span class="w">  </span><span class="c1">// object</span>
@@ -76,9 +78,9 @@ array)</p>
 </div>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">delete</span></code> destruct the data structure the pointer is pointing to and release
-the memory</p>
+the memory in heap</p>
 <ul class="simple">
-<li><p>always call delete on a pointer (array is a pointer)</p></li>
+<li><p>always call delete on a pointer (dynamic array is also a pointer)</p></li>
 <li><p>add [] if the pointer is pointing to a list of memory blocks (array)</p></li>
 </ul>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">delete</span><span class="w"> </span><span class="n">intPtr</span><span class="p">;</span><span class="w"></span>
@@ -93,7 +95,7 @@ the memory</p>
 <section id="memory-leak">
 <h2>Memory leak<a class="headerlink" href="#memory-leak" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>only happens in the heap memory</p></li>
+<li><p>only happens on data stored in the heap region (dynamic data)</p></li>
 <li><p>dynamic data allocated (new) but not released (delete)</p></li>
 <li><p>likely to be overlooked in function and class definitions when the flow of
 control is not obvious</p></li>
@@ -102,10 +104,10 @@ control is not obvious</p></li>
 <section id="other-memory-problems">
 <h2>Other Memory Problems<a class="headerlink" href="#other-memory-problems" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Stack overflow because of massive function calls, e.g. recursion</p></li>
-<li><p>Out-of-boundary array indexing</p></li>
-<li><p>Oversized C string copying</p></li>
-<li><p>Uninitialized pointer</p></li>
+<li><p>Stack overflow because of endless function calls, e.g. recursion</p></li>
+<li><p>Out-of-boundary array index</p></li>
+<li><p>Oversized C string operations</p></li>
+<li><p>Uninitialized pointer access</p></li>
 <li><p>Deleting the same pointer multiple times</p></li>
 </ul>
 </section>

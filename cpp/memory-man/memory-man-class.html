@@ -46,18 +46,24 @@
             
   <section id="memory-management-in-classes">
 <h1>Memory Management in Classes<a class="headerlink" href="#memory-management-in-classes" title="Permalink to this headline">¶</a></h1>
-<p>When a class owns dynamic data, special handling is required to avoid common
-memory problems.</p>
+<p>When a class owns dynamic data (part of the data stored in heap memory region),
+special handling is required to avoid memory problems.</p>
 <section id="implicitly-declared-methods">
 <h2>Implicitly-declared Methods<a class="headerlink" href="#implicitly-declared-methods" title="Permalink to this headline">¶</a></h2>
-<p>Some methods can be used without explicit declarations. They are usually methods
-that are essential to the object including the default constructor, destructor,
-copy constructor, copy assignment operator overloading, etc.</p>
+<p>Some methods can be used without explicit declarations. They are usually
+methods that are essential to the object including the default constructor,
+destructor, copy constructor, copy assignment operator overloading, etc.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can safely rely on these implicitly-declared methods when all your
+instance variables are not dynamic (primitive, class-typed, array, etc.).</p>
+</div>
 <ul class="simple">
 <li><p>Default constructor</p>
 <ul>
 <li><p>must declare and define explicitly if other constructor is present</p></li>
-<li><p>use <code class="docutils literal notranslate"><span class="pre">MyClass::MyClass()=default;</span></code> if the default behavior is desirable</p></li>
+<li><p>use <code class="docutils literal notranslate"><span class="pre">MyClass::MyClass()=default;</span></code> if you have to define the default
+constructor but only the default behavior is desirable</p></li>
 </ul>
 </li>
 </ul>
@@ -83,23 +89,26 @@ objects containing dynamic data.</p>
 <span class="linenos"> 4</span><span class="k">class</span><span class="w"> </span><span class="nc">Example</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="linenos"> 5</span><span class="w">  </span><span class="n">string</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w"></span>
 <span class="linenos"> 6</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 7</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="linenos"> 8</span><span class="w">  </span><span class="n">string</span><span class="w"> </span><span class="n">getName</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="k">return</span><span class="w"> </span><span class="n">name</span><span class="p">;}</span><span class="w"></span>
-<span class="linenos"> 9</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">setName</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;}</span><span class="w"></span>
-<span class="linenos">10</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">getAge</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="k">return</span><span class="w"> </span><span class="n">age</span><span class="p">;}</span><span class="w"></span>
-<span class="linenos">11</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">setAge</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">age</span><span class="p">;}</span><span class="w"></span>
-<span class="linenos">12</span><span class="p">};</span><span class="w"></span>
-<span class="linenos">13</span>
-<span class="linenos">14</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">15</span><span class="w">  </span><span class="c1">// allowed without explicit declaration</span>
-<span class="linenos">16</span><span class="w">  </span><span class="n">Example</span><span class="w"> </span><span class="n">exp</span><span class="p">;</span><span class="w">  </span><span class="c1">// trigger default constructor</span>
-<span class="linenos">17</span><span class="w">  </span><span class="n">exp</span><span class="p">.</span><span class="n">setName</span><span class="p">(</span><span class="s">&quot;John&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">18</span><span class="w">  </span><span class="n">exp</span><span class="p">.</span><span class="n">setAge</span><span class="p">(</span><span class="mi">14</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">19</span><span class="w">  </span><span class="n">Example</span><span class="w"> </span><span class="n">exp1</span><span class="p">(</span><span class="n">exp</span><span class="p">);</span><span class="w">  </span><span class="c1">// trigger copy constructor</span>
-<span class="linenos">20</span><span class="w">  </span><span class="n">Example</span><span class="w"> </span><span class="n">exp2</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">21</span><span class="w">  </span><span class="n">exp2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">exp</span><span class="p">;</span><span class="w">  </span><span class="c1">// trigger copy assignment operator overload</span>
-<span class="linenos">22</span><span class="w">  </span><span class="c1">// both exp1 and exp2 will have name as &quot;John&quot; and age as 14</span>
-<span class="linenos">23</span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="n">grades</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="w">  </span><span class="n">string</span><span class="w"> </span><span class="n">getName</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="k">return</span><span class="w"> </span><span class="n">name</span><span class="p">;}</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">setName</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;}</span><span class="w"></span>
+<span class="linenos">11</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">getAge</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="k">return</span><span class="w"> </span><span class="n">age</span><span class="p">;}</span><span class="w"></span>
+<span class="linenos">12</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">setAge</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">age</span><span class="p">;}</span><span class="w"></span>
+<span class="linenos">13</span><span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="n">getGrade</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="k">return</span><span class="w"> </span><span class="n">grades</span><span class="p">[</span><span class="n">index</span><span class="p">];}</span><span class="w"></span>
+<span class="linenos">14</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">setGrade</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="n">grades</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;}</span><span class="w"></span>
+<span class="linenos">15</span><span class="p">};</span><span class="w"></span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">18</span><span class="w">  </span><span class="c1">// allowed without explicit declaration</span>
+<span class="linenos">19</span><span class="w">  </span><span class="n">Example</span><span class="w"> </span><span class="n">exp</span><span class="p">;</span><span class="w">  </span><span class="c1">// trigger default constructor</span>
+<span class="linenos">20</span><span class="w">  </span><span class="n">exp</span><span class="p">.</span><span class="n">setName</span><span class="p">(</span><span class="s">&quot;John&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">21</span><span class="w">  </span><span class="n">exp</span><span class="p">.</span><span class="n">setAge</span><span class="p">(</span><span class="mi">14</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">22</span><span class="w">  </span><span class="n">Example</span><span class="w"> </span><span class="n">exp1</span><span class="p">(</span><span class="n">exp</span><span class="p">);</span><span class="w">  </span><span class="c1">// trigger copy constructor</span>
+<span class="linenos">23</span><span class="w">  </span><span class="n">Example</span><span class="w"> </span><span class="n">exp2</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">24</span><span class="w">  </span><span class="n">exp2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">exp</span><span class="p">;</span><span class="w">  </span><span class="c1">// trigger copy assignment operator overload</span>
+<span class="linenos">25</span><span class="w">  </span><span class="c1">// both exp1 and exp2 will have name as &quot;John&quot; and age as 14</span>
+<span class="linenos">26</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
@@ -109,7 +118,7 @@ objects containing dynamic data.</p>
 <li><p>pointer-typed instance variables</p>
 <ul class="simple">
 <li><p>holding a single value/object or an array</p></li>
-<li><p>allocated using <code class="docutils literal notranslate"><span class="pre">new</span></code></p></li>
+<li><p>allocated using <code class="docutils literal notranslate"><span class="pre">new</span></code> and data stored in heap</p></li>
 <li><p>simple assignment will cause <strong>shallow copy</strong></p></li>
 </ul>
 </li>
@@ -123,7 +132,8 @@ objects containing dynamic data.</p>
 </li>
 <li><p>shallow copy - fail to copy the dynamic data in the heap memory</p>
 <ul>
-<li><p>only the memory address are copied by default constructor/assignment</p></li>
+<li><p>only the memory addresses (values of pointers) are copied by assignment</p></li>
+<li><p>implicitly-declared methods will cause <strong>shallow copy</strong></p></li>
 <li><p>bad or no explicit copy constructor</p></li>
 <li><p>bad or no explicit copy assignment operator overload</p></li>
 <li><p><strong>only happens when objects are copied or copy assigned</strong></p></li>
@@ -135,7 +145,8 @@ block in heap multiple times</p></li>
 </li>
 <li><p>Rule of three</p>
 <ul>
-<li><p>The <strong>big three</strong> methods needed for classes with dynamic data</p></li>
+<li><p>The <strong>big three</strong> methods needed for classes to handle dynamic data
+correctly</p></li>
 <li><p>destructor</p>
 <ul class="simple">
 <li><p><strong>mandatory</strong> because it will always be triggered</p></li>
@@ -150,6 +161,7 @@ block in heap multiple times</p></li>
 </li>
 <li><p>copy constructor</p>
 <ul>
+<li><p><strong>optional</strong> not needed if never triggered</p></li>
 <li><p>explicit triggering <code class="docutils literal notranslate"><span class="pre">MyClass</span> <span class="pre">obj1;</span> <span class="pre">MyClass</span> <span class="pre">obj2(obj1);</span></code></p></li>
 <li><p>implicit triggering <code class="docutils literal notranslate"><span class="pre">MyClass</span> <span class="pre">obj1;</span> <span class="pre">MyClass</span> <span class="pre">obj2</span> <span class="pre">=</span> <span class="pre">obj1;</span></code></p></li>
 <li><p>implicit triggering in parameter passing:</p>
@@ -168,6 +180,7 @@ block in heap multiple times</p></li>
 </li>
 <li><p>copy assignment operator overload</p>
 <ul class="simple">
+<li><p><strong>optional</strong> not needed if never triggered</p></li>
 <li><p>explicit triggering <code class="docutils literal notranslate"><span class="pre">MyClass</span> <span class="pre">obj1;</span> <span class="pre">MyClass</span> <span class="pre">obj2;</span> <span class="pre">obj2</span> <span class="pre">=</span> <span class="pre">obj1;</span></code></p></li>
 <li><p>implicit triggering <strong>Easy to miss</strong></p>
 <ul>
@@ -186,7 +199,7 @@ block in heap multiple times</p></li>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Even in classes with dynamic data, the implementation of the big three is
-not always all mandatory. Only the destructor will mostly be triggered.
+not always all mandatory. Only the destructor will be always triggered.
 Thus, <strong>the copy constructor or the copy assignment operator overloading
 implementations can be omitted</strong> if they are never triggered.</p>
 </div>
@@ -234,13 +247,13 @@ implementations can be omitted</strong> if they are never triggered.</p>
 <span class="linenos">40</span><span class="p">}</span><span class="w"></span>
 <span class="linenos">41</span>
 <span class="linenos">42</span><span class="o">~</span><span class="n">MyClass</span><span class="o">::</span><span class="n">MyClass</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">43</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">arr</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">43</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">arr</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)</span><span class="w">  </span><span class="c1">// safeguard to avoid freeing a null pointer</span>
 <span class="linenos">44</span><span class="w">    </span><span class="k">delete</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="n">arr</span><span class="p">;</span><span class="w"></span>
 <span class="linenos">45</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>Rule of five</p>
+<li><p>Rule of five (FYI)</p>
 <ul>
 <li><p>Two more methods</p>
 <ul>
@@ -277,9 +290,14 @@ implementations can be omitted</strong> if they are never triggered.</p>
 </section>
 <section id="ownership-of-dynamic-data">
 <h2>Ownership of Dynamic Data<a class="headerlink" href="#ownership-of-dynamic-data" title="Permalink to this headline">¶</a></h2>
-<p>A dynamic data can be created and passed. As the ownership changed. The last
-owner should take the responsibility to release the memory.</p>
-<p>Passing dynamic data created outside as a parameter. The recipient owns the
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This section is for extended reading. It is beneficial to projects and
+self-improving but not essential in exams.</p>
+</div>
+<p>A dynamic data can be created anywhere and passed around. As the ownership
+changed. The last owner should take the responsibility to release the memory.</p>
+<p>#. Passing dynamic data created outside as a parameter. The recipient owns the
 data after.</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">DataType</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="linenos"> 2</span><span class="w">  </span><span class="c1">// ...</span>
@@ -306,9 +324,10 @@ data after.</p>
 <span class="linenos">23</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
-<p>You may also choose to remove the destructor and let the main function to
+<p>#. You may also choose to remove the destructor and let the main function to
 delete if you feel it make more sense that the recipients are only users of the
-dynamic data. Sometimes the dynamic data is shared.</p>
+dynamic data and the main function is still the owner. Sometimes the dynamic
+data is shared in this case.</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">Configuration</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="linenos"> 2</span><span class="w">  </span><span class="c1">// ...</span>
 <span class="linenos"> 3</span><span class="p">};</span><span class="w"></span>

@@ -52,14 +52,14 @@ in an imperative program.</p>
 <h2>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p>Sequential</p>
-<p>The fundamental control flow is the execution of instructions one by another
-in the natural order of the instructions.</p>
+<p>The fundamental control flow is the execution of instructions one after
+another in the natural order of the instructions.</p>
 </li>
 <li><p>Branch/Selection/Conditional</p>
 <p>Execution of different sets of instructions according to a condition.</p>
 </li>
 <li><p>Loop/Iteration</p>
-<p>Repeated executions of a sequence of instructions</p>
+<p>Repeated executions of a sequence of instructions according to a condition</p>
 </li>
 </ul>
 </section>
@@ -72,7 +72,7 @@ in the natural order of the instructions.</p>
 <ul>
 <li><p>boolean expression</p></li>
 <li><p>optional else</p></li>
-<li><p>optional {}</p></li>
+<li><p><strong>optional {} when only one statement in its body</strong></p></li>
 <li><p>if, else pairing</p></li>
 <li><p>negating logic to swap if and else blocks</p></li>
 </ul>
@@ -117,56 +117,58 @@ in the natural order of the instructions.</p>
 <span class="linenos">18</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;a is greater than 10</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
 <span class="linenos">19</span>
 <span class="linenos">20</span><span class="c1">// missed {} so the third line is not part of the if and will run always</span>
-<span class="linenos">21</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">21</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"></span>
 <span class="linenos">22</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;a is greater than 10</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
 <span class="linenos">23</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Please try a smaller value!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
 <span class="linenos">24</span>
-<span class="linenos">25</span><span class="c1">// will run but cout is no longer part of the if</span>
-<span class="linenos">26</span><span class="c1">// the if statement has an empty body and does nothing</span>
-<span class="linenos">27</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">28</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;a is greater than 10</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">29</span>
-<span class="linenos">30</span><span class="c1">// will run but does not mean a is between 1 and 10</span>
-<span class="linenos">31</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">32</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;a is between 1 and 10</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">33</span>
-<span class="linenos">34</span><span class="c1">// switch on double</span>
-<span class="linenos">35</span><span class="c1">// double value is not exact</span>
-<span class="linenos">36</span><span class="c1">// this snippet may work and may cause problem</span>
-<span class="linenos">37</span><span class="kt">double</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">38</span><span class="n">cin</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">39</span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">40</span><span class="w">  </span><span class="c1">//...</span>
-<span class="linenos">41</span><span class="p">}</span><span class="w"></span>
-<span class="linenos">42</span>
-<span class="linenos">43</span><span class="c1">// missing break</span>
-<span class="linenos">44</span><span class="c1">// will also display &quot;case 2&quot; when input is 1</span>
-<span class="linenos">45</span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">input</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">46</span><span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="w"></span>
-<span class="linenos">47</span><span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Case 1&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">48</span><span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="mi">2</span><span class="p">:</span><span class="w"></span>
-<span class="linenos">49</span><span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Case 2&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">50</span><span class="w">  </span><span class="c1">// ...</span>
-<span class="linenos">51</span><span class="p">}</span><span class="w"></span>
-<span class="linenos">52</span>
-<span class="linenos">53</span><span class="c1">// ---- poor ----</span>
-<span class="linenos">54</span>
-<span class="linenos">55</span><span class="kt">bool</span><span class="w"> </span><span class="n">flag</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">56</span><span class="c1">// calculate flag</span>
-<span class="linenos">57</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">flag</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">true</span><span class="p">)</span><span class="w">  </span><span class="c1">// should be if (flag)</span>
-<span class="linenos">58</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;True</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">25</span><span class="c1">// will run but does not mean a is between 1 and 10</span>
+<span class="linenos">26</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">27</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;a is between 1 and 10</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">28</span>
+<span class="linenos">29</span><span class="c1">// switch on double</span>
+<span class="linenos">30</span><span class="c1">// double value is not exact</span>
+<span class="linenos">31</span><span class="c1">// this snippet may work and may cause problem</span>
+<span class="linenos">32</span><span class="kt">double</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">33</span><span class="n">cin</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">34</span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">35</span><span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="mf">1.0</span><span class="p">:</span><span class="w"></span>
+<span class="linenos">36</span><span class="w">    </span><span class="p">...</span><span class="w"></span>
+<span class="linenos">37</span><span class="w">    </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">38</span><span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="mf">2.0</span><span class="p">:</span><span class="w"></span>
+<span class="linenos">39</span><span class="w">    </span><span class="p">...</span><span class="w"></span>
+<span class="linenos">40</span><span class="w">    </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">41</span><span class="w">  </span><span class="p">...</span><span class="w"></span>
+<span class="linenos">42</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">43</span>
+<span class="linenos">44</span><span class="c1">// missing break</span>
+<span class="linenos">45</span><span class="c1">// will also display &quot;case 2&quot; when input is 1</span>
+<span class="linenos">46</span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">input</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">47</span><span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="w"></span>
+<span class="linenos">48</span><span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Case 1&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">49</span><span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="mi">2</span><span class="p">:</span><span class="w"></span>
+<span class="linenos">50</span><span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Case 2&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">51</span><span class="w">  </span><span class="c1">// ...</span>
+<span class="linenos">52</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">53</span>
+<span class="linenos">54</span><span class="c1">// ---- poor ----</span>
+<span class="linenos">55</span>
+<span class="linenos">56</span><span class="kt">bool</span><span class="w"> </span><span class="n">flag</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">57</span><span class="c1">// calculate flag</span>
+<span class="linenos">58</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">flag</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">true</span><span class="p">)</span><span class="w">  </span><span class="c1">// should be if (flag)</span>
+<span class="linenos">59</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;True</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
 <section id="branch-patterns">
 <h3>Branch Patterns<a class="headerlink" href="#branch-patterns" title="Permalink to this headline">¶</a></h3>
+<p>Various ways to solve the same grade conversion problem are compared below.</p>
 <ul>
 <li><p>Multi-way branching</p>
 <ul class="simple">
+<li><p>switch (not always work, depend on math tricks)</p></li>
 <li><p>if-else if-…-else</p></li>
 <li><p>nested if-else</p></li>
 <li><p>standalone if-else</p></li>
-<li><p>switch</p></li>
 </ul>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// switch version</span>
 <span class="linenos"> 2</span><span class="c1">// use integer division</span>
@@ -252,21 +254,22 @@ in the natural order of the instructions.</p>
 <li><p>while</p>
 <ul>
 <li><p>boolean expression</p></li>
-<li><p>optional {}</p></li>
+<li><p><strong>optional {} when only one statement in its body</strong></p></li>
 </ul>
 </li>
 <li><p>do-while</p>
 <ul>
 <li><p>boolean expression</p></li>
-<li><p>optional {}</p></li>
+<li><p><strong>optional {} when only one statement in its body</strong></p></li>
 <li><p>at least run once</p></li>
+<li><p>not general</p></li>
 </ul>
 </li>
 <li><p>for</p>
 <ul>
-<li><p>boolean expression</p></li>
-<li><p>optional {}</p></li>
-<li><p>at least run once</p></li>
+<li><p>initialization; boolean expression; update</p></li>
+<li><p><strong>optional {} when only one statement in its body</strong></p></li>
+<li><p>translate to the equivalent while loop</p></li>
 </ul>
 </li>
 <li><p>break</p></li>

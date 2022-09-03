@@ -13,8 +13,8 @@ Types
 
 + Sequential
 
-  The fundamental control flow is the execution of instructions one by another
-  in the natural order of the instructions.
+  The fundamental control flow is the execution of instructions one after
+  another in the natural order of the instructions.
 
 + Branch/Selection/Conditional
 
@@ -22,7 +22,7 @@ Types
 
 + Loop/Iteration
 
-  Repeated executions of a sequence of instructions
+  Repeated executions of a sequence of instructions according to a condition
 
 Branch
 ======
@@ -34,7 +34,7 @@ Branch Statements
 
   * boolean expression
   * optional else
-  * optional {}
+  * **optional {} when only one statement in its body**
   * if, else pairing
   * negating logic to swap if and else blocks
 
@@ -78,14 +78,9 @@ Branch Pitfalls
     cout << "a is greater than 10\n";
 
   // missed {} so the third line is not part of the if and will run always
-  if (a > 10);
+  if (a > 10)
     cout << "a is greater than 10\n";
     cout << "Please try a smaller value!\n";
-
-  // will run but cout is no longer part of the if
-  // the if statement has an empty body and does nothing
-  if (a > 10);
-    cout << "a is greater than 10\n";
 
   // will run but does not mean a is between 1 and 10
   if (1 < a < 10)
@@ -97,7 +92,13 @@ Branch Pitfalls
   double a;
   cin << a;
   switch (a) {
-    //...
+    case 1.0:
+      ...
+      break;
+    case 2.0:
+      ...
+      break;
+    ...
   }
 
   // missing break
@@ -119,13 +120,14 @@ Branch Pitfalls
 
 Branch Patterns
 ---------------
+Various ways to solve the same grade conversion problem are compared below.
 
 + Multi-way branching
 
+  * switch (not always work, depend on math tricks)
   * if-else if-...-else
   * nested if-else
   * standalone if-else
-  * switch
 
   ::
 
@@ -209,19 +211,20 @@ Loop Statements
 + while
 
   * boolean expression
-  * optional {}
+  * **optional {} when only one statement in its body**
 
 + do-while
 
   * boolean expression
-  * optional {}
+  * **optional {} when only one statement in its body**
   * at least run once
+  * not general
 
 + for
 
-  * boolean expression
-  * optional {}
-  * at least run once
+  * initialization; boolean expression; update
+  * **optional {} when only one statement in its body**
+  * translate to the equivalent while loop
 
 + break
 + continue

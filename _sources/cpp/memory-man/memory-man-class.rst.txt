@@ -4,19 +4,25 @@
 ****************************
 Memory Management in Classes
 ****************************
-When a class owns dynamic data, special handling is required to avoid common
-memory problems.
+When a class owns dynamic data (part of the data stored in heap memory region),
+special handling is required to avoid memory problems.
 
 Implicitly-declared Methods
 ===========================
-Some methods can be used without explicit declarations. They are usually methods
-that are essential to the object including the default constructor, destructor,
-copy constructor, copy assignment operator overloading, etc.
+Some methods can be used without explicit declarations. They are usually
+methods that are essential to the object including the default constructor,
+destructor, copy constructor, copy assignment operator overloading, etc.
+
+.. note::
+
+  You can safely rely on these implicitly-declared methods when all your
+  instance variables are not dynamic (primitive, class-typed, array, etc.).
 
 + Default constructor
 
   * must declare and define explicitly if other constructor is present
-  * use ``MyClass::MyClass()=default;`` if the default behavior is desirable
+  * use ``MyClass::MyClass()=default;`` if you have to define the default
+    constructor but only the default behavior is desirable
 
 .. warning::
 
@@ -41,11 +47,14 @@ copy constructor, copy assignment operator overloading, etc.
   class Example {
     string name;
     int age;
+    double grades[4];
    public:
     string getName() {return name;}
     void setName(string name) {this->name = name;}
     int getAge() {return age;}
     void setAge(int age) {this->age = age;}
+    double getGrade(int index) {return grades[index];}
+    void setGrade(int index, int value) {grades[index] = value;}
   };
 
   int main() {
@@ -64,7 +73,7 @@ Dynamic data in class
 + pointer-typed instance variables
 
   * holding a single value/object or an array
-  * allocated using ``new``
+  * allocated using ``new`` and data stored in heap
   * simple assignment will cause **shallow copy**
 
 + Potential memory problems
@@ -76,7 +85,8 @@ Dynamic data in class
 
   * shallow copy - fail to copy the dynamic data in the heap memory
 
-    - only the memory address are copied by default constructor/assignment
+    - only the memory addresses (values of pointers) are copied by assignment
+    - implicitly-declared methods will cause **shallow copy**
     - bad or no explicit copy constructor
     - bad or no explicit copy assignment operator overload
     - **only happens when objects are copied or copy assigned**
@@ -85,7 +95,8 @@ Dynamic data in class
 
 + Rule of three
 
-  * The **big three** methods needed for classes with dynamic data
+  * The **big three** methods needed for classes to handle dynamic data
+    correctly
   * destructor
 
     - **mandatory** because it will always be triggered
@@ -98,6 +109,7 @@ Dynamic data in class
 
   * copy constructor
 
+    - **optional** not needed if never triggered
     - explicit triggering ``MyClass obj1; MyClass obj2(obj1);``
     - implicit triggering ``MyClass obj1; MyClass obj2 = obj1;``
     - implicit triggering in parameter passing::
@@ -114,6 +126,7 @@ Dynamic data in class
 
   * copy assignment operator overload
 
+    - **optional** not needed if never triggered
     - explicit triggering ``MyClass obj1; MyClass obj2; obj2 = obj1;``
     - implicit triggering **Easy to miss**
 
@@ -129,7 +142,7 @@ Dynamic data in class
   .. note::
 
     Even in classes with dynamic data, the implementation of the big three is
-    not always all mandatory. Only the destructor will mostly be triggered.
+    not always all mandatory. Only the destructor will be always triggered.
     Thus, **the copy constructor or the copy assignment operator overloading
     implementations can be omitted** if they are never triggered.
 
@@ -177,11 +190,11 @@ Dynamic data in class
   }
 
   ~MyClass::MyClass() {
-    if (arr != nullptr)
+    if (arr != nullptr)  // safeguard to avoid freeing a null pointer
       delete [] arr;
   }
 
-+ Rule of five
++ Rule of five (FYI)
 
   * Two more methods
 
@@ -215,10 +228,16 @@ Dynamic data in class
 
 Ownership of Dynamic Data
 =========================
-A dynamic data can be created and passed. As the ownership changed. The last
-owner should take the responsibility to release the memory.
 
-Passing dynamic data created outside as a parameter. The recipient owns the
+.. note::
+
+  This section is for extended reading. It is beneficial to projects and
+  self-improving but not essential in exams.
+
+A dynamic data can be created anywhere and passed around. As the ownership
+changed. The last owner should take the responsibility to release the memory.
+
+#. Passing dynamic data created outside as a parameter. The recipient owns the
 data after.
 
 ::
@@ -247,9 +266,10 @@ data after.
     return 0;
   }
 
-You may also choose to remove the destructor and let the main function to
+#. You may also choose to remove the destructor and let the main function to
 delete if you feel it make more sense that the recipients are only users of the
-dynamic data. Sometimes the dynamic data is shared.
+dynamic data and the main function is still the owner. Sometimes the dynamic
+data is shared in this case.
 
 ::
 

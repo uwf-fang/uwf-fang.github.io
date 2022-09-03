@@ -7,18 +7,19 @@ Memory Management
 
 Memory regions
 ==============
+When a program written with C++ is executed, a section of physical memory is
+allocated to the program. The program will then partition the memory into
+regions.
 
-:code: code
-:static: global and static variables
-:stack: local variables and function formal parameters
-:heap: dynamic data (allocated by new)
+:code region: code (binary)
+:static region: global and static variables
+:stack region: local variables and function formal parameters
+:heap region: dynamic data (allocated by **new** operator)
 
 Dynamic Memory Allocation
 =========================
-
-+ Data in heap
-+ ``new`` creates the data structure in heap memory and returns a pointer (or
-  array)
++ Data stored in heap
++ ``new`` creates the data structure in heap memory and returns a pointer
 
   .. code-block:: c++
 
@@ -27,9 +28,9 @@ Dynamic Memory Allocation
     MyClass *myObjPtr = new MyClass();  // object
 
 + ``delete`` destruct the data structure the pointer is pointing to and release
-  the memory
+  the memory in heap
 
-  - always call delete on a pointer (array is a pointer)
+  - always call delete on a pointer (dynamic array is also a pointer)
   - add [] if the pointer is pointing to a list of memory blocks (array)
 
   .. code-block:: c++
@@ -40,33 +41,34 @@ Dynamic Memory Allocation
 
 + The allocated data in heap are known as **dynamic data**
 
-
 Memory leak
 ===========
-
-+ only happens in the heap memory
++ only happens on data stored in the heap region (dynamic data)
 + dynamic data allocated (new) but not released (delete)
 + likely to be overlooked in function and class definitions when the flow of
   control is not obvious
 
 Other Memory Problems
 =====================
-
-+ Stack overflow because of massive function calls, e.g. recursion
-+ Out-of-boundary array indexing
-+ Oversized C string copying
-+ Uninitialized pointer
++ Stack overflow because of endless function calls, e.g. recursion
++ Out-of-boundary array index
++ Oversized C string operations
++ Uninitialized pointer access
 + Deleting the same pointer multiple times
 
 Memory Problem Checking Tool
 ============================
+
+.. note:
+
+  Extended reading. Beneficial to projects.
+
 The command line tool ``valgrind``, read instruction `here`__
 
 .. __: https://valgrind.org/docs/manual/quick-start.html
 
 Dynamic Data and Functions
 ==========================
-
 Refer to the :ref:`array-passing` section for details on how
 dynamic data allows returning an array from a function.
 

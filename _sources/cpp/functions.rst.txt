@@ -4,58 +4,81 @@
 **********************
 User-defined Functions
 **********************
+User-defined functions are the fundamental unit to organize code in C++
+programming language.
 
 Purpose
 =======
-+ readability
++ Readability, maintainability
 
-  * shorter function body
-  * unique name for a code block
+  * Shorter function body
+  * Unique name for a code block
 
-+ code reuse, write once, use many times
-+ affect the outside world
++ Code reuse, write once, use many times
++ Affect the outside world
 
-  * return value
-  * modify parameter (reference or pointer parameters)
-  * input/output
-  * modify global variables (**AVOID!**)
+  * Return a value
+  * Modify reference or pointer-typed parameters
+  * Input/output
+  * Modify global variables (**AVOID!**)
 
-Syntax
-======
 Declaration
------------
-* optional but strongly recommended
-* may omit parameter names
-* default value for parameters
-* add documentation
-* call a function before its implementation (definition)
-* public function declarations
+===========
+* **Optional but strongly recommended**
+* Declarations in header file enables function reuse in another cpp file
+* May omit parameter names
+* May provide default value for parameters
+* Public function declarations
 
-  - functions to be used by other cpp files
-  - prefer to put in the header
+  - Functions to be used by other cpp files
+  - In the header files
+  - Add documentation
 
-* private function declarations
+* Private function declarations
 
-  - functions to be used only in the current cpp file
-  - prefer to put in the cpp file
+  - Functions to be used only in the current cpp file only
+  - In the cpp files
+
+* Return type
+
+  - a concrete type: expecting a value of the specified type
+  - void: not expecting anything
 
 Definition (implementation)
----------------------------
-* prefer to put in the cpp file
-* must have parameter names
-* default values are ignored
-* must align to declaration
+===========================
+* In the cpp files
+* Formal parameters
+
+  - Parameters listed in the parenthesis
+  - Must have types and names specified
+  - Default values are ignored
+  - Stored the same way as local variables
+
+* Must align to declarations
+* Return statement
+
+  - may have multiple in a same function definition
+  - returns a value **as a copy (by-value)** to the caller (except in void
+    functions)
 
 Function call
--------------
-* must be either declared or defined before the function call
-* matching mechanism
-* parameter passing is like initialization (not assignment!)
+=============
+* Functions must be either declared or defined before being called
+* Actual parameters
 
-  - type conversion will happen as needed
+  - Values provided in function calls
+  - Rvalues in the parenthesis
+  - **Never add types**
+
+* Usages
+
+  - as a statement ``strcpy(str1, str2);``
+  - as part of an expression (non-void functions) ``cout << sqrt(4)
+    << endl;``
+
 
 Function Pitfalls
------------------
+=================
 * Declaration/definition after call
 * Default value in definition
 * No parameter name in definition
@@ -72,41 +95,25 @@ Function Pitfalls
     // ---- wrong function calls ----
     func1(int a);
 
-
-Function examples
+Parameter Passing
 =================
++ parameter passing is the same as initialization (not assignment!)
 
-::
+  * type conversion will happen as needed
 
-  #include <iostream>
++ Pass by value
 
-  using namespace std;
+  * The default method to pass parameters
+  * The value of the actual parameter is used to initialize the formal
+    parameter
+  * A copy is created like in a normal initialization
 
-  /**
-    * function to double a value
-    * myParam: the input value to be doubled
-    * return: a double value
-    * documentations should be above the declaration
-    */
-  // int doubleValue(int = 10);  // default value, no name
-  int doubleValue(int myParam = 10);  // default value, with name
++ Pass by pointer
 
-  int doubleValue(int param1){ // parameter name can even be different
-    return param1 * 2;
-  }
+  * A memory address is passed by value
 
-  int localFunc() {
-    cout << "This is local" << endl;
-    return 0;
-  }
-
-  int main() {
-    // function calls
-    cout << "double_value() gives " << doubleValue() << endl;  // get 20
-    cout << "double_value(5) gives " << doubleValue(5) << endl; // get 10
-
-    return EXIT_SUCCESS;
-  }
++ :ref:`Passing arrays<pass-by-array>`
++ :ref:`Pass by reference<pass-by-ref>`
 
 Scope
 =====
@@ -183,30 +190,83 @@ parameter names will not be valid overloading.
 Function call matching
 ======================
 Function name overloading, default value, and implicit type conversion will all
-affect function call matching. Any ambiguous function call will cause an syntax
-error. Calls that need type conversion will not conflict with calls that do not
-need conversion.
+affect function call matching process. Any ambiguous function call will cause
+an syntax error.
+
+* call matching mechanism
+
+  - return type does not matter
+  - default value should be considered
+  - Exact match: no implicit type conversion
+  - Compatible match: need implicit type conversion
+  - order of matching
+
+    #. Exact matching
+    #. Compatible matching
+
+* ambiguous matching
+
+  - multiple exact matches
+  - multiple compatible matches
+  - an exact match will not conflict with compatible matches
 
 ::
 
   // Wrong
-  // both do not need type conversion.
+  // both exact matches
   // func1(1); call is ambiguous with
   void func1(int);
   void func1(int, int = 1);
 
   // Wrong
-  // both need type conversion
+  // both compatible matches
   // func2(2, 3); call is ambiguous with
   void func2(int, double);
   void func2(double, int);
 
   // Correct
-  // first do not need type conversion
-  // second need type conversion
+  // first is an exact match
+  // second is a compatible match
   // func2(2, 3.0); call is fine with
   void func2(int, double);
   void func2(double, double);
+
+.. _func-full-example:
+
+Example
+=======
+
+::
+
+  #include <iostream>
+
+  using namespace std;
+
+  /**
+    * function to double a value
+    * myParam: the input value to be doubled
+    * return: a double value
+    * documentations should be above the declaration
+    */
+  // int doubleValue(int = 10);  // default value, no name
+  int doubleValue(int myParam = 10);  // default value, with name
+
+  int doubleValue(int param1){ // parameter name can even be different
+    return param1 * 2;
+  }
+
+  int localFunc() {
+    cout << "This is local" << endl;
+    return 0;
+  }
+
+  int main() {
+    // function calls
+    cout << "double_value() gives " << doubleValue() << endl;  // get 20
+    cout << "double_value(5) gives " << doubleValue(5) << endl; // get 10
+
+    return EXIT_SUCCESS;
+  }
 
 Function Glossary
 =================
@@ -220,13 +280,6 @@ Function Glossary
     A pair of parentheses must be present to differentiate a function name from
     a variable name.
 
-  Formal parameters
-    Sometimes referred as parameters. Are the names listed in the parentheses
-    in the function definition.
-
-  Actual parameters
-    Are the rvalues provided in the parentheses of the function call.
-
   Function declaration
     A specification of the return type, function name and parameter types. How
     a function can be called and what you can expect from the call.
@@ -238,10 +291,31 @@ Function Glossary
     The syntaxes to invoke the function by providing actual parameters and
     optionally receive the returned value
 
+  Formal parameters
+    Sometimes referred as parameters. They are the names listed in the
+    parentheses in the **function definition**. Each name should have a type
+    specified. Formal parameters are stored in the same place as the local
+    variables in the stack frame of the function call.
+
+  Actual parameters
+    The rvalues provided in the parenthesis in a **function call**.
+
+  Parameter Passing
+    A mechanism to initialize the value of formal parameters using the values
+    of actual parameters provided in the function call.
+
+  Return statement
+    A statement employed in a function to exit the function and return a value
+    (except in a void function).
+
+  Function overloading
+    The mechanism that allows multiple declarations using a same function name but different parameter list. Also applies to methods.
+
+  Function Call Matching
+    A mechanism to identify the right function definition to execute given a
+    function call.
+
   Scope
     The lifespan of names of entities in C++(variables, functions, types, etc.)
-    The C++ language has a block-based scope
-
-  Function name overloading
-    The mechanism that allows multiple declarations using a same function name but different parameter list. Also applies to methods
+    The C++ language has a block-based scope.
 
