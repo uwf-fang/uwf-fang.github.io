@@ -46,20 +46,26 @@
             
   <section id="pointer-type">
 <span id="ptr-type"></span><h1>Pointer Type<a class="headerlink" href="#pointer-type" title="Permalink to this headline">¶</a></h1>
+<section id="basics">
+<h2>Basics<a class="headerlink" href="#basics" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>A derived type to store the memory address of an lvalue</p></li>
 <li><p>* symbol after type to make a derived type <code class="docutils literal notranslate"><span class="pre">BaseType</span> <span class="pre">*ptr;</span></code></p></li>
-<li><p>* operator to dereference a pointer <code class="docutils literal notranslate"><span class="pre">*ptr</span></code></p></li>
-<li><p>&amp; operator to reference an lvalue <code class="docutils literal notranslate"><span class="pre">&amp;lvalue</span></code></p></li>
-<li><p>syntax</p></li>
+<li><p>* operator to dereference a pointer variable <code class="docutils literal notranslate"><span class="pre">*ptr</span></code></p></li>
+<li><p>&amp; operator to reference an lvalue <code class="docutils literal notranslate"><span class="pre">ptr</span> <span class="pre">=</span> <span class="pre">&amp;lvalue;</span></code></p></li>
 </ul>
+</section>
+<section id="example">
+<span id="ptr-example"></span><h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
 <span class="linenos">2</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">ptr1</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">3</span><span class="n">ptr1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">;</span><span class="w">  </span><span class="c1">// reference, now you can use *ptr1 as an alias of value</span>
+<span class="linenos">3</span><span class="n">ptr1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">;</span><span class="w">  </span><span class="c1">// reference the value, now you can use *ptr1 as an alias of value</span>
 <span class="linenos">4</span><span class="p">(</span><span class="o">*</span><span class="n">ptr1</span><span class="p">)</span><span class="o">++</span><span class="p">;</span><span class="w">  </span><span class="c1">// value increased by 1 and become 11</span>
-<span class="linenos">5</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;The value is &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="o">*</span><span class="n">ptr1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w">  </span><span class="c1">// dereference</span>
-<span class="linenos">6</span><span class="c1">// type cast to void * type to be displayed correctly</span>
-<span class="linenos">7</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;The memory address is &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">void</span><span class="w"> </span><span class="o">*&gt;</span><span class="p">(</span><span class="n">ptr1</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">5</span>
+<span class="linenos">6</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;The value is &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="n">ptr1</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w">  </span><span class="c1">// dereference</span>
+<span class="linenos">7</span>
+<span class="linenos">8</span><span class="c1">// type cast to (void *) type to be displayed correctly</span>
+<span class="linenos">9</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;The memory address is &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">void</span><span class="w"> </span><span class="o">*&gt;</span><span class="p">(</span><span class="n">ptr1</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -70,6 +76,23 @@
 </li>
 </ul>
 </section>
+<section id="pointer-type-based-data-structures">
+<h2>Pointer Type Based Data Structures<a class="headerlink" href="#pointer-type-based-data-structures" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Linked-list</p></li>
+<li><p>Tree</p></li>
+<li><p>Graph</p></li>
+<li><p>Hash Table (chained)</p></li>
+</ul>
+</section>
+<section id="related-topics">
+<h2>Related Topics<a class="headerlink" href="#related-topics" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="../array/array.html#ptr-array"><span class="std std-ref">Pointer syntaxes in array</span></a></p></li>
+<li><p><a class="reference internal" href="../ref/ref-vs-ptr.html"><span class="doc">Reference type vs pointer type</span></a></p></li>
+</ul>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -78,6 +101,19 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Pointer Type</a><ul>
+<li><a class="reference internal" href="#basics">Basics</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+<li><a class="reference internal" href="#pointer-type-based-data-structures">Pointer Type Based Data Structures</a></li>
+<li><a class="reference internal" href="#related-topics">Related Topics</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
   <div>
     <h4>Previous topic</h4>
     <p class="topless"><a href="../../course/cop3014/ch05.html"

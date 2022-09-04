@@ -11,10 +11,32 @@ When a program written with C++ is executed, a section of physical memory is
 allocated to the program. The program will then partition the memory into
 regions.
 
-:code region: code (binary)
-:static region: global and static variables
-:stack region: local variables and function formal parameters
-:heap region: dynamic data (allocated by **new** operator)
+.. glossary::
+
+  Code Memory Region
+    The memory region to store code binary.
+
+  Static Memory Region
+    The memory region to store global and static variables.
+
+  Stack Memory Region
+    The memory region to store formal parameters and local variables allocated
+    during function calls.
+
+  Heap Memory Region
+    The memory region to store data allocated using the ``new`` operator.
+
+Stack and Function Calls
+========================
+Stack is an ADT in which elements are added and removed in a first in last out
+order (FILO). It aligned well with the requirement to store data required in
+function calls. The memory allocated for function calls in C++ is thus named
+the stack memory region.
+
+In C++, every function call requires the data storage of all formal parameters
+and local variables. They are packed into a  ``Stack Frame`` and pushed into
+the stack when the function is called. The ``Stack Frame`` is popped and
+removed from the stack when the function returns.
 
 Dynamic Memory Allocation
 =========================
@@ -41,15 +63,18 @@ Dynamic Memory Allocation
 
 + The allocated data in heap are known as **dynamic data**
 
+Memory Problems
+===============
+
 Memory leak
-===========
-+ only happens on data stored in the heap region (dynamic data)
-+ dynamic data allocated (new) but not released (delete)
-+ likely to be overlooked in function and class definitions when the flow of
+-----------
++ Only for data stored in the heap region (dynamic data)
++ Dynamic data allocated (new) but not released (delete)
++ Likely to be overlooked in function and class definitions when the flow of
   control is not obvious
 
-Other Memory Problems
-=====================
+Other Problems
+--------------
 + Stack overflow because of endless function calls, e.g. recursion
 + Out-of-boundary array index
 + Oversized C string operations
@@ -57,11 +82,11 @@ Other Memory Problems
 + Deleting the same pointer multiple times
 
 Memory Problem Checking Tool
-============================
+----------------------------
 
-.. note:
+.. note::
 
-  Extended reading. Beneficial to projects.
+  Optional reading material. Beneficial to projects depending on working style.
 
 The command line tool ``valgrind``, read instruction `here`__
 
@@ -69,7 +94,23 @@ The command line tool ``valgrind``, read instruction `here`__
 
 Dynamic Data and Functions
 ==========================
-Refer to the :ref:`array-passing` section for details on how
-dynamic data allows returning an array from a function.
+Refer to the :ref:`return-array` section for details on how dynamic data allows
+returning an array from a function.
 
 You can return dynamic data that are not array also.
+
+Glossary
+========
+
+.. glossary::
+
+  Dynamic Data
+    Data allocated in the heap memory region.
+
+  Stack Frame
+    The section of memory allocated in the stack memory region for each
+    function call.
+
+  Memory Leak
+    The memory problem that the memory allocated for dynamic data is not
+    correctly released.
