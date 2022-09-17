@@ -1,0 +1,429 @@
+**********************
+Midterm 1 Topic Review
+**********************
+
+How to prepare
+==============
++ Self-test using this document to see what concepts are challenging or unknown
+  to you
++ Course notes website is the main resource for tips, pitfalls. High priority
+  in midterm preparation.
++ Review all participation activities and challenge activities in zyBook
++ Practice your ability to finish the coding patterns listed here from scratch
+  without the assistance from the editor/ IDE
+
+Topics
+======
+
+Environment
+-----------
++ Command-line interface (CLI)
+
+  * add prefix ``./`` to run an executable in the current directory
+
++ keyboard input
++ screen output
+
++ Basic Linux bash command: ls, mkdir, cd, rm, mv, vi/vim, man, ssh
++ Compilation command: ``g++``
++ Building: ``make``
+
+General C++ concepts
+--------------------
++ name/identifier rule
+
+  * digit, letter, underscore
+  * digit cannot be first character
+  * avoid conflict with keyword
+
++ Three ype of errors
++ Comments
+
+  * line //
+  * block /* \*/
+  * documentation - comments above declarations to document classes or
+    functions
+
++ Debugging
+
+  * Manually debugging - run code, provide different input and check output
+  * tracing - add ``cout <<`` statements to your code to show values of
+    variables
+
++ Testing
+
+  * Write additional code to feed various input (parameters) to
+    functions/methods and check whether the outputs are as expected
+  * assert macro
+
+    - cassert header
+
+Variable & expressions
+----------------------
++ integer division
+
+  * truncate, loose precision
+
++ modulo
+
+  * **int only!**
+
++ type cast/conversion
+
+  * explicit/type cast
+
+    - ``static_cast<NewType>(variable)``
+    - avoid C style type conversion like ``(int) variable`` (points off in
+      exam)
+
+  * implicit/conversion
+
+    - assignment to a variable of a different type. E.g. ``int a = 4.5;``
+    - mixed operation like ``3 + 5.0`` (a type of smaller range automatically
+      converted to a type of larger range)
+
++ Operators
+
+  * arithmetic
+  * relationship
+  * logical
+  * bitwise **know they exist, should not confuse with logical ops**
+  * precedence rule
+
++ complex expression evaluation
+
+  * **step-wise**
+
++ textual literals
+
+  * char 'a'
+  * string "string"
+  * escape sequence
+
+    - ``\n``
+    - ``\t``
+    - ``\\``
+
++ Array basics
+
+  * declaration syntax
+  * size must me a compilation-time constant (literal or const variable)
+  * initialization syntax (size infer)
+  * element access with the ``[]`` operator
+
++ Reference basics
+
+  * declaration with mandatory initialization
+  * make an alias of a variable
+
+Control flows
+-------------
++ Three types
++ Branch
+
+  * if-else
+  * switch
+
+    - break
+
++ Loop
+
+  * while
+  * do-while (cannot handle all scenarios)
+  * for
+  * break
+  * continue
+
++ examples
+
+  * statements with child blocks ``if``, ``else``, ``while``, ``for``
+
+    - no statement like ``if (expr1);`` (meaningless but compilable)
+    - one statement like ``if (expr1) statement;``
+    - code block like ``if (expr1) {statement; ...}``
+
+  * interconversion
+
+    - while; do-while; for
+    - if-else; switch
+
+Functions
+---------
++ declaration/prototype syntax
+
+  * public declarations should be in header files if they exist
+  * may omit parameter name
+  * may provide default value
+
++ definitions/implementation syntax
+
+  * in cpp files if they exist
+  * must have parameter name
+  * must not have default value
+
++ function call syntax (no parameter types)
++ parameter passing
+
+  * pass-by-value (default way)
+  * pass-by-ref
+
+    - use & after the type in the formal parameter list
+    - must use a single variable as the actual parameter in function call
+    - formal parameter will serve as an alias of the actual parameter
+    - reason 1: avoid copying large obj (may use const to avoid modification)
+    - reason 2: modify the actual parameters passed to it
+
++ function overloading
+
+  * same name but different parameter types, count or order
+  * function call matching
+
+    - exact match
+    - match with compatible types
+
+  * things that do not count
+
+    - differ only in return type
+    - differ only in parameter names
+
++ scope
+
+  * block scope
+  * shadowing example
+
+Class
+-----
++ concepts
+
+  * class is a type
+  * object/instance is a variable of a class type
+  * members
+
+    - member variables / instance variables
+    - member functions / methods
+
+  * access modifier
+
+    - section based (different from Java)
+    - public
+    - private (default)
+
++ syntax
+
+  * class declaration
+
+    - public declarations should be in header files if they exist
+    - may contain implementation (in-line function)
+    - may omit formal parameter names (not recommended)
+    - may add default values
+
+  * member function definition (out-of-line)
+
+    - in cpp files
+    - different from in-line
+    - must use :: operator to specify the ownership of the functions
+    - must have formal parameter names
+    - should not use default values
+
+  * member variable access and member function call
+
+    - use variableName.functionName()
+
+  * this pointer
+
+    - use -> syntax to access members
+    - ``this->`` can be omitted when name does not conflict
+
+  * const function (not const variables or const parameters)
+
+    - const keyword after the parenthesis in both declaration and definition
+    - prevent a function from modifying any member variables
+    - getters for example
+
++ member function overloading
++ special member functions
+
+  * constructor
+
+    - overload
+    - default constructor
+    - parameterized constructor
+    - no return type
+
+  * destructor
+
+    - only one
+    - no parameter
+    - no return type
+
+  * getter/accesser
+  * setter/mutator
+
+    - ``this->`` syntax when name conflicts
+
+Modular Development
+-------------------
+
+* a pair of header/implementation files per class (or a group of classes)
+* a pair of header/implementation files per group of functions
+* a runner/driver/tester - usually main.cpp file, with a main function
+* test runners - optional, when tests are needed; with a main function
+* .hpp header file in the pair
+
+  - header guard (#ifndef, #define, #endif)
+  - public declarations of classe(s) or function(s)
+  - holds preprocessor derivatives - #include, etc.
+
+* .cpp file in the pair
+
+  - include libraries used in the implementation only
+  - private declarations
+  - holds function/method definitions
+
+* .cpp file for the runner
+
+  - main function
+  - includes the paired headers to use the functions/classes
+
+* g++
+
+  - handles all three steps of the compilation process
+
+    #. preprossing
+    #. compilation
+    #. linking
+
+  - -c flag to preprocess and compile only; generate object files (usually
+    named as .o files)
+  - -o flag for the output file (will be the name of object file if -c is
+    present)
+  - -Wall to display all warnings
+  - flag -std=c++14 follow the C++ 2014 standard
+
+* make
+
+  - **know the simple g++ commands**
+  - **use of variables will not be tested!**
+  - automate the build (preprossing, compilation, linking) process
+  - makefile
+
+    + syntax
+
+      .. code-block::
+
+        <target> : <dependencies/prerequisites>
+                <recipe/commands>
+
+    - example
+
+      .. code-block::
+
+        main : main.o lib1.o
+            g++ -o main main.o lib1.o
+
+
+
+Top-down design
+---------------
++ **Will not be directly tested in exam but you will do a lot better in the
+  coding questions if you know how to apply the rule!**
++ divide problem into sub-tasks
++ keep dividing sub-tasks to sub-sub-tasks as necessary
++ work from top level to bottom level
++ finish bigger picture design before digging into sub-tasks
++ work iteratively - keep improving the design during development
+
+Object oriented design
+----------------------
++ **Will only test simple concepts.**
++ Identify/diagnose ownerships between classes and members
++ identify objects and classes (concepts, nouns)
++ identify states of objects, a.k.a. member variables (concepts, attributes,
+  nouns)
++ identify behavior of objects, a.k.a. member functions (relationships,
+  verbs)
+
+Frequently Tested Contents
+--------------------------
++ **Finish coding on paper or in a plain text editor like notepad**
++ **Write a full program project in a single cpp file**
++ **Write a full program project with multiple files**
+
+  * header/cpp pairs and driver/runner cpp file
+  * how includes works
+  * **header guards**
+  * how to make them work together
+  * how to compile using g++ commands and simple makefile
+  * refer to Lab 2 and Project 1
+
++ Write a full function
+
+  * based on problem to solve
+  * based on function usages
+  * Pass-by-ref functions, e.g. swap
+
++ **Write a full class**
+
+  * class declaration
+  * member function definitions
+  * both single file or multiple file
+  * based on class usages
+
++ Input with validation
++ Complex expression evaluation - **stepwise**
++ Output of loop/branch
+
+  * **stepwise**
+
++ Function overloading and call matching
++ Pitfalls. Find them in the notes. Some are listed here.
+
+  * modulo on non-int values
+  * initialization only syntax
+  * & vs &&, \| vs \|\|
+  * switch w/o break
+  * switch on double value
+  * optional {} in if/while/for
+  * empty if/while/for like ``if (expr);``
+  * wrong syntax of array like ``int [] arr``
+  * mismatched function call
+  * out of scope use of variables
+  * off-by-one in loops (check border conditions)
+  * infinite loops (missed termination condition)
+  * while loops that checked condition at a wrong place. **always use while
+    (true) loop to avoid**
+  * ; after the } in a class declaration
+  * constructor only syntax
+
+    - initializer list
+    - no return type
+
+  * forget MyClass:: prefix in method definitions
+  * use public/private as method prefix rather than sections
+
+Examples
+--------
+
++ complex expressions
+
+  * **step-wise evaluation**
+  * precedence rule
+  * implicit conversion
+  * explicit type cast
+
+  .. code-block:: c++
+
+      ((3 / 4 + (9 + 3) ) / 3.0 - 3) / ( 1 + (2 * 3))
+      = ((3 / 4 + 12) / 3.0 - 3) / ( 1 + 6)
+      = ((0 + 12) / 3.0 - 3) / 7
+      = (12 / 3.0 - 3) / 7
+      = (4.0 - 3) / 7
+      = 1.0 / 7
+      = 0.14...
+
+      ((17 / 2 + 19 % 3 + 6) >= (5 + 2 * 4)) && !(((4 * 5) + 1) / 2 == (7 / 3 + 2 * 5 - 2) || !(4 >= 3))
+      = ((8 + 1 + 6) >= (5 + 8)) && !((20 + 1) / 2 == (2 + 10 - 2) || !(4 >= 3))
+      = (15 >= 13) && !(21 / 2 == 10) || !(4 >= 3)
+      = (15 >= 13) && !(10== 10) || !(4 >= 3)
+      = true && !(true || !true)
+      = false

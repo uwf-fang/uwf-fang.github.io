@@ -50,17 +50,19 @@
 <h2>TL;DR<a class="headerlink" href="#tl-dr" title="Permalink to this headline">¶</a></h2>
 <dl class="simple">
 <dt>Windows</dt><dd><p>Install the toolchain under WSL; Use any code editor; Compile and run in WSL
-bash window; Transfer to the SSH server for a final test.</p>
+bash window; Transfer to the SSH server for an optional final test. <strong>Do not
+recommend MinGW! Use it at your own risk!</strong></p>
 </dd>
-<dt>Mac OS</dt><dd><p>Install X-Code command line tool as your toolchain; Use any code editor;
-Compile and run in your terminal; Transfer to the SSH server for a final
-test.</p>
+<dt>Mac OS</dt><dd><p>Install <strong>X-Code command line tool</strong> as your toolchain; Use any code editor;
+Compile and run in your terminal; Transfer to the SSH server for an optional
+final test.</p>
 </dd>
 <dt>Linux</dt><dd><p>Install the toolchain; Use any code editor; Compile and run in your terminal;
-Transfer to the SSH server for a final test.</p>
+Transfer to the SSH server for an optional final test.</p>
 </dd>
 <dt>Avoid</dt><dd><p>When working on multi-file projects, <strong>avoid any system that do not support
-make!</strong>. Example: jGrasp, onlineGDB, run button in VS Code.</p>
+make!</strong>. Example: jGrasp, onlineGDB, the run button in VS Code. Use them at
+your own risk.</p>
 </dd>
 </dl>
 </section>
@@ -70,7 +72,23 @@ make!</strong>. Example: jGrasp, onlineGDB, run button in VS Code.</p>
 <dt id="term-Command-line-Interface">Command-line Interface<a class="headerlink" href="#term-Command-line-Interface" title="Permalink to this term">¶</a></dt><dd><p>The Command-line interface (CLI) let user to process commands (computer
 applications) as lines of texts. Almost all operating systems provide CLIs.
 It has many advantages for programmers and are exclusively used to control
-remote computer through networks.</p>
+remote computer through networks. Among the many CLI environments
+available, we stick to <strong>bash</strong> as our CLI environment.</p>
+</dd>
+<dt id="term-Command-line-Command">Command-line Command<a class="headerlink" href="#term-Command-line-Command" title="Permalink to this term">¶</a></dt><dd><p>A command-line command is an executable that can be invoked in the CLI
+environment (a terminal/console) with given configurations. A typical
+command contains the path to the executable followed by with arguments and
+options. E.g. <code class="docutils literal notranslate"><span class="pre">g++</span> <span class="pre">-o</span> <span class="pre">main</span> <span class="pre">main.cpp</span></code></p>
+</dd>
+<dt id="term-Command-Arguments-and-Options">Command Arguments and Options<a class="headerlink" href="#term-Command-Arguments-and-Options" title="Permalink to this term">¶</a></dt><dd><p>Given an example command: <code class="docutils literal notranslate"><span class="pre">g++</span> <span class="pre">-g</span> <span class="pre">-o</span> <span class="pre">main</span> <span class="pre">main.cpp</span></code>. A argument is a
+general parameter provided in a command like <code class="docutils literal notranslate"><span class="pre">main.cpp</span></code>. An option is a
+parameter in the form like either <code class="docutils literal notranslate"><span class="pre">-o</span> <span class="pre">main</span></code> (with an option argument) or
+<code class="docutils literal notranslate"><span class="pre">-g</span></code>).</p>
+</dd>
+<dt id="term-Bash">Bash<a class="headerlink" href="#term-Bash" title="Permalink to this term">¶</a></dt><dd><p>Bash is a unix shell to support the usage of CLI commands. It is also a
+command language to allow shell programming. It is the default shell in
+most Linux distributions and some versions of Mac OS (switched to zsh after
+version 10.3).</p>
 </dd>
 <dt id="term-Executable">Executable<a class="headerlink" href="#term-Executable" title="Permalink to this term">¶</a></dt><dd><p>It is also know as “executable file”, or “binary”. An executable refers to
 a file that can be invoked to perform certain tasks on a computer. It can
@@ -106,24 +124,28 @@ pre-installed with the required toolchain. Students can connect to the server
 and use the toolchain without any local installation.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>It is strongly recommended that students give their project a final test run
-on the server before submitting it.</p>
+<p>Although a local environment (not including MinGW) should be good enough to
+test run your projects. It is recommended that students give their project a
+final test run on the server before submitting it for their first couple of
+projects to confirm the compatibility. <strong>MinGW user should always test your
+code on the SSH server before submitting your work for grading.</strong></p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Assignments collected through the GitHub Classroom with auto-grading may skip
-this step as GitHub has provided a similar Linux testing environment with a
-proper setup.</p>
+<p>Assignments collected through the GitHub Classroom with auto-grading do not
+require tests on the SSH server as GitHub has provided a compatible Linux
+testing environment with a proper setup.</p>
 </div>
 </section>
 <section id="local-development-environment">
 <h2>Local Development Environment<a class="headerlink" href="#local-development-environment" title="Permalink to this headline">¶</a></h2>
-<p>Installing your own local development environment is highly recommended for the
-reasons:</p>
+<p>Installing your own local development environment is <strong>highly recommended</strong> for
+the following reasons:</p>
 <ol class="arabic simple">
-<li><p>Convenience: no need to transfer files every time to compile and run</p></li>
+<li><p>Convenience: no need to transfer files to the SSH server every time to
+compile and run.</p></li>
 <li><p>Learning purpose: gain better understanding of the environment though
-the installation, configuration and execution processes</p></li>
+the installation, configuration and execution processes.</p></li>
 </ol>
 <p>The following list of tools applies to the C++ courses I teach. Other
 instructors may require other tools. The first five tools are required in most
@@ -137,16 +159,20 @@ task automation</p>
 <dt id="term-ssh">ssh<a class="headerlink" href="#term-ssh" title="Permalink to this term">¶</a></dt><dd><p>The secure shell to access remote computer system through a command-line
 interface</p>
 </dd>
-<dt id="term-Linux">Linux<a class="headerlink" href="#term-Linux" title="Permalink to this term">¶</a></dt><dd><p>The operating system required as the final test environment.</p>
+<dt id="term-Linux">Linux<a class="headerlink" href="#term-Linux" title="Permalink to this term">¶</a></dt><dd><p>The open-source operating system. Many distributions available. Ubuntu 20.04 is recommended in this course. It serves as the final grading environment.</p>
 </dd>
-<dt id="term-Editor-IDE">Editor/IDE<a class="headerlink" href="#term-Editor-IDE" title="Permalink to this term">¶</a></dt><dd><p>Any tool to be used for text file editing. Your own choice.</p>
+<dt id="term-WSL">WSL<a class="headerlink" href="#term-WSL" title="Permalink to this term">¶</a></dt><dd><p>The Windows Subsystem for Linux. It allows students to use Linux
+environment in the Windows operating system.</p>
+</dd>
+<dt id="term-Editor-IDE">Editor/IDE<a class="headerlink" href="#term-Editor-IDE" title="Permalink to this term">¶</a></dt><dd><p>Any tool to be used for text file editing. Your own choice. Visual Studio
+Code is selected for demonstration in the classroom.</p>
 </dd>
 <dt id="term-git">git<a class="headerlink" href="#term-git" title="Permalink to this term">¶</a></dt><dd><p>The distributed version control system to manage source code or other
-files. Employ to work with the GitHub Classroom</p>
+files. Optional to classes not using GitHub Classroom.</p>
 </dd>
-<dt id="term-gdb">gdb<a class="headerlink" href="#term-gdb" title="Permalink to this term">¶</a></dt><dd><p>The GNU debugger for C/C++ programs</p>
+<dt id="term-gdb">gdb<a class="headerlink" href="#term-gdb" title="Permalink to this term">¶</a></dt><dd><p>The GNU debugger for C/C++ programs. Optional to all classes.</p>
 </dd>
-<dt id="term-valgrind">valgrind<a class="headerlink" href="#term-valgrind" title="Permalink to this term">¶</a></dt><dd><p>The memory problem checking tool.</p>
+<dt id="term-valgrind">valgrind<a class="headerlink" href="#term-valgrind" title="Permalink to this term">¶</a></dt><dd><p>The memory problem checking CLI tool.</p>
 </dd>
 </dl>
 </section>
@@ -210,13 +236,13 @@ web browser to use it. The drawbacks are:</p>
 </section>
 <section id="windows-1x-local">
 <h3>Windows 1x Local<a class="headerlink" href="#windows-1x-local" title="Permalink to this headline">¶</a></h3>
-<p>To have a most compatible toolchain working on Windows, the <strong>Windows Subsystem
-for Linux (WSL)</strong> is preferred over MinGW or CygWin. To set up WSL and related
-tools:</p>
+<p>To have the most compatible toolchain working on Windows, the <strong>Windows
+Subsystem for Linux (WSL)</strong> is preferred over MinGW or CygWin. To set up WSL
+and related tools:</p>
 <ol class="arabic">
 <li><p>Install WSL (e.g. Ubuntu 20.04 LTS) from the Microsoft Store</p></li>
 <li><p>Run for the first time: Setup username and password</p></li>
-<li><p>Install building tools: g++, make, and git (optional for some courses):</p>
+<li><p>Install building tools: g++, make, and git:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo apt-get update
 sudo apt-get install build-essential
 sudo apt-get install git
@@ -233,8 +259,8 @@ problems by yourself. It usually not work the effort.</p>
 </section>
 <section id="mac-os-local">
 <h3>Mac OS Local<a class="headerlink" href="#mac-os-local" title="Permalink to this headline">¶</a></h3>
-<p>The easiest way to install the toolchain on Mac OS is to install the <em>XCode
-Command line tool</em> in the Terminal:</p>
+<p>The easiest way to install the toolchain on Mac OS is to install the <strong>XCode
+Command line tool</strong> in the Terminal:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo xcode-select --install
 </pre></div>
 </div>
@@ -254,7 +280,10 @@ sudo apt-get install build-essential
 sudo apt-get install git
 </pre></div>
 </div>
-<p>You may skip git if it is not required in your course.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>git is required in the Data Structure class only.</p>
+</div>
 </section>
 </section>
 </section>

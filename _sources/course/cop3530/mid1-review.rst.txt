@@ -1,0 +1,277 @@
+**********************
+Midterm 1 Topic Review
+**********************
+
+How to use this document
+========================
++ Self-test using this document to see what concepts are challenging to you
++ Course notes document is the main resource for tips, pitfalls. High priority
+  in midterm preparation.
++ Review all participation activities and challenge activities in zyBook
++ Practice your ability to finish the patterns listed here from scratch without
+  the help from any editor/ IDE
+
+Topics
+======
+
+Concepts
+--------
++ Algorithms
++ Data structure definition and characteristics
++ Abstract Data Type (ADT) definition and characteristics
++ relationships
+
+Environment
+-----------
++ Command-line interface (CLI)
+
+  * add prefix ``./`` to run an executable in the current directory
+
++ keyboard input
++ screen output
+
++ Basic Linux bash command: ls, mkdir, cd, rm, mv, vi/vim, man, ssh
++ Compilation command: ``g++``
++ Building: ``make``
++ ``git``
+
+  * clone
+  * add
+  * status
+  * commit
+  * push
+
+Modular Compilation
+-------------------
+* g++
+
+  - -c to compile (no linking)
+  - -o to specify the output file name
+
+* Header file (hpp file)
+
+  - public declarations
+  - include
+  - header guard
+  - may include implementation as in-line methods of a class
+
+* Implementation file (cpp file)
+
+  - function implementations
+  - include its own header if exist, and other includes only when used in the
+    implementations
+
+* Preproccessor derivatives
+
+  - #include "filename.hpp"
+  - #include <sys library>
+  - header guard
+
+* Multi-file compilation
+
+  - hpp/cpp file pair per class (group of classes)
+  - hpp/cpp file pair per group of functions
+  - main.cpp (or other names) for entry point (convention rather than
+    requirement)
+  - make to compile/build
+
+* Make
+
+  - automate the building process
+  - syntax
+
+    .. code-block::
+
+      <target> : <dependencies/prerequisites>
+              <recipe/commands>
+
+  - example
+
+    .. code-block::
+
+      main : main.o lib1.o
+              g++ -o main main.o lib1.o
+
+Memory management
+-----------------
++ Memory sections
+
+  * static
+  * code
+  * stack
+  * heap
+
++ Pointer data-type
+
+  * stores memory address
+  * e.g. ``int *intPointer1;`` to define a pointer to point to an int value
+  * dereference operator \*: ``cout << *intPointer1;``
+  * reference operator &: ``int *intPtr1 = &a``
+  * ``nullptr``
+  * range not checked, need to be carefully managed by the programmer
+
++ Dynamic array
++ new and delete operators
+
+  * new creates the data structure in heap memory and returns a pointer (or
+    array):
+
+  .. code-block:: c++
+
+    int int *intPtr = new int;
+    int *array1 = new int[10];
+    MyClass *myObj = new MyClass();
+
+  * delete destruct the data structure the pointer is pointing to and release
+    the memory:
+
+  .. code-block:: c++
+
+    delete intPtr;
+    delete [] array1;
+    delete myObj;
+
+  * Anything new'ed should be deleted
+  * The destructor of a class is a good place to delete anything new`ed during
+    the usage of the object
+
++ memory leak
+
+  * only for heap memory
+  * allocated but not released
+  * new operation without corresponding delete operation
+
++ reference type
+
+  * stores memory address
+  * mostly used when passing/returning values to/from a function
+  * used in the same way as the variable it refers to, feels like an alias of
+    another variable
+  * no referencing and dereferencing operations
+  * cannot assign value to it, only initialization or parameter pass allowed
+
+    .. code-block:: c++
+
+      int a = 10;
+      int &b = a;
+      int c = 20;
+
+      b = c;  // this will not re-assign b to refer to c, instead it is equivalent to a = c
+
++ ref type vs pointer type
+
+  * ref cannot be re-assigned
+  * ref is easier to use with no ref/deref operations
+  * ref is safer to use
+  * pointer is more powerful and allows many algorithms
+  * array is also a pointer
+  * new and delete only work with pointer
+
+Algorithm Analysis
+------------------
++ Complexity
+
+  * Resources used by an algorithm
+
+    - time ``T(N)``
+    - space ``S(N)``
+
+  * algorithm may not be stable
+
+    - best case
+    - average case
+    - worst case (most important)
+
+  * growth of an algorithm complexity
+
+    - lower bound - best case
+    - upper bound - worst case
+    - exact bound - when upper and lower bounds are same
+
++ Analysis
+
+  * Big O - most important
+  * Big :math:`\Omega`
+  * Big :math:`\Theta`
+  * T(N) estimation - important
+
+    - approximation: treat each statement or expression as a constant time
+      operation
+
++ Calculation
+
+  * addition: more complex one dominate less complex ones::
+
+      e.g. O(1) + O(N) + O(logN) = O(N)
+
+  * multiplication, e.g. ``O(1)*O(N)*O(logN) = O(NlogN)``
+  * Simplification of O(f(N))
+
+    - :math:`O(3N^{2}+5N+10) = O(N^{2})`
+
++ Know the complexities of well-known algorithms
+
+  * search
+  * sort
+  * string ops
+
+Recursion
+---------
+
++ function call mechanism
+
+  * one stack frame in stack memory per function call
+  * keeps local variables and formal parameters in the stack frame
+  * may overflow
+
++ a function that calls itself (directly or indirectly)
++ may be an alternative way to write iterative algorithms
++ recursive definition
+
+  * e.g. factorial, Fibonacci, binary search, merge sort
+  * base (termination) case - where the recursion may stop, cause infinite
+    recursion without it
+  * recursive case - where the problem is defined as smaller subproblem which
+    is similar to the problem itself
+  * may have multiple base cases and recursive cases
+  * may need helper functions
+
++ recursive thinking
+
+  - translate recursive definition to code
+  - may rewrite traditional algorithms in a recursive way
+
++ recursion complexity analysis
+
+  - recursion trees
+  - how problem size reduced in each round
+
+Frequently Tested Contents
+--------------------------
++ **Finish coding on paper or in plain text editor like notepad**
++ **Write a full program with multiple files**
++ **Write a full class**
+
+  * single file or multiple file
+  * inline or not inline
+  * with the **big-three**
+
++ Write function/class according to usages/tests
++ Calculate ``T(N)`` given a snippet
++ Pass-by-ref functions
++ Recursive algorithms as functions
++ Pitfalls! Find them in the notes. Some are listed here.
+
+  * disposable object syntax ``objArr[i] = MyClass(10);``
+  * constructor triggering
+  * constructor only syntax
+  * not releasing old data in copy assignment operator overloading
+  * missing destructor
+  * use public/private as method prefix rather than sections
+  * forget ; after } in class declaration
+  * confuse T(N) with O(f(N))
+  * confuse delete with delete []
+  * confuse . with ->
+  * confuse additive and multiplicative in analysis
+  * recursive function with no termination cases
+  * order of O(f(N)) e.g. O(logN) vs O(N)

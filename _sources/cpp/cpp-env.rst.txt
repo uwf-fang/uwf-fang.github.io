@@ -8,20 +8,22 @@ TL;DR
 =====
 Windows
   Install the toolchain under WSL; Use any code editor; Compile and run in WSL
-  bash window; Transfer to the SSH server for a final test.
+  bash window; Transfer to the SSH server for an optional final test. **Do not
+  recommend MinGW! Use it at your own risk!**
 
 Mac OS
-  Install X-Code command line tool as your toolchain; Use any code editor;
-  Compile and run in your terminal; Transfer to the SSH server for a final
-  test.
+  Install **X-Code command line tool** as your toolchain; Use any code editor;
+  Compile and run in your terminal; Transfer to the SSH server for an optional
+  final test.
 
 Linux
   Install the toolchain; Use any code editor; Compile and run in your terminal;
-  Transfer to the SSH server for a final test.
+  Transfer to the SSH server for an optional final test.
 
 Avoid
   When working on multi-file projects, **avoid any system that do not support
-  make!**. Example: jGrasp, onlineGDB, run button in VS Code.
+  make!**. Example: jGrasp, onlineGDB, the run button in VS Code. Use them at
+  your own risk.
 
 Concepts
 ========
@@ -29,11 +31,29 @@ Concepts
 .. glossary::
 
   Command-line Interface
-
     The Command-line interface (CLI) let user to process commands (computer
     applications) as lines of texts. Almost all operating systems provide CLIs.
     It has many advantages for programmers and are exclusively used to control
-    remote computer through networks.
+    remote computer through networks. Among the many CLI environments
+    available, we stick to **bash** as our CLI environment.
+
+  Command-line Command
+    A command-line command is an executable that can be invoked in the CLI
+    environment (a terminal/console) with given configurations. A typical
+    command contains the path to the executable followed by with arguments and
+    options. E.g. ``g++ -o main main.cpp``
+
+  Command Arguments and Options
+    Given an example command: ``g++ -g -o main main.cpp``. A argument is a
+    general parameter provided in a command like ``main.cpp``. An option is a
+    parameter in the form like either ``-o main`` (with an option argument) or
+    ``-g``).
+
+  Bash
+    Bash is a unix shell to support the usage of CLI commands. It is also a
+    command language to allow shell programming. It is the default shell in
+    most Linux distributions and some versions of Mac OS (switched to zsh after
+    version 10.3).
 
   Executable
 
@@ -77,24 +97,27 @@ and use the toolchain without any local installation.
 
 .. important::
 
-  It is strongly recommended that students give their project a final test run
-  on the server before submitting it.
+  Although a local environment (not including MinGW) should be good enough to
+  test run your projects. It is recommended that students give their project a
+  final test run on the server before submitting it for their first couple of
+  projects to confirm the compatibility. **MinGW user should always test your
+  code on the SSH server before submitting your work for grading.**
 
 .. note::
 
-  Assignments collected through the GitHub Classroom with auto-grading may skip
-  this step as GitHub has provided a similar Linux testing environment with a
-  proper setup.
+  Assignments collected through the GitHub Classroom with auto-grading do not
+  require tests on the SSH server as GitHub has provided a compatible Linux
+  testing environment with a proper setup.
 
 Local Development Environment
 =============================
+Installing your own local development environment is **highly recommended** for
+the following reasons:
 
-Installing your own local development environment is highly recommended for the
-reasons:
-
-#. Convenience: no need to transfer files every time to compile and run
+#. Convenience: no need to transfer files to the SSH server every time to
+   compile and run.
 #. Learning purpose: gain better understanding of the environment though
-   the installation, configuration and execution processes
+   the installation, configuration and execution processes.
 
 The following list of tools applies to the C++ courses I teach. Other
 instructors may require other tools. The first five tools are required in most
@@ -114,20 +137,25 @@ of the C++-based programming courses. The rest are sometimes optional.
     interface
 
   Linux
-    The operating system required as the final test environment.
+    The open-source operating system. Many distributions available. Ubuntu 20.04 is recommended in this course. It serves as the final grading environment.
+
+  WSL
+    The Windows Subsystem for Linux. It allows students to use Linux
+    environment in the Windows operating system.
 
   Editor/IDE
-    Any tool to be used for text file editing. Your own choice.
+    Any tool to be used for text file editing. Your own choice. Visual Studio
+    Code is selected for demonstration in the classroom.
 
   git
     The distributed version control system to manage source code or other
-    files. Employ to work with the GitHub Classroom
+    files. Optional to classes not using GitHub Classroom.
 
   gdb
-    The GNU debugger for C/C++ programs
+    The GNU debugger for C/C++ programs. Optional to all classes.
 
   valgrind
-    The memory problem checking tool.
+    The memory problem checking CLI tool.
 
 Editor vs IDE
 =============
@@ -200,14 +228,13 @@ web browser to use it. The drawbacks are:
 
 Windows 1x Local
 ----------------
-
-To have a most compatible toolchain working on Windows, the **Windows Subsystem
-for Linux (WSL)** is preferred over MinGW or CygWin. To set up WSL and related
-tools:
+To have the most compatible toolchain working on Windows, the **Windows
+Subsystem for Linux (WSL)** is preferred over MinGW or CygWin. To set up WSL
+and related tools:
 
 1. Install WSL (e.g. Ubuntu 20.04 LTS) from the Microsoft Store
 2. Run for the first time: Setup username and password
-3. Install building tools: g++, make, and git (optional for some courses)::
+3. Install building tools: g++, make, and git::
 
      sudo apt-get update
      sudo apt-get install build-essential
@@ -222,8 +249,8 @@ tools:
 Mac OS Local
 ------------
 
-The easiest way to install the toolchain on Mac OS is to install the *XCode
-Command line tool* in the Terminal::
+The easiest way to install the toolchain on Mac OS is to install the **XCode
+Command line tool** in the Terminal::
 
   sudo xcode-select --install
 
@@ -243,4 +270,6 @@ command::
   sudo apt-get install build-essential
   sudo apt-get install git
 
-You may skip git if it is not required in your course.
+.. note::
+
+  git is required in the Data Structure class only.
