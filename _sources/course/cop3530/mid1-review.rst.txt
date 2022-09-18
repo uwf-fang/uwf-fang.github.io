@@ -14,8 +14,8 @@ How to use this document
 Topics
 ======
 
-Concepts
---------
+Basic Concepts
+--------------
 + Algorithms
 + Data structure definition and characteristics
 + Abstract Data Type (ADT) definition and characteristics
@@ -92,6 +92,13 @@ Modular Compilation
       main : main.o lib1.o
               g++ -o main main.o lib1.o
 
+  - command-line invoke
+
+    + ``make`` to build the first target
+    + ``make <target name>`` to build a specific target
+    + multiple targets allowed like ``make clean main``
+
+
 Memory management
 -----------------
 + Memory sections
@@ -131,32 +138,25 @@ Memory management
     delete [] array1;
     delete myObj;
 
-  * Anything new'ed should be deleted
-  * The destructor of a class is a good place to delete anything new`ed during
-    the usage of the object
-
 + memory leak
 
-  * only for heap memory
-  * allocated but not released
-  * new operation without corresponding delete operation
+  * only happens in the heap memory region
+  * new operations without corresponding delete operations
+
++ memory management in classes
+
+  * implicitly-declared methods
+  * shallow copy
+  * the big three
+
+    - what are they
+    - how are they triggered
+    - how to implement
 
 + reference type
 
-  * stores memory address
+  * implicitly stores memory address
   * mostly used when passing/returning values to/from a function
-  * used in the same way as the variable it refers to, feels like an alias of
-    another variable
-  * no referencing and dereferencing operations
-  * cannot assign value to it, only initialization or parameter pass allowed
-
-    .. code-block:: c++
-
-      int a = 10;
-      int &b = a;
-      int c = 20;
-
-      b = c;  // this will not re-assign b to refer to c, instead it is equivalent to a = c
 
 + ref type vs pointer type
 
@@ -193,7 +193,7 @@ Algorithm Analysis
   * Big O - most important
   * Big :math:`\Omega`
   * Big :math:`\Theta`
-  * T(N) estimation - important
+  * ``T(N)`` estimation - important
 
     - approximation: treat each statement or expression as a constant time
       operation
@@ -202,10 +202,10 @@ Algorithm Analysis
 
   * addition: more complex one dominate less complex ones::
 
-      e.g. O(1) + O(N) + O(logN) = O(N)
+      O(1) + O(N) + O(logN) = O(N)
 
   * multiplication, e.g. ``O(1)*O(N)*O(logN) = O(NlogN)``
-  * Simplification of O(f(N))
+  * Simplification of ``O(f(N))``
 
     - :math:`O(3N^{2}+5N+10) = O(N^{2})`
 
@@ -229,10 +229,9 @@ Recursion
 + recursive definition
 
   * e.g. factorial, Fibonacci, binary search, merge sort
-  * base (termination) case - where the recursion may stop, cause infinite
-    recursion without it
-  * recursive case - where the problem is defined as smaller subproblem which
-    is similar to the problem itself
+  * base case - where the recursion may stop at
+  * recursive case - where the same algorithm is applied to a smaller/simpler
+    case
   * may have multiple base cases and recursive cases
   * may need helper functions
 
@@ -247,7 +246,7 @@ Recursion
   - how problem size reduced in each round
 
 Frequently Tested Contents
---------------------------
+==========================
 + **Finish coding on paper or in plain text editor like notepad**
 + **Write a full program with multiple files**
 + **Write a full class**
@@ -262,16 +261,16 @@ Frequently Tested Contents
 + Recursive algorithms as functions
 + Pitfalls! Find them in the notes. Some are listed here.
 
-  * disposable object syntax ``objArr[i] = MyClass(10);``
-  * constructor triggering
-  * constructor only syntax
+  * disposable object syntax ``patients[i] = Patient("John", 23);``
+  * constructor triggering. E.g. copy constructor vs copy assignment
+  * constructor only syntax: no return type, initializer list
   * not releasing old data in copy assignment operator overloading
   * missing destructor
   * use public/private as method prefix rather than sections
   * forget ; after } in class declaration
-  * confuse T(N) with O(f(N))
+  * confuse ``T(N)`` with ``O(f(N))``
   * confuse delete with delete []
-  * confuse . with ->
+  * confuse ``.`` with ``->``
   * confuse additive and multiplicative in analysis
   * recursive function with no termination cases
-  * order of O(f(N)) e.g. O(logN) vs O(N)
+  * confusion in the order of big-O. e.g. ``O(logN) > O(N)``

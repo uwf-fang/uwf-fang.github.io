@@ -59,8 +59,8 @@ the help from any editor/ IDE</p></li>
 </section>
 <section id="topics">
 <h2>Topics<a class="headerlink" href="#topics" title="Permalink to this headline">¶</a></h2>
-<section id="concepts">
-<h3>Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h3>
+<section id="basic-concepts">
+<h3>Basic Concepts<a class="headerlink" href="#basic-concepts" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Algorithms</p></li>
 <li><p>Data structure definition and characteristics</p></li>
@@ -147,6 +147,13 @@ requirement)</p></li>
 </pre></div>
 </div>
 </li>
+<li><p>command-line invoke</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span></code> to build the first target</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">&lt;target</span> <span class="pre">name&gt;</span></code> to build a specific target</p></li>
+<li><p>multiple targets allowed like <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span> <span class="pre">main</span></code></p></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -192,35 +199,30 @@ the memory:</p></li>
 <span class="k">delete</span><span class="w"> </span><span class="n">myObj</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
-<ul class="simple">
-<li><p>Anything new’ed should be deleted</p></li>
-<li><p>The destructor of a class is a good place to delete anything new`ed during
-the usage of the object</p></li>
-</ul>
 </li>
 <li><p>memory leak</p>
 <ul class="simple">
-<li><p>only for heap memory</p></li>
-<li><p>allocated but not released</p></li>
-<li><p>new operation without corresponding delete operation</p></li>
+<li><p>only happens in the heap memory region</p></li>
+<li><p>new operations without corresponding delete operations</p></li>
+</ul>
+</li>
+<li><p>memory management in classes</p>
+<ul class="simple">
+<li><p>implicitly-declared methods</p></li>
+<li><p>shallow copy</p></li>
+<li><p>the big three</p>
+<ul>
+<li><p>what are they</p></li>
+<li><p>how are they triggered</p></li>
+<li><p>how to implement</p></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><p>reference type</p>
-<ul>
-<li><p>stores memory address</p></li>
+<ul class="simple">
+<li><p>implicitly stores memory address</p></li>
 <li><p>mostly used when passing/returning values to/from a function</p></li>
-<li><p>used in the same way as the variable it refers to, feels like an alias of
-another variable</p></li>
-<li><p>no referencing and dereferencing operations</p></li>
-<li><p>cannot assign value to it, only initialization or parameter pass allowed</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
-<span class="kt">int</span><span class="w"> </span><span class="o">&amp;</span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"></span>
-<span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span><span class="w"></span>
-
-<span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c</span><span class="p">;</span><span class="w">  </span><span class="c1">// this will not re-assign b to refer to c, instead it is equivalent to a = c</span>
-</pre></div>
-</div>
-</li>
 </ul>
 </li>
 <li><p>ref type vs pointer type</p>
@@ -267,7 +269,7 @@ another variable</p></li>
 <li><p>Big O - most important</p></li>
 <li><p>Big <span class="math notranslate nohighlight">\(\Omega\)</span></p></li>
 <li><p>Big <span class="math notranslate nohighlight">\(\Theta\)</span></p></li>
-<li><p>T(N) estimation - important</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">T(N)</span></code> estimation - important</p>
 <ul>
 <li><p>approximation: treat each statement or expression as a constant time
 operation</p></li>
@@ -278,12 +280,12 @@ operation</p></li>
 <li><p>Calculation</p>
 <ul>
 <li><p>addition: more complex one dominate less complex ones:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">e</span><span class="o">.</span><span class="n">g</span><span class="o">.</span> <span class="n">O</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">O</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="o">+</span> <span class="n">O</span><span class="p">(</span><span class="n">logN</span><span class="p">)</span> <span class="o">=</span> <span class="n">O</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">O</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">O</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="o">+</span> <span class="n">O</span><span class="p">(</span><span class="n">logN</span><span class="p">)</span> <span class="o">=</span> <span class="n">O</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
 <li><p>multiplication, e.g. <code class="docutils literal notranslate"><span class="pre">O(1)*O(N)*O(logN)</span> <span class="pre">=</span> <span class="pre">O(NlogN)</span></code></p></li>
-<li><p>Simplification of O(f(N))</p>
+<li><p>Simplification of <code class="docutils literal notranslate"><span class="pre">O(f(N))</span></code></p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(O(3N^{2}+5N+10) = O(N^{2})\)</span></p></li>
 </ul>
@@ -314,10 +316,9 @@ operation</p></li>
 <li><p>recursive definition</p>
 <ul>
 <li><p>e.g. factorial, Fibonacci, binary search, merge sort</p></li>
-<li><p>base (termination) case - where the recursion may stop, cause infinite
-recursion without it</p></li>
-<li><p>recursive case - where the problem is defined as smaller subproblem which
-is similar to the problem itself</p></li>
+<li><p>base case - where the recursion may stop at</p></li>
+<li><p>recursive case - where the same algorithm is applied to a smaller/simpler
+case</p></li>
 <li><p>may have multiple base cases and recursive cases</p></li>
 <li><p>may need helper functions</p></li>
 </ul>
@@ -336,8 +337,9 @@ is similar to the problem itself</p></li>
 </li>
 </ul>
 </section>
+</section>
 <section id="frequently-tested-contents">
-<h3>Frequently Tested Contents<a class="headerlink" href="#frequently-tested-contents" title="Permalink to this headline">¶</a></h3>
+<h2>Frequently Tested Contents<a class="headerlink" href="#frequently-tested-contents" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><strong>Finish coding on paper or in plain text editor like notepad</strong></p></li>
 <li><p><strong>Write a full program with multiple files</strong></p></li>
@@ -354,23 +356,22 @@ is similar to the problem itself</p></li>
 <li><p>Recursive algorithms as functions</p></li>
 <li><p>Pitfalls! Find them in the notes. Some are listed here.</p>
 <ul>
-<li><p>disposable object syntax <code class="docutils literal notranslate"><span class="pre">objArr[i]</span> <span class="pre">=</span> <span class="pre">MyClass(10);</span></code></p></li>
-<li><p>constructor triggering</p></li>
-<li><p>constructor only syntax</p></li>
+<li><p>disposable object syntax <code class="docutils literal notranslate"><span class="pre">patients[i]</span> <span class="pre">=</span> <span class="pre">Patient(&quot;John&quot;,</span> <span class="pre">23);</span></code></p></li>
+<li><p>constructor triggering. E.g. copy constructor vs copy assignment</p></li>
+<li><p>constructor only syntax: no return type, initializer list</p></li>
 <li><p>not releasing old data in copy assignment operator overloading</p></li>
 <li><p>missing destructor</p></li>
 <li><p>use public/private as method prefix rather than sections</p></li>
 <li><p>forget ; after } in class declaration</p></li>
-<li><p>confuse T(N) with O(f(N))</p></li>
+<li><p>confuse <code class="docutils literal notranslate"><span class="pre">T(N)</span></code> with <code class="docutils literal notranslate"><span class="pre">O(f(N))</span></code></p></li>
 <li><p>confuse delete with delete []</p></li>
-<li><p>confuse . with -&gt;</p></li>
+<li><p>confuse <code class="docutils literal notranslate"><span class="pre">.</span></code> with <code class="docutils literal notranslate"><span class="pre">-&gt;</span></code></p></li>
 <li><p>confuse additive and multiplicative in analysis</p></li>
 <li><p>recursive function with no termination cases</p></li>
-<li><p>order of O(f(N)) e.g. O(logN) vs O(N)</p></li>
+<li><p>confusion in the order of big-O. e.g. <code class="docutils literal notranslate"><span class="pre">O(logN)</span> <span class="pre">&gt;</span> <span class="pre">O(N)</span></code></p></li>
 </ul>
 </li>
 </ul>
-</section>
 </section>
 </section>
 
@@ -387,15 +388,15 @@ is similar to the problem itself</p></li>
 <li><a class="reference internal" href="#">Midterm 1 Topic Review</a><ul>
 <li><a class="reference internal" href="#how-to-use-this-document">How to use this document</a></li>
 <li><a class="reference internal" href="#topics">Topics</a><ul>
-<li><a class="reference internal" href="#concepts">Concepts</a></li>
+<li><a class="reference internal" href="#basic-concepts">Basic Concepts</a></li>
 <li><a class="reference internal" href="#environment">Environment</a></li>
 <li><a class="reference internal" href="#modular-compilation">Modular Compilation</a></li>
 <li><a class="reference internal" href="#memory-management">Memory management</a></li>
 <li><a class="reference internal" href="#algorithm-analysis">Algorithm Analysis</a></li>
 <li><a class="reference internal" href="#recursion">Recursion</a></li>
-<li><a class="reference internal" href="#frequently-tested-contents">Frequently Tested Contents</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#frequently-tested-contents">Frequently Tested Contents</a></li>
 </ul>
 </li>
 </ul>
