@@ -7,7 +7,6 @@ Objects and Classes in C++
 
 Concepts
 ========
-
 :object:  a collection of coherent states and behaviors
 :class:  a template of a group of similar objects
 :states:  data, property, attribute, member variable
@@ -15,13 +14,11 @@ Concepts
 
 map to C++ concepts
 -------------------
-
 :class: a type
 :object: a variable (instance) of a class type
 
-Class declaration
-=================
-
+Class Declaration And Method Definition
+=======================================
 + class keyword (or struct keyword)
 + Usually in header file
 + Members
@@ -31,9 +28,34 @@ Class declaration
 
 + static members
 
-  * one per class vs one per object for non-static
-  * data shared among objects
-  * functions that do not rely on any instance variables
+  * static keyword
+  * one per class
+  * global life span
+  * stored in the ``static`` memory region
+  * instance variable
+
+    - data shared among objects
+    - can only be initialized outside of the class declaration::
+
+        // my-class.hpp
+        class MyClass {
+        private:
+          static int count;  // NEVER initialize here!
+        public:
+          // ...
+        };
+
+        // my-class.cpp
+        // omit the static keyword
+        int MyClass::count = 10;
+
+
+  * method
+
+    - can not access any instance variable
+    - can access static instance variable
+    - e.g. pure math functions
+    - either ``MyClass::method()`` or ``obj.method()`` to trigger
 
 + visibility (access specifier)
 
@@ -143,7 +165,7 @@ Class declaration
      private:
       int value = 10;  // <-- here
      public:
-      MyClass() {};
+      MyClass()=default;  // doing nothing
     };
 
     // 2. constructor member initializer list, only affect one constructor
@@ -151,48 +173,41 @@ Class declaration
      private:
       int value;
      public:
-      MyClass(): value(10) {};  // <-- here
+      MyClass(): value(10) {}  // <-- here
     };
 
-+ data initialization of static instance variable::
-
-    // my-class.hpp
+    // Naive assignment
     class MyClass {
      private:
-      static int count;  // NEVER initialize here!
+      int value;
      public:
-      // ...
+      MyClass() {value = 10;}  // <-- here
     };
 
-    // my-class.cpp
-    // omit the static keyword
-    int MyClass::count = 10;
-
-Using class/object
+Using Class/Object
 ==================
++ Declare a variable of a class type
 
-+ declare a variable of a class type
-
-  * initialization using the constructor::
+  * Initialization using the constructor::
 
       MyClass myObj1(10);
       MyClass myObj1 = 10;  // same as the above example
       MyClass myObj1{10}; // since C++11
 
-  * disposable object (Class name followed by parenthesis to trigger the
-    constructor)::
+  * Disposable object assignment (Class name followed by parenthesis to trigger
+    the constructor)::
 
       int myFunction(MyClass obj);
 
       int main() {
-        // as parameter, MyClass(10) is a temp object
+        // as a parameter, MyClass(10) is a temp object
         cout << myFunction(MyClass(10)) << endl;
 
         // assign to another object
         // copy constructor or copy assignment operator will be triggered
         // MyClass(10) is a temp object
-        MyClass objArray[10];  // object array, default constructor called
-        objArray[0] = MyClass(10);
+        MyClass objArray[10];  // object array, default constructor triggered
+        objArray[0] = MyClass(10);  // copy assignment operator triggered
       }
 
 + ``.`` member accessing operator::
@@ -207,7 +222,23 @@ Using class/object
     // objPtr->getValue() is same as (*objPtr).getValue()
     cout << objPtr->getValue() << endl;
 
-Class modeling
++ ``::`` Domain resolution operator::
+
+    // Name space
+    std::string myString;
+
+    // Class method out-of-line definition
+    void MyClass::print() {
+      cout << "value: " << this->value << endl;
+    }
+
+    // Class static members
+    // static int square(int value) { return value * value};
+    MyClass obj1;
+    cout << obj1.square(5) << endl;  // use object to access
+    cout << MyClass::square(5) << endl;  // use class to access
+
+Class Modeling
 ==============
 UML Class Diagrams
 ------------------

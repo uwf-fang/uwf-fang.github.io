@@ -74,8 +74,8 @@
 </dl>
 </section>
 </section>
-<section id="class-declaration">
-<h2>Class declaration<a class="headerlink" href="#class-declaration" title="Permalink to this headline">¶</a></h2>
+<section id="class-declaration-and-method-definition">
+<h2>Class Declaration And Method Definition<a class="headerlink" href="#class-declaration-and-method-definition" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p>class keyword (or struct keyword)</p></li>
 <li><p>Usually in header file</p></li>
@@ -86,10 +86,39 @@
 </ul>
 </li>
 <li><p>static members</p>
-<ul class="simple">
-<li><p>one per class vs one per object for non-static</p></li>
+<ul>
+<li><p>static keyword</p></li>
+<li><p>one per class</p></li>
+<li><p>global life span</p></li>
+<li><p>stored in the <code class="docutils literal notranslate"><span class="pre">static</span></code> memory region</p></li>
+<li><p>instance variable</p>
+<ul>
 <li><p>data shared among objects</p></li>
-<li><p>functions that do not rely on any instance variables</p></li>
+<li><p>can only be initialized outside of the class declaration:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// my-class.hpp</span>
+<span class="linenos"> 2</span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 3</span><span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w">  </span><span class="c1">// NEVER initialize here!</span>
+<span class="linenos"> 5</span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="w">  </span><span class="c1">// ...</span>
+<span class="linenos"> 7</span><span class="p">};</span><span class="w"></span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="c1">// my-class.cpp</span>
+<span class="linenos">10</span><span class="c1">// omit the static keyword</span>
+<span class="linenos">11</span><span class="kt">int</span><span class="w"> </span><span class="n">MyClass</span><span class="o">::</span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p>method</p>
+<ul class="simple">
+<li><p>can not access any instance variable</p></li>
+<li><p>can access static instance variable</p></li>
+<li><p>e.g. pure math functions</p></li>
+<li><p>either <code class="docutils literal notranslate"><span class="pre">MyClass::method()</span></code> or <code class="docutils literal notranslate"><span class="pre">obj.method()</span></code> to trigger</p></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><p>visibility (access specifier)</p>
@@ -207,7 +236,7 @@ among various constructors. When used together, the first will be ignored.</p>
 <span class="linenos"> 3</span><span class="w"> </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
 <span class="linenos"> 4</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">  </span><span class="c1">// &lt;-- here</span>
 <span class="linenos"> 5</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="linenos"> 6</span><span class="w">  </span><span class="n">MyClass</span><span class="p">()</span><span class="w"> </span><span class="p">{};</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="w">  </span><span class="n">MyClass</span><span class="p">()</span><span class="o">=</span><span class="k">default</span><span class="p">;</span><span class="w">  </span><span class="c1">// doing nothing</span>
 <span class="linenos"> 7</span><span class="p">};</span><span class="w"></span>
 <span class="linenos"> 8</span>
 <span class="linenos"> 9</span><span class="c1">// 2. constructor member initializer list, only affect one constructor</span>
@@ -215,53 +244,46 @@ among various constructors. When used together, the first will be ignored.</p>
 <span class="linenos">11</span><span class="w"> </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
 <span class="linenos">12</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"></span>
 <span class="linenos">13</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="linenos">14</span><span class="w">  </span><span class="n">MyClass</span><span class="p">()</span><span class="o">:</span><span class="w"> </span><span class="n">value</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">{};</span><span class="w">  </span><span class="c1">// &lt;-- here</span>
+<span class="linenos">14</span><span class="w">  </span><span class="n">MyClass</span><span class="p">()</span><span class="o">:</span><span class="w"> </span><span class="n">value</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w">  </span><span class="c1">// &lt;-- here</span>
 <span class="linenos">15</span><span class="p">};</span><span class="w"></span>
-</pre></div>
-</div>
-</li>
-<li><p>data initialization of static instance variable:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// my-class.hpp</span>
-<span class="linenos"> 2</span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 3</span><span class="w"> </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
-<span class="linenos"> 4</span><span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w">  </span><span class="c1">// NEVER initialize here!</span>
-<span class="linenos"> 5</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="linenos"> 6</span><span class="w">  </span><span class="c1">// ...</span>
-<span class="linenos"> 7</span><span class="p">};</span><span class="w"></span>
-<span class="linenos"> 8</span>
-<span class="linenos"> 9</span><span class="c1">// my-class.cpp</span>
-<span class="linenos">10</span><span class="c1">// omit the static keyword</span>
-<span class="linenos">11</span><span class="kt">int</span><span class="w"> </span><span class="n">MyClass</span><span class="o">::</span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="c1">// Naive assignment</span>
+<span class="linenos">18</span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">19</span><span class="w"> </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
+<span class="linenos">20</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">21</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="linenos">22</span><span class="w">  </span><span class="n">MyClass</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;}</span><span class="w">  </span><span class="c1">// &lt;-- here</span>
+<span class="linenos">23</span><span class="p">};</span><span class="w"></span>
 </pre></div>
 </div>
 </li>
 </ul>
 </section>
 <section id="using-class-object">
-<h2>Using class/object<a class="headerlink" href="#using-class-object" title="Permalink to this headline">¶</a></h2>
+<h2>Using Class/Object<a class="headerlink" href="#using-class-object" title="Permalink to this headline">¶</a></h2>
 <ul>
-<li><p>declare a variable of a class type</p>
+<li><p>Declare a variable of a class type</p>
 <ul>
-<li><p>initialization using the constructor:</p>
+<li><p>Initialization using the constructor:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">MyClass</span><span class="w"> </span><span class="nf">myObj1</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
 <span class="n">MyClass</span><span class="w"> </span><span class="n">myObj1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">  </span><span class="c1">// same as the above example</span>
 <span class="n">MyClass</span><span class="w"> </span><span class="n">myObj1</span><span class="p">{</span><span class="mi">10</span><span class="p">};</span><span class="w"> </span><span class="c1">// since C++11</span>
 </pre></div>
 </div>
 </li>
-<li><p>disposable object (Class name followed by parenthesis to trigger the
-constructor):</p>
+<li><p>Disposable object assignment (Class name followed by parenthesis to trigger
+the constructor):</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kt">int</span><span class="w"> </span><span class="nf">myFunction</span><span class="p">(</span><span class="n">MyClass</span><span class="w"> </span><span class="n">obj</span><span class="p">);</span><span class="w"></span>
 <span class="linenos"> 2</span>
 <span class="linenos"> 3</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 4</span><span class="w">  </span><span class="c1">// as parameter, MyClass(10) is a temp object</span>
+<span class="linenos"> 4</span><span class="w">  </span><span class="c1">// as a parameter, MyClass(10) is a temp object</span>
 <span class="linenos"> 5</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">myFunction</span><span class="p">(</span><span class="n">MyClass</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
 <span class="linenos"> 6</span>
 <span class="linenos"> 7</span><span class="w">  </span><span class="c1">// assign to another object</span>
 <span class="linenos"> 8</span><span class="w">  </span><span class="c1">// copy constructor or copy assignment operator will be triggered</span>
 <span class="linenos"> 9</span><span class="w">  </span><span class="c1">// MyClass(10) is a temp object</span>
-<span class="linenos">10</span><span class="w">  </span><span class="n">MyClass</span><span class="w"> </span><span class="n">objArray</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span><span class="w">  </span><span class="c1">// object array, default constructor called</span>
-<span class="linenos">11</span><span class="w">  </span><span class="n">objArray</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MyClass</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">  </span><span class="n">MyClass</span><span class="w"> </span><span class="n">objArray</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span><span class="w">  </span><span class="c1">// object array, default constructor triggered</span>
+<span class="linenos">11</span><span class="w">  </span><span class="n">objArray</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MyClass</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w">  </span><span class="c1">// copy assignment operator triggered</span>
 <span class="linenos">12</span><span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
@@ -282,10 +304,27 @@ constructor):</p>
 </pre></div>
 </div>
 </li>
+<li><p><code class="docutils literal notranslate"><span class="pre">::</span></code> Domain resolution operator:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// Name space</span>
+<span class="linenos"> 2</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">myString</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="c1">// Class method out-of-line definition</span>
+<span class="linenos"> 5</span><span class="kt">void</span><span class="w"> </span><span class="nf">MyClass::print</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;value: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">value</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="c1">// Class static members</span>
+<span class="linenos">10</span><span class="c1">// static int square(int value) { return value * value};</span>
+<span class="linenos">11</span><span class="n">MyClass</span><span class="w"> </span><span class="n">obj1</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">12</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">obj1</span><span class="p">.</span><span class="n">square</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w">  </span><span class="c1">// use object to access</span>
+<span class="linenos">13</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">MyClass</span><span class="o">::</span><span class="n">square</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w">  </span><span class="c1">// use class to access</span>
+</pre></div>
+</div>
+</li>
 </ul>
 </section>
 <section id="class-modeling">
-<h2>Class modeling<a class="headerlink" href="#class-modeling" title="Permalink to this headline">¶</a></h2>
+<h2>Class Modeling<a class="headerlink" href="#class-modeling" title="Permalink to this headline">¶</a></h2>
 <section id="uml-class-diagrams">
 <h3>UML Class Diagrams<a class="headerlink" href="#uml-class-diagrams" title="Permalink to this headline">¶</a></h3>
 <p>The Unified Modeling Language is a general-purpose modeling language used in
@@ -436,9 +475,9 @@ model classes and relationships among them in object-oriented programming.</p>
 <li><a class="reference internal" href="#map-to-c-concepts">map to C++ concepts</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#class-declaration">Class declaration</a></li>
-<li><a class="reference internal" href="#using-class-object">Using class/object</a></li>
-<li><a class="reference internal" href="#class-modeling">Class modeling</a><ul>
+<li><a class="reference internal" href="#class-declaration-and-method-definition">Class Declaration And Method Definition</a></li>
+<li><a class="reference internal" href="#using-class-object">Using Class/Object</a></li>
+<li><a class="reference internal" href="#class-modeling">Class Modeling</a><ul>
 <li><a class="reference internal" href="#uml-class-diagrams">UML Class Diagrams</a></li>
 </ul>
 </li>
