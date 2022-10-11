@@ -181,8 +181,7 @@ Dynamic data in class
   MyClass & MyClass::operator=(const MyClass& other) {
     size = other.size;
     // must release memory of the old dynamic data first!
-    if (arr != nullptr)
-      delete [] arr;
+    delete [] arr;
     arr = new int[size];
     for (int i=0; i<size; i++)
       arr[i] = other.arr[i];
@@ -190,8 +189,7 @@ Dynamic data in class
   }
 
   ~MyClass::MyClass() {
-    if (arr != nullptr)  // safeguard to avoid freeing a null pointer
-      delete [] arr;
+    delete [] arr;
   }
 
 + Rule of five (FYI)
