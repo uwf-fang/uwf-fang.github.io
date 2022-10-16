@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
@@ -13,6 +13,7 @@
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/cpp/testing/testing.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -45,7 +46,7 @@
           <div class="body" role="main">
             
   <section id="testing-in-c">
-<h1>Testing in C++<a class="headerlink" href="#testing-in-c" title="Permalink to this headline">¶</a></h1>
+<h1>Testing in C++<a class="headerlink" href="#testing-in-c" title="Permalink to this heading">¶</a></h1>
 <p>As the size and complexity of a software project scales, manual testing and
 debugging become less and less effective. A more systematic testing method is
 desirable.</p>
@@ -69,7 +70,7 @@ together.</p>
 </dd>
 </dl>
 <section id="simple-test-run">
-<h2>Simple Test Run<a class="headerlink" href="#simple-test-run" title="Permalink to this headline">¶</a></h2>
+<h2>Simple Test Run<a class="headerlink" href="#simple-test-run" title="Permalink to this heading">¶</a></h2>
 <p>As a beginner taking entry-level courses, you should learn testing as soon as
 possible to build a correct workflow on project. You can start writing tests by
 simply add <code class="docutils literal notranslate"><span class="pre">cout</span></code> and <code class="docutils literal notranslate"><span class="pre">if</span></code> statements to check whether your function or
@@ -120,7 +121,7 @@ test. A test driver may look like this:</p>
 </div>
 </section>
 <section id="assertions">
-<h2>Assertions<a class="headerlink" href="#assertions" title="Permalink to this headline">¶</a></h2>
+<h2>Assertions<a class="headerlink" href="#assertions" title="Permalink to this heading">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">assert</span></code> macro function (similar to a function when used) allows a more
 efficient way to run tests. This macro takes a bool parameter and abort your
 program when the bool expression evaluates to false. You can add as many as you
@@ -162,7 +163,7 @@ of <code class="docutils literal notranslate"><span class="pre">#define</span> <
 </div>
 </section>
 <section id="testing-frameworks">
-<h2>Testing Frameworks<a class="headerlink" href="#testing-frameworks" title="Permalink to this headline">¶</a></h2>
+<h2>Testing Frameworks<a class="headerlink" href="#testing-frameworks" title="Permalink to this heading">¶</a></h2>
 <p>Choosing a good testing framework is more effective in terms of easier test
 writing and creation, better test organization, and better test result
 presentations. We choose the Catch2 framework to write tests in some projects.
@@ -179,7 +180,7 @@ It is simple but feature-rich. The syntax to write tests are simple:</p>
 <span class="linenos"> 8</span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="p">;</span><span class="w"></span>
 <span class="linenos"> 9</span>
 <span class="linenos">10</span><span class="n">TEST_CASE</span><span class="p">(</span><span class="s">&quot;Test Store class&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">11</span><span class="w">  </span><span class="n">Store</span><span class="w"> </span><span class="nf">myStore</span><span class="p">(</span><span class="s">&quot;Test Store&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">11</span><span class="w">  </span><span class="n">Store</span><span class="w"> </span><span class="n">myStore</span><span class="p">(</span><span class="s">&quot;Test Store&quot;</span><span class="p">);</span><span class="w"></span>
 <span class="linenos">12</span><span class="w">  </span><span class="n">myStore</span><span class="p">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">StoreItem</span><span class="p">(</span><span class="s">&quot;Apple&quot;</span><span class="p">));</span><span class="w"></span>
 <span class="linenos">13</span><span class="w">  </span><span class="n">myStore</span><span class="p">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">StoreItem</span><span class="p">(</span><span class="s">&quot;Banana&quot;</span><span class="p">));</span><span class="w"></span>
 <span class="linenos">14</span><span class="w">  </span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">myStore</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
@@ -187,8 +188,8 @@ It is simple but feature-rich. The syntax to write tests are simple:</p>
 <span class="linenos">16</span><span class="p">}</span><span class="w"></span>
 <span class="linenos">17</span>
 <span class="linenos">18</span><span class="n">TEST_CASE</span><span class="p">(</span><span class="s">&quot;Test StoreItem class&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">19</span><span class="w">  </span><span class="n">StoreItem</span><span class="w"> </span><span class="nf">item1</span><span class="p">(</span><span class="s">&quot;Apple&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">20</span><span class="w">  </span><span class="n">StoreItem</span><span class="w"> </span><span class="nf">item2</span><span class="p">(</span><span class="s">&quot;apple&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">19</span><span class="w">  </span><span class="n">StoreItem</span><span class="w"> </span><span class="n">item1</span><span class="p">(</span><span class="s">&quot;Apple&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">20</span><span class="w">  </span><span class="n">StoreItem</span><span class="w"> </span><span class="n">item2</span><span class="p">(</span><span class="s">&quot;apple&quot;</span><span class="p">);</span><span class="w"></span>
 <span class="linenos">21</span><span class="w">  </span><span class="n">REQUIRE</span><span class="p">(</span><span class="n">item1</span><span class="p">.</span><span class="n">equals</span><span class="p">(</span><span class="n">item2</span><span class="p">));</span><span class="w"></span>
 <span class="linenos">22</span><span class="w">  </span><span class="c1">// CHECK(item1.equals(item2));</span>
 <span class="linenos">23</span><span class="p">}</span><span class="w"></span>
@@ -207,7 +208,7 @@ will see <code class="docutils literal notranslate"><span class="pre">CHECK</spa
 <p>A comprehensive <a class="reference external" href="https://catch2.docsforge.com/v2.13.2/tutorial/">tutorial</a> is available online.</p>
 </section>
 <section id="testability">
-<h2>Testability<a class="headerlink" href="#testability" title="Permalink to this headline">¶</a></h2>
+<h2>Testability<a class="headerlink" href="#testability" title="Permalink to this heading">¶</a></h2>
 <p>Some codes are easier to test than others. In most of the cases, a more
 testable code base has better quality than something not very testable.
 Testable codes are usually well-designed.</p>
@@ -270,7 +271,7 @@ rules we can follow:</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -295,7 +296,7 @@ rules we can follow:</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
     </div>
   </body>
 </html>

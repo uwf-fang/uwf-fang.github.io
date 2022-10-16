@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
@@ -13,6 +13,7 @@
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/cpp/array/obj-array.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -45,19 +46,19 @@
           <div class="body" role="main">
             
   <section id="object-array">
-<h1>Object Array<a class="headerlink" href="#object-array" title="Permalink to this headline">¶</a></h1>
+<h1>Object Array<a class="headerlink" href="#object-array" title="Permalink to this heading">¶</a></h1>
 <section id="motivation">
-<h2>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">¶</a></h2>
+<h2>Motivation<a class="headerlink" href="#motivation" title="Permalink to this heading">¶</a></h2>
 <p>Array of objects is an efficient method to model a list of records. Compared to
 other alternative methods to model multiple records, object array excels in
 many aspects.</p>
 </section>
 <section id="d-array-of-objects">
-<h2>1D Array of Objects<a class="headerlink" href="#d-array-of-objects" title="Permalink to this headline">¶</a></h2>
+<h2>1D Array of Objects<a class="headerlink" href="#d-array-of-objects" title="Permalink to this heading">¶</a></h2>
 <p>When modeling a list of <code class="docutils literal notranslate"><span class="pre">N</span></code> records with <code class="docutils literal notranslate"><span class="pre">M</span></code> fields (a <code class="docutils literal notranslate"><span class="pre">N</span> <span class="pre">*</span> <span class="pre">M</span></code> 2D table),
 there are several data structures to choose from:</p>
 <section id="multiple-arrays">
-<h3>Multiple arrays<a class="headerlink" href="#multiple-arrays" title="Permalink to this headline">¶</a></h3>
+<h3>Multiple arrays<a class="headerlink" href="#multiple-arrays" title="Permalink to this heading">¶</a></h3>
 <ul>
 <li><p>store data in <code class="docutils literal notranslate"><span class="pre">M</span></code> arrays, each with size <code class="docutils literal notranslate"><span class="pre">N</span></code>, same index means same
 record</p>
@@ -77,9 +78,9 @@ record</p>
 </ul>
 </section>
 <section id="array-of-objects">
-<h3>Array of objects<a class="headerlink" href="#array-of-objects" title="Permalink to this headline">¶</a></h3>
+<h3>Array of objects<a class="headerlink" href="#array-of-objects" title="Permalink to this heading">¶</a></h3>
 <ul>
-<li><p>Pre-allocate <code class="docutils literal notranslate"><span class="pre">N</span></code> objects using the default constructor</p></li>
+<li><p>Pre-allocate <code class="docutils literal notranslate"><span class="pre">N</span></code> empty objects using the default constructor</p></li>
 <li><p>Each object has <code class="docutils literal notranslate"><span class="pre">M</span></code> fields</p></li>
 <li><p>Local array example:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// struct example</span>
@@ -106,7 +107,7 @@ record</p>
 <span class="linenos">22</span><span class="p">};</span><span class="w"></span>
 <span class="linenos">23</span>
 <span class="linenos">24</span><span class="n">StudentClass</span><span class="w"> </span><span class="n">students1</span><span class="p">[</span><span class="n">NUM_STUDENT</span><span class="p">];</span><span class="w">  </span><span class="c1">// default constructor called 100 times</span>
-<span class="linenos">25</span><span class="n">students1</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">StudentClass</span><span class="p">(</span><span class="s">&quot;John Smith&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span><span class="w">  </span><span class="c1">// temporary object assignment</span>
+<span class="linenos">25</span><span class="n">students1</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">StudentClass</span><span class="p">(</span><span class="s">&quot;John Smith&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span><span class="w">  </span><span class="c1">// disposable object assignment</span>
 <span class="linenos">26</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;The 5th student in the list &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">students1</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="n">getName</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; has a grade of &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">students1</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="n">getGrade</span><span class="p">();</span><span class="w"></span>
 </pre></div>
 </div>
@@ -159,9 +160,10 @@ objects, you can either</p>
 </section>
 </section>
 <section id="array-of-pointers-to-objects">
-<h2>Array of pointers to objects<a class="headerlink" href="#array-of-pointers-to-objects" title="Permalink to this headline">¶</a></h2>
+<h2>Array of pointers to objects<a class="headerlink" href="#array-of-pointers-to-objects" title="Permalink to this heading">¶</a></h2>
 <ul>
 <li><p>Pre-allocate <code class="docutils literal notranslate"><span class="pre">N</span></code> pointers</p></li>
+<li><p>Initialized to <code class="docutils literal notranslate"><span class="pre">nullptr</span></code></p></li>
 <li><p>Use <code class="docutils literal notranslate"><span class="pre">new</span></code> operator to allocate objects as needed</p></li>
 <li><p>Each object has <code class="docutils literal notranslate"><span class="pre">M</span></code> fields</p></li>
 <li><p>Complex syntax than array of objects</p></li>
@@ -228,7 +230,7 @@ objects, you can either</p>
 }" class="graphviz" /></div>
 </section>
 <section id="pitfalls">
-<h2>Pitfalls<a class="headerlink" href="#pitfalls" title="Permalink to this headline">¶</a></h2>
+<h2>Pitfalls<a class="headerlink" href="#pitfalls" title="Permalink to this heading">¶</a></h2>
 <ul>
 <li><p>mismatched assignment:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">StudentClass</span><span class="w"> </span><span class="n">students</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span><span class="w"></span>
@@ -301,7 +303,7 @@ objects, you can either</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -326,7 +328,7 @@ objects, you can either</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
     </div>
   </body>
 </html>

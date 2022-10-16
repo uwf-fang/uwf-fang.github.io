@@ -1,0 +1,67 @@
+*********
+Profiling
+*********
+“Premature optimization is the root of all evil” is a famous saying among
+software developers. Its source is credited to Donald Knuth. The idea is that
+one should never consider optimization before they see the performance problem
+and know where it is.
+
+In many program, they runs faster enough and any optimization is not
+noticeable.
+
+In many program, some certain units (e.g. functions) may be involved in 90% of
+the computation and only consist 10% lines of code. They are the best target of
+optimizations. Optimizations on the rest of code is pointless.
+
+Types
+=====
+1. Exact measure
+
+   Use hardware counters to catch events during the execution of a program.
+   Hard to exclude affects from hardware, operating system, etc.
+
+2. Simulation
+
+   Simulate how a program executes. Total control of all software and hardware
+   environment. **Not discussed here**
+
+Time Measurement
+================
++ Program level
+
+  Measures the total time to run a program. Not accurate as affected by many
+  conditions.
+
+  * GNU time ``/usr/bin/time``
+
++ API level
+
+  Library functions that you can call to measure the time used by a function,
+  etc. rather than the whole program. A finer measurement.
+
+  * rdtsc
+  * getrusage
+  * clock_gettime
+  * gettimeofday
+
+Profiling Tools
+===============
+Profiling tools allow programmers to identify the bottleneck to be optimized
+later.
+
++ gprof
++ valgrind
++ Vtune
++ HPCToolkit
++ Perfsuite
++ TAU
++ pprof
+
+gprof
+-----
+It of from GNU. Working closely with other GNU tools such as ``gcc``.
+
++ add ``-pg`` flag to your ``gcc`` command to compile the executable.
++ run the program to generate a .out file
++ run ``gprof`` command with the prepared executable as the parameter
+
