@@ -1,0 +1,443 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Midterm 2 Topic Review &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/course/cop3014/mid2-review.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Using getline after extraction" href="../../cpp/getline.html" />
+    <link rel="prev" title="Midterm 1 Topic Review" href="mid1-review.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../cpp/getline.html" title="Using getline after extraction"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mid1-review.html" title="Midterm 1 Topic Review"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">COP 3014 Algorithm and Program Design</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Midterm 2 Topic Review</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="midterm-2-topic-review">
+<h1>Midterm 2 Topic Review<a class="headerlink" href="#midterm-2-topic-review" title="Permalink to this headline">¶</a></h1>
+<section id="how-to-use-this-document">
+<h2>How to use this document<a class="headerlink" href="#how-to-use-this-document" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>All contents covered in Midterm I will not be specifically tested but will
+likely to be used in the questions.</p></li>
+<li><p>Self-test using this document to see what concepts are challenging to you</p></li>
+<li><p>Course notes document is the main resource for tips, pitfalls. High priority
+in midterm preparation.</p></li>
+<li><p>Review all participation activities and challenge activities in zyBook</p></li>
+<li><p>Practice your ability to finish the patterns listed here from scratch without
+the help from any editor/ IDE</p></li>
+</ul>
+</section>
+<section id="pointer-memory-management">
+<h2>Pointer, Memory Management<a class="headerlink" href="#pointer-memory-management" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Memory regions</p>
+<ul>
+<li><p>code: code</p></li>
+<li><p>static: global and static variables</p></li>
+<li><p>stack: local variables and function parameters</p></li>
+<li><p>heap: dynamic data</p></li>
+</ul>
+</li>
+<li><p>Pointer type</p>
+<ul>
+<li><p>declaration; derived type with *</p></li>
+<li><p>reference operator &amp; (variable -&gt; it’s memory address)</p></li>
+<li><p>dereference operator * (memory address -&gt; variable/lvalue it points to)</p></li>
+<li><p>nullptr</p></li>
+<li><p>segmentation error (trying to access an invalid pointer)</p></li>
+</ul>
+</li>
+<li><p>Dynamic data</p>
+<ul>
+<li><p>new keyword</p></li>
+<li><p>delete keyword</p></li>
+<li><p>new and delete arrays with []</p></li>
+<li><p>memory leak and how to avoid</p></li>
+</ul>
+</li>
+<li><p>Differentiate from reference type</p>
+<ul>
+<li><p>revisit reference type</p></li>
+<li><p>know the difference</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="algorithms">
+<h2>Algorithms<a class="headerlink" href="#algorithms" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>C array</p>
+<ul>
+<li><p>local array <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">arr[10];</span></code></p>
+<ul>
+<li><p>size must be literal or constant</p></li>
+</ul>
+</li>
+<li><p>dynamic array <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">*arr</span> <span class="pre">=</span> <span class="pre">new</span> <span class="pre">int[10];</span></code></p></li>
+<li><p>[] and * syntax interconversion <code class="docutils literal notranslate"><span class="pre">arr[n]</span></code> vs <code class="docutils literal notranslate"><span class="pre">*(arr</span> <span class="pre">+</span> <span class="pre">n)</span></code></p></li>
+<li><p>two parts in memory: pointer and data</p>
+<ul>
+<li><p>local array - both parts are local</p></li>
+<li><p>dynamic array - pointer is local, data is in heap</p></li>
+</ul>
+</li>
+<li><p>local array initialization syntax <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">arr[10]</span> <span class="pre">=</span> <span class="pre">{};</span></code></p></li>
+<li><p>initialization of dynamic arrays using <code class="docutils literal notranslate"><span class="pre">for</span></code> loops</p></li>
+<li><p>local/dynamic arrays as function parameters</p></li>
+<li><p>dynamic array as as return type</p></li>
+</ul>
+</li>
+<li><p>C string</p>
+<ul>
+<li><p>partially filled char array</p></li>
+<li><p>terminator <cite>‘0’</cite> character</p></li>
+<li><p>cstring header</p>
+<ul>
+<li><p>strlen</p></li>
+<li><p>strcmp</p></li>
+<li><p>strcpy</p></li>
+<li><p>strcat</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>C++ string</p>
+<ul>
+<li><p>methods (member functions)</p></li>
+<li><p>extraction getline mixed usage</p>
+<ul>
+<li><p>do-while loop to protect getline</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Building blocks of algorithms</p>
+<ul>
+<li><p>for loops</p></li>
+<li><p>while loops</p></li>
+<li><p>degree of freedom</p></li>
+<li><p>index manipulation <code class="docutils literal notranslate"><span class="pre">size</span> <span class="pre">-</span> <span class="pre">1</span> <span class="pre">-</span> <span class="pre">i</span></code></p></li>
+<li><p>know the meaning of looping variables</p></li>
+</ul>
+</li>
+<li><p>Algorithms on linear data types (C array, C string, and C++ string)</p>
+<ul>
+<li><p>search</p>
+<ul>
+<li><p>element</p></li>
+<li><p>sub sequence</p></li>
+<li><p>early return</p></li>
+</ul>
+</li>
+<li><p>compare</p>
+<ul>
+<li><p>two arrays - are same or are reverse</p></li>
+<li><p>internal - is a palindrome</p></li>
+<li><p>early return</p></li>
+</ul>
+</li>
+<li><p>aggregate/reduce</p>
+<ul>
+<li><p>sequence -&gt; single value</p></li>
+<li><p>must visit all element</p></li>
+</ul>
+</li>
+<li><p>map</p>
+<ul>
+<li><p>sequence -&gt; sequence of the same size</p></li>
+<li><p>can be in-place</p></li>
+</ul>
+</li>
+<li><p>filter</p>
+<ul>
+<li><p>sequence -&gt; shorter sequence</p></li>
+<li><p>to be covered when vector is introduced</p></li>
+</ul>
+</li>
+<li><p>sort</p>
+<ul>
+<li><p>selection</p></li>
+<li><p>insertion</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="advanced-array">
+<h2>Advanced Array<a class="headerlink" href="#advanced-array" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Multidimensional array</p>
+<ul>
+<li><p>array of arrays concept (diagrams)</p></li>
+<li><p>declaration</p></li>
+<li><p>initialization with nested loops</p></li>
+<li><p>for loop manipulation - nested</p></li>
+<li><p>dynamic 2D array</p>
+<ul>
+<li><p>new []</p></li>
+<li><p>delete []</p></li>
+<li><p>for loop</p></li>
+</ul>
+</li>
+<li><p>as function parameters</p>
+<ul>
+<li><p>[] syntax - last size can be omitted</p></li>
+<li><ul>
+<li><p>syntax (preferred)</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>as a return value</p>
+<ul>
+<li><p>dynamic array</p></li>
+</ul>
+</li>
+<li><p>algorithms</p>
+<ul>
+<li><p>tasks done on each row/column</p></li>
+<li><p>flip vertically/horizontally</p></li>
+<li><p>transpose</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Object array</p>
+<ul>
+<li><p>to model 2D relational table (like excel tables)</p></li>
+<li><p>temporary object assignment <code class="docutils literal notranslate"><span class="pre">patients[i]</span> <span class="pre">=</span> <span class="pre">Patient(&quot;John</span> <span class="pre">Smith&quot;,</span> <span class="pre">21,</span>
+<span class="pre">173);</span></code></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="frequently-tested-contents">
+<h2>Frequently Tested Contents<a class="headerlink" href="#frequently-tested-contents" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p><strong>must be able to finish coding on paper or plain text editor like notepad</strong></p></li>
+<li><p><strong>Write a full program project in a single file</strong></p></li>
+<li><p><strong>Write a full program project with multiple files</strong></p></li>
+<li><p>text menu handling</p></li>
+<li><p>input with validation</p></li>
+<li><p>expressions with pointer/array</p>
+<ul class="simple">
+<li><p>know pointer operators *, &amp;</p></li>
+<li><p>example expressions</p>
+<ul>
+<li><p>e.g. if <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">*a</span> <span class="pre">=</span> <span class="pre">&amp;b</span></code>, the <code class="docutils literal notranslate"><span class="pre">*a</span></code> is same as <code class="docutils literal notranslate"><span class="pre">b</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">arr[n]</span></code> <code class="docutils literal notranslate"><span class="pre">*(arr</span> <span class="pre">+</span> <span class="pre">n)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(*a)++</span></code></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>C string algorithms</p>
+<ul class="simple">
+<li><p>char array declaration</p></li>
+<li><p>for loop based on the terminator ‘0’</p></li>
+<li><p>1 extra space to store data</p></li>
+<li><p>existing string functions: strlen, strcpy, strcmp, strcat</p></li>
+</ul>
+</li>
+<li><p>dynamic array</p>
+<ul class="simple">
+<li><p>why using dynamic array</p></li>
+<li><p>memory allocation with new</p></li>
+<li><p>memory release with delete []</p></li>
+</ul>
+</li>
+<li><p>difference of in-place vs out-of-place algorithms</p></li>
+<li><p>1D array algorithms <strong>IMPORTANT</strong></p>
+<p>Know how to write; know how to mimic the run on paper.</p>
+<ul class="simple">
+<li><p>search</p></li>
+<li><p>compare two arrays, compare internally</p></li>
+<li><p>sort</p></li>
+<li><p>aggregate/reduce - sum, average, count, etc.</p></li>
+<li><p>map</p></li>
+</ul>
+</li>
+<li><p>array as function parameter</p></li>
+<li><p>dynamic array as the returned value of a function</p></li>
+<li><p>user input with mixed extractions and getlines</p></li>
+<li><p>2D array</p>
+<ul class="simple">
+<li><p>as function parameters <strong>very tricky!</strong></p></li>
+<li><p>allocation using for loop</p></li>
+<li><p>delete using for loop</p></li>
+<li><p>initialization using for loops</p></li>
+</ul>
+</li>
+<li><p>2D array algorithms</p>
+<ul class="simple">
+<li><p>flip</p></li>
+<li><p>transpose</p></li>
+<li><p>rotate</p></li>
+<li><p>initialize to a specific format</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="pitfalls">
+<h2>Pitfalls<a class="headerlink" href="#pitfalls" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>pointer</p>
+<ul>
+<li><p>referring to an uninitialized pointer</p></li>
+<li><p>mismatched assignment, parameter passing</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">*a</span> <span class="pre">=</span> <span class="pre">b;</span> <span class="pre">//</span> <span class="pre">b</span> <span class="pre">is</span> <span class="pre">an</span> <span class="pre">int</span></code></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>array</p>
+<ul>
+<li><p>out of boundary index <code class="docutils literal notranslate"><span class="pre">cout</span> <span class="pre">&lt;&lt;</span> <span class="pre">arr[size];</span></code></p></li>
+<li><p>mismatched passing</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">cout</span> <span class="pre">&lt;&lt;</span> <span class="pre">average(arr[size],</span> <span class="pre">size);</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cout</span> <span class="pre">&lt;&lt;</span> <span class="pre">average(arr[],</span> <span class="pre">size);</span></code></p></li>
+</ul>
+</li>
+<li><p>pass without size <code class="docutils literal notranslate"><span class="pre">cout</span> <span class="pre">&lt;&lt;</span> <span class="pre">average(arr);</span></code></p></li>
+<li><p>Java syntax <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">[]arr;</span></code> <code class="docutils literal notranslate"><span class="pre">double</span> <span class="pre">average(double</span> <span class="pre">[]</span> <span class="pre">arr,</span> <span class="pre">int</span> <span class="pre">size);</span></code></p></li>
+<li><p>using initialization syntax for assignment <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">arr[4];</span> <span class="pre">arr</span> <span class="pre">=</span> <span class="pre">{1,2,3,4};</span></code></p></li>
+</ul>
+</li>
+<li><p>2d array</p>
+<ul>
+<li><p>new with more than one [] <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">**twoD</span> <span class="pre">=</span> <span class="pre">new</span> <span class="pre">int[3][4]</span></code></p></li>
+<li><p>bad function parameter</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">flip(int</span> <span class="pre">twoDimArr[rows][cols],</span> <span class="pre">int</span> <span class="pre">rows,</span> <span class="pre">int</span> <span class="pre">cols);</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">flip(int</span> <span class="pre">twoDimArr[][],</span> <span class="pre">int</span> <span class="pre">rows,</span> <span class="pre">int</span> <span class="pre">cols);</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">flip(int</span> <span class="pre">[][]</span> <span class="pre">twoDimArr,</span> <span class="pre">int</span> <span class="pre">rows,</span> <span class="pre">int</span> <span class="pre">cols);</span></code></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>dynamic array</p>
+<ul>
+<li><p>Java syntax <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">[]</span> <span class="pre">arr</span> <span class="pre">=</span> <span class="pre">new</span> <span class="pre">int[10];</span></code></p></li>
+<li><p>forget to <code class="docutils literal notranslate"><span class="pre">delete</span> <span class="pre">[]</span></code></p></li>
+<li><p>use <code class="docutils literal notranslate"><span class="pre">delete</span></code> without <code class="docutils literal notranslate"><span class="pre">[]</span></code></p></li>
+<li><p>2D</p>
+<ul>
+<li><p>new or delete using more than one []</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Midterm 2 Topic Review</a><ul>
+<li><a class="reference internal" href="#how-to-use-this-document">How to use this document</a></li>
+<li><a class="reference internal" href="#pointer-memory-management">Pointer, Memory Management</a></li>
+<li><a class="reference internal" href="#algorithms">Algorithms</a></li>
+<li><a class="reference internal" href="#advanced-array">Advanced Array</a></li>
+<li><a class="reference internal" href="#frequently-tested-contents">Frequently Tested Contents</a></li>
+<li><a class="reference internal" href="#pitfalls">Pitfalls</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="mid1-review.html"
+                          title="previous chapter">Midterm 1 Topic Review</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../../cpp/getline.html"
+                          title="next chapter">Using getline after extraction</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/course/cop3014/mid2-review.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../cpp/getline.html" title="Using getline after extraction"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mid1-review.html" title="Midterm 1 Topic Review"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Midterm 2 Topic Review</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+    </div>
+  </body>
+</html>

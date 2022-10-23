@@ -1,0 +1,254 @@
+**********************
+Midterm 2 Topic Review
+**********************
+
+How to use this document
+========================
++ All contents covered in Midterm I will not be specifically tested but will
+  likely to be used in the questions.
++ Self-test using this document to see what concepts are challenging to you
++ Course notes document is the main resource for tips, pitfalls. High priority
+  in midterm preparation.
++ Review all participation activities and challenge activities in zyBook
++ Practice your ability to finish the patterns listed here from scratch without
+  the help from any editor/ IDE
+
+Pointer, Memory Management
+==========================
++ Memory regions
+
+  * code: code
+  * static: global and static variables
+  * stack: local variables and function parameters
+  * heap: dynamic data
+
++ Pointer type
+
+  * declaration; derived type with *
+  * reference operator & (variable -> it's memory address)
+  * dereference operator * (memory address -> variable/lvalue it points to)
+  * nullptr
+  * segmentation error (trying to access an invalid pointer)
+
++ Dynamic data
+
+  * new keyword
+  * delete keyword
+  * new and delete arrays with []
+  * memory leak and how to avoid
+
++ Differentiate from reference type
+
+  * revisit reference type
+  * know the difference
+
+Algorithms
+==========
++ C array
+
+  * local array ``int arr[10];``
+
+    - size must be literal or constant
+
+  * dynamic array ``int *arr = new int[10];``
+  * [] and * syntax interconversion ``arr[n]`` vs ``*(arr + n)``
+  * two parts in memory: pointer and data
+
+    - local array - both parts are local
+    - dynamic array - pointer is local, data is in heap
+
+  * local array initialization syntax ``int arr[10] = {};``
+  * initialization of dynamic arrays using ``for`` loops
+  * local/dynamic arrays as function parameters
+  * dynamic array as as return type
+
++ C string
+
+  * partially filled char array
+  * terminator `'\0'` character
+  * cstring header
+
+    - strlen
+    - strcmp
+    - strcpy
+    - strcat
+
++ C++ string
+
+  * methods (member functions)
+  * extraction getline mixed usage
+
+    - do-while loop to protect getline
+
++ Building blocks of algorithms
+
+  * for loops
+  * while loops
+  * degree of freedom
+  * index manipulation ``size - 1 - i``
+  * know the meaning of looping variables
+
++ Algorithms on linear data types (C array, C string, and C++ string)
+
+  * search
+
+    - element
+    - sub sequence
+    - early return
+
+  * compare
+
+    - two arrays - are same or are reverse
+    - internal - is a palindrome
+    - early return
+
+  * aggregate/reduce
+
+    - sequence -> single value
+    - must visit all element
+
+  * map
+
+    - sequence -> sequence of the same size
+    - can be in-place
+
+  * filter
+
+    - sequence -> shorter sequence
+    - to be covered when vector is introduced
+
+  * sort
+
+    - selection
+    - insertion
+
+Advanced Array
+==============
++ Multidimensional array
+
+  * array of arrays concept (diagrams)
+  * declaration
+  * initialization with nested loops
+  * for loop manipulation - nested
+  * dynamic 2D array
+
+    - new []
+    - delete []
+    - for loop
+
+  * as function parameters
+
+    - [] syntax - last size can be omitted
+    - * syntax (preferred)
+
+  * as a return value
+
+    - dynamic array
+
+  * algorithms
+
+    - tasks done on each row/column
+    - flip vertically/horizontally
+    - transpose
+
++ Object array
+
+  * to model 2D relational table (like excel tables)
+  * temporary object assignment ``patients[i] = Patient("John Smith", 21,
+    173);``
+
+Frequently Tested Contents
+==========================
++ **must be able to finish coding on paper or plain text editor like notepad**
++ **Write a full program project in a single file**
++ **Write a full program project with multiple files**
++ text menu handling
++ input with validation
++ expressions with pointer/array
+
+  * know pointer operators \*, &
+  * example expressions
+
+    - e.g. if ``int *a = &b``, the ``*a`` is same as ``b``
+    - ``arr[n]`` ``*(arr + n)``
+    - ``(*a)++``
+
++ C string algorithms
+
+  * char array declaration
+  * for loop based on the terminator '\0'
+  * 1 extra space to store data
+  * existing string functions: strlen, strcpy, strcmp, strcat
+
++ dynamic array
+
+  * why using dynamic array
+  * memory allocation with new
+  * memory release with delete []
+
++ difference of in-place vs out-of-place algorithms
++ 1D array algorithms **IMPORTANT**
+
+  Know how to write; know how to mimic the run on paper.
+
+  * search
+  * compare two arrays, compare internally
+  * sort
+  * aggregate/reduce - sum, average, count, etc.
+  * map
+
++ array as function parameter
++ dynamic array as the returned value of a function
++ user input with mixed extractions and getlines
++ 2D array
+
+  * as function parameters **very tricky!**
+  * allocation using for loop
+  * delete using for loop
+  * initialization using for loops
+
++ 2D array algorithms
+
+  * flip
+  * transpose
+  * rotate
+  * initialize to a specific format
+
+Pitfalls
+========
++ pointer
+
+  * referring to an uninitialized pointer
+  * mismatched assignment, parameter passing
+
+    - ``int *a = b; // b is an int``
+
++ array
+
+  * out of boundary index ``cout << arr[size];``
+  * mismatched passing
+
+    - ``cout << average(arr[size], size);``
+    - ``cout << average(arr[], size);``
+
+  * pass without size ``cout << average(arr);``
+  * Java syntax ``int []arr;`` ``double average(double [] arr, int size);``
+  * using initialization syntax for assignment ``int arr[4]; arr = {1,2,3,4};``
+
++ 2d array
+
+  * new with more than one [] ``int **twoD = new int[3][4]``
+  * bad function parameter
+
+    - ``void flip(int twoDimArr[rows][cols], int rows, int cols);``
+    - ``void flip(int twoDimArr[][], int rows, int cols);``
+    - ``void flip(int [][] twoDimArr, int rows, int cols);``
+
++ dynamic array
+
+  * Java syntax ``int [] arr = new int[10];``
+  * forget to ``delete []``
+  * use ``delete`` without ``[]``
+  * 2D
+
+    - new or delete using more than one []
