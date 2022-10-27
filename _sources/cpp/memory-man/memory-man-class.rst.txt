@@ -174,7 +174,7 @@ Dynamic data in class
     // you can access private members of other directly in C++!
     size = other.size;
     arr = new int[size];
-    for (int i = 0; i < size; i++)
+    for (int i = 0; i < size; ++i)
       arr[i] = other.arr[i];
   }
 
@@ -183,7 +183,7 @@ Dynamic data in class
     // must release memory of the old dynamic data first!
     delete [] arr;
     arr = new int[size];
-    for (int i=0; i<size; i++)
+    for (int i=0; i<size; ++i)
       arr[i] = other.arr[i];
     return *this;  // IMPORTANT! return the current object by reference
   }
@@ -316,7 +316,7 @@ Example: The object always owns the data. The recipient just used it.
     // declare and initialize data in MyClass obj1;
     int size = obj1.getSize();
     int *arr = obj1.getArray();
-    for (int i = 0; i < size; i++)
+    for (int i = 0; i < size; ++i)
       cout << arr[i] << " ";
     return 0;
   }
@@ -341,19 +341,18 @@ function to delete the dynamic data. Both are reasonable.
     int posCount = getPositiveCount();
     int *arr = new int[posCount];  // dynamic data, not meant to be owned
     int j = 0;
-    for (int i = 0; i < size; i++)
+    for (int i = 0; i < size; ++i)
       if (array[i] > 0) {
         arr[j] = array[i];
-        j++;
+        ++j;
       }
     return arr;
   }
 
   int MyClass::getPositiveCount() {
     int count = 0;
-    for (int i = 0; i < size; i++)
-      if (array[i] > 0)
-        count++;
+    for (int i = 0; i < size; ++i)
+      if (array[i] > 0) ++count;
     return count;
   }
 
@@ -361,7 +360,7 @@ function to delete the dynamic data. Both are reasonable.
     // declare and initialize data in MyClass obj1;
     int *positiveArray = obj1.getPositiveValues();
     int size = obj1.getPositiveCount();
-    for (int i = 0; i < size; i++)
+    for (int i = 0; i < size; ++i)
       cout << positiveArray[i] << " ";
     delete [] positiveArray;  // positiveArray owned by the main function
     return 0;

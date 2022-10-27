@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Overview &#8212; IanFang Course Note Hosting  documentation</title>
+    <title>C/C++ Development Environment &#8212; IanFang Course Note Hosting  documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
@@ -14,7 +14,7 @@
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <link rel="canonical" href="https://uwf-fang.github.io/cpp/cpp-env.html" />
+    <link rel="canonical" href="https://uwf-fang.github.io/cpp/ccpp-env.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Remote Linux Server Tutorial" href="../course/cs-ssh-server.html" />
@@ -35,7 +35,7 @@
         <li class="nav-item nav-item-0"><a href="../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../course/cop3014/env.html" accesskey="U">Development Environment</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Overview</a></li> 
+        <li class="nav-item nav-item-this"><a href="">C/C++ Development Environment</a></li> 
       </ul>
     </div>  
 
@@ -44,14 +44,14 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="overview">
-<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
+  <section id="c-c-development-environment">
+<h1>C/C++ Development Environment<a class="headerlink" href="#c-c-development-environment" title="Permalink to this headline">¶</a></h1>
 <section id="tl-dr">
 <h2>TL;DR<a class="headerlink" href="#tl-dr" title="Permalink to this headline">¶</a></h2>
 <dl class="simple">
 <dt>Under Windows</dt><dd><p>Install the toolchain under WSL; Use any code editor; Compile and run in WSL
 bash window; Transfer to the SSH server for an optional final test. <strong>Do not
-recommend MinGW! Use it at your own risk!</strong></p>
+recommend MinGW (include git bash)! Use it at your own risk!</strong></p>
 </dd>
 <dt>Under Mac OS</dt><dd><p>Install <strong>X-Code command line tool</strong> as your toolchain; Use any code editor;
 Compile and run in your terminal; Transfer to the SSH server for an optional
@@ -66,9 +66,11 @@ Always test on the SSH server only if you are using MingGW as your local
 environment to avoid many known incompatibility issues.</p>
 </dd>
 <dt>Single-Click-Run Feature</dt><dd><p>When working on multi-file projects, <strong>avoid any single-click-run feature
-that mostly does not support make</strong> such as in jGrasp, onlineGDB, VS Code.
+that mostly does not support make</strong> such as in jGrasp, onlineGDB, or VS Code.
 You can still use them as text editor but do not try to run your project with
-a single mouse button click.</p>
+a single mouse button click. It will mostly fail unless you spend time to
+learn how to configure it correctly. It is overall inconvenient as you may
+need to reconfigure every time working with a different project.</p>
 </dd>
 </dl>
 </section>
@@ -107,13 +109,12 @@ executables in machine language. As plain text files, you can used any text
 editor to work with them.</p>
 </dd>
 <dt id="term-Toolchain">Toolchain<a class="headerlink" href="#term-Toolchain" title="Permalink to this term">¶</a></dt><dd><p>The tools required to generate executables from source code files are known
-as <strong>toolchain</strong>. For C++, it include a C++ compiler and related tools like
-make.</p>
+as <strong>toolchain</strong>.</p>
 </dd>
 </dl>
 </section>
-<section id="official-development-environment">
-<h2>Official Development Environment<a class="headerlink" href="#official-development-environment" title="Permalink to this headline">¶</a></h2>
+<section id="minimal-requirements">
+<h2>Minimal Requirements<a class="headerlink" href="#minimal-requirements" title="Permalink to this headline">¶</a></h2>
 <p>To work on a programming project, the minimal requirements of the development
 environment are:</p>
 <ol class="arabic simple">
@@ -123,10 +124,13 @@ environment are:</p>
 <p>The two parts are independent of each other. They can even exist on different
 computers. For instance, you can edit source codes on your laptop, transfer
 file to the Linux server, build and run your code there.</p>
-<p>The <strong>official environment</strong> required in most of the C++ based courses at UWF
+</section>
+<section id="official-environment-ssh-linux-server">
+<h2>Official Environment: SSH Linux Server<a class="headerlink" href="#official-environment-ssh-linux-server" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>official environment</strong> required in most of the C/C++ based courses at UWF
 are the SSH server from the CS department. Read the
 <a class="reference internal" href="../course/cs-ssh-server.html"><span class="doc">document</span></a> for more details. It is a Linux server
-pre-installed with the required toolchain. Students can connect to the server
+pre-installed with the required toolchains. Students can connect to the server
 and use the toolchain without any local installation.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
@@ -135,12 +139,6 @@ It is recommended that students give their project a final test run on the
 server before submitting it for their first couple of projects to confirm the
 compatibility. <strong>MinGW user should always test your code on the SSH server
 before submitting your work for grading.</strong></p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Assignments collected through the GitHub Classroom with auto-grading do not
-require tests on the SSH server as GitHub has provided a compatible Linux
-testing environment with a proper setup.</p>
 </div>
 </section>
 <section id="local-development-environment">
@@ -153,38 +151,45 @@ compile and run.</p></li>
 <li><p>Learning purpose: gain better understanding of the environment though
 the installation, configuration and execution processes.</p></li>
 </ol>
-<p>The following list of tools applies to the C++ courses I teach. Other
-instructors may require other tools. The first five tools are required in most
-of the C++-based programming courses. The rest are sometimes optional.</p>
+<p>The following list of tools applies to the courses using C or C++ as the main programming language.</p>
 <dl class="glossary simple">
-<dt id="term-g">g++<a class="headerlink" href="#term-g" title="Permalink to this term">¶</a></dt><dd><p>The GNU C++ compiler invocation command.</p>
+<dt id="term-GCC-GNU-Compiler-Collection">GCC (GNU Compiler Collection)<a class="headerlink" href="#term-GCC-GNU-Compiler-Collection" title="Permalink to this term">¶</a></dt><dd><p>A collection of compilers from GNU to compile many languages including C, C++, Objective-C, Fortran, Ada and Go.</p>
+</dd>
+<dt id="term-gcc">gcc<a class="headerlink" href="#term-gcc" title="Permalink to this term">¶</a></dt><dd><p>The GNU C compiler invocation command. Usually used to compile pure C or
+C/C++ hybrid projects. Not required for courses focusing on C++.</p>
+</dd>
+<dt id="term-g">g++<a class="headerlink" href="#term-g" title="Permalink to this term">¶</a></dt><dd><p>The GNU C++ compiler invocation command. Employed to compile pure C++
+projects.</p>
 </dd>
 <dt id="term-make">make<a class="headerlink" href="#term-make" title="Permalink to this term">¶</a></dt><dd><p>The GNU building tool to produce executables and libraries. Also used in
 task automation.</p>
 </dd>
-<dt id="term-ssh">ssh<a class="headerlink" href="#term-ssh" title="Permalink to this term">¶</a></dt><dd><p>The secure shell to access remote computer system through a command-line
-interface.</p>
+<dt id="term-ssh">ssh<a class="headerlink" href="#term-ssh" title="Permalink to this term">¶</a></dt><dd><p>The secure shell command to access remote computer system through a
+command-line interface.</p>
 </dd>
-<dt id="term-Linux">Linux<a class="headerlink" href="#term-Linux" title="Permalink to this term">¶</a></dt><dd><p>The open-source operating system. Many distributions available. Ubuntu 20.04 is recommended in this course. It serves as the final grading environment.</p>
+<dt id="term-Linux">Linux<a class="headerlink" href="#term-Linux" title="Permalink to this term">¶</a></dt><dd><p>The open-source operating system. Many Linux distributions are available.
+Ubuntu 20.04 is employed for demonstration in most courses.</p>
 </dd>
 <dt id="term-WSL">WSL<a class="headerlink" href="#term-WSL" title="Permalink to this term">¶</a></dt><dd><p>The Windows Subsystem for Linux. It allows students to use Linux
-environment in the Windows operating system.</p>
+environment under the Windows operating system.</p>
 </dd>
 <dt id="term-Editor-IDE">Editor/IDE<a class="headerlink" href="#term-Editor-IDE" title="Permalink to this term">¶</a></dt><dd><p>Any tool to be used for text file editing. Your own choice. Visual Studio
-Code is selected for demonstration in the classroom.</p>
+Code is used for demonstration in the classroom.</p>
 </dd>
 <dt id="term-git">git<a class="headerlink" href="#term-git" title="Permalink to this term">¶</a></dt><dd><p>The distributed version control system to manage source code or other
 files. Optional to classes not using GitHub Classroom.</p>
 </dd>
-<dt id="term-gdb">gdb<a class="headerlink" href="#term-gdb" title="Permalink to this term">¶</a></dt><dd><p>The GNU debugger for C/C++ programs. Optional to all classes.</p>
+<dt id="term-gdb">gdb<a class="headerlink" href="#term-gdb" title="Permalink to this term">¶</a></dt><dd><p>The GNU debugger for C/C++ programs.</p>
 </dd>
-<dt id="term-valgrind">valgrind<a class="headerlink" href="#term-valgrind" title="Permalink to this term">¶</a></dt><dd><p>The memory problem checking CLI tool.</p>
+<dt id="term-valgrind">valgrind<a class="headerlink" href="#term-valgrind" title="Permalink to this term">¶</a></dt><dd><p>A CLI tool for profiling and diagnosis of C/C++ programs. It is usually
+used to check memory problem in the courses. It has known installation
+problem under Mac OS.</p>
 </dd>
 </dl>
 </section>
 <section id="editor-vs-ide">
 <h2>Editor vs IDE<a class="headerlink" href="#editor-vs-ide" title="Permalink to this headline">¶</a></h2>
-<p>An editor has no knowledge of the toolchain. It makes the setup easier. A
+<p>A pure editor has no knowledge of the toolchain. It makes the setup easier. A
 programmer’s editor can provide many functionalities but will not be as
 feature-rich as a professional IDE.</p>
 <p>On the contrast, an IDE can be more powerful than an editor. However, to use
@@ -198,11 +203,17 @@ are not compatible to the GNU toolchain we use in the course. You will
 experience huge problem if you do not handle it correctly.</p>
 </div>
 <p>In classroom demonstration will use Visual Studio Code as editor and g++/make
-under WSL as the toolchain.</p>
+under WSL/Linux as the toolchain.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>For VS Code user, you only need the C/C++ plugin from Microsoft. Install
+other plugins at your own risk. They are mostly not as easy to use as
+terminal commands.</p>
+</div>
 </section>
 <section id="toolchain-installation">
 <h2>Toolchain Installation<a class="headerlink" href="#toolchain-installation" title="Permalink to this headline">¶</a></h2>
-<p>The setups are tightly couple to the workflow you follow. They can be
+<p>The setups are tightly coupled to the workflow you follow. They can be
 categorized by the location of the toolchain and the operating system you use.</p>
 <section id="remote">
 <h3>Remote<a class="headerlink" href="#remote" title="Permalink to this headline">¶</a></h3>
@@ -220,10 +231,10 @@ in this document because it is employed as the <strong>final/official</strong> e
 in our courses.</p>
 <p>A separate tutorial discussing the usage of the Linux server using SSH is
 available: <a class="reference internal" href="../course/cs-ssh-server.html"><span class="doc">Remote Linux Server Tutorial</span></a></p>
-<p>The major drawback using a remote toolchain is that all your files exist on the
-remote server. You will need either edit it remotely using a command-line based
-editors like <code class="docutils literal notranslate"><span class="pre">vim</span></code> or constantly transfer file back and forth whenever any
-changes are made.</p>
+<p>The major drawback using a remote toolchain is that all your files are compiled
+on the remote server. You will need either edit it remotely using a
+command-line based editors like <code class="docutils literal notranslate"><span class="pre">vim</span></code> or constantly transfer file back and
+forth whenever any changes are made on your local computer.</p>
 <p>Some editors/IDEs support the edition of remote files in the same way as local
 files. It is very convenient. However, the setup and configuration are not
 always working and can be challenging to most students.</p>
@@ -285,7 +296,7 @@ Command line tool</strong> in the Terminal:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo xcode-select --install
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">git</span></code> tool is usually pre-installed on Mac OS.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">git</span></code> command line tool is usually pre-installed on Mac OS.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>You will be asked for your password and then you may see a popup dialog to
@@ -293,6 +304,9 @@ confirm.</p>
 </div>
 <p>To use the command-line environment, use the default <code class="docutils literal notranslate"><span class="pre">Terminal</span></code> app. Type the
 command <code class="docutils literal notranslate"><span class="pre">bash</span></code> to switch to bash if your default shell is zsh.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">valgrind</span></code> tool has no Mac OS native version available. You may use
+Homebrew to install a third-party version but the installation is not always
+working. You may need to use the SSH server to run valgrind in this case.</p>
 </section>
 <section id="linux-local">
 <h3>Linux Local<a class="headerlink" href="#linux-local" title="Permalink to this headline">¶</a></h3>
@@ -322,10 +336,11 @@ sudo apt-get install git
   <div>
     <h3><a href="../index.html">Table of Contents</a></h3>
     <ul>
-<li><a class="reference internal" href="#">Overview</a><ul>
+<li><a class="reference internal" href="#">C/C++ Development Environment</a><ul>
 <li><a class="reference internal" href="#tl-dr">TL;DR</a></li>
 <li><a class="reference internal" href="#concepts">Concepts</a></li>
-<li><a class="reference internal" href="#official-development-environment">Official Development Environment</a></li>
+<li><a class="reference internal" href="#minimal-requirements">Minimal Requirements</a></li>
+<li><a class="reference internal" href="#official-environment-ssh-linux-server">Official Environment: SSH Linux Server</a></li>
 <li><a class="reference internal" href="#local-development-environment">Local Development Environment</a></li>
 <li><a class="reference internal" href="#editor-vs-ide">Editor vs IDE</a></li>
 <li><a class="reference internal" href="#toolchain-installation">Toolchain Installation</a><ul>
@@ -354,7 +369,7 @@ sudo apt-get install git
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/cpp/cpp-env.rst.txt"
+      <li><a href="../_sources/cpp/ccpp-env.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -387,12 +402,12 @@ sudo apt-get install git
         <li class="nav-item nav-item-0"><a href="../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../course/cop3014/env.html" >Development Environment</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Overview</a></li> 
+        <li class="nav-item nav-item-this"><a href="">C/C++ Development Environment</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
     </div>
   </body>
 </html>

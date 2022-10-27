@@ -1,15 +1,15 @@
 .. highlight:: shell
 
-********
-Overview
-********
+*****************************
+C/C++ Development Environment
+*****************************
 
 TL;DR
 =====
 Under Windows
   Install the toolchain under WSL; Use any code editor; Compile and run in WSL
   bash window; Transfer to the SSH server for an optional final test. **Do not
-  recommend MinGW! Use it at your own risk!**
+  recommend MinGW (include git bash)! Use it at your own risk!**
 
 Under Mac OS
   Install **X-Code command line tool** as your toolchain; Use any code editor;
@@ -28,9 +28,11 @@ Optional Usage of the SSH Server (CS department)
 
 Single-Click-Run Feature
   When working on multi-file projects, **avoid any single-click-run feature
-  that mostly does not support make** such as in jGrasp, onlineGDB, VS Code.
+  that mostly does not support make** such as in jGrasp, onlineGDB, or VS Code.
   You can still use them as text editor but do not try to run your project with
-  a single mouse button click.
+  a single mouse button click. It will mostly fail unless you spend time to
+  learn how to configure it correctly. It is overall inconvenient as you may
+  need to reconfigure every time working with a different project.
 
 Concepts
 ========
@@ -79,12 +81,11 @@ Concepts
   Toolchain
 
     The tools required to generate executables from source code files are known
-    as **toolchain**. For C++, it include a C++ compiler and related tools like
-    make.
+    as **toolchain**.
 
 
-Official Development Environment
-================================
+Minimal Requirements
+====================
 To work on a programming project, the minimal requirements of the development
 environment are:
 
@@ -95,10 +96,12 @@ The two parts are independent of each other. They can even exist on different
 computers. For instance, you can edit source codes on your laptop, transfer
 file to the Linux server, build and run your code there.
 
-The **official environment** required in most of the C++ based courses at UWF
+Official Environment: SSH Linux Server
+======================================
+The **official environment** required in most of the C/C++ based courses at UWF
 are the SSH server from the CS department. Read the
 :doc:`document</course/cs-ssh-server>` for more details. It is a Linux server
-pre-installed with the required toolchain. Students can connect to the server
+pre-installed with the required toolchains. Students can connect to the server
 and use the toolchain without any local installation.
 
 .. important::
@@ -108,12 +111,6 @@ and use the toolchain without any local installation.
   server before submitting it for their first couple of projects to confirm the
   compatibility. **MinGW user should always test your code on the SSH server
   before submitting your work for grading.**
-
-.. note::
-
-  Assignments collected through the GitHub Classroom with auto-grading do not
-  require tests on the SSH server as GitHub has provided a compatible Linux
-  testing environment with a proper setup.
 
 Local Development Environment
 =============================
@@ -125,47 +122,56 @@ the following reasons:
 #. Learning purpose: gain better understanding of the environment though
    the installation, configuration and execution processes.
 
-The following list of tools applies to the C++ courses I teach. Other
-instructors may require other tools. The first five tools are required in most
-of the C++-based programming courses. The rest are sometimes optional.
+The following list of tools applies to the courses using C or C++ as the main programming language.
 
 .. glossary::
 
+  GCC (GNU Compiler Collection)
+    A collection of compilers from GNU to compile many languages including C, C++, Objective-C, Fortran, Ada and Go.
+
+  gcc
+    The GNU C compiler invocation command. Usually used to compile pure C or
+    C/C++ hybrid projects. Not required for courses focusing on C++.
+
   g++
-    The GNU C++ compiler invocation command.
+    The GNU C++ compiler invocation command. Employed to compile pure C++
+    projects.
 
   make
     The GNU building tool to produce executables and libraries. Also used in
     task automation.
 
   ssh
-    The secure shell to access remote computer system through a command-line
-    interface.
+    The secure shell command to access remote computer system through a
+    command-line interface.
 
   Linux
-    The open-source operating system. Many distributions available. Ubuntu 20.04 is recommended in this course. It serves as the final grading environment.
+    The open-source operating system. Many Linux distributions are available.
+    Ubuntu 20.04 is employed for demonstration in most courses.
 
   WSL
     The Windows Subsystem for Linux. It allows students to use Linux
-    environment in the Windows operating system.
+    environment under the Windows operating system.
 
   Editor/IDE
     Any tool to be used for text file editing. Your own choice. Visual Studio
-    Code is selected for demonstration in the classroom.
+    Code is used for demonstration in the classroom.
 
   git
     The distributed version control system to manage source code or other
     files. Optional to classes not using GitHub Classroom.
 
   gdb
-    The GNU debugger for C/C++ programs. Optional to all classes.
+    The GNU debugger for C/C++ programs.
 
   valgrind
-    The memory problem checking CLI tool.
+    A CLI tool for profiling and diagnosis of C/C++ programs. It is usually
+    used to check memory problem in the courses. It has known installation
+    problem under Mac OS.
 
 Editor vs IDE
 =============
-An editor has no knowledge of the toolchain. It makes the setup easier. A
+A pure editor has no knowledge of the toolchain. It makes the setup easier. A
 programmer's editor can provide many functionalities but will not be as
 feature-rich as a professional IDE.
 
@@ -181,11 +187,17 @@ this reason.
   experience huge problem if you do not handle it correctly.
 
 In classroom demonstration will use Visual Studio Code as editor and g++/make
-under WSL as the toolchain.
+under WSL/Linux as the toolchain.
+
+.. warning::
+
+  For VS Code user, you only need the C/C++ plugin from Microsoft. Install
+  other plugins at your own risk. They are mostly not as easy to use as
+  terminal commands.
 
 Toolchain Installation
 ======================
-The setups are tightly couple to the workflow you follow. They can be
+The setups are tightly coupled to the workflow you follow. They can be
 categorized by the location of the toolchain and the operating system you use.
 
 Remote
@@ -208,10 +220,10 @@ in our courses.
 A separate tutorial discussing the usage of the Linux server using SSH is
 available: :doc:`/course/cs-ssh-server`
 
-The major drawback using a remote toolchain is that all your files exist on the
-remote server. You will need either edit it remotely using a command-line based
-editors like ``vim`` or constantly transfer file back and forth whenever any
-changes are made.
+The major drawback using a remote toolchain is that all your files are compiled
+on the remote server. You will need either edit it remotely using a
+command-line based editors like ``vim`` or constantly transfer file back and
+forth whenever any changes are made on your local computer.
 
 Some editors/IDEs support the edition of remote files in the same way as local
 files. It is very convenient. However, the setup and configuration are not
@@ -270,7 +282,7 @@ Command line tool** in the Terminal::
 
   sudo xcode-select --install
 
-The ``git`` tool is usually pre-installed on Mac OS.
+The ``git`` command line tool is usually pre-installed on Mac OS.
 
 .. note::
 
@@ -279,6 +291,10 @@ The ``git`` tool is usually pre-installed on Mac OS.
 
 To use the command-line environment, use the default ``Terminal`` app. Type the
 command ``bash`` to switch to bash if your default shell is zsh.
+
+The ``valgrind`` tool has no Mac OS native version available. You may use
+Homebrew to install a third-party version but the installation is not always
+working. You may need to use the SSH server to run valgrind in this case.
 
 Linux Local
 -----------

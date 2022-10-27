@@ -84,18 +84,18 @@ Two dimensional array
 
     // allocate memory (on Heap)
     dynArr1 = new int *[2];
-    for (int i = 0; i < 2 ; i++)
+    for (int i = 0; i < 2 ; ++i)
       dynArr1[i] = new int[3];
     //now you can access element using array syntax like dynArr1[0][0]
 
     // put values into the array
-    for (int i = 0; i < 2 ; i++)
-      for (int j = 0; j < 3; j++)
+    for (int i = 0; i < 2 ; ++i)
+      for (int j = 0; j < 3; ++j)
         dynArr1[i][j] = i * 3 + j + 1;
     // now dynArr1 is {{1, 2, 3}, {4, 5, 6}}
 
     // release memory
-    for (int i = 0; i < 2 ; i++)
+    for (int i = 0; i < 2 ; ++i)
       delete [] dynArr1[i];
     delete [] dynArr1;
 
@@ -138,8 +138,8 @@ Two dimensional array
 
        // correct version 1
        void matrixOp(int ** matrix, int rows, int cols) {
-         for (int i = 0; i < rows ; i++)
-           for (int j = 0; j < cols; j++)
+         for (int i = 0; i < rows ; ++i)
+           for (int j = 0; j < cols; ++j)
              cout << matrix[i][j] << " ";  // same syntax as local array
        }
        // correct version 2
@@ -169,9 +169,9 @@ Two dimensional array
     int **createMatrix(int rows, int cols, int value) {
       int **result;
       result = new int *[rows];
-      for (int i = 0; i < rows; i++) {
+      for (int i = 0; i < rows; ++i) {
         result[i] = new int[cols];
-        for (int j = 0; j < cols; j++)
+        for (int j = 0; j < cols; ++j)
           result[i][j] = value;
       }
       return result;
@@ -183,7 +183,7 @@ Two dimensional array
       // work on the matrix
 
       // release memory
-      for (int i = 0; i < rows; i++)
+      for (int i = 0; i < rows; ++i)
         delete [] matrix[i];
       delete [] matrix;
     }
