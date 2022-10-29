@@ -1,0 +1,90 @@
+.. highlight:: c++
+  :linenothreshold: 5
+
+***********************************************
+Module 3: Shared-Memory Programming with OpenMP
+***********************************************
+Characteristics
+===============
++ A shared-memory programming model.
++ Modifies existing serial program
++ Include library header ``omp.h``
++ Preprocessor directive ``Pragma``
++ Requires compiler level support
++ Thread based
+
+Compile and run
+===============
+gcc
+---
++ include omp.h
++ compile with ``-fopenmp`` flag
+
+Concepts
+========
+
+.. glossary::
+
+  pragmas
+    The preprocessor directive employed by OpenMP. Employ **clauses** to fine
+    control the parallelized behavior. It works like a domain specific
+    language.
+
+  Structured block
+    The code block to be parallelized by OpenMP. It can be a for/while/do-while
+    statement, a function call or a code block enclosed by ``{}``
+
+  Threads (OpenMP)
+    OpenMP will fork threads to execute the structured block. The collection of
+    threads is called **Team**. There is a **master** thread to execute the
+    codes that are not parallelized and the rest of threads are known as
+    **slave**, which execute the structured block only.
+
+  Synchronization
+    A mechanism to constraint the ordering of execution of instructions to
+    preclude potential problems such as racing condition, and other
+    inconsistency problems.
+
+  Variable Scope (OpenMP)
+    As OpenMP is not part of C standard, the scope of variables in the
+    structured block needs special handling. The can be defined as ``private``
+    or ``shared`` in OpenMP ``pragma`` directives. The default scope of
+    variables declared outside of the block is ``shared``, while the default
+    scope of variables declared inside the block is ``private``.
+
+Clauses
+=======
++ parallel
++ num_threads
++ private
++ shared
++ default
++ reduction
++ for
++ schedule
+
+  * static
+  * dynamic
+  * guided
+
++ critical
++ atomic
++ barrier
+
+Synchronization
+===============
++ critical section
++ atomic
++ barrier
++ mutual exclusion (locks)
+
+  * omp_set_lock
+  * omp_unset_lock
+
+Examples
+========
++ Integration calculation (trapezoids)
++ Estimation of :math:`\pi`
++ Sorting
++ Matrix-vector multiplication
+
