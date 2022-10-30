@@ -51,33 +51,48 @@
 <li><p>gcc</p></li>
 <li><p>make</p></li>
 <li><p>mpicc/mpiexec</p></li>
+<li><p>OpenMP</p></li>
 </ul>
 </section>
 <section id="operating-system-dependent-installation">
 <h2>Operating System Dependent Installation<a class="headerlink" href="#operating-system-dependent-installation" title="Permalink to this headline">¶</a></h2>
+<section id="linux">
+<h3>Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p>Linux</p>
-<ul>
 <li><p>install gcc and make <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">build-essential</span></code></p></li>
 <li><p>install mpich using <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">mpich</span></code></p></li>
 </ul>
-</li>
-<li><p>SSH server</p>
-<ul>
+</section>
+<section id="ssh-server">
+<h3>SSH server<a class="headerlink" href="#ssh-server" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
 <li><p>gcc and make pre-installed</p></li>
 <li><p>enable mpicc using command <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">load</span> <span class="pre">mpi/openmpi-x86_64</span></code></p></li>
 </ul>
-</li>
-<li><p>Windows WSL (Windows subsystem for linux)</p>
-<ul>
-<li><p>install Ubuntu 20.04 LTS from Microsoft Store</p></li>
+</section>
+<section id="windows-wsl-windows-subsystem-for-linux">
+<h3>Windows WSL (Windows subsystem for linux)<a class="headerlink" href="#windows-wsl-windows-subsystem-for-linux" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>install Ubuntu 20.04 LTS from the Microsoft Store</p></li>
 <li><p>Run it for the first time and set user name and password for Ubuntu</p></li>
 <li><p>install gcc and make <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">build-essential</span></code></p></li>
 <li><p>install mpich using <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">mpich</span></code></p></li>
 </ul>
-</li>
-<li><p>Mac OS</p>
+</section>
+<section id="mac-os">
+<h3>Mac OS<a class="headerlink" href="#mac-os" title="Permalink to this headline">¶</a></h3>
+<p>When OpenMP is involved, it is recommended to test and run your code on the SSH
+server for the best compatibility. If you want to try a local Mac version, you
+may try the following instruction at the your own risk. It is not fully tested.
+To use OpenMP with clang, the makefile used under Mac OS can be different from
+what we will use to grade your code (Linux).</p>
 <ul>
+<li><p>Install XCode command line tool</p>
+<p>By installing the XCode command-line tool, you get the <code class="docutils literal notranslate"><span class="pre">gcc</span></code> command that
+is actually an alias to the <code class="docutils literal notranslate"><span class="pre">clang</span></code> command. The <code class="docutils literal notranslate"><span class="pre">clang</span></code> command is the
+invocation command of the LLVM C compiler rather than the GNU C compiler. It
+works in most cases but need special handling for packages like OpenMP, etc.</p>
+<ul class="simple">
 <li><p>install xcode command line tool  <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">xcode-select</span> <span class="pre">--install</span></code></p></li>
 <li><p>use <code class="docutils literal notranslate"><span class="pre">homebrew</span></code> to install mpich</p>
 <ul>
@@ -85,10 +100,26 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">mpich</span></code></p></li>
 </ul>
 </li>
+<li><p>special handling to install OpenMP</p>
+<ul>
+<li><p>install libomp <code class="docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">libomp</span></code></p></li>
+<li><p>configure as needed</p></li>
 </ul>
 </li>
-<li><p>External HPC/Cloud (TBD)</p>
-<ul>
+</ul>
+</li>
+<li><p>Install the real GCC</p>
+<ul class="simple">
+<li><p>install gcc <code class="docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">gcc</span></code></p></li>
+<li><p>install mpi <code class="docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">mpich</span></code></p></li>
+<li><p>OpenMP is built-in in the gcc package</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="external-hpc-cloud-tbd">
+<h3>External HPC/Cloud (TBD)<a class="headerlink" href="#external-hpc-cloud-tbd" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
 <li><p>Google Colab</p></li>
 <li><p>access-ci.org</p>
 <ul>
@@ -99,8 +130,7 @@
 </ul>
 </li>
 </ul>
-</li>
-</ul>
+</section>
 </section>
 <section id="programming-language">
 <h2>Programming language<a class="headerlink" href="#programming-language" title="Permalink to this headline">¶</a></h2>
@@ -122,6 +152,10 @@
 </li>
 </ul>
 </section>
+<section id="id1">
+<h2>Mac OS<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>On Mac OS, by installing the XCode command line tool, the <code class="docutils literal notranslate"><span class="pre">gcc</span></code> command is actually a link to the <code class="docutils literal notranslate"><span class="pre">clang</span></code> command which is the LLVM C compiler. It is mostly compatible but</p>
+</section>
 </section>
 
 
@@ -136,8 +170,16 @@
     <ul>
 <li><a class="reference internal" href="#">Development Environment For Parallel Programming</a><ul>
 <li><a class="reference internal" href="#tool-chain">Tool Chain</a></li>
-<li><a class="reference internal" href="#operating-system-dependent-installation">Operating System Dependent Installation</a></li>
+<li><a class="reference internal" href="#operating-system-dependent-installation">Operating System Dependent Installation</a><ul>
+<li><a class="reference internal" href="#linux">Linux</a></li>
+<li><a class="reference internal" href="#ssh-server">SSH server</a></li>
+<li><a class="reference internal" href="#windows-wsl-windows-subsystem-for-linux">Windows WSL (Windows subsystem for linux)</a></li>
+<li><a class="reference internal" href="#mac-os">Mac OS</a></li>
+<li><a class="reference internal" href="#external-hpc-cloud-tbd">External HPC/Cloud (TBD)</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#programming-language">Programming language</a></li>
+<li><a class="reference internal" href="#id1">Mac OS</a></li>
 </ul>
 </li>
 </ul>
@@ -193,7 +235,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
     </div>
   </body>
 </html>

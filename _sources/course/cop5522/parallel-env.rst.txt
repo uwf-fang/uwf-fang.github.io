@@ -7,27 +7,41 @@ Tool Chain
 + gcc
 + make
 + mpicc/mpiexec
++ OpenMP
 
 Operating System Dependent Installation
 =======================================
-+ Linux
+Linux
+-----
+* install gcc and make ``sudo apt-get install build-essential``
+* install mpich using ``sudo apt-get install mpich``
 
-  * install gcc and make ``sudo apt-get install build-essential``
-  * install mpich using ``sudo apt-get install mpich``
+SSH server
+----------
+* gcc and make pre-installed
+* enable mpicc using command ``module load mpi/openmpi-x86_64``
 
-+ SSH server
+Windows WSL (Windows subsystem for linux)
+-----------------------------------------
+* install Ubuntu 20.04 LTS from the Microsoft Store
+* Run it for the first time and set user name and password for Ubuntu
+* install gcc and make ``sudo apt-get install build-essential``
+* install mpich using ``sudo apt-get install mpich``
 
-  * gcc and make pre-installed
-  * enable mpicc using command ``module load mpi/openmpi-x86_64``
+Mac OS
+------
+When OpenMP is involved, it is recommended to test and run your code on the SSH
+server for the best compatibility. If you want to try a local Mac version, you
+may try the following instruction at the your own risk. It is not fully tested.
+To use OpenMP with clang, the makefile used under Mac OS can be different from
+what we will use to grade your code (Linux).
 
-+ Windows WSL (Windows subsystem for linux)
++ Install XCode command line tool
 
-  * install Ubuntu 20.04 LTS from Microsoft Store
-  * Run it for the first time and set user name and password for Ubuntu
-  * install gcc and make ``sudo apt-get install build-essential``
-  * install mpich using ``sudo apt-get install mpich``
-
-+ Mac OS
+  By installing the XCode command-line tool, you get the ``gcc`` command that
+  is actually an alias to the ``clang`` command. The ``clang`` command is the
+  invocation command of the LLVM C compiler rather than the GNU C compiler. It
+  works in most cases but need special handling for packages like OpenMP, etc.
 
   * install xcode command line tool  ``sudo xcode-select --install``
   * use ``homebrew`` to install mpich
@@ -35,15 +49,27 @@ Operating System Dependent Installation
     - You need to install homebrew first
     - ``brew install mpich``
 
-+ External HPC/Cloud (TBD)
+  * special handling to install OpenMP
 
-  * Google Colab
-  * access-ci.org
+    - install libomp ``brew install libomp``
+    - configure as needed
 
-    - NSF Funded
-    - access to real cluster
-    - may apply GPU node
-    - proposal required
++ Install the real GCC
+
+  * install gcc ``brew install gcc``
+  * install mpi ``brew install mpich``
+  * OpenMP is built-in in the gcc package
+
+External HPC/Cloud (TBD)
+------------------------
+
+* Google Colab
+* access-ci.org
+
+  - NSF Funded
+  - access to real cluster
+  - may apply GPU node
+  - proposal required
 
 
 Programming language
@@ -60,3 +86,7 @@ Programming language
   * can call any C library
   * heterogeneous compilation with C libraries using gcc
   * object-oriented
+
+Mac OS
+======
+On Mac OS, by installing the XCode command line tool, the ``gcc`` command is actually a link to the ``clang`` command which is the LLVM C compiler. It is mostly compatible but
