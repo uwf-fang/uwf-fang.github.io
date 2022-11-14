@@ -55,21 +55,56 @@ Concepts
 Clauses
 =======
 + parallel
+
+  Create a team
+
 + num_threads
+
+  Control number of threads
+
 + private
+
+  Register private variable
+
 + shared
+
+  Register shared variable
+
 + default
+
+  Override how the default scope is inferred
+
 + reduction
+
+  Register how reduction operation is done
+
 + for
+
+  Register parallelization of a for loop
+
 + schedule
+
+  Set the scheduling method
 
   * static
   * dynamic
   * guided
 
 + critical
+
+  Define a critical region, which can be accessed only one thread
+
 + atomic
+
+  Define an atomic operation
+
 + barrier
+
+  Force the thread to join
+
++ single
+
+  Only run by one thread (not necessarily the master thread)
 
 Synchronization
 ===============
@@ -80,6 +115,15 @@ Synchronization
 
   * omp_set_lock
   * omp_unset_lock
+
+Nested Loop
+===========
++ Parallelize outer loop if possible
++ Separate ``parallel`` and ``for`` constructs to reduce fork and join
+  operations if parallelization of inner loop is desirable
++ Consider cache friendship
+
+  * change scheduling method
 
 Examples
 ========

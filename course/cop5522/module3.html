@@ -18,7 +18,7 @@
     <link rel="canonical" href="https://uwf-fang.github.io/course/cop5522/module3.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="About" href="../../about/about.html" />
+    <link rel="next" title="Module 5 Distributed Memory Programming with MPI" href="module5.html" />
     <link rel="prev" title="Profiling" href="profiling.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -28,7 +28,7 @@
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../../about/about.html" title="About"
+          <a href="module5.html" title="Module 5 Distributed Memory Programming with MPI"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="profiling.html" title="Profiling"
@@ -96,24 +96,48 @@ scope of variables declared inside the block is <code class="docutils literal no
 </section>
 <section id="clauses">
 <h2>Clauses<a class="headerlink" href="#clauses" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>parallel</p></li>
-<li><p>num_threads</p></li>
-<li><p>private</p></li>
-<li><p>shared</p></li>
-<li><p>default</p></li>
-<li><p>reduction</p></li>
-<li><p>for</p></li>
-<li><p>schedule</p>
 <ul>
+<li><p>parallel</p>
+<p>Create a team</p>
+</li>
+<li><p>num_threads</p>
+<p>Control number of threads</p>
+</li>
+<li><p>private</p>
+<p>Register private variable</p>
+</li>
+<li><p>shared</p>
+<p>Register shared variable</p>
+</li>
+<li><p>default</p>
+<p>Override how the default scope is inferred</p>
+</li>
+<li><p>reduction</p>
+<p>Register how reduction operation is done</p>
+</li>
+<li><p>for</p>
+<p>Register parallelization of a for loop</p>
+</li>
+<li><p>schedule</p>
+<p>Set the scheduling method</p>
+<ul class="simple">
 <li><p>static</p></li>
 <li><p>dynamic</p></li>
 <li><p>guided</p></li>
 </ul>
 </li>
-<li><p>critical</p></li>
-<li><p>atomic</p></li>
-<li><p>barrier</p></li>
+<li><p>critical</p>
+<p>Define a critical region, which can be accessed only one thread</p>
+</li>
+<li><p>atomic</p>
+<p>Define an atomic operation</p>
+</li>
+<li><p>barrier</p>
+<p>Force the thread to join</p>
+</li>
+<li><p>single</p>
+<p>Only run by one thread (not necessarily the master thread)</p>
+</li>
 </ul>
 </section>
 <section id="synchronization">
@@ -126,6 +150,19 @@ scope of variables declared inside the block is <code class="docutils literal no
 <ul>
 <li><p>omp_set_lock</p></li>
 <li><p>omp_unset_lock</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="nested-loop">
+<h2>Nested Loop<a class="headerlink" href="#nested-loop" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Parallelize outer loop if possible</p></li>
+<li><p>Separate <code class="docutils literal notranslate"><span class="pre">parallel</span></code> and <code class="docutils literal notranslate"><span class="pre">for</span></code> constructs to reduce fork and join
+operations if parallelization of inner loop is desirable</p></li>
+<li><p>Consider cache friendship</p>
+<ul>
+<li><p>change scheduling method</p></li>
 </ul>
 </li>
 </ul>
@@ -160,6 +197,7 @@ scope of variables declared inside the block is <code class="docutils literal no
 <li><a class="reference internal" href="#concepts">Concepts</a></li>
 <li><a class="reference internal" href="#clauses">Clauses</a></li>
 <li><a class="reference internal" href="#synchronization">Synchronization</a></li>
+<li><a class="reference internal" href="#nested-loop">Nested Loop</a></li>
 <li><a class="reference internal" href="#examples">Examples</a></li>
 </ul>
 </li>
@@ -173,8 +211,8 @@ scope of variables declared inside the block is <code class="docutils literal no
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="../../about/about.html"
-                          title="next chapter">About</a></p>
+    <p class="topless"><a href="module5.html"
+                          title="next chapter">Module 5 Distributed Memory Programming with MPI</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -204,7 +242,7 @@ scope of variables declared inside the block is <code class="docutils literal no
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../../about/about.html" title="About"
+          <a href="module5.html" title="Module 5 Distributed Memory Programming with MPI"
              >next</a> |</li>
         <li class="right" >
           <a href="profiling.html" title="Profiling"
@@ -216,7 +254,7 @@ scope of variables declared inside the block is <code class="docutils literal no
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
     </div>
   </body>
 </html>
