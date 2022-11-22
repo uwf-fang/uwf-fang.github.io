@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Module 5 Distributed Memory Programming with MPI &#8212; IanFang Course Note Hosting  documentation</title>
+    <title>Module 5: Distributed Memory Programming with MPI &#8212; IanFang Course Note Hosting  documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -17,8 +17,8 @@
     <link rel="canonical" href="https://uwf-fang.github.io/course/cop5522/module5.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="About" href="../../about/about.html" />
-    <link rel="prev" title="Module 3: Shared-Memory Programming with OpenMP" href="module3.html" /> 
+    <link rel="next" title="Module 6: MPI Case Study, and Pthread" href="module6.html" />
+    <link rel="prev" title="Module 4: OpenMP Case Study: N-body problem" href="module4.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -27,14 +27,14 @@
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../../about/about.html" title="About"
+          <a href="module6.html" title="Module 6: MPI Case Study, and Pthread"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="module3.html" title="Module 3: Shared-Memory Programming with OpenMP"
+          <a href="module4.html" title="Module 4: OpenMP Case Study: N-body problem"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">COP 5520 Parallel and Distributed Programming</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Module 5 Distributed Memory Programming with MPI</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Module 5: Distributed Memory Programming with MPI</a></li> 
       </ul>
     </div>  
 
@@ -44,7 +44,7 @@
           <div class="body" role="main">
             
   <section id="module-5-distributed-memory-programming-with-mpi">
-<h1>Module 5 Distributed Memory Programming with MPI<a class="headerlink" href="#module-5-distributed-memory-programming-with-mpi" title="Permalink to this headline">¶</a></h1>
+<h1>Module 5: Distributed Memory Programming with MPI<a class="headerlink" href="#module-5-distributed-memory-programming-with-mpi" title="Permalink to this headline">¶</a></h1>
 <section id="the-mpi-model">
 <h2>The MPI Model<a class="headerlink" href="#the-mpi-model" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
@@ -92,6 +92,12 @@
 <li><p>Message matching</p></li>
 </ul>
 </section>
+<section id="synchronization">
+<h2>Synchronization<a class="headerlink" href="#synchronization" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>MPI Barrier</p></li>
+</ul>
+</section>
 <section id="peer-to-peer-apis">
 <h2>Peer-to-peer APIs<a class="headerlink" href="#peer-to-peer-apis" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
@@ -110,11 +116,24 @@
 <li><p>All gether</p></li>
 </ul>
 </section>
+<section id="derived-data-type">
+<h2>Derived Data-Type<a class="headerlink" href="#derived-data-type" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Customize data type</p></li>
+</ul>
+</section>
 <section id="evaluation">
 <h2>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>MPI_Wtime</p></li>
 <li><p>MPI_Barrier</p></li>
+</ul>
+</section>
+<section id="safety">
+<h2>Safety<a class="headerlink" href="#safety" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Buffering vs Blocking</p></li>
+<li><p>Deadlock</p></li>
 </ul>
 </section>
 </section>
@@ -129,12 +148,15 @@
   <div>
     <h3><a href="../../index.html">Table of Contents</a></h3>
     <ul>
-<li><a class="reference internal" href="#">Module 5 Distributed Memory Programming with MPI</a><ul>
+<li><a class="reference internal" href="#">Module 5: Distributed Memory Programming with MPI</a><ul>
 <li><a class="reference internal" href="#the-mpi-model">The MPI Model</a></li>
 <li><a class="reference internal" href="#basic-mpi-concepts">Basic MPI Concepts</a></li>
+<li><a class="reference internal" href="#synchronization">Synchronization</a></li>
 <li><a class="reference internal" href="#peer-to-peer-apis">Peer-to-peer APIs</a></li>
 <li><a class="reference internal" href="#collective-apis">Collective APIs</a></li>
+<li><a class="reference internal" href="#derived-data-type">Derived Data-Type</a></li>
 <li><a class="reference internal" href="#evaluation">Evaluation</a></li>
+<li><a class="reference internal" href="#safety">Safety</a></li>
 </ul>
 </li>
 </ul>
@@ -142,13 +164,13 @@
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="module3.html"
-                          title="previous chapter">Module 3: Shared-Memory Programming with OpenMP</a></p>
+    <p class="topless"><a href="module4.html"
+                          title="previous chapter">Module 4: OpenMP Case Study: N-body problem</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="../../about/about.html"
-                          title="next chapter">About</a></p>
+    <p class="topless"><a href="module6.html"
+                          title="next chapter">Module 6: MPI Case Study, and Pthread</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -178,19 +200,19 @@
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../../about/about.html" title="About"
+          <a href="module6.html" title="Module 6: MPI Case Study, and Pthread"
              >next</a> |</li>
         <li class="right" >
-          <a href="module3.html" title="Module 3: Shared-Memory Programming with OpenMP"
+          <a href="module4.html" title="Module 4: OpenMP Case Study: N-body problem"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" >COP 5520 Parallel and Distributed Programming</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Module 5 Distributed Memory Programming with MPI</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Module 5: Distributed Memory Programming with MPI</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
     </div>
   </body>
 </html>

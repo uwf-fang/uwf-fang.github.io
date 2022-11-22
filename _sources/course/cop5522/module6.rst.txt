@@ -1,0 +1,56 @@
+.. highlight:: c++
+  :linenothreshold: 5
+
+*************************************
+Module 6: MPI Case Study, and Pthread
+*************************************
+
+Pthread
+=======
++ POSIX standard: Unix, Linux, BSD, etc.
++ Thread library for POSIX Operating Systems
++ Code
+
+  * ``pthread.h`` header file
+  * ``-lpthread`` linking flag for gcc
+
++ Types
+
+  * ``pthread_t`` thread handle object used to refer to a thread
+
++ Function as parameter
+
+  * declaration like ``void *function_name (void * args);``
+  * parameter declared like ``void *(*function_name)(void)``
+
++ API
+
+  * ``pthread-create`` create a thread, run the function, return a pthread_t
+    object
+  * ``pthread-join`` wait for the thread to finish
+
+Case Studies
+============
+Odd-even transportation sort
+----------------------------
++ Modified bubble sort to adapt to parallelization
++ Assuming size ``N``, parallelized on ``P`` processes
++ Serial version
+
+  * Phase 0: compare and swap between even element with its right neighbor
+  * Phase 1: compare and swap between even element with its left neighbor
+  * N rounds to finish
+
++ Parallelized with MPI
+
+  * Sort the local section first
+  * Phase 0: compare and exchange between even process with its right neighbor
+  * Phase 1: compare and swap between even process with its left neighbor
+
+N-body MPI
+----------
++ Decide the data structure
+
+  * each process stores a whole array of masses
+  * computes physical metrics of its share of local particles
+  * allgether to collect local position array to global position array
