@@ -1,0 +1,224 @@
+******************
+Final Topic Review
+******************
+**The final exam is comprehensive. This outline focuses on contents after
+midterm II and should be used together with the past midterm reviews.**
+
+Materials to prepare (sorted by the order of importance)
+========================================================
+#. Practice exam
+#. Past midterm exams
+#. Past projects (know what you did wrong)
+#. This outline and outlines for past exams
+#. Course notes website
+#. Zybook content and activities
+
+Hint and tips for preparation
+=============================
++ All contents covered in the semester will be tested
++ Self-test using this document to see what concepts are challenging to you.
++ Course notes document is the main resource for tips, pitfalls. High priority
+  in midterm preparation.
++ The past midterm exams are important materials to prepare.
++ Re-do all participation activities and challenge activities in zyBook
++ Practice your ability to finish the patterns listed here from scratch without
+  editor or IDE
+
+Memory management (class)
+=========================
+1. Rule of three:
+
+   + The big three
+
+    * Implicitly-declared methods
+    * How they are triggered, and when they are needed
+    * Only needed when dynamic data exist
+
+   + Destructor to avoid memory leak
+   + Copy constructor and copy assignment operator overloading to avoid shallow
+     copy
+   + Syntax of the three
+
+     * const reference parameters (except destructor)
+     * reference returned type (copy assignment operator)
+
+   + access the private member of another object of the same class directly
+   + **Must know how to write a simple class with all three!**
+
+2. Deep and shallow copy concepts
+
+   + The dynamically allocated instance variables of an object are stored as
+     two parts: the pointer itself and the actual content they referred to (in
+     the heap memory region).
+   + If you do not provide the big three, default versions will be created by
+     the compiler. The default big three will always perform shallow copy.
+   + Shallow copy: only the pointers are duplicated. The actual content stays
+     same. Thus, pointers from both objects refer to the same content.
+   + Deep copy: New memory is allocated first and the dynamic contents are
+     duplicated.
+
+Input/output
+============
++ stream - sequence of data transmitted in the input or output process
+
+Standard I/O
+------------
++ iostream header
++ standard input
+
+  * istream class
+  * cin is a provided istream typed object(variable)
+
++ standard output
+
+  * ostream class
+  * cout is a provided ostream typed object(variable)
+
+File I/O
+--------
++ fstream header
++ ifstream class
++ ofstream class
++ steps to use files
+
+  * open file (open method or constructor)
+  * check open status (.fail() or .is_open())
+  * input / output
+
+    * loop
+    * check eof
+    * know the patterns
+
+  * close file
+
+String I/O
+----------
++ sstream header (not stringstream!)
++ Input string stream - istreamstream class
+
+  Used to parse textual content and extract data.
+
+  * constructor to load a string
+  * str() method to load a string
+
++ Output string stream - ostreamstream class
+
+  Used to generate text with formatted data in it.
+
+  * str() method to give a string
+
+Stream I/O Operations
+---------------------
++ iomanip header
++ Insertion
+
+  * output manipulator
+
+    - fixed
+    - setprecision(n)
+    - setw(n) **Not sticky!**
+    - setfill(c)
+    - endl
+
+  * can be chained
+  * pattern: tabula display
+
++ Extraction
+
+  * chained
+  * auto type conversion
+  * use as bool value
+
++ getline(inputStream, line)
+
+  * read a text till the delimiter from a istream object (include istringstream
+    and ifstream)
+  * use stoi, stod etc. to convert to numeric values
+  * may read in empty line after use of >> operator **Must know how to handle
+    that!**
+
++ Error handling
+
+  * do not check too often
+  * check right after the read
+  * call .clear() to reset the error bits
+
++ pitfalls
+
+  * .fail() should be check after every essential extraction, and getline
+    operations.
+  * getline after extraction without protection.
+  * expect getline to read non-string-typed values
+
+String manipulation
+===================
++ string member functions
+
+  * .find()
+
+    - find a pattern in a text
+    - return string::npos if pattern not found
+    - second optional parameter to specify the start index to search from
+
+  * .substr(startIdx, length) - extract substring
+  * .length()/.size()
+
++ Standalone functions
+
+  * ``stoi()``
+  * ``stod()``
+
++ operators
+
+  * enabled by operator overloading in the string class
+  * addition + for concatenation
+  * =, ==, !=
+  * avoid <, <=, >, >=
+
+Vector
+======
++ models a list/sequence with variable length
++ class type
++ flexible length
++ Implemented as a dynamic array
++ Constructors
+
+  * initial size
+  * repetition
+  * copy
+  * initializer list
+
++ member functions (methods)
+
+  * at(i) - access element with index, never use [] syntax
+  * size() - get size, not length()!
+  * empty() - check if the vector is empty
+  * clear() - clears the content
+  * resize() - change the size
+  * back() - get the last value
+  * push_back(element) - add an element to the end, size will increase by one
+  * pop_back(element) - remove an element at the end, **does not return that
+    value**, size will decrease by one
+
++ operators
+
+  * ``=`` assignment
+  * ``==``, ``!=``
+
+Patterns
+========
+Patterns are something you should be able to reproduce in an exam environment.
+
++ Write complete classes (hpp/cpp file pair) and a driver with provided
+  specifications (class name, method description, instance variable, etc.)
++ Write complete classes and a driver with the big three and dynamic data
++ Write complete classes to operate on files
++ Write functions of array related algorithms on vectors
++ Write programs to correctly read/write files with error handling
++ Read data from a file till the end
++ Write functions/methods to parse text using istringstream
++ Write functions/methods to parse text using string methods
++ Write formatted (tabular) output to screen
++ Write functions/methods to generate formatted text using ostringstream and
+  formatting manipulators
++ Use extraction and getline together
