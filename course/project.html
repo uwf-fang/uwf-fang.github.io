@@ -50,14 +50,10 @@
 <p>The grading system of complex projects differs greatly from that used in
 entry-level courses and in coding questions in exams:</p>
 <ul class="simple">
-<li><p>Most of the grades are functionality based. <strong>Your code must compile and run</strong>
-to allow the grader to test the functionality. It means that you will lose
-most if not all of these grades if your code cannot be compiled and run.</p></li>
-<li><p>A program compiles and runs through makefile or other building system using
-commands like <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">&amp;&amp;</span> <span class="pre">./main</span></code>, <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code>, <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test-run</span></code>, etc. When
-the project is collected using GitHub Classroom, the GitHub Action based
-auto-grading system will be used to grade the functionalities. A working
-makefile is the prerequisite of a compile-and-run project.</p></li>
+<li><p><strong>Your code must compile and run!</strong></p></li>
+<li><p><strong>The grader grades your code by running rather than by reading them!</strong></p></li>
+<li><p>A program compiles and runs through <code class="docutils literal notranslate"><span class="pre">GNU</span> <span class="pre">make</span></code> using commands like
+<code class="docutils literal notranslate"><span class="pre">make</span></code>, <code class="docutils literal notranslate"><span class="pre">./main</span></code>, <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code>, <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test-run</span></code>, etc.</p></li>
 <li><p><strong>You should not expect any partial credits for code that cannot be tested by
 running your program.</strong> The grader do not have the responsibility to read,
 debug and understand your source code.</p></li>
@@ -105,7 +101,7 @@ empty classes, header guards, know includes, etc.</p>
 <p>A skeleton repository may be provided for you to use in a GitHub
 Classroom-based assignment. Run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">&lt;URL&gt;</span></code> to clone it to your
 computer. It may also be provided as a zip file downloadable from Canvas.</p>
-<ol class="arabic">
+<ol class="arabic simple">
 <li><p>Iterative development</p>
 <ol class="arabic simple">
 <li><p>Backup your files (three options)</p>
@@ -131,16 +127,23 @@ not depending on other units)</p></li>
 <li><p>Proceed to the next iteration</p></li>
 </ol>
 </li>
-<li><p>Perform a final test (two options)</p>
+<li><p>Perform a final test</p>
 <ul class="simple">
-<li><p>push to GitHub classroom and check the results</p></li>
-<li><p>transfer your file to the SSH server and test run</p></li>
+<li><p>Run all tests locally</p></li>
+<li><p>Transfer your files to the SSH server and test run</p></li>
 </ul>
 </li>
-<li><p>Submission</p>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Tests on SSH server is usually only necessary if your environment is not
+compatible to Linux, such as MinGW, CygWin.</p>
+</div>
+<ol class="arabic">
+<li><p>Submission depending on the requirement</p>
 <ul>
-<li><p>GitHub classroom</p>
-<p>Simply <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">main</span></code>.</p>
+<li><p>GitHub classroom submission <a class="reference internal" href="github-classroom.html"><span class="doc">GitHub and GitHub Classroom</span></a></p>
+<p>Simply <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">main</span></code></p>
 </li>
 <li><p><a class="reference internal" href="#canvas-submission"><span class="std std-ref">Canvas file upload</span></a></p></li>
 </ul>
@@ -161,40 +164,63 @@ Java.</p>
 <ol class="arabic simple">
 <li><p>Duplicate your directory</p></li>
 <li><p>Change the directory to the base name of your submission file like
-<code class="docutils literal notranslate"><span class="pre">uwfid_proj#</span></code>. Substitute uwfid with your UWF email id (the first part of
-your UWF email address, before &#64;). Substitute # with your project number.</p></li>
+<code class="docutils literal notranslate"><span class="pre">proj#</span></code>. Substitute # with your project number.</p></li>
 <li><p>Change to the new directory in your terminal</p></li>
 <li><p>Remove files not needed in the submission (the <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code> command
 should do most of the job for you)</p></li>
 <li><p>Perform a last test on everything (local or on the SSH server)</p></li>
 <li><p>Clean the generated files in the test run using <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code> again</p></li>
-<li><p>Compress your directory using zip format and name it as <code class="docutils literal notranslate"><span class="pre">uwfid_proj#.zip</span></code></p></li>
+<li><p>Compress your directory using zip format and name it as <code class="docutils literal notranslate"><span class="pre">proj#.zip</span></code></p></li>
 <li><p>Find the Canvas assignment page and upload</p></li>
 <li><p>Visit the page again to confirm the uploaded file is there</p></li>
 </ol>
 </section>
 </section>
+<section id="build-run-and-debug">
+<h2>Build, run and debug<a class="headerlink" href="#build-run-and-debug" title="Permalink to this headline">¶</a></h2>
+<p>Due to the complexity of compiling and running your modular project manually,
+building tools such as GNU make, Autotools, Cmake, Ninja, Meson are employed to
+automate the process. We employ <code class="docutils literal notranslate"><span class="pre">GNU</span> <span class="pre">make</span></code> in our course mostly.</p>
+<section id="make-command-lines">
+<h3>Make command-lines<a class="headerlink" href="#make-command-lines" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">make</span></code> command-lines commonly employed in the projects are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">all</span></code> to compile multiple targets</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">main</span></code> to compile main</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test-run</span></code> to test run your main</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code> to compile and run a test</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test-all</span></code> to compile and run multiple tests</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test-#-xxx</span></code> to compile and run one of the many tests where # is a
+number, and xxx is a name of the individual test</p></li>
+</ul>
+<p>You must compile and run your code through these commands because this is how
+the grader will employ in the grading.</p>
+</section>
 <section id="provided-tests">
-<h2>Provided Tests<a class="headerlink" href="#provided-tests" title="Permalink to this headline">¶</a></h2>
+<h3>Provided Tests<a class="headerlink" href="#provided-tests" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Tests are provided in some starting code bases to facilitate grading.</p></li>
 <li><p>Students are not supposed to change source codes in the test directory or the
-cpp files provided for test such as test.cpp.</p></li>
+cpp files provided for test such as <code class="docutils literal notranslate"><span class="pre">test.cpp</span></code>.</p></li>
 <li><p>Make sure your filenames follows the naming convention so the makefile will
 work properly. The convention requires all lowercase filenames.</p></li>
 <li><p>Complete the makefile as needed.</p></li>
 <li><p>Run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code> or <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test-all</span></code> to run tests.</p></li>
-<li><p>You can find other <code class="docutils literal notranslate"><span class="pre">test-xxx</span></code> kind of targets in your makefile to run tests
-separately.</p></li>
+<li><p>You can find other <code class="docutils literal notranslate"><span class="pre">test-#-xxx</span></code> kind of targets in your makefile to run
+tests separately.</p></li>
 <li><p>Make good use of these tests locally to test your code.</p></li>
 <li><p>A major portion of grading will be based on the tests runs.</p></li>
 </ul>
 </section>
+</section>
 <section id="get-help">
 <h2>Get Help<a class="headerlink" href="#get-help" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Post sharable problems on Discord server</p></li>
-<li><p>Email me/TA about the question</p></li>
+<li><p>Debug your code. You may refer to common error messages from
+<a class="reference internal" href="../tools/make.html#make-diag"><span class="std std-ref">make</span></a> and <a class="reference internal" href="../cpp/building/gpp.html#gpp-diag"><span class="std std-ref">g++</span></a></p></li>
+<li><p>Post sharable problems on the Discord server</p></li>
+<li><p>Email the instructor or TA about the question. Must include your code.</p></li>
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -275,7 +301,11 @@ need learning</p></li>
 <li><a class="reference internal" href="#canvas-file-upload">Canvas file upload</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#build-run-and-debug">Build, run and debug</a><ul>
+<li><a class="reference internal" href="#make-command-lines">Make command-lines</a></li>
 <li><a class="reference internal" href="#provided-tests">Provided Tests</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#get-help">Get Help</a></li>
 <li><a class="reference internal" href="#avoid-common-mistakes">Avoid Common Mistakes</a></li>
 </ul>

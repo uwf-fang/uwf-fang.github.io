@@ -57,8 +57,33 @@ what we will use to grade your code (Linux).
 + Install the real GCC
 
   * install gcc ``brew install gcc``
-  * install mpi ``brew install mpich``
+  * alias gcc
+
+    The command ``gcc`` and ``g++`` are usually linked to ``clang`` and
+    ``clang++`` when XCode command-line tools are installed. You need to change
+    it back to point to the real ``gcc`` and ``g++``.
+
+    In your ``.bash_profile`` file, add the following lines (change the suffix
+    12 to the version number you have)::
+
+      alias gcc='gcc-12'
+      alias g++='g++-12'
+
+    Source the ``.bash_profile`` or rerun your shell.
+
+  * install MPI
+
+    - add the following to the ``.bash_profile`` (change the suffix
+      12 to the version number you have)::
+
+        export HOMEBREW_CC=gcc-12
+        export HOMEBREW_CXX=g++-12
+
+    - ``brew install mpich --build-from-source`` will take long time to compile
+
   * OpenMP is built-in in the gcc package
+
+    - compile with ``-pthread`` flag
 
 External HPC/Cloud (TBD)
 ------------------------

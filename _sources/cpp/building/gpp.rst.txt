@@ -3,31 +3,33 @@
 *********************
 Compilation Using g++
 *********************
-
-Compilation
-===========
+What compilation means
+======================
 Compilation is a process to translate source codes into executables or
 libraries. A compiled programming language requires source codes to be compiled
-before they can be executed. C++ is typical compiled compiled programming
-language.
+before they can be executed. C++ is typical compiled programming language.
 
 There are many mainstream C/C++ compilers available to various operating
 systems:
 
-+ Cross-platform (Linux native, Mac OS, Windows, etc.): gcc/g++
-+ Mac OS native: Xcode clang/clang++
++ Cross-platform (Linux native, Mac OS, Windows, etc.): gcc/g++ from GNU GCC
++ Mac OS native: The LLVM C/C++ compilers clang/clang++ from the Xcode
+  command-line tools
 + Windows native: Visual C++
 
 They are not compatible to each other so you need to stick to one for
-consistency. In our course, the GNU g++ is chosen as the standard compiler and
-you must stick to it so your code can be correctly compile and executed by your
-instructor or grader.
+consistency. **In our course, the GNU g++ (part of GCC) is chosen as the only
+compiler and you must stick to it so your code can be correctly compile and
+executed by your instructor or grader.**
 
 The g++ command
 ===============
-g++ is the GNU C++ compiler invocation command. It builds C++ projects to
-produce libraries or executables. It performs three main tasks:
-preprocessing, compilation, and linking.
+g++ is the GNU C++ compiler invocation command. It builds C++ source codes to
+produce libraries or executables.
+
+Stages of compilation
+---------------------
+It performs three main tasks: preprocessing, compilation, and linking.
 
 .. glossary::
 
@@ -36,44 +38,67 @@ preprocessing, compilation, and linking.
     textual manipulations mostly.
 
   Compilation step
-    Translate the source code files to object files.
+    Translate the source code (.cpp) files to object (.o) files.
 
   Linking step
-    Take object files to produce executables or libraries
+    Link object (.o) files to produce an executables (or a library)
 
 The three steps can be performed all at once or separately. The preprocessing
 step are usually merged into the compilation step. Thus, typical step-wise
 compilations involve separation of the compilation step from the linking step.
 
-Command Options and Arguments of g++
-------------------------------------
+g++ command-line
+----------------
+A typical g++ compilation command-line looks like:
+
+.. code-block:: bash
+
+  g++ <options> <arguments>
+
+.. glossary::
+
+  g++ options
+    Something started with a hyphen character. They are provided to control the
+    behavior of the compilation. Some options come with their own arguments.
+
+  g++ arguments
+    Everything in the command-line that are not options. They usually specify
+    the source of the compilation. They can be either .cpp file or .o file
+    names.
+
+Example: :code:`g++ -Wall -std=c++14 -Wall -o main main.cpp`
+
+Common g++ options
+------------------
 
 .. glossary::
 
   -o
-    This option specify the name of the output file. It must be followed
-    by the name like ``main``.
+    This option specify the name of the output file. It must be followed by a
+    name. For example, ``-o main`` to generate a file called ``main``.
 
   -c
     This option tell g++ to compile only. No linking. It will generate an
     object file.
 
   -std=c++14
-    Use the C++ standard 14 to compile.
+    Use the C++ standard 14 to compile. There are other C++ standards available
+    such as C++ 11, C++ 17, C++20, etc.
 
   -Wall
-    Show selected warnings.
+    Show common warning messages. Many warning messages are helpful to give you
+    hints on potential problem in your code.
 
   -g
     Store debugging information during compilation to allow future use of
-    debuggers like ``gdb``.
+    debuggers like ``gdb`` or ``valgrind``.
 
-preprocessor directives
------------------------
-
-Preprocessor directives are instructions that direct how the preprocessor
-will manipulate the text of the source codes files before they are actually
-compiled. They are instructions started with a hash symbol ``#``.
+Preprocessor directives
+=======================
+Preprocessor directives are instructions used in your source code. They are
+mixed with C++ statements and direct how the preprocessor will manipulate the
+text of the source codes files before they are actually compiled. They are
+instructions started with a hash symbol ``#``.
 
 .. warning::
 
@@ -137,7 +162,8 @@ compiled. They are instructions started with a hash symbol ``#``.
 
     You must add header guards to all user headers!
 
-
+Styles of compilation
+=====================
 One step compilation
 --------------------
 You may use a single g++ command to produce the executable from the source code
@@ -166,37 +192,79 @@ arguments and fine grained error handling.
 Use the same example with a ``main.cpp``, a ``lib1.cpp``, and a ``lib2.cpp``
 with several headers. You can build your ``main`` executable in steps::
 
-  g++ -std=c++14 -c main.cpp
-  g++ -std=c++14 -c lib1.cpp
-  g++ -std=c++14 -c lib2.cpp
+  g++ -std=c++14 -Wall -c main.cpp
+  g++ -std=c++14 -Wall -c lib1.cpp
+  g++ -std=c++14 -Wall -c lib2.cpp
   g++ -o main main.o lib1.o lib2.o
 
 The first three lines compiles all source code files to the corresponding
 object files respectively. The last line links all object files into an
 executable named ``main``.
 
-Every step may trigger errors and they are easier to fix with separated
-steps.
-
-Useful g++ options
-------------------
-
-:-c:  Compile only option. g++ will try to link without seeing this option
-:-std: Specify the C++ standards like ``-std=c++14`` for C++ 2014 standard
-:-o:  Followed by a file name to specify the output file name; Use for both
-  compilation and linking; e.g. ``-o main``, ``-o main.o``
-:-Wall: Turn on the most common warning flags, recommended
-:-Wextra: Turn on more warning flags, recommended
-:-g:  Enable GDB support; Keep extra information to be used by the debugger
-
 .. warning::
 
-  **NEVER include header files in the g++ commands**
+  **Modular compilation is always preferred as every step may trigger errors
+  and they are much easier to fix separately** It is complicated but can be
+  automated using building tools such as GNU make, etc.
 
 Pitfalls
 --------
 
++ include header files in the g++ command
+
 ::
 
-  # wrong! including header files in the command
   g++ -o main main.cpp lib1.hpp lib1.cpp
+
+.. _gpp-diag:
+
+Common Error Messages from g++
+------------------------------
+
+.. note::
+
+  Some error messages are misleading. Thus, do not stick to it if you cannot
+  figure it out. Try other method such as code review to solve the problem
+  instead.
+
++ Alway solve only one error message and re-compile to see the result
++ Compilation errors
+
+  Error happens during compilation of .cpp files to .o files.
+
+  * :code:`undeclared identifier ...`
+
+    - Means that the compiler cannot find a matching declaration for an
+      identifier usage
+    - Misspelled identifier (variable name, type name, class name, etc) when
+      you declare or use an identifier
+    - Forget to include the header that declared the identifier
+
+  * :code:`No matching function ...`
+
+    - Means that the compiler cannot find a matching declaration for a
+      function call
+    - Misspelled function name when you declare or call a function
+    - Forget to include the header that declared the function
+
++ Linker errors
+
+  Error happens during the linking of .o files to an executable. They usually
+  end with :code:`ld returned 1 exit status` in the last line.
+
+  * :code:`undefined reference to ...`
+
+    - Means that the linker cannot find a function definition for a given
+      declaration
+    - misspelled function name when you declare or define a function
+    - Forget to include the .o file where the function definition is
+
+  * :code:`multiple definition of ... first defined here`
+
+    - Means that you have multiple function definitions with a same name and
+      parameter list
+    - You have included a wrong .o file in the g++ command. For example, two .o
+      file each has a main function.
+    - A failed function overloading
+    - A misspelled function name in the definition so it conflict with another
+      function

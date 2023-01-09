@@ -109,10 +109,37 @@ works in most cases but need special handling for packages like OpenMP, etc.</p>
 </ul>
 </li>
 <li><p>Install the real GCC</p>
-<ul class="simple">
+<ul>
 <li><p>install gcc <code class="docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">gcc</span></code></p></li>
-<li><p>install mpi <code class="docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">mpich</span></code></p></li>
-<li><p>OpenMP is built-in in the gcc package</p></li>
+<li><p>alias gcc</p>
+<p>The command <code class="docutils literal notranslate"><span class="pre">gcc</span></code> and <code class="docutils literal notranslate"><span class="pre">g++</span></code> are usually linked to <code class="docutils literal notranslate"><span class="pre">clang</span></code> and
+<code class="docutils literal notranslate"><span class="pre">clang++</span></code> when XCode command-line tools are installed. You need to change
+it back to point to the real <code class="docutils literal notranslate"><span class="pre">gcc</span></code> and <code class="docutils literal notranslate"><span class="pre">g++</span></code>.</p>
+<p>In your <code class="docutils literal notranslate"><span class="pre">.bash_profile</span></code> file, add the following lines (change the suffix
+12 to the version number you have):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">alias</span> <span class="n">gcc</span><span class="o">=</span><span class="s1">&#39;gcc-12&#39;</span>
+<span class="n">alias</span> <span class="n">g</span><span class="o">++=</span><span class="s1">&#39;g++-12&#39;</span>
+</pre></div>
+</div>
+<p>Source the <code class="docutils literal notranslate"><span class="pre">.bash_profile</span></code> or rerun your shell.</p>
+</li>
+<li><p>install MPI</p>
+<ul>
+<li><p>add the following to the <code class="docutils literal notranslate"><span class="pre">.bash_profile</span></code> (change the suffix
+12 to the version number you have):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">HOMEBREW_CC</span><span class="o">=</span><span class="n">gcc</span><span class="o">-</span><span class="mi">12</span>
+<span class="n">export</span> <span class="n">HOMEBREW_CXX</span><span class="o">=</span><span class="n">g</span><span class="o">++-</span><span class="mi">12</span>
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">mpich</span> <span class="pre">--build-from-source</span></code> will take long time to compile</p></li>
+</ul>
+</li>
+<li><p>OpenMP is built-in in the gcc package</p>
+<ul class="simple">
+<li><p>compile with <code class="docutils literal notranslate"><span class="pre">-pthread</span></code> flag</p></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

@@ -1,0 +1,47 @@
+*************************************
+Troubleshooting make runs in projects
+*************************************
+The ``make`` family commands are the most important ways the grader or
+auto-grading system test the functionalities of your submissions. Thus, it
+should also be your only focus to test your own code before submission.
+Interpreting the error messages from the ``make`` command runs are one of the
+most important skill you should learn to be successful in projects.
+
+Basics
+======
+The ``make`` commands commonly employed in the projects are:
+
++ ``make``
++ ``make all`` to compile multiple targets
++ ``make main`` to compile main
++ ``make test-run`` to test run your main
++ ``make test`` to compile and run a test
++ ``make test-all`` to compile and run multiple tests
++ ``make test-#-xxx`` to compile and run one of the many tests where # is a
+  number, and xxx is a name of the individual test
+
+The ``make`` commands will trigger rules defined in a ``makefile`` and run
+shell commands. Thus, there are two families of errors:
+
+1. Errors from the makefile rules
+1. Errors from the bash commands
+
+Errors from makefile rules
+==========================
++ Missing file (wrong file name, wrong case in file name)
+
+  * Error like: :code:`make: *** No rule to make target 'xxx.o', needed by
+    'main'.  Stop.` where ``xxx`` is the required name like patient, gradebook,
+    etc.
+  * Check file name indicated in the message. Focus on xxx.cpp file. **Case
+    matters!**
+
+Errors from the bash commands
+=============================
++ Failed command (usually g++)
+
+  * Error like: :code:`make: *** [makefile:#: xxx] Error 1` where # is the line
+    number in the makefile and xxx is the name of target.
+  * Scroll up to see the last command that went wrong (mostly g++)
+  * Also refer to the #th line in the makefile to see which command caused the
+    problem. There are sometimes useful hints in the comments in the makefile.

@@ -297,18 +297,35 @@ heavy coding. It is a limitation of make any.</p>
 </div>
 </section>
 <section id="common-error-messages">
-<h2>Common Error Messages<a class="headerlink" href="#common-error-messages" title="Permalink to this headline">¶</a></h2>
+<span id="make-diag"></span><h2>Common Error Messages<a class="headerlink" href="#common-error-messages" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The terms ‘xxx’, ‘yyy’, etc. are placeholders of names. The term ‘#’ is a
+placeholder for numbers.</p>
+</div>
 <ul>
-<li><p><strong>No rule to make target `xxx’.</strong> or <strong>No rule to make target `xxx’, needed by
-`yyy’.</strong></p>
-<p>It means the make system found a target but cannot identify any rule in your
-makefile. It is common that you have provided a wrong target name or the rule
-for intermediate targets (like .o files) are not present.</p>
+<li><p><code class="code docutils literal notranslate"><span class="pre">No</span> <span class="pre">rule</span> <span class="pre">to</span> <span class="pre">make</span> <span class="pre">target</span> <span class="pre">'xxx'.</span></code></p>
+<p>Wrong target name. For example, you try to run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">foo</span></code> but
+<code class="docutils literal notranslate"><span class="pre">foo</span></code> is not defined as a target name in the <code class="docutils literal notranslate"><span class="pre">makefile</span></code></p>
 </li>
-<li><p><strong>missing separator. Stop.</strong></p>
-<p>This can happen for many reason but one common reason is that you have used
-the space characters for indentation. It is not supported in some old version
-of make. <strong>Use tab for indentation for best compatibility!</strong></p>
+<li><p><code class="code docutils literal notranslate"><span class="pre">No</span> <span class="pre">rule</span> <span class="pre">to</span> <span class="pre">make</span> <span class="pre">target</span> <span class="pre">'xxx.o',</span> <span class="pre">needed</span> <span class="pre">by</span> <span class="pre">'yyy'.</span></code></p>
+<p>This is a common error when make require a <code class="docutils literal notranslate"><span class="pre">xxx.cpp</span></code> file to compile
+<code class="docutils literal notranslate"><span class="pre">xxx.o</span></code> but the file does not exist. Check for missing file or bad file
+name! Names like <code class="docutils literal notranslate"><span class="pre">Xxx.cpp</span></code> is wrong because Linux is case sensitive with
+file names!</p>
+</li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">missing</span> <span class="pre">separator.</span> <span class="pre">Stop.</span></code></p>
+<p>It is likely that you have used the space characters for indentation. It is
+not supported in some old version of make. <strong>Use tab for indentation for best
+compatibility!</strong></p>
+</li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">make:</span> <span class="pre">***</span> <span class="pre">[makefile:#:</span> <span class="pre">xxx]</span> <span class="pre">Error</span> <span class="pre">1</span></code></p>
+<p>This is caused by a bad command runs by make.</p>
+<ul class="simple">
+<li><p>Scroll up to see the last command that went wrong (mostly g++)</p></li>
+<li><p>Also refer to the #th line in the makefile to see which command caused the
+problem. There are sometimes useful hints in the comments in the makefile.</p></li>
+</ul>
 </li>
 <li><p><strong>warning: overriding recipe for target `xxx’</strong></p>
 <p>It means that you have multiple rules for a same target. It can be dangerous

@@ -270,20 +270,41 @@ Pitfalls
   main.o: main.cpp
       $(CXX) $(CXXFLAG) -c $@ $<
 
+.. _make-diag:
+
 Common Error Messages
 =====================
-+ **No rule to make target `xxx'.** or **No rule to make target `xxx', needed by
-  `yyy'.**
 
-  It means the make system found a target but cannot identify any rule in your
-  makefile. It is common that you have provided a wrong target name or the rule
-  for intermediate targets (like .o files) are not present.
+.. note::
 
-+ **missing separator. Stop.**
+  The terms 'xxx', 'yyy', etc. are placeholders of names. The term '#' is a
+  placeholder for numbers.
 
-  This can happen for many reason but one common reason is that you have used
-  the space characters for indentation. It is not supported in some old version
-  of make. **Use tab for indentation for best compatibility!**
++ :code:`No rule to make target 'xxx'.`
+
+  Wrong target name. For example, you try to run ``make foo`` but
+  ``foo`` is not defined as a target name in the ``makefile``
+
++ :code:`No rule to make target 'xxx.o', needed by 'yyy'.`
+
+  This is a common error when make require a ``xxx.cpp`` file to compile
+  ``xxx.o`` but the file does not exist. Check for missing file or bad file
+  name! Names like ``Xxx.cpp`` is wrong because Linux is case sensitive with
+  file names!
+
++ :code:`missing separator. Stop.`
+
+  It is likely that you have used the space characters for indentation. It is
+  not supported in some old version of make. **Use tab for indentation for best
+  compatibility!**
+
++ :code:`make: *** [makefile:#: xxx] Error 1`
+
+  This is caused by a bad command runs by make.
+
+  * Scroll up to see the last command that went wrong (mostly g++)
+  * Also refer to the #th line in the makefile to see which command caused the
+    problem. There are sometimes useful hints in the comments in the makefile.
 
 + **warning: overriding recipe for target `xxx'**
 

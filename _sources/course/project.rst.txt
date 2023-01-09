@@ -7,14 +7,10 @@ Grading
 The grading system of complex projects differs greatly from that used in
 entry-level courses and in coding questions in exams:
 
-+ Most of the grades are functionality based. **Your code must compile and run**
-  to allow the grader to test the functionality. It means that you will lose
-  most if not all of these grades if your code cannot be compiled and run.
-+ A program compiles and runs through makefile or other building system using
-  commands like ``make && ./main``, ``make test``, ``make test-run``, etc. When
-  the project is collected using GitHub Classroom, the GitHub Action based
-  auto-grading system will be used to grade the functionalities. A working
-  makefile is the prerequisite of a compile-and-run project.
++ **Your code must compile and run!**
++ **The grader grades your code by running rather than by reading them!**
++ A program compiles and runs through ``GNU make`` using commands like
+  ``make``, ``./main``, ``make test``, ``make test-run``, etc.
 + **You should not expect any partial credits for code that cannot be tested by
   running your program.** The grader do not have the responsibility to read,
   debug and understand your source code.
@@ -23,14 +19,12 @@ You may read the :ref:`project FAQ <proj-faq>` for more information.
 
 Project Workflow
 ================
-
 This workflow is beginner oriented. Students may develop their own workflow as
 they gain experience in programming. However, there is still something even the
 experienced students can learn from here.
 
 Design/Modelling Stage
 ----------------------
-
 In this workflow I assume that you start from a problem description to finish
 an application to solve a problem. In the real-world projects,
 many steps are already finished and you will be asked to start from
@@ -62,7 +56,6 @@ cases.
 
 Implementation Stage
 --------------------
-
 A skeleton repository may be provided for you to use in a GitHub
 Classroom-based assignment. Run ``git clone <URL>`` to clone it to your
 computer. It may also be provided as a zip file downloadable from Canvas.
@@ -89,16 +82,21 @@ computer. It may also be provided as a zip file downloadable from Canvas.
    #. Fix problems found in the run
    #. Proceed to the next iteration
 
-#. Perform a final test (two options)
+#. Perform a final test
 
-   + push to GitHub classroom and check the results
-   + transfer your file to the SSH server and test run
+   + Run all tests locally
+   + Transfer your files to the SSH server and test run
 
-#. Submission
+.. note::
 
-   + GitHub classroom
+  Tests on SSH server is usually only necessary if your environment is not
+  compatible to Linux, such as MinGW, CygWin.
 
-     Simply ``git push origin main``.
+#. Submission depending on the requirement
+
+   + GitHub classroom submission :doc:`github-classroom`
+
+     Simply ``git push origin main``
 
    + :ref:`canvas-submission`
 
@@ -118,35 +116,58 @@ Canvas file upload
 ------------------
 #. Duplicate your directory
 #. Change the directory to the base name of your submission file like
-   ``uwfid_proj#``. Substitute uwfid with your UWF email id (the first part of
-   your UWF email address, before @). Substitute # with your project number.
+   ``proj#``. Substitute # with your project number.
 #. Change to the new directory in your terminal
 #. Remove files not needed in the submission (the ``make clean`` command
    should do most of the job for you)
 #. Perform a last test on everything (local or on the SSH server)
 #. Clean the generated files in the test run using ``make clean`` again
-#. Compress your directory using zip format and name it as ``uwfid_proj#.zip``
+#. Compress your directory using zip format and name it as ``proj#.zip``
 #. Find the Canvas assignment page and upload
 #. Visit the page again to confirm the uploaded file is there
 
+Build, run and debug
+====================
+Due to the complexity of compiling and running your modular project manually,
+building tools such as GNU make, Autotools, Cmake, Ninja, Meson are employed to
+automate the process. We employ ``GNU make`` in our course mostly.
+
+Make command-lines
+------------------
+The ``make`` command-lines commonly employed in the projects are:
+
++ ``make``
++ ``make all`` to compile multiple targets
++ ``make main`` to compile main
++ ``make test-run`` to test run your main
++ ``make test`` to compile and run a test
++ ``make test-all`` to compile and run multiple tests
++ ``make test-#-xxx`` to compile and run one of the many tests where # is a
+  number, and xxx is a name of the individual test
+
+You must compile and run your code through these commands because this is how
+the grader will employ in the grading.
+
 Provided Tests
-==============
+--------------
 + Tests are provided in some starting code bases to facilitate grading.
 + Students are not supposed to change source codes in the test directory or the
-  cpp files provided for test such as test.cpp.
+  cpp files provided for test such as ``test.cpp``.
 + Make sure your filenames follows the naming convention so the makefile will
   work properly. The convention requires all lowercase filenames.
 + Complete the makefile as needed.
 + Run ``make test`` or ``make test-all`` to run tests.
-+ You can find other ``test-xxx`` kind of targets in your makefile to run tests
-  separately.
++ You can find other ``test-#-xxx`` kind of targets in your makefile to run
+  tests separately.
 + Make good use of these tests locally to test your code.
 + A major portion of grading will be based on the tests runs.
 
 Get Help
 ========
-+ Post sharable problems on Discord server
-+ Email me/TA about the question
++ Debug your code. You may refer to common error messages from
+  :ref:`make<make-diag>` and :ref:`g++<gpp-diag>`
++ Post sharable problems on the Discord server
++ Email the instructor or TA about the question. Must include your code.
 
 .. warning::
 
