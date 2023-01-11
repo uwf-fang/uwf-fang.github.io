@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Hash Table in C++ &#8212; IanFang Course Note Hosting  documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
@@ -13,7 +13,9 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/cpp/hash-table.html" />
     <link rel="index" title="Index" href="../genindex.html" />
@@ -46,7 +48,7 @@
           <div class="body" role="main">
             
   <section id="hash-table-in-c">
-<h1>Hash Table in C++<a class="headerlink" href="#hash-table-in-c" title="Permalink to this headline">¶</a></h1>
+<h1>Hash Table in C++<a class="headerlink" href="#hash-table-in-c" title="Permalink to this heading">¶</a></h1>
 <p>Hash table uses hashing to implement a data structure that maps a key to an
 index so the value can be stored in the corresponding location (a bucket) in a
 sequential data structure like an array.</p>
@@ -54,7 +56,7 @@ sequential data structure like an array.</p>
 hash table? (Because the most frequent usage is to access by index, which is
 slow with linked-list data structure)</p>
 <section id="characteristics">
-<h2>Characteristics<a class="headerlink" href="#characteristics" title="Permalink to this headline">¶</a></h2>
+<h2>Characteristics<a class="headerlink" href="#characteristics" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>fast lookup <span class="math notranslate nohighlight">\(O(1)\)</span></p></li>
 <li><p>redundant storage (certain ratio of empty buckets)</p>
@@ -65,7 +67,7 @@ slow with linked-list data structure)</p>
 </ul>
 </section>
 <section id="hash-function-for-hash-tables">
-<h2>Hash function for hash tables<a class="headerlink" href="#hash-function-for-hash-tables" title="Permalink to this headline">¶</a></h2>
+<h2>Hash function for hash tables<a class="headerlink" href="#hash-function-for-hash-tables" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(h(x)\)</span></p></li>
 <li><p>any key type mapping to integer from 0 to N - 1 (indices in a size N array)</p></li>
@@ -73,10 +75,10 @@ slow with linked-list data structure)</p>
 </ul>
 </section>
 <section id="collision-resolution">
-<h2>Collision resolution<a class="headerlink" href="#collision-resolution" title="Permalink to this headline">¶</a></h2>
+<h2>Collision resolution<a class="headerlink" href="#collision-resolution" title="Permalink to this heading">¶</a></h2>
 <p>Methods to handle collision when multiple keys are mapped to a same bucket.</p>
 <section id="chaining">
-<h3>Chaining<a class="headerlink" href="#chaining" title="Permalink to this headline">¶</a></h3>
+<h3>Chaining<a class="headerlink" href="#chaining" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>each bucket is a linked list to store multiple values (chained)</p></li>
 <li><p>Nodes in the linked-list keeps key, value and next pointer</p></li>
@@ -85,7 +87,7 @@ slow with linked-list data structure)</p>
 </ul>
 </section>
 <section id="open-addressing">
-<h3>Open addressing<a class="headerlink" href="#open-addressing" title="Permalink to this headline">¶</a></h3>
+<h3>Open addressing<a class="headerlink" href="#open-addressing" title="Permalink to this heading">¶</a></h3>
 <ul>
 <li><p>find another available bucket to store the value when a collision occurs</p></li>
 <li><p>probing sequence: the sequence of the buckets to check when collision happens</p></li>
@@ -109,9 +111,9 @@ slow with linked-list data structure)</p>
 </section>
 </section>
 <section id="applications">
-<h2>Applications<a class="headerlink" href="#applications" title="Permalink to this headline">¶</a></h2>
+<h2>Applications<a class="headerlink" href="#applications" title="Permalink to this heading">¶</a></h2>
 <section id="hash-map">
-<h3>Hash map<a class="headerlink" href="#hash-map" title="Permalink to this headline">¶</a></h3>
+<h3>Hash map<a class="headerlink" href="#hash-map" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>implementation of the <strong>Map ADT</strong></p></li>
 <li><p>key and value are different</p></li>
@@ -127,7 +129,7 @@ slow with linked-list data structure)</p>
 </ul>
 </section>
 <section id="hash-set">
-<h3>Hash set<a class="headerlink" href="#hash-set" title="Permalink to this headline">¶</a></h3>
+<h3>Hash set<a class="headerlink" href="#hash-set" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>implementation of the <strong>Set ADT</strong></p></li>
 <li><p>the key is treated as value</p></li>
@@ -146,7 +148,7 @@ slow with linked-list data structure)</p>
 </section>
 </section>
 <section id="chaining-example">
-<h2>Chaining Example<a class="headerlink" href="#chaining-example" title="Permalink to this headline">¶</a></h2>
+<h2>Chaining Example<a class="headerlink" href="#chaining-example" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">Node</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="linenos"> 2</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">;</span><span class="w"></span>
 <span class="linenos"> 3</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"></span>
@@ -176,7 +178,7 @@ slow with linked-list data structure)</p>
 </div>
 </section>
 <section id="open-addressing-example">
-<h2>Open addressing example<a class="headerlink" href="#open-addressing-example" title="Permalink to this headline">¶</a></h2>
+<h2>Open addressing example<a class="headerlink" href="#open-addressing-example" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">Bucket</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="linenos"> 2</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">;</span><span class="w"></span>
 <span class="linenos"> 3</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"></span>
@@ -212,8 +214,8 @@ slow with linked-list data structure)</p>
 </div>
 </section>
 <section id="hash-table-glossary">
-<h2>Hash Table Glossary<a class="headerlink" href="#hash-table-glossary" title="Permalink to this headline">¶</a></h2>
-<dl class="glossary simple">
+<h2>Hash Table Glossary<a class="headerlink" href="#hash-table-glossary" title="Permalink to this heading">¶</a></h2>
+<dl class="simple glossary">
 <dt id="term-Hash-Table">Hash Table<a class="headerlink" href="#term-Hash-Table" title="Permalink to this term">¶</a></dt><dd><p>An associative data structure that models mapping from keys to values. It is
 usually implemented as an array. A hash function is employed to map the key
 to the index of the array element where the value is stored</p>
@@ -301,7 +303,7 @@ addressing collision resolution approach</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -326,7 +328,7 @@ addressing collision resolution approach</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
   </body>
 </html>

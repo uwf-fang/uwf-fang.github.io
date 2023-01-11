@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>GNU Make &#8212; IanFang Course Note Hosting  documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
@@ -13,7 +13,9 @@
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/tools/make.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -46,17 +48,17 @@
           <div class="body" role="main">
             
   <section id="gnu-make">
-<h1>GNU Make<a class="headerlink" href="#gnu-make" title="Permalink to this headline">¶</a></h1>
+<h1>GNU Make<a class="headerlink" href="#gnu-make" title="Permalink to this heading">¶</a></h1>
 <p>The GNU Make project provides a command-line tool and a configuration system to
 facilitate the building of complex projects and generate executables. It is
 also employed to automate command-line tasks. Read the the <a class="reference external" href="https://www.gnu.org/software/make/manual/html_node/index.html">official
 documentation</a> for a more detailed view.</p>
 <section id="make-command">
-<h2>make command<a class="headerlink" href="#make-command" title="Permalink to this headline">¶</a></h2>
+<h2>make command<a class="headerlink" href="#make-command" title="Permalink to this heading">¶</a></h2>
 <p>The command-line tool <code class="docutils literal notranslate"><span class="pre">make</span></code> is how you run all tasks.</p>
 </section>
 <section id="makefile">
-<h2>makefile<a class="headerlink" href="#makefile" title="Permalink to this headline">¶</a></h2>
+<h2>makefile<a class="headerlink" href="#makefile" title="Permalink to this heading">¶</a></h2>
 <p>A makefile is the configuration file for the make command. It contains all the
 logics to guide the make to build the executables.</p>
 <p>A makefile is usually named <code class="docutils literal notranslate"><span class="pre">makefile</span></code> or <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> and locate in
@@ -69,7 +71,7 @@ the makefile of another name or in another directory.</p>
     recipe
 </pre></div>
 </div>
-<dl class="glossary simple">
+<dl class="simple glossary">
 <dt id="term-Target">Target<a class="headerlink" href="#term-Target" title="Permalink to this term">¶</a></dt><dd><p>It is usually the file you want to generate. However, virtual targets
 such as <code class="docutils literal notranslate"><span class="pre">main</span></code>, <code class="docutils literal notranslate"><span class="pre">clean</span></code> are extensively used in many makefiles. They
 do not bind to a real file but can be used in the make command-line like
@@ -92,7 +94,7 @@ versions of GNU make. The newer versions can take spaces for indentation.</p>
 </div>
 </section>
 <section id="modular-compilation">
-<h2>Modular Compilation<a class="headerlink" href="#modular-compilation" title="Permalink to this headline">¶</a></h2>
+<h2>Modular Compilation<a class="headerlink" href="#modular-compilation" title="Permalink to this heading">¶</a></h2>
 <p>Let’s assume that we are writing a makefile for a project with multiple files.
 The relationship among files are demonstrated in the diagram. Arrows means
 include relationship: <code class="docutils literal notranslate"><span class="pre">main.cpp</span> <span class="pre">-&gt;</span> <span class="pre">student.hpp</span></code> means the <code class="docutils literal notranslate"><span class="pre">student.hpp</span></code>
@@ -121,7 +123,7 @@ limitation of the website generating system. You should change them to real
 </li>
 </ul>
 <section id="hard-coded-rules">
-<h3>Hard-coded rules<a class="headerlink" href="#hard-coded-rules" title="Permalink to this headline">¶</a></h3>
+<h3>Hard-coded rules<a class="headerlink" href="#hard-coded-rules" title="Permalink to this heading">¶</a></h3>
 <p>A simple makefile with hard coded g++ commands:</p>
 <div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="c"># declare virtual targets</span>
 <span class="nf">.PHONY</span><span class="o">:</span> <span class="n">clean</span>
@@ -157,7 +159,7 @@ remove generated temporary files and the executable.</p>
 the makefile as the target to make.</p>
 </section>
 <section id="introducing-variables">
-<h3>Introducing variables<a class="headerlink" href="#introducing-variables" title="Permalink to this headline">¶</a></h3>
+<h3>Introducing variables<a class="headerlink" href="#introducing-variables" title="Permalink to this heading">¶</a></h3>
 <p>You may noticed a lot of redundant texts such as the g++ flags (<code class="docutils literal notranslate"><span class="pre">-std=c++14</span>
 <span class="pre">-Wall</span> <span class="pre">-g</span></code>), list of file names, etc. Many of the redundancy can be remove by
 introducing variables. With variables, you can also extract configurations out
@@ -192,11 +194,11 @@ of the commands for efficient management of configurations.</p>
 compilation flags by modifying variables.</p>
 </section>
 <section id="introducing-automatic-variables">
-<h3>Introducing automatic variables<a class="headerlink" href="#introducing-automatic-variables" title="Permalink to this headline">¶</a></h3>
+<h3>Introducing automatic variables<a class="headerlink" href="#introducing-automatic-variables" title="Permalink to this heading">¶</a></h3>
 <p>You may notice that we still have redundancy. The file names listed as part of
 the target or dependencies are hard-coded in the g++ commands. It can be
 improved using the <strong>automatic variables</strong> like $&#64;, $^, $&lt;.</p>
-<dl class="glossary simple">
+<dl class="simple glossary">
 <dt id="term-0">$&#64;<a class="headerlink" href="#term-0" title="Permalink to this term">¶</a></dt><dd><p>the target</p>
 </dd>
 <dt id="term-1">$^<a class="headerlink" href="#term-1" title="Permalink to this term">¶</a></dt><dd><p>all prerequisites</p>
@@ -238,7 +240,7 @@ in the list!</p>
 </div>
 </section>
 <section id="use-pattern-match">
-<h3>Use Pattern Match<a class="headerlink" href="#use-pattern-match" title="Permalink to this headline">¶</a></h3>
+<h3>Use Pattern Match<a class="headerlink" href="#use-pattern-match" title="Permalink to this heading">¶</a></h3>
 <p>It is still verbose. By sacrificing the header prerequisites in the object file
 rules, we can merge these rules into one:</p>
 <div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">CXX</span><span class="o">=</span>g++
@@ -267,7 +269,7 @@ heavy coding. It is a limitation of make any.</p>
 </div>
 </section>
 <section id="further-improvement">
-<h3>Further Improvement<a class="headerlink" href="#further-improvement" title="Permalink to this headline">¶</a></h3>
+<h3>Further Improvement<a class="headerlink" href="#further-improvement" title="Permalink to this heading">¶</a></h3>
 <p>Now we have a very concise makefile.</p>
 <p>You can learn potential improvement from the :</p>
 <ul class="simple">
@@ -277,7 +279,7 @@ heavy coding. It is a limitation of make any.</p>
 </section>
 </section>
 <section id="pitfalls">
-<h2>Pitfalls<a class="headerlink" href="#pitfalls" title="Permalink to this headline">¶</a></h2>
+<h2>Pitfalls<a class="headerlink" href="#pitfalls" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="c"># use the wrong variable</span>
 <span class="c"># the use of $^ will include the hpp file in the g++ command</span>
 <span class="c"># use $&lt; to only include the first prerequisite, which should be the cpp file</span>
@@ -297,7 +299,7 @@ heavy coding. It is a limitation of make any.</p>
 </div>
 </section>
 <section id="common-error-messages">
-<span id="make-diag"></span><h2>Common Error Messages<a class="headerlink" href="#common-error-messages" title="Permalink to this headline">¶</a></h2>
+<span id="make-diag"></span><h2>Common Error Messages<a class="headerlink" href="#common-error-messages" title="Permalink to this heading">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The terms ‘xxx’, ‘yyy’, etc. are placeholders of names. The term ‘#’ is a
@@ -334,7 +336,7 @@ if you do not know which one is finally employed to build your target.</p>
 </ul>
 </section>
 <section id="debug-makefile">
-<h2>Debug makefile<a class="headerlink" href="#debug-makefile" title="Permalink to this headline">¶</a></h2>
+<h2>Debug makefile<a class="headerlink" href="#debug-makefile" title="Permalink to this heading">¶</a></h2>
 <p>You may use the make command with option <cite>-d</cite> to show debugging information.
 E.g. <cite>make -d main</cite> to show the details about target and rule matching process.</p>
 </section>
@@ -395,7 +397,7 @@ E.g. <cite>make -d main</cite> to show the details about target and rule matchin
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -421,7 +423,7 @@ E.g. <cite>make -d main</cite> to show the details about target and rule matchin
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
   </body>
 </html>
