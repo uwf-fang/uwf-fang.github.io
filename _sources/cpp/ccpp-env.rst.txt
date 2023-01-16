@@ -9,30 +9,33 @@ TL;DR
 Under Windows
   Install the toolchain under WSL; Use any code editor; Compile and run in WSL
   bash window; Transfer to the SSH server for an optional final test. **Do not
-  recommend MinGW (include git bash)! Use it at your own risk!**
+  recommend MinGW (include git bash)! Use it at your own risk!** For more
+  detail, read `Windows 1x Local`_ section.
 
 Under Mac OS
   Install **X-Code command line tool** as your toolchain; Use any code editor;
   Compile and run in your terminal; Transfer to the SSH server for an optional
-  final test.
+  final test. For more detail, read `Mac OS Local`_ section.
 
 Under Linux
   Install the toolchain; Use any code editor; Compile and run in your terminal;
-  Transfer to the SSH server for an optional final test.
+  Transfer to the SSH server for an optional final test. For more detail, read
+  `Linux Local`_ section.
 
 Optional Usage of the SSH Server (CS department)
-  The SSH server provided by the Department of Computer Science is for the
+  The SSH server provided by the Department of Computer Science is for
   testing purpose. It is **optional** if your local environment works well.
   Always test on the SSH server only if you are using MingGW as your local
-  environment to avoid many known incompatibility issues.
+  environment to avoid known incompatibility issues.
 
 Single-Click-Run Feature
   When working on multi-file projects, **avoid any single-click-run feature
-  that mostly does not support make** such as in jGrasp, onlineGDB, or VS Code.
-  You can still use them as text editor but do not try to run your project with
-  a single mouse button click. It will mostly fail unless you spend time to
-  learn how to configure it correctly. It is overall inconvenient as you may
-  need to reconfigure every time working with a different project.
+  that mostly does not support make** such as in **jGrasp**, **onlineGDB**, or
+  **VS Code run/debug feature**. You can still use them as text editor but do
+  not try to run your project with a single mouse button click. It will mostly
+  fail unless you spend time to learn how to configure it correctly. It is
+  overall inconvenient as you may need to reconfigure every time working with a
+  different project.
 
 Concepts
 ========
@@ -187,14 +190,13 @@ this reason.
   are not compatible to the GNU toolchain we use in the course. You will
   experience huge problem if you do not handle it correctly.
 
-In classroom demonstration will use Visual Studio Code as editor and g++/make
-under WSL/Linux as the toolchain.
+In classroom demonstration will use **Visual Studio Code** as editor and
+**g++/make under WSL/Linux** as the toolchain.
 
 .. warning::
 
   For VS Code user, you only need the C/C++ plugin from Microsoft. Install
-  other plugins at your own risk. They are mostly not as easy to use as
-  terminal commands.
+  other plugins at your own risk. They need some learning to work.
 
 Toolchain Installation
 ======================
@@ -257,24 +259,30 @@ and related tools:
 
 1. Install WSL (e.g. Ubuntu 20.04 LTS) from the Microsoft Store
 2. Run for the first time: Setup username and password
-3. Install building tools: g++, make, and git::
+3. Update the software management system::
 
      sudo apt-get update
+
+4. Install common building tools including g++, and make::
+
      sudo apt-get install build-essential
+
+5. If git is required (DSA 1), install git::
+
      sudo apt-get install git
 
 .. warning::
 
   MinGW (include Git Bash) or Cygwin will cause many compatibility issues. Use
   them only if you are confident to be able to solve all the compatibility
-  problems by yourself. It usually not work the effort.
+  problems by yourself. It usually not worth the effort.
 
 To use WSL, open a shell/terminal/console window. Several options to do that.
 
 + Install the new ``Windows Terminal`` in the Microsoft Store and use it with
   WSL. This is by far the best terminal you can get on Windows.
 + Find ``Ubuntu 20.04`` app in the start menu to start a Ubuntu bash shell.
-+ Type ``bash`` in either the PowerShell or CMD terminal.
++ Open the built-in terminal of the editor you use
 
 Mac OS Local
 ------------
@@ -299,15 +307,16 @@ working. You may need to use the SSH server to run valgrind in this case.
 
 Linux Local
 -----------
-On Ubuntu or Debian family Linux distribution you can install using the
-command::
+1. Update the software management system::
 
-  sudo apt-get update
-  sudo apt-get install build-essential
-  sudo apt-get install git
+     sudo apt-get update
 
-.. note::
+2. Install common building tools including g++, and make::
 
-  git is required in the Data Structure class only.
+     sudo apt-get install build-essential
+
+3. If git is required (DSA 1), install git::
+
+     sudo apt-get install git
 
 To use the command-line environment, use the default ``Terminal`` app.
