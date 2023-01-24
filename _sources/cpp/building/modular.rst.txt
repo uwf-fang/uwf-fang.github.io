@@ -22,18 +22,18 @@ As a convention, the sharable components are stored in the header files (hpp
 files) and the private components are stored in the source files (cpp files).
 Other textual files like .inc files are also used (not covered in our courses).
 
-Public/sharable components
---------------------------
+Public/sharable components in header (.hpp) files
+-------------------------------------------------
 #. Declarations of functions to be used in multiple cpp files
 #. Declarations of classes to be used in multiple cpp files
 #. Global variables (should avoid mutable global in most cases)
 #. Declarations of types, type alias, macros, etc.
 #. Class templates
 
-Private components
-------------------
+Private components in source (.cpp) files
+-----------------------------------------
 #. Declarations of everything that will be only used in the current cpp file
-#. Function/method definitions
+#. Function/class method definitions
 
 .. glossary::
 
@@ -65,22 +65,26 @@ you are doing.
 + Minimize your header (move out contents to the cpp file as much as possible)
 + Follow a consistent naming convention for all files
 
-Pitfalls
-========
+.. _mod-pitfall:
+
+Pitfalls in Modular Development
+===============================
 Many of these pitfalls are not wrong, but just not recommended at lease for
 beginners. C++ is very flexible but following a good convention is more
 beginner-friendly.
 
-+ Not using header guards
++ Not using header guards in header files
 + Put all declarations in the header file even though they are not shared
 + Wrong cases in the file names
 + Not following a strict naming convention of files
 + Use .h extension for C++ header files
-+ Include cpp files
++ Include cpp files like ``include "lib1.cpp"``
++ g++ commands with header files like ``g++ -std=c++14 -o main main.cpp
+  lib1.hpp lib1.cpp``
 
 Examples
 ========
-Please refer to :doc:`make document</tools/make>` for examples.
+Please refer to :doc:`make document</tools/make>` for modular examples.
 
 
 .. toctree::
@@ -89,3 +93,4 @@ Please refer to :doc:`make document</tools/make>` for examples.
 
    /cpp/building/gpp
    /tools/make
+   /cpp/testing/testing

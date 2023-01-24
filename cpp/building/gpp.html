@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Compilation Using g++ &#8212; IanFang Course Note Hosting  documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
@@ -13,7 +13,9 @@
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/cpp/building/gpp.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -34,7 +36,7 @@
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch03.html" >Chapter 3 User-defined Functions</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch03.html" >Chapter 3 User-defined Functions and Modular Development</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="modular.html" accesskey="U">Modular Development</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Compilation Using g++</a></li> 
       </ul>
@@ -46,12 +48,12 @@
           <div class="body" role="main">
             
   <section id="compilation-using-g">
-<h1>Compilation Using g++<a class="headerlink" href="#compilation-using-g" title="Permalink to this headline">¶</a></h1>
-<section id="what-compilation-means">
-<h2>What compilation means<a class="headerlink" href="#what-compilation-means" title="Permalink to this headline">¶</a></h2>
+<h1>Compilation Using g++<a class="headerlink" href="#compilation-using-g" title="Permalink to this heading">¶</a></h1>
 <p>Compilation is a process to translate source codes into executables or
 libraries. A compiled programming language requires source codes to be compiled
 before they can be executed. C++ is typical compiled programming language.</p>
+<section id="mainstream-compilation-systems">
+<h2>Mainstream Compilation Systems<a class="headerlink" href="#mainstream-compilation-systems" title="Permalink to this heading">¶</a></h2>
 <p>There are many mainstream C/C++ compilers available to various operating
 systems:</p>
 <ul class="simple">
@@ -65,14 +67,11 @@ consistency. <strong>In our course, the GNU g++ (part of GCC) is chosen as the o
 compiler and you must stick to it so your code can be correctly compile and
 executed by your instructor or grader.</strong></p>
 </section>
-<section id="the-g-command">
-<h2>The g++ command<a class="headerlink" href="#the-g-command" title="Permalink to this headline">¶</a></h2>
-<p>g++ is the GNU C++ compiler invocation command. It builds C++ source codes to
-produce libraries or executables.</p>
-<section id="stages-of-compilation">
-<h3>Stages of compilation<a class="headerlink" href="#stages-of-compilation" title="Permalink to this headline">¶</a></h3>
-<p>It performs three main tasks: preprocessing, compilation, and linking.</p>
-<dl class="glossary simple">
+<section id="stages-of-compilation-of-c-c-projects">
+<h2>Stages of compilation of C/C++ projects<a class="headerlink" href="#stages-of-compilation-of-c-c-projects" title="Permalink to this heading">¶</a></h2>
+<p>General compilation process of C/C++ projects contains three main stages:
+preprocessing, compilation, and linking.</p>
+<dl class="simple glossary">
 <dt id="term-Preprocessing-step">Preprocessing step<a class="headerlink" href="#term-Preprocessing-step" title="Permalink to this term">¶</a></dt><dd><p>Process preprocessing directives like #include, #define, etc. Performs
 textual manipulations mostly.</p>
 </dd>
@@ -81,17 +80,22 @@ textual manipulations mostly.</p>
 <dt id="term-Linking-step">Linking step<a class="headerlink" href="#term-Linking-step" title="Permalink to this term">¶</a></dt><dd><p>Link object (.o) files to produce an executables (or a library)</p>
 </dd>
 </dl>
-<p>The three steps can be performed all at once or separately. The preprocessing
-step are usually merged into the compilation step. Thus, typical step-wise
-compilations involve separation of the compilation step from the linking step.</p>
+<p>The three steps can be performed all at once or separately using g++. The
+preprocessing step are usually performed together the compilation step. Thus,
+typical step-wise compilations involve two steps: Preprocessing+Compilation and
+Linking.</p>
 </section>
+<section id="the-g-command">
+<h2>The g++ command<a class="headerlink" href="#the-g-command" title="Permalink to this heading">¶</a></h2>
+<p>g++ is the GNU C++ compiler invocation command. It builds C++ source codes to
+produce libraries or executables.</p>
 <section id="g-command-line">
-<h3>g++ command-line<a class="headerlink" href="#g-command-line" title="Permalink to this headline">¶</a></h3>
+<h3>g++ command-line<a class="headerlink" href="#g-command-line" title="Permalink to this heading">¶</a></h3>
 <p>A typical g++ compilation command-line looks like:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>g++ &lt;options&gt; &lt;arguments&gt;
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>g++<span class="w"> </span>&lt;options&gt;<span class="w"> </span>&lt;arguments&gt;
 </pre></div>
 </div>
-<dl class="glossary simple">
+<dl class="simple glossary">
 <dt id="term-g-options">g++ options<a class="headerlink" href="#term-g-options" title="Permalink to this term">¶</a></dt><dd><p>Something started with a hyphen character. They are provided to control the
 behavior of the compilation. Some options come with their own arguments.</p>
 </dd>
@@ -103,8 +107,8 @@ names.</p>
 <p>Example: <code class="code docutils literal notranslate"><span class="pre">g++</span> <span class="pre">-Wall</span> <span class="pre">-std=c++14</span> <span class="pre">-Wall</span> <span class="pre">-o</span> <span class="pre">main</span> <span class="pre">main.cpp</span></code></p>
 </section>
 <section id="common-g-options">
-<h3>Common g++ options<a class="headerlink" href="#common-g-options" title="Permalink to this headline">¶</a></h3>
-<dl class="glossary simple">
+<h3>Common g++ options<a class="headerlink" href="#common-g-options" title="Permalink to this heading">¶</a></h3>
+<dl class="simple glossary">
 <dt id="term-o">-o<a class="headerlink" href="#term-o" title="Permalink to this term">¶</a></dt><dd><p>This option specify the name of the output file. It must be followed by a
 name. For example, <code class="docutils literal notranslate"><span class="pre">-o</span> <span class="pre">main</span></code> to generate a file called <code class="docutils literal notranslate"><span class="pre">main</span></code>.</p>
 </dd>
@@ -124,7 +128,7 @@ debuggers like <code class="docutils literal notranslate"><span class="pre">gdb<
 </section>
 </section>
 <section id="preprocessor-directives">
-<h2>Preprocessor directives<a class="headerlink" href="#preprocessor-directives" title="Permalink to this headline">¶</a></h2>
+<h2>Preprocessor directives<a class="headerlink" href="#preprocessor-directives" title="Permalink to this heading">¶</a></h2>
 <p>Preprocessor directives are instructions used in your source code. They are
 mixed with C++ statements and direct how the preprocessor will manipulate the
 text of the source codes files before they are actually compiled. They are
@@ -139,9 +143,9 @@ the termination of directives. They are line based instead.</p>
 <p>It is used to copy and paste texts from another file to the location of the
 directive. You can use either angular brackets <code class="docutils literal notranslate"><span class="pre">&lt;&gt;</span></code> or double quotation marks <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code> to include system headers or user headers:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// user header</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;mylib.hpp&quot;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;mylib.hpp&quot;</span>
 <span class="c1">// system header</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -169,7 +173,9 @@ functions. It is not preferred in the courses! Use functions instead!</p>
 conditionally. These directives may greatly improve efficiency of the
 compilation process in large projects in trade of the readability and thus
 maintainability. In our course, we only use them in header guards.</p>
-<p>Header guards are the preferred way to prevent header contents from being
+</li>
+<li><p>Header guards</p>
+<p><strong>Header guards</strong> are the preferred way to prevent header contents from being
 included more than once. It is preferred over the alternative way using
 <code class="docutils literal notranslate"><span class="pre">#progma</span> <span class="pre">once</span></code>, which is a non-standard C++ directive.</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#ifndef MYHEADER_HPP</span>
@@ -188,19 +194,19 @@ included more than once. It is preferred over the alternative way using
 </ul>
 </section>
 <section id="styles-of-compilation">
-<h2>Styles of compilation<a class="headerlink" href="#styles-of-compilation" title="Permalink to this headline">¶</a></h2>
+<h2>Styles of compilation<a class="headerlink" href="#styles-of-compilation" title="Permalink to this heading">¶</a></h2>
 <section id="one-step-compilation">
-<h3>One step compilation<a class="headerlink" href="#one-step-compilation" title="Permalink to this headline">¶</a></h3>
+<h3>One step compilation<a class="headerlink" href="#one-step-compilation" title="Permalink to this heading">¶</a></h3>
 <p>You may use a single g++ command to produce the executable from the source code
 files. In this method, all three tasks are performed in one step.</p>
 <p>You can list all cpp files in the command line as arguments and specify the
 output file name as main:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>g++ -std<span class="o">=</span>c++14 -o main main.cpp lib1.cpp lib2.cpp
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>g++<span class="w"> </span>-std<span class="o">=</span>c++14<span class="w"> </span>-o<span class="w"> </span>main<span class="w"> </span>main.cpp<span class="w"> </span>lib1.cpp<span class="w"> </span>lib2.cpp
 </pre></div>
 </div>
 <p>You may also use wildcard to match all cpp files if only one cpp file contains
 a main function:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>g++ -std<span class="o">=</span>c++14 -o main *.cpp
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>g++<span class="w"> </span>-std<span class="o">=</span>c++14<span class="w"> </span>-o<span class="w"> </span>main<span class="w"> </span>*.cpp
 </pre></div>
 </div>
 <div class="admonition note">
@@ -209,16 +215,16 @@ a main function:</p>
 </div>
 </section>
 <section id="modular-compilation">
-<h3>Modular compilation<a class="headerlink" href="#modular-compilation" title="Permalink to this headline">¶</a></h3>
+<h3>Modular compilation<a class="headerlink" href="#modular-compilation" title="Permalink to this heading">¶</a></h3>
 <p>In the modular compilation approach, the compilation(include the preprocessing
 step) and linking steps are performed separately to provide fine control over
 arguments and fine grained error handling.</p>
 <p>Use the same example with a <code class="docutils literal notranslate"><span class="pre">main.cpp</span></code>, a <code class="docutils literal notranslate"><span class="pre">lib1.cpp</span></code>, and a <code class="docutils literal notranslate"><span class="pre">lib2.cpp</span></code>
 with several headers. You can build your <code class="docutils literal notranslate"><span class="pre">main</span></code> executable in steps:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>g++ -std<span class="o">=</span>c++14 -Wall -c main.cpp
-g++ -std<span class="o">=</span>c++14 -Wall -c lib1.cpp
-g++ -std<span class="o">=</span>c++14 -Wall -c lib2.cpp
-g++ -o main main.o lib1.o lib2.o
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>g++<span class="w"> </span>-std<span class="o">=</span>c++14<span class="w"> </span>-Wall<span class="w"> </span>-c<span class="w"> </span>main.cpp
+g++<span class="w"> </span>-std<span class="o">=</span>c++14<span class="w"> </span>-Wall<span class="w"> </span>-c<span class="w"> </span>lib1.cpp
+g++<span class="w"> </span>-std<span class="o">=</span>c++14<span class="w"> </span>-Wall<span class="w"> </span>-c<span class="w"> </span>lib2.cpp
+g++<span class="w"> </span>-o<span class="w"> </span>main<span class="w"> </span>main.o<span class="w"> </span>lib1.o<span class="w"> </span>lib2.o
 </pre></div>
 </div>
 <p>The first three lines compiles all source code files to the corresponding
@@ -232,16 +238,16 @@ automated using building tools such as GNU make, etc.</p>
 </div>
 </section>
 <section id="pitfalls">
-<h3>Pitfalls<a class="headerlink" href="#pitfalls" title="Permalink to this headline">¶</a></h3>
+<h3>Pitfalls<a class="headerlink" href="#pitfalls" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>include header files in the g++ command</p></li>
 </ul>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>g++ -o main main.cpp lib1.hpp lib1.cpp
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>g++<span class="w"> </span>-o<span class="w"> </span>main<span class="w"> </span>main.cpp<span class="w"> </span>lib1.hpp<span class="w"> </span>lib1.cpp
 </pre></div>
 </div>
 </section>
 <section id="common-error-messages-from-g">
-<span id="gpp-diag"></span><h3>Common Error Messages from g++<a class="headerlink" href="#common-error-messages-from-g" title="Permalink to this headline">¶</a></h3>
+<span id="gpp-diag"></span><h3>Common Error Messages From g++<a class="headerlink" href="#common-error-messages-from-g" title="Permalink to this heading">¶</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Some error messages are misleading. Thus, do not stick to it if you cannot
@@ -313,9 +319,9 @@ function</p></li>
     <h3><a href="../../index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">Compilation Using g++</a><ul>
-<li><a class="reference internal" href="#what-compilation-means">What compilation means</a></li>
+<li><a class="reference internal" href="#mainstream-compilation-systems">Mainstream Compilation Systems</a></li>
+<li><a class="reference internal" href="#stages-of-compilation-of-c-c-projects">Stages of compilation of C/C++ projects</a></li>
 <li><a class="reference internal" href="#the-g-command">The g++ command</a><ul>
-<li><a class="reference internal" href="#stages-of-compilation">Stages of compilation</a></li>
 <li><a class="reference internal" href="#g-command-line">g++ command-line</a></li>
 <li><a class="reference internal" href="#common-g-options">Common g++ options</a></li>
 </ul>
@@ -325,7 +331,7 @@ function</p></li>
 <li><a class="reference internal" href="#one-step-compilation">One step compilation</a></li>
 <li><a class="reference internal" href="#modular-compilation">Modular compilation</a></li>
 <li><a class="reference internal" href="#pitfalls">Pitfalls</a></li>
-<li><a class="reference internal" href="#common-error-messages-from-g">Common Error Messages from g++</a></li>
+<li><a class="reference internal" href="#common-error-messages-from-g">Common Error Messages From g++</a></li>
 </ul>
 </li>
 </ul>
@@ -359,7 +365,7 @@ function</p></li>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -378,14 +384,14 @@ function</p></li>
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch03.html" >Chapter 3 User-defined Functions</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch03.html" >Chapter 3 User-defined Functions and Modular Development</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="modular.html" >Modular Development</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Compilation Using g++</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
   </body>
 </html>

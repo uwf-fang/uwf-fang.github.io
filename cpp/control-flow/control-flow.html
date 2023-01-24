@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Control Flow &#8212; IanFang Course Note Hosting  documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
@@ -13,11 +13,13 @@
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/cpp/control-flow/control-flow.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Chapter 3 User-defined Functions" href="../../course/cop3014/ch03.html" />
+    <link rel="next" title="Chapter 3 User-defined Functions and Modular Development" href="../../course/cop3014/ch03.html" />
     <link rel="prev" title="Array Basics" href="../array/array-basics.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -27,7 +29,7 @@
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../../course/cop3014/ch03.html" title="Chapter 3 User-defined Functions"
+          <a href="../../course/cop3014/ch03.html" title="Chapter 3 User-defined Functions and Modular Development"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="../array/array-basics.html" title="Array Basics"
@@ -45,11 +47,11 @@
           <div class="body" role="main">
             
   <section id="control-flow">
-<h1>Control Flow<a class="headerlink" href="#control-flow" title="Permalink to this headline">¶</a></h1>
+<h1>Control Flow<a class="headerlink" href="#control-flow" title="Permalink to this heading">¶</a></h1>
 <p>Control flow, a.k.a. flow of control, is the order of the instruction execution
 in an imperative program.</p>
 <section id="types">
-<h2>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h2>
+<h2>Types<a class="headerlink" href="#types" title="Permalink to this heading">¶</a></h2>
 <ul>
 <li><p>Sequential</p>
 <p>The fundamental control flow is the execution of instructions one after
@@ -64,9 +66,9 @@ another in the natural order of the instructions.</p>
 </ul>
 </section>
 <section id="branch">
-<h2>Branch<a class="headerlink" href="#branch" title="Permalink to this headline">¶</a></h2>
+<h2>Branch<a class="headerlink" href="#branch" title="Permalink to this heading">¶</a></h2>
 <section id="branch-statements">
-<h3>Branch Statements<a class="headerlink" href="#branch-statements" title="Permalink to this headline">¶</a></h3>
+<h3>Branch Statements<a class="headerlink" href="#branch-statements" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>if-else</p>
 <ul>
@@ -90,7 +92,7 @@ another in the natural order of the instructions.</p>
 </ul>
 </section>
 <section id="branch-pitfalls">
-<h3>Branch Pitfalls<a class="headerlink" href="#branch-pitfalls" title="Permalink to this headline">¶</a></h3>
+<h3>Branch Pitfalls<a class="headerlink" href="#branch-pitfalls" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>switch on double/float values</p></li>
 <li><p>missing break statements in switch</p></li>
@@ -100,67 +102,67 @@ another in the natural order of the instructions.</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// ==== branch ====</span>
 <span class="linenos"> 2</span>
 <span class="linenos"> 3</span><span class="c1">// ---- correct ----</span>
-<span class="linenos"> 4</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;a is greater than 10</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;a is greater than 10</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
 <span class="linenos"> 5</span>
-<span class="linenos"> 6</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"></span>
-<span class="linenos"> 7</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;a is greater than 10</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
+<span class="linenos"> 7</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;a is greater than 10</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
 <span class="linenos"> 8</span>
-<span class="linenos"> 9</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">10</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;a is greater than 10</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">11</span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">10</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;a is greater than 10</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="linenos">11</span><span class="p">}</span>
 <span class="linenos">12</span>
 <span class="linenos">13</span><span class="c1">// ---- wrong ----</span>
 <span class="linenos">14</span>
 <span class="linenos">15</span><span class="c1">// empty if, will run but the if block is empty</span>
 <span class="linenos">16</span><span class="c1">// the second line is not part of the if and will run always</span>
-<span class="linenos">17</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">18</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;a is greater than 10</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">17</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+<span class="linenos">18</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;a is greater than 10</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
 <span class="linenos">19</span>
 <span class="linenos">20</span><span class="c1">// missed {} so the third line is not part of the if and will run always</span>
-<span class="linenos">21</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">22</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;a is greater than 10</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">23</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Please try a smaller value!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">21</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
+<span class="linenos">22</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;a is greater than 10</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="linenos">23</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Please try a smaller value!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
 <span class="linenos">24</span>
 <span class="linenos">25</span><span class="c1">// will run but does not mean a is between 1 and 10</span>
-<span class="linenos">26</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">27</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;a is between 1 and 10</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">26</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
+<span class="linenos">27</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;a is between 1 and 10</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
 <span class="linenos">28</span>
 <span class="linenos">29</span><span class="c1">// switch on double</span>
 <span class="linenos">30</span><span class="c1">// double value is not exact</span>
 <span class="linenos">31</span><span class="c1">// this snippet may work and may cause problem</span>
-<span class="linenos">32</span><span class="kt">double</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">33</span><span class="n">cin</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">34</span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">35</span><span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="mf">1.0</span><span class="p">:</span><span class="w"></span>
-<span class="linenos">36</span><span class="w">    </span><span class="p">...</span><span class="w"></span>
-<span class="linenos">37</span><span class="w">    </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">38</span><span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="mf">2.0</span><span class="p">:</span><span class="w"></span>
-<span class="linenos">39</span><span class="w">    </span><span class="p">...</span><span class="w"></span>
-<span class="linenos">40</span><span class="w">    </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">41</span><span class="w">  </span><span class="p">...</span><span class="w"></span>
-<span class="linenos">42</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">32</span><span class="kt">double</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="linenos">33</span><span class="n">cin</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="linenos">34</span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">35</span><span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="mf">1.0</span><span class="p">:</span>
+<span class="linenos">36</span><span class="w">    </span><span class="p">...</span>
+<span class="linenos">37</span><span class="w">    </span><span class="k">break</span><span class="p">;</span>
+<span class="linenos">38</span><span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="mf">2.0</span><span class="p">:</span>
+<span class="linenos">39</span><span class="w">    </span><span class="p">...</span>
+<span class="linenos">40</span><span class="w">    </span><span class="k">break</span><span class="p">;</span>
+<span class="linenos">41</span><span class="w">  </span><span class="p">...</span>
+<span class="linenos">42</span><span class="p">}</span>
 <span class="linenos">43</span>
 <span class="linenos">44</span><span class="c1">// missing break</span>
 <span class="linenos">45</span><span class="c1">// will also display &quot;case 2&quot; when input is 1</span>
-<span class="linenos">46</span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">input</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">47</span><span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="w"></span>
-<span class="linenos">48</span><span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Case 1&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">49</span><span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="mi">2</span><span class="p">:</span><span class="w"></span>
-<span class="linenos">50</span><span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Case 2&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">46</span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">input</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">47</span><span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span>
+<span class="linenos">48</span><span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Case 1&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="linenos">49</span><span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="mi">2</span><span class="p">:</span>
+<span class="linenos">50</span><span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Case 2&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
 <span class="linenos">51</span><span class="w">  </span><span class="c1">// ...</span>
-<span class="linenos">52</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">52</span><span class="p">}</span>
 <span class="linenos">53</span>
 <span class="linenos">54</span><span class="c1">// ---- poor ----</span>
 <span class="linenos">55</span>
-<span class="linenos">56</span><span class="kt">bool</span><span class="w"> </span><span class="n">flag</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">56</span><span class="kt">bool</span><span class="w"> </span><span class="n">flag</span><span class="p">;</span>
 <span class="linenos">57</span><span class="c1">// calculate flag</span>
 <span class="linenos">58</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">flag</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">true</span><span class="p">)</span><span class="w">  </span><span class="c1">// should be if (flag)</span>
-<span class="linenos">59</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;True</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">59</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;True</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
 </pre></div>
 </div>
 </section>
 <section id="branch-patterns">
-<h3>Branch Patterns<a class="headerlink" href="#branch-patterns" title="Permalink to this headline">¶</a></h3>
+<h3>Branch Patterns<a class="headerlink" href="#branch-patterns" title="Permalink to this heading">¶</a></h3>
 <p>Various ways to solve the same grade conversion problem are compared below.</p>
 <ul>
 <li><p>Multi-way branching</p>
@@ -174,72 +176,72 @@ another in the natural order of the instructions.</p>
 <span class="linenos"> 2</span><span class="c1">// use integer division</span>
 <span class="linenos"> 3</span><span class="c1">// not a general solution</span>
 <span class="linenos"> 4</span><span class="c1">// why no break statements are needed here?</span>
-<span class="linenos"> 5</span><span class="kt">char</span><span class="w"> </span><span class="nf">percentToLetterGrade1</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">percentGrade</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 6</span><span class="w">  </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 7</span><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="mi">10</span><span class="p">:</span><span class="w"></span>
-<span class="linenos"> 8</span><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="mi">9</span><span class="p">:</span><span class="w"></span>
-<span class="linenos"> 9</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;A&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">10</span><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="mi">8</span><span class="p">:</span><span class="w"></span>
-<span class="linenos">11</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;B&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">12</span><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="mi">7</span><span class="p">:</span><span class="w"></span>
-<span class="linenos">13</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;C&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">14</span><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="mi">6</span><span class="p">:</span><span class="w"></span>
-<span class="linenos">15</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;D&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">16</span><span class="w">    </span><span class="k">default</span><span class="o">:</span><span class="w"></span>
-<span class="linenos">17</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;F&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">18</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="linenos">19</span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="kt">char</span><span class="w"> </span><span class="nf">percentToLetterGrade1</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">percentGrade</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 6</span><span class="w">  </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 7</span><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="mi">10</span><span class="p">:</span>
+<span class="linenos"> 8</span><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="mi">9</span><span class="p">:</span>
+<span class="linenos"> 9</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;A&#39;</span><span class="p">;</span>
+<span class="linenos">10</span><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="mi">8</span><span class="p">:</span>
+<span class="linenos">11</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;B&#39;</span><span class="p">;</span>
+<span class="linenos">12</span><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="mi">7</span><span class="p">:</span>
+<span class="linenos">13</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;C&#39;</span><span class="p">;</span>
+<span class="linenos">14</span><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="mi">6</span><span class="p">:</span>
+<span class="linenos">15</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;D&#39;</span><span class="p">;</span>
+<span class="linenos">16</span><span class="w">    </span><span class="k">default</span><span class="o">:</span>
+<span class="linenos">17</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;F&#39;</span><span class="p">;</span>
+<span class="linenos">18</span><span class="w">  </span><span class="p">}</span>
+<span class="linenos">19</span><span class="p">}</span>
 <span class="linenos">20</span>
 <span class="linenos">21</span><span class="c1">// nested if-else version</span>
 <span class="linenos">22</span><span class="c1">// implicit conditions</span>
 <span class="linenos">23</span><span class="c1">// least comparison in the worst case</span>
-<span class="linenos">24</span><span class="kt">char</span><span class="w"> </span><span class="nf">percentToLetterGrade2</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">percentGrade</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">25</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">70</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">26</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">90</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">27</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;A&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">28</span><span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">80</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">29</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;B&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">30</span><span class="w">    </span><span class="k">else</span><span class="w"></span>
-<span class="linenos">31</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;C&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">32</span><span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">60</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">33</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;D&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">34</span><span class="w">  </span><span class="k">else</span><span class="w"></span>
-<span class="linenos">35</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;F&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">36</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">24</span><span class="kt">char</span><span class="w"> </span><span class="nf">percentToLetterGrade2</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">percentGrade</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">25</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">70</span><span class="p">)</span>
+<span class="linenos">26</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">90</span><span class="p">)</span>
+<span class="linenos">27</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;A&#39;</span><span class="p">;</span>
+<span class="linenos">28</span><span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">80</span><span class="p">)</span>
+<span class="linenos">29</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;B&#39;</span><span class="p">;</span>
+<span class="linenos">30</span><span class="w">    </span><span class="k">else</span>
+<span class="linenos">31</span><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;C&#39;</span><span class="p">;</span>
+<span class="linenos">32</span><span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">60</span><span class="p">)</span>
+<span class="linenos">33</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;D&#39;</span><span class="p">;</span>
+<span class="linenos">34</span><span class="w">  </span><span class="k">else</span>
+<span class="linenos">35</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;F&#39;</span><span class="p">;</span>
+<span class="linenos">36</span><span class="p">}</span>
 <span class="linenos">37</span>
 <span class="linenos">38</span><span class="c1">// flat if-else version</span>
 <span class="linenos">39</span><span class="c1">// nested only in else block</span>
 <span class="linenos">40</span><span class="c1">// implicit conditions</span>
 <span class="linenos">41</span><span class="c1">// most readable</span>
-<span class="linenos">42</span><span class="kt">char</span><span class="w"> </span><span class="nf">percentToLetterGrade3</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">percentGrade</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">43</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">90</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">44</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;A&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">45</span><span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">80</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">46</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;B&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">47</span><span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">70</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">48</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;C&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">49</span><span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">60</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">50</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;D&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">51</span><span class="w">  </span><span class="k">else</span><span class="w"></span>
-<span class="linenos">52</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;F&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">53</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">42</span><span class="kt">char</span><span class="w"> </span><span class="nf">percentToLetterGrade3</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">percentGrade</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">43</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">90</span><span class="p">)</span>
+<span class="linenos">44</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;A&#39;</span><span class="p">;</span>
+<span class="linenos">45</span><span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">80</span><span class="p">)</span>
+<span class="linenos">46</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;B&#39;</span><span class="p">;</span>
+<span class="linenos">47</span><span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">70</span><span class="p">)</span>
+<span class="linenos">48</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;C&#39;</span><span class="p">;</span>
+<span class="linenos">49</span><span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">60</span><span class="p">)</span>
+<span class="linenos">50</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;D&#39;</span><span class="p">;</span>
+<span class="linenos">51</span><span class="w">  </span><span class="k">else</span>
+<span class="linenos">52</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;F&#39;</span><span class="p">;</span>
+<span class="linenos">53</span><span class="p">}</span>
 <span class="linenos">54</span>
 <span class="linenos">55</span><span class="c1">// flat if version</span>
 <span class="linenos">56</span><span class="c1">// no implicit condition</span>
 <span class="linenos">57</span><span class="c1">// also most readable</span>
 <span class="linenos">58</span><span class="c1">// more comparisons</span>
-<span class="linenos">59</span><span class="kt">char</span><span class="w"> </span><span class="nf">percentToLetterGrade4</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">percentGrade</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">60</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">90</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">61</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;A&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">62</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">90</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">80</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">63</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;B&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">64</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">80</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">70</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">65</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;C&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">66</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">70</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">60</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">67</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;D&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">68</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">60</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">69</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;F&#39;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">70</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">59</span><span class="kt">char</span><span class="w"> </span><span class="nf">percentToLetterGrade4</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">percentGrade</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">60</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">90</span><span class="p">)</span>
+<span class="linenos">61</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;A&#39;</span><span class="p">;</span>
+<span class="linenos">62</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">90</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">80</span><span class="p">)</span>
+<span class="linenos">63</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;B&#39;</span><span class="p">;</span>
+<span class="linenos">64</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">80</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">70</span><span class="p">)</span>
+<span class="linenos">65</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;C&#39;</span><span class="p">;</span>
+<span class="linenos">66</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">70</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">60</span><span class="p">)</span>
+<span class="linenos">67</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;D&#39;</span><span class="p">;</span>
+<span class="linenos">68</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">percentGrade</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">60</span><span class="p">)</span>
+<span class="linenos">69</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;F&#39;</span><span class="p">;</span>
+<span class="linenos">70</span><span class="p">}</span>
 </pre></div>
 </div>
 </li>
@@ -247,9 +249,9 @@ another in the natural order of the instructions.</p>
 </section>
 </section>
 <section id="loop">
-<h2>Loop<a class="headerlink" href="#loop" title="Permalink to this headline">¶</a></h2>
+<h2>Loop<a class="headerlink" href="#loop" title="Permalink to this heading">¶</a></h2>
 <section id="loop-statements">
-<h3>Loop Statements<a class="headerlink" href="#loop-statements" title="Permalink to this headline">¶</a></h3>
+<h3>Loop Statements<a class="headerlink" href="#loop-statements" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>while</p>
 <ul>
@@ -277,45 +279,45 @@ another in the natural order of the instructions.</p>
 </ul>
 </section>
 <section id="break-continue-and-return">
-<h3>Break, Continue and Return<a class="headerlink" href="#break-continue-and-return" title="Permalink to this headline">¶</a></h3>
+<h3>Break, Continue and Return<a class="headerlink" href="#break-continue-and-return" title="Permalink to this heading">¶</a></h3>
 <p>Modify the flow of control in a loop</p>
 <dl class="field-list simple">
-<dt class="field-odd">break</dt>
+<dt class="field-odd">break<span class="colon">:</span></dt>
 <dd class="field-odd"><p>jump out of the inner most loop</p>
 </dd>
-<dt class="field-even">continue</dt>
+<dt class="field-even">continue<span class="colon">:</span></dt>
 <dd class="field-even"><p>jump to the start of the next round in the loop</p>
 </dd>
-<dt class="field-odd">return</dt>
+<dt class="field-odd">return<span class="colon">:</span></dt>
 <dd class="field-odd"><p>jump out of the function</p>
 </dd>
 </dl>
 </section>
 <section id="loop-pitfalls">
-<h3>Loop Pitfalls<a class="headerlink" href="#loop-pitfalls" title="Permalink to this headline">¶</a></h3>
+<h3>Loop Pitfalls<a class="headerlink" href="#loop-pitfalls" title="Permalink to this heading">¶</a></h3>
 <ul>
 <li><p>bad initial value</p></li>
 <li><p>exit conditions are not checked right after they are changed</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// wrong! The last negative input as the terminator</span>
 <span class="linenos"> 2</span><span class="c1">// will be added to the sum</span>
-<span class="linenos"> 3</span><span class="kt">int</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 3</span><span class="kt">int</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
 <span class="linenos"> 4</span><span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">  </span><span class="c1">// do not forget to initialization to 0</span>
 <span class="linenos"> 5</span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">input</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">// where the condition is checked</span>
-<span class="linenos"> 6</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Please input a positive value to sum up (negative value to exit): &quot;</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Please input a positive value to sum up (negative value to exit): &quot;</span><span class="p">;</span>
 <span class="linenos"> 7</span><span class="w">  </span><span class="n">cin</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">input</span><span class="p">;</span><span class="w">  </span><span class="c1">// where the condition changed!</span>
 <span class="linenos"> 8</span><span class="w">  </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">input</span><span class="p">;</span><span class="w">  </span><span class="c1">// where the mistake happens</span>
-<span class="linenos"> 9</span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="p">}</span>
 <span class="linenos">10</span>
 <span class="linenos">11</span><span class="c1">// correct way</span>
-<span class="linenos">12</span><span class="kt">int</span><span class="w"> </span><span class="n">input</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">13</span><span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">14</span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="nb">true</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">15</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Please input a positive value to sum up (negative value to exit): &quot;</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">12</span><span class="kt">int</span><span class="w"> </span><span class="n">input</span><span class="p">;</span>
+<span class="linenos">13</span><span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos">14</span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="nb">true</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">15</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Please input a positive value to sum up (negative value to exit): &quot;</span><span class="p">;</span>
 <span class="linenos">16</span><span class="w">  </span><span class="n">cin</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">input</span><span class="p">;</span><span class="w">  </span><span class="c1">// where the condition changed!</span>
-<span class="linenos">17</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">input</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="linenos">17</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">input</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
 <span class="linenos">18</span><span class="w">    </span><span class="k">break</span><span class="p">;</span><span class="w">  </span><span class="c1">// where the condition is checked</span>
-<span class="linenos">19</span><span class="w">  </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">input</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">20</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">19</span><span class="w">  </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">input</span><span class="p">;</span>
+<span class="linenos">20</span><span class="p">}</span>
 </pre></div>
 </div>
 </li>
@@ -326,20 +328,20 @@ another in the natural order of the instructions.</p>
 </ul>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// expect print 0 to 5</span>
 <span class="linenos"> 2</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w">  </span><span class="c1">// last round wrong should be i &lt;= 5 or i &lt; 6</span>
-<span class="linenos"> 3</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 3</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">;</span>
 <span class="linenos"> 4</span>
 <span class="linenos"> 5</span><span class="c1">// expect to get a positive integer</span>
-<span class="linenos"> 6</span><span class="kt">int</span><span class="w"> </span><span class="n">input</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 6</span><span class="kt">int</span><span class="w"> </span><span class="n">input</span><span class="p">;</span>
 <span class="linenos"> 7</span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">input</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">// first round wrong! input has no initial value!</span>
-<span class="linenos"> 8</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Please input a positive value (negative value to exit): &quot;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 9</span><span class="w">  </span><span class="n">cin</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">input</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">10</span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Please input a positive value (negative value to exit): &quot;</span><span class="p">;</span>
+<span class="linenos"> 9</span><span class="w">  </span><span class="n">cin</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">input</span><span class="p">;</span>
+<span class="linenos">10</span><span class="p">}</span>
 </pre></div>
 </div>
 </li>
 <li><p>variable scope problem</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">;</span>
 <span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w">  </span><span class="c1">// wrong! variable i is out of scope</span>
 </pre></div>
 </div>
@@ -347,7 +349,7 @@ another in the natural order of the instructions.</p>
 </ul>
 </section>
 <section id="loop-patterns">
-<h3>Loop Patterns<a class="headerlink" href="#loop-patterns" title="Permalink to this headline">¶</a></h3>
+<h3>Loop Patterns<a class="headerlink" href="#loop-patterns" title="Permalink to this heading">¶</a></h3>
 <p>Check the <a class="reference external" href="https://github.com/uwf-fang/cop3014-examples/tree/master/ch02-variable-control-flow">chapter 2 examples</a>.</p>
 <ul class="simple">
 <li><p>input validation</p></li>
@@ -397,7 +399,7 @@ another in the natural order of the instructions.</p>
   <div>
     <h4>Next topic</h4>
     <p class="topless"><a href="../../course/cop3014/ch03.html"
-                          title="next chapter">Chapter 3 User-defined Functions</a></p>
+                          title="next chapter">Chapter 3 User-defined Functions and Modular Development</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -415,7 +417,7 @@ another in the natural order of the instructions.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -427,7 +429,7 @@ another in the natural order of the instructions.</p>
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../../course/cop3014/ch03.html" title="Chapter 3 User-defined Functions"
+          <a href="../../course/cop3014/ch03.html" title="Chapter 3 User-defined Functions and Modular Development"
              >next</a> |</li>
         <li class="right" >
           <a href="../array/array-basics.html" title="Array Basics"
@@ -440,7 +442,7 @@ another in the natural order of the instructions.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
   </body>
 </html>

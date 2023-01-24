@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Operator Overloading &#8212; IanFang Course Note Hosting  documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
@@ -13,7 +13,9 @@
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/cpp/class/op-overload.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -44,17 +46,17 @@
           <div class="body" role="main">
             
   <section id="operator-overloading">
-<h1>Operator Overloading<a class="headerlink" href="#operator-overloading" title="Permalink to this headline">¶</a></h1>
+<h1>Operator Overloading<a class="headerlink" href="#operator-overloading" title="Permalink to this heading">¶</a></h1>
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline">¶</a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading">¶</a></h2>
 <p>Assumptions: <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> are operands; <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> is the placeholder for the
 operator, not the <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> operator</p>
-<table class="colwidths-given docutils align-default" id="id1">
+<table class="docutils align-default" id="id1">
 <caption><span class="caption-text">Operator Overloading Syntax</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
 <colgroup>
-<col style="width: 14%" />
-<col style="width: 43%" />
-<col style="width: 43%" />
+<col style="width: 14.3%" />
+<col style="width: 42.9%" />
+<col style="width: 42.9%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Expression</p></th>
@@ -81,78 +83,78 @@ operator, not the <code class="docutils literal notranslate"><span class="pre">&
 </ul>
 </section>
 <section id="operator-overloading-as-methods">
-<h2>Operator overloading as methods<a class="headerlink" href="#operator-overloading-as-methods" title="Permalink to this headline">¶</a></h2>
+<h2>Operator overloading as methods<a class="headerlink" href="#operator-overloading-as-methods" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Only when <code class="docutils literal notranslate"><span class="pre">a</span></code> is a class-typed object</p></li>
 <li><p>Declare as a method in the class of the object <code class="docutils literal notranslate"><span class="pre">a</span></code></p></li>
 <li><p>Declare as <code class="docutils literal notranslate"><span class="pre">const</span></code> method to make <code class="docutils literal notranslate"><span class="pre">a</span></code> const</p></li>
 <li><p>Declare <code class="docutils literal notranslate"><span class="pre">b</span></code> as a const formal parameter to make <code class="docutils literal notranslate"><span class="pre">b</span></code></p></li>
 </ul>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">Point</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 2</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 3</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 4</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="linenos"> 5</span><span class="w">  </span><span class="n">Point</span><span class="p">()</span><span class="o">=</span><span class="k">default</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 6</span><span class="w">  </span><span class="n">Point</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="n">y</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
-<span class="linenos"> 7</span><span class="w">  </span><span class="n">Point</span><span class="w"> </span><span class="k">operator</span><span class="o">+</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Point</span><span class="o">&amp;</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 8</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">y</span><span class="p">);</span><span class="w"></span>
-<span class="linenos"> 9</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="linenos">10</span><span class="w">  </span><span class="n">Point</span><span class="w"> </span><span class="k">operator</span><span class="o">-</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">11</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Point</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">12</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="linenos">13</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">print</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">14</span><span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;X: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; Y: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">15</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="linenos">16</span><span class="p">};</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">Point</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+<span class="linenos"> 3</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+<span class="linenos"> 4</span><span class="w"> </span><span class="k">public</span><span class="o">:</span>
+<span class="linenos"> 5</span><span class="w">  </span><span class="n">Point</span><span class="p">()</span><span class="o">=</span><span class="k">default</span><span class="p">;</span>
+<span class="linenos"> 6</span><span class="w">  </span><span class="n">Point</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="n">y</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+<span class="linenos"> 7</span><span class="w">  </span><span class="n">Point</span><span class="w"> </span><span class="k">operator</span><span class="o">+</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Point</span><span class="o">&amp;</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 8</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+<span class="linenos"> 9</span><span class="w">  </span><span class="p">}</span>
+<span class="linenos">10</span><span class="w">  </span><span class="n">Point</span><span class="w"> </span><span class="k">operator</span><span class="o">-</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">11</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Point</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="p">);</span>
+<span class="linenos">12</span><span class="w">  </span><span class="p">}</span>
+<span class="linenos">13</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">print</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">14</span><span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;X: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; Y: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="linenos">15</span><span class="w">  </span><span class="p">}</span>
+<span class="linenos">16</span><span class="p">};</span>
 <span class="linenos">17</span>
-<span class="linenos">18</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">19</span><span class="w">  </span><span class="n">Point</span><span class="w"> </span><span class="n">p1</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">),</span><span class="w"> </span><span class="n">p2</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">20</span><span class="w">  </span><span class="n">Point</span><span class="w"> </span><span class="n">p3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">p2</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">21</span><span class="w">  </span><span class="n">p3</span><span class="p">.</span><span class="n">print</span><span class="p">();</span><span class="w"></span>
-<span class="linenos">22</span><span class="w">  </span><span class="p">(</span><span class="o">-</span><span class="n">p3</span><span class="p">).</span><span class="n">print</span><span class="p">();</span><span class="w"></span>
-<span class="linenos">23</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">EXIT_SUCCESS</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">24</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">18</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">19</span><span class="w">  </span><span class="n">Point</span><span class="w"> </span><span class="n">p1</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">),</span><span class="w"> </span><span class="n">p2</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="linenos">20</span><span class="w">  </span><span class="n">Point</span><span class="w"> </span><span class="n">p3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">p2</span><span class="p">;</span>
+<span class="linenos">21</span><span class="w">  </span><span class="n">p3</span><span class="p">.</span><span class="n">print</span><span class="p">();</span>
+<span class="linenos">22</span><span class="w">  </span><span class="p">(</span><span class="o">-</span><span class="n">p3</span><span class="p">).</span><span class="n">print</span><span class="p">();</span>
+<span class="linenos">23</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">EXIT_SUCCESS</span><span class="p">;</span>
+<span class="linenos">24</span><span class="p">}</span>
 </pre></div>
 </div>
 </section>
 <section id="operator-overloading-as-functions">
-<h2>Operator overloading as functions<a class="headerlink" href="#operator-overloading-as-functions" title="Permalink to this headline">¶</a></h2>
+<h2>Operator overloading as functions<a class="headerlink" href="#operator-overloading-as-functions" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> can be any type</p></li>
 <li><p>Declare <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> as a const formal parameters to make them const</p></li>
 <li><p>may be declared as a <code class="docutils literal notranslate"><span class="pre">friend</span></code> function of a class</p></li>
 </ul>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">Point</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 2</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 3</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 4</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="linenos"> 5</span><span class="w">  </span><span class="n">Point</span><span class="p">()</span><span class="o">=</span><span class="k">default</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 6</span><span class="w">  </span><span class="n">Point</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="n">y</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
-<span class="linenos"> 7</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">print</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 8</span><span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;X: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; Y: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 9</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="linenos">10</span><span class="w">  </span><span class="k">friend</span><span class="w"> </span><span class="n">Point</span><span class="w"> </span><span class="k">operator</span><span class="o">+</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Point</span><span class="o">&amp;</span><span class="w"> </span><span class="n">p1</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Point</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">p2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">Point</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+<span class="linenos"> 3</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+<span class="linenos"> 4</span><span class="w"> </span><span class="k">public</span><span class="o">:</span>
+<span class="linenos"> 5</span><span class="w">  </span><span class="n">Point</span><span class="p">()</span><span class="o">=</span><span class="k">default</span><span class="p">;</span>
+<span class="linenos"> 6</span><span class="w">  </span><span class="n">Point</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="n">y</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+<span class="linenos"> 7</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">print</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 8</span><span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;X: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; Y: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="linenos"> 9</span><span class="w">  </span><span class="p">}</span>
+<span class="linenos">10</span><span class="w">  </span><span class="k">friend</span><span class="w"> </span><span class="n">Point</span><span class="w"> </span><span class="k">operator</span><span class="o">+</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Point</span><span class="o">&amp;</span><span class="w"> </span><span class="n">p1</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Point</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">p2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="linenos">11</span><span class="w">    </span><span class="c1">// will need public getter for x and y if not defined as a friend method</span>
 <span class="linenos">12</span><span class="w">    </span><span class="c1">// return Point(p1.getX() + p2.getX(), p1.getY(), p2.getY()</span>
-<span class="linenos">13</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Point</span><span class="p">(</span><span class="n">p1</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">p2</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">p1</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">p2</span><span class="p">.</span><span class="n">y</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">14</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="linenos">15</span><span class="w">  </span><span class="k">friend</span><span class="w"> </span><span class="n">Point</span><span class="w"> </span><span class="k">operator</span><span class="o">-</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Point</span><span class="w"> </span><span class="o">&amp;</span><span class="n">p1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">16</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Point</span><span class="p">(</span><span class="o">-</span><span class="n">p1</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="n">p1</span><span class="p">.</span><span class="n">y</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">17</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="linenos">18</span><span class="p">};</span><span class="w"></span>
+<span class="linenos">13</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Point</span><span class="p">(</span><span class="n">p1</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">p2</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">p1</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">p2</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+<span class="linenos">14</span><span class="w">  </span><span class="p">}</span>
+<span class="linenos">15</span><span class="w">  </span><span class="k">friend</span><span class="w"> </span><span class="n">Point</span><span class="w"> </span><span class="k">operator</span><span class="o">-</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Point</span><span class="w"> </span><span class="o">&amp;</span><span class="n">p1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">16</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Point</span><span class="p">(</span><span class="o">-</span><span class="n">p1</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="n">p1</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+<span class="linenos">17</span><span class="w">  </span><span class="p">}</span>
+<span class="linenos">18</span><span class="p">};</span>
 <span class="linenos">19</span>
-<span class="linenos">20</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">21</span><span class="w">  </span><span class="n">Point</span><span class="w"> </span><span class="n">p1</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">),</span><span class="w"> </span><span class="n">p2</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">22</span><span class="w">  </span><span class="n">Point</span><span class="w"> </span><span class="n">p3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">p2</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">23</span><span class="w">  </span><span class="n">p3</span><span class="p">.</span><span class="n">print</span><span class="p">();</span><span class="w"></span>
-<span class="linenos">24</span><span class="w">  </span><span class="p">(</span><span class="o">-</span><span class="n">p3</span><span class="p">).</span><span class="n">print</span><span class="p">();</span><span class="w"></span>
-<span class="linenos">25</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">EXIT_SUCCESS</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">26</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">20</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">21</span><span class="w">  </span><span class="n">Point</span><span class="w"> </span><span class="n">p1</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">),</span><span class="w"> </span><span class="n">p2</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="linenos">22</span><span class="w">  </span><span class="n">Point</span><span class="w"> </span><span class="n">p3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">p2</span><span class="p">;</span>
+<span class="linenos">23</span><span class="w">  </span><span class="n">p3</span><span class="p">.</span><span class="n">print</span><span class="p">();</span>
+<span class="linenos">24</span><span class="w">  </span><span class="p">(</span><span class="o">-</span><span class="n">p3</span><span class="p">).</span><span class="n">print</span><span class="p">();</span>
+<span class="linenos">25</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">EXIT_SUCCESS</span><span class="p">;</span>
+<span class="linenos">26</span><span class="p">}</span>
 </pre></div>
 </div>
 </section>
 <section id="const">
-<h2>Const<a class="headerlink" href="#const" title="Permalink to this headline">¶</a></h2>
+<h2>Const<a class="headerlink" href="#const" title="Permalink to this heading">¶</a></h2>
 <p>It is a great practice to make everything <code class="docutils literal notranslate"><span class="pre">const</span></code> if possible. For instance,
 operators like arithmetic, relational, logical operators can usually be made
 const. Some operators like <code class="docutils literal notranslate"><span class="pre">++/--</span></code>, <code class="docutils literal notranslate"><span class="pre">=</span></code>, <code class="docutils literal notranslate"><span class="pre">+=</span></code>, etc. cannot be const as
@@ -168,7 +170,7 @@ must be const. Unless it is protected with extra pair of parenthesis.</p>
 </div>
 </section>
 <section id="best-practice">
-<h2>Best Practice<a class="headerlink" href="#best-practice" title="Permalink to this headline">¶</a></h2>
+<h2>Best Practice<a class="headerlink" href="#best-practice" title="Permalink to this heading">¶</a></h2>
 <p>Do not abuse operator overloading. Only use it when it is logically making
 sense. Anything that may surprise the user should be avoided.</p>
 </section>
@@ -221,7 +223,7 @@ sense. Anything that may surprise the user should be avoided.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -245,7 +247,7 @@ sense. Anything that may surprise the user should be avoided.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.5.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
   </body>
 </html>
