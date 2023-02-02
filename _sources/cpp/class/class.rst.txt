@@ -7,55 +7,64 @@ Objects and Classes in C++
 
 Concepts
 ========
+General Object-oriented Programming
+-----------------------------------
 :object:  a collection of coherent states and behaviors
 :class:  a template of a group of similar objects
-:states:  data, property, attribute, member variable
+:state:  data, property, attribute, member variable
 :behavior:  method, member function
 
 map to C++ concepts
 -------------------
 :class: a type
 :object: a variable (instance) of a class type
+:state: an instance variable
+:behavior: a method
 
-Class Declaration And Method Definition
-=======================================
+.. code-block:: C++
+  :caption: A simple class
+
+  class Point {
+    int x;  // an instance variable
+    int y;
+    // above: members are private by default
+   public:
+    // below: members are public
+    // below are all methods
+    Point();  // default constructor
+    Point(int x, int y);
+    void setX(int x); // mutator/setter
+    int getX() {  // accessor/getter, inline definition
+      return x;
+    }
+    void setY(int y); // mutator/setter
+    int getY();
+  };  // end with ;
+
+  // out-of-line definition after
+  Point::Point(): x(0), y(0) {}
+
+  Point::Point(int x, int y): x(x), y(y) {}
+
+  void Point::setX(int x) {
+    this->x = x;
+  }
+
+  void Point::setY(int y) {
+    this->y = y;
+  }
+
+  int Point::getY() { return y;}
+
+Class Declaration
+=================
 + class keyword (or struct keyword)
 + Usually in header file
++ Semicolon after }
 + Members
 
   * data member - instance variable
   * function member - method (member function)
-
-+ static members
-
-  * static keyword
-  * one per class
-  * global life span
-  * stored in the ``static`` memory region
-  * instance variable
-
-    - data shared among objects
-    - can only be initialized outside of the class declaration::
-
-        // my-class.hpp
-        class MyClass {
-        private:
-          static int count;  // NEVER initialize here!
-        public:
-          // ...
-        };
-
-        // my-class.cpp
-        // omit the static keyword
-        int MyClass::count = 10;
-
-
-  * method
-
-    - can not access any instance variable
-    - can access static instance variable
-    - e.g. pure math functions
-    - either ``MyClass::method()`` or ``obj.method()`` to trigger
 
 + visibility (access specifier)
 
@@ -65,9 +74,30 @@ Class Declaration And Method Definition
     - private:  accessible only within objects of the same class
     - protected, etc.: not discussed in the courses
 
+  * default
+
+    - private in class
+    - public in struct
+
   * always prefer information hiding
 
-+ type of special methods
+    - make private if possible
+    - almost all instance variables are private
+    - only methods to be used out of the class should be public
+
+Methods
+=======
++ Inline definitions: in the class declaration
++ Out-of-line definitions: out of the class declaration
+
+  * Scope resolution operator ``::`` to specify the owner of the method
+    (the class)
+  * ``this`` pointer as a pointer pointing to the current object in method
+    definition
+
+    - use of ``->`` operator
+
++ Types of methods
 
   .. glossary::
 
@@ -91,30 +121,18 @@ Class Declaration And Method Definition
       A general name of all private methods as they are usually used to *help*
       other methods.
 
-+ Method definition
-
-  * inline: in the class declaration
-  * separate: in a separate cpp file
-
-    - scope resolution operator ``::`` to specify the owner of the method
-      (the class)
-    - ``this`` pointer as a pointer pointing to the current object in method
-      definition
-
-      + use of ``->`` operator
-
 + Constructor
 
-  * initializer list
+  * No return type
+  * Initializer list (read :ref:`this <data-init>`)
 
-    - constructor only
+    - constructor only syntax
     - initializes values of instance variables
 
-  * default constructor
+  * Default constructor
 
     - no parameter
-    - when omitted, the compiler will make one for you
-    - when you want to define some different initial value
+    - define initial value
     - to trigger
 
       ::
@@ -124,15 +142,16 @@ Class Declaration And Method Definition
         MyClass obj{};
         MyClass obj[10]; // every element created using the default constructor
 
-  * parameterized constructor
-  * duplication constructors (discussed in the memory management topic)
+  * Parameterized constructor
+  * Duplication constructors (further discussed
+    :doc:`here </cpp/memory-man-class>`)
 
     - copy constructor
     - move constructor
 
-+ const methods: methods that cannot not modify any instance variable
++ Const methods: methods that cannot not modify any instance variable
 
-  * **any other method called in a const method must be const too**
+  * **any other method called within a const method must be const too**
 
   ::
 
@@ -147,42 +166,47 @@ Class Declaration And Method Definition
       }
     };
 
-+ data initialization of non-static instance variable
+.. _data-init:
 
-  #. in-class initializer (since c++11)
-  #. initializer list in the constructor (preferred)
+Data Initialization of Non-Static Instance Variable
+===================================================
+#. In-class initializer (constructor only syntax, since c++11)
+#. Initializer list in the constructor (preferred)
+#. Assignment in the constructor
 
-    .. note::
+  .. note::
 
-      Two methods can be mixed. Use the first method for initial values shared
-      among multiple constructors; Use the second method for values that differs
-      among various constructors. When used together, the first will be ignored.
+    Two methods can be mixed. Use the first method for initial values shared
+    among multiple constructors; Use the second method for values that differs
+    among various constructors. When used together, the first will be ignored.
 
-  ::
+::
 
-    // 1. in-class initializer, always effective
-    class MyClass {
-     private:
-      int value = 10;  // <-- here
-     public:
-      MyClass()=default;  // doing nothing
-    };
+  // 1. in-class initializer, always effective
+  class MyClass {
+   private:
+    int value = 10;  // <-- here
+   public:
+    MyClass()=default;  // doing nothing
+  };
 
-    // 2. constructor member initializer list, only affect one constructor
-    class MyClass {
-     private:
-      int value;
-     public:
-      MyClass(): value(10) {}  // <-- here
-    };
+  // 2. constructor member initializer list, only affect one constructor
+  class MyClass {
+   private:
+    int value;
+   public:
+    MyClass(): value(10) {}  // <-- here
+  };
 
-    // Naive assignment
-    class MyClass {
-     private:
-      int value;
-     public:
-      MyClass() {value = 10;}  // <-- here
-    };
+  // 3. Naive assignment
+  class MyClass {
+   private:
+    int value;
+   public:
+    MyClass() {
+      value = 10;  // <-- here
+    }
+  };
 
 Using Class/Object
 ==================
@@ -219,6 +243,7 @@ Using Class/Object
 
     // pointer to class
     MyClass *objPtr;
+    objPtr = new MyClass;
     // objPtr->getValue() is same as (*objPtr).getValue()
     cout << objPtr->getValue() << endl;
 
@@ -238,10 +263,8 @@ Using Class/Object
     cout << obj1.square(5) << endl;  // use object to access
     cout << MyClass::square(5) << endl;  // use class to access
 
-Class Modeling
-==============
-UML Class Diagrams
-------------------
+UML Class Diagrams (FYI)
+========================
 The Unified Modeling Language is a general-purpose modeling language used in
 software engineering. The class diagram is one type of UML diagram used to
 model classes and relationships among them in object-oriented programming.
@@ -263,6 +286,37 @@ The class diagrams used here is in the PlantUML format. You can check this
   +string getName()
   +string getID()
   }
+
+Static Members (FYI)
+====================
++ static keyword
++ one per class
++ global life span
++ stored in the ``static`` memory region
++ instance variable
+
+  * data shared among objects
+  * can only be initialized outside of the class declaration::
+
+      // my-class.hpp
+      class MyClass {
+      private:
+        static int count;  // NEVER initialize here!
+      public:
+        // ...
+      };
+
+      // my-class.cpp
+      // omit the static keyword
+      int MyClass::count = 10;
+
+
++ method
+
+  * can not access any instance variable
+  * can access static instance variable
+  * e.g. pure math functions
+  * either ``MyClass::method()`` or ``obj.method()`` to trigger
 
 Class Example
 =============
