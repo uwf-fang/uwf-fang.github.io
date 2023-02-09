@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Memory Management in Classes &#8212; IanFang Course Note Hosting  documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
@@ -15,6 +15,7 @@
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/cpp/memory-man/memory-man-class.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -87,29 +88,29 @@ objects containing dynamic data.</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// Operations you can perform without defining any methods</span>
 <span class="linenos"> 2</span><span class="c1">// works with classes containing no dynamic data</span>
 <span class="linenos"> 3</span><span class="c1">// all instance variables can be duplicated using simple assignment</span>
-<span class="linenos"> 4</span><span class="k">class</span><span class="w"> </span><span class="nc">Example</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 5</span><span class="w">  </span><span class="n">string</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 6</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 7</span><span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="n">grades</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span><span class="w"></span>
-<span class="linenos"> 8</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="linenos"> 9</span><span class="w">  </span><span class="n">string</span><span class="w"> </span><span class="n">getName</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="k">return</span><span class="w"> </span><span class="n">name</span><span class="p">;}</span><span class="w"></span>
-<span class="linenos">10</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">setName</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;}</span><span class="w"></span>
-<span class="linenos">11</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">getAge</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="k">return</span><span class="w"> </span><span class="n">age</span><span class="p">;}</span><span class="w"></span>
-<span class="linenos">12</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">setAge</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">age</span><span class="p">;}</span><span class="w"></span>
-<span class="linenos">13</span><span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="n">getGrade</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="k">return</span><span class="w"> </span><span class="n">grades</span><span class="p">[</span><span class="n">index</span><span class="p">];}</span><span class="w"></span>
-<span class="linenos">14</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">setGrade</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="n">grades</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;}</span><span class="w"></span>
-<span class="linenos">15</span><span class="p">};</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="k">class</span><span class="w"> </span><span class="nc">Example</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 5</span><span class="w">  </span><span class="n">string</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="linenos"> 6</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">;</span>
+<span class="linenos"> 7</span><span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="n">grades</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+<span class="linenos"> 8</span><span class="w"> </span><span class="k">public</span><span class="o">:</span>
+<span class="linenos"> 9</span><span class="w">  </span><span class="n">string</span><span class="w"> </span><span class="n">getName</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="k">return</span><span class="w"> </span><span class="n">name</span><span class="p">;}</span>
+<span class="linenos">10</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">setName</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;}</span>
+<span class="linenos">11</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">getAge</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="k">return</span><span class="w"> </span><span class="n">age</span><span class="p">;}</span>
+<span class="linenos">12</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">setAge</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">age</span><span class="p">;}</span>
+<span class="linenos">13</span><span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="n">getGrade</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="k">return</span><span class="w"> </span><span class="n">grades</span><span class="p">[</span><span class="n">index</span><span class="p">];}</span>
+<span class="linenos">14</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">setGrade</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="n">grades</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;}</span>
+<span class="linenos">15</span><span class="p">};</span>
 <span class="linenos">16</span>
-<span class="linenos">17</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">17</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="linenos">18</span><span class="w">  </span><span class="c1">// allowed without explicit declaration</span>
 <span class="linenos">19</span><span class="w">  </span><span class="n">Example</span><span class="w"> </span><span class="n">exp</span><span class="p">;</span><span class="w">  </span><span class="c1">// trigger default constructor</span>
-<span class="linenos">20</span><span class="w">  </span><span class="n">exp</span><span class="p">.</span><span class="n">setName</span><span class="p">(</span><span class="s">&quot;John&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">21</span><span class="w">  </span><span class="n">exp</span><span class="p">.</span><span class="n">setAge</span><span class="p">(</span><span class="mi">14</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">20</span><span class="w">  </span><span class="n">exp</span><span class="p">.</span><span class="n">setName</span><span class="p">(</span><span class="s">&quot;John&quot;</span><span class="p">);</span>
+<span class="linenos">21</span><span class="w">  </span><span class="n">exp</span><span class="p">.</span><span class="n">setAge</span><span class="p">(</span><span class="mi">14</span><span class="p">);</span>
 <span class="linenos">22</span><span class="w">  </span><span class="n">Example</span><span class="w"> </span><span class="n">exp1</span><span class="p">(</span><span class="n">exp</span><span class="p">);</span><span class="w">  </span><span class="c1">// trigger copy constructor</span>
-<span class="linenos">23</span><span class="w">  </span><span class="n">Example</span><span class="w"> </span><span class="n">exp2</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">23</span><span class="w">  </span><span class="n">Example</span><span class="w"> </span><span class="n">exp2</span><span class="p">;</span>
 <span class="linenos">24</span><span class="w">  </span><span class="n">exp2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">exp</span><span class="p">;</span><span class="w">  </span><span class="c1">// trigger copy assignment operator overload</span>
 <span class="linenos">25</span><span class="w">  </span><span class="c1">// both exp1 and exp2 will have name as &quot;John&quot; and age as 14</span>
-<span class="linenos">26</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">26</span><span class="p">}</span>
 </pre></div>
 </div>
 </section>
@@ -167,11 +168,11 @@ correctly</p></li>
 <li><p>implicit triggering <code class="docutils literal notranslate"><span class="pre">MyClass</span> <span class="pre">obj1;</span> <span class="pre">MyClass</span> <span class="pre">obj2</span> <span class="pre">=</span> <span class="pre">obj1;</span></code></p></li>
 <li><p>implicit triggering in parameter passing:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1">// declaration</span>
-<span class="linenos">2</span><span class="kt">void</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span><span class="n">MyClass</span><span class="w"> </span><span class="n">myObj</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">2</span><span class="kt">void</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span><span class="n">MyClass</span><span class="w"> </span><span class="n">myObj</span><span class="p">);</span>
 <span class="linenos">3</span>
 <span class="linenos">4</span><span class="c1">// call</span>
-<span class="linenos">5</span><span class="n">MyClass</span><span class="w"> </span><span class="n">myObj1</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">6</span><span class="n">function</span><span class="p">(</span><span class="n">myObj1</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">5</span><span class="n">MyClass</span><span class="w"> </span><span class="n">myObj1</span><span class="p">;</span>
+<span class="linenos">6</span><span class="n">function</span><span class="p">(</span><span class="n">myObj1</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
@@ -206,49 +207,49 @@ implementations can be omitted</strong> if they are never triggered.</p>
 </div>
 </li>
 </ul>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 2</span><span class="w"> </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
-<span class="linenos"> 3</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">arr</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 4</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 5</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="linenos"> 6</span><span class="w">  </span><span class="n">MyClass</span><span class="p">();</span><span class="w"></span>
-<span class="linenos"> 7</span><span class="w">  </span><span class="n">MyClass</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w"></span>
-<span class="linenos"> 8</span><span class="w">  </span><span class="n">MyClass</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">MyClass</span><span class="o">&amp;</span><span class="w"> </span><span class="n">other</span><span class="p">);</span><span class="w"></span>
-<span class="linenos"> 9</span><span class="w">  </span><span class="n">MyClass</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">MyClass</span><span class="o">&amp;</span><span class="w"> </span><span class="n">other</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">10</span><span class="w">  </span><span class="o">~</span><span class="n">MyClass</span><span class="p">();</span><span class="w"></span>
-<span class="linenos">11</span><span class="p">}</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span><span class="w"> </span><span class="k">private</span><span class="o">:</span>
+<span class="linenos"> 3</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">arr</span><span class="p">;</span>
+<span class="linenos"> 4</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">;</span>
+<span class="linenos"> 5</span><span class="w"> </span><span class="k">public</span><span class="o">:</span>
+<span class="linenos"> 6</span><span class="w">  </span><span class="n">MyClass</span><span class="p">();</span>
+<span class="linenos"> 7</span><span class="w">  </span><span class="n">MyClass</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">);</span>
+<span class="linenos"> 8</span><span class="w">  </span><span class="n">MyClass</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">MyClass</span><span class="o">&amp;</span><span class="w"> </span><span class="n">other</span><span class="p">);</span>
+<span class="linenos"> 9</span><span class="w">  </span><span class="n">MyClass</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">MyClass</span><span class="o">&amp;</span><span class="w"> </span><span class="n">other</span><span class="p">);</span>
+<span class="linenos">10</span><span class="w">  </span><span class="o">~</span><span class="n">MyClass</span><span class="p">();</span>
+<span class="linenos">11</span><span class="p">}</span>
 <span class="linenos">12</span>
-<span class="linenos">13</span><span class="n">MyClass</span><span class="o">::</span><span class="n">MyClass</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">14</span><span class="w">  </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">15</span><span class="w">  </span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">16</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">13</span><span class="n">MyClass</span><span class="o">::</span><span class="n">MyClass</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">14</span><span class="w">  </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos">15</span><span class="w">  </span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">;</span>
+<span class="linenos">16</span><span class="p">}</span>
 <span class="linenos">17</span>
-<span class="linenos">18</span><span class="n">MyClass</span><span class="o">::</span><span class="n">MyClass</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">19</span><span class="w">  </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">20</span><span class="w">  </span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="p">[</span><span class="n">size</span><span class="p">];</span><span class="w"></span>
-<span class="linenos">21</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">18</span><span class="n">MyClass</span><span class="o">::</span><span class="n">MyClass</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">19</span><span class="w">  </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size</span><span class="p">;</span>
+<span class="linenos">20</span><span class="w">  </span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="p">[</span><span class="n">size</span><span class="p">];</span>
+<span class="linenos">21</span><span class="p">}</span>
 <span class="linenos">22</span>
-<span class="linenos">23</span><span class="n">MyClass</span><span class="o">::</span><span class="n">MyClass</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">MyClass</span><span class="o">&amp;</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">23</span><span class="n">MyClass</span><span class="o">::</span><span class="n">MyClass</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">MyClass</span><span class="o">&amp;</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="linenos">24</span><span class="w">  </span><span class="c1">// you can access private members of other directly in C++!</span>
-<span class="linenos">25</span><span class="w">  </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">size</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">26</span><span class="w">  </span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="p">[</span><span class="n">size</span><span class="p">];</span><span class="w"></span>
-<span class="linenos">27</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">28</span><span class="w">    </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"></span>
-<span class="linenos">29</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">25</span><span class="w">  </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">size</span><span class="p">;</span>
+<span class="linenos">26</span><span class="w">  </span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="p">[</span><span class="n">size</span><span class="p">];</span>
+<span class="linenos">27</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="linenos">28</span><span class="w">    </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="linenos">29</span><span class="p">}</span>
 <span class="linenos">30</span>
-<span class="linenos">31</span><span class="n">MyClass</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">MyClass</span><span class="o">::</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">MyClass</span><span class="o">&amp;</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">32</span><span class="w">  </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">size</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">31</span><span class="n">MyClass</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">MyClass</span><span class="o">::</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">MyClass</span><span class="o">&amp;</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">32</span><span class="w">  </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">size</span><span class="p">;</span>
 <span class="linenos">33</span><span class="w">  </span><span class="c1">// must release memory of the old dynamic data first!</span>
-<span class="linenos">34</span><span class="w">  </span><span class="k">delete</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="n">arr</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">35</span><span class="w">  </span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="p">[</span><span class="n">size</span><span class="p">];</span><span class="w"></span>
-<span class="linenos">36</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">37</span><span class="w">    </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"></span>
+<span class="linenos">34</span><span class="w">  </span><span class="k">delete</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="n">arr</span><span class="p">;</span>
+<span class="linenos">35</span><span class="w">  </span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="p">[</span><span class="n">size</span><span class="p">];</span>
+<span class="linenos">36</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">&lt;</span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="linenos">37</span><span class="w">    </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
 <span class="linenos">38</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="k">this</span><span class="p">;</span><span class="w">  </span><span class="c1">// IMPORTANT! return the current object by reference</span>
-<span class="linenos">39</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">39</span><span class="p">}</span>
 <span class="linenos">40</span>
-<span class="linenos">41</span><span class="n">MyClass</span><span class="o">::~</span><span class="n">MyClass</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">42</span><span class="w">  </span><span class="k">delete</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="n">arr</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">43</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">41</span><span class="n">MyClass</span><span class="o">::~</span><span class="n">MyClass</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">42</span><span class="w">  </span><span class="k">delete</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="n">arr</span><span class="p">;</span>
+<span class="linenos">43</span><span class="p">}</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -267,23 +268,23 @@ implementations can be omitted</strong> if they are never triggered.</p>
 </li>
 </ul>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// the parameter is no longer &#39;const&#39; because you will modify it</span>
-<span class="linenos"> 2</span><span class="n">MyClass</span><span class="o">::</span><span class="n">MyClass</span><span class="p">(</span><span class="n">MyClass</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 3</span><span class="w">  </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">size</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 4</span><span class="w">  </span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">arr</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 2</span><span class="n">MyClass</span><span class="o">::</span><span class="n">MyClass</span><span class="p">(</span><span class="n">MyClass</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 3</span><span class="w">  </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">size</span><span class="p">;</span>
+<span class="linenos"> 4</span><span class="w">  </span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">arr</span><span class="p">;</span>
 <span class="linenos"> 5</span><span class="w">  </span><span class="c1">// must make the other object ready for destruction</span>
 <span class="linenos"> 6</span><span class="w">  </span><span class="c1">// without this step the destructor may try to delete the moved data</span>
-<span class="linenos"> 7</span><span class="w">  </span><span class="n">other</span><span class="p">.</span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">null</span><span class="p">;</span><span class="w"></span>
+<span class="linenos"> 7</span><span class="w">  </span><span class="n">other</span><span class="p">.</span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">null</span><span class="p">;</span>
 <span class="linenos"> 8</span><span class="w">  </span><span class="n">other</span><span class="p">.</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">  </span><span class="c1">// this is not necessary unless your destructor rely on the size</span>
-<span class="linenos"> 9</span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 9</span><span class="p">}</span>
 <span class="linenos">10</span>
 <span class="linenos">11</span><span class="c1">// the parameter is no longer &#39;const&#39; because you will modify it</span>
-<span class="linenos">12</span><span class="n">MyClass</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">MyClass</span><span class="o">::</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">MyClass</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">12</span><span class="n">MyClass</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">MyClass</span><span class="o">::</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">MyClass</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="linenos">13</span><span class="w">  </span><span class="c1">// Swap both the size and arr with the other object</span>
 <span class="linenos">14</span><span class="w">  </span><span class="c1">// the destructor of the other object will destroy the old data</span>
-<span class="linenos">15</span><span class="w">  </span><span class="n">swap</span><span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">size</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">16</span><span class="w">  </span><span class="n">swap</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">arr</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">17</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="k">this</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">18</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">15</span><span class="w">  </span><span class="n">swap</span><span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">size</span><span class="p">);</span>
+<span class="linenos">16</span><span class="w">  </span><span class="n">swap</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">arr</span><span class="p">);</span>
+<span class="linenos">17</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="k">this</span><span class="p">;</span>
+<span class="linenos">18</span><span class="p">}</span>
 </pre></div>
 </div>
 </section>
@@ -298,124 +299,124 @@ self-improving but not essential in exams.</p>
 changed. The last owner should take the responsibility to release the memory.</p>
 <p>#. Passing dynamic data created outside as a parameter. The recipient owns the
 data after.</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">DataType</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">DataType</span><span class="w"> </span><span class="p">{</span>
 <span class="linenos"> 2</span><span class="w">  </span><span class="c1">// ...</span>
-<span class="linenos"> 3</span><span class="p">};</span><span class="w"></span>
+<span class="linenos"> 3</span><span class="p">};</span>
 <span class="linenos"> 4</span>
-<span class="linenos"> 5</span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 6</span><span class="w"> </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
-<span class="linenos"> 7</span><span class="w">  </span><span class="n">DataType</span><span class="w"> </span><span class="o">*</span><span class="n">myDynamicData</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 8</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="linenos"> 9</span><span class="w">  </span><span class="n">MyClass</span><span class="p">(</span><span class="n">DataType</span><span class="w"> </span><span class="o">*</span><span class="n">initialData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">10</span><span class="w">    </span><span class="n">myDynamicData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">initialData</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">11</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="linenos">12</span><span class="w">  </span><span class="o">~</span><span class="n">MyClass</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 6</span><span class="w"> </span><span class="k">private</span><span class="o">:</span>
+<span class="linenos"> 7</span><span class="w">  </span><span class="n">DataType</span><span class="w"> </span><span class="o">*</span><span class="n">myDynamicData</span><span class="p">;</span>
+<span class="linenos"> 8</span><span class="w"> </span><span class="k">public</span><span class="o">:</span>
+<span class="linenos"> 9</span><span class="w">  </span><span class="n">MyClass</span><span class="p">(</span><span class="n">DataType</span><span class="w"> </span><span class="o">*</span><span class="n">initialData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">10</span><span class="w">    </span><span class="n">myDynamicData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">initialData</span><span class="p">;</span>
+<span class="linenos">11</span><span class="w">  </span><span class="p">}</span>
+<span class="linenos">12</span><span class="w">  </span><span class="o">~</span><span class="n">MyClass</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="linenos">13</span><span class="w">    </span><span class="c1">// delete here although it is not new&#39;ed in the class</span>
-<span class="linenos">14</span><span class="w">    </span><span class="k">delete</span><span class="w"> </span><span class="n">myDynamicData</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">15</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="linenos">16</span><span class="p">};</span><span class="w"></span>
+<span class="linenos">14</span><span class="w">    </span><span class="k">delete</span><span class="w"> </span><span class="n">myDynamicData</span><span class="p">;</span>
+<span class="linenos">15</span><span class="w">  </span><span class="p">}</span>
+<span class="linenos">16</span><span class="p">};</span>
 <span class="linenos">17</span>
-<span class="linenos">18</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">18</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="linenos">19</span><span class="w">  </span><span class="n">DataType</span><span class="w"> </span><span class="o">*</span><span class="n">initData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">DataType</span><span class="p">();</span><span class="w">  </span><span class="c1">// main function owns it</span>
 <span class="linenos">20</span><span class="w">  </span><span class="n">MyClass</span><span class="w"> </span><span class="n">obj1</span><span class="p">(</span><span class="n">initData</span><span class="p">);</span><span class="w">  </span><span class="c1">// obj1 owns it now</span>
 <span class="linenos">21</span>
-<span class="linenos">22</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">23</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">22</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos">23</span><span class="p">}</span>
 </pre></div>
 </div>
 <p>#. You may also choose to remove the destructor and let the main function to
 delete if you feel it make more sense that the recipients are only users of the
 dynamic data and the main function is still the owner. Sometimes the dynamic
 data is shared in this case.</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">Configuration</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">Configuration</span><span class="w"> </span><span class="p">{</span>
 <span class="linenos"> 2</span><span class="w">  </span><span class="c1">// ...</span>
-<span class="linenos"> 3</span><span class="p">};</span><span class="w"></span>
+<span class="linenos"> 3</span><span class="p">};</span>
 <span class="linenos"> 4</span>
-<span class="linenos"> 5</span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 6</span><span class="w"> </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
-<span class="linenos"> 7</span><span class="w">  </span><span class="n">Configuration</span><span class="w"> </span><span class="o">*</span><span class="n">config</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 8</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="linenos"> 9</span><span class="w">  </span><span class="n">MyClass</span><span class="p">(</span><span class="n">Configuration</span><span class="w"> </span><span class="o">*</span><span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">10</span><span class="w">    </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">config</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">11</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="linenos">12</span><span class="p">};</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 6</span><span class="w"> </span><span class="k">private</span><span class="o">:</span>
+<span class="linenos"> 7</span><span class="w">  </span><span class="n">Configuration</span><span class="w"> </span><span class="o">*</span><span class="n">config</span><span class="p">;</span>
+<span class="linenos"> 8</span><span class="w"> </span><span class="k">public</span><span class="o">:</span>
+<span class="linenos"> 9</span><span class="w">  </span><span class="n">MyClass</span><span class="p">(</span><span class="n">Configuration</span><span class="w"> </span><span class="o">*</span><span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">nullptr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">10</span><span class="w">    </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">config</span><span class="p">;</span>
+<span class="linenos">11</span><span class="w">  </span><span class="p">}</span>
+<span class="linenos">12</span><span class="p">};</span>
 <span class="linenos">13</span>
-<span class="linenos">14</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">14</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="linenos">15</span>
 <span class="linenos">16</span><span class="w">  </span><span class="n">Configuration</span><span class="w"> </span><span class="o">*</span><span class="n">config1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Configuration</span><span class="p">();</span><span class="w">  </span><span class="c1">// main function owns it</span>
 <span class="linenos">17</span><span class="w">  </span><span class="n">MyClass</span><span class="w"> </span><span class="n">obj1</span><span class="p">(</span><span class="n">config1</span><span class="p">);</span><span class="w">  </span><span class="c1">// obj1 uses it</span>
 <span class="linenos">18</span><span class="w">  </span><span class="n">MyClass</span><span class="w"> </span><span class="n">obj2</span><span class="p">(</span><span class="n">config1</span><span class="p">);</span><span class="w">  </span><span class="c1">// obj2 uses it</span>
 <span class="linenos">19</span>
-<span class="linenos">20</span><span class="w">  </span><span class="k">delete</span><span class="w"> </span><span class="n">config1</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">21</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">22</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">20</span><span class="w">  </span><span class="k">delete</span><span class="w"> </span><span class="n">config1</span><span class="p">;</span>
+<span class="linenos">21</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos">22</span><span class="p">}</span>
 </pre></div>
 </div>
 <p>The dynamic data can also be passed as a returned value.</p>
 <p>Example: The object always owns the data. The recipient just used it.</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 2</span><span class="w"> </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span><span class="w"> </span><span class="k">private</span><span class="o">:</span>
 <span class="linenos"> 3</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">array</span><span class="p">;</span><span class="w">  </span><span class="c1">// always owned by the object</span>
-<span class="linenos"> 4</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 5</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">;</span>
+<span class="linenos"> 5</span><span class="w"> </span><span class="k">public</span><span class="o">:</span>
 <span class="linenos"> 6</span><span class="w">  </span><span class="c1">// ... other methods</span>
 <span class="linenos"> 7</span><span class="w">  </span><span class="c1">// array is new&#39;ed in some methods</span>
-<span class="linenos"> 8</span><span class="w">  </span><span class="o">~</span><span class="n">MyClass</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="k">delete</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="n">array</span><span class="p">;}</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w">  </span><span class="o">~</span><span class="n">MyClass</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="k">delete</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="n">array</span><span class="p">;}</span>
 <span class="linenos"> 9</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">getArray</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="k">return</span><span class="w"> </span><span class="n">array</span><span class="p">;}</span><span class="w">  </span><span class="c1">// expose to outside</span>
-<span class="linenos">10</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">getSize</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="k">return</span><span class="w"> </span><span class="n">size</span><span class="p">;}</span><span class="w"></span>
-<span class="linenos">11</span><span class="p">};</span><span class="w"></span>
+<span class="linenos">10</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">getSize</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="k">return</span><span class="w"> </span><span class="n">size</span><span class="p">;}</span>
+<span class="linenos">11</span><span class="p">};</span>
 <span class="linenos">12</span>
-<span class="linenos">13</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">13</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="linenos">14</span><span class="w">  </span><span class="c1">// declare and initialize data in MyClass obj1;</span>
-<span class="linenos">15</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">obj1</span><span class="p">.</span><span class="n">getSize</span><span class="p">();</span><span class="w"></span>
-<span class="linenos">16</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">obj1</span><span class="p">.</span><span class="n">getArray</span><span class="p">();</span><span class="w"></span>
-<span class="linenos">17</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">18</span><span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">19</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">20</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">15</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">obj1</span><span class="p">.</span><span class="n">getSize</span><span class="p">();</span>
+<span class="linenos">16</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">obj1</span><span class="p">.</span><span class="n">getArray</span><span class="p">();</span>
+<span class="linenos">17</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="linenos">18</span><span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">;</span>
+<span class="linenos">19</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos">20</span><span class="p">}</span>
 </pre></div>
 </div>
 <p>Example: The ownership is not clear. You can either let the object or the main
 function to delete the dynamic data. Both are reasonable.</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 2</span><span class="w"> </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span><span class="w"> </span><span class="k">private</span><span class="o">:</span>
 <span class="linenos"> 3</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">array</span><span class="p">;</span><span class="w">  </span><span class="c1">// always owned by the object</span>
-<span class="linenos"> 4</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 5</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">;</span>
+<span class="linenos"> 5</span><span class="w"> </span><span class="k">public</span><span class="o">:</span>
 <span class="linenos"> 6</span><span class="w">  </span><span class="c1">// ... other methods</span>
 <span class="linenos"> 7</span><span class="w">  </span><span class="c1">// array is new&#39;ed in some methods</span>
-<span class="linenos"> 8</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">getPositiveValues</span><span class="p">();</span><span class="w"></span>
-<span class="linenos"> 9</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">getPositiveCount</span><span class="p">();</span><span class="w"></span>
-<span class="linenos">10</span><span class="p">};</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">getPositiveValues</span><span class="p">();</span>
+<span class="linenos"> 9</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">getPositiveCount</span><span class="p">();</span>
+<span class="linenos">10</span><span class="p">};</span>
 <span class="linenos">11</span>
-<span class="linenos">12</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">MyClass::getPositiveValues</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">13</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">posCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getPositiveCount</span><span class="p">();</span><span class="w"></span>
+<span class="linenos">12</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">MyClass::getPositiveValues</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">13</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">posCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getPositiveCount</span><span class="p">();</span>
 <span class="linenos">14</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="p">[</span><span class="n">posCount</span><span class="p">];</span><span class="w">  </span><span class="c1">// dynamic data, not meant to be owned</span>
-<span class="linenos">15</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">16</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">17</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">18</span><span class="w">      </span><span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">];</span><span class="w"></span>
-<span class="linenos">19</span><span class="w">      </span><span class="o">++</span><span class="n">j</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">20</span><span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="linenos">21</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">arr</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">22</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">15</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos">16</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="linenos">17</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">18</span><span class="w">      </span><span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="linenos">19</span><span class="w">      </span><span class="o">++</span><span class="n">j</span><span class="p">;</span>
+<span class="linenos">20</span><span class="w">    </span><span class="p">}</span>
+<span class="linenos">21</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">arr</span><span class="p">;</span>
+<span class="linenos">22</span><span class="p">}</span>
 <span class="linenos">23</span>
-<span class="linenos">24</span><span class="kt">int</span><span class="w"> </span><span class="nf">MyClass::getPositiveCount</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">25</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">26</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">27</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">++</span><span class="n">count</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">28</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">29</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">24</span><span class="kt">int</span><span class="w"> </span><span class="nf">MyClass::getPositiveCount</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">25</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos">26</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="linenos">27</span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">++</span><span class="n">count</span><span class="p">;</span>
+<span class="linenos">28</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+<span class="linenos">29</span><span class="p">}</span>
 <span class="linenos">30</span>
-<span class="linenos">31</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">31</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="linenos">32</span><span class="w">  </span><span class="c1">// declare and initialize data in MyClass obj1;</span>
-<span class="linenos">33</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">positiveArray</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">obj1</span><span class="p">.</span><span class="n">getPositiveValues</span><span class="p">();</span><span class="w"></span>
-<span class="linenos">34</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">obj1</span><span class="p">.</span><span class="n">getPositiveCount</span><span class="p">();</span><span class="w"></span>
-<span class="linenos">35</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">36</span><span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">positiveArray</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">33</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">positiveArray</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">obj1</span><span class="p">.</span><span class="n">getPositiveValues</span><span class="p">();</span>
+<span class="linenos">34</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">obj1</span><span class="p">.</span><span class="n">getPositiveCount</span><span class="p">();</span>
+<span class="linenos">35</span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="linenos">36</span><span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">positiveArray</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">;</span>
 <span class="linenos">37</span><span class="w">  </span><span class="k">delete</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="n">positiveArray</span><span class="p">;</span><span class="w">  </span><span class="c1">// positiveArray owned by the main function</span>
-<span class="linenos">38</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">39</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">38</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos">39</span><span class="p">}</span>
 </pre></div>
 </div>
 </section>
@@ -491,7 +492,7 @@ function to delete the dynamic data. Both are reasonable.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
   </body>
 </html>

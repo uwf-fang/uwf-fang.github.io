@@ -51,7 +51,7 @@ Definition (implementation)
 
   - Parameters listed in the parenthesis
   - Must have types and names specified
-  - May provide default value for parameters
+  - Default values are ignored
   - Stored the same way as local variables
 
 * Must align to declarations
@@ -60,12 +60,6 @@ Definition (implementation)
   - may have multiple in a same function definition
   - returns a value **as a copy (by-value)** to the caller (except in void
     functions)
-
-Default value
-=============
-+ Provide starting from last to the first parameter
-+ Must only appear once, either in declaration or definition
-+ Default value in declarations is recommended
 
 Function call
 =============
@@ -86,7 +80,7 @@ Function call
 Function Pitfalls
 =================
 * Declaration/definition after call
-* Default values both in declaration and definition of a same function
+* Default value in definition
 * No parameter name in definition
 * Type of parameter provided in function call
 
@@ -94,16 +88,8 @@ Function Pitfalls
 
     // ==== functions ====
 
-    // ---- bad default values ----
-
-    // v1 cannot have default value if v2 do not have
-    void func1(int v1 = 10, int v2);
-
-    // both have default value
-    void func1(int v1 = 10);
-    void funct(int v1 = 10) { ... }
-
     // ---- wrong definitions ----
+    void func1(int val = 10) { ... }
     void func1(int) { ... }
 
     // ---- wrong function calls ----
