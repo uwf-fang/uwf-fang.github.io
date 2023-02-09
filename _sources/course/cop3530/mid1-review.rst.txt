@@ -30,7 +30,7 @@ Environment
 + keyboard input
 + screen output
 
-+ Basic Linux bash command: ls, mkdir, cd, rm, mv, vi/vim, man, ssh
++ Basic Linux bash command: ls, mkdir, cd, rm, mv, vi/vim, ssh
 + Compilation command: ``g++``
 + Building: ``make``
 + ``git``
@@ -45,20 +45,26 @@ Modular Compilation
 -------------------
 * g++
 
+  - three stages in compilation:
+
+    + preprocessing (handle directives in the cpp files)
+    + compilation (cpp file to object file)
+    + linking (object files to executable)
+
   - -c to compile (no linking)
   - -o to specify the output file name
 
 * Header file (hpp file)
 
   - public declarations
-  - include
+  - include other headers
   - header guard
   - may include implementation as in-line methods of a class
 
 * Implementation file (cpp file)
 
   - function implementations
-  - include its own header if exist, and other includes only when used in the
+  - include its own header if exist, and other headers to be used in the
     implementations
 
 * Preproccessor derivatives
@@ -69,16 +75,20 @@ Modular Compilation
 
 * Multi-file compilation
 
-  - hpp/cpp file pair per class (group of classes)
-  - hpp/cpp file pair per group of functions
-  - main.cpp (or other names) for entry point (convention rather than
-    requirement)
-  - make to compile/build
+  - Module
+
+    + hpp/cpp file pair per class (group of classes)
+    + hpp/cpp file pair per group of functions
+
+  - Driver/Runner
+
+    * main.cpp, test.cpp, driver.cpp or other names
+    * main function
 
 * Make
 
   - automate the building process
-  - syntax
+  - syntax in makefile
 
     .. code-block::
 
@@ -101,14 +111,14 @@ Modular Compilation
 
 Memory management
 -----------------
-+ Memory sections
++ Memory sections for C++ programs
 
   * static
   * code
   * stack
   * heap
 
-+ Pointer data-type
++ Pointer data-type revisit
 
   * stores memory address
   * e.g. ``int *intPointer1;`` to define a pointer to point to an int value
@@ -149,7 +159,8 @@ Memory management
   * shallow copy
   * the big three
 
-    - what are they
+    - what are they - destructor, copy constructor, copy assignment operator
+    - when are they needed
     - how are they triggered
     - how to implement
 
@@ -158,20 +169,11 @@ Memory management
   * implicitly stores memory address
   * mostly used when passing/returning values to/from a function
 
-+ ref type vs pointer type
-
-  * ref cannot be re-assigned
-  * ref is easier to use with no ref/deref operations
-  * ref is safer to use
-  * pointer is more powerful and allows many algorithms
-  * array is also a pointer
-  * new and delete only work with pointer
-
 Algorithm Analysis
 ------------------
 + Complexity
 
-  * Resources used by an algorithm
+  * Essential resources used by an algorithm
 
     - time ``T(N)``
     - space ``S(N)``
@@ -179,7 +181,6 @@ Algorithm Analysis
   * algorithm may not be stable
 
     - best case
-    - average case
     - worst case (most important)
 
   * growth of an algorithm complexity
@@ -213,11 +214,10 @@ Algorithm Analysis
 
   * search
   * sort
-  * string ops
+  * sequence comparison (array equal, palindrome)
 
 Recursion
 ---------
-
 + function call mechanism
 
   * one stack frame in stack memory per function call
@@ -238,12 +238,16 @@ Recursion
 + recursive thinking
 
   - translate recursive definition to code
-  - may rewrite traditional algorithms in a recursive way
+  - rewrite iterative algorithms in a recursive way
 
 + recursion complexity analysis
 
-  - recursion trees
-  - how problem size reduced in each round
+  - recursion trees diagram
+  - how many round of recursive call
+
+    * how problem size reduced in each round
+
+  - time/space complexity each round
 
 Frequently Tested Contents
 ==========================
@@ -257,7 +261,7 @@ Frequently Tested Contents
 
 + Write function/class according to usages/tests
 + Calculate ``T(N)`` given a snippet
-+ Pass-by-ref functions
++ Pass-by-ref functions/methods
 + Recursive algorithms as functions
 + Pitfalls! Find them in the notes. Some are listed here.
 

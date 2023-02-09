@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
     <title>Midterm 1 Topic Review &#8212; IanFang Course Note Hosting  documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
@@ -15,7 +15,6 @@
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/course/cop3530/mid1-review.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -80,7 +79,7 @@ the help from any editor/ IDE</p></li>
 </li>
 <li><p>keyboard input</p></li>
 <li><p>screen output</p></li>
-<li><p>Basic Linux bash command: ls, mkdir, cd, rm, mv, vi/vim, man, ssh</p></li>
+<li><p>Basic Linux bash command: ls, mkdir, cd, rm, mv, vi/vim, ssh</p></li>
 <li><p>Compilation command: <code class="docutils literal notranslate"><span class="pre">g++</span></code></p></li>
 <li><p>Building: <code class="docutils literal notranslate"><span class="pre">make</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">git</span></code></p>
@@ -99,6 +98,13 @@ the help from any editor/ IDE</p></li>
 <ul>
 <li><p>g++</p>
 <ul class="simple">
+<li><p>three stages in compilation:</p>
+<ul>
+<li><p>preprocessing (handle directives in the cpp files)</p></li>
+<li><p>compilation (cpp file to object file)</p></li>
+<li><p>linking (object files to executable)</p></li>
+</ul>
+</li>
 <li><p>-c to compile (no linking)</p></li>
 <li><p>-o to specify the output file name</p></li>
 </ul>
@@ -106,7 +112,7 @@ the help from any editor/ IDE</p></li>
 <li><p>Header file (hpp file)</p>
 <ul class="simple">
 <li><p>public declarations</p></li>
-<li><p>include</p></li>
+<li><p>include other headers</p></li>
 <li><p>header guard</p></li>
 <li><p>may include implementation as in-line methods of a class</p></li>
 </ul>
@@ -114,7 +120,7 @@ the help from any editor/ IDE</p></li>
 <li><p>Implementation file (cpp file)</p>
 <ul class="simple">
 <li><p>function implementations</p></li>
-<li><p>include its own header if exist, and other includes only when used in the
+<li><p>include its own header if exist, and other headers to be used in the
 implementations</p></li>
 </ul>
 </li>
@@ -127,17 +133,24 @@ implementations</p></li>
 </li>
 <li><p>Multi-file compilation</p>
 <ul class="simple">
+<li><p>Module</p>
+<ul>
 <li><p>hpp/cpp file pair per class (group of classes)</p></li>
 <li><p>hpp/cpp file pair per group of functions</p></li>
-<li><p>main.cpp (or other names) for entry point (convention rather than
-requirement)</p></li>
-<li><p>make to compile/build</p></li>
+</ul>
+</li>
+<li><p>Driver/Runner</p>
+<ul>
+<li><p>main.cpp, test.cpp, driver.cpp or other names</p></li>
+<li><p>main function</p></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><p>Make</p>
 <ul>
 <li><p>automate the building process</p></li>
-<li><p>syntax</p>
+<li><p>syntax in makefile</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">target</span><span class="o">&gt;</span> <span class="p">:</span> <span class="o">&lt;</span><span class="n">dependencies</span><span class="o">/</span><span class="n">prerequisites</span><span class="o">&gt;</span>
         <span class="o">&lt;</span><span class="n">recipe</span><span class="o">/</span><span class="n">commands</span><span class="o">&gt;</span>
 </pre></div>
@@ -163,7 +176,7 @@ requirement)</p></li>
 <section id="memory-management">
 <h3>Memory management<a class="headerlink" href="#memory-management" title="Permalink to this heading">¶</a></h3>
 <ul>
-<li><p>Memory sections</p>
+<li><p>Memory sections for C++ programs</p>
 <ul class="simple">
 <li><p>static</p></li>
 <li><p>code</p></li>
@@ -171,7 +184,7 @@ requirement)</p></li>
 <li><p>heap</p></li>
 </ul>
 </li>
-<li><p>Pointer data-type</p>
+<li><p>Pointer data-type revisit</p>
 <ul class="simple">
 <li><p>stores memory address</p></li>
 <li><p>e.g. <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">*intPointer1;</span></code> to define a pointer to point to an int value</p></li>
@@ -214,7 +227,8 @@ the memory:</p></li>
 <li><p>shallow copy</p></li>
 <li><p>the big three</p>
 <ul>
-<li><p>what are they</p></li>
+<li><p>what are they - destructor, copy constructor, copy assignment operator</p></li>
+<li><p>when are they needed</p></li>
 <li><p>how are they triggered</p></li>
 <li><p>how to implement</p></li>
 </ul>
@@ -227,16 +241,6 @@ the memory:</p></li>
 <li><p>mostly used when passing/returning values to/from a function</p></li>
 </ul>
 </li>
-<li><p>ref type vs pointer type</p>
-<ul class="simple">
-<li><p>ref cannot be re-assigned</p></li>
-<li><p>ref is easier to use with no ref/deref operations</p></li>
-<li><p>ref is safer to use</p></li>
-<li><p>pointer is more powerful and allows many algorithms</p></li>
-<li><p>array is also a pointer</p></li>
-<li><p>new and delete only work with pointer</p></li>
-</ul>
-</li>
 </ul>
 </section>
 <section id="algorithm-analysis">
@@ -244,7 +248,7 @@ the memory:</p></li>
 <ul>
 <li><p>Complexity</p>
 <ul class="simple">
-<li><p>Resources used by an algorithm</p>
+<li><p>Essential resources used by an algorithm</p>
 <ul>
 <li><p>time <code class="docutils literal notranslate"><span class="pre">T(N)</span></code></p></li>
 <li><p>space <code class="docutils literal notranslate"><span class="pre">S(N)</span></code></p></li>
@@ -253,7 +257,6 @@ the memory:</p></li>
 <li><p>algorithm may not be stable</p>
 <ul>
 <li><p>best case</p></li>
-<li><p>average case</p></li>
 <li><p>worst case (most important)</p></li>
 </ul>
 </li>
@@ -298,7 +301,7 @@ operation</p></li>
 <ul class="simple">
 <li><p>search</p></li>
 <li><p>sort</p></li>
-<li><p>string ops</p></li>
+<li><p>sequence comparison (array equal, palindrome)</p></li>
 </ul>
 </li>
 </ul>
@@ -328,13 +331,18 @@ case</p></li>
 <li><p>recursive thinking</p>
 <ul>
 <li><p>translate recursive definition to code</p></li>
-<li><p>may rewrite traditional algorithms in a recursive way</p></li>
+<li><p>rewrite iterative algorithms in a recursive way</p></li>
 </ul>
 </li>
 <li><p>recursion complexity analysis</p>
 <ul>
-<li><p>recursion trees</p></li>
+<li><p>recursion trees diagram</p></li>
+<li><p>how many round of recursive call</p>
+<ul>
 <li><p>how problem size reduced in each round</p></li>
+</ul>
+</li>
+<li><p>time/space complexity each round</p></li>
 </ul>
 </li>
 </ul>
@@ -354,7 +362,7 @@ case</p></li>
 </li>
 <li><p>Write function/class according to usages/tests</p></li>
 <li><p>Calculate <code class="docutils literal notranslate"><span class="pre">T(N)</span></code> given a snippet</p></li>
-<li><p>Pass-by-ref functions</p></li>
+<li><p>Pass-by-ref functions/methods</p></li>
 <li><p>Recursive algorithms as functions</p></li>
 <li><p>Pitfalls! Find them in the notes. Some are listed here.</p>
 <ul>
@@ -454,7 +462,7 @@ case</p></li>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
     </div>
   </body>
 </html>

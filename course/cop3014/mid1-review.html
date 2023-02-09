@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
     <title>Midterm 1 Topic Review &#8212; IanFang Course Note Hosting  documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
@@ -15,7 +15,6 @@
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/course/cop3014/mid1-review.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -115,7 +114,7 @@ variables</p></li>
 <ul>
 <li><p>Write additional code to feed various input (parameters) to
 functions/methods and check whether the outputs are as expected</p></li>
-<li><p>assert macro</p>
+<li><p>assert macro (similar to function)</p>
 <ul>
 <li><p>cassert header</p></li>
 </ul>
@@ -151,6 +150,7 @@ exam)</p></li>
 <li><p>assignment to a variable of a different type. E.g. <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">a</span> <span class="pre">=</span> <span class="pre">4.5;</span></code></p></li>
 <li><p>mixed operation like <code class="docutils literal notranslate"><span class="pre">3</span> <span class="pre">+</span> <span class="pre">5.0</span></code> (a type of smaller range automatically
 converted to a type of larger range)</p></li>
+<li><p>parameter passing (same as initialization/assignment)</p></li>
 </ul>
 </li>
 </ul>
@@ -167,6 +167,7 @@ converted to a type of larger range)</p></li>
 <li><p>complex expression evaluation</p>
 <ul>
 <li><p><strong>step-wise</strong></p></li>
+<li><p><a class="reference internal" href="#exp-example"><span class="std std-ref">Example</span></a></p></li>
 </ul>
 </li>
 <li><p>textual literals</p>
@@ -184,7 +185,7 @@ converted to a type of larger range)</p></li>
 </li>
 <li><p>Array basics</p>
 <ul>
-<li><p>declaration syntax</p></li>
+<li><p>declaration syntax with []</p></li>
 <li><p>size must me a compilation-time constant (literal or const variable)</p></li>
 <li><p>initialization syntax (size infer)</p></li>
 <li><p>element access with the <code class="docutils literal notranslate"><span class="pre">[]</span></code> operator</p></li>
@@ -193,7 +194,8 @@ converted to a type of larger range)</p></li>
 <li><p>Reference basics</p>
 <ul>
 <li><p>declaration with mandatory initialization</p></li>
-<li><p>make an alias of a variable</p></li>
+<li><p>an alias of a variable</p></li>
+<li><p>mostly used in parameter passing</p></li>
 </ul>
 </li>
 </ul>
@@ -247,17 +249,23 @@ converted to a type of larger range)</p></li>
 <ul>
 <li><p>public declarations should be in header files if they exist</p></li>
 <li><p>may omit parameter name</p></li>
-<li><p>may provide default value</p></li>
 </ul>
 </li>
 <li><p>definitions/implementation syntax</p>
 <ul>
 <li><p>in cpp files if they exist</p></li>
 <li><p>must have parameter name</p></li>
-<li><p>must not have default value</p></li>
+<li><p>may have default value</p></li>
 </ul>
 </li>
 <li><p>function call syntax (no parameter types)</p></li>
+<li><p>Default value for parameters</p>
+<ul>
+<li><p>from right to left</p></li>
+<li><p>should only appear once, either in declaration or in definition</p></li>
+<li><p>strongly recommended to put in declaration only</p></li>
+</ul>
+</li>
 <li><p>parameter passing</p>
 <ul>
 <li><p>pass-by-value (default way)</p></li>
@@ -284,14 +292,14 @@ converted to a type of larger range)</p></li>
 <li><p>things that do not count</p>
 <ul>
 <li><p>differ only in return type</p></li>
-<li><p>differ only in parameter names</p></li>
+<li><p>differ only in names of formal parameters</p></li>
 </ul>
 </li>
 </ul>
 </li>
 <li><p>scope</p>
 <ul>
-<li><p>block scope</p></li>
+<li><p>block scope (for loop example)</p></li>
 <li><p>shadowing example</p></li>
 </ul>
 </li>
@@ -327,21 +335,19 @@ converted to a type of larger range)</p></li>
 <li><p>public declarations should be in header files if they exist</p></li>
 <li><p>may contain implementation (in-line function)</p></li>
 <li><p>may omit formal parameter names (not recommended)</p></li>
-<li><p>may add default values</p></li>
+<li><p>trailing <code class="docutils literal notranslate"><span class="pre">;</span></code> after <code class="docutils literal notranslate"><span class="pre">}</span></code></p></li>
 </ul>
 </li>
 <li><p>member function definition (out-of-line)</p>
 <ul>
-<li><p>in cpp files</p></li>
-<li><p>different from in-line</p></li>
+<li><p>should be in cpp files</p></li>
 <li><p>must use :: operator to specify the ownership of the functions</p></li>
 <li><p>must have formal parameter names</p></li>
-<li><p>should not use default values</p></li>
 </ul>
 </li>
 <li><p>member variable access and member function call</p>
 <ul>
-<li><p>use variableName.functionName()</p></li>
+<li><p>use <code class="docutils literal notranslate"><span class="pre">variableName.functionName()</span></code></p></li>
 </ul>
 </li>
 <li><p>this pointer</p>
@@ -364,10 +370,11 @@ converted to a type of larger range)</p></li>
 <ul>
 <li><p>constructor</p>
 <ul>
-<li><p>overload</p></li>
+<li><p>may overload</p></li>
 <li><p>default constructor</p></li>
 <li><p>parameterized constructor</p></li>
 <li><p>no return type</p></li>
+<li><p>same name as the class</p></li>
 </ul>
 </li>
 <li><p>destructor</p>
@@ -375,6 +382,7 @@ converted to a type of larger range)</p></li>
 <li><p>only one</p></li>
 <li><p>no parameter</p></li>
 <li><p>no return type</p></li>
+<li><p>add <code class="docutils literal notranslate"><span class="pre">~</span></code> before the name of the class</p></li>
 </ul>
 </li>
 <li><p>getter/accesser</p></li>
@@ -389,31 +397,37 @@ converted to a type of larger range)</p></li>
 </section>
 <section id="modular-development">
 <h3>Modular Development<a class="headerlink" href="#modular-development" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Module:</p>
 <ul>
 <li><p>a pair of header/implementation files per class (or a group of classes)</p></li>
 <li><p>a pair of header/implementation files per group of functions</p></li>
-<li><p>a runner/driver/tester - usually main.cpp file, with a main function</p></li>
-<li><p>test runners - optional, when tests are needed; with a main function</p></li>
-<li><p>.hpp header file in the pair</p>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>Runner/driver - usually main.cpp file, with a main function</p></li>
+<li><p>.hpp header file in a module</p>
 <ul class="simple">
 <li><p>header guard (#ifndef, #define, #endif)</p></li>
 <li><p>public declarations of class(es) or function(s)</p></li>
-<li><p>holds preprocessor derivatives - #include, etc.</p></li>
+<li><p>include only libraries required by declarations</p></li>
 </ul>
 </li>
-<li><p>.cpp file in the pair</p>
+<li><p>.cpp file in a module</p>
 <ul class="simple">
-<li><p>include libraries used in the implementation only</p></li>
-<li><p>private declarations</p></li>
-<li><p>holds function/method definitions</p></li>
+<li><p>include libraries required by the implementation (function/method
+definitions)</p></li>
+<li><p>declarations used in the current file only</p></li>
+<li><p>function/method definitions</p></li>
 </ul>
 </li>
-<li><p>.cpp file for the runner</p>
+<li><p>.cpp file as a driver/runner</p>
 <ul class="simple">
 <li><p>main function</p></li>
-<li><p>includes the paired headers to use the functions/classes</p></li>
 </ul>
 </li>
+<li><p><strong>Never include cpp files!!!</strong></p></li>
 <li><p>g++</p>
 <ul class="simple">
 <li><p>handles all three steps of the compilation process</p>
@@ -423,29 +437,29 @@ converted to a type of larger range)</p></li>
 <li><p>linking</p></li>
 </ol>
 </li>
-<li><p>-c flag to preprocess and compile only; generate object files (usually
-named as .o files)</p></li>
-<li><p>-o flag for the output file (will be the name of object file if -c is
-present)</p></li>
-<li><p>-Wall to display all warnings</p></li>
-<li><p>flag -std=c++14 follow the C++ 2014 standard</p></li>
+<li><p>add <code class="docutils literal notranslate"><span class="pre">-c</span></code> flag to preprocess and compile only; generate object files
+(usually named as .o files)</p></li>
+<li><p>use <code class="docutils literal notranslate"><span class="pre">-o</span></code> flag to specify the name of the output file (either executable
+or object file)</p></li>
+<li><p>use <code class="docutils literal notranslate"><span class="pre">-Wall</span></code> flag to display all warnings</p></li>
+<li><p>use <code class="docutils literal notranslate"><span class="pre">-std=c++14</span></code> to follow the C++ 2014 standard</p></li>
+<li><p><strong>never provide .hpp file to g++ commands!</strong></p></li>
 </ul>
 </li>
 <li><p>make</p>
 <ul>
 <li><p><strong>know the simple g++ commands</strong></p></li>
-<li><p><strong>use of variables will not be tested!</strong></p></li>
-<li><p>automate the build (preprossing, compilation, linking) process</p></li>
+<li><p><strong>use of variables in makefile will not be tested!</strong></p></li>
+<li><p>automate the building (preprossing, compilation, linking) process</p></li>
 <li><p>makefile</p>
 <ul>
+<li><p>Must use <code class="docutils literal notranslate"><span class="pre">tab</span></code> for indentation</p></li>
 <li><p>syntax</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">target</span><span class="o">&gt;</span> <span class="p">:</span> <span class="o">&lt;</span><span class="n">dependencies</span><span class="o">/</span><span class="n">prerequisites</span><span class="o">&gt;</span>
         <span class="o">&lt;</span><span class="n">recipe</span><span class="o">/</span><span class="n">commands</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 </li>
-</ul>
-<ul>
 <li><p>example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">main</span> <span class="p">:</span> <span class="n">main</span><span class="o">.</span><span class="n">o</span> <span class="n">lib1</span><span class="o">.</span><span class="n">o</span>
     <span class="n">g</span><span class="o">++</span> <span class="o">-</span><span class="n">o</span> <span class="n">main</span> <span class="n">main</span><span class="o">.</span><span class="n">o</span> <span class="n">lib1</span><span class="o">.</span><span class="n">o</span>
@@ -473,7 +487,7 @@ coding questions if you know how to apply the rule!</strong></p></li>
 <section id="object-oriented-design">
 <h3>Object oriented design<a class="headerlink" href="#object-oriented-design" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
-<li><p><strong>Will only test simple concepts.</strong></p></li>
+<li><p><strong>Will only test very simple concepts.</strong></p></li>
 <li><p>Identify/diagnose ownerships between classes and members</p></li>
 <li><p>identify objects and classes (concepts, nouns)</p></li>
 <li><p>identify states of objects, a.k.a. member variables (concepts, attributes,
@@ -487,7 +501,7 @@ verbs)</p></li>
 <ul class="simple">
 <li><p><strong>Finish coding on paper or in a plain text editor like notepad</strong></p></li>
 <li><p><strong>Write a full program project in a single cpp file</strong></p></li>
-<li><p><strong>Write a full program project with multiple files</strong></p>
+<li><p><strong>Write full or part of a modular project</strong></p>
 <ul>
 <li><p>header/cpp pairs and driver/runner cpp file</p></li>
 <li><p>how includes works</p></li>
@@ -499,22 +513,22 @@ verbs)</p></li>
 </li>
 <li><p>Write a full function</p>
 <ul>
-<li><p>based on problem to solve</p></li>
+<li><p>based on problem description</p></li>
 <li><p>based on function usages</p></li>
-<li><p>Pass-by-ref functions, e.g. swap</p></li>
+<li><p>Pass-by-ref functions, e.g. swap in code example</p></li>
 </ul>
 </li>
 <li><p><strong>Write a full class</strong></p>
 <ul>
 <li><p>class declaration</p></li>
-<li><p>member function definitions</p></li>
-<li><p>both single file or multiple file</p></li>
+<li><p>method definitions</p></li>
+<li><p>both single file or multi-file</p></li>
 <li><p>based on class usages</p></li>
 </ul>
 </li>
-<li><p>Input with validation patterns</p></li>
+<li><p>Input with validation pattern</p></li>
 <li><p>Complex expression evaluation - <strong>stepwise</strong></p></li>
-<li><p>Output of loop/branch</p>
+<li><p>Output of a tricky loop/branch</p>
 <ul>
 <li><p><strong>stepwise</strong></p></li>
 </ul>
@@ -551,7 +565,7 @@ verbs)</p></li>
 </section>
 <section id="examples">
 <h3>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h3>
-<ul>
+<ul id="exp-example">
 <li><p>complex expressions</p>
 <ul class="simple">
 <li><p><strong>step-wise evaluation</strong></p></li>
@@ -662,7 +676,7 @@ verbs)</p></li>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2022, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
     </div>
   </body>
 </html>
