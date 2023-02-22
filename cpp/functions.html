@@ -106,7 +106,7 @@ programming language.</p>
 <ul>
 <li><p>Parameters listed in the parenthesis</p></li>
 <li><p>Must have types and names specified</p></li>
-<li><p>Default values are ignored</p></li>
+<li><p>May provide default value for parameters</p></li>
 <li><p>Stored the same way as local variables</p></li>
 </ul>
 </li>
@@ -118,6 +118,14 @@ programming language.</p>
 functions)</p></li>
 </ul>
 </li>
+</ul>
+</section>
+<section id="default-value">
+<h2>Default value<a class="headerlink" href="#default-value" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Provide starting from last to the first parameter</p></li>
+<li><p>Must only appear once, either in declaration or definition</p></li>
+<li><p>Default value in declarations is recommended</p></li>
 </ul>
 </section>
 <section id="function-call">
@@ -144,18 +152,26 @@ functions)</p></li>
 <h2>Function Pitfalls<a class="headerlink" href="#function-pitfalls" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Declaration/definition after call</p></li>
-<li><p>Default value in definition</p></li>
+<li><p>Default values both in declaration and definition of a same function</p></li>
 <li><p>No parameter name in definition</p></li>
 <li><p>Type of parameter provided in function call</p></li>
 </ul>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1">// ==== functions ====</span>
-<span class="linenos">2</span>
-<span class="linenos">3</span><span class="c1">// ---- wrong definitions ----</span>
-<span class="linenos">4</span><span class="kt">void</span><span class="w"> </span><span class="nf">func1</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
-<span class="linenos">5</span><span class="kt">void</span><span class="w"> </span><span class="nf">func1</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
-<span class="linenos">6</span>
-<span class="linenos">7</span><span class="c1">// ---- wrong function calls ----</span>
-<span class="linenos">8</span><span class="n">func1</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">);</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1">// ==== functions ====</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="c1">// ---- bad default values ----</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1">// v1 cannot have default value if v2 do not have</span>
+<span class="linenos"> 6</span><span class="kt">void</span><span class="w"> </span><span class="nf">func1</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">v1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">v2</span><span class="p">);</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1">// both have default value</span>
+<span class="linenos"> 9</span><span class="kt">void</span><span class="w"> </span><span class="nf">func1</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">v1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+<span class="linenos">10</span><span class="kt">void</span><span class="w"> </span><span class="nf">funct</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">v1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="c1">// ---- wrong definitions ----</span>
+<span class="linenos">13</span><span class="kt">void</span><span class="w"> </span><span class="nf">func1</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span><span class="c1">// ---- wrong function calls ----</span>
+<span class="linenos">16</span><span class="n">func1</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">);</span>
 </pre></div>
 </div>
 </section>
@@ -397,6 +413,7 @@ The C++ language has a block-based scope.</p>
 <li><a class="reference internal" href="#purpose">Purpose</a></li>
 <li><a class="reference internal" href="#declaration">Declaration</a></li>
 <li><a class="reference internal" href="#definition-implementation">Definition (implementation)</a></li>
+<li><a class="reference internal" href="#default-value">Default value</a></li>
 <li><a class="reference internal" href="#function-call">Function call</a></li>
 <li><a class="reference internal" href="#function-pitfalls">Function Pitfalls</a></li>
 <li><a class="reference internal" href="#parameter-passing">Parameter Passing</a></li>

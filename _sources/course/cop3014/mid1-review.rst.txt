@@ -60,7 +60,7 @@ General C++ concepts
 
   * Write additional code to feed various input (parameters) to
     functions/methods and check whether the outputs are as expected
-  * assert macro
+  * assert macro (similar to function)
 
     - cassert header
 
@@ -87,6 +87,7 @@ Variable & expressions
     - assignment to a variable of a different type. E.g. ``int a = 4.5;``
     - mixed operation like ``3 + 5.0`` (a type of smaller range automatically
       converted to a type of larger range)
+    - parameter passing (same as initialization/assignment)
 
 + Operators
 
@@ -99,6 +100,7 @@ Variable & expressions
 + complex expression evaluation
 
   * **step-wise**
+  * :ref:`Example <exp-example>`
 
 + textual literals
 
@@ -112,7 +114,7 @@ Variable & expressions
 
 + Array basics
 
-  * declaration syntax
+  * declaration syntax with []
   * size must me a compilation-time constant (literal or const variable)
   * initialization syntax (size infer)
   * element access with the ``[]`` operator
@@ -120,7 +122,8 @@ Variable & expressions
 + Reference basics
 
   * declaration with mandatory initialization
-  * make an alias of a variable
+  * an alias of a variable
+  * mostly used in parameter passing
 
 Control flows
 -------------
@@ -159,15 +162,20 @@ Functions
 
   * public declarations should be in header files if they exist
   * may omit parameter name
-  * may provide default value
 
 + definitions/implementation syntax
 
   * in cpp files if they exist
   * must have parameter name
-  * must not have default value
+  * may have default value
 
 + function call syntax (no parameter types)
++ Default value for parameters
+
+  * from right to left
+  * should only appear once, either in declaration or in definition
+  * strongly recommended to put in declaration only
+
 + parameter passing
 
   * pass-by-value (default way)
@@ -190,11 +198,11 @@ Functions
   * things that do not count
 
     - differ only in return type
-    - differ only in parameter names
+    - differ only in names of formal parameters
 
 + scope
 
-  * block scope
+  * block scope (for loop example)
   * shadowing example
 
 Class
@@ -223,19 +231,17 @@ Class
     - public declarations should be in header files if they exist
     - may contain implementation (in-line function)
     - may omit formal parameter names (not recommended)
-    - may add default values
+    - trailing ``;`` after ``}``
 
   * member function definition (out-of-line)
 
-    - in cpp files
-    - different from in-line
+    - should be in cpp files
     - must use :: operator to specify the ownership of the functions
     - must have formal parameter names
-    - should not use default values
 
   * member variable access and member function call
 
-    - use variableName.functionName()
+    - use ``variableName.functionName()``
 
   * this pointer
 
@@ -253,16 +259,18 @@ Class
 
   * constructor
 
-    - overload
+    - may overload
     - default constructor
     - parameterized constructor
     - no return type
+    - same name as the class
 
   * destructor
 
     - only one
     - no parameter
     - no return type
+    - add ``~`` before the name of the class
 
   * getter/accesser
   * setter/mutator
@@ -272,27 +280,29 @@ Class
 Modular Development
 -------------------
 
-* a pair of header/implementation files per class (or a group of classes)
-* a pair of header/implementation files per group of functions
-* a runner/driver/tester - usually main.cpp file, with a main function
-* test runners - optional, when tests are needed; with a main function
-* .hpp header file in the pair
++ Module:
+
+  * a pair of header/implementation files per class (or a group of classes)
+  * a pair of header/implementation files per group of functions
+
+* Runner/driver - usually main.cpp file, with a main function
+* .hpp header file in a module
 
   - header guard (#ifndef, #define, #endif)
   - public declarations of class(es) or function(s)
-  - holds preprocessor derivatives - #include, etc.
+  - include only libraries required by declarations
 
-* .cpp file in the pair
+* .cpp file in a module
 
-  - include libraries used in the implementation only
-  - private declarations
-  - holds function/method definitions
+  - include libraries required by the implementation (function/method
+    definitions)
+  - declarations used in the current file only
+  - function/method definitions
 
-* .cpp file for the runner
+* .cpp file as a driver/runner
 
   - main function
-  - includes the paired headers to use the functions/classes
-
+* **Never include cpp files!!!**
 * g++
 
   - handles all three steps of the compilation process
@@ -301,20 +311,22 @@ Modular Development
     #. compilation
     #. linking
 
-  - -c flag to preprocess and compile only; generate object files (usually
-    named as .o files)
-  - -o flag for the output file (will be the name of object file if -c is
-    present)
-  - -Wall to display all warnings
-  - flag -std=c++14 follow the C++ 2014 standard
+  - add ``-c`` flag to preprocess and compile only; generate object files
+    (usually named as .o files)
+  - use ``-o`` flag to specify the name of the output file (either executable
+    or object file)
+  - use ``-Wall`` flag to display all warnings
+  - use ``-std=c++14`` to follow the C++ 2014 standard
+  - **never provide .hpp file to g++ commands!**
 
 * make
 
   - **know the simple g++ commands**
-  - **use of variables will not be tested!**
-  - automate the build (preprossing, compilation, linking) process
+  - **use of variables in makefile will not be tested!**
+  - automate the building (preprossing, compilation, linking) process
   - makefile
 
+    + Must use ``tab`` for indentation
     + syntax
 
       .. code-block::
@@ -322,7 +334,7 @@ Modular Development
         <target> : <dependencies/prerequisites>
                 <recipe/commands>
 
-    - example
+    + example
 
       .. code-block::
 
@@ -342,7 +354,7 @@ Top-down design
 
 Object oriented design
 ----------------------
-+ **Will only test simple concepts.**
++ **Will only test very simple concepts.**
 + Identify/diagnose ownerships between classes and members
 + identify objects and classes (concepts, nouns)
 + identify states of objects, a.k.a. member variables (concepts, attributes,
@@ -354,7 +366,7 @@ Frequently Tested Contents
 --------------------------
 + **Finish coding on paper or in a plain text editor like notepad**
 + **Write a full program project in a single cpp file**
-+ **Write a full program project with multiple files**
++ **Write full or part of a modular project**
 
   * header/cpp pairs and driver/runner cpp file
   * how includes works
@@ -365,20 +377,20 @@ Frequently Tested Contents
 
 + Write a full function
 
-  * based on problem to solve
+  * based on problem description
   * based on function usages
-  * Pass-by-ref functions, e.g. swap
+  * Pass-by-ref functions, e.g. swap in code example
 
 + **Write a full class**
 
   * class declaration
-  * member function definitions
-  * both single file or multiple file
+  * method definitions
+  * both single file or multi-file
   * based on class usages
 
-+ Input with validation patterns
++ Input with validation pattern
 + Complex expression evaluation - **stepwise**
-+ Output of loop/branch
++ Output of a tricky loop/branch
 
   * **stepwise**
 
@@ -410,6 +422,8 @@ Frequently Tested Contents
 
 Examples
 --------
+
+.. _exp-example:
 
 + complex expressions
 
