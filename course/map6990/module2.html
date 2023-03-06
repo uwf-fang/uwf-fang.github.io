@@ -1,0 +1,274 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Module 2: Parallel Hardware and Software &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/course/map6990/module2.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Module 2: Parallel Hardware and Software</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-2-parallel-hardware-and-software">
+<h1>Module 2: Parallel Hardware and Software<a class="headerlink" href="#module-2-parallel-hardware-and-software" title="Permalink to this heading">¶</a></h1>
+<section id="serial-system">
+<h2>Serial System<a class="headerlink" href="#serial-system" title="Permalink to this heading">¶</a></h2>
+<ul>
+<li><p>von Neumann architecture</p></li>
+<li><p>Operating system</p>
+<ul class="simple">
+<li><p>Multitasking</p></li>
+<li><p>Process</p></li>
+<li><p>Thread</p></li>
+</ul>
+</li>
+<li><p>Cache</p>
+<ul class="simple">
+<li><p>Cache line</p></li>
+<li><p>Cache address mapping</p></li>
+<li><p>Cache hit/miss</p></li>
+<li><p>Cache eviction policy</p></li>
+</ul>
+</li>
+<li><p>Virtual memory</p>
+<ul class="simple">
+<li><p>Page - Fixed length block like a fixed length C array</p></li>
+<li><p>Swapping - unused page moved to secondary storage</p></li>
+<li><p>Virtual address</p></li>
+</ul>
+</li>
+<li><p>Instruction level parallelism (ILP)</p>
+<p>Internal feature of a CPU to allow parallelism. Hardware dependant.</p>
+<ul class="simple">
+<li><p>pipeline - unique subunit</p></li>
+<li><p>multiple issue - replicated subunits</p></li>
+</ul>
+</li>
+<li><p>Thread level parallelism (TLP)</p></li>
+</ul>
+</section>
+<section id="parallel-hardware">
+<h2>Parallel Hardware<a class="headerlink" href="#parallel-hardware" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Type of parallelism</p>
+<ul>
+<li><p>data parallelism</p></li>
+<li><p>task parallelism</p></li>
+</ul>
+</li>
+<li><p>Categorized with Flynn’s taxonomy</p></li>
+<li><p>Single instruction single data (SISD)</p>
+<ul>
+<li><p>classic von Neumann</p></li>
+</ul>
+</li>
+<li><p>Single instruction multiple data (SIMD)</p>
+<ul>
+<li><p>Vector processor</p></li>
+<li><p>single core GPUs (Graphical Processing Unit)</p></li>
+</ul>
+</li>
+<li><p>Multiple instruction multiple data (MIMD)</p>
+<ul>
+<li><p>Types</p>
+<ul>
+<li><p>shared-memory vs distributed memory</p></li>
+<li><p>homogeneous vs heterogeneous</p></li>
+</ul>
+</li>
+<li><p>interconnections</p>
+<ul>
+<li><p>bus</p></li>
+<li><p>switch</p>
+<ul>
+<li><p>direct</p></li>
+<li><p>indirect</p></li>
+</ul>
+</li>
+<li><p>bisect width/bandwidth</p></li>
+</ul>
+</li>
+<li><p>cache coherence in shared-memory system</p>
+<ul>
+<li><p>solution</p>
+<ul>
+<li><p>snooping</p></li>
+<li><p>directory</p></li>
+</ul>
+</li>
+<li><p>false sharing - different part of a cache line is shared</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="parallel-software">
+<h2>Parallel Software<a class="headerlink" href="#parallel-software" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Focusing on homogeneous MIMD systems</p></li>
+<li><p>Single program multiple data (SPMD) programs</p>
+<ul>
+<li><p>shared-memory -&gt; threads</p></li>
+<li><p>distributed-memory -&gt; processes/computation nodes</p></li>
+</ul>
+</li>
+<li><p>In shared-memory system</p>
+<ul>
+<li><p>Communicating by I/O to the shared memory</p></li>
+<li><p>nondeterminism</p></li>
+<li><p>racing condition</p></li>
+<li><p>critical section</p></li>
+<li><p>mutual exclusion lock (MUTEX)</p></li>
+<li><p>thread-safety</p></li>
+<li><p>Libraries</p>
+<ul>
+<li><p>POSIX thread</p></li>
+<li><p>OpenMP</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>In distributed-memory system</p>
+<ul>
+<li><p>Communicating by message passing</p></li>
+<li><p>The Message-Passing Interface (MPI) standard</p>
+<ul>
+<li><p>MPICH</p></li>
+<li><p>OpenMPI</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="performance-model">
+<h2>Performance Model<a class="headerlink" href="#performance-model" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Problem size <code class="docutils literal notranslate"><span class="pre">N</span></code></p></li>
+<li><p>Speedup <code class="docutils literal notranslate"><span class="pre">S</span></code></p></li>
+<li><p>Efficiency <code class="docutils literal notranslate"><span class="pre">E</span></code></p></li>
+<li><p>Number of processes/threads/nodes <code class="docutils literal notranslate"><span class="pre">P</span></code></p></li>
+<li><p>Amdahl’s law</p></li>
+<li><p>Scalability</p>
+<ul>
+<li><p>strong</p>
+<ul>
+<li><p>plot: <code class="docutils literal notranslate"><span class="pre">E/S</span></code> vs <code class="docutils literal notranslate"><span class="pre">P</span></code> with fixed <code class="docutils literal notranslate"><span class="pre">N</span></code></p></li>
+</ul>
+</li>
+<li><p>weak</p>
+<ul>
+<li><p>plot: <code class="docutils literal notranslate"><span class="pre">E</span></code> vs <code class="docutils literal notranslate"><span class="pre">P</span></code> with fixed <code class="docutils literal notranslate"><span class="pre">N/P</span></code> ratio</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Timing</p></li>
+</ul>
+</section>
+<section id="parallel-program-design">
+<h2>Parallel Program Design<a class="headerlink" href="#parallel-program-design" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Foster’s methodology</p>
+<ul>
+<li><p>partition</p></li>
+<li><p>agglomeration</p></li>
+<li><p>mapping</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="addition-content">
+<h2>Addition Content<a class="headerlink" href="#addition-content" title="Permalink to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Module 2: Parallel Hardware and Software</a><ul>
+<li><a class="reference internal" href="#serial-system">Serial System</a></li>
+<li><a class="reference internal" href="#parallel-hardware">Parallel Hardware</a></li>
+<li><a class="reference internal" href="#parallel-software">Parallel Software</a></li>
+<li><a class="reference internal" href="#performance-model">Performance Model</a></li>
+<li><a class="reference internal" href="#parallel-program-design">Parallel Program Design</a></li>
+<li><a class="reference internal" href="#addition-content">Addition Content</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/course/map6990/module2.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Module 2: Parallel Hardware and Software</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>

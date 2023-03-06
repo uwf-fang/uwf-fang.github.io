@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Module 6: MPI Case Study, and Pthread &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/course/map6990/module6.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Module 6: MPI Case Study, and Pthread</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-6-mpi-case-study-and-pthread">
+<h1>Module 6: MPI Case Study, and Pthread<a class="headerlink" href="#module-6-mpi-case-study-and-pthread" title="Permalink to this heading">¶</a></h1>
+<section id="pthread">
+<h2>Pthread<a class="headerlink" href="#pthread" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>POSIX standard: Unix, Linux, BSD, etc.</p></li>
+<li><p>Thread library for POSIX Operating Systems</p></li>
+<li><p>Code</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">pthread.h</span></code> header file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-lpthread</span></code> linking flag for gcc</p></li>
+</ul>
+</li>
+<li><p>Types</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">pthread_t</span></code> thread handle object used to refer to a thread</p></li>
+</ul>
+</li>
+<li><p>Function as parameter</p>
+<ul>
+<li><p>declaration like <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*function_name</span> <span class="pre">(void</span> <span class="pre">*</span> <span class="pre">arg);</span></code></p></li>
+<li><p>parameter declared like <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*(*function_name)(void)</span></code></p></li>
+</ul>
+</li>
+<li><p>API</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">pthread-create</span></code> create a thread, run the function, return a pthread_t
+object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pthread-join</span></code> wait for the thread to finish</p></li>
+</ul>
+</li>
+<li><p>Compilation with gcc</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">-pthread</span></code> flag, preferred</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-lpthread</span></code> old flag, retiring, should put at the very end of the gcc
+command line</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="case-studies">
+<h2>Case Studies<a class="headerlink" href="#case-studies" title="Permalink to this heading">¶</a></h2>
+<section id="odd-even-transportation-sort">
+<h3>Odd-even transportation sort<a class="headerlink" href="#odd-even-transportation-sort" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Modified bubble sort to adapt to parallelization</p></li>
+<li><p>Assuming size <code class="docutils literal notranslate"><span class="pre">N</span></code>, parallelized on <code class="docutils literal notranslate"><span class="pre">P</span></code> processes</p></li>
+<li><p>Serial version</p>
+<ul>
+<li><p>Phase 0: compare and swap between even element with its right neighbor</p></li>
+<li><p>Phase 1: compare and swap between even element with its left neighbor</p></li>
+<li><p>N rounds to finish</p></li>
+</ul>
+</li>
+<li><p>Parallelized with MPI</p>
+<ul>
+<li><p>Sort the local section first</p></li>
+<li><p>Phase 0: compare and exchange between even process with its right neighbor</p></li>
+<li><p>Phase 1: compare and swap between even process with its left neighbor</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="n-body-mpi">
+<h3>N-body MPI<a class="headerlink" href="#n-body-mpi" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Decide the data structure</p>
+<ul>
+<li><p>each process stores a whole array of masses</p></li>
+<li><p>computes physical metrics of its share of local particles</p></li>
+<li><p>allgether to collect local position array to global position array</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Module 6: MPI Case Study, and Pthread</a><ul>
+<li><a class="reference internal" href="#pthread">Pthread</a></li>
+<li><a class="reference internal" href="#case-studies">Case Studies</a><ul>
+<li><a class="reference internal" href="#odd-even-transportation-sort">Odd-even transportation sort</a></li>
+<li><a class="reference internal" href="#n-body-mpi">N-body MPI</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/course/map6990/module6.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Module 6: MPI Case Study, and Pthread</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>
