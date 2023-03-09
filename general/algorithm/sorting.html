@@ -49,6 +49,12 @@
             
   <section id="sorting-algorithms">
 <h1>Sorting Algorithms<a class="headerlink" href="#sorting-algorithms" title="Permalink to this heading">¶</a></h1>
+<section id="code-examples">
+<h2>Code examples<a class="headerlink" href="#code-examples" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/uwf-fang/cop3014-examples/tree/main/ch07-sorting-string">Chapter 7</a></p></li>
+</ul>
+</section>
 <section id="general-info">
 <h2>General info<a class="headerlink" href="#general-info" title="Permalink to this heading">¶</a></h2>
 <ul>
@@ -62,23 +68,24 @@ visualizations of common algorithms and data structures.</p>
 </ul>
 </li>
 <li><p>Categories</p>
-<p>All algorithms not mentioned in the book is for your information only.</p>
+<p>All algorithms not mentioned in the book is for your information only. Only
+algorithm with bold names are covered in the book.</p>
 <ul class="simple">
 <li><p>Comparison based - Best algorithm complexity <span class="math notranslate nohighlight">\(O(nlog(n))\)</span></p>
 <ul>
 <li><p>selection</p></li>
-<li><p>insertion</p></li>
+<li><p><strong>insertion</strong></p></li>
 <li><p>bubble</p></li>
-<li><p>quick</p></li>
-<li><p>merge</p></li>
 <li><p>shell</p></li>
+<li><p><strong>quick</strong></p></li>
+<li><p><strong>merge</strong></p></li>
+<li><p><strong>heap</strong></p></li>
 </ul>
 </li>
 <li><p>Other</p>
 <ul>
-<li><p>Heap</p></li>
 <li><p>Bucket</p></li>
-<li><p>Radix</p></li>
+<li><p><strong>Radix</strong></p></li>
 <li><p>Counting</p></li>
 </ul>
 </li>
@@ -88,7 +95,7 @@ visualizations of common algorithms and data structures.</p>
 <ul class="simple">
 <li><p>simple <span class="math notranslate nohighlight">\(O(n^{2})\)</span>: insert, selection, bubble</p></li>
 <li><p>fast <span class="math notranslate nohighlight">\(O(nlog(n))\)</span>: quick, merge, heap</p></li>
-<li><p>linear: radix <span class="math notranslate nohighlight">\(O(nk)\)</span>, bucket <span class="math notranslate nohighlight">\(O(n + k)\)</span></p></li>
+<li><p>linear: radix <span class="math notranslate nohighlight">\(O(nk) = O(n)\)</span>, bucket <span class="math notranslate nohighlight">\(O(n + k) = O(n)\)</span></p></li>
 </ul>
 </li>
 <li><p>Storage Space</p>
@@ -111,18 +118,25 @@ visualizations of common algorithms and data structures.</p>
 </section>
 <section id="insertion-sort">
 <h2>Insertion Sort<a class="headerlink" href="#insertion-sort" title="Permalink to this heading">¶</a></h2>
-<p>Repeatedly take one element from the unsorted section and insert into the sorted
-section.</p>
+<p>Repeatedly take one element from the unsorted section and insert into the
+sorted section.</p>
 <ul class="simple">
-<li><p>Complexity: <span class="math notranslate nohighlight">\(O(n^{2})\)</span></p></li>
+<li><p>Complexity: <span class="math notranslate nohighlight">\(O(n^{2})\)</span> for array</p></li>
+<li><p>Efficient with linked-lists</p></li>
 </ul>
 </section>
 <section id="quick-sort">
 <h2>Quick Sort<a class="headerlink" href="#quick-sort" title="Permalink to this heading">¶</a></h2>
-<p>Select one element (pivot), use this element to partition the whole list to
-obtain two partitions. Repeat the same process on the two partitions
-respectively.</p>
+<p>Call a quick partitioning algorithm to partition the whole list to two
+sections, repeat the same procedure recursively on both sections.</p>
+<section id="quick-partitioning">
+<h3>Quick Partitioning<a class="headerlink" href="#quick-partitioning" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
+<li><p>A useful algorithm</p></li>
+<li><p>Select one element, known as pivot, use this element to partition the whole
+list to two sections, such that all elements in the left section are less and
+equal than the pivot and all elements in the right section are greater than
+the pivot. (Assuming targeting an ascending order)</p></li>
 <li><p>Complexity: not stable</p>
 <ul>
 <li><p>average <span class="math notranslate nohighlight">\(O(nlog(n))\)</span></p></li>
@@ -143,6 +157,7 @@ respectively.</p>
 </li>
 </ul>
 </section>
+</section>
 <section id="merge-sort">
 <h2>Merge Sort<a class="headerlink" href="#merge-sort" title="Permalink to this heading">¶</a></h2>
 <p>Take two sorted list and merge into a larger sorted list recursively.</p>
@@ -152,13 +167,14 @@ respectively.</p>
 <ul>
 <li><p>top-down</p>
 <ul>
+<li><p>cut a list to two halves, sort both halves first, then merge</p></li>
 <li><p>usually recursive</p></li>
 <li><p>stop repetition when the size of section is 1 or 0</p></li>
 <li><p>in each round</p>
 <ul>
 <li><p>sort first half</p></li>
 <li><p>sort second half</p></li>
-<li><p>merge</p></li>
+<li><p>sorted merge</p></li>
 </ul>
 </li>
 </ul>
@@ -177,8 +193,8 @@ respectively.</p>
 </section>
 <section id="radix-sort">
 <h2>Radix Sort<a class="headerlink" href="#radix-sort" title="Permalink to this heading">¶</a></h2>
-<p>Not comparison based. Collect elements into buckets multiple times. Dependant on
-the semantic of the content. Example: use digits on each position of decimal
+<p>Not comparison based. Collect elements into buckets multiple times. Dependant
+on the semantic of the content. Example: use digits on each position of decimal
 numbers as buckets; starting from the right most digit; collect numbers into
 buckets, flatten, collect again to sort.</p>
 </section>
@@ -198,6 +214,7 @@ buckets, flatten, collect again to sort.</p>
 <li><p>best fit: out-of-space algorithms like merge sort and bucket sort</p></li>
 <li><p>other choices: algorithms that scan through elements one by one like
 insertion sort, quick sort, bubble sort</p></li>
+<li><p>not suitable: shell sort, heap sort</p></li>
 </ul>
 </li>
 </ul>
@@ -215,9 +232,13 @@ insertion sort, quick sort, bubble sort</p></li>
     <h3><a href="../../index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">Sorting Algorithms</a><ul>
+<li><a class="reference internal" href="#code-examples">Code examples</a></li>
 <li><a class="reference internal" href="#general-info">General info</a></li>
 <li><a class="reference internal" href="#insertion-sort">Insertion Sort</a></li>
-<li><a class="reference internal" href="#quick-sort">Quick Sort</a></li>
+<li><a class="reference internal" href="#quick-sort">Quick Sort</a><ul>
+<li><a class="reference internal" href="#quick-partitioning">Quick Partitioning</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#merge-sort">Merge Sort</a></li>
 <li><a class="reference internal" href="#radix-sort">Radix Sort</a></li>
 <li><a class="reference internal" href="#implementation-notes">Implementation Notes</a></li>

@@ -5,6 +5,12 @@
 Sorting Algorithms
 ******************
 
+Code examples
+=============
++ `Chapter 7 <ch7eg_>`_
+
+.. _ch7eg: https://github.com/uwf-fang/cop3014-examples/tree/main/ch07-sorting-string
+
 General info
 ============
 
@@ -19,29 +25,30 @@ General info
 
 + Categories
 
-  All algorithms not mentioned in the book is for your information only.
+  All algorithms not mentioned in the book is for your information only. Only
+  algorithm with bold names are covered in the book.
 
   * Comparison based - Best algorithm complexity :math:`O(nlog(n))`
 
     - selection
-    - insertion
+    - **insertion**
     - bubble
-    - quick
-    - merge
     - shell
+    - **quick**
+    - **merge**
+    - **heap**
 
   * Other
 
-    - Heap
     - Bucket
-    - Radix
+    - **Radix**
     - Counting
 
 + Complexity
 
   * simple :math:`O(n^{2})`: insert, selection, bubble
   * fast :math:`O(nlog(n))`: quick, merge, heap
-  * linear: radix :math:`O(nk)`, bucket :math:`O(n + k)`
+  * linear: radix :math:`O(nk) = O(n)`, bucket :math:`O(n + k) = O(n)`
 
 + Storage Space
 
@@ -57,19 +64,24 @@ General info
 
 Insertion Sort
 ==============
+Repeatedly take one element from the unsorted section and insert into the
+sorted section.
 
-Repeatedly take one element from the unsorted section and insert into the sorted
-section.
-
-+ Complexity: :math:`O(n^{2})`
++ Complexity: :math:`O(n^{2})` for array
++ Efficient with linked-lists
 
 Quick Sort
 ==========
+Call a quick partitioning algorithm to partition the whole list to two
+sections, repeat the same procedure recursively on both sections.
 
-Select one element (pivot), use this element to partition the whole list to
-obtain two partitions. Repeat the same process on the two partitions
-respectively.
-
+Quick Partitioning
+------------------
++ A useful algorithm
++ Select one element, known as pivot, use this element to partition the whole
+  list to two sections, such that all elements in the left section are less and
+  equal than the pivot and all elements in the right section are greater than
+  the pivot. (Assuming targeting an ascending order)
 + Complexity: not stable
 
   * average :math:`O(nlog(n))`
@@ -87,7 +99,6 @@ respectively.
 
 Merge Sort
 ==========
-
 Take two sorted list and merge into a larger sorted list recursively.
 
 + Complexity: stable :math:`O(nlog(n))`
@@ -95,13 +106,14 @@ Take two sorted list and merge into a larger sorted list recursively.
 
   * top-down
 
+    - cut a list to two halves, sort both halves first, then merge
     - usually recursive
     - stop repetition when the size of section is 1 or 0
     - in each round
 
       + sort first half
       + sort second half
-      + merge
+      + sorted merge
 
   * bottom-up (not mentioned in the book)
 
@@ -112,9 +124,8 @@ Take two sorted list and merge into a larger sorted list recursively.
 
 Radix Sort
 ==========
-
-Not comparison based. Collect elements into buckets multiple times. Dependant on
-the semantic of the content. Example: use digits on each position of decimal
+Not comparison based. Collect elements into buckets multiple times. Dependant
+on the semantic of the content. Example: use digits on each position of decimal
 numbers as buckets; starting from the right most digit; collect numbers into
 buckets, flatten, collect again to sort.
 
@@ -132,3 +143,4 @@ Implementation Notes
   * best fit: out-of-space algorithms like merge sort and bucket sort
   * other choices: algorithms that scan through elements one by one like
     insertion sort, quick sort, bubble sort
+  * not suitable: shell sort, heap sort
