@@ -1,0 +1,191 @@
+File systems/Storage services for Big Data
+==========================================
+
+Hello! Today we will be discussing file systems for big data. Big data requires
+storage and file systems that are capable of handling massive amounts of data.
+In this session, we will be focusing on three file systems: Hadoop Distributed
+File System (HDFS), Amazon S3, Azure Data Lake Storage (ADLS) and Google Cloud
+Storage.
+
+Hadoop Distributed File System (HDFS)
+-------------------------------------
+Hadoop Distributed File System (HDFS) is a distributed file system that is part
+of the Hadoop ecosystem. It is designed to store and manage large datasets
+across multiple commodity servers and provides fault tolerance, scalability,
+and high availability. HDFS is widely used in big data applications, such as
+data processing, analytics, and machine learning, and it can handle large files
+and data sets that exceed the capacity of a single machine.
+
++ Overview of HDFS architecture and components [#]_, [#]_
+
+  HDFS is a distributed file system that is designed to store and manage
+  large datasets across multiple commodity servers. The HDFS architecture
+  consists of two main components: NameNode and DataNode. The NameNode
+  manages the file system metadata, including the namespace, access control,
+  and file-to-block mappings. The DataNode, on the other hand, manages the
+  actual data storage and retrieval operations. Multiple DataNodes are
+  deployed across the Hadoop cluster to provide fault tolerance and
+  scalability.
+
++ HDFS data organization (blocks, replication, rack awareness)
+
+  HDFS organizes data into blocks, which are fixed-size units of data that
+  can be spread across multiple DataNodes. The default block size is 128 MB,
+  but it can be configured based on the specific use case. HDFS also supports
+  replication, which is the process of making copies of each block across
+  multiple DataNodes to ensure data durability and availability. The
+  replication factor is typically set to three, but it can be adjusted based
+  on the storage capacity and performance requirements. HDFS also supports
+  rack awareness, which is the process of placing DataNodes on different
+  racks to ensure data availability and fault tolerance in case of rack
+  failures.
+
++ HDFS operations (reading, writing, appending, deleting)
+
+  HDFS provides basic file system operations, such as reading, writing,
+  appending, and deleting files. Reading and writing operations are performed
+  by the client application, which communicates with the NameNode to obtain
+  the file location and the DataNodes to read or write the data blocks.
+  Appending data to an existing file is also supported, but it requires
+  specific append-only semantics to ensure data consistency. Deleting files
+  is also supported, but it is a non-trivial operation that involves multiple
+  steps to remove the file metadata and the associated data blocks.
+
+.. rubric:: References
+
+.. [#] "HDFS Architecture", `Apache official documentation <hdfs design_>`_
+.. [#] "Apache Hadoop HDFS Architecture", `edureka.co`_
+
+.. _hdfs design: https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html
+.. _edureka.co: https://www.edureka.co/blog/apache-hadoop-hdfs-architecture/
+
+Amazon S3 object store service
+------------------------------
+
+Amazon S3 is a highly scalable, secure, and durable object storage service that
+provides businesses with a simple and cost-effective way to store and retrieve
+any amount of data from anywhere on the web. [#]_ S3 offers various storage
+classes, data organization features, and operations to meet different use cases
+and requirements. Read the official user guide for more details. [#]_
+
++ S3 storage classes [#]_
+
+  S3 storage classes are designed to provide different levels of durability,
+  availability, and performance at different costs. The standard storage class
+  is suitable for frequently accessed data and offers high durability and
+  availability. The infrequent access (IA) variations of storage classes are
+  suitable for data that is accessed less frequently but needs to be readily
+  available when needed, and it offers lower storage costs but higher retrieval
+  costs. Glacier is a low-cost storage class that is designed for archiving
+  data for long-term retention and disaster recovery, with low retrieval costs
+  and high durability. When the needs are unknown,
+
++ S3 data organization (buckets, objects, keys)
+
+  S3 data organization is based on the concept of buckets, objects, and keys.
+  A bucket is a container for objects, and each object is identified by a
+  unique key. S3 allows for the creation of an unlimited number of buckets
+  and objects, with each object having a size limit of 5 terabytes. S3 also
+  supports versioning, which allows for the retention of multiple versions of
+  an object.
+
++ S3 operations (uploading, downloading, copying, deleting)
+
+  S3 operations provide a simple and intuitive interface for uploading,
+  downloading, copying, and deleting objects. Uploading objects to S3 can be
+  done through the AWS Management Console, API calls, command-line tools, or
+  third-party applications. Downloading objects can be done through a web
+  browser, API calls, or command-line tools. S3 also provides features such
+  as cross-region replication, lifecycle policies, and object tagging for
+  advanced management and automation of data.
+
+.. rubric:: References:
+
+.. [#] "Amazon S3 Storage Service", `official website <s3_>`_
+.. [#] "S3 User Guides", `official documentation <s3 guide_>`_
+.. [#] "S3 Storage Classes", `Official documentation <store class_>`_
+
+.. _s3: https://aws.amazon.com/s3/
+.. _s3 guide: https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html
+.. _store class: https://aws.amazon.com/s3/storage-classes
+
+
+Azure Data Lake Storage (ADLS)
+------------------------------
+
+Azure Data Lake Storage (ADLS) is a cloud-based blob storage and management
+service offered by Microsoft Azure. The concept of a blob is similar to the
+concept of a bucket to Amazon S3. It is designed for big data scenarios and can
+handle large-scale data analytics workloads. ADLS provides a hierarchical
+namespace that allows users to organize and manage data in a structured manner.
+The newest version in 2023 is Gen2. [#]_
+
++ Overview of ADLS storage tiers
+
+  ADLS offers three different storage tiers, including hot, cool, and archive.
+  The hot tier is for frequently accessed data and has the lowest access
+  latency and highest cost. The cool tier is for less frequently accessed data
+  and has a higher access latency than the hot tier but lower cost. The archive
+  tier is for long-term storage of infrequently accessed data and has the
+  highest latency and lowest cost.
+
++ ADLS data organization
+
+  ADLS organizes data into a hierarchical file system, similar to a traditional
+  file system. It uses directories and files to store and organize data.
+  Directories can contain sub-directories, and files can be of any size.
+
++ ADLS operations
+
+  ADLS supports a variety of operations to manage and manipulate data stored in
+  the system. These operations include creating new files or directories,
+  reading data from files, updating files or directories, and deleting files or
+  directories. ADLS also supports access control and security features,
+  allowing users to manage access to data stored in the system.
+
+.. rubric:: References:
+
+.. [#] "Introduction to Azure Data Lake Storage Gen2", `microsoft.com <adls2_>`_
+
+.. _adls2: https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction
+
+Google Cloud Storage
+--------------------
+Google Cloud Storage is a highly available and durable object storage service
+provided by Google Cloud Platform. It is designed to store and manage large
+data sets and supports various use cases such as backup and archive, big data
+analytics, and content distribution. [#]_
+
++ Google Cloud Storage classes
+
+  Google Cloud Storage offers four different storage classes, each with
+  different trade-offs between availability, performance, and cost. The
+  multi-regional class is for frequently accessed data and has the highest
+  availability and lowest access latency, but it is the most expensive. The
+  regional class is for data that is accessed less frequently than
+  multi-regional data but still needs low-latency access. The nearline class is
+  for data that is accessed infrequently but can tolerate longer access times.
+  Finally, the coldline class is for data that is accessed very rarely and can
+  tolerate high access latency.
+
++ Google Cloud Storage data organization
+
+  Google Cloud Storage organizes data into buckets, which are top-level
+  containers that can be used to store and access objects. Objects, in turn,
+  are files or pieces of data that can be uploaded, downloaded, and deleted
+  from a bucket. Objects are identified using a unique object name, called a
+  key.
+
++ Google Cloud Storage operations
+
+  Google Cloud Storage supports a variety of operations for managing and
+  manipulating data stored in the system, including uploading, downloading,
+  copying, and deleting objects. It also provides features such as access
+  control and versioning to manage access to data and keep track of changes to
+  objects.
+
+.. rubric:: References:
+
+.. [#] "Google Cloud Storage", `Official documentation <gcs_>`_
+
+.. _gcs: https://cloud.google.com/storage/
