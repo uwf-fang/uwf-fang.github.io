@@ -1,0 +1,591 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Big Data Processing For Big Data &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/course/map6990/data-processing.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Final Topic Review" href="final.html" />
+    <link rel="prev" title="Big Data Life Cycle" href="life-cycle.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="final.html" title="Final Topic Review"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="life-cycle.html" title="Big Data Life Cycle"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >MAP 6990 Big Data for Data Science</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="module3.html" accesskey="U">Module 3: Big Data Life Cycle; Data Processing For Big Data</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Big Data Processing For Big Data</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="big-data-processing-for-big-data">
+<h1>Big Data Processing For Big Data<a class="headerlink" href="#big-data-processing-for-big-data" title="Permalink to this heading">¶</a></h1>
+<p>The term “data processing” in this course refers to the procedure of turning
+raw data from the data acquisition stage into processed data that are ready for
+consumption by the subsequent data analysis tasks.</p>
+<p>Data processing is typically the most difficult and time-consuming step in the
+entire process due to the complexity of the raw data used in big data
+applications.</p>
+<p>Numerous data processing tasks are frequently used in this stage. The most
+typical tasks are described in the list below.</p>
+<section id="mapreduce-paradigm">
+<h2>MapReduce Paradigm<a class="headerlink" href="#mapreduce-paradigm" title="Permalink to this heading">¶</a></h2>
+<section id="overview-and-importance">
+<h3>Overview and importance<a class="headerlink" href="#overview-and-importance" title="Permalink to this heading">¶</a></h3>
+<p>The MapReduce paradigm is a popular and effective data processing technique
+used in Big Data processing. It allows for the distributed processing of large
+data sets across a cluster of computers using a simple programming model. The
+paradigm involves two major functions - Map and Reduce - which help break down
+the data processing task into smaller, manageable chunks, thereby improving the
+efficiency and scalability of the processing. With the exponential growth of
+data in recent years, the MapReduce paradigm has become increasingly important
+for processing Big Data, particularly for organizations dealing with large
+volumes of data. The paradigm offers a range of advantages, including
+scalability, fault tolerance, flexibility, and cost-effectiveness, making it a
+popular choice for data processing. However, it also poses certain challenges,
+such as a steep learning curve and compatibility issues with legacy systems.
+Despite these challenges, the MapReduce paradigm remains a critical tool in Big
+Data processing, and its importance is only set to grow as the demand for Big
+Data processing continues to increase.</p>
+</section>
+<section id="compare-to-traditional-methods">
+<h3>Compare to traditional methods<a class="headerlink" href="#compare-to-traditional-methods" title="Permalink to this heading">¶</a></h3>
+<p>MapReduce is a paradigm that is designed to process large-scale data
+efficiently and effectively. It is a <strong>distributed computing model</strong> that is
+used to process and analyze large data sets by dividing them into smaller, more
+manageable pieces. In contrast, traditional data processing techniques involve
+processing data in a <strong>sequential</strong> manner, which can be time-consuming and
+inefficient for large data sets.</p>
+</section>
+<section id="advantages">
+<h3>Advantages<a class="headerlink" href="#advantages" title="Permalink to this heading">¶</a></h3>
+<p>One of the key advantages of MapReduce over traditional data processing
+techniques is its <strong>scalability</strong>. MapReduce can process vast amounts of data
+by dividing it into smaller chunks and processing them in parallel across a
+cluster of computers. Traditional data processing techniques, on the other
+hand, cannot handle large data sets in a distributed manner and require all
+data to be processed on a single machine.</p>
+<p>MapReduce also offers <strong>fault tolerance</strong>, ensuring that if a single machine in
+the cluster fails during processing, the remaining machines can continue to
+process the data without losing any information. Traditional data processing
+techniques, on the other hand, may not have this level of fault tolerance and
+can lose data in case of a hardware failure.</p>
+<p>Another advantage of MapReduce is its <strong>flexibility</strong>. MapReduce provides a
+simple programming model, making it easier for developers to write code to
+process large data sets. In contrast, traditional data processing techniques
+require complex code to process large data sets, which can be difficult and
+time-consuming to develop.</p>
+<p>Finally, MapReduce is also <strong>cost-effective</strong>. With MapReduce, organizations
+can use commodity hardware, reducing the overall cost of processing large data
+sets. Traditional data processing techniques may require expensive hardware to
+process large data sets, making it cost-prohibitive for many organizations.</p>
+</section>
+<section id="phases-of-mapreduce">
+<h3>Phases of MapReduce<a class="headerlink" href="#phases-of-mapreduce" title="Permalink to this heading">¶</a></h3>
+<p>The MapReduce paradigm consists of three phases that work together to process
+large-scale data efficiently and effectively. These three phases are the Map
+phase, Shuffle and Sort phase, and Reduce phase.</p>
+<p><strong>Map phase</strong>: the input data is divided into smaller subsets and processed
+in parallel across multiple nodes in the cluster. Each node executes the Map
+function on its subset of the input data and produces a set of key-value pairs
+as output. The Map function transforms the input data into a format that can be
+processed by the Reduce function.</p>
+<p><strong>Shuffle and Sort phase</strong>: the key-value pairs generated by the Map
+function are sorted and partitioned based on their keys. The sorted data is
+then transferred to the nodes where the Reduce function will be executed. This
+phase ensures that all the key-value pairs with the same key are sent to the
+same node for processing by the Reduce function.</p>
+<p><strong>Reduce phase</strong>: the data is processed in parallel across multiple nodes in
+the cluster. Each node executes the Reduce function on its subset of the data
+and produces a set of output key-value pairs. The output of the Reduce function
+is stored in the distributed file system and serves as the final output of the
+MapReduce job.</p>
+<p>The three phases of MapReduce work together to enable efficient and scalable
+processing of large data sets. The Map phase transforms the input data into a
+format that can be processed by the Reduce function. The Shuffle and Sort phase
+ensures that the data is properly partitioned and sorted based on the keys. The
+Reduce phase processes the data and produces the final output. By breaking down
+the processing of large data sets into these three phases, MapReduce enables
+efficient parallel processing of large data sets across a distributed cluster
+of nodes.</p>
+</section>
+<section id="map-and-reduce-functions">
+<h3>Map and Reduce Functions<a class="headerlink" href="#map-and-reduce-functions" title="Permalink to this heading">¶</a></h3>
+<p>The MapReduce paradigm is based on two key functions: the <strong>Map function</strong> and
+the <strong>Reduce function</strong>. These functions are used to process large data sets in
+a distributed and parallel manner.</p>
+<p>The Map function is responsible for processing and transforming input data into
+a set of key-value pairs. It takes an input record and produces one or more
+key-value pairs as output. The Map function processes the input data
+independently and in parallel across multiple nodes in the cluster, thus
+enabling efficient processing of large data sets. The output of the Map
+function is stored in the distributed file system and passed on to the Shuffle
+and Sort phase.</p>
+<p>The Shuffle and Sort phase sorts and partitions the output of the Map function
+based on the keys, and transfers the data to the Reduce function. The Reduce
+function is responsible for processing the key-value pairs generated by the Map
+function and producing a final output. The Reduce function takes the output of
+the Shuffle and Sort phase as input and performs a specific computation on the
+key-value pairs with the same key. It produces a set of output key-value pairs
+that are stored in the distributed file system.</p>
+<p>The Map and Reduce functions together form the core of the MapReduce paradigm.
+The Map function transforms the input data into a format that can be processed
+by the Reduce function. The Reduce function performs the final computation on
+the transformed data and produces the output. The MapReduce paradigm enables
+the parallel processing of large data sets, making it an efficient and scalable
+method for Big Data processing.</p>
+<p>Overall, the Map function and Reduce function are the fundamental building
+blocks of the MapReduce paradigm, enabling the processing of large data sets in
+a distributed and parallel manner.</p>
+</section>
+</section>
+<section id="hadoop-ecosystem">
+<h2>Hadoop Ecosystem<a class="headerlink" href="#hadoop-ecosystem" title="Permalink to this heading">¶</a></h2>
+<p>Hadoop is an open-source software framework for distributed storage and
+processing of large datasets on clusters of commodity hardware. It is designed
+to handle big data, which refers to datasets that are too large or complex for
+traditional data processing applications. The Hadoop ecosystem is a collection
+of open-source tools and frameworks that work with Hadoop to enable big data
+processing.</p>
+<section id="examples-of-key-components-in-the-ecosystem">
+<h3>Examples of key components in the ecosystem<a class="headerlink" href="#examples-of-key-components-in-the-ecosystem" title="Permalink to this heading">¶</a></h3>
+<p>Some of the key components of the Hadoop ecosystem include:</p>
+<ul class="simple">
+<li><p>HDFS (Hadoop Distributed File System): a distributed file system that
+provides reliable and scalable storage for large datasets.</p></li>
+<li><p>MapReduce: a programming model and software framework for processing large
+datasets in parallel across a cluster of computers.</p></li>
+<li><p>YARN (Yet Another Resource Negotiator): a resource management layer that
+schedules and manages resources in a Hadoop cluster.</p></li>
+<li><p>Hive: a data warehousing and SQL-like query language that allows users to
+analyze large datasets stored in Hadoop using SQL-like syntax.</p></li>
+<li><p>Pig: a high-level platform for creating MapReduce programs used to process
+large datasets.</p></li>
+<li><p>Spark: a fast and general-purpose cluster computing system that can run data
+processing tasks in memory.</p></li>
+<li><p>HBase: a distributed, scalable, NoSQL database that provides random access to
+big data stored in Hadoop.</p></li>
+<li><p>Mahout: a machine learning library for building scalable and distributed
+machine learning applications.</p></li>
+<li><p>Oozie: a workflow scheduler system to manage Apache Hadoop jobs.</p></li>
+</ul>
+<p>The first three are core components and the rests are optional. Some components
+such as Spark can be either deployed under Hadoop or in stand-alone mode.</p>
+</section>
+<section id="example-of-mapreduce-in-hadoop">
+<h3>Example of MapReduce in Hadoop<a class="headerlink" href="#example-of-mapreduce-in-hadoop" title="Permalink to this heading">¶</a></h3>
+<p>The famous word counting example in Hadoop using Java. <a class="reference external" href="https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html#Example:_WordCount_v1.0">Link</a> to example in the official Hadoop documentation.</p>
+<p>Suppose we have a text file containing a list of words, and we want to count
+the frequency of each word in the file.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.IOException</span><span class="p">;</span><span class="w"></span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.util.StringTokenizer</span><span class="p">;</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.conf.Configuration</span><span class="p">;</span><span class="w"></span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.fs.Path</span><span class="p">;</span><span class="w"></span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.io.IntWritable</span><span class="p">;</span><span class="w"></span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.io.Text</span><span class="p">;</span><span class="w"></span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.mapreduce.Job</span><span class="p">;</span><span class="w"></span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.mapreduce.Mapper</span><span class="p">;</span><span class="w"></span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.mapreduce.Reducer</span><span class="p">;</span><span class="w"></span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.mapreduce.lib.input.FileInputFormat</span><span class="p">;</span><span class="w"></span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.mapreduce.lib.output.FileOutputFormat</span><span class="p">;</span><span class="w"></span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">WordCount</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">class</span> <span class="nc">TokenizerMapper</span><span class="w"></span>
+<span class="w">      </span><span class="kd">extends</span><span class="w"> </span><span class="n">Mapper</span><span class="o">&lt;</span><span class="n">Object</span><span class="p">,</span><span class="w"> </span><span class="n">Text</span><span class="p">,</span><span class="w"> </span><span class="n">Text</span><span class="p">,</span><span class="w"> </span><span class="n">IntWritable</span><span class="o">&gt;</span><span class="p">{</span><span class="w"></span>
+
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="n">IntWritable</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">IntWritable</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">Text</span><span class="w"> </span><span class="n">word</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Text</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">map</span><span class="p">(</span><span class="n">Object</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">Text</span><span class="w"> </span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="n">Context</span><span class="w"> </span><span class="n">context</span><span class="w"></span>
+<span class="w">                    </span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="p">,</span><span class="w"> </span><span class="n">InterruptedException</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">StringTokenizer</span><span class="w"> </span><span class="n">itr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringTokenizer</span><span class="p">(</span><span class="n">value</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span><span class="w"></span>
+<span class="w">      </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">itr</span><span class="p">.</span><span class="na">hasMoreTokens</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">word</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="n">itr</span><span class="p">.</span><span class="na">nextToken</span><span class="p">());</span><span class="w"></span>
+<span class="w">        </span><span class="n">context</span><span class="p">.</span><span class="na">write</span><span class="p">(</span><span class="n">word</span><span class="p">,</span><span class="w"> </span><span class="n">one</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">class</span> <span class="nc">IntSumReducer</span><span class="w"></span>
+<span class="w">      </span><span class="kd">extends</span><span class="w"> </span><span class="n">Reducer</span><span class="o">&lt;</span><span class="n">Text</span><span class="p">,</span><span class="n">IntWritable</span><span class="p">,</span><span class="n">Text</span><span class="p">,</span><span class="n">IntWritable</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">IntWritable</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">IntWritable</span><span class="p">();</span><span class="w"></span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">reduce</span><span class="p">(</span><span class="n">Text</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">Iterable</span><span class="o">&lt;</span><span class="n">IntWritable</span><span class="o">&gt;</span><span class="w"> </span><span class="n">values</span><span class="p">,</span><span class="w"></span>
+<span class="w">                      </span><span class="n">Context</span><span class="w"> </span><span class="n">context</span><span class="w"></span>
+<span class="w">                      </span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="p">,</span><span class="w"> </span><span class="n">InterruptedException</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">IntWritable</span><span class="w"> </span><span class="n">val</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">values</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">val</span><span class="p">.</span><span class="na">get</span><span class="p">();</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="n">result</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="n">sum</span><span class="p">);</span><span class="w"></span>
+<span class="w">      </span><span class="n">context</span><span class="p">.</span><span class="na">write</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">Configuration</span><span class="w"> </span><span class="n">conf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Configuration</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="n">Job</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Job</span><span class="p">.</span><span class="na">getInstance</span><span class="p">(</span><span class="n">conf</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;word count&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">job</span><span class="p">.</span><span class="na">setJarByClass</span><span class="p">(</span><span class="n">WordCount</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">job</span><span class="p">.</span><span class="na">setMapperClass</span><span class="p">(</span><span class="n">TokenizerMapper</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">job</span><span class="p">.</span><span class="na">setCombinerClass</span><span class="p">(</span><span class="n">IntSumReducer</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">job</span><span class="p">.</span><span class="na">setReducerClass</span><span class="p">(</span><span class="n">IntSumReducer</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">job</span><span class="p">.</span><span class="na">setOutputKeyClass</span><span class="p">(</span><span class="n">Text</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">job</span><span class="p">.</span><span class="na">setOutputValueClass</span><span class="p">(</span><span class="n">IntWritable</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">FileInputFormat</span><span class="p">.</span><span class="na">addInputPath</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Path</span><span class="p">(</span><span class="n">args</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">FileOutputFormat</span><span class="p">.</span><span class="na">setOutputPath</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Path</span><span class="p">(</span><span class="n">args</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">exit</span><span class="p">(</span><span class="n">job</span><span class="p">.</span><span class="na">waitForCompletion</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The MapReduce job consists of two main parts: the mapper and the reducer. We
+also need a driver to run the mapper and reducer.</p>
+<p>Mapper:
+In the mapper, we take the input text file and split it into individual words.
+For each word, we emit a key-value pair where the key is the word itself and
+the value is an integer 1.</p>
+<p>Reducer:
+In the reducer, we receive the key-value pairs emitted by the mapper. We group
+together all the values associated with each key and add them up to get the
+total count for that word. We then emit a final key-value pair where the key is
+the word and the value is the total count.</p>
+<p>Driver:
+In the driver code, we set up the configuration for the MapReduce job,
+specifying the input and output file paths, the mapper and reducer classes, and
+the output key and value types. We also set the combiner class, which is an
+optional optimization that runs on the output of the mapper before it is sent
+to the reducer. Finally, we run the job and wait for it to complete.</p>
+<a class="reference internal image-reference" href="../../_images/mapreduce.png"><img alt="Map Reduce Word Counting Example" src="../../_images/mapreduce.png" style="width: 600px;" /></a>
+<div class="footnotes docutils container">
+<p>Credit: <a class="reference external" href="https://www.educba.com/mapreduce-word-count/">https://www.educba.com/mapreduce-word-count/</a></p>
+</div>
+</section>
+</section>
+<section id="spark">
+<h2>Spark<a class="headerlink" href="#spark" title="Permalink to this heading">¶</a></h2>
+<p>Apache Spark is an open-source distributed computing system that is designed to
+process large-scale data and perform real-time analytics. It was initially
+developed at UC Berkeley’s AMPLab in 2009 and later became an Apache Software
+Foundation project in 2013.</p>
+<p>Spark is designed to be faster and more efficient than its predecessor, Hadoop
+MapReduce, by providing in-memory processing and a more expressive and concise
+programming model. Spark provides a unified platform for batch processing, SQL
+queries, stream processing, machine learning, and graph processing.</p>
+<p>While Spark can run independently, it can also be run on top of Hadoop
+Distributed File System (HDFS) and can be integrated with other Hadoop
+components, such as YARN and HBase. Spark can also leverage Hadoop’s
+distributed file system and resource management capabilities, allowing it to
+run on large Hadoop clusters.</p>
+<section id="components">
+<h3>Components<a class="headerlink" href="#components" title="Permalink to this heading">¶</a></h3>
+<p>Spark is a powerful open-source big data processing framework that provides a
+range of components for distributed data processing, machine learning, and
+streaming data analysis. Here are some of the key components of Spark:</p>
+<ul class="simple">
+<li><p>Spark Core: The core engine of Spark that provides the basic functionality of
+the framework, including distributed task scheduling, memory management, and
+fault-tolerance. It includes the Resilient Distributed Datasets (RDDs) API,
+which is the fundamental data structure of Spark.</p></li>
+<li><p>Spark SQL: A module of Spark that provides a SQL-like interface for working
+with structured and semi-structured data. It includes the DataFrame API,
+which allows users to manipulate structured data in a distributed
+environment.</p></li>
+<li><p>Spark Streaming: A module of Spark that enables real-time processing of
+streaming data. It can consume data from various sources such as Kafka,
+Flume, and Twitter, and process it in real-time.</p></li>
+<li><p>MLlib: A library of Spark that provides a scalable implementation of various
+machine learning algorithms for classification, regression, clustering, and
+collaborative filtering. It includes tools for feature extraction,
+transformation, and selection.</p></li>
+<li><p>GraphX: A library of Spark that provides a scalable implementation of graph
+processing and analysis. It includes various algorithms for graph processing,
+including PageRank, connected components, and triangle counting.</p></li>
+<li><p>PySpark: A package of Spark that enables users to interact with Spark from
+Python programming language.</p></li>
+<li><p>SparkR: A package of Spark that enables users to interact with Spark from R
+programming language.</p></li>
+<li><p>Structured Streaming: A high-level API of Spark that provides a unified
+programming model for batch and streaming data processing. It allows users to
+process data in real-time using Spark’s SQL and DataFrame APIs.</p></li>
+</ul>
+</section>
+<section id="comparison-to-hadoop-mapreduce">
+<h3>Comparison to Hadoop MapReduce<a class="headerlink" href="#comparison-to-hadoop-mapreduce" title="Permalink to this heading">¶</a></h3>
+<p>Spark and Hadoop MapReduce are both distributed computing frameworks designed
+to process big data. However, there are some significant differences between
+the two. Here are a few key differences:</p>
+<ul class="simple">
+<li><p>Processing Speed: Spark is generally faster than Hadoop MapReduce due to its
+in-memory processing capabilities. Spark can cache data in memory, while
+Hadoop MapReduce reads and writes data to disk for every iteration, which can
+slow down processing.</p></li>
+<li><p>Ease of Use: Spark provides a more user-friendly API than Hadoop MapReduce.
+Spark’s high-level APIs, such as RDDs and DataFrames, are more intuitive and
+easier to use than Hadoop MapReduce’s lower-level APIs.</p></li>
+<li><p>Real-Time Processing: Spark is better suited for real-time processing than
+Hadoop MapReduce. Spark Streaming and Structured Streaming provide real-time
+processing capabilities, while Hadoop MapReduce is primarily designed for
+batch processing.</p></li>
+<li><p>Machine Learning: Spark has a built-in machine learning library called MLlib,
+which provides scalable implementation of various machine learning
+algorithms. In contrast, Hadoop MapReduce does not have a built-in machine
+learning library.</p></li>
+<li><p>Storage: Hadoop MapReduce relies on the Hadoop Distributed File System (HDFS)
+for storage, while Spark can use various storage systems such as HDFS, Amazon
+S3, and Apache Cassandra.</p></li>
+</ul>
+<p>Overall, Spark provides a more efficient and user-friendly framework for big
+data processing than Hadoop MapReduce. While Hadoop MapReduce is still widely
+used for batch processing, Spark’s real-time processing capabilities and
+built-in machine learning library make it a more versatile framework for big
+data processing and analytics.</p>
+</section>
+<section id="data-apis">
+<h3>Data APIs<a class="headerlink" href="#data-apis" title="Permalink to this heading">¶</a></h3>
+<p>Spark provides three sets important data APIs for processing and analyzing big
+data: RDD, DataFrame, and Dataset. Here’s a comparison of these three data
+APIs:</p>
+<ul class="simple">
+<li><p>RDD (Resilient Distributed Datasets):</p>
+<ul>
+<li><p>RDD is the basic unit of data in Spark.</p></li>
+<li><p>RDD is an immutable distributed collection of objects that can be processed
+in parallel across a cluster of machines.</p></li>
+<li><p>RDDs are resilient and fault-tolerant, which means they can recover from
+machine failures automatically.</p></li>
+<li><p>RDDs are primarily used for batch processing and provide a simple and
+flexible API for data processing.</p></li>
+<li><p>RDDs do not have a schema, which means they can handle unstructured and
+semi-structured data.</p></li>
+</ul>
+</li>
+<li><p>DataFrame:</p>
+<ul>
+<li><p>DataFrame is a distributed collection of data organized into named columns.</p></li>
+<li><p>DataFrame is similar to a table in a relational database, with a schema
+that describes the data types of each column.</p></li>
+<li><p>DataFrames are optimized for processing large-scale structured and
+semi-structured data and provide a high-level API for data processing.</p></li>
+<li><p>DataFrames can be integrated with Spark SQL, enabling users to perform SQL
+queries on their data.</p></li>
+<li><p>DataFrames are an abstraction built on top of RDDs, providing better
+optimization and performance for structured data processing.</p></li>
+</ul>
+</li>
+<li><p>Dataset:</p>
+<ul>
+<li><p>Dataset is a strongly typed distributed collection of objects that was
+introduced in Spark 1.6.</p></li>
+<li><p>Dataset combines the advantages of RDDs and DataFrames, providing type
+safety and performance optimizations.</p></li>
+<li><p>Datasets provide a high-level API for data processing and can be used with
+both structured and unstructured data.</p></li>
+<li><p>Datasets are primarily used for machine learning and data science
+applications.</p></li>
+<li><p>Datasets provide better optimization and performance than RDDs, especially
+for structured data processing.</p></li>
+</ul>
+</li>
+</ul>
+<p>In summary, RDD is the most basic data structure in Spark, while DataFrame and
+Dataset are higher-level abstractions that are optimized for structured and
+semi-structured data processing. RDDs provide flexibility and fault-tolerance,
+while DataFrames and Datasets provide better performance and optimization for
+structured data processing. Understanding the differences between these data
+structures is important for choosing the right tool for the job in big data
+processing and analytics.</p>
+</section>
+<section id="pyspark-code-examples">
+<h3>PySpark Code Examples<a class="headerlink" href="#pyspark-code-examples" title="Permalink to this heading">¶</a></h3>
+<p>Below are example written in Python. It work with Spark though the PySpark
+components. All three data APIs are demonstrated here.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">RDD Example</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an RDD from a list of numbers</span>
+<span class="n">rdd</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">parallelize</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+<span class="c1"># Perform a map operation to square each number in the RDD</span>
+<span class="n">squared_rdd</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Filter the squared RDD to keep only even numbers</span>
+<span class="n">even_rdd</span> <span class="o">=</span> <span class="n">squared_rdd</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Collect the even numbers as a list</span>
+<span class="n">even_list</span> <span class="o">=</span> <span class="n">even_rdd</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+
+<span class="c1"># Print the list of even numbers</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">even_list</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">DataFrame</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a DataFrame from a CSV file</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s1">&#39;mydata.csv&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Select columns and filter rows</span>
+<span class="n">filtered_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">)</span>
+
+<span class="c1"># Group the DataFrame by name and calculate the average age</span>
+<span class="n">grouped_df</span> <span class="o">=</span> <span class="n">filtered_df</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="s1">&#39;avg&#39;</span><span class="p">})</span>
+
+<span class="c1"># Show the results in the console</span>
+<span class="n">grouped_df</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">DataSet</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a case class for representing a person</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">StructType</span><span class="p">,</span> <span class="n">StructField</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">,</span> <span class="n">StringType</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">col</span>
+
+<span class="k">class</span> <span class="nc">Person</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
+
+<span class="c1"># Create a Dataset from a list of Person objects</span>
+<span class="n">schema</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">([</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">()),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">())</span>
+<span class="p">])</span>
+<span class="n">people</span> <span class="o">=</span> <span class="p">[</span><span class="n">Person</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span> <span class="n">Person</span><span class="p">(</span><span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="n">Person</span><span class="p">(</span><span class="s2">&quot;Charlie&quot;</span><span class="p">,</span> <span class="mi">35</span><span class="p">)]</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">people</span><span class="p">,</span> <span class="n">schema</span><span class="p">)</span><span class="o">.</span><span class="k">as</span><span class="p">[</span><span class="n">Person</span><span class="p">]</span>
+
+<span class="c1"># Filter the Dataset to keep only people older than 30</span>
+<span class="n">filtered_ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">)</span>
+
+<span class="c1"># Group the Dataset by name and calculate the average age</span>
+<span class="n">grouped_ds</span> <span class="o">=</span> <span class="n">filtered_ds</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">)</span>
+
+<span class="c1"># Show the results in the console</span>
+<span class="n">grouped_ds</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Big Data Processing For Big Data</a><ul>
+<li><a class="reference internal" href="#mapreduce-paradigm">MapReduce Paradigm</a><ul>
+<li><a class="reference internal" href="#overview-and-importance">Overview and importance</a></li>
+<li><a class="reference internal" href="#compare-to-traditional-methods">Compare to traditional methods</a></li>
+<li><a class="reference internal" href="#advantages">Advantages</a></li>
+<li><a class="reference internal" href="#phases-of-mapreduce">Phases of MapReduce</a></li>
+<li><a class="reference internal" href="#map-and-reduce-functions">Map and Reduce Functions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#hadoop-ecosystem">Hadoop Ecosystem</a><ul>
+<li><a class="reference internal" href="#examples-of-key-components-in-the-ecosystem">Examples of key components in the ecosystem</a></li>
+<li><a class="reference internal" href="#example-of-mapreduce-in-hadoop">Example of MapReduce in Hadoop</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#spark">Spark</a><ul>
+<li><a class="reference internal" href="#components">Components</a></li>
+<li><a class="reference internal" href="#comparison-to-hadoop-mapreduce">Comparison to Hadoop MapReduce</a></li>
+<li><a class="reference internal" href="#data-apis">Data APIs</a></li>
+<li><a class="reference internal" href="#pyspark-code-examples">PySpark Code Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="life-cycle.html"
+                          title="previous chapter">Big Data Life Cycle</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="final.html"
+                          title="next chapter">Final Topic Review</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/course/map6990/data-processing.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="final.html" title="Final Topic Review"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="life-cycle.html" title="Big Data Life Cycle"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >MAP 6990 Big Data for Data Science</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="module3.html" >Module 3: Big Data Life Cycle; Data Processing For Big Data</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Big Data Processing For Big Data</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2023, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
+    </div>
+  </body>
+</html>

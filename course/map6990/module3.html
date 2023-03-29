@@ -4,9 +4,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Module 3: Shared-Memory Programming with OpenMP &#8212; IanFang Course Note Hosting  documentation</title>
+    <title>Module 3: Big Data Life Cycle; Data Processing For Big Data &#8212; IanFang Course Note Hosting  documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -16,11 +16,11 @@
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/course/map6990/module3.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Big Data Life Cycle" href="life-cycle.html" />
+    <link rel="prev" title="NoSQL Databases" href="nosql.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -28,8 +28,15 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="life-cycle.html" title="Big Data Life Cycle"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="nosql.html" title="NoSQL Databases"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Module 3: Shared-Memory Programming with OpenMP</a></li> 
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">MAP 6990 Big Data for Data Science</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Module 3: Big Data Life Cycle; Data Processing For Big Data</a></li> 
       </ul>
     </div>  
 
@@ -38,138 +45,34 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="module-3-shared-memory-programming-with-openmp">
-<h1>Module 3: Shared-Memory Programming with OpenMP<a class="headerlink" href="#module-3-shared-memory-programming-with-openmp" title="Permalink to this heading">¶</a></h1>
-<section id="characteristics">
-<h2>Characteristics<a class="headerlink" href="#characteristics" title="Permalink to this heading">¶</a></h2>
-<ul class="simple">
-<li><p>A shared-memory programming model.</p></li>
-<li><p>Modifies existing serial program</p></li>
-<li><p>Include library header <code class="docutils literal notranslate"><span class="pre">omp.h</span></code></p></li>
-<li><p>Preprocessor directive <code class="docutils literal notranslate"><span class="pre">Pragma</span></code></p></li>
-<li><p>Requires compiler level support</p></li>
-<li><p>Thread based</p></li>
-</ul>
-</section>
-<section id="compile-and-run">
-<h2>Compile and run<a class="headerlink" href="#compile-and-run" title="Permalink to this heading">¶</a></h2>
-<section id="gcc">
-<h3>gcc<a class="headerlink" href="#gcc" title="Permalink to this heading">¶</a></h3>
-<ul class="simple">
-<li><p>include omp.h</p></li>
-<li><p>compile with <code class="docutils literal notranslate"><span class="pre">-fopenmp</span></code> flag</p></li>
-</ul>
-</section>
-</section>
-<section id="concepts">
-<h2>Concepts<a class="headerlink" href="#concepts" title="Permalink to this heading">¶</a></h2>
-<dl class="simple glossary">
-<dt id="term-pragmas">pragmas<a class="headerlink" href="#term-pragmas" title="Permalink to this term">¶</a></dt><dd><p>The preprocessor directive employed by OpenMP. Employ <strong>clauses</strong> to fine
-control the parallelized behavior. It works like a domain specific
-language.</p>
-</dd>
-<dt id="term-Structured-block">Structured block<a class="headerlink" href="#term-Structured-block" title="Permalink to this term">¶</a></dt><dd><p>The code block to be parallelized by OpenMP. It can be a for/while/do-while
-statement, a function call or a code block enclosed by <code class="docutils literal notranslate"><span class="pre">{}</span></code></p>
-</dd>
-<dt id="term-Threads-OpenMP">Threads (OpenMP)<a class="headerlink" href="#term-Threads-OpenMP" title="Permalink to this term">¶</a></dt><dd><p>OpenMP will fork threads to execute the structured block. The collection of
-threads is called <strong>Team</strong>. There is a <strong>master</strong> thread to execute the
-codes that are not parallelized and the rest of threads are known as
-<strong>slave</strong>, which execute the structured block only.</p>
-</dd>
-<dt id="term-Synchronization">Synchronization<a class="headerlink" href="#term-Synchronization" title="Permalink to this term">¶</a></dt><dd><p>A mechanism to constraint the ordering of execution of instructions to
-preclude potential problems such as racing condition, and other
-inconsistency problems.</p>
-</dd>
-<dt id="term-Variable-Scope-OpenMP">Variable Scope (OpenMP)<a class="headerlink" href="#term-Variable-Scope-OpenMP" title="Permalink to this term">¶</a></dt><dd><p>As OpenMP is not part of C standard, the scope of variables in the
-structured block needs special handling. The can be defined as <code class="docutils literal notranslate"><span class="pre">private</span></code>
-or <code class="docutils literal notranslate"><span class="pre">shared</span></code> in OpenMP <code class="docutils literal notranslate"><span class="pre">pragma</span></code> directives. The default scope of
-variables declared outside of the block is <code class="docutils literal notranslate"><span class="pre">shared</span></code>, while the default
-scope of variables declared inside the block is <code class="docutils literal notranslate"><span class="pre">private</span></code>.</p>
-</dd>
-</dl>
-</section>
-<section id="clauses">
-<h2>Clauses<a class="headerlink" href="#clauses" title="Permalink to this heading">¶</a></h2>
+  <section id="module-3-big-data-life-cycle-data-processing-for-big-data">
+<h1>Module 3: Big Data Life Cycle; Data Processing For Big Data<a class="headerlink" href="#module-3-big-data-life-cycle-data-processing-for-big-data" title="Permalink to this heading">¶</a></h1>
+<p>The definition of the term “data process” varies greatly between sources. Some
+refer to it as a simple data transformation step. Some define it as the entire
+process of big data application life cycle, including all stages defined here.
+All of them are correct in their own context, but I’d like to define mine to
+help with the teaching process.</p>
+<p>As a result, before diving into data processing for big data, I’d like to walk
+you through the life cycle of most big data applications and explain my
+definition of “data process.” In the next section, data processing topic will
+be covered.</p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li><p>parallel</p>
-<p>Create a team</p>
-</li>
-<li><p>num_threads</p>
-<p>Control number of threads</p>
-</li>
-<li><p>private</p>
-<p>Register private variable</p>
-</li>
-<li><p>shared</p>
-<p>Register shared variable</p>
-</li>
-<li><p>default</p>
-<p>Override how the default scope is inferred</p>
-</li>
-<li><p>reduction</p>
-<p>Register how reduction operation is done</p>
-</li>
-<li><p>for</p>
-<p>Register parallelization of a for loop</p>
-</li>
-<li><p>schedule</p>
-<p>Set the scheduling method</p>
-<ul class="simple">
-<li><p>static</p></li>
-<li><p>dynamic</p></li>
-<li><p>guided</p></li>
+<li class="toctree-l1"><a class="reference internal" href="life-cycle.html">Big Data Life Cycle</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="life-cycle.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="life-cycle.html#stages">Stages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="life-cycle.html#aspects">Aspects</a></li>
 </ul>
 </li>
-<li><p>critical</p>
-<p>Define a critical region, which can be accessed only one thread</p>
-</li>
-<li><p>atomic</p>
-<p>Define an atomic operation</p>
-</li>
-<li><p>barrier</p>
-<p>Force the thread to join</p>
-</li>
-<li><p>single</p>
-<p>Only run by one thread (not necessarily the master thread)</p>
-</li>
-</ul>
-</section>
-<section id="synchronization">
-<h2>Synchronization<a class="headerlink" href="#synchronization" title="Permalink to this heading">¶</a></h2>
-<ul class="simple">
-<li><p>critical section</p></li>
-<li><p>atomic</p></li>
-<li><p>barrier</p></li>
-<li><p>mutual exclusion (locks)</p>
-<ul>
-<li><p>omp_set_lock</p></li>
-<li><p>omp_unset_lock</p></li>
+<li class="toctree-l1"><a class="reference internal" href="data-processing.html">Big Data Processing For Big Data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data-processing.html#mapreduce-paradigm">MapReduce Paradigm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-processing.html#hadoop-ecosystem">Hadoop Ecosystem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-processing.html#spark">Spark</a></li>
 </ul>
 </li>
 </ul>
-</section>
-<section id="nested-loop">
-<h2>Nested Loop<a class="headerlink" href="#nested-loop" title="Permalink to this heading">¶</a></h2>
-<ul class="simple">
-<li><p>Parallelize outer loop if possible</p></li>
-<li><p>Separate <code class="docutils literal notranslate"><span class="pre">parallel</span></code> and <code class="docutils literal notranslate"><span class="pre">for</span></code> constructs to reduce fork and join
-operations if parallelization of inner loop is desirable</p></li>
-<li><p>Consider cache friendship</p>
-<ul>
-<li><p>change scheduling method</p></li>
-</ul>
-</li>
-</ul>
-</section>
-<section id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h2>
-<ul class="simple">
-<li><p>Integration calculation (trapezoids)</p></li>
-<li><p>Estimation of <span class="math notranslate nohighlight">\(\pi\)</span></p></li>
-<li><p>Sorting</p></li>
-<li><p>Matrix-vector multiplication</p></li>
-</ul>
-</section>
+</div>
 </section>
 
 
@@ -180,23 +83,14 @@ operations if parallelization of inner loop is desirable</p></li>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <div>
-    <h3><a href="../../index.html">Table of Contents</a></h3>
-    <ul>
-<li><a class="reference internal" href="#">Module 3: Shared-Memory Programming with OpenMP</a><ul>
-<li><a class="reference internal" href="#characteristics">Characteristics</a></li>
-<li><a class="reference internal" href="#compile-and-run">Compile and run</a><ul>
-<li><a class="reference internal" href="#gcc">gcc</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#concepts">Concepts</a></li>
-<li><a class="reference internal" href="#clauses">Clauses</a></li>
-<li><a class="reference internal" href="#synchronization">Synchronization</a></li>
-<li><a class="reference internal" href="#nested-loop">Nested Loop</a></li>
-<li><a class="reference internal" href="#examples">Examples</a></li>
-</ul>
-</li>
-</ul>
-
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="nosql.html"
+                          title="previous chapter">NoSQL Databases</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="life-cycle.html"
+                          title="next chapter">Big Data Life Cycle</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -225,13 +119,20 @@ operations if parallelization of inner loop is desirable</p></li>
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="life-cycle.html" title="Big Data Life Cycle"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="nosql.html" title="NoSQL Databases"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Module 3: Shared-Memory Programming with OpenMP</a></li> 
+          <li class="nav-item nav-item-1"><a href="index.html" >MAP 6990 Big Data for Data Science</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Module 3: Big Data Life Cycle; Data Processing For Big Data</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021-2023, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
     </div>
   </body>
 </html>

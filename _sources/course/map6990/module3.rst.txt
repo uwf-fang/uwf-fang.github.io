@@ -1,134 +1,20 @@
-.. highlight:: c++
-  :linenothreshold: 5
+***********************************************************
+Module 3: Big Data Life Cycle; Data Processing For Big Data
+***********************************************************
+The definition of the term "data process" varies greatly between sources. Some
+refer to it as a simple data transformation step. Some define it as the entire
+process of big data application life cycle, including all stages defined here.
+All of them are correct in their own context, but I'd like to define mine to
+help with the teaching process.
 
-***********************************************
-Module 3: Shared-Memory Programming with OpenMP
-***********************************************
-Characteristics
-===============
-+ A shared-memory programming model.
-+ Modifies existing serial program
-+ Include library header ``omp.h``
-+ Preprocessor directive ``Pragma``
-+ Requires compiler level support
-+ Thread based
+As a result, before diving into data processing for big data, I'd like to walk
+you through the life cycle of most big data applications and explain my
+definition of "data process." In the next section, data processing topic will
+be covered.
 
-Compile and run
-===============
-gcc
----
-+ include omp.h
-+ compile with ``-fopenmp`` flag
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
 
-Concepts
-========
-
-.. glossary::
-
-  pragmas
-    The preprocessor directive employed by OpenMP. Employ **clauses** to fine
-    control the parallelized behavior. It works like a domain specific
-    language.
-
-  Structured block
-    The code block to be parallelized by OpenMP. It can be a for/while/do-while
-    statement, a function call or a code block enclosed by ``{}``
-
-  Threads (OpenMP)
-    OpenMP will fork threads to execute the structured block. The collection of
-    threads is called **Team**. There is a **master** thread to execute the
-    codes that are not parallelized and the rest of threads are known as
-    **slave**, which execute the structured block only.
-
-  Synchronization
-    A mechanism to constraint the ordering of execution of instructions to
-    preclude potential problems such as racing condition, and other
-    inconsistency problems.
-
-  Variable Scope (OpenMP)
-    As OpenMP is not part of C standard, the scope of variables in the
-    structured block needs special handling. The can be defined as ``private``
-    or ``shared`` in OpenMP ``pragma`` directives. The default scope of
-    variables declared outside of the block is ``shared``, while the default
-    scope of variables declared inside the block is ``private``.
-
-Clauses
-=======
-+ parallel
-
-  Create a team
-
-+ num_threads
-
-  Control number of threads
-
-+ private
-
-  Register private variable
-
-+ shared
-
-  Register shared variable
-
-+ default
-
-  Override how the default scope is inferred
-
-+ reduction
-
-  Register how reduction operation is done
-
-+ for
-
-  Register parallelization of a for loop
-
-+ schedule
-
-  Set the scheduling method
-
-  * static
-  * dynamic
-  * guided
-
-+ critical
-
-  Define a critical region, which can be accessed only one thread
-
-+ atomic
-
-  Define an atomic operation
-
-+ barrier
-
-  Force the thread to join
-
-+ single
-
-  Only run by one thread (not necessarily the master thread)
-
-Synchronization
-===============
-+ critical section
-+ atomic
-+ barrier
-+ mutual exclusion (locks)
-
-  * omp_set_lock
-  * omp_unset_lock
-
-Nested Loop
-===========
-+ Parallelize outer loop if possible
-+ Separate ``parallel`` and ``for`` constructs to reduce fork and join
-  operations if parallelization of inner loop is desirable
-+ Consider cache friendship
-
-  * change scheduling method
-
-Examples
-========
-+ Integration calculation (trapezoids)
-+ Estimation of :math:`\pi`
-+ Sorting
-+ Matrix-vector multiplication
-
+   life-cycle
+   data-processing

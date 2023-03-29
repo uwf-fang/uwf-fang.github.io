@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
     <title>GNU Make &#8212; IanFang Course Note Hosting  documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
@@ -16,7 +16,6 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/tools/make.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -72,7 +71,7 @@ the makefile of another name or in another directory.</p>
     recipe
 </pre></div>
 </div>
-<dl class="simple glossary">
+<dl class="glossary simple">
 <dt id="term-Target">Target<a class="headerlink" href="#term-Target" title="Permalink to this term">¶</a></dt><dd><p>It is usually the file you want to generate. However, virtual targets
 such as <code class="docutils literal notranslate"><span class="pre">main</span></code>, <code class="docutils literal notranslate"><span class="pre">clean</span></code> are extensively used in many makefiles. They
 do not bind to a real file but can be used in the make command-line like
@@ -127,28 +126,28 @@ limitation of the website generating system. You should change them to real
 <h3>Hard-coded rules<a class="headerlink" href="#hard-coded-rules" title="Permalink to this heading">¶</a></h3>
 <p>A simple makefile with hard coded g++ commands:</p>
 <div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="c"># declare virtual targets</span>
-<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">clean</span>
+<span class="nf">.PHONY</span><span class="o">:</span> <span class="n">clean</span>
 
 <span class="c"># Linking to provide the executable</span>
-<span class="nf">main</span><span class="o">:</span><span class="w"> </span><span class="n">main</span>.<span class="n">o</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">o</span> <span class="n">student</span>.<span class="n">o</span> <span class="n">grades</span>.<span class="n">o</span>
-<span class="w">    </span>g++<span class="w"> </span>-o<span class="w"> </span>main<span class="w"> </span>main.o<span class="w"> </span>grade-book.o<span class="w"> </span>student.o<span class="w"> </span>grades.o
+<span class="nf">main</span><span class="o">:</span> <span class="n">main</span>.<span class="n">o</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">o</span> <span class="n">student</span>.<span class="n">o</span> <span class="n">grades</span>.<span class="n">o</span>
+    g++ -o main main.o grade-book.o student.o grades.o
 
 <span class="c"># Compile. One cpp file a time.</span>
-<span class="nf">main.o</span><span class="o">:</span><span class="w"> </span><span class="n">main</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span>
-<span class="w">    </span>g++<span class="w"> </span>-std<span class="o">=</span>c++14<span class="w"> </span>-Wall<span class="w"> </span>-g<span class="w"> </span>-c<span class="w"> </span>main.cpp
+<span class="nf">main.o</span><span class="o">:</span> <span class="n">main</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span>
+    g++ -std<span class="o">=</span>c++14 -Wall -g -c main.cpp
 
-<span class="nf">student.o</span><span class="o">:</span><span class="w"> </span><span class="n">student</span>.<span class="n">cpp</span> <span class="n">student</span>.<span class="n">hpp</span>
-<span class="w">    </span>g++<span class="w"> </span>-std<span class="o">=</span>c++14<span class="w"> </span>-Wall<span class="w"> </span>-g<span class="w"> </span>-c<span class="w"> </span>student.cpp
+<span class="nf">student.o</span><span class="o">:</span> <span class="n">student</span>.<span class="n">cpp</span> <span class="n">student</span>.<span class="n">hpp</span>
+    g++ -std<span class="o">=</span>c++14 -Wall -g -c student.cpp
 
-<span class="nf">grades.o</span><span class="o">:</span><span class="w"> </span><span class="n">grades</span>.<span class="n">cpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
-<span class="w">    </span>g++<span class="w"> </span>-std<span class="o">=</span>c++14<span class="w"> </span>-Wall<span class="w"> </span>-g<span class="w"> </span>-c<span class="w"> </span>grades.cpp
+<span class="nf">grades.o</span><span class="o">:</span> <span class="n">grades</span>.<span class="n">cpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
+    g++ -std<span class="o">=</span>c++14 -Wall -g -c grades.cpp
 
-<span class="nf">grade-book.o</span><span class="o">:</span><span class="w"> </span><span class="n">grade</span>-<span class="n">book</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
-<span class="w">    </span>g++<span class="w"> </span>-std<span class="o">=</span>c++14<span class="w"> </span>-Wall<span class="w"> </span>-g<span class="w"> </span>-c<span class="w"> </span>grade-book.cpp
+<span class="nf">grade-book.o</span><span class="o">:</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
+    g++ -std<span class="o">=</span>c++14 -Wall -g -c grade-book.cpp
 
 <span class="c"># the &#39;clean&#39; virtual target to remove temporary files</span>
 <span class="nf">clean</span><span class="o">:</span>
-<span class="w">    </span>rm<span class="w"> </span>-rf<span class="w"> </span>*.o<span class="w"> </span>main<span class="w"> </span>*.gc*<span class="w"> </span>*.dSYM
+    rm -rf *.o main *.gc* *.dSYM
 </pre></div>
 </div>
 <p>The first rule is to produce the <code class="docutils literal notranslate"><span class="pre">main</span></code> executable. It calls g++ to link a
@@ -167,28 +166,28 @@ introducing variables. With variables, you can also extract configurations out
 of the commands for efficient management of configurations.</p>
 <p>A makefile using variables:</p>
 <div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">CXX</span><span class="o">=</span>g++
-<span class="nv">CXXFLAGS</span><span class="o">=</span>-std<span class="o">=</span>c++14<span class="w"> </span>-Wall<span class="w"> </span>-g
-<span class="nv">RM</span><span class="o">=</span>rm<span class="w"> </span>-rf
+<span class="nv">CXXFLAGS</span><span class="o">=</span>-std<span class="o">=</span>c++14 -Wall -g
+<span class="nv">RM</span><span class="o">=</span>rm -rf
 
-<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">clean</span>
+<span class="nf">.PHONY</span><span class="o">:</span> <span class="n">clean</span>
 
-<span class="nf">main</span><span class="o">:</span><span class="w"> </span><span class="n">main</span>.<span class="n">o</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">o</span> <span class="n">student</span>.<span class="n">o</span> <span class="n">grades</span>.<span class="n">o</span>
-<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span>-o<span class="w"> </span>main<span class="w"> </span>main.o<span class="w"> </span>grade-book.o<span class="w"> </span>student.o<span class="w"> </span>grades.o
+<span class="nf">main</span><span class="o">:</span> <span class="n">main</span>.<span class="n">o</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">o</span> <span class="n">student</span>.<span class="n">o</span> <span class="n">grades</span>.<span class="n">o</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> -o main main.o grade-book.o student.o grades.o
 
-<span class="nf">main.o</span><span class="o">:</span><span class="w"> </span><span class="n">main</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span>
-<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CXXFLAGS<span class="k">)</span><span class="w"> </span>-c<span class="w"> </span>main.cpp
+<span class="nf">main.o</span><span class="o">:</span> <span class="n">main</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>CXXFLAGS<span class="k">)</span> -c main.cpp
 
-<span class="nf">student.o</span><span class="o">:</span><span class="w"> </span><span class="n">student</span>.<span class="n">cpp</span> <span class="n">student</span>.<span class="n">hpp</span>
-<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CXXFLAGS<span class="k">)</span><span class="w"> </span>-c<span class="w"> </span>student.cpp
+<span class="nf">student.o</span><span class="o">:</span> <span class="n">student</span>.<span class="n">cpp</span> <span class="n">student</span>.<span class="n">hpp</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>CXXFLAGS<span class="k">)</span> -c student.cpp
 
-<span class="nf">grades.o</span><span class="o">:</span><span class="w"> </span><span class="n">grades</span>.<span class="n">cpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
-<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CXXFLAGS<span class="k">)</span><span class="w"> </span>-c<span class="w"> </span>grades.cpp
+<span class="nf">grades.o</span><span class="o">:</span> <span class="n">grades</span>.<span class="n">cpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>CXXFLAGS<span class="k">)</span> -c grades.cpp
 
-<span class="nf">grade-book.o</span><span class="o">:</span><span class="w"> </span><span class="n">grade</span>-<span class="n">book</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
-<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CXXFLAGS<span class="k">)</span><span class="w"> </span>-c<span class="w"> </span>grade-book.cpp
+<span class="nf">grade-book.o</span><span class="o">:</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>CXXFLAGS<span class="k">)</span> -c grade-book.cpp
 
 <span class="nf">clean</span><span class="o">:</span>
-<span class="w">    </span><span class="k">$(</span>RM<span class="k">)</span><span class="w"> </span>*.o<span class="w"> </span>main<span class="w"> </span>*.gc*<span class="w"> </span>*.dSYM
+    <span class="k">$(</span>RM<span class="k">)</span> *.o main *.gc* *.dSYM
 </pre></div>
 </div>
 <p>With variables, we can easily make modifications to the compiler command and
@@ -199,7 +198,7 @@ compilation flags by modifying variables.</p>
 <p>You may notice that we still have redundancy. The file names listed as part of
 the target or dependencies are hard-coded in the g++ commands. It can be
 improved using the <strong>automatic variables</strong> like $&#64;, $^, $&lt;.</p>
-<dl class="simple glossary">
+<dl class="glossary simple">
 <dt id="term-0">$&#64;<a class="headerlink" href="#term-0" title="Permalink to this term">¶</a></dt><dd><p>the target</p>
 </dd>
 <dt id="term-1">$^<a class="headerlink" href="#term-1" title="Permalink to this term">¶</a></dt><dd><p>all prerequisites</p>
@@ -209,28 +208,28 @@ improved using the <strong>automatic variables</strong> like $&#64;, $^, $&lt;.<
 </dl>
 <p>The further simplified makefile:</p>
 <div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">CXX</span><span class="o">=</span>g++
-<span class="nv">CXXFLAGS</span><span class="o">=</span>-std<span class="o">=</span>c++14<span class="w"> </span>-Wall<span class="w"> </span>-g
-<span class="nv">RM</span><span class="o">=</span>rm<span class="w"> </span>-rf
+<span class="nv">CXXFLAGS</span><span class="o">=</span>-std<span class="o">=</span>c++14 -Wall -g
+<span class="nv">RM</span><span class="o">=</span>rm -rf
 
-<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">clean</span>
+<span class="nf">.PHONY</span><span class="o">:</span> <span class="n">clean</span>
 
-<span class="nf">main</span><span class="o">:</span><span class="w"> </span><span class="n">main</span>.<span class="n">o</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">o</span> <span class="n">student</span>.<span class="n">o</span> <span class="n">grades</span>.<span class="n">o</span>
-<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">$@</span><span class="w"> </span>$^
+<span class="nf">main</span><span class="o">:</span> <span class="n">main</span>.<span class="n">o</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">o</span> <span class="n">student</span>.<span class="n">o</span> <span class="n">grades</span>.<span class="n">o</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> -o <span class="nv">$@</span> $^
 
-<span class="nf">main.o</span><span class="o">:</span><span class="w"> </span><span class="n">main</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span>
-<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CXXFLAGS<span class="k">)</span><span class="w"> </span>-c<span class="w"> </span>$&lt;
+<span class="nf">main.o</span><span class="o">:</span> <span class="n">main</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>CXXFLAGS<span class="k">)</span> -c $&lt;
 
-<span class="nf">student.o</span><span class="o">:</span><span class="w"> </span><span class="n">student</span>.<span class="n">cpp</span> <span class="n">student</span>.<span class="n">hpp</span>
-<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CXXFLAGS<span class="k">)</span><span class="w"> </span>-c<span class="w"> </span>$&lt;
+<span class="nf">student.o</span><span class="o">:</span> <span class="n">student</span>.<span class="n">cpp</span> <span class="n">student</span>.<span class="n">hpp</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>CXXFLAGS<span class="k">)</span> -c $&lt;
 
-<span class="nf">grades.o</span><span class="o">:</span><span class="w"> </span><span class="n">grades</span>.<span class="n">cpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
-<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CXXFLAGS<span class="k">)</span><span class="w"> </span>-c<span class="w"> </span>$&lt;
+<span class="nf">grades.o</span><span class="o">:</span> <span class="n">grades</span>.<span class="n">cpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>CXXFLAGS<span class="k">)</span> -c $&lt;
 
-<span class="nf">grade-book.o</span><span class="o">:</span><span class="w"> </span><span class="n">grade</span>-<span class="n">book</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
-<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CXXFLAGS<span class="k">)</span><span class="w"> </span>-c<span class="w"> </span>$&lt;
+<span class="nf">grade-book.o</span><span class="o">:</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>CXXFLAGS<span class="k">)</span> -c $&lt;
 
 <span class="nf">clean</span><span class="o">:</span>
-<span class="w">    </span><span class="k">$(</span>RM<span class="k">)</span><span class="w"> </span>*.o<span class="w"> </span>main<span class="w"> </span>*.gc*<span class="w"> </span>*.dSYM
+    <span class="k">$(</span>RM<span class="k">)</span> *.o main *.gc* *.dSYM
 </pre></div>
 </div>
 <div class="admonition note">
@@ -245,19 +244,19 @@ in the list!</p>
 <p>It is still verbose. By sacrificing the header prerequisites in the object file
 rules, we can merge these rules into one:</p>
 <div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">CXX</span><span class="o">=</span>g++
-<span class="nv">CXXFLAGS</span><span class="o">=</span>-std<span class="o">=</span>c++14<span class="w"> </span>-Wall<span class="w"> </span>-g
-<span class="nv">RM</span><span class="o">=</span>rm<span class="w"> </span>-rf
+<span class="nv">CXXFLAGS</span><span class="o">=</span>-std<span class="o">=</span>c++14 -Wall -g
+<span class="nv">RM</span><span class="o">=</span>rm -rf
 
-<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">clean</span>
+<span class="nf">.PHONY</span><span class="o">:</span> <span class="n">clean</span>
 
-<span class="nf">main</span><span class="o">:</span><span class="w"> </span><span class="n">main</span>.<span class="n">o</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">o</span> <span class="n">student</span>.<span class="n">o</span> <span class="n">grades</span>.<span class="n">o</span>
-<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">$@</span><span class="w"> </span>$^
+<span class="nf">main</span><span class="o">:</span> <span class="n">main</span>.<span class="n">o</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">o</span> <span class="n">student</span>.<span class="n">o</span> <span class="n">grades</span>.<span class="n">o</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> -o <span class="nv">$@</span> $^
 
-<span class="nf">%.o</span><span class="o">:</span><span class="w"> </span>%.<span class="n">cpp</span>
-<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CXXFLAGS<span class="k">)</span><span class="w"> </span>-c<span class="w"> </span>$&lt;
+<span class="nf">%.o</span><span class="o">:</span> %.<span class="n">cpp</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>CXXFLAGS<span class="k">)</span> -c $&lt;
 
 <span class="nf">clean</span><span class="o">:</span>
-<span class="w">    </span><span class="k">$(</span>RM<span class="k">)</span><span class="w"> </span>-rf<span class="w"> </span>*.o<span class="w"> </span>main<span class="w"> </span>*.gc*<span class="w"> </span>*.dSYM
+    <span class="k">$(</span>RM<span class="k">)</span> -rf *.o main *.gc* *.dSYM
 </pre></div>
 </div>
 <div class="admonition note">
@@ -284,18 +283,18 @@ heavy coding. It is a limitation of make any.</p>
 <div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="c"># use the wrong variable</span>
 <span class="c"># the use of $^ will include the hpp file in the g++ command</span>
 <span class="c"># use $&lt; to only include the first prerequisite, which should be the cpp file</span>
-<span class="nf">lib1.o</span><span class="o">:</span><span class="w"> </span><span class="n">lib</span>1.<span class="n">cpp</span> <span class="n">lib</span>1.<span class="n">hpp</span>
-<span class="w">    </span>g++<span class="w"> </span>-o<span class="w"> </span><span class="nv">$@</span><span class="w"> </span>$^
+<span class="nf">lib1.o</span><span class="o">:</span> <span class="n">lib</span>1.<span class="n">cpp</span> <span class="n">lib</span>1.<span class="n">hpp</span>
+    g++ -o <span class="nv">$@</span> $^
 
 <span class="c"># the order of prerequisites are wrong</span>
 <span class="c"># it will cause the g++ to run with hpp file as its argument</span>
 <span class="c"># the cpp file should go first so $&lt; will refer to it</span>
-<span class="nf">lib1.o</span><span class="o">:</span><span class="w"> </span><span class="n">lib</span>1.<span class="n">hpp</span> <span class="n">lib</span>1.<span class="n">cpp</span>
-<span class="w">    </span>g++<span class="w"> </span>-o<span class="w"> </span><span class="nv">$@</span><span class="w"> </span>$&lt;
+<span class="nf">lib1.o</span><span class="o">:</span> <span class="n">lib</span>1.<span class="n">hpp</span> <span class="n">lib</span>1.<span class="n">cpp</span>
+    g++ -o <span class="nv">$@</span> $&lt;
 
 <span class="c"># Typo in variables</span>
-<span class="nf">main.o</span><span class="o">:</span><span class="w"> </span><span class="n">main</span>.<span class="n">cpp</span>
-<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CXXFLAG<span class="k">)</span><span class="w"> </span>-c<span class="w"> </span><span class="nv">$@</span><span class="w"> </span>$&lt;
+<span class="nf">main.o</span><span class="o">:</span> <span class="n">main</span>.<span class="n">cpp</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>CXXFLAG<span class="k">)</span> -c <span class="nv">$@</span> $&lt;
 </pre></div>
 </div>
 </section>
@@ -424,7 +423,7 @@ E.g. <cite>make -d main</cite> to show the details about target and rule matchin
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021-2023, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
     </div>
   </body>
 </html>
