@@ -129,6 +129,10 @@ the transformed data and produces the output. The MapReduce paradigm enables
 the parallel processing of large data sets, making it an efficient and scalable
 method for Big Data processing.
 
+Overall, the Map function and Reduce function are the fundamental building
+blocks of the MapReduce paradigm, enabling the processing of large data sets in
+a distributed and parallel manner.
+
 Hadoop Ecosystem
 ================
 Hadoop is an open-source software framework for distributed storage and
@@ -262,7 +266,7 @@ to the reducer. Finally, we run the job and wait for it to complete.
   :width: 600
   :alt: Map Reduce Word Counting Example
 
-.. container:: footnotes
+.. container:: footnote
 
   Credit: https://www.educba.com/mapreduce-word-count/
 
@@ -393,11 +397,11 @@ APIs:
 
 In summary, RDD is the most basic data structure in Spark, while DataFrame and
 Dataset are higher-level abstractions that are optimized for structured and
-semi-structured data processing. RDDs only provide flexibility and
-fault-tolerance, while DataFrames and Datasets provide even better performance
-and optimization for structured data processing. Understanding the differences
-between these data structures is important for choosing the right tool for the
-job in big data processing and analytics.
+semi-structured data processing. RDDs provide flexibility and fault-tolerance,
+while DataFrames and Datasets provide better performance and optimization for
+structured data processing. Understanding the differences between these data
+structures is important for choosing the right tool for the job in big data
+processing and analytics.
 
 PySpark Code Examples
 ---------------------
@@ -407,14 +411,8 @@ components. All three data APIs are demonstrated here.
 .. code-block:: python
   :caption: RDD Example
 
-  # Import SparkSession
-  from pyspark.sql import SparkSession
-
-  # Create a Spark Session
-  spark = SparkSession.builder.master("local[*]").getOrCreate()
-
   # Create an RDD from a list of numbers
-  rdd = spark.sparkContext.parallelize([1, 2, 3, 4, 5])
+  rdd = sc.parallelize([1, 2, 3, 4, 5])
 
   # Perform a map operation to square each number in the RDD
   squared_rdd = rdd.map(lambda x: x**2)
@@ -430,12 +428,6 @@ components. All three data APIs are demonstrated here.
 
 .. code-block:: python
   :caption: DataFrame
-
-  # Import SparkSession
-  from pyspark.sql import SparkSession
-
-  # Create a Spark Session
-  spark = SparkSession.builder.master("local[*]").getOrCreate()
 
   # Create a DataFrame from a CSV file
   df = spark.read.csv('mydata.csv', header=True, inferSchema=True)
