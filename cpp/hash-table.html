@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Hash Table in C++ &#8212; IanFang Course Note Hosting  documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
@@ -16,6 +16,7 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/cpp/hash-table.html" />
     <link rel="index" title="Index" href="../genindex.html" />
@@ -149,73 +150,73 @@ slow with linked-list data structure)</p>
 </section>
 <section id="chaining-example">
 <h2>Chaining Example<a class="headerlink" href="#chaining-example" title="Permalink to this heading">¶</a></h2>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">Node</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 2</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 3</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 4</span><span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">next</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 5</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="linenos"> 6</span><span class="w">  </span><span class="n">Node</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w"></span>
-<span class="linenos"> 7</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">getKey</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 8</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">getValue</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 9</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setNext</span><span class="p">(</span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">next</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">10</span><span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="nf">getNext</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">11</span><span class="p">};</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">Node</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">;</span>
+<span class="linenos"> 3</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="linenos"> 4</span><span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">next</span><span class="p">;</span>
+<span class="linenos"> 5</span><span class="w"> </span><span class="k">public</span><span class="o">:</span>
+<span class="linenos"> 6</span><span class="w">  </span><span class="n">Node</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<span class="linenos"> 7</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">getKey</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<span class="linenos"> 8</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">getValue</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<span class="linenos"> 9</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">setNext</span><span class="p">(</span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">next</span><span class="p">);</span>
+<span class="linenos">10</span><span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="nf">getNext</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<span class="linenos">11</span><span class="p">};</span>
 <span class="linenos">12</span>
 <span class="linenos">13</span><span class="c1">// HashMap</span>
 <span class="linenos">14</span><span class="c1">// chaining</span>
-<span class="linenos">15</span><span class="k">class</span><span class="w"> </span><span class="nc">HashMap</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">16</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">capacity</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">15</span><span class="k">class</span><span class="w"> </span><span class="nc">HashMap</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">16</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">capacity</span><span class="p">;</span>
 <span class="linenos">17</span><span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">**</span><span class="n">buckets</span><span class="p">;</span><span class="w">  </span><span class="c1">// 1D array of pointers to linked lists</span>
-<span class="linenos">18</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">hashFunction</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">19</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="linenos">20</span><span class="w">  </span><span class="n">HashMap</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">21</span><span class="w">  </span><span class="o">~</span><span class="n">HashMap</span><span class="p">();</span><span class="w"></span>
-<span class="linenos">22</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">23</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">remove</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">24</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">lookUp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">25</span><span class="p">};</span><span class="w"></span>
+<span class="linenos">18</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">hashFunction</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">);</span>
+<span class="linenos">19</span><span class="w"> </span><span class="k">public</span><span class="o">:</span>
+<span class="linenos">20</span><span class="w">  </span><span class="n">HashMap</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span>
+<span class="linenos">21</span><span class="w">  </span><span class="o">~</span><span class="n">HashMap</span><span class="p">();</span>
+<span class="linenos">22</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<span class="linenos">23</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">remove</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">);</span>
+<span class="linenos">24</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">lookUp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">);</span>
+<span class="linenos">25</span><span class="p">};</span>
 </pre></div>
 </div>
 </section>
 <section id="open-addressing-example">
 <h2>Open addressing example<a class="headerlink" href="#open-addressing-example" title="Permalink to this heading">¶</a></h2>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">Bucket</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 2</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 3</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 4</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">emptySinceStart</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 5</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">emptySinceRemoval</span><span class="p">;</span><span class="w"></span>
-<span class="linenos"> 6</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="linenos"> 7</span><span class="w">  </span><span class="n">Bucket</span><span class="p">();</span><span class="w"></span>
-<span class="linenos"> 8</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w"></span>
-<span class="linenos"> 9</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">remove</span><span class="p">();</span><span class="w"></span>
-<span class="linenos">10</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">isEmptySinceStart</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">11</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">isEmptySinceRemoval</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">12</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">isEmpty</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">13</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">getKey</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">14</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">getValue</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">15</span><span class="p">};</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">Bucket</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">;</span>
+<span class="linenos"> 3</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="linenos"> 4</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">emptySinceStart</span><span class="p">;</span>
+<span class="linenos"> 5</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">emptySinceRemoval</span><span class="p">;</span>
+<span class="linenos"> 6</span><span class="w"> </span><span class="k">public</span><span class="o">:</span>
+<span class="linenos"> 7</span><span class="w">  </span><span class="n">Bucket</span><span class="p">();</span>
+<span class="linenos"> 8</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<span class="linenos"> 9</span><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">remove</span><span class="p">();</span>
+<span class="linenos">10</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">isEmptySinceStart</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<span class="linenos">11</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">isEmptySinceRemoval</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<span class="linenos">12</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">isEmpty</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<span class="linenos">13</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">getKey</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<span class="linenos">14</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">getValue</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<span class="linenos">15</span><span class="p">};</span>
 <span class="linenos">16</span>
 <span class="linenos">17</span><span class="c1">// HashMap</span>
 <span class="linenos">18</span><span class="c1">// Linear probing</span>
-<span class="linenos">19</span><span class="k">class</span><span class="w"> </span><span class="nc">HashMap</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">20</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">capacity</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">19</span><span class="k">class</span><span class="w"> </span><span class="nc">HashMap</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">20</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">capacity</span><span class="p">;</span>
 <span class="linenos">21</span><span class="w">  </span><span class="n">Bucket</span><span class="w"> </span><span class="o">*</span><span class="n">buckets</span><span class="p">;</span><span class="w">  </span><span class="c1">// 1D array of buckets</span>
-<span class="linenos">22</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">hashFunction</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">22</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">hashFunction</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">);</span>
 <span class="linenos">23</span><span class="w">  </span><span class="c1">// probing algorithm</span>
-<span class="linenos">24</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">probe</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">hash</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">probed</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">25</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="linenos">26</span><span class="w">  </span><span class="n">HashMap</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">27</span><span class="w">  </span><span class="o">~</span><span class="n">HashMap</span><span class="p">();</span><span class="w"></span>
-<span class="linenos">28</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">29</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">remove</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">30</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">lookUp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">31</span><span class="p">};</span><span class="w"></span>
+<span class="linenos">24</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">probe</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">hash</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">probed</span><span class="p">);</span>
+<span class="linenos">25</span><span class="w"> </span><span class="k">public</span><span class="o">:</span>
+<span class="linenos">26</span><span class="w">  </span><span class="n">HashMap</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">capacity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span>
+<span class="linenos">27</span><span class="w">  </span><span class="o">~</span><span class="n">HashMap</span><span class="p">();</span>
+<span class="linenos">28</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<span class="linenos">29</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">remove</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">);</span>
+<span class="linenos">30</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">lookUp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">);</span>
+<span class="linenos">31</span><span class="p">};</span>
 </pre></div>
 </div>
 </section>
 <section id="hash-table-glossary">
 <h2>Hash Table Glossary<a class="headerlink" href="#hash-table-glossary" title="Permalink to this heading">¶</a></h2>
-<dl class="glossary simple">
+<dl class="simple glossary">
 <dt id="term-Hash-Table">Hash Table<a class="headerlink" href="#term-Hash-Table" title="Permalink to this term">¶</a></dt><dd><p>An associative data structure that models mapping from keys to values. It is
 usually implemented as an array. A hash function is employed to map the key
 to the index of the array element where the value is stored</p>
@@ -328,7 +329,7 @@ addressing collision resolution approach</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021-2023, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
   </body>
 </html>
