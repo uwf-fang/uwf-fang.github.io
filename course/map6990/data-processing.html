@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
     <title>Big Data Processing For Big Data &#8212; IanFang Course Note Hosting  documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
@@ -16,11 +16,10 @@
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/course/map6990/data-processing.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Coding in PySpark" href="pyspark.html" />
+    <link rel="next" title="Module 4: PySpark Programming For Beginner" href="module4.html" />
     <link rel="prev" title="Big Data Life Cycle" href="life-cycle.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -30,7 +29,7 @@
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="pyspark.html" title="Coding in PySpark"
+          <a href="module4.html" title="Module 4: PySpark Programming For Beginner"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="life-cycle.html" title="Big Data Life Cycle"
@@ -163,9 +162,6 @@ by the Reduce function. The Reduce function performs the final computation on
 the transformed data and produces the output. The MapReduce paradigm enables
 the parallel processing of large data sets, making it an efficient and scalable
 method for Big Data processing.</p>
-<p>Overall, the Map function and Reduce function are the fundamental building
-blocks of the MapReduce paradigm, enabling the processing of large data sets in
-a distributed and parallel manner.</p>
 </section>
 </section>
 <section id="hadoop-ecosystem">
@@ -420,11 +416,11 @@ for structured data processing.</p></li>
 </ul>
 <p>In summary, RDD is the most basic data structure in Spark, while DataFrame and
 Dataset are higher-level abstractions that are optimized for structured and
-semi-structured data processing. RDDs provide flexibility and fault-tolerance,
-while DataFrames and Datasets provide better performance and optimization for
-structured data processing. Understanding the differences between these data
-structures is important for choosing the right tool for the job in big data
-processing and analytics.</p>
+semi-structured data processing. RDDs only provide flexibility and
+fault-tolerance, while DataFrames and Datasets provide even better performance
+and optimization for structured data processing. Understanding the differences
+between these data structures is important for choosing the right tool for the
+job in big data processing and analytics.</p>
 </section>
 <section id="pyspark-code-examples">
 <h3>PySpark Code Examples<a class="headerlink" href="#pyspark-code-examples" title="Permalink to this heading">¶</a></h3>
@@ -432,8 +428,14 @@ processing and analytics.</p>
 components. All three data APIs are demonstrated here.</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">RDD Example</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an RDD from a list of numbers</span>
-<span class="n">rdd</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">parallelize</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import SparkSession</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+
+<span class="c1"># Create a Spark Session</span>
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">master</span><span class="p">(</span><span class="s2">&quot;local[*]&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+
+<span class="c1"># Create an RDD from a list of numbers</span>
+<span class="n">rdd</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">parallelize</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
 
 <span class="c1"># Perform a map operation to square each number in the RDD</span>
 <span class="n">squared_rdd</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
@@ -451,7 +453,13 @@ components. All three data APIs are demonstrated here.</p>
 </div>
 <div class="literal-block-wrapper docutils container" id="id2">
 <div class="code-block-caption"><span class="caption-text">DataFrame</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a DataFrame from a CSV file</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import SparkSession</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+
+<span class="c1"># Create a Spark Session</span>
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">master</span><span class="p">(</span><span class="s2">&quot;local[*]&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+
+<span class="c1"># Create a DataFrame from a CSV file</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s1">&#39;mydata.csv&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Select columns and filter rows</span>
@@ -542,8 +550,8 @@ components. All three data APIs are demonstrated here.</p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="pyspark.html"
-                          title="next chapter">Coding in PySpark</a></p>
+    <p class="topless"><a href="module4.html"
+                          title="next chapter">Module 4: PySpark Programming For Beginner</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -573,7 +581,7 @@ components. All three data APIs are demonstrated here.</p>
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="pyspark.html" title="Coding in PySpark"
+          <a href="module4.html" title="Module 4: PySpark Programming For Beginner"
              >next</a> |</li>
         <li class="right" >
           <a href="life-cycle.html" title="Big Data Life Cycle"
@@ -586,7 +594,7 @@ components. All three data APIs are demonstrated here.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021-2023, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
     </div>
   </body>
 </html>

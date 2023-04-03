@@ -1,49 +1,113 @@
-*****************
-Coding in PySpark
-*****************
+********************************
+PySpark Programming for Beginner
+********************************
+We will only briefly introduce how to program in PySpark to manipulate datasets
+and achieve certain big data processing tasks.
 
-Environment
-===========
-Local
------
-You can try installing it on your own computer in a single node mode. You will
-need a UNIX like environment.
+PySpark Basics
+==============
++ Concepts
 
-Remote
-------
-We will use a remote environment called Google Colab to simplify the
-installation.
+  .. glossary::
 
-Google Colab
-============
-Google Colaboratory (also known as Google Colab or simply Colab) is a
-cloud-based platform that allows users to write, run, and share Python code
-using Jupyter notebooks. It is a free service provided by Google that allows
-users to access powerful computing resources, including GPUs and TPUs, without
-the need for expensive hardware.
+    SparkContext
+      Entry point to most of the PySpark functionalities.
 
-With Colab, you can easily create and share documents that contain live code,
-equations, visualizations, and text. You can also collaborate with others in
-real-time, making it an ideal tool for data science teams, researchers,
-educators, and students.
+    RDD (Resilient Distributed Dataset)
+      A fundamental building block of PySpark which is fault-tolerant, immutable distributed collection of objects
 
-Google Colab `website <colab_>`_
+    DataFrame
+      A distributed collection of data organized into named columns.
 
-.. _colab: https://colab.research.google.com/
+    DataSet
+      Similar to DataFrame but with strict types.
 
-Tutorials:
+Related Python Concepts
+=======================
+We will need to learn some useful python snippets to be used in data
+manipulation using PySpark APIs.
 
-+ `Google Colab Tutorial for Beginners (towardai.net) <ta_>`_
-+ `Google Colab Tutorial (tutorialspoint.com) <tp_>`_
+Lambda Functions
+----------------
++ A simple and disposable way to write a python function.
++ Many RDD transformations require a function as its parameter
++ Syntax
 
-.. _ta: https://pub.towardsai.net/google-colab-tutorial-for-beginners-834595494d44
-.. _tp: https://www.tutorialspoint.com/google_colab/index.htm
+  * ``lambda <input list>: <return value>``
+  * start with ``lambda`` keyword
+  * followed by a list of parameters
+  * after the colon, provide the return value calculated based on the
+    parameters
 
-Install PySpark
----------------
-Input ``!pip install pyspark`` in a code cell and run.
++ Examples
 
-Save Data
----------
-You can upload and download in the file explorer sidebar or mount your Google
-Drive to the Colab virtual machine.
+  * ``lambda x: x*x``, square the input
+  * ``lambda line: line.split()``, split a text to a list of text using spaces
+    as delimiters
+  * ``lambda paragraph: paragraph.split('\n')``, split a text to a list of
+    lines using new line character as delimiters
+  * ``lambda word: (word, 1)``, convert a work to a key-value pair of word and
+    1
+  * ``lambda pair: pair[0]``, return the first element of the pair
+  * ``lambda pair: pair[1]``, return the second element of the pair
+  * ``lambda x, y: x+y``, sum up two value
+  * ``lambda p1, p2: p1[1] + p2[1]``, sum up the second values in two pairs
+
+RDD (Resilient Distributed Dataset)
+===================================
++ External readings
+
+  * `RDD Programming Guide <rdd1_>`_
+  * `A Comprehensive Guide to PySpark RDD Operations <av1_>`_
+
+.. _rdd1: https://spark.apache.org/docs/latest/rdd-programming-guide.html
+.. _av1: https://www.analyticsvidhya.com/blog/2021/10/a-comprehensive-guide-to-pyspark-rdd-operations/
+
++ Two types of operations
+
+  * Transformations
+
+    - Takes an RDD and return another RDD
+    - Distributed to distributed
+    - Include but more than just mapping
+
+  * Actions
+
+    - Take an RDD and return a single object
+    - Distributed to local
+    - Include but more than just reducing
+
++ Useful transformations
+
+  * ``map``
+  * ``flatmap``
+  * ``filter``
+
++ Useful actions
+
+  * ``collect``
+  * ``count``
+  * ``first``
+  * ``take``
+  * ``reduce``
+  * ``sum``
+  * ``max``
+  * ``min``
+  * ``mean``
+  * ``countByValue``
+
++ Pair RDD
+
+  PySpark provides a specialized group of operations for working with Pair
+  RDDs. In PySpark, pair RDDs are a specialized subtype of the RDD data
+  structure that take the form of key-value pairs.
+
++ Useful transformations for pair RDDs
+
+  * ``reduceByKey``
+  * ``sortByKey``
+  * ``groupByKey``
+
++ Useful actions for pair RDDs
+
+  * ``countByKey``
