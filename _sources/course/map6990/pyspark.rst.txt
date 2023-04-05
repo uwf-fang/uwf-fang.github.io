@@ -48,6 +48,7 @@ Lambda Functions
     lines using new line character as delimiters
   * ``lambda word: (word, 1)``, convert a work to a key-value pair of word and
     1
+  * ``lambda word: len(word)``, convert a string to its length
   * ``lambda pair: pair[0]``, return the first element of the pair
   * ``lambda pair: pair[1]``, return the second element of the pair
   * ``lambda x, y: x+y``, sum up two value
@@ -62,6 +63,12 @@ RDD (Resilient Distributed Dataset)
 
 .. _rdd1: https://spark.apache.org/docs/latest/rdd-programming-guide.html
 .. _av1: https://www.analyticsvidhya.com/blog/2021/10/a-comprehensive-guide-to-pyspark-rdd-operations/
+
++ Characteristics
+
+  * Distributed
+  * Immutable
+  * Lazy evaluation
 
 + Two types of operations
 
@@ -79,22 +86,26 @@ RDD (Resilient Distributed Dataset)
 
 + Useful transformations
 
-  * ``map``
-  * ``flatmap``
-  * ``filter``
+  * ``map(func)``, func should transform one item to another
+  * ``flatMap(func)``, func should take one item and generate a list
+  * ``filter(func)``, func should return True or False according to the input
 
 + Useful actions
 
-  * ``collect``
-  * ``count``
-  * ``first``
-  * ``take``
-  * ``reduce``
-  * ``sum``
-  * ``max``
-  * ``min``
-  * ``mean``
-  * ``countByValue``
+  * ``collect()``, collect all data and return a local list
+  * ``count()``
+  * ``first()``
+  * ``take(num)``, take the first num of values and return a local list
+  * ``reduce(func)``, func should take two parameters and give one result
+  * ``sum()``
+  * ``max()``
+  * ``min()``
+  * ``mean()``
+  * ``countByValue()``
+
+    - Python dict like type as output ``{key1: value1, key2: value2, ...}``
+    - models key-value pair
+    - key must be unique
 
 + Pair RDD
 
@@ -102,12 +113,26 @@ RDD (Resilient Distributed Dataset)
   RDDs. In PySpark, pair RDDs are a specialized subtype of the RDD data
   structure that take the form of key-value pairs.
 
-+ Useful transformations for pair RDDs
+  * example ``[(key1, value1), (key2, value2), ...]``
+  * Useful transformations for pair RDDs
 
-  * ``reduceByKey``
-  * ``sortByKey``
-  * ``groupByKey``
+    - ``sortByKey(ascending=True)``
+    - ``sortBy(func, ascending=True)``
 
-+ Useful actions for pair RDDs
+      * func should take an item and return the value used to perform sorting
+      * e.g. ``pairs.sortBy(lambda p: p[1]`` use the value (second item in the
+        pair) to sort the pairs
 
-  * ``countByKey``
+    - ``groupByKey()``
+
+      * create a new RDD with each item being pairs with a same key
+
+  * Useful actions for pair RDDs
+
+    - ``reduceByKey(func)``
+
+      * func should take two values (second item in the pair) and return one
+      * used to combine values that have a same key
+
+    - ``countByKey()``
+

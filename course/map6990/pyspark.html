@@ -95,6 +95,7 @@ as delimiters</p></li>
 lines using new line character as delimiters</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">lambda</span> <span class="pre">word:</span> <span class="pre">(word,</span> <span class="pre">1)</span></code>, convert a work to a key-value pair of word and
 1</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lambda</span> <span class="pre">word:</span> <span class="pre">len(word)</span></code>, convert a string to its length</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">lambda</span> <span class="pre">pair:</span> <span class="pre">pair[0]</span></code>, return the first element of the pair</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">lambda</span> <span class="pre">pair:</span> <span class="pre">pair[1]</span></code>, return the second element of the pair</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">lambda</span> <span class="pre">x,</span> <span class="pre">y:</span> <span class="pre">x+y</span></code>, sum up two value</p></li>
@@ -115,6 +116,13 @@ lines using new line character as delimiters</p></li>
 </li>
 </ul>
 <ul>
+<li><p>Characteristics</p>
+<ul class="simple">
+<li><p>Distributed</p></li>
+<li><p>Immutable</p></li>
+<li><p>Lazy evaluation</p></li>
+</ul>
+</li>
 <li><p>Two types of operations</p>
 <ul class="simple">
 <li><p>Transformations</p>
@@ -135,40 +143,65 @@ lines using new line character as delimiters</p></li>
 </li>
 <li><p>Useful transformations</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">map</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">flatmap</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">filter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">map(func)</span></code>, func should transform one item to another</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flatMap(func)</span></code>, func should take one item and generate a list</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">filter(func)</span></code>, func should return True or False according to the input</p></li>
 </ul>
 </li>
 <li><p>Useful actions</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">collect</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">count</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">first</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">take</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">reduce</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sum</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">max</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">min</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">mean</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">countByValue</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">collect()</span></code>, collect all data and return a local list</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">count()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">first()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">take(num)</span></code>, take the first num of values and return a local list</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reduce(func)</span></code>, func should take two parameters and give one result</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sum()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">min()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mean()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">countByValue()</span></code></p>
+<ul>
+<li><p>Python dict like type as output <code class="docutils literal notranslate"><span class="pre">{key1:</span> <span class="pre">value1,</span> <span class="pre">key2:</span> <span class="pre">value2,</span> <span class="pre">...}</span></code></p></li>
+<li><p>models key-value pair</p></li>
+<li><p>key must be unique</p></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><p>Pair RDD</p>
 <p>PySpark provides a specialized group of operations for working with Pair
 RDDs. In PySpark, pair RDDs are a specialized subtype of the RDD data
 structure that take the form of key-value pairs.</p>
-</li>
-<li><p>Useful transformations for pair RDDs</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">reduceByKey</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sortByKey</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">groupByKey</span></code></p></li>
+<li><p>example <code class="docutils literal notranslate"><span class="pre">[(key1,</span> <span class="pre">value1),</span> <span class="pre">(key2,</span> <span class="pre">value2),</span> <span class="pre">...]</span></code></p></li>
+<li><p>Useful transformations for pair RDDs</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">sortByKey(ascending=True)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sortBy(func,</span> <span class="pre">ascending=True)</span></code></p>
+<ul>
+<li><p>func should take an item and return the value used to perform sorting</p></li>
+<li><p>e.g. <code class="docutils literal notranslate"><span class="pre">pairs.sortBy(lambda</span> <span class="pre">p:</span> <span class="pre">p[1]</span></code> use the value (second item in the
+pair) to sort the pairs</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">groupByKey()</span></code></p>
+<ul>
+<li><p>create a new RDD with each item being pairs with a same key</p></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><p>Useful actions for pair RDDs</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">countByKey</span></code></p></li>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">reduceByKey(func)</span></code></p>
+<ul>
+<li><p>func should take two values (second item in the pair) and return one</p></li>
+<li><p>used to combine values that have a same key</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">countByKey()</span></code></p></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
