@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Module 5: Distributed Memory Programming with MPI &#8212; IanFang Course Note Hosting  documentation</title>
+    <title>Module 5: Data Analysis for Big Data &#8212; IanFang Course Note Hosting  documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -19,7 +19,9 @@
     <script src="../../_static/sphinx_highlight.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/course/map6990/module5.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Final Topic Review" href="final.html" />
+    <link rel="prev" title="PySpark Programming for Beginner" href="pyspark.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -27,8 +29,15 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="final.html" title="Final Topic Review"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pyspark.html" title="PySpark Programming for Beginner"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Module 5: Distributed Memory Programming with MPI</a></li> 
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">MAP 6990 Big Data for Data Science</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Module 5: Data Analysis for Big Data</a></li> 
       </ul>
     </div>  
 
@@ -37,97 +46,191 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="module-5-distributed-memory-programming-with-mpi">
-<h1>Module 5: Distributed Memory Programming with MPI<a class="headerlink" href="#module-5-distributed-memory-programming-with-mpi" title="Permalink to this heading">¶</a></h1>
-<section id="the-mpi-model">
-<h2>The MPI Model<a class="headerlink" href="#the-mpi-model" title="Permalink to this heading">¶</a></h2>
+  <section id="module-5-data-analysis-for-big-data">
+<h1>Module 5: Data Analysis for Big Data<a class="headerlink" href="#module-5-data-analysis-for-big-data" title="Permalink to this heading">¶</a></h1>
+<p>The term “data analysis” is frequently used to describe either the entire
+process of data-driven applications or just the data processing and analysis
+steps outlined in the <a class="reference internal" href="life-cycle.html"><span class="doc">big data life cycle</span></a> discussed in this
+course. We will focus on the data analysis step as the last step of the whole
+process in which we convert the prepared datasets to the final products of the
+application that will provide value to the user.</p>
+<section id="products-of-data-analysis">
+<h2>Products of Data Analysis<a class="headerlink" href="#products-of-data-analysis" title="Permalink to this heading">¶</a></h2>
+<p>Data analysis involves processing and interpreting large and complex datasets
+to extract valuable insights and patterns. The following are the primary
+products of data analysis:</p>
 <ul class="simple">
-<li><p>An industrial standard to support distributed memory programming</p></li>
-<li><p>Multiple implementations</p>
+<li><p>Reports and Dashboards: Data analysis results are often presented in the form
+of reports and dashboards that provide a concise and intuitive overview of
+the insights gained from the data. These visualizations help decision-makers
+understand the results of the analysis quickly and easily.</p></li>
+<li><p>Models: Data analysis also involves building models that can be used to make
+predictions and generate new data. There are two main types of models:
+discriminative models, which use historical data to predict future outcomes,
+and generative models, which can generate new data that resembles the
+original data.</p>
 <ul>
-<li><p>MPICH</p></li>
-<li><p>OpenMPI</p></li>
+<li><p>Discriminative Models: Discriminative models use statistical and machine
+learning algorithms to analyze historical data and make predictions about
+future events. These models are commonly used in financial forecasting,
+marketing, and other industries where future predictions are essential.</p></li>
+<li><p>Generative Models: Generative models create new data that resembles the
+original data. These models are useful for tasks such as image and audio
+synthesis, text generation, and data augmentation.</p></li>
 </ul>
 </li>
-<li><p>Components</p>
+<li><p>Optimized Algorithm/Procedure: Data analysis can also help to optimize
+algorithms and procedures for data processing and analysis. This can result
+in faster processing times, improved accuracy, and increased efficiency in
+data-driven applications.</p></li>
+<li><p>Datasets: Finally, data analysis can guide the creation of new datasets
+that can be used to train models, validate results, or further research.
+These datasets are often made publicly available to support research and
+development in various fields.</p></li>
+</ul>
+<p>To produce these products, the developer will create models to model the data
+and extract insights from the data using the models. The insights are described
+and visualized to create reports.</p>
+<p>When the reports are time sensitive, automatic data pipeline are created to
+create real-time reports as a dashboard for real-time monitoring.</p>
+<p>The insights can also guide the improvement of certain algorithm or procedure
+or confirm the quality of the new datasets to be published for public usage.</p>
+<p>There are many types of models ranged from simple statistical model to large
+deep learning models. Some models are only useful to generate metrics and
+visualizations and some are more powerful machine learning and deep learning
+models that can be employed in more advanced tasks. We will focus on machine
+learning models in this course.</p>
+</section>
+<section id="data-analysis-in-big-data-context">
+<h2>Data Analysis in Big Data Context<a class="headerlink" href="#data-analysis-in-big-data-context" title="Permalink to this heading">¶</a></h2>
+<section id="machine-learning-overview">
+<h3>Machine Learning Overview<a class="headerlink" href="#machine-learning-overview" title="Permalink to this heading">¶</a></h3>
+<p>Machine learning models, including deep learning, are a subset of artificial
+intelligence that allows computers to learn from data and make predictions or
+decisions without being explicitly programmed. These models can be trained on
+large datasets to identify patterns and relationships in the data and use that
+knowledge to make predictions or classifications on new, unseen data.</p>
+<p>Machine learning models, including deep learning, rely on a set of parameters
+that are learned during the training process. These parameters determine the
+behavior of the model and affect its ability to make accurate predictions or
+classifications.</p>
+<p>In traditional machine learning models, such as linear regression or logistic
+regression, the parameters are learned using analytical solutions or
+optimization techniques such as gradient descent. These models have a fixed set
+of parameters that are learned during the training process, and they do not
+require a large amount of data to train.</p>
+<p>Deep learning models, on the other hand, are characterized by having many
+layers of interconnected neurons, and a large number of parameters that need to
+be learned. These models use stochastic gradient descent and backpropagation to
+update the parameters during the training process. The number of parameters in
+a deep learning model can be in the millions or even billions, depending on the
+size and complexity of the model.</p>
+</section>
+<section id="most-models-are-not-big">
+<h3>Most Models Are Not “Big”<a class="headerlink" href="#most-models-are-not-big" title="Permalink to this heading">¶</a></h3>
+<p>One important concept to clarify here is that while big data analysis is often
+associated with large volumes of data, most data analysis approaches are not
+“big” at all, with the exception of large deep learning models. This is because
+the amount of information required for many data analysis tasks is often
+limited, and can be effectively processed with smaller datasets.</p>
+<p>For example, generating a visualization or training a traditional machine
+learning model often only requires a subset of the available data. Even when
+large datasets are provided, only a limited amount of information may be
+extracted from them. In many cases, the performance of a model using a large
+volume of data is identical to the performance of the same model using a random
+subset of the data.</p>
+<p>Therefore, in most data analysis applications, the focus should be on finding
+the best subset of the available data to complete the analysis. This can be
+achieved by carefully selecting the relevant features or variables, or by using
+techniques such as data sampling or dimensionality reduction to reduce the
+amount of data without sacrificing accuracy.</p>
+</section>
+<section id="deep-learning-models-for-big-data">
+<h3>Deep Learning Models for Big Data<a class="headerlink" href="#deep-learning-models-for-big-data" title="Permalink to this heading">¶</a></h3>
+<p>Deep learning models are a specific type of machine learning model that are
+designed to process and analyze large and complex datasets. These models are
+based on artificial neural networks that are inspired by the structure and
+function of the human brain.</p>
+<p>One of the key advantages of deep learning models is their ability to learn and
+extract complex patterns from data. This is due to their large number of
+parameters, which can range from millions to billions, and allows them to model
+highly nonlinear and intricate relationships between input and output data.
+This makes them particularly useful in applications such as image and speech
+recognition, natural language processing, and autonomous systems, where there
+is a vast amount of data that needs to be processed and analyzed.</p>
+<p>However, the large number of parameters in deep learning models also means that
+they require a significant amount of data to train effectively. In fact, they
+are the only exception to the general rule that most data analysis approaches
+do not require large datasets. The more data that is available, the more
+accurately the model can be trained, and the better its performance will be on
+new, unseen data.</p>
+<p>As a result, deep learning models are currently the focus of much research in
+the field of big data applications. Many industries, including healthcare,
+finance, and transportation, are exploring the potential of deep learning
+models to analyze and extract insights from their data. However, it is
+important to note that the use of deep learning models also comes with its own
+set of challenges, including the need for specialized hardware, the risk of
+overfitting, and the potential for bias in the data. Therefore, it is important
+to carefully consider the suitability of deep learning models for a given task,
+and to ensure that they are trained and evaluated appropriately.</p>
+<a class="reference internal image-reference" href="../../_images/ml-dl-data-size.png"><img alt="Model performances vs data size" src="../../_images/ml-dl-data-size.png" style="width: 600px;" /></a>
+<div class="footnote docutils container">
+<p>Credit: Pu, Yuanyuan, et al. “Machine learning methods for rockburst prediction-state-of-the-art review.” International Journal of Mining Science and Technology 29.4 (2019): 565-570.</p>
+</div>
+</section>
+</section>
+<section id="types-of-learning-tasks">
+<h2>Types of learning tasks<a class="headerlink" href="#types-of-learning-tasks" title="Permalink to this heading">¶</a></h2>
 <ul>
-<li><p>compiler wrapper <code class="docutils literal notranslate"><span class="pre">mpicc</span></code></p></li>
-<li><p>library <code class="docutils literal notranslate"><span class="pre">mpi.h</span></code></p></li>
-<li><p>runner <code class="docutils literal notranslate"><span class="pre">mpiexec</span></code> or <code class="docutils literal notranslate"><span class="pre">mpirun</span></code> (not official)</p></li>
+<li><p>Supervised Learning:</p>
+<p>Supervised learning is a type of learning task that involves the use of
+labeled data, where the algorithm is trained using inputs and corresponding
+outputs. It can be further divided into two categories:</p>
+<ul class="simple">
+<li><p>Classification: Classification is a type of supervised learning where the
+algorithm learns to predict a discrete output. For example, predicting
+whether an email is spam or not.</p></li>
+<li><p>Regression: Regression is a type of supervised learning where the algorithm
+learns to predict a continuous output. For example, predicting the price of
+a house.</p></li>
 </ul>
 </li>
-</ul>
-</section>
-<section id="basic-mpi-concepts">
-<h2>Basic MPI Concepts<a class="headerlink" href="#basic-mpi-concepts" title="Permalink to this heading">¶</a></h2>
+<li><p>Unsupervised Learning:</p>
+<p>Unsupervised learning is a type of learning task that involves the use of
+unlabeled data. In this type of learning, the algorithm learns patterns and
+relationships within the data without any specific guidance or target output.
+It can be further divided into three categories:</p>
 <ul class="simple">
-<li><p>Communicator - collection of processes that can communicate through MPI</p></li>
-<li><p>Process - the running unit in MPI, same or different computation nodes</p></li>
-<li><p>Size and Rank</p></li>
-<li><p>API types</p>
-<ul>
-<li><p>peer-to-peer (P2P)</p></li>
-<li><p>collective</p></li>
+<li><p>Clustering: Clustering is a type of unsupervised learning where the
+algorithm groups similar data points together. For example, grouping
+customers based on their purchase history.</p></li>
+<li><p>Dimension reduction: Dimension reduction is a type of unsupervised learning
+where the algorithm reduces the number of variables in the data while
+preserving its underlying structure. For example, reducing the number of
+variables in an image while preserving its visual features. It can also be
+employed to visualize data in 2D and 3D plots.</p></li>
 </ul>
 </li>
-<li><p>Communication call types</p>
-<ul>
-<li><p>blocking</p></li>
-<li><p>non-blocking</p></li>
-</ul>
+<li><p>Reinforcement Learning:</p>
+<p>Reinforcement learning is a type of learning task where an agent learns to
+interact with an environment to achieve a specific goal. The agent receives
+rewards or punishments based on its actions and learns to make optimal
+decisions to maximize the cumulative reward.</p>
 </li>
-<li><p>Setup/Finalize</p>
-<ul>
-<li><p>MPI_Init</p></li>
-<li><p>MPI_Finalize</p></li>
-</ul>
+<li><p>Semi-Supervised Learning:</p>
+<p>Semi-supervised learning is a type of learning task that involves the use of
+both labeled and unlabeled data. In this type of learning, the algorithm
+learns from the labeled data and uses the unlabeled data to improve its
+performance.</p>
 </li>
-<li><p>Data types</p></li>
-<li><p>Message matching</p></li>
-</ul>
-</section>
-<section id="synchronization">
-<h2>Synchronization<a class="headerlink" href="#synchronization" title="Permalink to this heading">¶</a></h2>
-<ul class="simple">
-<li><p>MPI Barrier</p></li>
-</ul>
-</section>
-<section id="peer-to-peer-apis">
-<h2>Peer-to-peer APIs<a class="headerlink" href="#peer-to-peer-apis" title="Permalink to this heading">¶</a></h2>
-<ul class="simple">
-<li><p>Send/receive</p></li>
-<li><p>Send and receive in one call</p></li>
-</ul>
-</section>
-<section id="collective-apis">
-<h2>Collective APIs<a class="headerlink" href="#collective-apis" title="Permalink to this heading">¶</a></h2>
-<ul class="simple">
-<li><p>Map</p></li>
-<li><p>Reduce</p></li>
-<li><p>All Reduce</p></li>
-<li><p>Broadcast</p></li>
-<li><p>Gather/Scatter</p></li>
-<li><p>All Gether</p></li>
-</ul>
-</section>
-<section id="derived-data-type">
-<h2>Derived Data-Type<a class="headerlink" href="#derived-data-type" title="Permalink to this heading">¶</a></h2>
-<ul class="simple">
-<li><p>Customize data type</p></li>
-</ul>
-</section>
-<section id="evaluation">
-<h2>Evaluation<a class="headerlink" href="#evaluation" title="Permalink to this heading">¶</a></h2>
-<ul class="simple">
-<li><p>MPI_Wtime</p></li>
-<li><p>MPI_Barrier</p></li>
-</ul>
-</section>
-<section id="safety">
-<h2>Safety<a class="headerlink" href="#safety" title="Permalink to this heading">¶</a></h2>
-<ul class="simple">
-<li><p>Buffering vs Blocking</p></li>
-<li><p>Deadlock</p></li>
+<li><p>Self-Supervised Learning:</p>
+<p>Self-supervised learning is a type of learning task that involves the use of
+labeled data generated by the algorithm itself. In this type of learning, the
+algorithm creates a task based on the input data, and the output is used as
+the label for the same input data. For example, predicting the missing pixels
+in an image.</p>
+<p>Self-Supervised learning is extensively used in deep learning training.</p>
+</li>
 </ul>
 </section>
 </section>
@@ -142,19 +245,29 @@
   <div>
     <h3><a href="../../index.html">Table of Contents</a></h3>
     <ul>
-<li><a class="reference internal" href="#">Module 5: Distributed Memory Programming with MPI</a><ul>
-<li><a class="reference internal" href="#the-mpi-model">The MPI Model</a></li>
-<li><a class="reference internal" href="#basic-mpi-concepts">Basic MPI Concepts</a></li>
-<li><a class="reference internal" href="#synchronization">Synchronization</a></li>
-<li><a class="reference internal" href="#peer-to-peer-apis">Peer-to-peer APIs</a></li>
-<li><a class="reference internal" href="#collective-apis">Collective APIs</a></li>
-<li><a class="reference internal" href="#derived-data-type">Derived Data-Type</a></li>
-<li><a class="reference internal" href="#evaluation">Evaluation</a></li>
-<li><a class="reference internal" href="#safety">Safety</a></li>
+<li><a class="reference internal" href="#">Module 5: Data Analysis for Big Data</a><ul>
+<li><a class="reference internal" href="#products-of-data-analysis">Products of Data Analysis</a></li>
+<li><a class="reference internal" href="#data-analysis-in-big-data-context">Data Analysis in Big Data Context</a><ul>
+<li><a class="reference internal" href="#machine-learning-overview">Machine Learning Overview</a></li>
+<li><a class="reference internal" href="#most-models-are-not-big">Most Models Are Not “Big”</a></li>
+<li><a class="reference internal" href="#deep-learning-models-for-big-data">Deep Learning Models for Big Data</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#types-of-learning-tasks">Types of learning tasks</a></li>
 </ul>
 </li>
 </ul>
 
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="pyspark.html"
+                          title="previous chapter">PySpark Programming for Beginner</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="final.html"
+                          title="next chapter">Final Topic Review</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -183,8 +296,15 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="final.html" title="Final Topic Review"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pyspark.html" title="PySpark Programming for Beginner"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Module 5: Distributed Memory Programming with MPI</a></li> 
+          <li class="nav-item nav-item-1"><a href="index.html" >MAP 6990 Big Data for Data Science</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Module 5: Data Analysis for Big Data</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
