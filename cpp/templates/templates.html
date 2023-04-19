@@ -102,23 +102,23 @@ have a <code class="docutils literal notranslate"><span class="pre">template</sp
 <li><p>The keyword <code class="docutils literal notranslate"><span class="pre">typename</span></code> and <code class="docutils literal notranslate"><span class="pre">class</span></code> in the <code class="docutils literal notranslate"><span class="pre">template</span></code> clause are
 interchangeable</p></li>
 </ul>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
-<span class="linenos"> 2</span><span class="n">T</span><span class="w"> </span><span class="n">func1</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">param1</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="linenos"> 2</span><span class="n">T</span><span class="w"> </span><span class="n">func1</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">param1</span><span class="p">);</span>
 <span class="linenos"> 3</span>
-<span class="linenos"> 4</span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
-<span class="linenos"> 5</span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 6</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="linenos"> 7</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">method1</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">param1</span><span class="p">);</span><span class="w"></span>
-<span class="linenos"> 8</span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="linenos"> 5</span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="p">{</span>
+<span class="linenos"> 6</span><span class="w"> </span><span class="k">public</span><span class="o">:</span>
+<span class="linenos"> 7</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">method1</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">param1</span><span class="p">);</span>
+<span class="linenos"> 8</span><span class="p">}</span>
 <span class="linenos"> 9</span>
 <span class="linenos">10</span><span class="c1">// important to notice that MyClass is followed by &lt;T&gt; here!</span>
 <span class="linenos">11</span><span class="c1">// MyClass is the name of the template while MyClass&lt;T&gt; is the</span>
 <span class="linenos">12</span><span class="c1">//     name of the class</span>
-<span class="linenos">13</span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
-<span class="linenos">14</span><span class="kt">bool</span><span class="w"> </span><span class="n">MyClass</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">method1</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">param1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">13</span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="linenos">14</span><span class="kt">bool</span><span class="w"> </span><span class="n">MyClass</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">method1</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">param1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="linenos">15</span><span class="w">  </span><span class="c1">// core logics</span>
-<span class="linenos">16</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">17</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">16</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="linenos">17</span><span class="p">}</span>
 </pre></div>
 </div>
 </li>
@@ -126,12 +126,12 @@ interchangeable</p></li>
 <ul>
 <li><p>Specify the template argument to <strong>instantiate</strong> the template:</p>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="c1">// function template</span>
-<span class="linenos">2</span><span class="kt">int</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">func1</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">2</span><span class="kt">int</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">func1</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
 <span class="linenos">3</span>
 <span class="linenos">4</span><span class="c1">// class template</span>
-<span class="linenos">5</span><span class="n">MyClass</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">obj1</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">6</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">obj1</span><span class="p">.</span><span class="n">method1</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span><span class="w"></span>
-<span class="linenos">7</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;True&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">5</span><span class="n">MyClass</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">obj1</span><span class="p">;</span>
+<span class="linenos">6</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">obj1</span><span class="p">.</span><span class="n">method1</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="linenos">7</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;True&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
 </pre></div>
 </div>
 </li>
@@ -192,21 +192,21 @@ for use.</p></li>
 <span id="example"></span><h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h2>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">Template Syntax</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w"> </span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
-<span class="linenos"> 2</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">func1</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">param1</span><span class="p">);</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="w"> </span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="linenos"> 2</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">func1</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">param1</span><span class="p">);</span>
 <span class="linenos"> 3</span>
-<span class="linenos"> 4</span><span class="w"> </span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
-<span class="linenos"> 5</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="p">{</span><span class="w"></span>
-<span class="linenos"> 6</span><span class="w"> </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="linenos"> 7</span><span class="w">   </span><span class="kt">bool</span><span class="w"> </span><span class="n">method1</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">param1</span><span class="p">);</span><span class="w"></span>
-<span class="linenos"> 8</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 4</span><span class="w"> </span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="linenos"> 5</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="p">{</span>
+<span class="linenos"> 6</span><span class="w"> </span><span class="k">public</span><span class="o">:</span>
+<span class="linenos"> 7</span><span class="w">   </span><span class="kt">bool</span><span class="w"> </span><span class="n">method1</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">param1</span><span class="p">);</span>
+<span class="linenos"> 8</span><span class="w"> </span><span class="p">}</span>
 <span class="linenos"> 9</span>
 <span class="linenos">10</span><span class="w"> </span><span class="c1">// important to notice that MyClass is followed by &lt;T&gt; here!</span>
-<span class="linenos">11</span><span class="w"> </span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
-<span class="linenos">12</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">MyClass</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">method1</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">param1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos">11</span><span class="w"> </span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="linenos">12</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">MyClass</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">method1</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">param1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="linenos">13</span><span class="w">   </span><span class="c1">// logics</span>
-<span class="linenos">14</span><span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">15</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="linenos">14</span><span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="linenos">15</span><span class="w"> </span><span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -216,42 +216,42 @@ for use.</p></li>
 <span class="linenos"> 2</span><span class="cp">#define TEMPLATE_DEMO_HPP</span>
 <span class="linenos"> 3</span>
 <span class="linenos"> 4</span><span class="c1">// function template</span>
-<span class="linenos"> 5</span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
-<span class="linenos"> 6</span><span class="n">T</span><span class="w"> </span><span class="n">myMin</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="p">);</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="linenos"> 6</span><span class="n">T</span><span class="w"> </span><span class="n">myMin</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="p">);</span>
 <span class="linenos"> 7</span>
-<span class="linenos"> 8</span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
-<span class="linenos"> 9</span><span class="n">T</span><span class="w"> </span><span class="n">myMin</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">val1</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">val2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">10</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">val1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">val2</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">11</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">val2</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">12</span><span class="w">  </span><span class="k">else</span><span class="w"></span>
-<span class="linenos">13</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">val1</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">14</span><span class="p">}</span><span class="w"></span>
+<span class="linenos"> 8</span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="linenos"> 9</span><span class="n">T</span><span class="w"> </span><span class="n">myMin</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">val1</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">val2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">10</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">val1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">val2</span><span class="p">)</span>
+<span class="linenos">11</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">val2</span><span class="p">;</span>
+<span class="linenos">12</span><span class="w">  </span><span class="k">else</span>
+<span class="linenos">13</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">val1</span><span class="p">;</span>
+<span class="linenos">14</span><span class="p">}</span>
 <span class="linenos">15</span>
 <span class="linenos">16</span><span class="c1">// class template</span>
-<span class="linenos">17</span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
-<span class="linenos">18</span><span class="k">class</span><span class="w"> </span><span class="nc">Min</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">19</span><span class="w">  </span><span class="k">private</span><span class="o">:</span><span class="w"></span>
-<span class="linenos">20</span><span class="w">  </span><span class="n">T</span><span class="w"> </span><span class="n">val1</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">21</span><span class="w">  </span><span class="n">T</span><span class="w"> </span><span class="n">val2</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">22</span><span class="w">  </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="linenos">23</span><span class="w">  </span><span class="n">Min</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">val1</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">val2</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">24</span><span class="w">  </span><span class="n">T</span><span class="w"> </span><span class="nf">getMin</span><span class="p">();</span><span class="w"></span>
-<span class="linenos">25</span><span class="p">};</span><span class="w"></span>
+<span class="linenos">17</span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="linenos">18</span><span class="k">class</span><span class="w"> </span><span class="nc">Min</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">19</span><span class="w">  </span><span class="k">private</span><span class="o">:</span>
+<span class="linenos">20</span><span class="w">  </span><span class="n">T</span><span class="w"> </span><span class="n">val1</span><span class="p">;</span>
+<span class="linenos">21</span><span class="w">  </span><span class="n">T</span><span class="w"> </span><span class="n">val2</span><span class="p">;</span>
+<span class="linenos">22</span><span class="w">  </span><span class="k">public</span><span class="o">:</span>
+<span class="linenos">23</span><span class="w">  </span><span class="n">Min</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">val1</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">val2</span><span class="p">);</span>
+<span class="linenos">24</span><span class="w">  </span><span class="n">T</span><span class="w"> </span><span class="nf">getMin</span><span class="p">();</span>
+<span class="linenos">25</span><span class="p">};</span>
 <span class="linenos">26</span>
 <span class="linenos">27</span><span class="c1">// class methods implementations, not inline</span>
-<span class="linenos">28</span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
-<span class="linenos">29</span><span class="n">Min</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">Min</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">val1</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">val2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">30</span><span class="w">  </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">val1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">val1</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">31</span><span class="w">  </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">val2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">val2</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">32</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">28</span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="linenos">29</span><span class="n">Min</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">Min</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">val1</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">val2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">30</span><span class="w">  </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">val1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">val1</span><span class="p">;</span>
+<span class="linenos">31</span><span class="w">  </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">val2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">val2</span><span class="p">;</span>
+<span class="linenos">32</span><span class="p">}</span>
 <span class="linenos">33</span>
-<span class="linenos">34</span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
-<span class="linenos">35</span><span class="n">T</span><span class="w"> </span><span class="n">Min</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">getMin</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos">36</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">val1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">val2</span><span class="p">)</span><span class="w"></span>
-<span class="linenos">37</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">val2</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">38</span><span class="w">  </span><span class="k">else</span><span class="w"></span>
-<span class="linenos">39</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">val1</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">40</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">34</span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="linenos">35</span><span class="n">T</span><span class="w"> </span><span class="n">Min</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">getMin</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">36</span><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">val1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">val2</span><span class="p">)</span>
+<span class="linenos">37</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">val2</span><span class="p">;</span>
+<span class="linenos">38</span><span class="w">  </span><span class="k">else</span>
+<span class="linenos">39</span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">val1</span><span class="p">;</span>
+<span class="linenos">40</span><span class="p">}</span>
 <span class="linenos">41</span>
 <span class="linenos">42</span><span class="cp">#endif</span>
 </pre></div>
@@ -259,11 +259,11 @@ for use.</p></li>
 </div>
 <div class="literal-block-wrapper docutils container" id="id3">
 <div class="code-block-caption"><span class="caption-text">template-test.cpp</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;template-demo.hpp&quot;</span><span class="cp"></span>
-<span class="linenos"> 2</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
-<span class="linenos"> 3</span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;template-demo.hpp&quot;</span>
+<span class="linenos"> 2</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="linenos"> 3</span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="p">;</span>
 <span class="linenos"> 4</span>
-<span class="linenos"> 5</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos"> 5</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="linenos"> 6</span><span class="w">  </span><span class="c1">// test myMin function, the function template</span>
 <span class="linenos"> 7</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;min(2, 3) = &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">myMin</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w">  </span><span class="c1">// myMin(int, int)</span>
 <span class="linenos"> 8</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;min(2.0, 3.0) = &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">myMin</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="mf">3.0</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w">  </span><span class="c1">// myMin(double, double)</span>
@@ -271,14 +271,14 @@ for use.</p></li>
 <span class="linenos">10</span><span class="w">  </span><span class="c1">// Self-test: now to delare the function to make myMin(2, 3.0) work?</span>
 <span class="linenos">11</span>
 <span class="linenos">12</span><span class="w">  </span><span class="c1">// test Min class, the class template</span>
-<span class="linenos">13</span><span class="w">  </span><span class="n">Min</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">myMin1</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span><span class="w"></span>
-<span class="linenos">14</span><span class="w">  </span><span class="n">Min</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">myMin2</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="mf">3.0</span><span class="p">);</span><span class="w"></span>
+<span class="linenos">13</span><span class="w">  </span><span class="n">Min</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">myMin1</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<span class="linenos">14</span><span class="w">  </span><span class="n">Min</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">myMin2</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span><span class="w"> </span><span class="mf">3.0</span><span class="p">);</span>
 <span class="linenos">15</span>
-<span class="linenos">16</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;The min from the class Min&lt;int&gt;(2, 3) &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">myMin1</span><span class="p">.</span><span class="n">getMin</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
-<span class="linenos">17</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;The min from the class Min&lt;double&gt;(2.0, 3.0) &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">fixed</span><span class="w"></span>
-<span class="linenos">18</span><span class="w">    </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">myMin2</span><span class="p">.</span><span class="n">getMin</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"></span>
+<span class="linenos">16</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;The min from the class Min&lt;int&gt;(2, 3) &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">myMin1</span><span class="p">.</span><span class="n">getMin</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="linenos">17</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;The min from the class Min&lt;double&gt;(2.0, 3.0) &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">fixed</span>
+<span class="linenos">18</span><span class="w">    </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">myMin2</span><span class="p">.</span><span class="n">getMin</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
 <span class="linenos">19</span>
-<span class="linenos">20</span><span class="p">}</span><span class="w"></span>
+<span class="linenos">20</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>
