@@ -3,7 +3,6 @@
 *********************
 Compilation Using g++
 *********************
-
 Compilation is a process to translate source codes into executables or
 libraries. A compiled programming language requires source codes to be compiled
 before they can be executed. C++ is typical compiled programming language.
@@ -13,16 +12,26 @@ Mainstream Compilation Systems
 There are many mainstream C/C++ compilers available to various operating
 systems:
 
-+ Cross-platform (Linux native, Mac OS, Windows, etc.): gcc/g++ from GNU GCC
-+ Mac OS native: The LLVM C/C++ compilers clang/clang++ from the Xcode
-  command-line tools
-+ Windows native: Visual C++
-+ Windows non-native: MinGW (MSys2, Git Bash)
++ Cross-platform (Linux native, Mac OS, Windows, etc.)
+
+  * gcc/g++ from GNU GCC
+
++ Mac OS native
+
+  * The LLVM C/C++ compilers clang/clang++ from the Xcode command-line tools
+
++ Windows native
+
+  * Visual C++
+
++ Windows non-native
+
+  * MinGW (MSys2, Git Bash)
+  * Cygwin
 
 They are not compatible to each other so you need to stick to one for
-consistency. **In our course, the GNU g++ (part of GCC) is chosen as the only
-compiler and you must stick to it so your code can be correctly compile and
-executed by your instructor or grader.** Although it is not binary compatible
+consistency. In our course, **the GNU g++ (part of GCC) is chosen as the only
+compiler and you must stick to it.** Although it is not binary compatible
 to g++, code that is compilable using LLVM compilers clang++ can be compiled
 with g++ in most of the case.
 
@@ -33,9 +42,8 @@ with g++ in most of the case.
   compatibility issues and you must perform a final test on a Linux system
   (e.g. the SSH server) to make sure that it will work during grading.
 
-
-Stages of compilation of C/C++ projects
-=======================================
+Building process of C/C++ projects
+==================================
 General compilation process of C/C++ projects contains three main stages:
 preprocessing, compilation, and linking.
 
@@ -51,15 +59,17 @@ preprocessing, compilation, and linking.
   Linking step
     Link object (.o) files to produce an executables (or a library)
 
-The three steps can be performed all at once or separately using g++. The
-preprocessing step are usually performed together the compilation step. Thus,
-typical step-wise compilations involve two steps: Preprocessing+Compilation and
-Linking.
+The three steps of preprocessing, compilation, and linking can be performed
+either all at once or separately using the g++ compiler. Typically, the
+preprocessing and compilation steps are performed together. Therefore, the
+typical step-wise compilation process involves two steps: preprocessing and
+compilation, followed by linking.
 
 The g++ command
 ===============
 g++ is the GNU C++ compiler invocation command. It builds C++ source codes to
-produce libraries or executables.
+produce libraries or executables. It serves as pre-processor, compiler, and
+linker for C++ projects.
 
 g++ command-line
 ----------------
@@ -80,11 +90,11 @@ A typical g++ compilation command-line looks like:
     the source of the compilation. They can be either .cpp file or .o file
     names.
 
-Example: :code:`g++ -Wall -std=c++14 -Wall -o main main.cpp`
+Example: in :code:`g++ -Wall -std=c++14 -o main main.cpp` command, ``-Wall``,
+``-std=c++14`` and ``-o main`` are options and ``main.cpp`` is an argument.
 
 Common g++ options
 ------------------
-
 .. glossary::
 
   -o
@@ -92,8 +102,8 @@ Common g++ options
     name. For example, ``-o main`` to generate a file called ``main``.
 
   -c
-    This option tell g++ to compile only. No linking. It will generate an
-    object file.
+    This option tell g++ to compile only without linking. It will generate an
+    object (.o) file.
 
   -std=c++14
     Use the C++ standard 14 to compile. There are other C++ standards available
@@ -107,12 +117,16 @@ Common g++ options
     Store debugging information during compilation to allow future use of
     debuggers like ``gdb`` or ``valgrind``.
 
+  -O0, -O1, -O2, -O3
+    Optimize the generated code. The higher the number, the more optimization
+    will be performed. The default is -O2.
+
 Preprocessor directives
 =======================
-Preprocessor directives are instructions used in your source code. They are
-mixed with C++ statements and direct how the preprocessor will manipulate the
-text of the source codes files before they are actually compiled. They are
-instructions started with a hash symbol ``#``.
+Preprocessor directives are instructions that are mixed in with C++ statements
+in your source code. They direct the preprocessor to manipulate the text of the
+source code files before they are compiled. These directives are identified by
+the hash symbol '#' at the start of the instruction.
 
 .. warning::
 
@@ -121,8 +135,9 @@ instructions started with a hash symbol ``#``.
 
 + ``#include``
 
-  It is used to copy and paste texts from another file to the location of the
-  directive. You can use either angular brackets ``<>`` or double quotation marks ``""`` to include system headers or user headers:
+  It is used to copy texts from another file and paste to the location of the
+  directive. You can use either angular brackets ``<>`` or double quotation
+  marks ``""`` to include system headers or user headers:
 
   .. code-block:: c++
 
@@ -183,7 +198,7 @@ Styles of compilation
 One step compilation
 --------------------
 You may use a single g++ command to produce the executable from the source code
-files. In this method, all three tasks are performed in one step.
+files. In this method, all three stages are invoked by one g++ command.
 
 You can list all cpp files in the command line as arguments and specify the
 output file name as main::
@@ -226,7 +241,7 @@ executable named ``main``.
 Pitfalls
 --------
 
-+ include header files in the g++ command
++ List header files in the g++ command
 
 ::
 

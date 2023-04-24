@@ -1,63 +1,136 @@
 *******************
 Modular Development
 *******************
+TL;DR
+=====
++ No more single file project except in Intro to C++ class.
++ Learning how modules work together.
++ Use ``make`` to automated the building process.
+
+Overview
+========
 Modular development is the process of subdividing a program into separate
 sub-units known as modules. A module is a separate software component. It can
 often be used in a variety of applications and functions with other components
 of the system.
 
-The advantage of modular development include:
+Unless in the Introductory courses, we will always use modular development
+rather than single-file development. **You can not survive the course if you
+stick to single-file development.**
 
-1. Ease of code organization/management
-2. Reusability
-3. Ease of maintenance (testing, collaboration, etc.)
+Advantages
+==========
++ Code reusability: Modules can be designed and implemented as stand-alone
+  entities, which can be reused in other projects. This can help reduce
+  development time and improve overall code quality.
++ Simplicity: By breaking down a large program into smaller modules, it becomes
+  easier to manage and understand the code. This makes it easier to debug and
+  maintain, as well as more readable for other programmers.
++ Encapsulation: Modules provide a way to encapsulate data and functions,
+  allowing them to be accessed only through a specific interface. This can
+  improve code security and help prevent errors caused by unintentional
+  modifications of data or functions.
++ Parallel development: Modular development allows multiple programmers to work
+  on different modules simultaneously without interfering with each other's
+  code. This can significantly speed up the development process and improve
+  overall efficiency.
++ Flexibility: Modules can be developed and tested independently, making it
+  easier to modify or add functionality to a program without affecting other
+  parts of the code. This can help make the program more adaptable to changing
+  requirements and user needs.
++ Testing: Modular development allows for easier testing of individual
+  components, which can help detect errors earlier in the development process
+  and improve overall code quality.
 
-Life Cycle of a C++ Executable
-==============================
+C++ Building Process
+====================
+The building process of a modular C++ project generally involves three main
+steps: pre-processing, compilation, and linking. External libraries may also be
+involved in the process.
+
++ Pre-processing: In this step, the pre-processor examines the source code
+  files and performs tasks such as including header files, expanding macros,
+  and removing comments. The pre-processor outputs a modified version of the
+  source code, which is then sent to the compiler.
++ Compilation: The compiler takes the pre-processed source code and translates
+  it into machine-readable object code. Each source code file is compiled
+  independently, resulting in one object code file for each source file.
++ Linking: In this step, the linker takes all of the object code files and
+  combines them into a single executable program or library. During this
+  process, unresolved external references are resolved by linking with external
+  libraries.
+
+If the modular C++ project uses external libraries, the libraries need to be
+included in the build process. This can be done by specifying the library file
+paths and names in the linker command line or in a configuration file.
+
+It's important to note that the building process for a modular C++ project can
+vary depending on the specific build tools and development environment used.
+However, the general steps of pre-processing, compilation, and linking are
+common to most build processes.
+
+It is discussed in detail in the :doc:`g++ document</building/gpp>`.
 
 .. image:: /_static/cpp-build-process.png
+  :alt: C++ Building Process of an Executable
 
 Multi-file Organization in C++
 ==============================
-The key component that allows the modular compilation in C++ is the
-``#include`` directive which copies all contents from one file and paste at the
-location at the directive.
-
-As a convention, the sharable components are stored in the header files (hpp
-files) and the private components are stored in the source files (cpp files).
-Other textual files like .inc files are also used (not covered in our courses).
-
-Public/sharable components in header (.hpp) files
--------------------------------------------------
-#. Declarations of functions to be used in multiple cpp files
-#. Declarations of classes to be used in multiple cpp files
-#. Global variables (should avoid mutable global in most cases)
-#. Declarations of types, type alias, macros, etc.
-#. Class templates
-
-Private components in source (.cpp) files
------------------------------------------
-#. Declarations of everything that will be only used in the current cpp file
-#. Function/class method definitions
-
+Types of Files
+--------------
 .. glossary::
 
-  Header file (hpp file)
-    The textual file to be included by other files to share public contents including public declarations of functions and classes, and public
-    configurations(variables, macros, type alias, etc.).
+  Header file
+    A header file is a text file that is included by other files to share
+    public contents such as function and class declarations, as well as public
+    configurations such as variables, macros, and type aliases.
 
-  Source file (cpp file)
-    The textual file to be compiled to create object file. They typically
-    include private declarations, private configurations, and definitions of
-    functions and methods,
+  Source code file
+    A source code file is a text file that is compiled to create an object
+    file. It typically contains private declarations, private configurations,
+    and the definitions of functions and methods.
 
-Best Practices
-==============
-These are general rules. They should be followed most of the time especially
-for beginners. They can be violate when you have a good reason and know what
-you are doing.
+Header file
+-----------
++ .h extension for C header files
++ .hpp extension for C++ header files
++ Store public/sharable components
 
-+ Sort the ``#include`` directive correctly
+  * Declarations of functions
+  * Declarations of classes
+  * Global variables
+  * Declarations of types, type alias, macros, etc.
+  * Class templates
+
+Source code file
+----------------
++ .c extension for C source files
++ .cpp extension for C++ source files
++ Store private components
+
+  * Declarations of anything that will be only used in the current cpp file
+  * Function/class method definitions (implementation)
+
+Module
+------
++ A module is a collection of header files and source files that are related to
+  each other. In our class, we will use the term "module" to refer to a pair of
+  header and source code file with the same base name.
++ E.g. ``lib1.hpp`` and ``lib1.cpp`` are a module.
++ Allows multiple classes and functions in a same module.
+
+.. note::
+
+  C++ do not require the programmer to put only one class in a module!
+
+Best Practices in Modular Development
+=====================================
+Generally, it is recommended to follow these rules, especially for beginners.
+However, there may be situations where it is appropriate to deviate from these
+guidelines if there is a good reason and the programmer knows what they are
+doing.
+
++ Sort the ``#include`` directive in the following order:
 
   1. own header (paired header)
   2. headers in the same project
@@ -65,32 +138,31 @@ you are doing.
   4. system library headers
 
 + Only include headers as needed
-+ Avoid include-all headers like bits/stdc++.h
++ Avoid include-all headers like ``bits/stdc++.h``
 + Always add header guards
-+ Minimize your header (move out contents to the cpp file as much as possible)
++ Minimize your header (move contents to the cpp file as much as possible)
 + Follow a consistent naming convention for all files
 
 .. _mod-pitfall:
 
 Pitfalls in Modular Development
 ===============================
-Many of these pitfalls are not wrong, but just not recommended at lease for
-beginners. C++ is very flexible but following a good convention is more
-beginner-friendly.
+Many of these pitfalls are not necessarily incorrect, but they are generally
+not recommended, especially for beginners. C++ is a highly flexible language,
+but following established conventions can make it more accessible for those who
+are new to programming.
 
-+ Not using header guards in header files
-+ Put all declarations in the header file even though they are not shared
-+ Wrong cases in the file names
++ Missing header guards in header files
++ Store all declarations in the header file even though they are not shared
 + Not following a strict naming convention of files
+
+  * Upper case letters in the file names
+  * Space and special characters in the file names
+
 + Use .h extension for C++ header files
 + Include cpp files like ``include "lib1.cpp"``
 + g++ commands with header files like ``g++ -std=c++14 -o main main.cpp
   lib1.hpp lib1.cpp``
-
-Examples
-========
-Please refer to :doc:`make document</tools/make>` for modular examples.
-
 
 .. toctree::
    :maxdepth: 1

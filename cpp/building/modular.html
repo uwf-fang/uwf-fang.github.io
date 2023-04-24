@@ -49,62 +49,145 @@
             
   <section id="modular-development">
 <h1>Modular Development<a class="headerlink" href="#modular-development" title="Permalink to this heading">¶</a></h1>
+<section id="tl-dr">
+<h2>TL;DR<a class="headerlink" href="#tl-dr" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>No more single file project except in Intro to C++ class.</p></li>
+<li><p>Learning how modules work together.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">make</span></code> to automated the building process.</p></li>
+</ul>
+</section>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
 <p>Modular development is the process of subdividing a program into separate
 sub-units known as modules. A module is a separate software component. It can
 often be used in a variety of applications and functions with other components
 of the system.</p>
-<p>The advantage of modular development include:</p>
-<ol class="arabic simple">
-<li><p>Ease of code organization/management</p></li>
-<li><p>Reusability</p></li>
-<li><p>Ease of maintenance (testing, collaboration, etc.)</p></li>
-</ol>
-<section id="life-cycle-of-a-c-executable">
-<h2>Life Cycle of a C++ Executable<a class="headerlink" href="#life-cycle-of-a-c-executable" title="Permalink to this heading">¶</a></h2>
-<img alt="../../_images/cpp-build-process.png" src="../../_images/cpp-build-process.png" />
+<p>Unless in the Introductory courses, we will always use modular development
+rather than single-file development. <strong>You can not survive the course if you
+stick to single-file development.</strong></p>
+</section>
+<section id="advantages">
+<h2>Advantages<a class="headerlink" href="#advantages" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Code reusability: Modules can be designed and implemented as stand-alone
+entities, which can be reused in other projects. This can help reduce
+development time and improve overall code quality.</p></li>
+<li><p>Simplicity: By breaking down a large program into smaller modules, it becomes
+easier to manage and understand the code. This makes it easier to debug and
+maintain, as well as more readable for other programmers.</p></li>
+<li><p>Encapsulation: Modules provide a way to encapsulate data and functions,
+allowing them to be accessed only through a specific interface. This can
+improve code security and help prevent errors caused by unintentional
+modifications of data or functions.</p></li>
+<li><p>Parallel development: Modular development allows multiple programmers to work
+on different modules simultaneously without interfering with each other’s
+code. This can significantly speed up the development process and improve
+overall efficiency.</p></li>
+<li><p>Flexibility: Modules can be developed and tested independently, making it
+easier to modify or add functionality to a program without affecting other
+parts of the code. This can help make the program more adaptable to changing
+requirements and user needs.</p></li>
+<li><p>Testing: Modular development allows for easier testing of individual
+components, which can help detect errors earlier in the development process
+and improve overall code quality.</p></li>
+</ul>
+</section>
+<section id="c-building-process">
+<h2>C++ Building Process<a class="headerlink" href="#c-building-process" title="Permalink to this heading">¶</a></h2>
+<p>The building process of a modular C++ project generally involves three main
+steps: pre-processing, compilation, and linking. External libraries may also be
+involved in the process.</p>
+<ul class="simple">
+<li><p>Pre-processing: In this step, the pre-processor examines the source code
+files and performs tasks such as including header files, expanding macros,
+and removing comments. The pre-processor outputs a modified version of the
+source code, which is then sent to the compiler.</p></li>
+<li><p>Compilation: The compiler takes the pre-processed source code and translates
+it into machine-readable object code. Each source code file is compiled
+independently, resulting in one object code file for each source file.</p></li>
+<li><p>Linking: In this step, the linker takes all of the object code files and
+combines them into a single executable program or library. During this
+process, unresolved external references are resolved by linking with external
+libraries.</p></li>
+</ul>
+<p>If the modular C++ project uses external libraries, the libraries need to be
+included in the build process. This can be done by specifying the library file
+paths and names in the linker command line or in a configuration file.</p>
+<p>It’s important to note that the building process for a modular C++ project can
+vary depending on the specific build tools and development environment used.
+However, the general steps of pre-processing, compilation, and linking are
+common to most build processes.</p>
+<p>It is discussed in detail in the <span class="xref std std-doc">g++ document</span>.</p>
+<img alt="C++ Building Process of an Executable" src="../../_images/cpp-build-process.png" />
 </section>
 <section id="multi-file-organization-in-c">
 <h2>Multi-file Organization in C++<a class="headerlink" href="#multi-file-organization-in-c" title="Permalink to this heading">¶</a></h2>
-<p>The key component that allows the modular compilation in C++ is the
-<code class="docutils literal notranslate"><span class="pre">#include</span></code> directive which copies all contents from one file and paste at the
-location at the directive.</p>
-<p>As a convention, the sharable components are stored in the header files (hpp
-files) and the private components are stored in the source files (cpp files).
-Other textual files like .inc files are also used (not covered in our courses).</p>
-<section id="public-sharable-components-in-header-hpp-files">
-<h3>Public/sharable components in header (.hpp) files<a class="headerlink" href="#public-sharable-components-in-header-hpp-files" title="Permalink to this heading">¶</a></h3>
-<ol class="arabic simple">
-<li><p>Declarations of functions to be used in multiple cpp files</p></li>
-<li><p>Declarations of classes to be used in multiple cpp files</p></li>
-<li><p>Global variables (should avoid mutable global in most cases)</p></li>
-<li><p>Declarations of types, type alias, macros, etc.</p></li>
-<li><p>Class templates</p></li>
-</ol>
-</section>
-<section id="private-components-in-source-cpp-files">
-<h3>Private components in source (.cpp) files<a class="headerlink" href="#private-components-in-source-cpp-files" title="Permalink to this heading">¶</a></h3>
-<ol class="arabic simple">
-<li><p>Declarations of everything that will be only used in the current cpp file</p></li>
-<li><p>Function/class method definitions</p></li>
-</ol>
+<section id="types-of-files">
+<h3>Types of Files<a class="headerlink" href="#types-of-files" title="Permalink to this heading">¶</a></h3>
 <dl class="simple glossary">
-<dt id="term-Header-file-hpp-file">Header file (hpp file)<a class="headerlink" href="#term-Header-file-hpp-file" title="Permalink to this term">¶</a></dt><dd><p>The textual file to be included by other files to share public contents including public declarations of functions and classes, and public
-configurations(variables, macros, type alias, etc.).</p>
+<dt id="term-Header-file">Header file<a class="headerlink" href="#term-Header-file" title="Permalink to this term">¶</a></dt><dd><p>A header file is a text file that is included by other files to share
+public contents such as function and class declarations, as well as public
+configurations such as variables, macros, and type aliases.</p>
 </dd>
-<dt id="term-Source-file-cpp-file">Source file (cpp file)<a class="headerlink" href="#term-Source-file-cpp-file" title="Permalink to this term">¶</a></dt><dd><p>The textual file to be compiled to create object file. They typically
-include private declarations, private configurations, and definitions of
-functions and methods,</p>
+<dt id="term-Source-code-file">Source code file<a class="headerlink" href="#term-Source-code-file" title="Permalink to this term">¶</a></dt><dd><p>A source code file is a text file that is compiled to create an object
+file. It typically contains private declarations, private configurations,
+and the definitions of functions and methods.</p>
 </dd>
 </dl>
 </section>
-</section>
-<section id="best-practices">
-<h2>Best Practices<a class="headerlink" href="#best-practices" title="Permalink to this heading">¶</a></h2>
-<p>These are general rules. They should be followed most of the time especially
-for beginners. They can be violate when you have a good reason and know what
-you are doing.</p>
+<section id="header-file">
+<h3>Header file<a class="headerlink" href="#header-file" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
-<li><p>Sort the <code class="docutils literal notranslate"><span class="pre">#include</span></code> directive correctly</p>
+<li><p>.h extension for C header files</p></li>
+<li><p>.hpp extension for C++ header files</p></li>
+<li><p>Store public/sharable components</p>
+<ul>
+<li><p>Declarations of functions</p></li>
+<li><p>Declarations of classes</p></li>
+<li><p>Global variables</p></li>
+<li><p>Declarations of types, type alias, macros, etc.</p></li>
+<li><p>Class templates</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="source-code-file">
+<h3>Source code file<a class="headerlink" href="#source-code-file" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>.c extension for C source files</p></li>
+<li><p>.cpp extension for C++ source files</p></li>
+<li><p>Store private components</p>
+<ul>
+<li><p>Declarations of anything that will be only used in the current cpp file</p></li>
+<li><p>Function/class method definitions (implementation)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="module">
+<h3>Module<a class="headerlink" href="#module" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>A module is a collection of header files and source files that are related to
+each other. In our class, we will use the term “module” to refer to a pair of
+header and source code file with the same base name.</p></li>
+<li><p>E.g. <code class="docutils literal notranslate"><span class="pre">lib1.hpp</span></code> and <code class="docutils literal notranslate"><span class="pre">lib1.cpp</span></code> are a module.</p></li>
+<li><p>Allows multiple classes and functions in a same module.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>C++ do not require the programmer to put only one class in a module!</p>
+</div>
+</section>
+</section>
+<section id="best-practices-in-modular-development">
+<h2>Best Practices in Modular Development<a class="headerlink" href="#best-practices-in-modular-development" title="Permalink to this heading">¶</a></h2>
+<p>Generally, it is recommended to follow these rules, especially for beginners.
+However, there may be situations where it is appropriate to deviate from these
+guidelines if there is a good reason and the programmer knows what they are
+doing.</p>
+<ul class="simple">
+<li><p>Sort the <code class="docutils literal notranslate"><span class="pre">#include</span></code> directive in the following order:</p>
 <ol class="arabic simple">
 <li><p>own header (paired header)</p></li>
 <li><p>headers in the same project</p></li>
@@ -113,31 +196,32 @@ you are doing.</p>
 </ol>
 </li>
 <li><p>Only include headers as needed</p></li>
-<li><p>Avoid include-all headers like bits/stdc++.h</p></li>
+<li><p>Avoid include-all headers like <code class="docutils literal notranslate"><span class="pre">bits/stdc++.h</span></code></p></li>
 <li><p>Always add header guards</p></li>
-<li><p>Minimize your header (move out contents to the cpp file as much as possible)</p></li>
+<li><p>Minimize your header (move contents to the cpp file as much as possible)</p></li>
 <li><p>Follow a consistent naming convention for all files</p></li>
 </ul>
 </section>
 <section id="pitfalls-in-modular-development">
 <span id="mod-pitfall"></span><h2>Pitfalls in Modular Development<a class="headerlink" href="#pitfalls-in-modular-development" title="Permalink to this heading">¶</a></h2>
-<p>Many of these pitfalls are not wrong, but just not recommended at lease for
-beginners. C++ is very flexible but following a good convention is more
-beginner-friendly.</p>
+<p>Many of these pitfalls are not necessarily incorrect, but they are generally
+not recommended, especially for beginners. C++ is a highly flexible language,
+but following established conventions can make it more accessible for those who
+are new to programming.</p>
 <ul class="simple">
-<li><p>Not using header guards in header files</p></li>
-<li><p>Put all declarations in the header file even though they are not shared</p></li>
-<li><p>Wrong cases in the file names</p></li>
-<li><p>Not following a strict naming convention of files</p></li>
+<li><p>Missing header guards in header files</p></li>
+<li><p>Store all declarations in the header file even though they are not shared</p></li>
+<li><p>Not following a strict naming convention of files</p>
+<ul>
+<li><p>Upper case letters in the file names</p></li>
+<li><p>Space and special characters in the file names</p></li>
+</ul>
+</li>
 <li><p>Use .h extension for C++ header files</p></li>
 <li><p>Include cpp files like <code class="docutils literal notranslate"><span class="pre">include</span> <span class="pre">&quot;lib1.cpp&quot;</span></code></p></li>
 <li><p>g++ commands with header files like <code class="docutils literal notranslate"><span class="pre">g++</span> <span class="pre">-std=c++14</span> <span class="pre">-o</span> <span class="pre">main</span> <span class="pre">main.cpp</span>
 <span class="pre">lib1.hpp</span> <span class="pre">lib1.cpp</span></code></p></li>
 </ul>
-</section>
-<section id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h2>
-<p>Please refer to <a class="reference internal" href="../../tools/make.html"><span class="doc">make document</span></a> for modular examples.</p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Related Readings:</span></p>
 <ul>
@@ -160,15 +244,19 @@ beginner-friendly.</p>
     <h3><a href="../../index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">Modular Development</a><ul>
-<li><a class="reference internal" href="#life-cycle-of-a-c-executable">Life Cycle of a C++ Executable</a></li>
+<li><a class="reference internal" href="#tl-dr">TL;DR</a></li>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#advantages">Advantages</a></li>
+<li><a class="reference internal" href="#c-building-process">C++ Building Process</a></li>
 <li><a class="reference internal" href="#multi-file-organization-in-c">Multi-file Organization in C++</a><ul>
-<li><a class="reference internal" href="#public-sharable-components-in-header-hpp-files">Public/sharable components in header (.hpp) files</a></li>
-<li><a class="reference internal" href="#private-components-in-source-cpp-files">Private components in source (.cpp) files</a></li>
+<li><a class="reference internal" href="#types-of-files">Types of Files</a></li>
+<li><a class="reference internal" href="#header-file">Header file</a></li>
+<li><a class="reference internal" href="#source-code-file">Source code file</a></li>
+<li><a class="reference internal" href="#module">Module</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#best-practices">Best Practices</a></li>
+<li><a class="reference internal" href="#best-practices-in-modular-development">Best Practices in Modular Development</a></li>
 <li><a class="reference internal" href="#pitfalls-in-modular-development">Pitfalls in Modular Development</a></li>
-<li><a class="reference internal" href="#examples">Examples</a></li>
 </ul>
 </li>
 </ul>
