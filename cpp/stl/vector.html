@@ -54,12 +54,13 @@
 <ul class="simple">
 <li><p>A vector is mostly a data structure as it is usually language specific.</p></li>
 <li><p>A vector can be sometimes be treated as an ADT, when focusing on the data
-organization and behaviors only. Implementations are not defined.</p></li>
-<li><p>Vector: A sequential ADT, similar to list ADT</p></li>
+organization and behaviors only. Implementations are ignored.</p></li>
+<li><p>Vector: A sequential ADT, similar to list ADT with some specific behaviors</p></li>
 <li><p>Behaviors</p>
 <ul>
 <li><p>access by index</p></li>
 <li><p>insert remove by index</p></li>
+<li><p>add remove at the end</p></li>
 <li><p>check size/empty</p></li>
 </ul>
 </li>
@@ -159,6 +160,52 @@ vector</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">vector&lt;int&gt;</span> <span class="pre">v(5,</span> <span class="pre">1)</span></code> size 5 vector with 1s, <strong>warning:</strong> <code class="docutils literal notranslate"><span class="pre">v{5,</span> <span class="pre">1}</span></code> will
 make a size 2 vector instead</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">vector&lt;int&gt;</span> <span class="pre">v1(v)</span></code> make a copy of v</p></li>
+</ul>
+</section>
+<section id="c-iterator-type-extended-reading">
+<span id="iterator"></span><h3>C++ Iterator Type (Extended reading)<a class="headerlink" href="#c-iterator-type-extended-reading" title="Permalink to this heading">¶</a></h3>
+<p>In C++, an iterator is an object that enables traversal through the elements of
+a container, such as a vector, list, or map, without exposing the underlying
+implementation of the container. Iterators provide a consistent interface to
+access and modify the elements of a container, regardless of the specific
+container type. They allow for efficient manipulation of container elements by
+providing methods for moving between elements, accessing the value at the
+current position, and modifying the value at the current position. Iterators
+are an essential tool for generic programming in C++ and allow for efficient,
+type-independent algorithms to be written for a variety of container types.</p>
+<ul>
+<li><p>A derived type of STL containers such as vector, list, map, etc.</p>
+<ul class="simple">
+<li><p>e.g. <code class="docutils literal notranslate"><span class="pre">vector&lt;int&gt;::iterator</span></code> is used to iterate through a vector of int.</p></li>
+<li><p>May use <code class="docutils literal notranslate"><span class="pre">auto</span></code> to simplify the type declaration: <code class="docutils literal notranslate"><span class="pre">auto</span> <span class="pre">it</span> <span class="pre">=</span> <span class="pre">v.begin();</span></code></p></li>
+</ul>
+</li>
+<li><p>Vector methods using iterator</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">begin()</span></code> returns an iterator pointing to the first element</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">end()</span></code> returns an iterator pointing to the element after the last
+element</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">erase(iterator)</span></code> removes the element at the iterator position and
+returns the iterator pointing to the next element</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">insert(iterator,</span> <span class="pre">value)</span></code> inserts the value before the iterator position
+and returns the iterator pointing to the inserted element</p></li>
+</ul>
+</li>
+<li><p>Functions using iterators</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">find(begin,</span> <span class="pre">end,</span> <span class="pre">value)</span></code> returns an iterator pointing to the first
+element that matches the value in the range defined by a beginning iterator
+and an ending iterator. It return the end iterator if not found.</p></li>
+</ul>
+</li>
+<li><p>Example:</p>
+<p>vector&lt;int&gt; v = {1, 2, 3, 4, 5};
+vector&lt;int&gt;::iterator it = find(v.begin(), v.end(), 3);
+it = v.erase(it);  // remove the element at the iterator position, returns</p>
+<blockquote>
+<div><p>// the iterator pointing to the next element</p>
+</div></blockquote>
+</li>
 </ul>
 </section>
 <section id="passing-vector-around">
@@ -265,6 +312,7 @@ happen)</p></li>
 <li><a class="reference internal" href="#vector-abstract-data-type-adt">Vector Abstract Data Type (ADT)</a></li>
 <li><a class="reference internal" href="#c-std-vector">C++ std::vector</a><ul>
 <li><a class="reference internal" href="#initialization">Initialization</a></li>
+<li><a class="reference internal" href="#c-iterator-type-extended-reading">C++ Iterator Type (Extended reading)</a></li>
 <li><a class="reference internal" href="#passing-vector-around">Passing vector around</a></li>
 <li><a class="reference internal" href="#algorithms">Algorithms</a></li>
 <li><a class="reference internal" href="#pitfalls">Pitfalls</a></li>

@@ -9,12 +9,13 @@ Vector Abstract Data Type (ADT)
 ===============================
 + A vector is mostly a data structure as it is usually language specific.
 + A vector can be sometimes be treated as an ADT, when focusing on the data
-  organization and behaviors only. Implementations are not defined.
-+ Vector: A sequential ADT, similar to list ADT
+  organization and behaviors only. Implementations are ignored.
++ Vector: A sequential ADT, similar to list ADT with some specific behaviors
 + Behaviors
 
   * access by index
   * insert remove by index
+  * add remove at the end
   * check size/empty
 
 C++ std::vector
@@ -99,6 +100,48 @@ use parentheses when triggering other constructors.
 * ``vector<int> v(5, 1)`` size 5 vector with 1s, **warning:** ``v{5, 1}`` will
   make a size 2 vector instead
 * ``vector<int> v1(v)`` make a copy of v
+
+.. _iterator:
+
+C++ Iterator Type (Extended reading)
+------------------------------------
+In C++, an iterator is an object that enables traversal through the elements of
+a container, such as a vector, list, or map, without exposing the underlying
+implementation of the container. Iterators provide a consistent interface to
+access and modify the elements of a container, regardless of the specific
+container type. They allow for efficient manipulation of container elements by
+providing methods for moving between elements, accessing the value at the
+current position, and modifying the value at the current position. Iterators
+are an essential tool for generic programming in C++ and allow for efficient,
+type-independent algorithms to be written for a variety of container types.
+
++ A derived type of STL containers such as vector, list, map, etc.
+
+  * e.g. ``vector<int>::iterator`` is used to iterate through a vector of int.
+  * May use ``auto`` to simplify the type declaration: ``auto it = v.begin();``
+
++ Vector methods using iterator
+
+  * ``begin()`` returns an iterator pointing to the first element
+  * ``end()`` returns an iterator pointing to the element after the last
+    element
+  * ``erase(iterator)`` removes the element at the iterator position and
+    returns the iterator pointing to the next element
+  * ``insert(iterator, value)`` inserts the value before the iterator position
+    and returns the iterator pointing to the inserted element
+
++ Functions using iterators
+
+  * ``find(begin, end, value)`` returns an iterator pointing to the first
+    element that matches the value in the range defined by a beginning iterator
+    and an ending iterator. It return the end iterator if not found.
+
++ Example::
+
+  vector<int> v = {1, 2, 3, 4, 5};
+  vector<int>::iterator it = find(v.begin(), v.end(), 3);
+  it = v.erase(it);  // remove the element at the iterator position, returns
+                     // the iterator pointing to the next element
 
 Passing vector around
 ---------------------
