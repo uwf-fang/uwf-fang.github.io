@@ -211,6 +211,26 @@ than itself</p>
 <li><p>Get height</p></li>
 </ul>
 </section>
+<section id="implementations">
+<h3>Implementations<a class="headerlink" href="#implementations" title="Permalink to this heading">¶</a></h3>
+<ul>
+<li><p>Algorithms that happens from top to bottom</p>
+<p>Easy to implement either iteratively or recursively</p>
+<ul class="simple">
+<li><p>search</p></li>
+<li><p>insert</p></li>
+</ul>
+</li>
+<li><p>Algorithms that happens from bottom to top</p>
+<p>Easy to implement recursively; Hard to implement iteratively (must use stack)</p>
+<ul class="simple">
+<li><p>subtree removal (may be used in the destruction of a tree)</p></li>
+<li><p>part of remove</p></li>
+<li><p>in-order traversal</p></li>
+</ul>
+</li>
+</ul>
+</section>
 <section id="variation">
 <h3>Variation<a class="headerlink" href="#variation" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
@@ -230,37 +250,37 @@ than itself</p>
 <h3>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">¶</a></h3>
 <ul>
 <li><p>general BST</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
-<span class="k">class</span><span class="w"> </span><span class="nc">Node</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="w">  </span><span class="n">T</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"></span>
-<span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">left</span><span class="p">;</span><span class="w"></span>
-<span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">right</span><span class="p">;</span><span class="w"></span>
-<span class="p">};</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Node</span><span class="w"> </span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">  </span><span class="n">T</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">left</span><span class="p">;</span>
+<span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">right</span><span class="p">;</span>
+<span class="p">};</span>
 
-<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
-<span class="k">class</span><span class="w"> </span><span class="nc">BinarySearchTree</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="k">private</span><span class="o">:</span><span class="w"></span>
-<span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">root</span><span class="p">;</span><span class="w"></span>
-<span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="w">  </span><span class="o">~</span><span class="n">BinarySearchTree</span><span class="p">();</span><span class="w"></span>
-<span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="nf">search</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w"></span>
-<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">insert</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w"></span>
-<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">remove</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w"></span>
-<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">height</span><span class="p">();</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BinarySearchTree</span><span class="w"> </span><span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">root</span><span class="p">;</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">  </span><span class="o">~</span><span class="n">BinarySearchTree</span><span class="p">();</span>
+<span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="nf">search</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">insert</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">remove</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">height</span><span class="p">();</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </li>
 <li><p>with parent pointer</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
-<span class="k">class</span><span class="w"> </span><span class="nc">Node</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="k">public</span><span class="o">:</span><span class="w"></span>
-<span class="w">  </span><span class="n">T</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"></span>
-<span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">left</span><span class="p">;</span><span class="w"></span>
-<span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">right</span><span class="p">;</span><span class="w"></span>
-<span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">parent</span><span class="p">;</span><span class="w"></span>
-<span class="p">};</span><span class="w"></span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Node</span><span class="w"> </span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">  </span><span class="n">T</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">left</span><span class="p">;</span>
+<span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">right</span><span class="p">;</span>
+<span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">parent</span><span class="p">;</span>
+<span class="p">};</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -303,6 +323,7 @@ than itself</p>
 </li>
 <li><a class="reference internal" href="#binary-search-tree">Binary search tree</a><ul>
 <li><a class="reference internal" href="#behaviors">Behaviors</a></li>
+<li><a class="reference internal" href="#implementations">Implementations</a></li>
 <li><a class="reference internal" href="#variation">Variation</a></li>
 <li><a class="reference internal" href="#applications-of-bst">Applications of BST</a></li>
 <li><a class="reference internal" href="#implementation">Implementation</a></li>

@@ -19,9 +19,7 @@
     <script src="../../_static/sphinx_highlight.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/course/map6990/data-processing.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Module 4: PySpark Programming For Beginner" href="module4.html" />
-    <link rel="prev" title="Big Data Life Cycle" href="life-cycle.html" /> 
+    <link rel="search" title="Search" href="../../search.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -29,15 +27,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="module4.html" title="Module 4: PySpark Programming For Beginner"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="life-cycle.html" title="Big Data Life Cycle"
-             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" >MAP 6990 Big Data for Data Science</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="module3.html" accesskey="U">Module 3: Big Data Life Cycle; Data Processing For Big Data</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Big Data Processing For Big Data</a></li> 
       </ul>
     </div>  
@@ -203,67 +193,67 @@ such as Spark can be either deployed under Hadoop or in stand-alone mode.</p>
 <p>The famous word counting example in Hadoop using Java. <a class="reference external" href="https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html#Example:_WordCount_v1.0">Link</a> to example in the official Hadoop documentation.</p>
 <p>Suppose we have a text file containing a list of words, and we want to count
 the frequency of each word in the file.</p>
-<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.IOException</span><span class="p">;</span><span class="w"></span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">java.util.StringTokenizer</span><span class="p">;</span><span class="w"></span>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">java.io.IOException</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.util.StringTokenizer</span><span class="p">;</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.conf.Configuration</span><span class="p">;</span><span class="w"></span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.fs.Path</span><span class="p">;</span><span class="w"></span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.io.IntWritable</span><span class="p">;</span><span class="w"></span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.io.Text</span><span class="p">;</span><span class="w"></span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.mapreduce.Job</span><span class="p">;</span><span class="w"></span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.mapreduce.Mapper</span><span class="p">;</span><span class="w"></span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.mapreduce.Reducer</span><span class="p">;</span><span class="w"></span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.mapreduce.lib.input.FileInputFormat</span><span class="p">;</span><span class="w"></span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.mapreduce.lib.output.FileOutputFormat</span><span class="p">;</span><span class="w"></span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.conf.Configuration</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.fs.Path</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.io.IntWritable</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.io.Text</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.mapreduce.Job</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.mapreduce.Mapper</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.mapreduce.Reducer</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.mapreduce.lib.input.FileInputFormat</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.hadoop.mapreduce.lib.output.FileOutputFormat</span><span class="p">;</span>
 
-<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">WordCount</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">WordCount</span><span class="w"> </span><span class="p">{</span>
 
-<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">class</span> <span class="nc">TokenizerMapper</span><span class="w"></span>
-<span class="w">      </span><span class="kd">extends</span><span class="w"> </span><span class="n">Mapper</span><span class="o">&lt;</span><span class="n">Object</span><span class="p">,</span><span class="w"> </span><span class="n">Text</span><span class="p">,</span><span class="w"> </span><span class="n">Text</span><span class="p">,</span><span class="w"> </span><span class="n">IntWritable</span><span class="o">&gt;</span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">class</span> <span class="nc">TokenizerMapper</span>
+<span class="w">      </span><span class="kd">extends</span><span class="w"> </span><span class="n">Mapper</span><span class="o">&lt;</span><span class="n">Object</span><span class="p">,</span><span class="w"> </span><span class="n">Text</span><span class="p">,</span><span class="w"> </span><span class="n">Text</span><span class="p">,</span><span class="w"> </span><span class="n">IntWritable</span><span class="o">&gt;</span><span class="p">{</span>
 
-<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="n">IntWritable</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">IntWritable</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">Text</span><span class="w"> </span><span class="n">word</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Text</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="n">IntWritable</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">IntWritable</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">Text</span><span class="w"> </span><span class="n">word</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Text</span><span class="p">();</span>
 
-<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">map</span><span class="p">(</span><span class="n">Object</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">Text</span><span class="w"> </span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="n">Context</span><span class="w"> </span><span class="n">context</span><span class="w"></span>
-<span class="w">                    </span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="p">,</span><span class="w"> </span><span class="n">InterruptedException</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">      </span><span class="n">StringTokenizer</span><span class="w"> </span><span class="n">itr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringTokenizer</span><span class="p">(</span><span class="n">value</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span><span class="w"></span>
-<span class="w">      </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">itr</span><span class="p">.</span><span class="na">hasMoreTokens</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="n">word</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="n">itr</span><span class="p">.</span><span class="na">nextToken</span><span class="p">());</span><span class="w"></span>
-<span class="w">        </span><span class="n">context</span><span class="p">.</span><span class="na">write</span><span class="p">(</span><span class="n">word</span><span class="p">,</span><span class="w"> </span><span class="n">one</span><span class="p">);</span><span class="w"></span>
-<span class="w">      </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">map</span><span class="p">(</span><span class="n">Object</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">Text</span><span class="w"> </span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="n">Context</span><span class="w"> </span><span class="n">context</span>
+<span class="w">                    </span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="p">,</span><span class="w"> </span><span class="n">InterruptedException</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">StringTokenizer</span><span class="w"> </span><span class="n">itr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringTokenizer</span><span class="p">(</span><span class="n">value</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span>
+<span class="w">      </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">itr</span><span class="p">.</span><span class="na">hasMoreTokens</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">word</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="n">itr</span><span class="p">.</span><span class="na">nextToken</span><span class="p">());</span>
+<span class="w">        </span><span class="n">context</span><span class="p">.</span><span class="na">write</span><span class="p">(</span><span class="n">word</span><span class="p">,</span><span class="w"> </span><span class="n">one</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
 
-<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">class</span> <span class="nc">IntSumReducer</span><span class="w"></span>
-<span class="w">      </span><span class="kd">extends</span><span class="w"> </span><span class="n">Reducer</span><span class="o">&lt;</span><span class="n">Text</span><span class="p">,</span><span class="n">IntWritable</span><span class="p">,</span><span class="n">Text</span><span class="p">,</span><span class="n">IntWritable</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">IntWritable</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">IntWritable</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">class</span> <span class="nc">IntSumReducer</span>
+<span class="w">      </span><span class="kd">extends</span><span class="w"> </span><span class="n">Reducer</span><span class="o">&lt;</span><span class="n">Text</span><span class="p">,</span><span class="n">IntWritable</span><span class="p">,</span><span class="n">Text</span><span class="p">,</span><span class="n">IntWritable</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">IntWritable</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">IntWritable</span><span class="p">();</span>
 
-<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">reduce</span><span class="p">(</span><span class="n">Text</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">Iterable</span><span class="o">&lt;</span><span class="n">IntWritable</span><span class="o">&gt;</span><span class="w"> </span><span class="n">values</span><span class="p">,</span><span class="w"></span>
-<span class="w">                      </span><span class="n">Context</span><span class="w"> </span><span class="n">context</span><span class="w"></span>
-<span class="w">                      </span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="p">,</span><span class="w"> </span><span class="n">InterruptedException</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">      </span><span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
-<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">IntWritable</span><span class="w"> </span><span class="n">val</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">values</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">val</span><span class="p">.</span><span class="na">get</span><span class="p">();</span><span class="w"></span>
-<span class="w">      </span><span class="p">}</span><span class="w"></span>
-<span class="w">      </span><span class="n">result</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="n">sum</span><span class="p">);</span><span class="w"></span>
-<span class="w">      </span><span class="n">context</span><span class="p">.</span><span class="na">write</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">reduce</span><span class="p">(</span><span class="n">Text</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">Iterable</span><span class="o">&lt;</span><span class="n">IntWritable</span><span class="o">&gt;</span><span class="w"> </span><span class="n">values</span><span class="p">,</span>
+<span class="w">                      </span><span class="n">Context</span><span class="w"> </span><span class="n">context</span>
+<span class="w">                      </span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="p">,</span><span class="w"> </span><span class="n">InterruptedException</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">IntWritable</span><span class="w"> </span><span class="n">val</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">values</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">val</span><span class="p">.</span><span class="na">get</span><span class="p">();</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">      </span><span class="n">result</span><span class="p">.</span><span class="na">set</span><span class="p">(</span><span class="n">sum</span><span class="p">);</span>
+<span class="w">      </span><span class="n">context</span><span class="p">.</span><span class="na">write</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
 
-<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">Configuration</span><span class="w"> </span><span class="n">conf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Configuration</span><span class="p">();</span><span class="w"></span>
-<span class="w">    </span><span class="n">Job</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Job</span><span class="p">.</span><span class="na">getInstance</span><span class="p">(</span><span class="n">conf</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;word count&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="n">job</span><span class="p">.</span><span class="na">setJarByClass</span><span class="p">(</span><span class="n">WordCount</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="n">job</span><span class="p">.</span><span class="na">setMapperClass</span><span class="p">(</span><span class="n">TokenizerMapper</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="n">job</span><span class="p">.</span><span class="na">setCombinerClass</span><span class="p">(</span><span class="n">IntSumReducer</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="n">job</span><span class="p">.</span><span class="na">setReducerClass</span><span class="p">(</span><span class="n">IntSumReducer</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="n">job</span><span class="p">.</span><span class="na">setOutputKeyClass</span><span class="p">(</span><span class="n">Text</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="n">job</span><span class="p">.</span><span class="na">setOutputValueClass</span><span class="p">(</span><span class="n">IntWritable</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="n">FileInputFormat</span><span class="p">.</span><span class="na">addInputPath</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Path</span><span class="p">(</span><span class="n">args</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">));</span><span class="w"></span>
-<span class="w">    </span><span class="n">FileOutputFormat</span><span class="p">.</span><span class="na">setOutputPath</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Path</span><span class="p">(</span><span class="n">args</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">));</span><span class="w"></span>
-<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">exit</span><span class="p">(</span><span class="n">job</span><span class="p">.</span><span class="na">waitForCompletion</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Configuration</span><span class="w"> </span><span class="n">conf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Configuration</span><span class="p">();</span>
+<span class="w">    </span><span class="n">Job</span><span class="w"> </span><span class="n">job</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Job</span><span class="p">.</span><span class="na">getInstance</span><span class="p">(</span><span class="n">conf</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;word count&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">job</span><span class="p">.</span><span class="na">setJarByClass</span><span class="p">(</span><span class="n">WordCount</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+<span class="w">    </span><span class="n">job</span><span class="p">.</span><span class="na">setMapperClass</span><span class="p">(</span><span class="n">TokenizerMapper</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+<span class="w">    </span><span class="n">job</span><span class="p">.</span><span class="na">setCombinerClass</span><span class="p">(</span><span class="n">IntSumReducer</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+<span class="w">    </span><span class="n">job</span><span class="p">.</span><span class="na">setReducerClass</span><span class="p">(</span><span class="n">IntSumReducer</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+<span class="w">    </span><span class="n">job</span><span class="p">.</span><span class="na">setOutputKeyClass</span><span class="p">(</span><span class="n">Text</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+<span class="w">    </span><span class="n">job</span><span class="p">.</span><span class="na">setOutputValueClass</span><span class="p">(</span><span class="n">IntWritable</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+<span class="w">    </span><span class="n">FileInputFormat</span><span class="p">.</span><span class="na">addInputPath</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Path</span><span class="p">(</span><span class="n">args</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">));</span>
+<span class="w">    </span><span class="n">FileOutputFormat</span><span class="p">.</span><span class="na">setOutputPath</span><span class="p">(</span><span class="n">job</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Path</span><span class="p">(</span><span class="n">args</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">));</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">exit</span><span class="p">(</span><span class="n">job</span><span class="p">.</span><span class="na">waitForCompletion</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>The MapReduce job consists of two main parts: the mapper and the reducer. We
@@ -544,16 +534,6 @@ components. All three data APIs are demonstrated here.</p>
 </ul>
 
   </div>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="life-cycle.html"
-                          title="previous chapter">Big Data Life Cycle</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="module4.html"
-                          title="next chapter">Module 4: PySpark Programming For Beginner</a></p>
-  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -581,15 +561,7 @@ components. All three data APIs are demonstrated here.</p>
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
-        <li class="right" >
-          <a href="module4.html" title="Module 4: PySpark Programming For Beginner"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="life-cycle.html" title="Big Data Life Cycle"
-             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" >MAP 6990 Big Data for Data Science</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="module3.html" >Module 3: Big Data Life Cycle; Data Processing For Big Data</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Big Data Processing For Big Data</a></li> 
       </ul>
     </div>
