@@ -1,0 +1,131 @@
+*******************************************
+Code Organization for Modular Java Programs
+*******************************************
+This section describes how to organize Java code for modular programs in
+courses that focus more on program logics rather than software engineering.
+
+Classes and Files
+=================
+All class in default package for simplicity. It means there should be no
+package statement in the source code and all Java files stays in the same
+directory. This is not recommended for large projects but works well in course
+that focus more on program logics.
+
+Styles of Java Classes
+======================
++ Classes with all static methods
+
+  * Corresponds to modules containing stand-alone functions in languages like
+    C/C++
+
+  .. code-block:: java
+
+    public class MathUtils {
+      public static int add(int a, int b) {
+          return a + b;
+      }
+      public static int subtract(int a, int b) {
+          return a - b;
+      }
+    }
+
++ Classes with all non-static methods
+
+  .. code-block:: java
+
+    public class Car {
+      private String brand;
+      private String model;
+
+      public Car(String brand, String model) {
+          this.brand = brand;
+          this.model = model;
+      }
+
+      public void startEngine() {
+          System.out.println("Starting the engine of " + brand + " " + model);
+      }
+
+      public void stopEngine() {
+          System.out.println("Stopping the engine of " + brand + " " + model);
+      }
+    }
+
++ Avoid mixing static and non-static methods in the same class as a beginner
+
+  * Exception: a main function as the only static method in a class so you do
+    not have to write a separate driver. It works well for single file projects.
+  * A separate driver class is still preferred in modular design.
+
+Classes categorized by functionality
+====================================
++ Client classes
+
+  Client classes in Java are classes that use other classes to perform specific
+  tasks. They typically interact with other classes by creating objects,
+  invoking methods, and using the functionality provided by those classes.
+  Client classes are responsible for utilizing the services or functionality
+  offered by other classes to achieve a particular goal or outcome. They can
+  utilize various classes and their methods to accomplish their objectives.
+  Here's an example of a client class:
+
+  .. code-block:: java
+
+    public class DrawingApp {
+      public static void main(String[] args) {
+        Circle circle = new Circle(5.0);
+        circle.draw();
+      }
+    }
+
++ Interfaces
+
+  Interfaces in Java define a contract or a set of methods that a class must implement. They provide a way to specify the behavior that implementing classes should adhere to. Interfaces define the method signatures without providing any implementation details. Here's an example of an interface:
+
+  .. code-block:: java
+
+    public interface Drawable {
+      void draw();
+    }
+
+  The Drawable interface specifies a single method draw() that any class
+  implementing this interface must define.
+
++ Implementation classes
+
+  Implementation classes in Java are the classes that provide the actual
+  implementation of the methods defined in interfaces or abstract classes. They
+  fulfill the contract specified by the interfaces or abstract classes by
+  implementing the required methods. Implementation classes can also extend
+  abstract classes to inherit common behavior. Here's an example of an
+  implementation class:
+
+  .. code-block:: java
+
+    public class Circle implements Drawable {
+      private double radius;
+
+      public Circle(double radius) {
+        this.radius = radius;
+      }
+
+      public void draw() {
+        System.out.println("Drawing a circle with radius " + radius);
+        // Draw the circle
+      }
+    }
+
+  In the above example, the Circle class implements the Drawable interface. It
+  provides the implementation for the draw() method specified in the interface.
+  The implementation class defines how the method should be executed.
+
++ Benefit of separating interfaces and implementation classes
+
+  * Interfaces and implementation classes are separated so that the client
+    classes can use the interfaces to interact with the implementation classes
+    without knowing the implementation details.
+  * This separation of interfaces and implementation classes is a common
+    practice in Java and is known as the Interface Segregation Principle (ISP)
+    in object-oriented design.
+  * You can provide more than one implementations for an interface so the
+    client can chose the suitable implementation as needed.
