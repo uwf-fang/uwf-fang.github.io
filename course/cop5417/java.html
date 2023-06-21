@@ -48,53 +48,132 @@
             
   <section id="java-programming-model">
 <h1>Java Programming Model<a class="headerlink" href="#java-programming-model" title="Permalink to this heading">¶</a></h1>
-<p>** In COP 5217 course **</p>
+<p>In this module, I listed the essential Java language features to be used in
+this course. This is not a comprehensive Java tutorial. For more details,
+please refer to the Java documentation at
+<a class="reference external" href="https://docs.oracle.com/javase/tutorial/java/index.html">https://docs.oracle.com/javase/tutorial/java/index.html</a> or other online
+resources.</p>
 <section id="environment">
 <h2>Environment<a class="headerlink" href="#environment" title="Permalink to this heading">¶</a></h2>
-<ul class="simple">
-<li><p>Install JDK and JRE</p></li>
-<li><p>Install Editor/IDE</p></li>
-</ul>
-</section>
-<section id="code-organization">
-<h2>Code Organization<a class="headerlink" href="#code-organization" title="Permalink to this heading">¶</a></h2>
-<ul class="simple">
-<li><p>All in default package (no package statements)</p></li>
-<li><p>Classes with all static methods</p>
 <ul>
-<li><p>Corresponds to stand-alone functions</p></li>
+<li><p>Eclipse for Java Developers</p>
+<ul class="simple">
+<li><p>Built-in JDK/JRE</p></li>
+<li><p>Tips</p></li>
+</ul>
+<a class="reference internal image-reference" href="../../_images/eclipse-new-proj.png"><img alt="Map Reduce Word Counting Example" src="../../_images/eclipse-new-proj.png" style="width: 500px;" /></a>
+<a class="reference internal image-reference" href="../../_images/eclipse-new-class.png"><img alt="Map Reduce Word Counting Example" src="../../_images/eclipse-new-class.png" style="width: 500px;" /></a>
+</li>
+<li><p>You can choose other options for IDE/Editor</p></li>
+<li><p>Java version</p>
+<ul class="simple">
+<li><p>Anything newer than Java 8</p></li>
+<li><p>OpenJDK or Oracle both fine</p></li>
 </ul>
 </li>
-<li><p>Classes with all non-static methods</p></li>
-<li><p>Avoid mixing static and non-static methods in the same class</p></li>
 </ul>
 </section>
 <section id="data-types-and-expressions">
 <h2>Data Types and Expressions<a class="headerlink" href="#data-types-and-expressions" title="Permalink to this heading">¶</a></h2>
-<ul class="simple">
-<li><p>Primitive data types</p>
 <ul>
-<li><p>int, double, boolean, char, etc.</p></li>
-</ul>
+<li><p>Primitive data types</p>
+<p>In Java, primitive data types represent the basic building blocks of data.
+They are simple, predefined data types that are not derived from any other
+types. Examples of primitive data types include int, double, boolean, char,
+and others. These types hold their values directly and have a fixed size in
+memory.</p>
 </li>
 <li><p>Reference types</p>
-<ul>
-<li><p>Class types</p></li>
-<li><p>Stores a reference to an object</p></li>
+<p>Unlike primitive data types, reference types in Java represent objects rather
+than storing the actual data. They store a reference or address that points
+to the memory location where the object is stored. Reference types include
+class types, which are user-defined classes, as well as arrays and
+interfaces.</p>
+<ul class="simple">
+<li><p>Assignment copies the reference, not the object</p></li>
+<li><p>Equal comparison checks if two references point to the same object rather
+than comparing the values of the objects</p></li>
 </ul>
 </li>
-<li><p>Generics</p></li>
+<li><p>Generics</p>
+<p>Generics in Java allow you to create classes, interfaces, and methods that
+can operate on different data types. They provide a way to define a class or
+method that can work with different types of data, while maintaining type
+safety at compile-time. Generics are useful for creating reusable code and
+enhancing code flexibility.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Box</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">contents</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="nf">Box</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">contents</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">contents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">contents</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="nf">getContents</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">contents</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setContents</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">contents</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">contents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">contents</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">Box</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span><span class="w"> </span><span class="n">integerBox</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Box</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="w">      </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Contents of integerBox: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">integerBox</span><span class="p">.</span><span class="na">getContents</span><span class="p">());</span>
+
+<span class="w">      </span><span class="n">Box</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">stringBox</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Box</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="s">&quot;Hello&quot;</span><span class="p">);</span>
+<span class="w">      </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Contents of stringBox: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">stringBox</span><span class="p">.</span><span class="na">getContents</span><span class="p">());</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In the above example, we have a generic class called Box which can hold any
+type of object. The generic type parameter T allows us to specify the type of
+the contents of the box when creating an instance of the class.</p>
+<p>Inside the Box class, we have a private field contents of type T which
+represents the object stored in the box. We also have getter and setter
+methods to access and modify the contents.</p>
+<p>In the main method, we create two instances of the Box class: integerBox and
+stringBox. We specify the type argument &lt;Integer&gt; for integerBox and &lt;String&gt;
+for stringBox. This ensures that the contents field of each box is of the
+specified type.</p>
+<p>Finally, we print the contents of each box using the getContents method.
+Since we used generics, the compiler ensures type safety, allowing us to use
+the getContents method without the need for explicit type casting.</p>
+</li>
 <li><p>Variables</p></li>
-<li><p>Identifiers</p></li>
+<li><p>Identifiers</p>
+<ul class="simple">
+<li><p>Names for variables, methods, classes, etc.</p></li>
+<li><p>Naming rules - start with a letter, $, or _, followed by letters, digits,
+$, or _</p></li>
+<li><p>Naming conventions</p>
+<ul>
+<li><p>Upper camel case for class names</p></li>
+<li><p>Lower camel case for variable and method names</p></li>
+</ul>
+</li>
+<li><p>Case sensitivity</p></li>
+<li><p>Reserved words</p></li>
+</ul>
+</li>
 <li><p>Literals</p></li>
 <li><p>Expressions</p>
-<ul>
+<ul class="simple">
 <li><p>Operators</p></li>
 <li><p>Precedence</p></li>
 <li><p>Associativity</p></li>
 <li><p>Type conversion</p></li>
 </ul>
 </li>
+</ul>
+</section>
+<section id="arrays">
+<h2>Arrays<a class="headerlink" href="#arrays" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>This is a class type stored as references in variables!</p></li>
+<li><p>Declaration</p></li>
+<li><p>Initialization</p></li>
+<li><p>Assignment</p></li>
 </ul>
 </section>
 <section id="statements">
@@ -113,19 +192,104 @@
 <li><p>Shortcut notations</p>
 <ul>
 <li><p>initialization</p></li>
-<li><p>implicit assignment</p></li>
+<li><p>implicit assignment (+=, -=, *=, /=, %=)</p></li>
 <li><p>single-statement block (omit braces)</p></li>
-<li><p>for notations</p></li>
+<li><p>for notations (for-each, for-in)</p></li>
 </ul>
 </li>
 </ul>
 </section>
-<section id="arrays">
-<h2>Arrays<a class="headerlink" href="#arrays" title="Permalink to this heading">¶</a></h2>
+<section id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>Declaration</p></li>
-<li><p>Initialization</p></li>
-<li><p>Assignment</p></li>
+<li><p>static vs. non-static</p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.3%" />
+<col style="width: 37.4%" />
+<col style="width: 37.4%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>Static Methods</p></th>
+<th class="head"><p>Non-Static Methods</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Invocation</p></td>
+<td><p>ClassName.methodName()</p></td>
+<td><p>objectReference.methodName()</p></td>
+</tr>
+<tr class="row-odd"><td><p>Method Access</p></td>
+<td><p>Can access only other static methods within the same class</p></td>
+<td><p>Can access both static and non-static methods within the same class</p></td>
+</tr>
+<tr class="row-even"><td><p>Class Dependency</p></td>
+<td><p>No dependency on object instances</p></td>
+<td><p>Requires an object instance of the class</p></td>
+</tr>
+<tr class="row-odd"><td><p>Memory Allocation</p></td>
+<td><p>Only one copy of the method exists in memory</p></td>
+<td><p>Each object instance has its own copy of non-static methods</p></td>
+</tr>
+<tr class="row-even"><td><p>Use of instance variables</p></td>
+<td><p>Cannot directly access or modify instance variables</p></td>
+<td><p>Can directly access or modify instance variables</p></td>
+</tr>
+<tr class="row-odd"><td><p>Overriding</p></td>
+<td><p>Cannot be overridden</p></td>
+<td><p>Can be overridden in subclasses</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="code-organization">
+<h2>Code Organization<a class="headerlink" href="#code-organization" title="Permalink to this heading">¶</a></h2>
+<ul>
+<li><p>All class in default package for simplicity (no package statements)</p></li>
+<li><p>Classes with all static methods</p>
+<ul class="simple">
+<li><p>Corresponds to modules with stand-alone functions in languages like C/C++</p></li>
+</ul>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">MathUtils</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">subtract</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Classes with all non-static methods</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Car</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">brand</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">model</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="nf">Car</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">brand</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">model</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">brand</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">brand</span><span class="p">;</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">model</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">startEngine</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Starting the engine of &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">brand</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">model</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">stopEngine</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Stopping the engine of &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">brand</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">model</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Avoid mixing static and non-static methods in the same class as a beginner</p>
+<ul class="simple">
+<li><p>Exception: a main function as the only static method in a class so you do
+not have to write a separate driver class.</p></li>
+</ul>
+</li>
 </ul>
 </section>
 </section>
@@ -142,10 +306,11 @@
     <ul>
 <li><a class="reference internal" href="#">Java Programming Model</a><ul>
 <li><a class="reference internal" href="#environment">Environment</a></li>
-<li><a class="reference internal" href="#code-organization">Code Organization</a></li>
 <li><a class="reference internal" href="#data-types-and-expressions">Data Types and Expressions</a></li>
-<li><a class="reference internal" href="#statements">Statements</a></li>
 <li><a class="reference internal" href="#arrays">Arrays</a></li>
+<li><a class="reference internal" href="#statements">Statements</a></li>
+<li><a class="reference internal" href="#methods">Methods</a></li>
+<li><a class="reference internal" href="#code-organization">Code Organization</a></li>
 </ul>
 </li>
 </ul>

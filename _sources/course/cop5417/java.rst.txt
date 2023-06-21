@@ -1,37 +1,120 @@
 **********************
 Java Programming Model
 **********************
-** In COP 5217 course **
+In this module, I listed the essential Java language features to be used in
+this course. This is not a comprehensive Java tutorial. For more details,
+please refer to the Java documentation at
+https://docs.oracle.com/javase/tutorial/java/index.html or other online
+resources.
 
 Environment
 ===========
-+ Install JDK and JRE
-+ Install Editor/IDE
++ Eclipse for Java Developers
 
-Code Organization
-=================
-+ All in default package (no package statements)
-+ Classes with all static methods
+  * Built-in JDK/JRE
+  * Tips
 
-  * Corresponds to stand-alone functions
+  .. image:: /_static/eclipse-new-proj.png
+    :width: 500
+    :alt: Map Reduce Word Counting Example
 
-+ Classes with all non-static methods
-+ Avoid mixing static and non-static methods in the same class
+  .. image:: /_static/eclipse-new-class.png
+    :width: 500
+    :alt: Map Reduce Word Counting Example
+
++ You can choose other options for IDE/Editor
++ Java version
+
+  * Anything newer than Java 8
+  * OpenJDK or Oracle both fine
 
 Data Types and Expressions
 ==========================
 + Primitive data types
 
-  * int, double, boolean, char, etc.
+  In Java, primitive data types represent the basic building blocks of data.
+  They are simple, predefined data types that are not derived from any other
+  types. Examples of primitive data types include int, double, boolean, char,
+  and others. These types hold their values directly and have a fixed size in
+  memory.
 
 + Reference types
 
-  * Class types
-  * Stores a reference to an object
+  Unlike primitive data types, reference types in Java represent objects rather
+  than storing the actual data. They store a reference or address that points
+  to the memory location where the object is stored. Reference types include
+  class types, which are user-defined classes, as well as arrays and
+  interfaces.
+
+  * Assignment copies the reference, not the object
+  * Equal comparison checks if two references point to the same object rather
+    than comparing the values of the objects
 
 + Generics
+
+  Generics in Java allow you to create classes, interfaces, and methods that
+  can operate on different data types. They provide a way to define a class or
+  method that can work with different types of data, while maintaining type
+  safety at compile-time. Generics are useful for creating reusable code and
+  enhancing code flexibility.
+
+  .. code-block:: java
+
+    public class Box<T> {
+      private T contents;
+
+      public Box(T contents) {
+          this.contents = contents;
+      }
+
+      public T getContents() {
+          return contents;
+      }
+
+      public void setContents(T contents) {
+          this.contents = contents;
+      }
+
+      public static void main(String[] args) {
+          Box<Integer> integerBox = new Box<>(10);
+          System.out.println("Contents of integerBox: " + integerBox.getContents());
+
+          Box<String> stringBox = new Box<>("Hello");
+          System.out.println("Contents of stringBox: " + stringBox.getContents());
+      }
+    }
+
+  In the above example, we have a generic class called Box which can hold any
+  type of object. The generic type parameter T allows us to specify the type of
+  the contents of the box when creating an instance of the class.
+
+  Inside the Box class, we have a private field contents of type T which
+  represents the object stored in the box. We also have getter and setter
+  methods to access and modify the contents.
+
+  In the main method, we create two instances of the Box class: integerBox and
+  stringBox. We specify the type argument <Integer> for integerBox and <String>
+  for stringBox. This ensures that the contents field of each box is of the
+  specified type.
+
+  Finally, we print the contents of each box using the getContents method.
+  Since we used generics, the compiler ensures type safety, allowing us to use
+  the getContents method without the need for explicit type casting.
+
 + Variables
 + Identifiers
+
+  * Names for variables, methods, classes, etc.
+  * Naming rules - start with a letter, $, or _, followed by letters, digits,
+    $, or _
+  * Naming conventions
+
+    - Upper camel case for class names
+    - Lower camel case for variable and method names
+
+  * Case sensitivity
+  * Reserved words
+
 + Literals
 + Expressions
 
@@ -39,6 +122,13 @@ Data Types and Expressions
   * Precedence
   * Associativity
   * Type conversion
+
+Arrays
+======
++ This is a class type stored as references in variables!
++ Declaration
++ Initialization
++ Assignment
 
 Statements
 ==========
@@ -54,12 +144,82 @@ Statements
 + Shortcut notations
 
   * initialization
-  * implicit assignment
+  * implicit assignment (+=, -=, \*=, /=, %=)
   * single-statement block (omit braces)
-  * for notations
+  * for notations (for-each, for-in)
 
-Arrays
-======
-+ Declaration
-+ Initialization
-+ Assignment
+Methods
+=======
++ static vs. non-static
+
+.. list-table::
+   :widths: 25 37 37
+   :header-rows: 1
+
+   * -
+     - Static Methods
+     - Non-Static Methods
+   * - Invocation
+     - ClassName.methodName()
+     - objectReference.methodName()
+   * - Method Access
+     - Can access only other static methods within the same class
+     - Can access both static and non-static methods within the same class
+   * - Class Dependency
+     - No dependency on object instances
+     - Requires an object instance of the class
+   * - Memory Allocation
+     - Only one copy of the method exists in memory
+     - Each object instance has its own copy of non-static methods
+   * - Use of instance variables
+     - Cannot directly access or modify instance variables
+     - Can directly access or modify instance variables
+   * - Overriding
+     - Cannot be overridden
+     - Can be overridden in subclasses
+
+Code Organization
+=================
++ All class in default package for simplicity (no package statements)
++ Classes with all static methods
+
+  * Corresponds to modules with stand-alone functions in languages like C/C++
+
+  .. code-block:: java
+
+    public class MathUtils {
+      public static int add(int a, int b) {
+          return a + b;
+      }
+      public static int subtract(int a, int b) {
+          return a - b;
+      }
+    }
+
++ Classes with all non-static methods
+
+  .. code-block:: java
+
+    public class Car {
+      private String brand;
+      private String model;
+
+      public Car(String brand, String model) {
+          this.brand = brand;
+          this.model = model;
+      }
+
+      public void startEngine() {
+          System.out.println("Starting the engine of " + brand + " " + model);
+      }
+
+      public void stopEngine() {
+          System.out.println("Stopping the engine of " + brand + " " + model);
+      }
+    }
+
++ Avoid mixing static and non-static methods in the same class as a beginner
+
+  * Exception: a main function as the only static method in a class so you do
+    not have to write a separate driver class.
+
