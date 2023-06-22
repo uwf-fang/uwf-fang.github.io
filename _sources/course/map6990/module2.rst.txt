@@ -4,47 +4,194 @@ Module 2: Data Storage For Big Data
 
 Overview
 ========
+In Module 2, we will delve into the crucial aspect of data storage for big
+data. Understanding how to effectively store and manage large volumes of data
+is essential for organizations dealing with big data challenges. In this
+module, we will explore the key considerations and techniques involved in
+storing big data.
+
 What we care most
 -----------------
+When it comes to data storage for big data, there are several factors that we
+prioritize to ensure optimal performance and cost-effectiveness. Let's examine
+the key aspects that we care most about:
+
 + Scalability - Volume
+
+  Scalability is crucial when dealing with big data as the volume of data can
+  be immense. Traditional storage systems may not be able to handle the growing
+  volume effectively. Therefore, we focus on employing scalable storage
+  solutions that can accommodate the increasing volume of data without
+  compromising performance.
+
+  For example, organizations often utilize distributed file systems like Apache
+  Hadoop Distributed File System (HDFS) or object storage systems like Amazon
+  S3 that can scale horizontally by adding more storage nodes as the data
+  volume expands.
+
 + Cost - Volume
+
+  Big data storage can become expensive if not managed efficiently. As the
+  volume of data grows, the cost of storage infrastructure, maintenance, and
+  operations can increase significantly. Therefore, we emphasize cost-effective
+  storage solutions that balance performance and cost considerations.
+
+  For instance, cloud storage services such as Amazon Glacier or Google Cloud Storage Nearline offer lower-cost options for storing infrequently accessed or archival data, reducing overall storage expenses.
+
 + Performance - Velocity, Volume
+
+  Big data is often characterized by high velocity, where data is generated and
+  consumed at a rapid pace. Additionally, the sheer volume of data can pose
+  performance challenges if not handled properly. Hence, we focus on storage
+  systems that can deliver high-performance capabilities to handle the velocity
+  and volume of data effectively.
+
+  One approach to achieve high performance is through distributed storage
+  architectures like Apache Cassandra, which employs a peer-to-peer model for
+  storing and retrieving data across multiple nodes, enabling parallel
+  processing and faster data access.
+
 + Data organization and structure - Variety
+
+  Big data encompasses various types of data, including structured,
+  semi-structured, and unstructured data. Efficient organization and structure
+  are crucial to enable effective data analysis and processing. Therefore, we
+  prioritize storage solutions that support different data formats and enable
+  efficient data organization.
+
+  For example, NoSQL databases like MongoDB provide flexible schema designs,
+  allowing for the storage and retrieval of diverse data structures, making
+  them suitable for handling the variety of big data.
+
 + Robustness, error tolerance - Veracity, Variety
+
+  Big data sources may be prone to errors, inconsistencies, and outliers, which
+  can impact the quality and reliability of the data. Hence, we emphasize
+  robust storage mechanisms that ensure data integrity and error tolerance,
+  especially when dealing with diverse and potentially unreliable data sources.
+
+  Techniques such as data replication, distributed storage redundancy, and
+  error detection mechanisms like checksums or data checksumming algorithms
+  help ensure the veracity and reliability of big data.
 
 Traditional data storage
 ------------------------
-+ File system - unstructured, semi-structured
-+ Relational Database Management System (RDBMS) - structure
+When discussing data storage for big data, it is important to understand the
+traditional approaches that have been commonly used. Let's examine two widely
+used traditional data storage methods:
 
-Data storage for big data
--------------------------
++ File system (local) - unstructured, and semi-structured data
+
+  File systems have long been used to store unstructured and semi-structured
+  data. They provide a hierarchical structure for organizing files and folders.
+  Traditional file systems, such as those found in operating systems like
+  Windows, Mac OS or Linux, are suitable for storing individual files or small
+  datasets.
+
+  However, when dealing with big data, the limitations of local file systems
+  become obvious. They may struggle to handle large volumes of data
+  efficiently, lack scalability, and suffer from performance bottlenecks when
+  accessed concurrently by multiple users or processes.
+
++ Relational Database Management System (RDBMS) - structured data
+
+  Relational Database Management Systems (RDBMS) have been the go-to solution
+  for structured data storage for many years. RDBMS offer a structured and
+  tabular format for data storage, where data is organized into tables with
+  predefined schemas and relationships defined by primary and foreign keys.
+
+  RDBMS provide powerful querying capabilities using SQL (Structured Query
+  Language) and support transactional integrity. They are well-suited for
+  applications that require data consistency and complex relational queries.
+
+  However, when dealing with big data, RDBMS may face challenges in terms of
+  scalability and performance. The rigid schema and ACID (Atomicity,
+  Consistency, Isolation, Durability) properties of RDBMS may hinder the
+  efficient processing of large volumes of data and the flexibility required
+  for handling diverse data types.
+
+Types of Data storage for big data
+----------------------------------
+In the context of big data, various types of data storage technologies have
+emerged to address the unique requirements and challenges posed by large
+volumes of data. Let's explore three prominent types of data storage solutions
+for big data:
+
 + Distributed file system
 
-  - Data organized as files.
-  - High performance
-  - Good scalability
-  - File system access protocol
-  - Unstructured, semi-structured
+  A distributed file system is designed to handle massive amounts of data by
+  distributing it across multiple storage nodes. Some popular examples of
+  distributed file systems include Hadoop Distributed File System (HDFS) and
+  Google File System (GFS). Here are the key characteristics of distributed
+  file systems:
+
+  * Data organized as files: In a distributed file system, data is organized
+    and accessed as files, similar to traditional file systems. This allows for
+    the storage of unstructured and semi-structured data.
+  * High performance: Distributed file systems leverage parallel processing and
+    data replication to achieve high-performance data storage and retrieval.
+    They can efficiently handle large-scale data processing tasks by
+    distributing the workload across multiple nodes.
+  * Good scalability: Distributed file systems are designed to scale
+    horizontally by adding more storage nodes as data volume increases. This
+    scalability enables organizations to accommodate the growing demands of big
+    data storage.
+  * File system access protocol: Distributed file systems typically provide
+    their own access protocols for interacting with the stored data. For
+    example, HDFS uses the Hadoop Distributed File System Protocol (HDFS
+    protocol) for file operations.
 
 + Object store
 
-  - Data organized as objects
-  - Perfect scalability
-  - Low cost
-  - RESTful API, HTTP protocol
-  - Unstructured, semi-structured
+  An object store is a storage architecture that organizes data as objects
+  rather than files or blocks. It offers highly scalable and cost-effective
+  storage solutions for big data. Notable examples of object stores include
+  Amazon S3 (Simple Storage Service) and Google Cloud Storage. Let's explore
+  the characteristics of object stores:
+
+  * Data organized as objects: In an object store, data is organized as
+    discrete objects, each with its own unique identifier and associated
+    metadata. This approach enables efficient storage and retrieval of
+    unstructured and semi-structured data.
+  * Perfect scalability: Object stores are designed for near-limitless
+    scalability, allowing organizations to store and manage vast amounts of
+    data without worrying about storage capacity constraints.
+  * Low cost: Object stores often offer cost-effective storage options,
+    especially for infrequently accessed or archival data. By leveraging
+    storage tiers and lifecycle policies, organizations can optimize costs by
+    moving data to lower-cost storage tiers as it becomes less frequently
+    accessed.
+  * RESTful API, HTTP protocol: Object stores typically provide a RESTful API
+    (Application Programming Interface) that allows developers to interact with
+    the stored objects using HTTP-based operations. This makes it easy to
+    integrate and access data from various applications and systems.d
 
 + NoSQL database
 
-  - Data organized as records, documents, and nodes
-  - Perfect scalability
-  - Structured, Semi-structured data
-  - Optimized on structures
-  - Query protocol
-  - Structured, semi-structured
+  NoSQL (Not Only SQL) databases are designed to handle the requirements of
+  storing and processing large volumes of structured and semi-structured data.
+  NoSQL databases offer excellent scalability and flexibility for big data
+  storage. Let's examine the characteristics of NoSQL databases:
 
-.. toctree::
+  * Data organized as records, documents, and nodes: NoSQL databases employ
+    various data models, such as key-value, document, columnar, or graph, to
+    organize and store data. Each data model provides specific benefits for
+    different types of data.
+  * Perfect scalability: NoSQL databases are built for horizontal scalability,
+    allowing them to handle massive data volumes and high-velocity data
+    ingestion. They can distribute data across multiple nodes and scale
+    seamlessly as data grows.
+  * Optimized for structures: NoSQL databases optimize data storage and
+    retrieval for specific data structures. For example, document-oriented
+    NoSQL databases like MongoDB excel at storing and querying JSON-like
+    documents, making them ideal for handling semi-structured data.
+  * Query protocol: Each NoSQL database offers its own query protocol or API
+    for interacting with the data. For instance, MongoDB utilizes a flexible
+    and powerful query language called MongoDB Query Language (MQL) for
+    querying and manipulating data.
+
+
+.. toctree:: More detailed reading:
    :maxdepth: 2
    :caption: Contents:
 
