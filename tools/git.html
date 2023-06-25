@@ -215,6 +215,72 @@ autograding. Treat pushing like submitting your work.</p>
 <li><p><a class="reference external" href="https://www.freecodecamp.org/news/practical-git-and-git-workflows/">FreeCodeCamp.org Git Workflow Tutorial</a></p></li>
 </ul>
 </section>
+<section id="advanced-topics">
+<h2>Advanced topics<a class="headerlink" href="#advanced-topics" title="Permalink to this heading">¶</a></h2>
+<section id="synchronize-to-the-remote-server">
+<h3>Synchronize to the remote server<a class="headerlink" href="#synchronize-to-the-remote-server" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>The scenario: You have a local repository synchronized with the remote
+repository. Your instructor pushed an emergency change to the remote
+repository. You want to synchronize your local repository with the remote
+repository.</p></li>
+<li><p>The solution: Run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">pull</span> <span class="pre">origin</span> <span class="pre">main</span></code> to pull the changes from the
+remote repository to your local repository if you have no new commits
+locally. Or run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">rebase</span> <span class="pre">origin/main</span></code> if you have new commits locally.
+You may need to solve the conflicts if there are any.</p></li>
+</ul>
+</section>
+<section id="synchronization-among-multiple-computers">
+<h3>Synchronization among multiple computers<a class="headerlink" href="#synchronization-among-multiple-computers" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>The scenario: One user work on one branch from multiple computers.</p></li>
+<li><p>The problem: When you are working on a branch on one computer, you may want to
+continue working on the same branch on another computer. You will need to
+synchronize the changes between the two computers.</p></li>
+<li><p>The best practice:</p>
+<ul>
+<li><p>Always <code class="docutils literal notranslate"><span class="pre">pull</span></code> first when you start on a new computer.</p></li>
+<li><p>Do not forget to <code class="docutils literal notranslate"><span class="pre">push</span></code> before you leave that computer.</p></li>
+</ul>
+</li>
+</ul>
+<ul class="simple">
+<li><p>Other useful approach</p>
+<ul>
+<li><p>If you already committed something before you remember to pull first. Use
+<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">rebase</span> <span class="pre">origin/main</span></code> to rebase your local commits on top of the
+remote commits. It may fail if there are conflicts. You will need to
+resolve it manually.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="filename-case-problem">
+<h3>Filename case problem<a class="headerlink" href="#filename-case-problem" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>The scenario: The changes in the filename case (e.g. <code class="docutils literal notranslate"><span class="pre">file.txt</span></code> to
+<code class="docutils literal notranslate"><span class="pre">File.txt</span></code>) is not tracked by git. It will not be detected by <code class="docutils literal notranslate"><span class="pre">git</span>
+<span class="pre">status</span></code> and <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">add</span></code>.</p></li>
+<li><p>The solution: Use <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">mv</span></code> to rename the file. It will be detected by <code class="docutils literal notranslate"><span class="pre">git</span>
+<span class="pre">status</span></code> and <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">add</span></code>.</p></li>
+<li><p>The backup solution: If <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">mv</span></code> is not working, you can use backup the
+file, <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">rm</span></code> to remove the file and commit; Then copy the file back <code class="docutils literal notranslate"><span class="pre">git</span>
+<span class="pre">add</span></code> to add the new file and commit. This will usually solve the problem.</p></li>
+</ul>
+</section>
+<section id="restore-files">
+<h3>Restore files<a class="headerlink" href="#restore-files" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>The scenario: You accidentally deleted a file or modified a file and want to
+restore it to the last commit.</p></li>
+<li><p>The solution:</p>
+<ul>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">restore</span> <span class="pre">&lt;path&gt;</span></code> to restore the file to the last commit.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
 </section>
 
 
@@ -235,6 +301,13 @@ autograding. Treat pushing like submitting your work.</p>
 <li><a class="reference internal" href="#subcommands">Subcommands</a></li>
 <li><a class="reference internal" href="#linear-workflow">linear workflow</a></li>
 <li><a class="reference internal" href="#other-workflows">Other Workflows</a></li>
+<li><a class="reference internal" href="#advanced-topics">Advanced topics</a><ul>
+<li><a class="reference internal" href="#synchronize-to-the-remote-server">Synchronize to the remote server</a></li>
+<li><a class="reference internal" href="#synchronization-among-multiple-computers">Synchronization among multiple computers</a></li>
+<li><a class="reference internal" href="#filename-case-problem">Filename case problem</a></li>
+<li><a class="reference internal" href="#restore-files">Restore files</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

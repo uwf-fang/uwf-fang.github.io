@@ -188,3 +188,53 @@ Many tutorials available for anyone who is interested:
 .. _`Altlassian/Bitbucket tutorial`: https://www.atlassian.com/git/tutorials/comparing-workflows
 
 .. _`FreeCodeCamp.org Git Workflow Tutorial`: https://www.freecodecamp.org/news/practical-git-and-git-workflows/
+
+Advanced topics
+===============
+Synchronize to the remote server
+--------------------------------
++ The scenario: You have a local repository synchronized with the remote
+  repository. Your instructor pushed an emergency change to the remote
+  repository. You want to synchronize your local repository with the remote
+  repository.
++ The solution: Run ``git pull origin main`` to pull the changes from the
+  remote repository to your local repository if you have no new commits
+  locally. Or run ``git rebase origin/main`` if you have new commits locally.
+  You may need to solve the conflicts if there are any.
+
+Synchronization among multiple computers
+----------------------------------------
++ The scenario: One user work on one branch from multiple computers.
++ The problem: When you are working on a branch on one computer, you may want to
+  continue working on the same branch on another computer. You will need to
+  synchronize the changes between the two computers.
++ The best practice:
+
+  * Always ``pull`` first when you start on a new computer.
+  * Do not forget to ``push`` before you leave that computer.
+
+* Other useful approach
+
+  * If you already committed something before you remember to pull first. Use
+    ``git rebase origin/main`` to rebase your local commits on top of the
+    remote commits. It may fail if there are conflicts. You will need to
+    resolve it manually.
+
+Filename case problem
+---------------------
++ The scenario: The changes in the filename case (e.g. ``file.txt`` to
+  ``File.txt``) is not tracked by git. It will not be detected by ``git
+  status`` and ``git add``.
++ The solution: Use ``git mv`` to rename the file. It will be detected by ``git
+  status`` and ``git add``.
++ The backup solution: If ``git mv`` is not working, you can use backup the
+  file, ``git rm`` to remove the file and commit; Then copy the file back ``git
+  add`` to add the new file and commit. This will usually solve the problem.
+
+Restore files
+-------------
++ The scenario: You accidentally deleted a file or modified a file and want to
+  restore it to the last commit.
++ The solution:
+
+  * Use ``git restore <path>`` to restore the file to the last commit.

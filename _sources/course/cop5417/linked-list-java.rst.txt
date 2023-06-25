@@ -1,0 +1,76 @@
+*******************
+Linked-list in Java
+*******************
+
+.. graphviz::
+  :caption: a minimal linked-list
+
+  digraph ll {
+      rankdir=LR;
+      node [shape=record];
+      head [label="head"];
+      a [label="{ <data> 12 | <ref>  }", width=1.2];
+      b [label="{ <data> 99 | <ref>  }"];
+      c [label="{ <data> 37 | <ref>  }"];
+      head:e -> a:data    [arrowhead=vee, arrowtail=none, dir=both, tailclip=false];
+      a:ref:c -> b:data [arrowhead=vee, arrowtail=dot, dir=both, tailclip=false];
+      b:ref:c -> c:data [arrowhead=vee, arrowtail=dot, dir=both, tailclip=false];
+  }
+
+Overview
+========
+A linked list is a linear data structure, in which the elements are not stored
+at contiguous memory locations. The elements in a linked list are linked using
+references.
+
+Motivation
+==========
++ Alternative to array to store a sequence of data
++ Fast to add/remove at the beginning or in the middle of the list
+
+.. csv-table::
+  :header: Property,Linked list,Array
+
+  Data structure,Linear,Linear
+  Memory usage,More,Less;Continuous
+  Random access,Slow,Fast
+  Insertion/deletion,Fast,Slow
+  Size,Dynamic,Static
+
+Variations
+==========
++ Singly linked list
++ Doubly linked list
++ Circular linked list (optional)
++ With or without dummy head node (optional)
+
+Components
+==========
++ Head/first variable
+
+  * reference to the first node in the linked list
+  * can be null if the linked list is empty
+
++ Tail/last viable
+
+  * reference to the last node in the linked list
+  * can be null if the linked list is empty
+  * optional, can improve performance when the tail nodes needs to be accessed
+    frequently
+
++ Node class (nested private class)
+
+  .. code-block:: Java
+
+    // Node class for singly linked list
+    private class Node {
+      int data;
+      Node next;
+    }
+
+    // node class for doubly linked list
+    private class Node {
+      int data;
+      Node prev;
+      Node next;
+    }
