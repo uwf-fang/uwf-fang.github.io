@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Algorithm Analysis &#8212; IanFang Course Note Hosting  documentation</title>
+    <title>Module 3: Sorting (Elemental, Merge, Quick) &#8212; IanFang Course Note Hosting  documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -17,11 +17,12 @@
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/sphinx_highlight.js"></script>
-    <link rel="canonical" href="https://uwf-fang.github.io/course/cop5417/alg-analysis.html" />
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/course/cop5417/m03.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Module 3: Sorting (Elemental, Merge, Quick)" href="m03.html" />
-    <link rel="prev" title="Stack and Queue in Java" href="stack-queue.html" /> 
+    <link rel="next" title="About" href="../../about/about.html" />
+    <link rel="prev" title="Algorithm Analysis" href="alg-analysis.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,15 +31,14 @@
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="m03.html" title="Module 3: Sorting (Elemental, Merge, Quick)"
+          <a href="../../about/about.html" title="About"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="stack-queue.html" title="Stack and Queue in Java"
+          <a href="alg-analysis.html" title="Algorithm Analysis"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" >COP 5417 Data Structure and Algorithms Essentials</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="m02.html" accesskey="U">Module 2: Stack, Queue and linked list; Algorithm Analysis</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Algorithm Analysis</a></li> 
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">COP 5417 Data Structure and Algorithms Essentials</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Module 3: Sorting (Elemental, Merge, Quick)</a></li> 
       </ul>
     </div>  
 
@@ -47,37 +47,71 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="algorithm-analysis">
-<h1>Algorithm Analysis<a class="headerlink" href="#algorithm-analysis" title="Permalink to this heading">¶</a></h1>
-<ul class="simple">
-<li><p>Motivation - We want to be able to compare algorithms and choose the best one
-for a given task</p></li>
-<li><p>Scientific Method</p></li>
-<li><p>Empirical Analysis</p></li>
-<li><p>Mathematical models</p>
-<ul>
-<li><p>Case analysis</p></li>
-<li><p>Asymptotic notations</p>
-<ul>
-<li><p>Big-Oh</p></li>
-<li><p>Big-Omega</p></li>
-<li><p>Big-Theta</p></li>
-</ul>
-</li>
-<li><p>tilde notation</p></li>
-</ul>
-</li>
-<li><p>Examples to try analysis on</p>
-<ul>
-<li><p><a class="reference external" href="https://github.com/uwf-fang/cop5417-examples/tree/main/m02-binary-search">Binary search</a></p></li>
-<li><p><a class="reference external" href="https://github.com/uwf-fang/cop5417-examples/tree/main/m02-linked-list">Linked list insert, remove, etc</a></p></li>
-</ul>
-</li>
-</ul>
+  <section id="module-3-sorting-elemental-merge-quick">
+<h1>Module 3: Sorting (Elemental, Merge, Quick)<a class="headerlink" href="#module-3-sorting-elemental-merge-quick" title="Permalink to this heading">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Extended reading (used in CPP course) : <a class="reference internal" href="../../cpp/complexity.html"><span class="doc">Complexity Analysis</span></a></p>
+<p>This page only contains the notes for the module. It provides a big picture
+on the sorting algorithms.</p>
 </div>
+<ul>
+<li><p>Visualizations</p>
+<p>Due to the complexity of the sorting algorithms. Visualizations may greatly
+enhance the learning process. Below are two useful websites providing
+visualizations of common algorithms and data structures.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://visualgo.net/en/sorting">visualgo.net</a></p></li>
+<li><p><a class="reference external" href="https://www.cs.usfca.edu/~galles/visualization/Algorithms.html">Data Structure Visualization</a></p></li>
+</ul>
+</li>
+<li><p>Categories</p>
+<ul class="simple">
+<li><p>Comparison based</p>
+<ul>
+<li><p>Best algorithm complexity <span class="math notranslate nohighlight">\(O(nlog(n))\)</span></p></li>
+<li><p>The base type must be comparable (can use &gt;, &lt;, ==, etc.)</p></li>
+<li><p><strong>selection</strong></p></li>
+<li><p><strong>insertion</strong></p></li>
+<li><p>bubble</p></li>
+<li><p>shell</p></li>
+<li><p><strong>quick</strong></p></li>
+<li><p><strong>merge</strong></p></li>
+<li><p>heap - to be covered in the next module</p></li>
+</ul>
+</li>
+<li><p>Other (special requirements on the data type)</p>
+<ul>
+<li><p>Bucket</p></li>
+<li><p>Radix</p></li>
+<li><p>Counting</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Complexity</p>
+<ul class="simple">
+<li><p>simple <span class="math notranslate nohighlight">\(O(n^{2})\)</span>: insert, selection, bubble</p></li>
+<li><p>fast <span class="math notranslate nohighlight">\(O(nlog(n))\)</span>: quick, merge, heap</p></li>
+<li><p>linear: radix <span class="math notranslate nohighlight">\(O(nk) = O(n)\)</span>, bucket <span class="math notranslate nohighlight">\(O(n + k) = O(n)\)</span></p></li>
+</ul>
+</li>
+<li><p>Storage Space</p>
+<ul class="simple">
+<li><p>in-place</p>
+<ul>
+<li><p>most sorting algorithms</p></li>
+</ul>
+</li>
+<li><p>not-in-place (out-of-place)</p>
+<ul>
+<li><p>merge sort</p></li>
+<li><p>bucket sort</p></li>
+<li><p>radix sort</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 </section>
 
 
@@ -89,18 +123,18 @@ for a given task</p></li>
         <div class="sphinxsidebarwrapper">
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="stack-queue.html"
-                          title="previous chapter">Stack and Queue in Java</a></p>
+    <p class="topless"><a href="alg-analysis.html"
+                          title="previous chapter">Algorithm Analysis</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="m03.html"
-                          title="next chapter">Module 3: Sorting (Elemental, Merge, Quick)</a></p>
+    <p class="topless"><a href="../../about/about.html"
+                          title="next chapter">About</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../../_sources/course/cop5417/alg-analysis.rst.txt"
+      <li><a href="../../_sources/course/cop5417/m03.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -125,15 +159,14 @@ for a given task</p></li>
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="m03.html" title="Module 3: Sorting (Elemental, Merge, Quick)"
+          <a href="../../about/about.html" title="About"
              >next</a> |</li>
         <li class="right" >
-          <a href="stack-queue.html" title="Stack and Queue in Java"
+          <a href="alg-analysis.html" title="Algorithm Analysis"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" >COP 5417 Data Structure and Algorithms Essentials</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="m02.html" >Module 2: Stack, Queue and linked list; Algorithm Analysis</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Algorithm Analysis</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Module 3: Sorting (Elemental, Merge, Quick)</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
