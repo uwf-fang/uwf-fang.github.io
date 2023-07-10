@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Module 4: Priority Queue and Heap Sort &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/course/cop5417/m04.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="About" href="../../about/about.html" />
+    <link rel="prev" title="Module 3: Sorting (Elemental, Merge, Quick)" href="m03.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../about/about.html" title="About"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="m03.html" title="Module 3: Sorting (Elemental, Merge, Quick)"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">COP 5417 Data Structure and Algorithms Essentials</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Module 4: Priority Queue and Heap Sort</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-4-priority-queue-and-heap-sort">
+<h1>Module 4: Priority Queue and Heap Sort<a class="headerlink" href="#module-4-priority-queue-and-heap-sort" title="Permalink to this heading">¶</a></h1>
+<section id="priority-queue">
+<h2>Priority Queue<a class="headerlink" href="#priority-queue" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Not a queue, but a set of elements each with a priority</p></li>
+<li><p>Add in any order and remove in order of priority</p>
+<ul>
+<li><p>Max first</p></li>
+<li><p>Min first</p></li>
+</ul>
+</li>
+<li><p>Behaviors</p>
+<ul>
+<li><p>enqueue</p></li>
+<li><p>dequeue</p></li>
+<li><p>isEmpty</p></li>
+</ul>
+</li>
+<li><p>Implementations</p>
+<ul>
+<li><p>Unsorted array</p></li>
+<li><p>Sorted array</p></li>
+<li><p>Unsorted linked list</p></li>
+<li><p>Sorted linked list</p></li>
+<li><p>Heap</p></li>
+</ul>
+</li>
+<li><p>Applications</p>
+<ul>
+<li><p>Sorting</p></li>
+<li><p>Find the <cite>n</cite> largest elements</p></li>
+<li><p>Event-driven simulation</p></li>
+<li><p>Huffman coding</p></li>
+<li><p>Dijkstra’s algorithm</p></li>
+<li><p>A* search</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="heap">
+<h2>Heap<a class="headerlink" href="#heap" title="Permalink to this heading">¶</a></h2>
+<ul>
+<li><p>Behaviors</p>
+<ul class="simple">
+<li><p>add (put, insert)</p></li>
+<li><p>remove (get, delete)</p></li>
+<li><p>percolate up (swim, bubble)</p></li>
+<li><p>percolate down (sink)</p></li>
+<li><p>heapify (build heap)</p></li>
+</ul>
+</li>
+<li><p>Complexity</p>
+<p>Mostly determined by the depth of the tree which is O(log n)</p>
+<ul class="simple">
+<li><p>enqueue: <code class="docutils literal notranslate"><span class="pre">O(log</span> <span class="pre">n)</span></code>, add to the end and percolate up</p></li>
+<li><p>dequeue: <code class="docutils literal notranslate"><span class="pre">O(log</span> <span class="pre">n)</span></code>, replace the root with the last element and percolate
+down</p></li>
+<li><p>percolate up: <code class="docutils literal notranslate"><span class="pre">O(log</span> <span class="pre">n)</span></code></p></li>
+<li><p>percolate down: <code class="docutils literal notranslate"><span class="pre">O(log</span> <span class="pre">n)</span></code></p></li>
+<li><p>heapify:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">O(n)</span></code> - repeated percolate down on all internal nodes</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">O(n</span> <span class="pre">log</span> <span class="pre">n)</span></code> - repeated add</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Heap sort</p>
+<ul class="simple">
+<li><p>Build a heap from the array</p></li>
+<li><p>Repeatedly swap the root with the last element of the unsorted section and
+percolate down</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">O(n</span> <span class="pre">log</span> <span class="pre">n)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Module 4: Priority Queue and Heap Sort</a><ul>
+<li><a class="reference internal" href="#priority-queue">Priority Queue</a></li>
+<li><a class="reference internal" href="#heap">Heap</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="m03.html"
+                          title="previous chapter">Module 3: Sorting (Elemental, Merge, Quick)</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../../about/about.html"
+                          title="next chapter">About</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/course/cop5417/m04.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../about/about.html" title="About"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="m03.html" title="Module 3: Sorting (Elemental, Merge, Quick)"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >COP 5417 Data Structure and Algorithms Essentials</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Module 4: Priority Queue and Heap Sort</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2023, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>
