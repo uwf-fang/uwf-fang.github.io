@@ -1,0 +1,104 @@
+******************
+Self-balancing BST
+******************
+As the performance of operations on any BST depends on the height of the tree,
+it is desirable to keep the average height as small as possible. A
+self-balancing BST is a BST that automatically keeps its height balanced in the
+process of arbitrary item insertions and deletions. The most popular
+self-balancing BSTs are AVL trees and red-black trees.
+
+.. note:
+
+  Due to the complexity of the implementation, we will focus on a subset of
+  concepts of the self-balancing BST in this course. For the implementation
+  details, please refer to the book examples as extended readings.
+
+Red-black tree
+==============
+2-3 tree
+--------
++ 2-nodes and 3-nodes
+
+  A 2-node is a node with one key and two children while a 3-node is a node
+  with two keys and three children. A 2-3 tree are always balanced.
+
++ Search - straight forward with two comparisons on each node
++ Insertion
+
+  * If the tree is empty, create a 2-node with the key and return.
+  * To insert to a 2-node, create a 3-node with the new key added.
+  * To insert to a 3-node, create a temporary 4-node with the key added and
+    move the middle key to the parent node. This operation may propagate up.
+  * If there is no parent node (root), create a new root node with the middle
+    key.
+
++ Delete (Optional content)
++ It is hard to implement certain programming languages as is because it is
+  hard to maintain many node types.
+
+Red-black tree
+--------------
+A red-black tree is a representation of a 2-3 tree as a BST. It uses the red
+and black colors to help representing the 3-nodes and 2-nodes respectively. The
+red-black tree is always balanced as a 2-3 tree but not really balanced as a
+BST.
+
+We will use left-leaning red-black tree as an example in which the red link is
+always leaning left by definition.
+
++ Representation
+
+  * The nodes is colored rather than the links as each link can only point to
+    one node and one-to-one mapping exists.
+  * Each node is either red or black as stored in a boolean instance variable.
+
++ Search - same as BST
++ Insert
+
+  * Insert as BST first
+  * Abnormal cases created in BST insertion
+
+    - right-leaning 3-node
+    - 4-node
+
+      + both children are red
+      + left-left 4-node
+      + left-right 4-node
+
+  * Adjust the tree to make it a valid red-black tree
+
+    - left rotation
+    - right rotation
+    - split
+
+AVL Tree
+========
+
+.. note::
+
+  Optional reading for COP5417
+
+A BST is an AVL tree if and only if for every node in the tree, the heights of
+the left and right subtrees differ by at most 1. It keeps track of the balance
+factor of each node in the tree and uses this information to decide whether to
+rotate the tree to balance it.
+
+Comparison between AVL tree and red-black tree
+----------------------------------------------
+
++-----------------------+--------------------------------------+---------------------------------+
+|      Aspect           |            AVL Trees                |           Red-black Trees        |
++=======================+======================================+=================================+
+| Balance Factor        | Maintains balance using height       | Maintains balance using color   |
+|                       | difference (balance factor)          | (red or black)                  |
++-----------------------+--------------------------------------+---------------------------------+
+| Height                | More strictly balanced               | Less strictly balanced          |
+|                       | (better worst-case performance)      | (slightly worse performance)    |
++-----------------------+--------------------------------------+---------------------------------+
+| Memory Overhead       | May have higher memory overhead      | Generally has lower memory      |
+|                       | due to balance factor storage        | overhead due to color storage   |
++-----------------------+--------------------------------------+---------------------------------+
+| Insertion/Deletion    | Can be slower due to stricter        | Generally faster due to fewer   |
+| Performance           | balancing requirements               | rotations and looser balancing  |
++-----------------------+--------------------------------------+---------------------------------+
+
