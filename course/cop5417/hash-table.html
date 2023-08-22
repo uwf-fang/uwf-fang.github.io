@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Hash Table &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/course/cop5417/hash-table.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Module 7: Graph" href="m07.html" />
+    <link rel="prev" title="Self-balancing BST" href="self-balancing-bst.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="m07.html" title="Module 7: Graph"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="self-balancing-bst.html" title="Self-balancing BST"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >COP 5417 Data Structure and Algorithms Essentials</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="m06.html" accesskey="U">Module 6 Self-balancing BST; Hash table</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Hash Table</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="hash-table">
+<h1>Hash Table<a class="headerlink" href="#hash-table" title="Permalink to this heading">¶</a></h1>
+<p>Hash table uses hashing to implement a data structure that maps a key to an
+index so the value can be stored in the corresponding location (a bucket) in a
+sequential data structure like an array.</p>
+<p><strong>Quick question:</strong> why linked-list is not a good way to store buckets in a
+hash table? (Because the most frequent usage is to access by index, which is
+slow with linked-list data structure)</p>
+<section id="characteristics">
+<h2>Characteristics<a class="headerlink" href="#characteristics" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>fast lookup <span class="math notranslate nohighlight">\(O(1)\)</span></p></li>
+<li><p>redundant storage (certain ratio of empty buckets)</p>
+<ul>
+<li><p>performance degradation</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="hash-function-for-hash-tables">
+<h2>Hash function for hash tables<a class="headerlink" href="#hash-function-for-hash-tables" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(h(x)\)</span></p></li>
+<li><p>a key of any type mapping to integer from 0 to N - 1 (indices in a size N
+array)</p></li>
+<li><p>modulo operator on any integer generating hash function</p></li>
+</ul>
+</section>
+<section id="collision-resolution">
+<h2>Collision resolution<a class="headerlink" href="#collision-resolution" title="Permalink to this heading">¶</a></h2>
+<p>Methods to handle collision when multiple keys are mapped to a same bucket.</p>
+<section id="chaining">
+<h3>Chaining<a class="headerlink" href="#chaining" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>each bucket is a linked list to store multiple values (chained)</p></li>
+<li><p>Nodes in the linked-list keeps key, value and next pointer</p></li>
+<li><p>unlimited storage space</p></li>
+<li><p>Performance degradation when over-filled</p></li>
+</ul>
+</section>
+<section id="open-addressing">
+<h3>Open addressing<a class="headerlink" href="#open-addressing" title="Permalink to this heading">¶</a></h3>
+<ul>
+<li><p>find another available bucket to store the value when a collision occurs</p></li>
+<li><p>probing sequence: the sequence of the buckets to check when collision happens</p></li>
+<li><p>simplest linear probing:</p>
+<p><span class="math notranslate nohighlight">\((h1(key) + i) \% NUM\_BUCKETS, i = 0, 1, 2, 3 \dots\)</span></p>
+</li>
+<li><p>other probing (optional): linear probing that skips, quadratic probing, and
+double hashing</p></li>
+<li><p>implementation</p>
+<ul class="simple">
+<li><p>each bucket keeps both key and value</p></li>
+<li><p>search in the probing sequence until find the key or an empty bucket.</p></li>
+<li><p>insertion</p>
+<ul>
+<li><p>if the key is already in the hash table, update the value</p></li>
+<li><p>if the key is not in the hash table, find an empty bucket in the probing
+sequence and store the key and value there</p></li>
+</ul>
+</li>
+<li><p>deletion</p>
+<ul>
+<li><p>will create a hole in the probing sequence that interferes with future
+searches, insertion and deletion</p></li>
+<li><p>rearrange after every deletion</p></li>
+<li><p>differentiate <strong>empty-since-start</strong> vs <strong>empty-after-removal</strong> (Optional)</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="hash-table-glossary">
+<h2>Hash Table Glossary<a class="headerlink" href="#hash-table-glossary" title="Permalink to this heading">¶</a></h2>
+<dl class="simple glossary">
+<dt id="term-Hash-Table">Hash Table<a class="headerlink" href="#term-Hash-Table" title="Permalink to this term">¶</a></dt><dd><p>An associative data structure that models mapping from keys to values. It is
+usually implemented as an array. A hash function is employed to map the key
+to the index of the array element where the value is stored</p>
+</dd>
+<dt id="term-Key-hash-table">Key (hash table)<a class="headerlink" href="#term-Key-hash-table" title="Permalink to this term">¶</a></dt><dd><p>The input to the hash function to calculate the index of the buckets in the
+hash table</p>
+</dd>
+<dt id="term-Value-hash-table">Value (hash table)<a class="headerlink" href="#term-Value-hash-table" title="Permalink to this term">¶</a></dt><dd><p>The values stored in the buckets in tha hash table</p>
+</dd>
+<dt id="term-Collision-hash-table">Collision (hash table)<a class="headerlink" href="#term-Collision-hash-table" title="Permalink to this term">¶</a></dt><dd><p>A collision occurs when multiple keys result in the same index in the array</p>
+</dd>
+<dt id="term-Collision-resolution">Collision resolution<a class="headerlink" href="#term-Collision-resolution" title="Permalink to this term">¶</a></dt><dd><p>The approach to resolve collisions in hash tables</p>
+</dd>
+<dt id="term-Chaining">Chaining<a class="headerlink" href="#term-Chaining" title="Permalink to this term">¶</a></dt><dd><p>A collision resolution approach in which every element in an array is a
+linked-list</p>
+</dd>
+<dt id="term-Open-addressing">Open addressing<a class="headerlink" href="#term-Open-addressing" title="Permalink to this term">¶</a></dt><dd><p>A collision resolution approach in which an empty bucket elsewhere in the
+hash table is used when collision happens</p>
+</dd>
+<dt id="term-Probing">Probing<a class="headerlink" href="#term-Probing" title="Permalink to this term">¶</a></dt><dd><p>The mechanism to determine the next index of bucket to check in the open
+addressing collision resolution approach</p>
+</dd>
+<dt id="term-Hash-map">Hash map<a class="headerlink" href="#term-Hash-map" title="Permalink to this term">¶</a></dt><dd><p>An implementation of the Map ADT based on the hash table data structure</p>
+</dd>
+<dt id="term-Hash-set">Hash set<a class="headerlink" href="#term-Hash-set" title="Permalink to this term">¶</a></dt><dd><p>An implementation of the Set ADT based on the hash table data structure</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Hash Table</a><ul>
+<li><a class="reference internal" href="#characteristics">Characteristics</a></li>
+<li><a class="reference internal" href="#hash-function-for-hash-tables">Hash function for hash tables</a></li>
+<li><a class="reference internal" href="#collision-resolution">Collision resolution</a><ul>
+<li><a class="reference internal" href="#chaining">Chaining</a></li>
+<li><a class="reference internal" href="#open-addressing">Open addressing</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#hash-table-glossary">Hash Table Glossary</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="self-balancing-bst.html"
+                          title="previous chapter">Self-balancing BST</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="m07.html"
+                          title="next chapter">Module 7: Graph</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/course/cop5417/hash-table.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="m07.html" title="Module 7: Graph"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="self-balancing-bst.html" title="Self-balancing BST"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >COP 5417 Data Structure and Algorithms Essentials</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="m06.html" >Module 6 Self-balancing BST; Hash table</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Hash Table</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2023, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>

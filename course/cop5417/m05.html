@@ -1,0 +1,220 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Module 5 Symbol Table, Binary Search tree &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/course/cop5417/m05.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Module 6 Self-balancing BST; Hash table" href="m06.html" />
+    <link rel="prev" title="Module 4: Priority Queue and Heap Sort" href="m04.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="m06.html" title="Module 6 Self-balancing BST; Hash table"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="m04.html" title="Module 4: Priority Queue and Heap Sort"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">COP 5417 Data Structure and Algorithms Essentials</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Module 5 Symbol Table, Binary Search tree</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-5-symbol-table-binary-search-tree">
+<h1>Module 5 Symbol Table, Binary Search tree<a class="headerlink" href="#module-5-symbol-table-binary-search-tree" title="Permalink to this heading">¶</a></h1>
+<p>In this module we will start approaching the topic of <code class="docutils literal notranslate"><span class="pre">searching</span></code>. Searching
+problems are a group of problems that require the algorithm to locate a certain
+record by a <code class="docutils literal notranslate"><span class="pre">key</span></code>. You should already know methods to search in a sequential
+data structure such as an array or a linked list. In this module, we will
+discuss the topic in more complicate scenarios.</p>
+<section id="symbol-table">
+<h2>Symbol Table<a class="headerlink" href="#symbol-table" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Symbol</span> <span class="pre">table</span></code> is a term used historically in compiler to refer to a data
+structure that keeps track of all the identifiers in a program and how they
+are used. Under this context, this term refers to a <strong>data structure</strong>.</p></li>
+<li><p>It is defined as an <strong>ADT</strong> to store key-value pairs by some authors.</p></li>
+<li><p>Alternative names are <code class="docutils literal notranslate"><span class="pre">dictionary</span></code> and <code class="docutils literal notranslate"><span class="pre">map</span></code>.</p></li>
+<li><p>Key must be unique</p></li>
+<li><p>Behaviors</p>
+<ul>
+<li><p>put: put a key-value pair into the table</p></li>
+<li><p>get: return value with a given key</p></li>
+<li><p>contains: is there a value paired with a given key?</p></li>
+<li><p>delete: remove key-value pair with a given key</p></li>
+<li><p>size: number of key-value pairs</p></li>
+<li><p>isEmpty: is the table empty?</p></li>
+</ul>
+</li>
+<li><p>Conventions for Java</p>
+<ul>
+<li><p>use of <code class="docutils literal notranslate"><span class="pre">null</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">equals()</span></code></p></li>
+<li><p>key should be immutable (use final keyword)</p></li>
+<li><p>key should be comparable</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="elementary-implementations">
+<h2>Elementary implementations<a class="headerlink" href="#elementary-implementations" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Store key-value pairs in a sequential data structure (array or linked list)</p></li>
+<li><p>put, get, contains and remove are all based on key lookup</p>
+<ul>
+<li><p>put: search for key, if found, replace value, else add new key-value pair</p></li>
+<li><p>get: search for key, if found, return associated value, else return null</p></li>
+<li><p>remove: search for key, if found, remove key-value pair, else do nothing</p></li>
+</ul>
+</li>
+<li><p>Lookup algorithm</p>
+<ul>
+<li><p>Unsorted list + Sequential search: O(N)</p></li>
+<li><p>Sorted list + Binary search: O(logN)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="advanced-implementations">
+<h2>Advanced implementations<a class="headerlink" href="#advanced-implementations" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../cpp/adt/tree.html"><span class="doc">Tree basics</span></a></p></li>
+<li><p>Binary search tree</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Binary</span> <span class="pre">search</span> <span class="pre">tree</span></code> (BST) is a binary tree in symmetric order.</p></li>
+<li><p>Symmetric order: each node has a key, and every node’s key is</p>
+<ul>
+<li><p>larger than all keys in its left subtree</p></li>
+<li><p>smaller than all keys in its right subtree</p></li>
+</ul>
+</li>
+<li><p>BST implementation</p>
+<ul>
+<li><p>Node class: key, value, left, right</p></li>
+<li><p>BST class: root node</p></li>
+<li><p>put</p></li>
+<li><p>get</p></li>
+<li><p>delete</p></li>
+<li><p>size</p></li>
+<li><p>isEmpty</p></li>
+<li><p>min, max, floor, ceiling, rank, select (optional)</p></li>
+</ul>
+</li>
+<li><p>Efficiency depends on the height of the tree</p>
+<ul>
+<li><p>Worst case: O(N) (unbalanced tree)</p></li>
+<li><p>Average case: O(logN) (balanced tree)</p></li>
+</ul>
+</li>
+<li><p>Self-balancing BST to guarantee O(logN) performance</p>
+<ul>
+<li><p>AVL tree (optional)</p></li>
+<li><p>Red-black tree (next module)</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Hash table (next module)</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Module 5 Symbol Table, Binary Search tree</a><ul>
+<li><a class="reference internal" href="#symbol-table">Symbol Table</a></li>
+<li><a class="reference internal" href="#elementary-implementations">Elementary implementations</a></li>
+<li><a class="reference internal" href="#advanced-implementations">Advanced implementations</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="m04.html"
+                          title="previous chapter">Module 4: Priority Queue and Heap Sort</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="m06.html"
+                          title="next chapter">Module 6 Self-balancing BST; Hash table</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/course/cop5417/m05.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="m06.html" title="Module 6 Self-balancing BST; Hash table"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="m04.html" title="Module 4: Priority Queue and Heap Sort"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >COP 5417 Data Structure and Algorithms Essentials</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Module 5 Symbol Table, Binary Search tree</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2023, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>
