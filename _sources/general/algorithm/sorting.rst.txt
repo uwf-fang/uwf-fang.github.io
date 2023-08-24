@@ -5,15 +5,8 @@
 Sorting Algorithms
 ******************
 
-Code examples
-=============
-+ `Chapter 7 <ch7eg_>`_
-
-.. _ch7eg: https://github.com/uwf-fang/cop3014-examples/tree/main/ch07-sorting-string
-
-General info
-============
-
+Overview
+========
 + Visualizations
 
   Due to the complexity of the sorting algorithms. Visualizations may greatly
@@ -28,119 +21,76 @@ General info
   All algorithms not mentioned in the book is for your information only. Only
   algorithm with bold names are covered in the book.
 
-  * Comparison based - Best algorithm complexity :math:`O(nlog(n))`
+  * Comparison based
 
-    - selection
-    - **insertion**
-    - bubble
-    - shell
-    - **quick**
-    - **merge**
-    - **heap**
+    - Selection
+    - Insertion
+    - Bubble
+    - Shell
+    - Quick
+    - Merge
+    - Heap
 
-  * Other
+  * Non-comparison based
 
     - Bucket
-    - **Radix**
+    - Radix
     - Counting
 
-+ Complexity
+  * Divide-and-conquer :math:`O(nlog(n))`
+
+    - Quick
+    - Merge
+
+  * simple :math:`O(n^{2})`
+
+    - Selection
+    - Insertion
+    - Bubble
+
+  * Hybrid
+
+    - Tim sort: combination of merge sort and insertion sort
+
++ Time complexity
 
   * simple :math:`O(n^{2})`: insert, selection, bubble
   * fast :math:`O(nlog(n))`: quick, merge, heap
   * linear: radix :math:`O(nk) = O(n)`, bucket :math:`O(n + k) = O(n)`
 
-+ Storage Space
++ Space complexity
 
-  * in-place
+  * in-place (swap based) :math:`O(1)`
 
-    - most sorting algorithms
+    - most sorting algorithms except merge sort, bucket sort, and radix sort
 
-  * not-in-place (out-of-place)
+  * not-in-place (out-of-place) :math:`O(n)`
 
     - merge sort
     - bucket sort
     - radix sort
 
-Insertion Sort
-==============
-Repeatedly take one element from the unsorted section and insert into the
-sorted section.
+Implementation Variations
+=========================
++ Sorting an array
 
-+ Complexity: :math:`O(n^{2})` for array
-+ Efficient with linked-lists
+  * Array property
 
-Quick Sort
-==========
-Call a quick partitioning algorithm to partition the whole list to two
-sections, repeat the same procedure recursively on both sections.
+    - fast access by index
+    - slow reconstruction of new array
+    - slow insertion and deletion of elements except at the end
 
-Quick Partitioning
-------------------
-+ A useful algorithm
-+ Select one element, known as pivot, use this element to partition the whole
-  list to two sections, such that all elements in the left section are less and
-  equal than the pivot and all elements in the right section are greater than
-  the pivot. (Assuming targeting an ascending order)
-+ Complexity:
+  * best fit: in-place algorithms that swaps elements
+  * less efficient: out-of-place algorithms that creates new arrays and moves
+    data around frequently
 
-  * average :math:`O(nlog(n))`
-  * worst :math:`O(n^{2})`
++ Sorting a linked-list based
 
-+ Pivot selection
+  * Linked-list property
 
-  * fixed: first, last or middle
-  * random
+    - slow access by index
+    - fast reconstruction of new list
+    - fast access to neighboring nodes
 
-+ Partitioning algorithm
-
-  * Hoare's Scheme (preferred)
-  * Lomuto's Scheme
-
-Merge Sort
-==========
-Take two sorted list and merge into a larger sorted list recursively.
-
-+ Complexity: stable :math:`O(nlog(n))`
-+ Variations
-
-  * top-down
-
-    - cut a list to two halves, sort both halves first, then merge
-    - usually recursive
-    - stop repetition when the size of section is 1 or 0
-    - in each round
-
-      + sort first half
-      + sort second half
-      + sorted merge
-
-  * bottom-up (not mentioned in the book)
-
-    - usually iterative
-    - merge all n size 1 sections (single element) into n/2 size 2 sections
-    - merge all size 2 lists to size 4 lists
-    - continue until done
-
-Radix Sort
-==========
-Not comparison based. Collect elements into buckets multiple times. Dependant
-on the semantic of the content. Example: use digits on each position of decimal
-numbers as buckets; starting from the right most digit; collect numbers into
-buckets, flatten, collect again to sort.
-
-Implementation Notes
-====================
-+ Array based
-
-  * fast access by index
-
-+ Linked-list based
-
-  * slow access by index
-  * fast access to neighboring nodes
-  * fast reconstruction of new list
-  * best fit: out-of-space algorithms like merge sort and bucket sort
-  * other choices: algorithms that scan through elements one by one like
-    insertion sort, quick sort, bubble sort
-  * not suitable: shell sort, heap sort
+  * best fit: insertion sort, merge sort, bucket sort
+  * not suitable: shell sort, and heap sort require slow access by index

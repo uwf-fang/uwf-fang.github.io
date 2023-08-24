@@ -1,0 +1,282 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Complexity Analysis &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/general/complexity.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Chapter 5 Recursion" href="../course/cop3530/ch05.html" />
+    <link rel="prev" title="Chapter 4 Algorithm Analysis" href="../course/cop3530/ch04.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../course/cop3530/ch05.html" title="Chapter 5 Recursion"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../course/cop3530/ch04.html" title="Chapter 4 Algorithm Analysis"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../course/cop3530/ch04.html" accesskey="U">Chapter 4 Algorithm Analysis</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Complexity Analysis</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="complexity-analysis">
+<h1>Complexity Analysis<a class="headerlink" href="#complexity-analysis" title="Permalink to this heading">¶</a></h1>
+<p>Analyze the computational resources consumed by an algorithm. Limited to the
+imperative programming paradigm in the course.</p>
+<section id="concepts">
+<h2>Concepts<a class="headerlink" href="#concepts" title="Permalink to this heading">¶</a></h2>
+<dl class="simple glossary">
+<dt id="term-Computational-complexity">Computational complexity<a class="headerlink" href="#term-Computational-complexity" title="Permalink to this term">¶</a></dt><dd><p>The computational resources consumed by an algorithm as a function of the
+size of the problem.</p>
+</dd>
+<dt id="term-Time-complexity">Time complexity<a class="headerlink" href="#term-Time-complexity" title="Permalink to this term">¶</a></dt><dd><p>The computational time consumed by an algorithm a function of the size of
+the problem. It is usually described using a function <span class="math notranslate nohighlight">\(T(N)\)</span>.</p>
+</dd>
+<dt id="term-Space-complexity">Space complexity<a class="headerlink" href="#term-Space-complexity" title="Permalink to this term">¶</a></dt><dd><p>The computational storage space (usually refer to memory) consumed by an
+algorithm a function of the size of the problem. <strong>auxiliary space
+complexity</strong> is the space complexity excluding the input data. It is usually
+described using a function <span class="math notranslate nohighlight">\(S(N)\)</span>.</p>
+</dd>
+<dt id="term-Best-case-worst-case-and-average-case">Best case, worst case, and average case<a class="headerlink" href="#term-Best-case-worst-case-and-average-case" title="Permalink to this term">¶</a></dt><dd><p>Best case is the scenario in which the algorithm finished with the least
+resource consumed. Worst case is the scenario in which the algorithm
+finished with the most resource consumed. Sometimes we will use average
+case, which is the average over all possible inputs.</p>
+</dd>
+<dt id="term-Constant-time-operation">Constant time operation<a class="headerlink" href="#term-Constant-time-operation" title="Permalink to this term">¶</a></dt><dd><p>Because the accurate measurement of time consumption is impossible, we
+usually count the number of constant time operations to estimate the time
+consumption. A constant time operation is an operation that always consume a
+certain amount of time regardless of the problem size N.</p>
+</dd>
+<dt id="term-Growth-rate">Growth rate<a class="headerlink" href="#term-Growth-rate" title="Permalink to this term">¶</a></dt><dd><p>How much more resource is needed when the problem size grows. It is usually
+described using simple math functions. It is a simple way to visualize the
+complexity.</p>
+</dd>
+<dt id="term-Asymptotic-notation">Asymptotic notation<a class="headerlink" href="#term-Asymptotic-notation" title="Permalink to this term">¶</a></dt><dd><p>The math language we use to describe the complexity in a formal way. It
+includes <span class="math notranslate nohighlight">\(O\)</span> (big-O), <span class="math notranslate nohighlight">\(\Omega\)</span> (big-omega), <span class="math notranslate nohighlight">\(\Theta\)</span>
+(big-theta) notations.</p>
+</dd>
+<dt id="term-Lower-bound">Lower bound<a class="headerlink" href="#term-Lower-bound" title="Permalink to this term">¶</a></dt><dd><p>The best (least resource) complexity of a given algorithm. Related to the best case and the <span class="math notranslate nohighlight">\(\Omega\)</span> (big-omega) notation.</p>
+</dd>
+<dt id="term-Upper-bound">Upper bound<a class="headerlink" href="#term-Upper-bound" title="Permalink to this term">¶</a></dt><dd><p>The worst (most resource) complexity of a given algorithm. Related to the worst case and the <span class="math notranslate nohighlight">\(O\)</span> (big-O) notation.</p>
+</dd>
+<dt id="term-Exact-bound">Exact bound<a class="headerlink" href="#term-Exact-bound" title="Permalink to this term">¶</a></dt><dd><p>When a same complexity can be found for both the upper and lower bound, it
+is the exact bound <span class="math notranslate nohighlight">\(\Theta\)</span></p>
+</dd>
+</dl>
+<a class="reference internal image-reference" href="../_images/complexity.png"><img alt="Complexity" class="align-center" src="../_images/complexity.png" style="width: 400px;" /></a>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Common Growth Rates <span class="math notranslate nohighlight">\(f(N)\)</span> (least to most complex)</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 33.3%" />
+<col style="width: 66.7%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(1\)</span></p></td>
+<td><p>constant</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(log(N)\)</span></p></td>
+<td><p>logarithmic</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(n\)</span></p></td>
+<td><p>linear</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(Nlog(N)\)</span></p></td>
+<td><p>linear logarithmic</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(n^2\)</span></p></td>
+<td><p>quadratic</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(n^3\)</span></p></td>
+<td><p>cubic</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(2^n\)</span></p></td>
+<td><p>exponential</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(n!\)</span></p></td>
+<td><p>factorial</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Time complexity is more useful and is focused in the following sections. Most
+of the rules can be used with space complexity with little modification.</p>
+</div>
+</section>
+<section id="asymptotic-notation">
+<h2>Asymptotic notation<a class="headerlink" href="#asymptotic-notation" title="Permalink to this heading">¶</a></h2>
+<p>A.k.a Bachmann–Landau notation. A mathematical notation system to describe the
+limiting behavior of a function.</p>
+<section id="formal-definitions">
+<h3>Formal Definitions<a class="headerlink" href="#formal-definitions" title="Permalink to this heading">¶</a></h3>
+<p>Given <span class="math notranslate nohighlight">\(T(N)\)</span> the time function of the problem size <span class="math notranslate nohighlight">\(N\)</span></p>
+<p>We will write <span class="math notranslate nohighlight">\(T(N) = O(f(N))\)</span> or <span class="math notranslate nohighlight">\(T(N) \in O(f(N))\)</span> if there
+exists a certain positive constant <span class="math notranslate nohighlight">\(c\)</span> and a problem size <span class="math notranslate nohighlight">\(n_{0}\)</span>,
+such that <span class="math notranslate nohighlight">\(T(N) \leq cf(N)\)</span> for all <span class="math notranslate nohighlight">\(N \geq n_{0}\)</span>.</p>
+<p>We will write <span class="math notranslate nohighlight">\(T(N) = \Omega(f(N))\)</span> or <span class="math notranslate nohighlight">\(T(N) \in \Omega(f(N))\)</span> if
+there exists a certain positive constant <span class="math notranslate nohighlight">\(c\)</span> and a problem size
+<span class="math notranslate nohighlight">\(n_{0}\)</span>, such that <span class="math notranslate nohighlight">\(T(N) \geq cf(N)\)</span> for all <span class="math notranslate nohighlight">\(N \geq n_{0}\)</span>.</p>
+<p>We will write <span class="math notranslate nohighlight">\(T(N) = \Theta(f(N))\)</span> if <span class="math notranslate nohighlight">\(T(N) = \Omega(f(N))\)</span> and
+<span class="math notranslate nohighlight">\(T(N) = O(f(N))\)</span> are both true. Note: the constants are different.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <span class="math notranslate nohighlight">\(=\)</span> used in equations like <span class="math notranslate nohighlight">\(T(N) = O(f(N))\)</span> does not mean
+<em>equal</em>! It means <em>in</em> or <em>belong to</em>.</p>
+</div>
+<p>The notations <span class="math notranslate nohighlight">\(O(f(N))\)</span>, <span class="math notranslate nohighlight">\(\Omega(f(N))\)</span>, and
+<span class="math notranslate nohighlight">\(T(N) = \Theta(f(N))\)</span> define sets of functions that have the same
+<em>order</em>. Thus, the set will be the same of the function <span class="math notranslate nohighlight">\(f(N)\)</span> has the
+same order. For example, <span class="math notranslate nohighlight">\(O(N^2)=O(2*N^2)=O(N^2+3N)=\dots\)</span></p>
+</section>
+</section>
+<section id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this heading">¶</a></h2>
+<section id="find-t-n">
+<h3>Find <span class="math notranslate nohighlight">\(T(N)\)</span><a class="headerlink" href="#find-t-n" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>additive (sequential, branch)</p></li>
+<li><p>multiplicative (loop, recursion)</p>
+<ul>
+<li><p>complexity of number of iterations</p>
+<ul>
+<li><p>how problem size is reduced in each iteration`</p></li>
+<li><p>reduce by half each round: <span class="math notranslate nohighlight">\(O(log(N))\)</span></p></li>
+<li><p>reduce by a constant each round: <span class="math notranslate nohighlight">\(O(N)\)</span></p></li>
+</ul>
+</li>
+<li><p>complexity in each iteration</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="find-o-given-t-n">
+<h3>Find <span class="math notranslate nohighlight">\(O\)</span> given <span class="math notranslate nohighlight">\(T(N)\)</span><a class="headerlink" href="#find-o-given-t-n" title="Permalink to this heading">¶</a></h3>
+<p>Given <span class="math notranslate nohighlight">\(T(N) = 20 * N^2 + 10 * N + 12\)</span>, find the term with highest order,
+and remove all constant factors to give <span class="math notranslate nohighlight">\(O(N^2)\)</span></p>
+</section>
+</section>
+<section id="pitfalls">
+<h2>Pitfalls<a class="headerlink" href="#pitfalls" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Confusing <span class="math notranslate nohighlight">\(T(N)\)</span> to <span class="math notranslate nohighlight">\(O(f(N))\)</span></p></li>
+<li><p>Not all function calls are constant time operations (a.k.a. <span class="math notranslate nohighlight">\(O(1)\)</span>)</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Complexity Analysis</a><ul>
+<li><a class="reference internal" href="#concepts">Concepts</a></li>
+<li><a class="reference internal" href="#asymptotic-notation">Asymptotic notation</a><ul>
+<li><a class="reference internal" href="#formal-definitions">Formal Definitions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#analysis">Analysis</a><ul>
+<li><a class="reference internal" href="#find-t-n">Find <span class="math notranslate nohighlight">\(T(N)\)</span></a></li>
+<li><a class="reference internal" href="#find-o-given-t-n">Find <span class="math notranslate nohighlight">\(O\)</span> given <span class="math notranslate nohighlight">\(T(N)\)</span></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pitfalls">Pitfalls</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../course/cop3530/ch04.html"
+                          title="previous chapter">Chapter 4 Algorithm Analysis</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../course/cop3530/ch05.html"
+                          title="next chapter">Chapter 5 Recursion</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/general/complexity.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../course/cop3530/ch05.html" title="Chapter 5 Recursion"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../course/cop3530/ch04.html" title="Chapter 4 Algorithm Analysis"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../course/cop3530/ch04.html" >Chapter 4 Algorithm Analysis</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Complexity Analysis</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2023, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>

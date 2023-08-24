@@ -1,0 +1,391 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Tree ADT &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/general/adt/tree.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Chapter 12 Heap and Exhaustive Search" href="../../course/cop3530/ch12.html" />
+    <link rel="prev" title="Chapter 11 Tree" href="../../course/cop3530/ch11.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../course/cop3530/ch12.html" title="Chapter 12 Heap and Exhaustive Search"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../../course/cop3530/ch11.html" title="Chapter 11 Tree"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3530/ch11.html" accesskey="U">Chapter 11 Tree</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Tree ADT</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="tree-adt">
+<h1>Tree ADT<a class="headerlink" href="#tree-adt" title="Permalink to this heading">¶</a></h1>
+<section id="tree">
+<h2>Tree<a class="headerlink" href="#tree" title="Permalink to this heading">¶</a></h2>
+<p>In computer science, tree is a kind of constrained directed acyclic graphs that
+models hierarchical structures. In graph theory, trees are defined differently
+as connected undirected acyclic graphs.</p>
+<section id="concepts">
+<h3>Concepts<a class="headerlink" href="#concepts" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Node (Vertex in graph theory)</p>
+<ul>
+<li><p>root node</p></li>
+<li><p>internal nodes</p></li>
+<li><p>leaf nodes</p></li>
+<li><p>level/depth</p></li>
+<li><p>degree</p></li>
+</ul>
+</li>
+<li><p>Edge</p></li>
+<li><p>Connectivity</p>
+<ul>
+<li><p>path</p></li>
+<li><p>distance</p></li>
+</ul>
+</li>
+<li><p>Relationships</p>
+<ul>
+<li><p>parent/child</p></li>
+<li><p>ancestor/descendant</p></li>
+<li><p>siblings</p></li>
+</ul>
+</li>
+<li><p>Tree properties</p>
+<ul>
+<li><p>degree</p></li>
+<li><p>height</p></li>
+<li><p>ordered/unordered</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="applications-of-trees">
+<h3>Applications of Trees<a class="headerlink" href="#applications-of-trees" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>File system (directory, sub-directory, and file)</p></li>
+<li><p>Decision making (decision tree)</p></li>
+<li><p>Indexing (binary search tree)</p></li>
+<li><p>Parsing tree</p></li>
+<li><p>Heap (complete binary tree)</p></li>
+<li><p>Blockchain (Merkle tree)</p></li>
+<li><p>Search-based Artificial Intelligence</p></li>
+</ul>
+</section>
+<section id="tree-glossary">
+<h3>Tree Glossary<a class="headerlink" href="#tree-glossary" title="Permalink to this heading">¶</a></h3>
+<dl class="simple glossary">
+<dt id="term-Tree">Tree<a class="headerlink" href="#term-Tree" title="Permalink to this term">¶</a></dt><dd><p>A collection of nodes. Each node have a value and refers to zero to n other
+nodes (child nodes)</p>
+</dd>
+<dt id="term-Root">Root<a class="headerlink" href="#term-Root" title="Permalink to this term">¶</a></dt><dd><p>start point of a tree with no other nodes referring to it (not a child of
+any other node)</p>
+</dd>
+<dt id="term-Parent">Parent<a class="headerlink" href="#term-Parent" title="Permalink to this term">¶</a></dt><dd><p>A node is another node’s parent node if it refers to another node</p>
+</dd>
+<dt id="term-Child">Child<a class="headerlink" href="#term-Child" title="Permalink to this term">¶</a></dt><dd><p>A node is another node’s child node if it is referred by another node</p>
+</dd>
+<dt id="term-Sibling">Sibling<a class="headerlink" href="#term-Sibling" title="Permalink to this term">¶</a></dt><dd><p>A node is another node’s sibling node if they share the same parent</p>
+</dd>
+<dt id="term-Leaf-node">Leaf node<a class="headerlink" href="#term-Leaf-node" title="Permalink to this term">¶</a></dt><dd><p>nodes with no child</p>
+</dd>
+<dt id="term-Internal-node">Internal node<a class="headerlink" href="#term-Internal-node" title="Permalink to this term">¶</a></dt><dd><p>nodes being a child of another node and has a least one child</p>
+</dd>
+<dt id="term-Degree-of-a-node">Degree of a node<a class="headerlink" href="#term-Degree-of-a-node" title="Permalink to this term">¶</a></dt><dd><p>The number of child nodes</p>
+</dd>
+<dt id="term-Degree-of-a-tree">Degree of a tree<a class="headerlink" href="#term-Degree-of-a-tree" title="Permalink to this term">¶</a></dt><dd><p>The maximum degree among all nodes</p>
+</dd>
+<dt id="term-Edge-Link">Edge/Link<a class="headerlink" href="#term-Edge-Link" title="Permalink to this term">¶</a></dt><dd><p>The relationship between a parent and its child</p>
+</dd>
+<dt id="term-Ancestor">Ancestor<a class="headerlink" href="#term-Ancestor" title="Permalink to this term">¶</a></dt><dd><p>A node reachable by repeated proceeding from child to parent</p>
+</dd>
+<dt id="term-Descendant">Descendant<a class="headerlink" href="#term-Descendant" title="Permalink to this term">¶</a></dt><dd><p>A node reachable by repeated proceeding from parent to child</p>
+</dd>
+<dt id="term-Path-Tree">Path (Tree)<a class="headerlink" href="#term-Path-Tree" title="Permalink to this term">¶</a></dt><dd><p>The number of edges from a node to another; Only between an ancestor and on
+of its descendant</p>
+</dd>
+<dt id="term-Distance-tree">Distance (tree)<a class="headerlink" href="#term-Distance-tree" title="Permalink to this term">¶</a></dt><dd><p>The number of edges found in a path</p>
+</dd>
+<dt id="term-Level-Depth">Level/Depth<a class="headerlink" href="#term-Level-Depth" title="Permalink to this term">¶</a></dt><dd><p>The level of a node is the distance from the root node. Nodes can be grouped by levels. Children of a node in level n are in level n + 1</p>
+</dd>
+<dt id="term-Height-tree">Height (tree)<a class="headerlink" href="#term-Height-tree" title="Permalink to this term">¶</a></dt><dd><p>The longest path in a tree; Always start from the root</p>
+</dd>
+<dt id="term-Subtree">Subtree<a class="headerlink" href="#term-Subtree" title="Permalink to this term">¶</a></dt><dd><p>A node with all of its descendants</p>
+</dd>
+<dt id="term-Ordered-Tree">Ordered Tree<a class="headerlink" href="#term-Ordered-Tree" title="Permalink to this term">¶</a></dt><dd><p>A tree in which sibling nodes are ordered</p>
+</dd>
+<dt id="term-Unordered-Tree">Unordered Tree<a class="headerlink" href="#term-Unordered-Tree" title="Permalink to this term">¶</a></dt><dd><p>A tree in which sibling nodes are unordered</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="binary-tree">
+<h2>Binary tree<a class="headerlink" href="#binary-tree" title="Permalink to this heading">¶</a></h2>
+<p>Binary trees are ordered trees with degree of 2. Each node have at most two
+child nodes known as left and right child.</p>
+<section id="id1">
+<h3>Concepts<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>left/right child</p></li>
+<li><p>variations</p>
+<ul>
+<li><p>full binary tree</p></li>
+<li><p>complete binary tree</p></li>
+<li><p>perfect binary tree</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="applications-of-binary-trees">
+<h3>Applications of binary trees<a class="headerlink" href="#applications-of-binary-trees" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Expression parsing</p></li>
+<li><p>Decision tree</p></li>
+<li><p>Heap</p></li>
+</ul>
+</section>
+<section id="binary-tree-glossary">
+<h3>Binary Tree Glossary<a class="headerlink" href="#binary-tree-glossary" title="Permalink to this heading">¶</a></h3>
+<dl class="simple glossary">
+<dt id="term-Full-binary-tree">Full binary tree<a class="headerlink" href="#term-Full-binary-tree" title="Permalink to this term">¶</a></dt><dd><p>A binary tree in which every node has 0 or 2 children</p>
+</dd>
+<dt id="term-Complete-binary-tree">Complete binary tree<a class="headerlink" href="#term-Complete-binary-tree" title="Permalink to this term">¶</a></dt><dd><p>A Binary Tree is a Complete Binary Tree if all the levels are completely
+filled except possibly the last level and the last level has all keys as
+left as possible</p>
+</dd>
+<dt id="term-Perfect-binary-tree">Perfect binary tree<a class="headerlink" href="#term-Perfect-binary-tree" title="Permalink to this term">¶</a></dt><dd><p>A binary tree with all level filled</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="binary-search-tree">
+<h2>Binary search tree<a class="headerlink" href="#binary-search-tree" title="Permalink to this heading">¶</a></h2>
+<p>A binary search tree (BST) is a binary tree in which for every node, its left
+child has a smaller value than itself while its right child has a greater value
+than itself</p>
+<section id="behaviors">
+<h3>Behaviors<a class="headerlink" href="#behaviors" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Search</p></li>
+<li><p>Insert</p></li>
+<li><p>Remove</p></li>
+<li><p>Traversal: Visit all nodes in a tree in a certain order</p>
+<ul>
+<li><p>in-order</p>
+<ul>
+<li><p>overall: from smallest to greatest</p></li>
+<li><p>for each node: left-subtree, self, right-subtree</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Get height</p></li>
+</ul>
+</section>
+<section id="implementations">
+<h3>Implementations<a class="headerlink" href="#implementations" title="Permalink to this heading">¶</a></h3>
+<ul>
+<li><p>Algorithms that happens from top to bottom</p>
+<p>Easy to implement either iteratively or recursively</p>
+<ul class="simple">
+<li><p>search</p></li>
+<li><p>insert</p></li>
+</ul>
+</li>
+<li><p>Algorithms that happens from bottom to top</p>
+<p>Easy to implement recursively; Hard to implement iteratively (must use stack)</p>
+<ul class="simple">
+<li><p>subtree removal (may be used in the destruction of a tree)</p></li>
+<li><p>part of remove</p></li>
+<li><p>in-order traversal</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="variation">
+<h3>Variation<a class="headerlink" href="#variation" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>self-balanced trees</p></li>
+</ul>
+</section>
+<section id="applications-of-bst">
+<h3>Applications of BST<a class="headerlink" href="#applications-of-bst" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Indexing</p></li>
+<li><p>Tree Sort</p></li>
+<li><p>Tree Map</p></li>
+<li><p>Tree Set</p></li>
+</ul>
+</section>
+<section id="implementation">
+<h3>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">¶</a></h3>
+<ul>
+<li><p>general BST</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Node</span><span class="w"> </span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">  </span><span class="n">T</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">left</span><span class="p">;</span>
+<span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">right</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BinarySearchTree</span><span class="w"> </span><span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="n">root</span><span class="p">;</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">  </span><span class="o">~</span><span class="n">BinarySearchTree</span><span class="p">();</span>
+<span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="nf">search</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">insert</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">remove</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="nf">height</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>with parent pointer</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Node</span><span class="w"> </span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">  </span><span class="n">T</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">left</span><span class="p">;</span>
+<span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">right</span><span class="p">;</span>
+<span class="w">  </span><span class="n">Node</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">parent</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>recursive methods</p>
+<ul>
+<li><p>search</p></li>
+<li><p>insert</p></li>
+<li><p>remove</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Tree ADT</a><ul>
+<li><a class="reference internal" href="#tree">Tree</a><ul>
+<li><a class="reference internal" href="#concepts">Concepts</a></li>
+<li><a class="reference internal" href="#applications-of-trees">Applications of Trees</a></li>
+<li><a class="reference internal" href="#tree-glossary">Tree Glossary</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#binary-tree">Binary tree</a><ul>
+<li><a class="reference internal" href="#id1">Concepts</a></li>
+<li><a class="reference internal" href="#applications-of-binary-trees">Applications of binary trees</a></li>
+<li><a class="reference internal" href="#binary-tree-glossary">Binary Tree Glossary</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#binary-search-tree">Binary search tree</a><ul>
+<li><a class="reference internal" href="#behaviors">Behaviors</a></li>
+<li><a class="reference internal" href="#implementations">Implementations</a></li>
+<li><a class="reference internal" href="#variation">Variation</a></li>
+<li><a class="reference internal" href="#applications-of-bst">Applications of BST</a></li>
+<li><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../../course/cop3530/ch11.html"
+                          title="previous chapter">Chapter 11 Tree</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../../course/cop3530/ch12.html"
+                          title="next chapter">Chapter 12 Heap and Exhaustive Search</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/general/adt/tree.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../course/cop3530/ch12.html" title="Chapter 12 Heap and Exhaustive Search"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../../course/cop3530/ch11.html" title="Chapter 11 Tree"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3530/ch11.html" >Chapter 11 Tree</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Tree ADT</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2023, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>
