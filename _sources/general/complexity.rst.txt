@@ -1,8 +1,12 @@
 *******************
 Complexity Analysis
 *******************
-Analyze the computational resources consumed by an algorithm. Limited to the
-imperative programming paradigm in the course.
+Computational complexity analysis plays a pivotal role in the theoretical
+analysis of algorithms. It involves assessing how the performance of an
+algorithm scales with the size of the input, enabling us to make predictions
+about an algorithm's efficiency in terms of time and space usage. This analysis
+is crucial for understanding the inherent difficulty of solving computational
+problems and for comparing and selecting algorithms for various tasks.
 
 Concepts
 ========
@@ -14,14 +18,14 @@ Concepts
     size of the problem.
 
   Time complexity
-    The computational time consumed by an algorithm a function of the size of
-    the problem. It is usually described using a function :math:`T(N)`.
+    The computational time consumed by an algorithm as a function of the size of
+    the problem. It is usually described using a function :math:`T(n)`.
 
   Space complexity
     The computational storage space (usually refer to memory) consumed by an
-    algorithm a function of the size of the problem. **auxiliary space
+    algorithm as a function of the size of the problem. **auxiliary space
     complexity** is the space complexity excluding the input data. It is usually
-    described using a function :math:`S(N)`.
+    described using a function :math:`S(n)`.
 
   Best case, worst case, and average case
     Best case is the scenario in which the algorithm finished with the least
@@ -33,7 +37,7 @@ Concepts
     Because the accurate measurement of time consumption is impossible, we
     usually count the number of constant time operations to estimate the time
     consumption. A constant time operation is an operation that always consume a
-    certain amount of time regardless of the problem size N.
+    certain amount of time regardless of the problem size n.
 
   Growth rate
     How much more resource is needed when the problem size grows. It is usually
@@ -60,68 +64,85 @@ Concepts
   :alt: Complexity
   :align: center
 
-
-.. list-table:: Common Growth Rates :math:`f(N)` (least to most complex)
-  :header-rows: 1
-  :widths: 20 40
-
-  * - Name
-    - Description
-  * - :math:`1`
-    - constant
-  * - :math:`log(N)`
-    - logarithmic
-  * - :math:`n`
-    - linear
-  * - :math:`Nlog(N)`
-    - linear logarithmic
-  * - :math:`n^2`
-    - quadratic
-  * - :math:`n^3`
-    - cubic
-  * - :math:`2^n`
-    - exponential
-  * - :math:`n!`
-    - factorial
+Asymptotic notation
+===================
+A.k.a Bachmann–Landau notation. A mathematical notation system to describe the
+limiting behavior of a function.
 
 .. note::
 
   Time complexity is more useful and is focused in the following sections. Most
   of the rules can be used with space complexity with little modification.
 
-Asymptotic notation
-===================
-A.k.a Bachmann–Landau notation. A mathematical notation system to describe the
-limiting behavior of a function.
-
 Formal Definitions
 ------------------
-Given :math:`T(N)` the time function of the problem size :math:`N`
+Given :math:`T(n)` the time function of the problem size :math:`n`
 
-We will write :math:`T(N) = O(f(N))` or :math:`T(N) \in O(f(N))` if there
+We will write :math:`T(n) = O(f(n))` or :math:`T(n) \in O(f(n))` if there
 exists a certain positive constant :math:`c` and a problem size :math:`n_{0}`,
-such that :math:`T(N) \leq cf(N)` for all :math:`N \geq n_{0}`.
+such that :math:`T(n) \leq cf(n)` for all :math:`n \geq n_{0}`.
 
-We will write :math:`T(N) = \Omega(f(N))` or :math:`T(N) \in \Omega(f(N))` if
+We will write :math:`T(n) = \Omega(f(n))` or :math:`T(n) \in \Omega(f(n))` if
 there exists a certain positive constant :math:`c` and a problem size
-:math:`n_{0}`, such that :math:`T(N) \geq cf(N)` for all :math:`N \geq n_{0}`.
+:math:`n_{0}`, such that :math:`T(n) \geq cf(n)` for all :math:`n \geq n_{0}`.
 
-We will write :math:`T(N) = \Theta(f(N))` if :math:`T(N) = \Omega(f(N))` and
-:math:`T(N) = O(f(N))` are both true. Note: the constants are different.
+We will write :math:`T(n) = \Theta(f(n))` if :math:`T(n) = \Omega(f(n))` and
+:math:`T(n) = O(f(n))` are both true. Note: the constants are different.
+
+We will write :math:`T(n) = o(f(n))` or :math:`T(n) \in O(f(n))` if there
+exists a certain positive constant :math:`c` and a problem size :math:`n_{0}`,
+such that :math:`T(n) < cf(n)` for all :math:`n \geq n_{0}`.
 
 .. warning::
 
-  The :math:`=` used in equations like :math:`T(N) = O(f(N))` does not mean
+  The :math:`=` used in equations like :math:`T(n) = O(f(n))` does not mean
   *equal*! It means *in* or *belong to*.
 
-The notations :math:`O(f(N))`, :math:`\Omega(f(N))`, and
-:math:`T(N) = \Theta(f(N))` define sets of functions that have the same
-*order*. Thus, the set will be the same of the function :math:`f(N)` has the
-same order. For example, :math:`O(N^2)=O(2*N^2)=O(N^2+3N)=\dots`
+All notations :math:`O(f(n))`, :math:`\Omega(f(n))`, :math:`T(n) =
+\Theta(f(n))` and :math:`T(n) = o(f(n))` define sets of functions that have the
+same *order*. Thus, the set will be the same of the function :math:`f(n)` has
+the same order. For example, :math:`O(n^2)=O(2*n^2)=O(n^2+3n)=\dots`
+
+Representative Algorithms of Certain Complexity
+-----------------------------------------------
+
+.. list-table:: Typical Complexity and Representative Algorithms
+   :widths: 20 30 50
+   :header-rows: 1
+
+   * - Name
+     - Complexity (Big O)
+     - Representative Algorithms
+   * - Constant
+     - :math:`O(1)`
+     - Array indexing, Hash table lookups
+   * - Logarithmic
+     - :math:`O(log(n))`
+     - Binary Search, Balanced Binary Search Trees (e.g., AVL, Red-Black)
+   * - Linear
+     - :math:`O(n)`
+     - Linear Search, Most Simple Array/Linked List Operations
+   * - Linearithmic
+     - :math:`O(n log(n))`
+     - Merge Sort, Heap Sort, Quicksort
+   * - Quadratic
+     - :math:`O(n^2)`
+     - Bubble Sort, Selection Sort, Insertion Sort
+   * - Polynomial (k > 2)
+     - :math:`O(n^k)`
+     - Matrix Multiplication (naive approach)
+   * - Exponential
+     - :math:`O(2^n)`
+     - Recursive algorithms without memoization (e.g., naive Fibonacci)
+   * - Factorial
+     - :math:`O(n!)`
+     - Traveling Salesman Problem (naive solution)
+
+.. Improve this!
 
 Analysis
 ========
-Find :math:`T(N)`
+Find :math:`T(n)`
 -----------------
 + additive (sequential, branch)
 + multiplicative (loop, recursion)
@@ -129,17 +150,17 @@ Find :math:`T(N)`
   * complexity of number of iterations
 
     - how problem size is reduced in each iteration`
-    - reduce by half each round: :math:`O(log(N))`
-    - reduce by a constant each round: :math:`O(N)`
+    - reduce by half each round: :math:`O(log(n))`
+    - reduce by a constant each round: :math:`O(n)`
 
   * complexity in each iteration
 
-Find :math:`O` given :math:`T(N)`
+Find :math:`O` given :math:`T(n)`
 ---------------------------------
-Given :math:`T(N) = 20 * N^2 + 10 * N + 12`, find the term with highest order,
-and remove all constant factors to give :math:`O(N^2)`
+Given :math:`T(n) = 20 * n^2 + 10 * n + 12`, find the term with highest order,
+and remove all constant factors to give :math:`O(n^2)`
 
 Pitfalls
 ========
-+ Confusing :math:`T(N)` to :math:`O(f(N))`
++ Confusing :math:`T(n)` to :math:`O(f(n))`
 + Not all function calls are constant time operations (a.k.a. :math:`O(1)`)
