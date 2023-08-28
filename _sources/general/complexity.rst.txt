@@ -138,27 +138,106 @@ Representative Algorithms of Certain Complexity
      - :math:`O(n!)`
      - Traveling Salesman Problem (naive solution)
 
-.. Improve this!
+Properties
+----------
++ :math:`O(f(n))` is a **set** of functions that have the same order as
+  :math:`f(n)`.
 
-Analysis
-========
+  + E.g. :math:`O(n^2) = O(2n^2) = O(n^2 + 3n) = \dots` because they all have
+    the same order :math:`n^2`.
+  + Thus, we will always use the simplest form of :math:`f(n)` to represent the
+    set. E.g. :math:`O(2n^2 + 10n - 4) = O(n^2)`. This step is called
+    **simplification**.
+
++ If :math:`T(n) = O(f(n))` and :math:`g(n)` is a function with higher order
+  than :math:`f(n)`, then :math:`T(n) = O(g(n))`.
+
+  + E.g. if :math:`T(n) = 3n^2 + 10n + 4 = O(n^2)`, then :math:`T(n) = O(n^3) =
+    O(n^4) = \cdots`, All functions with higher order than :math:`n^2` is a
+    possible upper bound of :math:`T(n)`.
+  + Thus, we should always use the lowest-possible order to represent the set,
+    :math:`O(n^2)` in this case. Because higher order functions is always a
+    possible upper bound, they become less meaningful.
+
++ Summary, **We should always use the simplest form of the lowest-possible
+  order to represent the set**.
+
+Steps to Find Complexity
+========================
++ Option 1: Find :math:`T(n)` and then find :math:`O(f(n))`.
++ Option 2: Estimate :math:`O(f(n))` directly.
+
 Find :math:`T(n)`
 -----------------
++ :math:`T(n)` = number of operations
++ Count the number of constant time operations
++ Each statement, and expression evaluation is considered
+  to take constant time.
+
+  * E.g. In the pseudo code ``if a < 10 then b = a + 10``, the
+    comparison ``a < 10`` and the assignment ``b = a + 10`` are considered
+    to take constant time. They both should be counted as 1 operation.
+
++ Function calls are more complicated. Functions that does not variable
+  size input are mostly constant time. Functions that does variable size
+  input are more complicate and you better check the reference.
+
+  * ``std::swap, cout <<, getline`` are constant time.
+  * ``std::sort, std::search, std::shuffle`` are not constant time.
+
+Find :math:`O` given :math:`T(n)`
+---------------------------------
++ Keep the term with highest order. Drop the coefficient and lower order terms
+  go provide the simplest form.
++ Example:
+
+  * :math:`T(n) = 20 \times n^2 + 10 \times n + 12 = O(n^2)`
+  * :math:`T(n) = 5 \times 2^n + 3 \times n^3 = O(2^n)`
+
+.. list-table:: Common Growth Rates, from low to high order
+   :widths: 25 25
+   :header-rows: 1
+
+   * - Term
+     - Growth Rate
+   * - Constant Time
+     - :math:`1`
+   * - Logarithmic
+     - :math:`log(n)`
+   * - Linear
+     - :math:`n`
+   * - Linearithmic
+     - :math:`n log(n)`
+   * - Quadratic
+     - :math:`n^2`
+   * - Cubic
+     - :math:`n^3`
+   * - Exponential
+     - :math:`2^n`
+   * - Factorial
+     - :math:`n!`
+
+
+Find :math:`O` directly
+-----------------------
 + additive (sequential, branch)
+
+  * :math:`O(f(n)) + O(g(n)) = O(f(n) + g(n))`
+  * E.g. :math:`O(n^2) + O(n) = O(n^2 + n) = O(n^2)`
+
 + multiplicative (loop, recursion)
 
-  * complexity of number of iterations
+  * for a layer of loop: :math:`O(f(n)) \times O(g(n)) = O(f(n) \times g(n))`
+  * complexity of number of iterations :math:`O(f(n))`
 
     - how problem size is reduced in each iteration`
     - reduce by half each round: :math:`O(log(n))`
     - reduce by a constant each round: :math:`O(n)`
 
-  * complexity in each iteration
-
-Find :math:`O` given :math:`T(n)`
----------------------------------
-Given :math:`T(n) = 20 * n^2 + 10 * n + 12`, find the term with highest order,
-and remove all constant factors to give :math:`O(n^2)`
+  * complexity in each iteration :math:`O(g(n))`
+  * E.g. For merge sort, the number of iterations is :math:`O(log(n))` and the
+    complexity in each iteration is :math:`O(n)`. Thus, the total complexity is
+    :math:`O(logn) \times O(n) = O(n log(n))`.
 
 Pitfalls
 ========

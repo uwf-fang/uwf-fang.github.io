@@ -182,31 +182,141 @@ the same order. For example, <span class="math notranslate nohighlight">\(O(n^2)
 </tbody>
 </table>
 </section>
+<section id="properties">
+<h3>Properties<a class="headerlink" href="#properties" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(O(f(n))\)</span> is a <strong>set</strong> of functions that have the same order as
+<span class="math notranslate nohighlight">\(f(n)\)</span>.</p>
+<ul>
+<li><p>E.g. <span class="math notranslate nohighlight">\(O(n^2) = O(2n^2) = O(n^2 + 3n) = \dots\)</span> because they all have
+the same order <span class="math notranslate nohighlight">\(n^2\)</span>.</p></li>
+<li><p>Thus, we will always use the simplest form of <span class="math notranslate nohighlight">\(f(n)\)</span> to represent the
+set. E.g. <span class="math notranslate nohighlight">\(O(2n^2 + 10n - 4) = O(n^2)\)</span>. This step is called
+<strong>simplification</strong>.</p></li>
+</ul>
+</li>
+<li><p>If <span class="math notranslate nohighlight">\(T(n) = O(f(n))\)</span> and <span class="math notranslate nohighlight">\(g(n)\)</span> is a function with higher order
+than <span class="math notranslate nohighlight">\(f(n)\)</span>, then <span class="math notranslate nohighlight">\(T(n) = O(g(n))\)</span>.</p>
+<ul>
+<li><p>E.g. if <span class="math notranslate nohighlight">\(T(n) = 3n^2 + 10n + 4 = O(n^2)\)</span>, then <span class="math notranslate nohighlight">\(T(n) = O(n^3) =
+O(n^4) = \cdots\)</span>, All functions with higher order than <span class="math notranslate nohighlight">\(n^2\)</span> is a
+possible upper bound of <span class="math notranslate nohighlight">\(T(n)\)</span>.</p></li>
+<li><p>Thus, we should always use the lowest-possible order to represent the set,
+<span class="math notranslate nohighlight">\(O(n^2)\)</span> in this case. Because higher order functions is always a
+possible upper bound, they become less meaningful.</p></li>
+</ul>
+</li>
+<li><p>Summary, <strong>We should always use the simplest form of the lowest-possible
+order to represent the set</strong>.</p></li>
+</ul>
 </section>
-<section id="analysis">
-<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="steps-to-find-complexity">
+<h2>Steps to Find Complexity<a class="headerlink" href="#steps-to-find-complexity" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Option 1: Find <span class="math notranslate nohighlight">\(T(n)\)</span> and then find <span class="math notranslate nohighlight">\(O(f(n))\)</span>.</p></li>
+<li><p>Option 2: Estimate <span class="math notranslate nohighlight">\(O(f(n))\)</span> directly.</p></li>
+</ul>
 <section id="find-t-n">
 <h3>Find <span class="math notranslate nohighlight">\(T(n)\)</span><a class="headerlink" href="#find-t-n" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
-<li><p>additive (sequential, branch)</p></li>
-<li><p>multiplicative (loop, recursion)</p>
+<li><p><span class="math notranslate nohighlight">\(T(n)\)</span> = number of operations</p></li>
+<li><p>Count the number of constant time operations</p></li>
+<li><p>Each statement, and expression evaluation is considered
+to take constant time.</p>
 <ul>
-<li><p>complexity of number of iterations</p>
-<ul>
-<li><p>how problem size is reduced in each iteration`</p></li>
-<li><p>reduce by half each round: <span class="math notranslate nohighlight">\(O(log(n))\)</span></p></li>
-<li><p>reduce by a constant each round: <span class="math notranslate nohighlight">\(O(n)\)</span></p></li>
+<li><p>E.g. In the pseudo code <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">a</span> <span class="pre">&lt;</span> <span class="pre">10</span> <span class="pre">then</span> <span class="pre">b</span> <span class="pre">=</span> <span class="pre">a</span> <span class="pre">+</span> <span class="pre">10</span></code>, the
+comparison <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">&lt;</span> <span class="pre">10</span></code> and the assignment <code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">a</span> <span class="pre">+</span> <span class="pre">10</span></code> are considered
+to take constant time. They both should be counted as 1 operation.</p></li>
 </ul>
 </li>
-<li><p>complexity in each iteration</p></li>
+<li><p>Function calls are more complicated. Functions that does not variable
+size input are mostly constant time. Functions that does variable size
+input are more complicate and you better check the reference.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::swap,</span> <span class="pre">cout</span> <span class="pre">&lt;&lt;,</span> <span class="pre">getline</span></code> are constant time.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::sort,</span> <span class="pre">std::search,</span> <span class="pre">std::shuffle</span></code> are not constant time.</p></li>
 </ul>
 </li>
 </ul>
 </section>
 <section id="find-o-given-t-n">
 <h3>Find <span class="math notranslate nohighlight">\(O\)</span> given <span class="math notranslate nohighlight">\(T(n)\)</span><a class="headerlink" href="#find-o-given-t-n" title="Permalink to this heading">¶</a></h3>
-<p>Given <span class="math notranslate nohighlight">\(T(n) = 20 * n^2 + 10 * n + 12\)</span>, find the term with highest order,
-and remove all constant factors to give <span class="math notranslate nohighlight">\(O(n^2)\)</span></p>
+<ul class="simple">
+<li><p>Keep the term with highest order. Drop the coefficient and lower order terms
+go provide the simplest form.</p></li>
+<li><p>Example:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(T(n) = 20 \times n^2 + 10 \times n + 12 = O(n^2)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(T(n) = 5 \times 2^n + 3 \times n^3 = O(2^n)\)</span></p></li>
+</ul>
+</li>
+</ul>
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text">Common Growth Rates, from low to high order</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 50.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Term</p></th>
+<th class="head"><p>Growth Rate</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Constant Time</p></td>
+<td><p><span class="math notranslate nohighlight">\(1\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>Logarithmic</p></td>
+<td><p><span class="math notranslate nohighlight">\(log(n)\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>Linear</p></td>
+<td><p><span class="math notranslate nohighlight">\(n\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>Linearithmic</p></td>
+<td><p><span class="math notranslate nohighlight">\(n log(n)\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>Quadratic</p></td>
+<td><p><span class="math notranslate nohighlight">\(n^2\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>Cubic</p></td>
+<td><p><span class="math notranslate nohighlight">\(n^3\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>Exponential</p></td>
+<td><p><span class="math notranslate nohighlight">\(2^n\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>Factorial</p></td>
+<td><p><span class="math notranslate nohighlight">\(n!\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="find-o-directly">
+<h3>Find <span class="math notranslate nohighlight">\(O\)</span> directly<a class="headerlink" href="#find-o-directly" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>additive (sequential, branch)</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(O(f(n)) + O(g(n)) = O(f(n) + g(n))\)</span></p></li>
+<li><p>E.g. <span class="math notranslate nohighlight">\(O(n^2) + O(n) = O(n^2 + n) = O(n^2)\)</span></p></li>
+</ul>
+</li>
+<li><p>multiplicative (loop, recursion)</p>
+<ul>
+<li><p>for a layer of loop: <span class="math notranslate nohighlight">\(O(f(n)) \times O(g(n)) = O(f(n) \times g(n))\)</span></p></li>
+<li><p>complexity of number of iterations <span class="math notranslate nohighlight">\(O(f(n))\)</span></p>
+<ul>
+<li><p>how problem size is reduced in each iteration`</p></li>
+<li><p>reduce by half each round: <span class="math notranslate nohighlight">\(O(log(n))\)</span></p></li>
+<li><p>reduce by a constant each round: <span class="math notranslate nohighlight">\(O(n)\)</span></p></li>
+</ul>
+</li>
+<li><p>complexity in each iteration <span class="math notranslate nohighlight">\(O(g(n))\)</span></p></li>
+<li><p>E.g. For merge sort, the number of iterations is <span class="math notranslate nohighlight">\(O(log(n))\)</span> and the
+complexity in each iteration is <span class="math notranslate nohighlight">\(O(n)\)</span>. Thus, the total complexity is
+<span class="math notranslate nohighlight">\(O(logn) \times O(n) = O(n log(n))\)</span>.</p></li>
+</ul>
+</li>
+</ul>
 </section>
 </section>
 <section id="pitfalls">
@@ -233,11 +343,13 @@ and remove all constant factors to give <span class="math notranslate nohighligh
 <li><a class="reference internal" href="#asymptotic-notation">Asymptotic notation</a><ul>
 <li><a class="reference internal" href="#formal-definitions">Formal Definitions</a></li>
 <li><a class="reference internal" href="#representative-algorithms-of-certain-complexity">Representative Algorithms of Certain Complexity</a></li>
+<li><a class="reference internal" href="#properties">Properties</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#analysis">Analysis</a><ul>
+<li><a class="reference internal" href="#steps-to-find-complexity">Steps to Find Complexity</a><ul>
 <li><a class="reference internal" href="#find-t-n">Find <span class="math notranslate nohighlight">\(T(n)\)</span></a></li>
 <li><a class="reference internal" href="#find-o-given-t-n">Find <span class="math notranslate nohighlight">\(O\)</span> given <span class="math notranslate nohighlight">\(T(n)\)</span></a></li>
+<li><a class="reference internal" href="#find-o-directly">Find <span class="math notranslate nohighlight">\(O\)</span> directly</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#pitfalls">Pitfalls</a></li>
