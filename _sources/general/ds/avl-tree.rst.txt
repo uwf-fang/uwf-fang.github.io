@@ -1,0 +1,72 @@
+********
+AVL Tree
+********
+
+Definition
+==========
+An AVL tree, named after its inventors Adelson-Velsky and Landis, is a
+self-balancing binary search tree data structure. It is designed to maintain a
+balanced tree structure at all times, ensuring that the height difference
+(balance factor) between the left and right subtrees of any node is limited to
+no more than one.
+
+Characteristics
+===============
+In addition to the standard binary search tree states and operations, AVL trees
+should also support the following:
+
++ Balance factor: Each node in an AVL tree has a balance factor, which is
+  calculated as the difference between the height of its left subtree and the
+  height of its right subtree. The balance factor can be one of -1, 0, or 1.
++ Height-Balanced: The height of an AVL tree is guaranteed to be logarithmic
+  :math:`O(log(n))`, ensuring efficient search, insert, and delete operations
+  even in worst-case scenarios.
++ Imbalance: an insertion or deletion operation that causes the balance factor
+  of a node to be -2 or 2.
++ Self-Balancing: AVL trees are self-balancing, meaning that after each insert
+  or delete operation, the tree is automatically adjusted to maintain its
+  balance, preventing it from becoming skewed or unbalanced.
++ Balancing operation: the process of restructuring an AVL tree to maintain the
+  AVL balance factor property. Operations are performed bottom-up, starting
+  with the deepest unbalanced node. It is done by performing rotations. There
+  are four type of rotations to restore four cases of imbalance:
+
+  * Left-Left (LL) Imbalance:
+
+    - Scenario: This imbalance occurs when the left subtree of the left child
+      of a node is taller by more than one level than the right subtree of the
+      left child.
+    - Rotation: To balance, perform a **right rotation** on the node.
+
+  * Right-Right (RR) Imbalance:
+
+    - Scenario: This imbalance occurs when the right subtree of the right child
+      of a node is taller by more than one level than the left subtree of the
+      right child.
+    - Rotation: To balance, perform a **left rotation** on the node.
+
+  * Left-Right (LR) Imbalance:
+
+    - Scenario: This imbalance occurs when the right subtree of the left child
+      of a node is taller by more than one level than the left subtree of the
+      left child.
+    - Rotation: To balance, perform a left rotation on the left child, followed
+      by a right rotation on the node. Known as **left-right double rotation**.
+
+  * Right-Left (RL) Imbalance:
+
+    - Scenario: This imbalance occurs when the left subtree of the right child
+      of a node is taller by more than one level than the right subtree of the
+      right child.
+    - Rotation: To balance, perform a right rotation on the right child,
+      followed by a left rotation on the node. Known as **right-left double
+      rotation**.
+
++ Alternative terminologies
+
+  When two capital letter is used, it describes the type of imbalance.
+
+  * Left rotation: RR rotation; rotation with right child
+  * Right rotation: LL rotation; rotation with left child
+  * Left-right double rotation: LR rotation; double rotation with left child
+  * Right-left double rotation: RL rotation; double rotation with right child
