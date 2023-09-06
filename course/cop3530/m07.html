@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Chapter 3 Memory Management, Rule of Three &#8212; IanFang Course Note Hosting  documentation</title>
+    <title>Module 7 List ADT and Linked-list &#8212; IanFang Course Note Hosting  documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -17,11 +17,11 @@
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/sphinx_highlight.js"></script>
-    <link rel="canonical" href="https://uwf-fang.github.io/course/cop3530/ch03.html" />
+    <link rel="canonical" href="https://uwf-fang.github.io/course/cop3530/m07.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Chapter 4 Algorithm Analysis" href="ch04.html" />
-    <link rel="prev" title="Chapter 2 Modular Design, GNU Make and Testing" href="ch02.html" /> 
+    <link rel="next" title="Linear ADTs" href="../../general/adt/linear-adts.html" />
+    <link rel="prev" title="Templates in C++" href="../../cpp/templates/templates.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,14 +30,14 @@
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="ch04.html" title="Chapter 4 Algorithm Analysis"
+          <a href="../../general/adt/linear-adts.html" title="Linear ADTs"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="ch02.html" title="Chapter 2 Modular Design, GNU Make and Testing"
+          <a href="../../cpp/templates/templates.html" title="Templates in C++"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Chapter 3 Memory Management, Rule of Three</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Module 7 List ADT and Linked-list</a></li> 
       </ul>
     </div>  
 
@@ -46,31 +46,22 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="chapter-3-memory-management-rule-of-three">
-<h1>Chapter 3 Memory Management, Rule of Three<a class="headerlink" href="#chapter-3-memory-management-rule-of-three" title="Permalink to this heading">¶</a></h1>
+  <section id="module-7-list-adt-and-linked-list">
+<h1>Module 7 List ADT and Linked-list<a class="headerlink" href="#module-7-list-adt-and-linked-list" title="Permalink to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../cpp/variable-type/pointer.html">Pointer Type</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../cpp/variable-type/pointer.html#basics">Basics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../cpp/variable-type/pointer.html#example">Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../cpp/variable-type/pointer.html#pointer-type-based-data-structures">Pointer Type Based Data Structures</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../cpp/variable-type/pointer.html#related-topics">Related Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../general/adt/linear-adts.html">Linear ADTs (read only the list part)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../general/adt/linear-adts.html#common-linear-adts">Common Linear ADTs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../general/adt/linear-adts.html#data-structures">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../general/adt/linear-adts.html#related-stl-containers">Related STL containers</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../cpp/memory-man/memory-man.html">Memory Management</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../cpp/memory-man/memory-man.html#memory-regions">Memory regions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../cpp/memory-man/memory-man.html#stack-and-function-calls">Stack and Function Calls</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../cpp/memory-man/memory-man.html#dynamic-memory-allocation">Dynamic Memory Allocation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../cpp/memory-man/memory-man.html#memory-problems">Memory Problems</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../cpp/memory-man/memory-man.html#dynamic-data-and-functions">Dynamic Data and Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../cpp/memory-man/memory-man.html#glossary">Glossary</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../cpp/memory-man/memory-man-class.html">Memory Management in Classes</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../cpp/memory-man/memory-man-class.html#implicitly-declared-methods">Implicitly-declared Methods</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../cpp/memory-man/memory-man-class.html#dynamic-data-in-class">Dynamic data in class</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../cpp/memory-man/memory-man-class.html#ownership-of-dynamic-data">Ownership of Dynamic Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cpp/linked-list.html">Linked-List Data Structure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cpp/linked-list.html#implementation-variations">Implementation Variations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cpp/linked-list.html#c-implementation-details">C++ Implementation Details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cpp/linked-list.html#pitfalls">Pitfalls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cpp/linked-list.html#linked-list-glossary">Linked-list Glossary</a></li>
 </ul>
 </li>
 </ul>
@@ -86,18 +77,18 @@
         <div class="sphinxsidebarwrapper">
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="ch02.html"
-                          title="previous chapter">Chapter 2 Modular Design, GNU Make and Testing</a></p>
+    <p class="topless"><a href="../../cpp/templates/templates.html"
+                          title="previous chapter">Templates in C++</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="ch04.html"
-                          title="next chapter">Chapter 4 Algorithm Analysis</a></p>
+    <p class="topless"><a href="../../general/adt/linear-adts.html"
+                          title="next chapter">Linear ADTs</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../../_sources/course/cop3530/ch03.rst.txt"
+      <li><a href="../../_sources/course/cop3530/m07.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -122,14 +113,14 @@
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="ch04.html" title="Chapter 4 Algorithm Analysis"
+          <a href="../../general/adt/linear-adts.html" title="Linear ADTs"
              >next</a> |</li>
         <li class="right" >
-          <a href="ch02.html" title="Chapter 2 Modular Design, GNU Make and Testing"
+          <a href="../../cpp/templates/templates.html" title="Templates in C++"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Chapter 3 Memory Management, Rule of Three</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Module 7 List ADT and Linked-list</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
