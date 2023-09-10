@@ -51,12 +51,8 @@
 <p>In module 2, we will review some of the math concepts that are important for
 the algorithm analysis and data structures that we will cover in the course.
 We will also explore more of algorithm analysis topics.</p>
-<section id="math-review">
-<h2>Math Review<a class="headerlink" href="#math-review" title="Permalink to this heading">¶</a></h2>
-<p>In this section, we will review some of the math concepts that are important
-for algorithm analysis and data structures.</p>
 <div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Math review topics:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Module 2 Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="math-review.html">Math Concepts Review For Algorithm Analysis</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="math-review.html#exponents">Exponents</a></li>
@@ -66,88 +62,15 @@ for algorithm analysis and data structures.</p>
 <li class="toctree-l2"><a class="reference internal" href="math-review.html#proof-methods">Proof methods</a></li>
 </ul>
 </li>
-</ul>
-</div>
-</section>
-<section id="algorithm-analysis">
-<h2>Algorithm Analysis<a class="headerlink" href="#algorithm-analysis" title="Permalink to this heading">¶</a></h2>
-<section id="motivation">
-<h3>Motivation<a class="headerlink" href="#motivation" title="Permalink to this heading">¶</a></h3>
-<ul class="simple">
-<li><p>to compare and select the best algorithm based on the understanding of:</p>
-<ul>
-<li><p>resource usage</p></li>
-<li><p>guarantees</p></li>
-<li><p>practicality</p></li>
-<li><p>tradeoffs</p></li>
-<li><p>limitations</p></li>
+<li class="toctree-l1"><a class="reference internal" href="../../general/alg-anal.html">Algorithm Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../general/alg-anal.html#definition">Definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../general/alg-anal.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../general/alg-anal.html#goals">Goals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../general/alg-anal.html#components">Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../general/alg-anal.html#factors-affecting-performance">Factors Affecting Performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../general/alg-anal.html#key-resources-analyzed-in-algorithm-analysis">Key Resources Analyzed in Algorithm Analysis</a></li>
 </ul>
 </li>
-<li><p>to optimize the efficiency of an algorithm</p></li>
-</ul>
-</section>
-<section id="criteria-of-quality">
-<h3>Criteria of Quality<a class="headerlink" href="#criteria-of-quality" title="Permalink to this heading">¶</a></h3>
-<p>To judge the quality of a software, we need to consider the following:</p>
-<ul class="simple">
-<li><p>correctness</p></li>
-<li><p><strong>efficiency</strong></p></li>
-<li><p>simplicity</p></li>
-<li><p>readability</p></li>
-<li><p>testability</p></li>
-<li><p>maintainability</p></li>
-<li><p>usability</p></li>
-<li><p>robustness</p></li>
-<li><p>flexibility</p></li>
-<li><p>portability</p></li>
-<li><p>scalability</p></li>
-<li><p>security</p></li>
-<li><p>reusability</p></li>
-<li><p>extensibility</p></li>
-<li><p>…</p></li>
-</ul>
-<p>Algorithm Analysis will focus on the <strong>resource efficiency</strong> of an algorithm.</p>
-</section>
-<section id="types-of-analysis">
-<h3>Types of Analysis<a class="headerlink" href="#types-of-analysis" title="Permalink to this heading">¶</a></h3>
-<ul>
-<li><p>Empirical Analysis</p>
-<p>Empirical analysis involves running actual implementations of algorithms on
-real or simulated data and measuring their performance. This approach
-provides practical insights into how algorithms behave under specific
-conditions.</p>
-<div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">Empirical analysis using &lt;chrono&gt; library</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
-<div class="highlight-C++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;chrono&gt;</span>
-
-<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="c1">// Start the clock</span>
-<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">high_resolution_clock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
-<span class="w">    </span><span class="c1">// Call the function to be measured</span>
-<span class="w">    </span><span class="n">algorithm</span><span class="p">(</span><span class="n">parameter</span><span class="p">);</span>
-<span class="w">    </span><span class="c1">// Stop the clock</span>
-<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">high_resolution_clock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
-<span class="w">    </span><span class="c1">// Calculate the duration</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">duration</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">duration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="p">;</span>
-<span class="w">    </span><span class="c1">// Print the duration in seconds</span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Function took &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">duration</span><span class="p">.</span><span class="n">count</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; seconds.&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</div>
-</li>
-<li><p>Theoretical Analysis</p>
-<p>Theoretical analysis involves mathematically modeling and reasoning about
-algorithm behavior without the need for actual implementation or
-experimentation. This approach provides insights into how an algorithm scales
-as the input size grows.</p>
-</li>
-</ul>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Theoretical Analysis topics:</span></p>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../general/complexity.html">Complexity Analysis</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../general/complexity.html#concepts">Concepts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../general/complexity.html#asymptotic-notation">Asymptotic notation</a></li>
@@ -155,43 +78,12 @@ as the input size grows.</p>
 <li class="toctree-l2"><a class="reference internal" href="../../general/complexity.html#pitfalls">Pitfalls</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../general/amortized-anal.html">Amortized Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../general/amortized-anal.html#types-of-amortized-analysis">Types of Amortized Analysis</a></li>
+</ul>
+</li>
 </ul>
 </div>
-</section>
-</section>
-<section id="amortized-analysis">
-<h2>Amortized Analysis<a class="headerlink" href="#amortized-analysis" title="Permalink to this heading">¶</a></h2>
-<p>Amortized analysis is a mathematical technique employed in the realm of
-computer science and algorithm analysis. It offers a more refined and
-comprehensive approach to evaluating the time complexity of algorithms that
-involve a sequence of operations, especially those with variable costs.</p>
-<p>Especially useful for data structures changes their size and structure
-dynamically. Example including dynamic arrays, hash tables, self-balancing
-binary search trees, and splay trees.</p>
-<section id="types-of-amortized-analysis">
-<h3>Types of Amortized Analysis<a class="headerlink" href="#types-of-amortized-analysis" title="Permalink to this heading">¶</a></h3>
-<ul>
-<li><p>Aggregate Analysis</p>
-<p>Aggregate analysis is the simplest method of amortized analysis. It involves
-determining the total cost of a sequence of operations and then dividing this
-cost by the number of operations to determine the amortized cost.</p>
-</li>
-<li><p>Accounting Method</p>
-<p>This method involves assigning “credits” and “debits” to different operations
-in a way that the total credits always cover the total cost of the
-operations. The goal is to distribute the cost of expensive operations across
-multiple operations, making the average cost more predictable.</p>
-</li>
-<li><p>Potential Method</p>
-<p>The potential method defines a “potential function” that represents the
-stored energy in a data structure after each operation. Changes in potential
-are used to offset the actual cost of operations, ensuring that the amortized
-cost remains relatively constant.</p>
-</li>
-<li><p>…</p></li>
-</ul>
-</section>
-</section>
 </section>
 
 
@@ -201,26 +93,6 @@ cost remains relatively constant.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <div>
-    <h3><a href="../../index.html">Table of Contents</a></h3>
-    <ul>
-<li><a class="reference internal" href="#">Module 2 Math Review; Algorithm Analysis; Amortized Analysis</a><ul>
-<li><a class="reference internal" href="#math-review">Math Review</a></li>
-<li><a class="reference internal" href="#algorithm-analysis">Algorithm Analysis</a><ul>
-<li><a class="reference internal" href="#motivation">Motivation</a></li>
-<li><a class="reference internal" href="#criteria-of-quality">Criteria of Quality</a></li>
-<li><a class="reference internal" href="#types-of-analysis">Types of Analysis</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#amortized-analysis">Amortized Analysis</a><ul>
-<li><a class="reference internal" href="#types-of-amortized-analysis">Types of Amortized Analysis</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-  </div>
   <div>
     <h4>Previous topic</h4>
     <p class="topless"><a href="m01.html"

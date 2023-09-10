@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Backtracking and Exhaustive Algorithms &#8212; IanFang Course Note Hosting  documentation</title>
+    <title>Backtracking &#8212; IanFang Course Note Hosting  documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -17,11 +17,11 @@
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/sphinx_highlight.js"></script>
-    <link rel="canonical" href="https://uwf-fang.github.io/general/algorithm/exhaustive-backtracking.html" />
+    <link rel="canonical" href="https://uwf-fang.github.io/general/algorithm/backtracking.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Module 13 Graph" href="../../course/cop3530/m13.html" />
-    <link rel="prev" title="Heap and Heap Sort" href="../../cpp/heap.html" /> 
+    <link rel="prev" title="Brute-force Algorithms" href="brute-force.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -33,12 +33,12 @@
           <a href="../../course/cop3530/m13.html" title="Module 13 Graph"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="../../cpp/heap.html" title="Heap and Heap Sort"
+          <a href="brute-force.html" title="Brute-force Algorithms"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../../course/cop3530/m12.html" accesskey="U">Module 12 Heap and Exhaustive Search</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Backtracking and Exhaustive Algorithms</a></li> 
+          <li class="nav-item nav-item-2"><a href="../../course/cop3530/m12.html" accesskey="U">Chapter 12 Heap and Exhaustive Search</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Backtracking</a></li> 
       </ul>
     </div>  
 
@@ -47,27 +47,22 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="backtracking-and-exhaustive-algorithms">
-<h1>Backtracking and Exhaustive Algorithms<a class="headerlink" href="#backtracking-and-exhaustive-algorithms" title="Permalink to this heading">¶</a></h1>
-<section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
-<p>Many problems involving multi-step decision making process can be modeled as
-the exploration/traversal in a <strong>tree space</strong> for a solution or solutions.
-There are many algorithms to search the tree spaces depending on the problems.
-We introduce two of them here.</p>
-</section>
-<section id="backtracking">
-<h2>Backtracking<a class="headerlink" href="#backtracking" title="Permalink to this heading">¶</a></h2>
+  <section id="backtracking">
+<h1>Backtracking<a class="headerlink" href="#backtracking" title="Permalink to this heading">¶</a></h1>
 <p>An algorithm that incrementally build candidates toward the solution and reject
 candidates as soon as it is known not to lead to any solution. It searches
 paths in a decision tree space and allows early pruning of branches. When a
 candidate is abandoned it <strong>backtracks</strong> to a prior state and search for the
 next candidate.</p>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>Try one option and search further, when done/rejected, backtrack and try next
-option</p></li>
-<li><p>Iterative approach frequently uses a stack to store states</p></li>
-<li><p>Recursive approach implicitly uses a stack (the stack frame)</p></li>
+<li><p>Recursive approach</p></li>
+<li><p>Iterative approach</p>
+<ul>
+<li><p>Stack data structure</p></li>
+</ul>
+</li>
 <li><p>Variations according to the goal</p>
 <ul>
 <li><p>find one solution</p></li>
@@ -75,8 +70,16 @@ option</p></li>
 </ul>
 </li>
 </ul>
-<section id="examples">
-<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h3>
+</section>
+<section id="application-domain">
+<h2>Application Domain<a class="headerlink" href="#application-domain" title="Permalink to this heading">¶</a></h2>
+<p>Backtracking algorithms are often used for optimization problems and
+combinatorial problems, where you need to search through a large solution
+space. They can be very efficient when implemented correctly, as they prune the
+search space by discarding branches that are guaranteed not to lead to a
+solution.</p>
+<section id="example-problems">
+<h3>Example problems<a class="headerlink" href="#example-problems" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Sudoku</p></li>
 <li><p>Eight queens</p></li>
@@ -84,32 +87,10 @@ option</p></li>
 </ul>
 </section>
 </section>
-<section id="exhaustive-algorithm">
-<h2>Exhaustive Algorithm<a class="headerlink" href="#exhaustive-algorithm" title="Permalink to this heading">¶</a></h2>
-<p>Explore all possible combinations from a set of choices and values. Sometimes
-also called recursive enumeration because it is usually implemented as
-recursive structures. Iterative implementations are available too. It is often
-also referred as brutal-force search.</p>
-<ul class="simple">
-<li><p>Recursive</p></li>
-<li><p>Helper function</p></li>
-<li><p>Book-keeping parameter</p></li>
-</ul>
-<section id="id1">
-<h3>Examples<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h3>
-<ul class="simple">
-<li><p>Permutation</p></li>
-<li><p>Enumerate all possible password given a rule</p></li>
-<li><p>All binary numbers in a range</p></li>
-<li><p>All decimal numbers in a range</p></li>
-<li><p>Eight queens (as a poor solution)</p></li>
-</ul>
-</section>
-</section>
 <section id="comparison">
 <h2>Comparison<a class="headerlink" href="#comparison" title="Permalink to this heading">¶</a></h2>
-<table class="docutils align-default" id="id2">
-<caption><span class="caption-text">Backtracking vs Exhaustive</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Backtracking vs Brute-force</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col style="width: 25.0%" />
 <col style="width: 37.5%" />
@@ -118,7 +99,7 @@ also referred as brutal-force search.</p>
 <thead>
 <tr class="row-odd"><th class="head stub"></th>
 <th class="head"><p>Backtracking</p></th>
-<th class="head"><p>Exhaustive</p></th>
+<th class="head"><p>Brute-force</p></th>
 </tr>
 </thead>
 <tbody>
@@ -157,14 +138,10 @@ also referred as brutal-force search.</p>
   <div>
     <h3><a href="../../index.html">Table of Contents</a></h3>
     <ul>
-<li><a class="reference internal" href="#">Backtracking and Exhaustive Algorithms</a><ul>
-<li><a class="reference internal" href="#overview">Overview</a></li>
-<li><a class="reference internal" href="#backtracking">Backtracking</a><ul>
-<li><a class="reference internal" href="#examples">Examples</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#exhaustive-algorithm">Exhaustive Algorithm</a><ul>
-<li><a class="reference internal" href="#id1">Examples</a></li>
+<li><a class="reference internal" href="#">Backtracking</a><ul>
+<li><a class="reference internal" href="#implementation">Implementation</a></li>
+<li><a class="reference internal" href="#application-domain">Application Domain</a><ul>
+<li><a class="reference internal" href="#example-problems">Example problems</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#comparison">Comparison</a></li>
@@ -175,8 +152,8 @@ also referred as brutal-force search.</p>
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="../../cpp/heap.html"
-                          title="previous chapter">Heap and Heap Sort</a></p>
+    <p class="topless"><a href="brute-force.html"
+                          title="previous chapter">Brute-force Algorithms</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -186,7 +163,7 @@ also referred as brutal-force search.</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../../_sources/general/algorithm/exhaustive-backtracking.rst.txt"
+      <li><a href="../../_sources/general/algorithm/backtracking.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -214,12 +191,12 @@ also referred as brutal-force search.</p>
           <a href="../../course/cop3530/m13.html" title="Module 13 Graph"
              >next</a> |</li>
         <li class="right" >
-          <a href="../../cpp/heap.html" title="Heap and Heap Sort"
+          <a href="brute-force.html" title="Brute-force Algorithms"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../../course/cop3530/m12.html" >Module 12 Heap and Exhaustive Search</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Backtracking and Exhaustive Algorithms</a></li> 
+          <li class="nav-item nav-item-2"><a href="../../course/cop3530/m12.html" >Chapter 12 Heap and Exhaustive Search</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Backtracking</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

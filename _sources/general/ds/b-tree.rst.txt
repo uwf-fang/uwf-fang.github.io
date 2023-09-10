@@ -1,0 +1,94 @@
+******
+B-Tree
+******
+
+Overview
+========
+The name B-Tree is after the name of its inventors, Bayer and McCreight. It
+also suggests that it is "balanced".
+
+A B-tree, short for "balanced tree," is a self-balancing tree data structure
+used in computer science for organizing and storing data efficiently. It is
+designed to provide fast access to data, especially in situations where the
+data set is large and dynamic. B-trees are commonly used in database management
+systems and file systems.
+
+Definition
+==========
+A B-tree of order :math:`m` is a tree which satisfies the following properties:
+
++ Every node has at most :math:`m` children.
++ Every internal node has at least :math:`\lceil m/2 \rceil` children.
++ The root has at least 2 children if it is not a leaf node.
++ All leaves appear on the same level.
++ A non-leaf node with :math:`k` children contains :math:`k-1` keys.
+
+.. image:: /_static/b-tree.png
+  :alt: B-Tree of order 5
+
+Characteristics
+===============
++ Balanced
++ N-ary search tree
++ Sorted
+
+Behavior
+========
++ Insertion
+
+  * Start at the root node.
+  * Find the leaf node where the key should be inserted.
+  * If the node is not full, insert the key into the node.
+  * If the node is full, split the node into two nodes.
+  * Insert the median key into the parent node.
+  * If the parent node is full, split the parent node.
+  * Repeat until the root node is reached.
+
++ Deletion
+
+  * Start at the root node.
+  * Find the node where the key should be deleted.
+  * If the node is a leaf node, delete the key from the node.
+  * If the node is an internal node, replace the key with the predecessor or
+    successor key. Then delete the predecessor or successor key from the leaf
+    node.
+  * If the node is underfilled, borrow a key from a sibling node.
+  * If the node is underfilled and no sibling node can lend a key, merge the
+    node with a sibling node.
+  * If the merge causes the parent node to be underfilled, repeat the process
+    on the parent node.
+  * Repeat until the root node is reached.
+
++ Visualization
+
+  * `B-Tree Visualization <b-tree-vis_>`_
+
+.. _b-tree-vis: https://www.cs.usfca.edu/~galles/visualization/BTree.html
+
+Variations
+==========
++ B+ Tree (Textbook example)
+
+  * A B+ tree of order :math:`m` satisfies the following properties:
+
+    - All data are stored in the leaves.
+    - All leaves are linked together for better sequential access.
+    - All internal nodes are keys only for faster search.
+    - All internal nodes have between :math:`\lceil m/2 \rceil` and :math:`m`
+      children.
+    - All leaves have between :math:`\lceil l/2 \rceil` and :math:`l` keys.
+
+  * The :math:`l` can be adjusted according to the block size of the disk.
+  * Ideal as a file system or database index.
+  * Reduced number of disk accesses.
+  * Reduced potential key redistribution when inserting or deleting.
+  * Visualization
+
+    - `B+ Tree visualization <b-plus-vis_>`_
+
+.. image:: /_static/b-plus-tree.png
+  :alt: B+ Tree of order 5
+
+.. _b-plus-vis: https://www.cs.usfca.edu/~galles/visualization/BPlusTree.html
+
+* B* Tree (FYI)
