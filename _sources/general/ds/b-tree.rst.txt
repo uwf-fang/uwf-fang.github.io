@@ -17,7 +17,7 @@ Definition
 ==========
 A B-tree of order :math:`m` is a tree which satisfies the following properties:
 
-+ Every node has at most :math:`m` children.
++ Every node has at most :math:`m` children and :math:`m-1` keys.
 + Every internal node has at least :math:`\lceil m/2 \rceil` children.
 + The root has at least 2 children if it is not a leaf node.
 + All leaves appear on the same level.
@@ -25,6 +25,59 @@ A B-tree of order :math:`m` is a tree which satisfies the following properties:
 
 .. image:: /_static/b-tree.png
   :alt: B-Tree of order 5
+
+Characteristics
+===============
++ Balanced
+
+  * All leaves appear on the same level.
+  * The height of the tree is always :math:`O(\log n)`.
+
++ N-ary search tree
+
+  * In-order traversal of a B-tree will provide a sorted sequence.
+  * Each node defines a range of keys stored in the subtree rooted at that
+    node.
+  * The keys in each node partitions the keys in the subtree it rooted at.
+  * :math:`m-1` keys partition keys into :math:`m` sections that correspond to
+    :math:`m` children.
+
++ Self-balancing
+
+  * The tree is always balanced.
+  * The balance is maintained by redistribution of keys
+
+    - splitting and merging nodes.
+    - borrowing keys from sibling nodes.
+
+  * The height of the tree changes only when the root is split or merged.
+
+Terminology
+===========
+There are two sets of terminology for B-trees. One focus on "order" and another
+focus on "degree". They are not the same as what they mean in general tree and
+graph theory. Be careful when reading the literature.
+
++ Order (B-tree) **Preferred**
+
+  * The maximum number of children a node can have: :math:`m`.
+  * The maximum number of keys a node can have is always one less: :math:`m-1`.
+  * This is the same as what we defined as "degree of a tree" in general tree
+    theory.
+  * Sometimes referred as "maximum degree".
+
++ Degree :math:`t` (B-tree)
+
+  * It is actually short for "minimum degree".
+  * The minimum number of children an internal node may have.
+  * Sometimes referred as :math:`t` in the literature.
+  * This term is very confusing because it is not the same as what we defined
+    as "degree" in tree theory.
+  * It is even more confusing in some places where it is called "order".
+  * This term cannot describe all possible B-trees.
+  * We will prefer to stay away from this term!
+
+We will use the term "order" in this document.
 
 Characteristics
 ===============
@@ -40,9 +93,18 @@ Behavior
   * Find the leaf node where the key should be inserted.
   * If the node is not full, insert the key into the node.
   * If the node is full, split the node into two nodes.
+  * Insert the key into the appropriate child.
   * Insert the median key into the parent node.
-  * If the parent node is full, split the parent node.
+  * If the parent node is full after insertion of the median key, split the
+    parent node.
   * Repeat until the root node is reached.
+
+  In this method, when split a full node, the split happens before the key is
+  inserted. There is another way to insert a key to a full node. In that
+  method, the key is inserted to the node first, which causes a temporary
+  overflow, then the node is split. After that, the median key is inserted to
+  the parent node. This method is more common in demonstrations and
+  visualizations.
 
 + Deletion
 
