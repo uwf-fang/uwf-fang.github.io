@@ -1,0 +1,388 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Genetic Algorithm &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/general/algorithm/ga.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="IDC 6145 Big Data for Data Science" href="../../course/idc6145/index.html" />
+    <link rel="prev" title="Module 5: Brute-Force, Genetic Algorithms, and Backtracking" href="../../course/cop4534/m05.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../course/idc6145/index.html" title="IDC 6145 Big Data for Data Science"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../../course/cop4534/m05.html" title="Module 5: Brute-Force, Genetic Algorithms, and Backtracking"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop4534/m05.html" accesskey="U">Module 5: Brute-Force, Genetic Algorithms, and Backtracking</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Genetic Algorithm</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="genetic-algorithm">
+<h1>Genetic Algorithm<a class="headerlink" href="#genetic-algorithm" title="Permalink to this heading">¶</a></h1>
+<section id="definition">
+<h2>Definition<a class="headerlink" href="#definition" title="Permalink to this heading">¶</a></h2>
+<p><strong>Genetic Algorithm (GA)</strong>: A computational approach inspired by the process of
+natural evolution, genetic algorithms are used to find approximate solutions to
+optimization and search problems. They represent a fascinating intersection
+between biology and computer science, offering a unique way to solve complex
+problems.</p>
+</section>
+<section id="historical-context">
+<h2>Historical Context<a class="headerlink" href="#historical-context" title="Permalink to this heading">¶</a></h2>
+<p>The concept of genetic algorithms finds its roots in the early works of
+scientists like John Holland who, in the 1960s, introduced the schema theorem
+which describes the functioning of GAs. But the real inspiration comes from a
+much older source – Charles Darwin’s theory of natural selection. Darwin
+proposed that species evolve over generations by the survival of the fittest
+individuals. This biological concept provided a framework for developing a new
+class of computational algorithms.</p>
+</section>
+<section id="metaheuristic-paradigm">
+<h2>Metaheuristic Paradigm<a class="headerlink" href="#metaheuristic-paradigm" title="Permalink to this heading">¶</a></h2>
+<p>Genetic algorithms belong to a broader category known as metaheuristics. The
+term metaheuristic is derived from the Greek words “meta” (beyond) and
+“heuriskein” (to search or find). They represent higher-level procedures or
+strategies designed to find, generate, or select a heuristic that might provide
+a sufficiently good solution to an optimization problem, especially with
+incomplete or imperfect information or limited computation capacity.</p>
+<p>Metaheuristics encompass a range of algorithms, including but not limited to:</p>
+<ul class="simple">
+<li><p>Simulated Annealing</p></li>
+<li><p>Tabu Search</p></li>
+<li><p>Ant Colony Optimization</p></li>
+<li><p>Particle Swarm Optimization</p></li>
+</ul>
+<p>Like other metaheuristics, GAs aim to provide practical solutions to complex
+problems where traditional methods are ineffective or too slow. They harness
+inspiration from natural phenomena (in GA’s case, natural evolution) to guide
+the search process.</p>
+</section>
+<section id="basics-of-genetics-and-evolution">
+<h2>Basics of Genetics and Evolution<a class="headerlink" href="#basics-of-genetics-and-evolution" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>DNA, Genes, and Chromosomes</strong>:</p></li>
+</ul>
+<p>In biological systems, DNA (Deoxyribonucleic acid) is the molecule that carries
+genetic instructions for the development, functioning, growth, and reproduction
+of all known living organisms. DNA is organized into structures called
+chromosomes, which are collections of genes. Each gene is a segment of DNA that
+has a specific function or contains a particular piece of genetic information.</p>
+<ul class="simple">
+<li><p><strong>Principles of Natural Selection</strong>:</p>
+<ul>
+<li><p><strong>Survival of the Fittest</strong>: Not all individuals in a population have the
+same chances of survival and reproduction. Those with characteristics
+better suited to their environment tend to survive longer and reproduce
+more, passing on their genes to the next generation.</p></li>
+<li><p><strong>Reproduction</strong>: The process through which new individuals or offspring
+are produced. In the context of GAs, this refers to the generation of new
+potential solutions from the existing ones, based on their “fitness” or
+suitability to the problem.</p></li>
+<li><p><strong>Mutation</strong>: In biological terms, a mutation is a change in the DNA
+sequence. Mutations introduce genetic diversity, which can be beneficial,
+neutral, or harmful. For GAs, mutation means introducing small random
+changes in potential solutions to maintain diversity in the population and
+avoid getting stuck at local optima.</p></li>
+<li><p><strong>Crossover</strong>: Also known as recombination, this is a process where two
+parent genes exchange portions of their genetic information to create new
+offspring. In GAs, crossover combines elements of two potential solutions
+to produce a new one, hopefully combining the best features of both
+parents.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="core-components">
+<h2>Core Components<a class="headerlink" href="#core-components" title="Permalink to this heading">¶</a></h2>
+<ul>
+<li><p><strong>Population</strong></p>
+<p>At the heart of every GA is a population, which is essentially a collection
+of individual potential solutions to the problem. Each individual represents
+a possible solution, often encoded in some form, like a binary string. The
+initial population is typically generated randomly, ensuring a diverse range
+of potential solutions.</p>
+</li>
+<li><p><strong>Fitness Function</strong></p>
+<p>To determine which solutions are ‘better’ than others, GAs employ a fitness
+function. This function quantitatively measures how good each solution in the
+population is with respect to the given problem. For instance, if the problem
+is to find the shortest path between cities, the fitness might be inversely
+proportional to the path length.</p>
+</li>
+<li><p><strong>Selection</strong></p>
+<p>Based on the principle of “survival of the fittest,” the selection process
+chooses which solutions, or parents, will be used to create the next
+generation. There are various selection methods such as roulette wheel
+selection (where the probability of an individual being selected is
+proportional to its fitness) and tournament selection (where a subset of
+individuals are chosen, and the fittest among them is selected).</p>
+</li>
+<li><p><strong>Crossover (Recombination)</strong></p>
+<p>Once parents are selected, the crossover operation is used to combine their
+genetic information and produce offspring. There are many crossover
+techniques, such as one-point crossover (where one crossover point is
+selected and genes from one parent are combined with genes from another
+parent based on this point) and uniform crossover (where genes from both
+parents are mixed uniformly).</p>
+</li>
+<li><p><strong>Mutation</strong></p>
+<p>After crossover, mutation introduces small random changes in the offspring.
+The main purpose of mutation is to maintain genetic diversity within the
+population, ensuring that the GA does not converge prematurely to a
+sub-optimal solution. For instance, in a binary encoded GA, mutation might
+flip a 0 to a 1 or vice versa.</p>
+</li>
+<li><p><strong>Replacement</strong></p>
+<p>This step involves determining how individuals from the new generation
+replace those in the current generation. There are various strategies, such
+as generational replacement (where the entire old generation is replaced) and
+steady-state replacement (where only a portion of the old generation is
+replaced).</p>
+</li>
+</ul>
+</section>
+<section id="pseudocode-of-a-basic-genetic-algorithm">
+<h2>Pseudocode of a Basic Genetic Algorithm<a class="headerlink" href="#pseudocode-of-a-basic-genetic-algorithm" title="Permalink to this heading">¶</a></h2>
+<p>To better visualize the process of a genetic algorithm, here’s a simplistic
+pseudocode representation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">1.</span> <span class="n">Generate</span> <span class="n">initial</span> <span class="n">population</span> <span class="n">of</span> <span class="n">size</span> <span class="n">N</span><span class="o">.</span>
+<span class="mf">2.</span> <span class="n">Evaluate</span> <span class="n">the</span> <span class="n">fitness</span> <span class="n">of</span> <span class="n">each</span> <span class="n">individual</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">population</span><span class="o">.</span>
+
+<span class="mf">3.</span> <span class="n">WHILE</span> <span class="p">(</span><span class="n">stopping</span> <span class="n">condition</span> <span class="ow">not</span> <span class="n">met</span><span class="p">):</span>
+    <span class="n">a</span><span class="o">.</span> <span class="n">Select</span> <span class="n">two</span> <span class="n">parents</span> <span class="n">based</span> <span class="n">on</span> <span class="n">their</span> <span class="n">fitness</span><span class="o">.</span>
+    <span class="n">b</span><span class="o">.</span> <span class="n">Perform</span> <span class="n">crossover</span> <span class="n">on</span> <span class="n">the</span> <span class="n">selected</span> <span class="n">parents</span> <span class="n">to</span> <span class="n">produce</span> <span class="n">offspring</span><span class="o">.</span>
+    <span class="n">c</span><span class="o">.</span> <span class="n">Apply</span> <span class="n">mutation</span> <span class="n">on</span> <span class="n">the</span> <span class="n">offspring</span> <span class="k">with</span> <span class="n">a</span> <span class="n">certain</span> <span class="n">probability</span><span class="o">.</span>
+    <span class="n">d</span><span class="o">.</span> <span class="n">Evaluate</span> <span class="n">the</span> <span class="n">fitness</span> <span class="n">of</span> <span class="n">the</span> <span class="n">offspring</span><span class="o">.</span>
+    <span class="n">e</span><span class="o">.</span> <span class="n">Replace</span> <span class="n">individuals</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">current</span> <span class="n">population</span> <span class="k">with</span> <span class="n">the</span> <span class="n">new</span> <span class="n">offspring</span> <span class="n">based</span> <span class="n">on</span> <span class="n">a</span> <span class="n">replacement</span> <span class="n">strategy</span><span class="o">.</span>
+    <span class="n">f</span><span class="o">.</span> <span class="n">OPTIONAL</span><span class="p">:</span> <span class="n">Keep</span> <span class="n">track</span> <span class="n">of</span> <span class="n">the</span> <span class="n">best</span> <span class="n">solution</span> <span class="n">found</span> <span class="n">so</span> <span class="n">far</span><span class="o">.</span>
+
+<span class="mf">4.</span> <span class="n">Return</span> <span class="n">the</span> <span class="n">best</span> <span class="n">solution</span> <span class="n">found</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>By iterating through this process, the GA “evolves” the population of potential
+solutions, gradually improving the fitness of the individuals, and getting
+closer to an optimal or near-optimal solution.</p>
+</section>
+<section id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">¶</a></h2>
+<p>The efficiency and effectiveness of a genetic algorithm (GA) are deeply
+influenced by the choice of its parameters. Proper tuning of these parameters
+can significantly boost the performance, while poor choices can hinder or stall
+the algorithm. Let’s delve into some of the fundamental parameters:</p>
+<ul>
+<li><p><strong>Population Size</strong></p>
+<p>Refers to the number of individuals (potential solutions) in each generation.
+A larger population might offer greater diversity and potentially explore a
+wider solution space. However, it might also increase computational demands.
+A smaller population may run faster but risks premature convergence to
+suboptimal solutions.</p>
+</li>
+<li><p><strong>Crossover Rate</strong></p>
+<p>Determines how often crossover will occur between pairs of parents. A high
+crossover rate can enhance exploration of the solution space, while a low
+rate emphasizes exploitation of the current best solutions.</p>
+</li>
+<li><p><strong>Mutation Rate</strong></p>
+<p>Specifies the frequency with which bits in an individual’s encoding will be
+flipped or altered. A higher mutation rate increases genetic diversity but
+can disrupt well-performing solutions. A very low mutation rate might make
+the algorithm stagnant and fall into local optima.</p>
+</li>
+<li><p><strong>Selection Pressure</strong></p>
+<p>Indicates the emphasis on selecting the fittest individuals as parents. High
+selection pressure might lead to faster convergence but risks losing
+diversity. Low pressure maintains diversity but can slow the convergence
+rate.</p>
+</li>
+<li><p><strong>Importance of Balanced Parameter Setting</strong>:</p>
+<p>Striking a balance in setting GA parameters is crucial. Overemphasizing
+exploration (through high mutation and crossover rates) can cause the GA to
+behave almost randomly, while stressing too much on exploitation (low
+mutation and selecting only the very best individuals) might lead to
+premature convergence on suboptimal solutions.</p>
+<p>Often, the best approach is to conduct multiple experiments with different
+parameter settings to understand how each influences the GA’s performance for
+a specific problem.</p>
+</li>
+</ul>
+</section>
+<section id="applications-of-genetic-algorithms">
+<h2>Applications of Genetic Algorithms<a class="headerlink" href="#applications-of-genetic-algorithms" title="Permalink to this heading">¶</a></h2>
+<p>Genetic algorithms have found diverse applications across multiple domains,
+proving their adaptability and versatility. Here are some of the notable
+applications:</p>
+<ul class="simple">
+<li><p><strong>Optimization Problems</strong>:</p>
+<ul>
+<li><p>Traveling Salesman Problem: Finding the shortest possible route that
+visits a set of cities and returns to the origin city.</p></li>
+<li><p>Job Scheduling: Allocating jobs to resources in a manner that optimizes
+specific objectives, such as minimizing completion time.</p></li>
+</ul>
+</li>
+<li><p><strong>Machine Learning</strong>:</p>
+<ul>
+<li><p>Feature Selection: Identifying the most relevant features in a dataset
+to improve model performance.</p></li>
+<li><p>Neural Network Training: Optimizing the weights of neural networks to
+achieve better accuracy.</p></li>
+</ul>
+</li>
+<li><p><strong>Game Development</strong></p></li>
+<li><p><strong>Art and Design</strong></p></li>
+</ul>
+</section>
+<section id="advantages-and-limitations">
+<h2>Advantages and Limitations<a class="headerlink" href="#advantages-and-limitations" title="Permalink to this heading">¶</a></h2>
+<section id="advantages">
+<h3>Advantages<a class="headerlink" href="#advantages" title="Permalink to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Versatility and Generality</strong>: GAs can be applied to a wide variety of
+problems, from optimization tasks to design challenges, without requiring a
+deep understanding of the problem domain.</p></li>
+<li><p><strong>Global Search Capability</strong>: Thanks to their population-based approach, GAs
+can search multiple points in the solution space simultaneously, making them
+less prone to getting stuck in local optima compared to some other methods.</p></li>
+<li><p><strong>Inherent Parallelism</strong>: The nature of GAs, especially the evaluation of
+multiple individuals, lends itself to parallel computing, potentially
+speeding up the search process.</p></li>
+<li><p><strong>Adaptability</strong>: GAs can adapt to changing environments, making them
+suitable for dynamic problems where the fitness landscape might shift over
+time.</p></li>
+</ol>
+</section>
+<section id="limitations">
+<h3>Limitations<a class="headerlink" href="#limitations" title="Permalink to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p><strong>No Guarantee of Optimal Solution</strong>: While GAs are good at finding
+“good-enough” or near-optimal solutions, they don’t guarantee an optimal
+solution.</p></li>
+<li><p><strong>Parameter Sensitivity</strong>: The performance of a GA can be significantly
+influenced by its parameter settings (e.g., population size, mutation rate).
+It may require trial-and-error or domain knowledge to tune these parameters
+effectively.</p></li>
+<li><p><strong>Computational Overhead</strong>: Depending on the problem size and GA parameters,
+the algorithm might require a considerable number of generations and
+evaluations to converge, which could be computationally expensive.</p></li>
+<li><p><strong>Premature Convergence</strong>: GAs might sometimes converge too early to a
+suboptimal solution, especially if there’s not enough genetic diversity in
+the population.</p></li>
+</ol>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Genetic Algorithm</a><ul>
+<li><a class="reference internal" href="#definition">Definition</a></li>
+<li><a class="reference internal" href="#historical-context">Historical Context</a></li>
+<li><a class="reference internal" href="#metaheuristic-paradigm">Metaheuristic Paradigm</a></li>
+<li><a class="reference internal" href="#basics-of-genetics-and-evolution">Basics of Genetics and Evolution</a></li>
+<li><a class="reference internal" href="#core-components">Core Components</a></li>
+<li><a class="reference internal" href="#pseudocode-of-a-basic-genetic-algorithm">Pseudocode of a Basic Genetic Algorithm</a></li>
+<li><a class="reference internal" href="#parameters">Parameters</a></li>
+<li><a class="reference internal" href="#applications-of-genetic-algorithms">Applications of Genetic Algorithms</a></li>
+<li><a class="reference internal" href="#advantages-and-limitations">Advantages and Limitations</a><ul>
+<li><a class="reference internal" href="#advantages">Advantages</a></li>
+<li><a class="reference internal" href="#limitations">Limitations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../../course/cop4534/m05.html"
+                          title="previous chapter">Module 5: Brute-Force, Genetic Algorithms, and Backtracking</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../../course/idc6145/index.html"
+                          title="next chapter">IDC 6145 Big Data for Data Science</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/general/algorithm/ga.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../course/idc6145/index.html" title="IDC 6145 Big Data for Data Science"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../../course/cop4534/m05.html" title="Module 5: Brute-Force, Genetic Algorithms, and Backtracking"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop4534/m05.html" >Module 5: Brute-Force, Genetic Algorithms, and Backtracking</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Genetic Algorithm</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2023, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>
