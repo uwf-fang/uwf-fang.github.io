@@ -2,18 +2,99 @@
 Backtracking
 ************
 
-An algorithm that incrementally build candidates toward the solution and reject
-candidates as soon as it is known not to lead to any solution. It searches
-paths in a decision tree space and allows early pruning of branches. When a
-candidate is abandoned it **backtracks** to a prior state and search for the
-next candidate.
+Definition
+==========
+Backtracking is a general algorithmic technique that involves exploring all
+possible solutions to a problem by building solution candidates incrementally
+and abandoning a candidate ("backtracking") as soon as it is determined that
+the candidate cannot be extended to a valid solution. It's essentially a trial
+and error approach, where potential solutions are built piece by piece and
+abandoned when they fail to meet the necessary criteria.
+
+Backtracking is a fundamental concept in computer science, especially in the
+domain of algorithms and problem-solving. It's particularly useful for solving
+constraint satisfaction problems, optimization problems, and combinatorial
+problems. Some classic examples include the N-Queens puzzle, the traveling
+salesman problem, and various game-solving algorithms like Sudoku. Its
+importance lies in its ability to find solutions to problems where the solution
+space is vast and cannot be traversed in a straightforward manner. By
+systematically trying out different solutions and backtracking when necessary,
+efficient solutions can be found for many complex problems.
+
+Core Concepts
+=============
++ Decision Space:
+
+  The decision space refers to all the possible options or choices available at
+  any given point in the problem-solving process. In backtracking, not all
+  decisions in this space lead to a valid solution. The algorithm explores
+  these decisions systematically, often visualized as a tree or graph, where
+  each node represents a decision.
+
++ Feasibility Checks:
+
+  Before or after making a decision, it's essential to check if the current
+  path being taken is feasible. This involves ensuring that the current
+  solution candidate adheres to the problem's constraints. If a decision fails
+  the feasibility check, the algorithm will backtrack to a previous decision
+  point.
+
++ Solution Space:
+
+  The solution space encompasses all potential solutions to the problem. It's
+  the set of all paths or decision sequences that lead to a valid solution.
+  Backtracking navigates this space by exploring and discarding paths, aiming
+  to find one or more paths that lead to a valid solution.
+
 
 Implementation
 ==============
 + Recursive approach
+
+.. code-block::
+
+  function BACKTRACKING-SOLUTION(problem):
+      if problem is a base case:
+          return solution to the base case
+      for each option in problem:
+          if option is valid:
+              make the option
+              result = BACKTRACKING-SOLUTION(sub-problem created by the option)
+              if result is a valid solution:
+                  return result
+              undo the option (backtrack)
+      return no solution found
+
 + Iterative approach
 
   * Stack data structure
+
+.. code-block::
+
+  function ITERATIVE-BACKTRACKING-SOLUTION(initialProblem):
+      create an empty stack S
+      push initialProblem onto S
+
+      while S is not empty:
+          currentProblem = top of S
+
+          if currentProblem is a solution:
+              return currentProblem
+
+          if currentProblem has unexplored options:
+              nextOption = get next unexplored option for currentProblem
+
+              if nextOption is valid:
+                  push nextOption onto S
+              else:
+                  mark nextOption as explored for currentProblem
+
+          else:
+              // All options for currentProblem have been explored, backtrack
+              pop S
+
+      return no solution found
+
 
 + Variations according to the goal
 

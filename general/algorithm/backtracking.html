@@ -49,20 +49,100 @@
             
   <section id="backtracking">
 <h1>Backtracking<a class="headerlink" href="#backtracking" title="Permalink to this heading">¶</a></h1>
-<p>An algorithm that incrementally build candidates toward the solution and reject
-candidates as soon as it is known not to lead to any solution. It searches
-paths in a decision tree space and allows early pruning of branches. When a
-candidate is abandoned it <strong>backtracks</strong> to a prior state and search for the
-next candidate.</p>
+<section id="definition">
+<h2>Definition<a class="headerlink" href="#definition" title="Permalink to this heading">¶</a></h2>
+<p>Backtracking is a general algorithmic technique that involves exploring all
+possible solutions to a problem by building solution candidates incrementally
+and abandoning a candidate (“backtracking”) as soon as it is determined that
+the candidate cannot be extended to a valid solution. It’s essentially a trial
+and error approach, where potential solutions are built piece by piece and
+abandoned when they fail to meet the necessary criteria.</p>
+<p>Backtracking is a fundamental concept in computer science, especially in the
+domain of algorithms and problem-solving. It’s particularly useful for solving
+constraint satisfaction problems, optimization problems, and combinatorial
+problems. Some classic examples include the N-Queens puzzle, the traveling
+salesman problem, and various game-solving algorithms like Sudoku. Its
+importance lies in its ability to find solutions to problems where the solution
+space is vast and cannot be traversed in a straightforward manner. By
+systematically trying out different solutions and backtracking when necessary,
+efficient solutions can be found for many complex problems.</p>
+</section>
+<section id="core-concepts">
+<h2>Core Concepts<a class="headerlink" href="#core-concepts" title="Permalink to this heading">¶</a></h2>
+<ul>
+<li><p>Decision Space:</p>
+<p>The decision space refers to all the possible options or choices available at
+any given point in the problem-solving process. In backtracking, not all
+decisions in this space lead to a valid solution. The algorithm explores
+these decisions systematically, often visualized as a tree or graph, where
+each node represents a decision.</p>
+</li>
+<li><p>Feasibility Checks:</p>
+<p>Before or after making a decision, it’s essential to check if the current
+path being taken is feasible. This involves ensuring that the current
+solution candidate adheres to the problem’s constraints. If a decision fails
+the feasibility check, the algorithm will backtrack to a previous decision
+point.</p>
+</li>
+<li><p>Solution Space:</p>
+<p>The solution space encompasses all potential solutions to the problem. It’s
+the set of all paths or decision sequences that lead to a valid solution.
+Backtracking navigates this space by exploring and discarding paths, aiming
+to find one or more paths that lead to a valid solution.</p>
+</li>
+</ul>
+</section>
 <section id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Recursive approach</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">BACKTRACKING</span><span class="o">-</span><span class="n">SOLUTION</span><span class="p">(</span><span class="n">problem</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">problem</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">base</span> <span class="n">case</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">solution</span> <span class="n">to</span> <span class="n">the</span> <span class="n">base</span> <span class="n">case</span>
+    <span class="k">for</span> <span class="n">each</span> <span class="n">option</span> <span class="ow">in</span> <span class="n">problem</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">option</span> <span class="ow">is</span> <span class="n">valid</span><span class="p">:</span>
+            <span class="n">make</span> <span class="n">the</span> <span class="n">option</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">BACKTRACKING</span><span class="o">-</span><span class="n">SOLUTION</span><span class="p">(</span><span class="n">sub</span><span class="o">-</span><span class="n">problem</span> <span class="n">created</span> <span class="n">by</span> <span class="n">the</span> <span class="n">option</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">valid</span> <span class="n">solution</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">result</span>
+            <span class="n">undo</span> <span class="n">the</span> <span class="n">option</span> <span class="p">(</span><span class="n">backtrack</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">no</span> <span class="n">solution</span> <span class="n">found</span>
+</pre></div>
+</div>
+<ul class="simple">
 <li><p>Iterative approach</p>
 <ul>
 <li><p>Stack data structure</p></li>
 </ul>
 </li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">ITERATIVE</span><span class="o">-</span><span class="n">BACKTRACKING</span><span class="o">-</span><span class="n">SOLUTION</span><span class="p">(</span><span class="n">initialProblem</span><span class="p">):</span>
+    <span class="n">create</span> <span class="n">an</span> <span class="n">empty</span> <span class="n">stack</span> <span class="n">S</span>
+    <span class="n">push</span> <span class="n">initialProblem</span> <span class="n">onto</span> <span class="n">S</span>
+
+    <span class="k">while</span> <span class="n">S</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">empty</span><span class="p">:</span>
+        <span class="n">currentProblem</span> <span class="o">=</span> <span class="n">top</span> <span class="n">of</span> <span class="n">S</span>
+
+        <span class="k">if</span> <span class="n">currentProblem</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">solution</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">currentProblem</span>
+
+        <span class="k">if</span> <span class="n">currentProblem</span> <span class="n">has</span> <span class="n">unexplored</span> <span class="n">options</span><span class="p">:</span>
+            <span class="n">nextOption</span> <span class="o">=</span> <span class="n">get</span> <span class="nb">next</span> <span class="n">unexplored</span> <span class="n">option</span> <span class="k">for</span> <span class="n">currentProblem</span>
+
+            <span class="k">if</span> <span class="n">nextOption</span> <span class="ow">is</span> <span class="n">valid</span><span class="p">:</span>
+                <span class="n">push</span> <span class="n">nextOption</span> <span class="n">onto</span> <span class="n">S</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mark</span> <span class="n">nextOption</span> <span class="k">as</span> <span class="n">explored</span> <span class="k">for</span> <span class="n">currentProblem</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="o">//</span> <span class="n">All</span> <span class="n">options</span> <span class="k">for</span> <span class="n">currentProblem</span> <span class="n">have</span> <span class="n">been</span> <span class="n">explored</span><span class="p">,</span> <span class="n">backtrack</span>
+            <span class="n">pop</span> <span class="n">S</span>
+
+    <span class="k">return</span> <span class="n">no</span> <span class="n">solution</span> <span class="n">found</span>
+</pre></div>
+</div>
+<ul class="simple">
 <li><p>Variations according to the goal</p>
 <ul>
 <li><p>find one solution</p></li>
@@ -139,6 +219,8 @@ solution.</p>
     <h3><a href="../../index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">Backtracking</a><ul>
+<li><a class="reference internal" href="#definition">Definition</a></li>
+<li><a class="reference internal" href="#core-concepts">Core Concepts</a></li>
 <li><a class="reference internal" href="#implementation">Implementation</a></li>
 <li><a class="reference internal" href="#application-domain">Application Domain</a><ul>
 <li><a class="reference internal" href="#example-problems">Example problems</a></li>
