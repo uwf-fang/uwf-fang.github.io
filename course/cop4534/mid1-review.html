@@ -1,0 +1,518 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Midterm 1 Review &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/course/cop4534/mid1-review.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="IDC 6145 Big Data for Data Science" href="../idc6145/index.html" />
+    <link rel="prev" title="Genetic Algorithm" href="../../general/algorithm/ga.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../idc6145/index.html" title="IDC 6145 Big Data for Data Science"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../../general/algorithm/ga.html" title="Genetic Algorithm"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Midterm 1 Review</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="midterm-1-review">
+<h1>Midterm 1 Review<a class="headerlink" href="#midterm-1-review" title="Permalink to this heading">¶</a></h1>
+<section id="how-to-use-this-document">
+<h2>How to use this document<a class="headerlink" href="#how-to-use-this-document" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Self-test using this document to see what concepts are challenging to you.</p></li>
+<li><p>The slides are the most concise and focused document you can start with.</p></li>
+<li><p>Course content website is the systematic view for tips, pitfalls.</p></li>
+<li><p>Practice your ability to work on an algorithm on paper. Play with the
+visualization website to see how the algorithm works step by step.</p></li>
+<li><p>Refer to the practice exam for the format of the exam and the types of
+questions.</p></li>
+<li><p>Refer to the test exam for how the Honorlock will work.</p></li>
+</ul>
+</section>
+<section id="type-of-questions">
+<h2>Type of Questions<a class="headerlink" href="#type-of-questions" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>True/False (TF)</p></li>
+<li><p>Multiple Choice (MC)</p></li>
+<li><p>Fill in the Blank (FIB)</p></li>
+<li><p>Matching (MAT) - match a list of items to another list of items</p></li>
+<li><p>Short Answer/Coding (SA)</p></li>
+</ul>
+</section>
+<section id="topics">
+<h2>Topics<a class="headerlink" href="#topics" title="Permalink to this heading">¶</a></h2>
+<section id="environment">
+<h3>Environment<a class="headerlink" href="#environment" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Know the toolchain: g++, make, git</p></li>
+<li><p>Windows environment: WSL only! No MinGW!</p></li>
+<li><p>Building process of modular programs</p>
+<ul>
+<li><p>Three steps: preprocessing, compilation, linking</p></li>
+<li><p>Driver vs library/module</p></li>
+<li><p>Multi-step compilation:</p>
+<ol class="arabic simple">
+<li><p>Preprocessing + compilation: <cite>g++ -c</cite></p></li>
+<li><p>Linking: <cite>g++</cite> without <cite>-c</cite></p></li>
+</ol>
+</li>
+<li><p>Makefile (basics only)</p>
+<ul>
+<li><p>Write a simple rule</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">clean</span></code> target</p></li>
+<li><p>Triggering rules <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">&lt;target&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">make</span></code>, <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">&lt;target</span> <span class="pre">list&gt;</span></code></p>
+<ul>
+<li><p>first target is default</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Code organization</p>
+<ul>
+<li><p>Header: public declarations of functions, classes, global variables</p></li>
+<li><p>Source/cpp: everything else</p>
+<ul>
+<li><p>Private declarations</p></li>
+<li><p>Definitions</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Conventions in this class</p>
+<ul>
+<li><p>Naming, casing</p></li>
+<li><p>File extensions</p></li>
+<li><p>Documentation and comments</p></li>
+</ul>
+</li>
+<li><p>git</p>
+<ul>
+<li><p>clone, add, commit, push, status</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="math">
+<h3>Math<a class="headerlink" href="#math" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Exponent: know the definition</p></li>
+<li><p>Logarithm: know the definition, <span class="math notranslate nohighlight">\(log(n)\)</span> is less complex than <span class="math notranslate nohighlight">\(n\)</span></p></li>
+<li><p>Modulus: know the definition, applications in random number generation and
+hash table</p></li>
+<li><p>Proof methods: know definitions</p></li>
+</ul>
+</section>
+<section id="algorithm-analysis">
+<h3>Algorithm Analysis<a class="headerlink" href="#algorithm-analysis" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Definition</p></li>
+<li><p>Two types: empirical and theoretical</p></li>
+<li><p>Asymptotic definitions</p>
+<ul>
+<li><p>Big-O notation: definition, upper bound</p></li>
+<li><p>Big-Omega notation: definition, lower bound</p></li>
+<li><p>Big-Theta notation: definition, exact bound</p></li>
+<li><p>Little-O notation: definition, upper bound, not asymptotically tight</p></li>
+</ul>
+</li>
+<li><p>Best/worst/average cases</p>
+<ul>
+<li><p>relationship to upper/lower bounds</p></li>
+<li><p>relationship to asymptotic notation</p></li>
+</ul>
+</li>
+<li><p>Estimate big-O</p>
+<ul>
+<li><p>know big-O for common algorithms</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="amortized-analysis">
+<h3>Amortized Analysis<a class="headerlink" href="#amortized-analysis" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Definition</p></li>
+<li><p>Motivation</p></li>
+</ul>
+</section>
+<section id="tree">
+<h3>Tree<a class="headerlink" href="#tree" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Definitions: computer science vs graph theory; recursive</p></li>
+<li><p>Concepts</p>
+<ul>
+<li><p>root, leaf, internal nodes</p></li>
+<li><p>parent, child, sibling, ancestor, descendant</p></li>
+<li><p>path, length of path, depth of nodes, level of nodes, height of tree</p></li>
+<li><p>degree of node, degree of tree</p></li>
+<li><p>Able to find and different on a tree diagram</p></li>
+</ul>
+</li>
+<li><p>Characteristics</p>
+<ul>
+<li><p>ordered vs unordered</p></li>
+<li><p>directed vs undirected</p></li>
+<li><p>cyclic vs acyclic</p></li>
+<li><p>connected vs unconnected</p></li>
+</ul>
+</li>
+<li><p>Behaviors</p>
+<ul>
+<li><p>traversal: definitions of preorder, inorder (discussed with binary tree),
+postorder, level-order</p></li>
+<li><p>search: definitions of depth-first search, breadth-first search</p></li>
+<li><p>insertion: discussed in BST</p></li>
+<li><p>deletion: discussed in BST</p></li>
+</ul>
+</li>
+<li><p>Implementation</p>
+<ul>
+<li><p>variable number of children</p></li>
+<li><p>first child, next sibling</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="binary-tree">
+<h3>Binary Tree<a class="headerlink" href="#binary-tree" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Definition: degree 2 ordered tree</p></li>
+<li><p>Three special types</p>
+<ul>
+<li><p>full binary tree</p></li>
+<li><p>complete binary tree</p></li>
+<li><p>perfect binary tree</p></li>
+</ul>
+</li>
+<li><p>Applications</p></li>
+</ul>
+</section>
+<section id="binary-search-tree">
+<h3>Binary Search Tree<a class="headerlink" href="#binary-search-tree" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Definition of search tree</p></li>
+<li><p>Behaviors: know the details on how they work on paper</p>
+<ul>
+<li><p>search</p></li>
+<li><p>insertion: always at leaf</p></li>
+<li><p>deletion: three cases, how successor/predecessor is used</p></li>
+</ul>
+</li>
+<li><p>Analysis</p>
+<ul>
+<li><p>determined by tree height</p></li>
+<li><p>ideal tree height: <span class="math notranslate nohighlight">\(O(log(n))\)</span></p></li>
+<li><p>worst case tree height: <span class="math notranslate nohighlight">\(O(n)\)</span></p></li>
+<li><p>degradation of efficiency: unbalance tree or even a list</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="self-balancing">
+<h3>Self-balancing<a class="headerlink" href="#self-balancing" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Motivation: avoid degradation of efficiency</p></li>
+<li><p>Definition: height-balanced automatically</p></li>
+</ul>
+</section>
+<section id="avl-tree">
+<h3>AVL Tree<a class="headerlink" href="#avl-tree" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Name: Adelson-Velskii and Landis</p></li>
+<li><p>Balance factor: <span class="math notranslate nohighlight">\(BF = h_l - h_r\)</span>, know how to calculate on diagram</p></li>
+<li><p>Balance condition: <span class="math notranslate nohighlight">\(BF \in \{-1, 0, 1\}\)</span></p></li>
+<li><p>Self-balancing</p>
+<ul>
+<li><p>triggered: insertion/deletion causes balance factor to be +2/-2</p></li>
+<li><p>recursively check balance factor and rotate from bottom up</p></li>
+</ul>
+</li>
+<li><p>Imbalance and rotation</p>
+<ul>
+<li><p>Know how they work on paper</p></li>
+<li><p>LL imbalance - LL rotation/right rotation</p></li>
+<li><p>RR imbalance - RR rotation/left rotation</p></li>
+<li><p>LR imbalance - LR rotation/left-right double rotation</p></li>
+<li><p>RL imbalance - RL rotation/right-left double rotation</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="b-tree">
+<h3>B-Tree<a class="headerlink" href="#b-tree" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Name: Bayer and McCreight, Balanced tree</p></li>
+<li><p>N-ary search tree</p></li>
+<li><p>Application:</p>
+<ul>
+<li><p>index in file system and database</p></li>
+</ul>
+</li>
+<li><p>Always balanced</p></li>
+<li><p>Behaviors</p>
+<ul>
+<li><p>search</p></li>
+<li><p>insertion</p>
+<ul>
+<li><p>always at leaf</p></li>
+<li><p>adjustment when full</p>
+<ul>
+<li><p>split and promote middle key</p></li>
+<li><p>check full recursively from bottom up to root</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>deletion</p>
+<ul>
+<li><p>internal or leaf node</p></li>
+<li><p>how successor/predecessor is used when deleting from internal node</p></li>
+<li><p>adjustment when underfill</p>
+<ul>
+<li><p>borrow from sibling</p></li>
+<li><p>merge with sibling</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id1">
+<h3>B+ Tree<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Difference from B-tree</p>
+<ul>
+<li><p>internal nodes do not store data</p></li>
+<li><p>leaf nodes are linked together</p></li>
+</ul>
+</li>
+<li><p>Pro and con vs B-tree</p>
+<ul>
+<li><p>sequential and range access</p></li>
+<li><p>less key redistribution between internal nodes and leaves</p></li>
+</ul>
+</li>
+<li><p>Application:</p>
+<ul>
+<li><p>index in file system and database</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="algorithmic-paradigms">
+<h3>Algorithmic Paradigms<a class="headerlink" href="#algorithmic-paradigms" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Definition</p></li>
+<li><p>Types to be covered, know the definitions</p>
+<ul>
+<li><p>brute force</p></li>
+<li><p>divide and conquer</p></li>
+<li><p>greedy</p></li>
+<li><p>dynamic programming</p></li>
+<li><p>backtracking</p></li>
+<li><p>heuristic</p></li>
+</ul>
+</li>
+<li><p>General understanding</p>
+<ul>
+<li><p>exact vs approximation</p></li>
+<li><p>deterministic vs randomized</p></li>
+<li><p>type of problem to be solved</p>
+<ul>
+<li><p>find “best” - optimization</p></li>
+<li><p>find “all” - enumeration</p></li>
+<li><p>find “one” - decision</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="brute-force">
+<h3>Brute-Force<a class="headerlink" href="#brute-force" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Definition</p></li>
+<li><p>No optimization, pruning, or heuristic</p></li>
+<li><p>Exact algorithms</p></li>
+<li><p>Can solve optimization, enumeration, decision</p></li>
+<li><p>Exponent or factorial time complexity</p></li>
+</ul>
+</section>
+<section id="backtracking">
+<h3>Backtracking<a class="headerlink" href="#backtracking" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Definition</p></li>
+<li><p>Two approaches</p>
+<ul>
+<li><p>recursive: base case, recursive case, backtracking operation</p></li>
+<li><p>iterative: use of stack</p></li>
+</ul>
+</li>
+<li><p>Feasibility check to reject partial solutions</p></li>
+<li><p>Backtracking operation when partial solution is rejected</p></li>
+<li><p>Steps in pseudocode</p></li>
+</ul>
+</section>
+<section id="genetic-algorithm">
+<h3>Genetic Algorithm<a class="headerlink" href="#genetic-algorithm" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Inspiration from natural evolution</p></li>
+<li><p>Approximation algorithm</p>
+<ul>
+<li><p>not guaranteed to find the optimal solution</p></li>
+<li><p>can find a good solution in a reasonable amount of time</p></li>
+</ul>
+</li>
+<li><p>Characteristics: brief understanding</p></li>
+<li><p>Concepts</p>
+<ul>
+<li><p>population</p></li>
+<li><p>individual and encoding - binary, integer, real-valued, permutation</p></li>
+<li><p>selection - roulette wheel, tournament selection</p></li>
+<li><p>fitness</p></li>
+<li><p>crossover - one-point crossover, two-point crossover</p></li>
+<li><p>mutation - bit flip, swap mutation</p></li>
+<li><p>replacement - elitism, generational replacement, steady-state replacement</p></li>
+</ul>
+</li>
+<li><p>Parameters</p>
+<ul>
+<li><p>population size</p></li>
+<li><p>crossover rate</p></li>
+<li><p>mutation rate</p></li>
+<li><p>number of generations (if not using other termination condition)</p></li>
+</ul>
+</li>
+<li><p>Steps in pseudocode</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Midterm 1 Review</a><ul>
+<li><a class="reference internal" href="#how-to-use-this-document">How to use this document</a></li>
+<li><a class="reference internal" href="#type-of-questions">Type of Questions</a></li>
+<li><a class="reference internal" href="#topics">Topics</a><ul>
+<li><a class="reference internal" href="#environment">Environment</a></li>
+<li><a class="reference internal" href="#math">Math</a></li>
+<li><a class="reference internal" href="#algorithm-analysis">Algorithm Analysis</a></li>
+<li><a class="reference internal" href="#amortized-analysis">Amortized Analysis</a></li>
+<li><a class="reference internal" href="#tree">Tree</a></li>
+<li><a class="reference internal" href="#binary-tree">Binary Tree</a></li>
+<li><a class="reference internal" href="#binary-search-tree">Binary Search Tree</a></li>
+<li><a class="reference internal" href="#self-balancing">Self-balancing</a></li>
+<li><a class="reference internal" href="#avl-tree">AVL Tree</a></li>
+<li><a class="reference internal" href="#b-tree">B-Tree</a></li>
+<li><a class="reference internal" href="#id1">B+ Tree</a></li>
+<li><a class="reference internal" href="#algorithmic-paradigms">Algorithmic Paradigms</a></li>
+<li><a class="reference internal" href="#brute-force">Brute-Force</a></li>
+<li><a class="reference internal" href="#backtracking">Backtracking</a></li>
+<li><a class="reference internal" href="#genetic-algorithm">Genetic Algorithm</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../../general/algorithm/ga.html"
+                          title="previous chapter">Genetic Algorithm</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../idc6145/index.html"
+                          title="next chapter">IDC 6145 Big Data for Data Science</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/course/cop4534/mid1-review.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../idc6145/index.html" title="IDC 6145 Big Data for Data Science"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../../general/algorithm/ga.html" title="Genetic Algorithm"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Midterm 1 Review</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2023, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>

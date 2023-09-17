@@ -9,6 +9,15 @@ optimization and search problems. They represent a fascinating intersection
 between biology and computer science, offering a unique way to solve complex
 problems.
 
+Characteristics
+===============
++ Optimal solution not guaranteed
++ Find a "good-enough" or near-optimal solution in a reasonable time
++ Non-deterministic
++ Population-based approach
++ Depend on randomness
++ Many parameters to tune
+
 Historical Context
 ==================
 The concept of genetic algorithms finds its roots in the early works of
@@ -78,6 +87,19 @@ has a specific function or contains a particular piece of genetic information.
 
 Core Components
 ===============
++ **Individual and encoding**
+
+  An individual is a potential solution to the problem. It is typically
+  represented as a string of bits, where each bit is called a gene. The term
+  "bit" is used loosely here, and the encoding can be binary, integer, or
+  real-valued. The string is known as the chromosome. The genes can be
+  independent of each other. The string can also be interpreted as a
+  permutation, where each gene represents a position in the permutation.
+
+  E.g. A binary encoded individual with 5 genes: 10101; Traveling Salesman
+  Problem: A permutation of the indices of cities. Each gene is an integer
+  representing a city. The chromosome is a permutation of the cities.
+
 + **Population**
 
   At the heart of every GA is a population, which is essentially a collection
@@ -184,7 +206,15 @@ the algorithm. Let's delve into some of the fundamental parameters:
   Indicates the emphasis on selecting the fittest individuals as parents. High
   selection pressure might lead to faster convergence but risks losing
   diversity. Low pressure maintains diversity but can slow the convergence
-  rate.
+  rate. This parameter is related to the selection method and replacement
+  strategy.
+
++ **Number of Generations**
+
+  The number of generations or iterations the GA will run for. It is only
+  relevant when it is employed as the termination condition. A higher number of
+  generations might lead to better solutions but can also increase
+  computational demands.
 
 + **Importance of Balanced Parameter Setting**:
 
@@ -197,6 +227,41 @@ the algorithm. Let's delve into some of the fundamental parameters:
   Often, the best approach is to conduct multiple experiments with different
   parameter settings to understand how each influences the GA's performance for
   a specific problem.
+
+Representative Algorithms/Strategies
+====================================
++ Selection Methods:
+
+  * Roulette Wheel Selection: Individuals are selected with a probability
+    proportional to their fitness.
+  * Tournament Selection: A random subset of individuals is selected, and the
+    fittest among them is chosen.
+  * Rank Selection: Individuals are ranked based on their fitness, and the
+    probability of selection is proportional to their rank.
+
++ Replacement Strategies:
+
+  * Elitism: The best individuals from the old generation are carried over to
+    the new generation.
+  * Generational Replacement: The entire old generation is replaced by the new
+    generation.
+  * Steady-State Replacement: Only a portion of the old generation is replaced
+    by the new generation. The rest of the individuals are carried over.
+
++ Crossover Techniques:
+
+  * One-Point Crossover: A crossover point is selected, and genes from one
+    parent are combined with genes from another parent based on this point.
+  * Two-Point Crossover: Two crossover points are selected, and genes between
+    the two points are swapped between the parents.
+  * Uniform Crossover: Genes from both parents are mixed uniformly.
+
++ Mutation Methods:
+
+  * Bit Flip Mutation: A random bit in the individual's encoding is flipped.
+  * Swap Mutation: Two random genes in the individual's encoding are swapped.
+  * Inversion Mutation: A random subset of genes in the individual's encoding
+    is reversed.
 
 
 Applications of Genetic Algorithms

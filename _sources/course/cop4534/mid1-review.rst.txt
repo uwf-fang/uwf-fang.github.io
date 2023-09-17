@@ -1,0 +1,292 @@
+****************
+Midterm 1 Review
+****************
+How to use this document
+========================
++ Self-test using this document to see what concepts are challenging to you.
++ The slides are the most concise and focused document you can start with.
++ Course content website is the systematic view for tips, pitfalls.
++ Practice your ability to work on an algorithm on paper. Play with the
+  visualization website to see how the algorithm works step by step.
++ Refer to the practice exam for the format of the exam and the types of
+  questions.
++ Refer to the test exam for how the Honorlock will work.
+
+
+Type of Questions
+=================
++ True/False (TF)
++ Multiple Choice (MC)
++ Fill in the Blank (FIB)
++ Matching (MAT) - match a list of items to another list of items
++ Short Answer/Coding (SA)
+
+Topics
+======
+Environment
+-----------
++ Know the toolchain: g++, make, git
++ Windows environment: WSL only! No MinGW!
++ Building process of modular programs
+
+  * Three steps: preprocessing, compilation, linking
+  * Driver vs library/module
+  * Multi-step compilation:
+
+    1. Preprocessing + compilation: `g++ -c`
+    2. Linking: `g++` without `-c`
+
+  * Makefile (basics only)
+
+    - Write a simple rule
+    - ``clean`` target
+    - Triggering rules ``make <target>``, ``make``, ``make <target list>``
+
+      + first target is default
+
++ Code organization
+
+  * Header: public declarations of functions, classes, global variables
+  * Source/cpp: everything else
+
+    - Private declarations
+    - Definitions
+
++ Conventions in this class
+
+  * Naming, casing
+  * File extensions
+  * Documentation and comments
+
++ git
+
+  * clone, add, commit, push, status
+
+Math
+----
++ Exponent: know the definition
++ Logarithm: know the definition, :math:`log(n)` is less complex than :math:`n`
++ Modulus: know the definition, applications in random number generation and
+  hash table
++ Proof methods: know definitions
+
+Algorithm Analysis
+------------------
++ Definition
++ Two types: empirical and theoretical
++ Asymptotic definitions
+
+  * Big-O notation: definition, upper bound
+  * Big-Omega notation: definition, lower bound
+  * Big-Theta notation: definition, exact bound
+  * Little-O notation: definition, upper bound, not asymptotically tight
+
++ Best/worst/average cases
+
+  * relationship to upper/lower bounds
+  * relationship to asymptotic notation
+
++ Estimate big-O
+
+  * know big-O for common algorithms
+
+Amortized Analysis
+------------------
++ Definition
++ Motivation
+
+Tree
+----
++ Definitions: computer science vs graph theory; recursive
++ Concepts
+
+  * root, leaf, internal nodes
+  * parent, child, sibling, ancestor, descendant
+  * path, length of path, depth of nodes, level of nodes, height of tree
+  * degree of node, degree of tree
+  * Able to find and different on a tree diagram
+
++ Characteristics
+
+  * ordered vs unordered
+  * directed vs undirected
+  * cyclic vs acyclic
+  * connected vs unconnected
+
++ Behaviors
+
+  * traversal: definitions of preorder, inorder (discussed with binary tree),
+    postorder, level-order
+  * search: definitions of depth-first search, breadth-first search
+  * insertion: discussed in BST
+  * deletion: discussed in BST
+
++ Implementation
+
+  * variable number of children
+  * first child, next sibling
+
+Binary Tree
+-----------
++ Definition: degree 2 ordered tree
++ Three special types
+
+  * full binary tree
+  * complete binary tree
+  * perfect binary tree
+
++ Applications
+
+Binary Search Tree
+------------------
++ Definition of search tree
++ Behaviors: know the details on how they work on paper
+
+  * search
+  * insertion: always at leaf
+  * deletion: three cases, how successor/predecessor is used
+
++ Analysis
+
+  * determined by tree height
+  * ideal tree height: :math:`O(log(n))`
+  * worst case tree height: :math:`O(n)`
+  * degradation of efficiency: unbalance tree or even a list
+
+Self-balancing
+--------------
++ Motivation: avoid degradation of efficiency
++ Definition: height-balanced automatically
+
+AVL Tree
+--------
++ Name: Adelson-Velskii and Landis
++ Balance factor: :math:`BF = h_l - h_r`, know how to calculate on diagram
++ Balance condition: :math:`BF \in \{-1, 0, 1\}`
++ Self-balancing
+
+  * triggered: insertion/deletion causes balance factor to be +2/-2
+  * recursively check balance factor and rotate from bottom up
+
++ Imbalance and rotation
+
+  * Know how they work on paper
+  * LL imbalance - LL rotation/right rotation
+  * RR imbalance - RR rotation/left rotation
+  * LR imbalance - LR rotation/left-right double rotation
+  * RL imbalance - RL rotation/right-left double rotation
+
+B-Tree
+------
++ Name: Bayer and McCreight, Balanced tree
++ N-ary search tree
++ Application:
+
+  * index in file system and database
+
++ Always balanced
++ Behaviors
+
+  * search
+  * insertion
+
+    - always at leaf
+    - adjustment when full
+
+      - split and promote middle key
+      - check full recursively from bottom up to root
+
+  * deletion
+
+    - internal or leaf node
+    - how successor/predecessor is used when deleting from internal node
+    - adjustment when underfill
+
+      + borrow from sibling
+      + merge with sibling
+
+B+ Tree
+-------
++ Difference from B-tree
+
+  * internal nodes do not store data
+  * leaf nodes are linked together
+
++ Pro and con vs B-tree
+
+  * sequential and range access
+  * less key redistribution between internal nodes and leaves
+
++ Application:
+
+  * index in file system and database
+
+Algorithmic Paradigms
+---------------------
++ Definition
++ Types to be covered, know the definitions
+
+  * brute force
+  * divide and conquer
+  * greedy
+  * dynamic programming
+  * backtracking
+  * heuristic
+
++ General understanding
+
+  * exact vs approximation
+  * deterministic vs randomized
+  * type of problem to be solved
+
+    - find "best" - optimization
+    - find "all" - enumeration
+    - find "one" - decision
+
+Brute-Force
+-----------
++ Definition
++ No optimization, pruning, or heuristic
++ Exact algorithms
++ Can solve optimization, enumeration, decision
++ Exponent or factorial time complexity
+
+Backtracking
+------------
++ Definition
++ Two approaches
+
+  * recursive: base case, recursive case, backtracking operation
+  * iterative: use of stack
+
++ Feasibility check to reject partial solutions
++ Backtracking operation when partial solution is rejected
++ Steps in pseudocode
+
+Genetic Algorithm
+-----------------
++ Inspiration from natural evolution
++ Approximation algorithm
+
+  * not guaranteed to find the optimal solution
+  * can find a good solution in a reasonable amount of time
+
++ Characteristics: brief understanding
++ Concepts
+
+  * population
+  * individual and encoding - binary, integer, real-valued, permutation
+  * selection - roulette wheel, tournament selection
+  * fitness
+  * crossover - one-point crossover, two-point crossover
+  * mutation - bit flip, swap mutation
+  * replacement - elitism, generational replacement, steady-state replacement
+
++ Parameters
+
+  * population size
+  * crossover rate
+  * mutation rate
+  * number of generations (if not using other termination condition)
+
++ Steps in pseudocode

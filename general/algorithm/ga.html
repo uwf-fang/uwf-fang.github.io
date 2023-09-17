@@ -20,7 +20,7 @@
     <link rel="canonical" href="https://uwf-fang.github.io/general/algorithm/ga.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="IDC 6145 Big Data for Data Science" href="../../course/idc6145/index.html" />
+    <link rel="next" title="Midterm 1 Review" href="../../course/cop4534/mid1-review.html" />
     <link rel="prev" title="Module 5: Brute-Force, Genetic Algorithms, and Backtracking" href="../../course/cop4534/m05.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -30,7 +30,7 @@
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../../course/idc6145/index.html" title="IDC 6145 Big Data for Data Science"
+          <a href="../../course/cop4534/mid1-review.html" title="Midterm 1 Review"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="../../course/cop4534/m05.html" title="Module 5: Brute-Force, Genetic Algorithms, and Backtracking"
@@ -56,6 +56,17 @@ natural evolution, genetic algorithms are used to find approximate solutions to
 optimization and search problems. They represent a fascinating intersection
 between biology and computer science, offering a unique way to solve complex
 problems.</p>
+</section>
+<section id="characteristics">
+<h2>Characteristics<a class="headerlink" href="#characteristics" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Optimal solution not guaranteed</p></li>
+<li><p>Find a “good-enough” or near-optimal solution in a reasonable time</p></li>
+<li><p>Non-deterministic</p></li>
+<li><p>Population-based approach</p></li>
+<li><p>Depend on randomness</p></li>
+<li><p>Many parameters to tune</p></li>
+</ul>
 </section>
 <section id="historical-context">
 <h2>Historical Context<a class="headerlink" href="#historical-context" title="Permalink to this heading">¶</a></h2>
@@ -125,6 +136,17 @@ parents.</p></li>
 <section id="core-components">
 <h2>Core Components<a class="headerlink" href="#core-components" title="Permalink to this heading">¶</a></h2>
 <ul>
+<li><p><strong>Individual and encoding</strong></p>
+<p>An individual is a potential solution to the problem. It is typically
+represented as a string of bits, where each bit is called a gene. The term
+“bit” is used loosely here, and the encoding can be binary, integer, or
+real-valued. The string is known as the chromosome. The genes can be
+independent of each other. The string can also be interpreted as a
+permutation, where each gene represents a position in the permutation.</p>
+<p>E.g. A binary encoded individual with 5 genes: 10101; Traveling Salesman
+Problem: A permutation of the indices of cities. Each gene is an integer
+representing a city. The chromosome is a permutation of the cities.</p>
+</li>
 <li><p><strong>Population</strong></p>
 <p>At the heart of every GA is a population, which is essentially a collection
 of individual potential solutions to the problem. Each individual represents
@@ -223,7 +245,14 @@ the algorithm stagnant and fall into local optima.</p>
 <p>Indicates the emphasis on selecting the fittest individuals as parents. High
 selection pressure might lead to faster convergence but risks losing
 diversity. Low pressure maintains diversity but can slow the convergence
-rate.</p>
+rate. This parameter is related to the selection method and replacement
+strategy.</p>
+</li>
+<li><p><strong>Number of Generations</strong></p>
+<p>The number of generations or iterations the GA will run for. It is only
+relevant when it is employed as the termination condition. A higher number of
+generations might lead to better solutions but can also increase
+computational demands.</p>
 </li>
 <li><p><strong>Importance of Balanced Parameter Setting</strong>:</p>
 <p>Balance in setting GA parameters is crucial. Overemphasizing
@@ -234,6 +263,48 @@ premature convergence on suboptimal solutions.</p>
 <p>Often, the best approach is to conduct multiple experiments with different
 parameter settings to understand how each influences the GA’s performance for
 a specific problem.</p>
+</li>
+</ul>
+</section>
+<section id="representative-algorithms-strategies">
+<h2>Representative Algorithms/Strategies<a class="headerlink" href="#representative-algorithms-strategies" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Selection Methods:</p>
+<ul>
+<li><p>Roulette Wheel Selection: Individuals are selected with a probability
+proportional to their fitness.</p></li>
+<li><p>Tournament Selection: A random subset of individuals is selected, and the
+fittest among them is chosen.</p></li>
+<li><p>Rank Selection: Individuals are ranked based on their fitness, and the
+probability of selection is proportional to their rank.</p></li>
+</ul>
+</li>
+<li><p>Replacement Strategies:</p>
+<ul>
+<li><p>Elitism: The best individuals from the old generation are carried over to
+the new generation.</p></li>
+<li><p>Generational Replacement: The entire old generation is replaced by the new
+generation.</p></li>
+<li><p>Steady-State Replacement: Only a portion of the old generation is replaced
+by the new generation. The rest of the individuals are carried over.</p></li>
+</ul>
+</li>
+<li><p>Crossover Techniques:</p>
+<ul>
+<li><p>One-Point Crossover: A crossover point is selected, and genes from one
+parent are combined with genes from another parent based on this point.</p></li>
+<li><p>Two-Point Crossover: Two crossover points are selected, and genes between
+the two points are swapped between the parents.</p></li>
+<li><p>Uniform Crossover: Genes from both parents are mixed uniformly.</p></li>
+</ul>
+</li>
+<li><p>Mutation Methods:</p>
+<ul>
+<li><p>Bit Flip Mutation: A random bit in the individual’s encoding is flipped.</p></li>
+<li><p>Swap Mutation: Two random genes in the individual’s encoding are swapped.</p></li>
+<li><p>Inversion Mutation: A random subset of genes in the individual’s encoding
+is reversed.</p></li>
+</ul>
 </li>
 </ul>
 </section>
@@ -323,12 +394,14 @@ the population.</p></li>
     <ul>
 <li><a class="reference internal" href="#">Genetic Algorithm</a><ul>
 <li><a class="reference internal" href="#definition">Definition</a></li>
+<li><a class="reference internal" href="#characteristics">Characteristics</a></li>
 <li><a class="reference internal" href="#historical-context">Historical Context</a></li>
 <li><a class="reference internal" href="#metaheuristic-paradigm">Metaheuristic Paradigm</a></li>
 <li><a class="reference internal" href="#basics-of-genetics-and-evolution">Basics of Genetics and Evolution</a></li>
 <li><a class="reference internal" href="#core-components">Core Components</a></li>
 <li><a class="reference internal" href="#pseudocode-of-a-basic-genetic-algorithm">Pseudocode of a Basic Genetic Algorithm</a></li>
 <li><a class="reference internal" href="#parameters">Parameters</a></li>
+<li><a class="reference internal" href="#representative-algorithms-strategies">Representative Algorithms/Strategies</a></li>
 <li><a class="reference internal" href="#applications-of-genetic-algorithms">Applications of Genetic Algorithms</a></li>
 <li><a class="reference internal" href="#advantages-and-limitations">Advantages and Limitations</a><ul>
 <li><a class="reference internal" href="#advantages">Advantages</a></li>
@@ -348,8 +421,8 @@ the population.</p></li>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="../../course/idc6145/index.html"
-                          title="next chapter">IDC 6145 Big Data for Data Science</a></p>
+    <p class="topless"><a href="../../course/cop4534/mid1-review.html"
+                          title="next chapter">Midterm 1 Review</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -379,7 +452,7 @@ the population.</p></li>
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../../course/idc6145/index.html" title="IDC 6145 Big Data for Data Science"
+          <a href="../../course/cop4534/mid1-review.html" title="Midterm 1 Review"
              >next</a> |</li>
         <li class="right" >
           <a href="../../course/cop4534/m05.html" title="Module 5: Brute-Force, Genetic Algorithms, and Backtracking"
