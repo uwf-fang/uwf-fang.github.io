@@ -58,6 +58,35 @@ various data types.</p>
 <li><p>E.g. type cast functions like <code class="docutils literal notranslate"><span class="pre">static_cast&lt;int&gt;(3.5)</span></code></p></li>
 <li><p>Similar idea to Java generics but with different implementation details</p></li>
 </ul>
+<section id="pro-and-con">
+<h2>Pro and Con<a class="headerlink" href="#pro-and-con" title="Permalink to this heading">¶</a></h2>
+<ul>
+<li><p>Pro</p>
+<ul class="simple">
+<li><p>Generalize functions/classes to work with various data types</p></li>
+<li><p>Avoid code redundancy</p></li>
+<li><p>Allow type-safe operations</p></li>
+</ul>
+</li>
+<li><p>Con</p>
+<ul>
+<li><p>Code bloat</p>
+<p>The compiler will generate a copy of the function/class for each base type
+used. This may cause the executable file to be very large.</p>
+</li>
+<li><p>Hard to debug</p>
+<p>The error messages from the compiler may be hard to understand.</p>
+</li>
+<li><p>Compilation</p>
+<p>The compilation can be very slow if the template is used in many places.</p>
+</li>
+<li><p>Header-only library</p>
+<p>It violates the principle of separation of declaration and implementation.</p>
+</li>
+</ul>
+</li>
+</ul>
+</section>
 <section id="alternatives">
 <h2>Alternatives<a class="headerlink" href="#alternatives" title="Permalink to this heading">¶</a></h2>
 <p>There are other way to allow generalization of functions to work with different
@@ -85,40 +114,44 @@ variables. In these cases, template is the only solution.</p>
 <section id="syntax">
 <h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading">¶</a></h2>
 <ul>
-<li><p>Define a template</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">template</span></code> keyword</p>
 <ul class="simple">
-<li><p>A line above the first line of a function/class declaration/definition</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">template&lt;typename</span> <span class="pre">T&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">template&lt;class</span> <span class="pre">T&gt;</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code> refers to a user-defined name for the base type</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">template</span> <span class="pre">&lt;list</span> <span class="pre">of</span> <span class="pre">template</span> <span class="pre">parameters&gt;</span></code> clause.</p></li>
+<li><p>The list of template parameters can contain one or more template
+parameters separated by commas.</p></li>
+<li><p>The template parameters are enclosed in angle-brackets (&lt;&gt;).</p></li>
+<li><p>We only focus on <strong>type template parameters</strong>, which is used to match a
+type.</p>
 <ul>
-<li><p>known as <strong>template argument</strong></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code> used as a type in the following function/class</p></li>
+<li><p>Started with keyword <code class="docutils literal notranslate"><span class="pre">class</span></code> or <code class="docutils literal notranslate"><span class="pre">typename</span></code> (interchangeable)</p></li>
 </ul>
 </li>
-<li><p>Takes multiple types, e.g. <code class="docutils literal notranslate"><span class="pre">template&lt;typename</span> <span class="pre">T1,</span> <span class="pre">typename</span> <span class="pre">T2&gt;</span></code></p></li>
-<li><p>May have a default value for the type <code class="docutils literal notranslate"><span class="pre">template&lt;typename</span> <span class="pre">T1=int&gt;</span></code></p></li>
-<li><p>IMPORTANT! Every declaration/definition containing the <code class="docutils literal notranslate"><span class="pre">T</span></code> must
-have a <code class="docutils literal notranslate"><span class="pre">template</span></code> clause</p></li>
-<li><p>The keyword <code class="docutils literal notranslate"><span class="pre">typename</span></code> and <code class="docutils literal notranslate"><span class="pre">class</span></code> in the <code class="docutils literal notranslate"><span class="pre">template</span></code> clause are
-interchangeable</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">template</span></code> clause must be above the following entities when every the
+parameterized type is used.</p>
+<ul>
+<li><p>function declaration</p></li>
+<li><p>function definition</p></li>
+<li><p>class declaration</p></li>
+<li><p>method definition</p></li>
+</ul>
+</li>
 </ul>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
-<span class="linenos"> 2</span><span class="n">T</span><span class="w"> </span><span class="n">func1</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">param1</span><span class="p">);</span>
+<span class="linenos"> 2</span><span class="kt">void</span><span class="w"> </span><span class="n">func1</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">param1</span><span class="p">);</span>
 <span class="linenos"> 3</span>
 <span class="linenos"> 4</span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
 <span class="linenos"> 5</span><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="p">{</span>
 <span class="linenos"> 6</span><span class="w"> </span><span class="k">public</span><span class="o">:</span>
-<span class="linenos"> 7</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">method1</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">param1</span><span class="p">);</span>
-<span class="linenos"> 8</span><span class="p">}</span>
+<span class="linenos"> 7</span><span class="w">  </span><span class="n">MyClass</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">param1</span><span class="p">);</span>
+<span class="linenos"> 8</span><span class="p">};</span>
 <span class="linenos"> 9</span>
-<span class="linenos">10</span><span class="c1">// important to notice that MyClass is followed by &lt;T&gt; here!</span>
+<span class="linenos">10</span><span class="c1">// important to notice that the first MyClass is followed by &lt;T&gt; here!</span>
 <span class="linenos">11</span><span class="c1">// MyClass is the name of the template while MyClass&lt;T&gt; is the</span>
 <span class="linenos">12</span><span class="c1">//     name of the class</span>
 <span class="linenos">13</span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
-<span class="linenos">14</span><span class="kt">bool</span><span class="w"> </span><span class="n">MyClass</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">method1</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">param1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">14</span><span class="n">MyClass</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">MyClass</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">param1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="linenos">15</span><span class="w">  </span><span class="c1">// core logics</span>
-<span class="linenos">16</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
-<span class="linenos">17</span><span class="p">}</span>
+<span class="linenos">16</span><span class="p">}</span>
 </pre></div>
 </div>
 </li>
@@ -135,10 +168,12 @@ interchangeable</p></li>
 </pre></div>
 </div>
 </li>
-<li><p><strong>Template argument deduction</strong> for function template:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">func1</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w">  </span><span class="c1">// T will be int</span>
-<span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">func1</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w">  </span><span class="c1">// T will be int</span>
-<span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">func1</span><span class="p">(</span><span class="mf">10.0</span><span class="p">);</span><span class="w">  </span><span class="c1">// T will be double</span>
+<li><p><strong>Template argument deduction</strong>:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">func1</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w">  </span><span class="c1">// T will be int</span>
+<span class="linenos">2</span><span class="n">func1</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w">  </span><span class="c1">// T will be int</span>
+<span class="linenos">3</span><span class="n">func1</span><span class="p">(</span><span class="mf">10.0</span><span class="p">);</span><span class="w">  </span><span class="c1">// T will be double</span>
+<span class="linenos">4</span>
+<span class="linenos">5</span><span class="n">MyClass</span><span class="w"> </span><span class="nf">obj1</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w">  </span><span class="c1">// T will be int</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -153,6 +188,8 @@ interchangeable</p></li>
 <section id="split-header-implementation-file">
 <h2>Split header/implementation file<a class="headerlink" href="#split-header-implementation-file" title="Permalink to this heading">¶</a></h2>
 <p><strong>TL;DR Put everything of a template in a single header file.</strong></p>
+<section id="single-header-file">
+<h3>Single Header File<a class="headerlink" href="#single-header-file" title="Permalink to this heading">¶</a></h3>
 <p>A template must be instantiated to provided the compilable source code. The
 instantiation of templates is lazy. Only when a templated entity is used with
 base type(s) specified, the template will be instantiated. For instance,
@@ -173,20 +210,25 @@ cannot find it and the instantiation will fail.</p></li>
 </ul>
 <p>Thus, it is natural to have a templated function/class in a single header file
 so that when a cpp file uses the template, the compiler can find all the
-template code in the header. <strong>This method is recommended in most of the
-scenarios in our courses.</strong></p>
-<p>If the implementation portion of a template is split into a cpp file like we
-normal do with un-templated code. This portion of code cannot be found when
-compiling the header with another cpp file that included the header.</p>
+template code in the header. This method is recommended in our courses.</p>
+</section>
+<section id="split-to-multiple-files">
+<h3>Split To Multiple Files<a class="headerlink" href="#split-to-multiple-files" title="Permalink to this heading">¶</a></h3>
+<p>Templates requires special organization of the source code because the compiler
+needs to see both the template definition (not instantiation) and its use
+within a single translation unit. Thus, it is not possible to split the
+template into a header file and a cpp file like normal modular code.</p>
 <p>There are two work-around methods when the split is preferred:</p>
 <ol class="arabic simple">
-<li><p>split implementations in a separate file and include it in the header file
-after the declarations</p></li>
-<li><p>split implementations into a cpp file, declare all possible instantiations
-of the template in the cpp file; Thus, when other cpp needs to use the
-template, the instantiated codes have already been instantiated and ready
-for use.</p></li>
+<li><p>split implementations in a separate text file and include it in the header
+file after the declarations. This method is not recommended but commonly
+seen in old-fashioned courses.</p></li>
+<li><p>split implementations into a cpp file, explicitly declare all possible
+instantiations of the template in the cpp file; Thus, when other cpp needs
+to use the template, the instantiated codes have already been instantiated
+and ready for use.</p></li>
 </ol>
+</section>
 </section>
 <section id="examples">
 <span id="example"></span><h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h2>
@@ -296,9 +338,14 @@ for use.</p></li>
     <h3><a href="../../index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">Templates in C++</a><ul>
+<li><a class="reference internal" href="#pro-and-con">Pro and Con</a></li>
 <li><a class="reference internal" href="#alternatives">Alternatives</a></li>
 <li><a class="reference internal" href="#syntax">Syntax</a></li>
-<li><a class="reference internal" href="#split-header-implementation-file">Split header/implementation file</a></li>
+<li><a class="reference internal" href="#split-header-implementation-file">Split header/implementation file</a><ul>
+<li><a class="reference internal" href="#single-header-file">Single Header File</a></li>
+<li><a class="reference internal" href="#split-to-multiple-files">Split To Multiple Files</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#examples">Examples</a></li>
 </ul>
 </li>

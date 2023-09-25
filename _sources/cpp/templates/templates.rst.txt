@@ -13,6 +13,33 @@ various data types.
 + E.g. type cast functions like ``static_cast<int>(3.5)``
 + Similar idea to Java generics but with different implementation details
 
+Pro and Con
+===========
++ Pro
+
+  * Generalize functions/classes to work with various data types
+  * Avoid code redundancy
+  * Allow type-safe operations
+
++ Con
+
+  * Code bloat
+
+    The compiler will generate a copy of the function/class for each base type
+    used. This may cause the executable file to be very large.
+
+  * Hard to debug
+
+    The error messages from the compiler may be hard to understand.
+
+  * Compilation
+
+    The compilation can be very slow if the template is used in many places.
+
+  * Header-only library
+
+    It violates the principle of separation of declaration and implementation.
+
 Alternatives
 ============
 There are other way to allow generalization of functions to work with different
@@ -36,40 +63,42 @@ variables. In these cases, template is the only solution.
 
 Syntax
 ======
-+ Define a template
++ ``template`` keyword
 
-  * A line above the first line of a function/class declaration/definition
-  * ``template<typename T>`` or ``template<class T>``
-  * ``T`` refers to a user-defined name for the base type
+  * ``template <list of template parameters>`` clause.
+  * The list of template parameters can contain one or more template
+    parameters separated by commas.
+  * The template parameters are enclosed in angle-brackets (<>).
+  * We only focus on **type template parameters**, which is used to match a
+    type.
 
-    - known as **template argument**
-    - ``T`` used as a type in the following function/class
+    - Started with keyword ``class`` or ``typename`` (interchangeable)
 
-  * Takes multiple types, e.g. ``template<typename T1, typename T2>``
-  * May have a default value for the type ``template<typename T1=int>``
-  * IMPORTANT! Every declaration/definition containing the ``T`` must
-    have a ``template`` clause
-  * The keyword ``typename`` and ``class`` in the ``template`` clause are
-    interchangeable
+  * The ``template`` clause must be above the following entities when every the
+    parameterized type is used.
+
+    - function declaration
+    - function definition
+    - class declaration
+    - method definition
 
   ::
 
     template<typename T>
-    T func1(T param1);
+    void func1(T param1);
 
     template<typename T>
     class MyClass{
      public:
-      bool method1(T param1);
-    }
+      MyClass(T param1);
+    };
 
-    // important to notice that MyClass is followed by <T> here!
+    // important to notice that the first MyClass is followed by <T> here!
     // MyClass is the name of the template while MyClass<T> is the
     //     name of the class
     template<typename T>
-    bool MyClass<T>::method1(T param1) {
+    MyClass<T>::MyClass(T param1) {
       // core logics
-      return true;
     }
 
 + To use a template
@@ -84,11 +113,13 @@ Syntax
       if (obj1.method1(10))
         cout << "True" << endl;
 
-  * **Template argument deduction** for function template::
+  * **Template argument deduction**::
 
-      result = func1(10);  // T will be int
-      result = func1<>(10);  // T will be int
-      result = func1(10.0);  // T will be double
+      func1(10);  // T will be int
+      func1<>(10);  // T will be int
+      func1(10.0);  // T will be double
+
+      MyClass obj1(10);  // T will be int
 
     .. note::
 
@@ -100,6 +131,8 @@ Split header/implementation file
 
 **TL;DR Put everything of a template in a single header file.**
 
+Single Header File
+------------------
 A template must be instantiated to provided the compilable source code. The
 instantiation of templates is lazy. Only when a templated entity is used with
 base type(s) specified, the template will be instantiated. For instance,
@@ -120,21 +153,24 @@ instance of ``vector<int>``.
 
 Thus, it is natural to have a templated function/class in a single header file
 so that when a cpp file uses the template, the compiler can find all the
-template code in the header. **This method is recommended in most of the
-scenarios in our courses.**
+template code in the header. This method is recommended in our courses.
 
-If the implementation portion of a template is split into a cpp file like we
-normal do with un-templated code. This portion of code cannot be found when
-compiling the header with another cpp file that included the header.
+Split To Multiple Files
+-----------------------
+Templates requires special organization of the source code because the compiler
+needs to see both the template definition (not instantiation) and its use
+within a single translation unit. Thus, it is not possible to split the
+template into a header file and a cpp file like normal modular code.
 
 There are two work-around methods when the split is preferred:
 
-1. split implementations in a separate file and include it in the header file
-   after the declarations
-2. split implementations into a cpp file, declare all possible instantiations
-   of the template in the cpp file; Thus, when other cpp needs to use the
-   template, the instantiated codes have already been instantiated and ready
-   for use.
+1. split implementations in a separate text file and include it in the header
+   file after the declarations. This method is not recommended but commonly
+   seen in old-fashioned courses.
+2. split implementations into a cpp file, explicitly declare all possible
+   instantiations of the template in the cpp file; Thus, when other cpp needs
+   to use the template, the instantiated codes have already been instantiated
+   and ready for use.
 
 .. _example:
 
