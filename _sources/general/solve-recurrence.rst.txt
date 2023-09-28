@@ -1,0 +1,188 @@
+******************
+Solving Recurrence
+******************
+
+Recursive relation
+==================
+Many algorithms are either recursive in nature or can be efficiently
+implemented as an recursive algorithm. Among these are the divide-and-conquer
+algorithms, dynamic programming algorithms, the backtracking algorithms, and so
+on. In the analysis of these recursive implementations of algorithms, the time
+function :math:`T(N)` can be described by a recurrence relation.
+
+Definition
+----------
+A recurrence relation for the function :math:`T(N)` is an equation that
+expresses :math:`T(N)` in terms of one or more smaller values of :math:`N`.
+
+E.g. The recursive relation for a merge sort is: :math:`T(N) = 2T(N/2) + N`
+
+General forms
+-------------
+There are many forms of recurrence relations. The following are the most common
+forms found in the analysis of algorithms.
+
+1. Divide-and-conquer recurrence
+
+   .. math::
+      T(N) = aT(N/b) + f(N)
+
+   where :math:`a \geq 1` and :math:`b > 1` are constants and :math:`f(N)` is a
+   given function.
+
+2. Linear recurrence (first order)
+
+   .. math::
+      T(N) = aT(N-1) + f(N)
+
+   where :math:`a \geq 1` is a constant and :math:`f(N)` is a given function.
+
+3. Linear recurrence (second order)
+
+   .. math::
+      T(N) = aT(N-1) + bT(N-2) + f(N)
+
+   where :math:`a \geq 1` and :math:`b \geq 1` are constants and :math:`f(N)` is
+   a given function.
+
+There are many other forms of recurrence relations. Some of them can be very
+complicated and difficult to solve. Fortunately, they are not commonly found in
+the analysis of algorithms.
+
+Solution to a recurrence relation
+=================================
+A closed-form expression, also known as an explicit formula, is a mathematical
+expression that directly provides the value of a function or a sequence for any
+given input or term, without the need for further computation or recursion. In
+essence, it represents a formulaic solution that expresses the relationship
+between the input or term and the output in a straightforward, algebraic
+manner.
+
+E.g. :math:`N^2 + 2N + 1`
+
+The solution of a recurrence relation is a closed-form expression for the
+function :math:`T(N)` in terms of :math:`N`.
+
+E.g. The close form solution of :math:`T(N) = 2T(N/2) + N` is :math:`O(N\log
+N)`
+
+Common Approaches
+-----------------
++ Substitution method
++ Recursion-tree method
++ Master method
+
+Substitution method
+===================
+The key idea behind the substitution method is to guess a solution for the
+recurrence relation and then use mathematical induction to prove that the
+guessed solution is correct.
+
+1. Guess the form of the solution.
+2. Use mathematical induction to find the constants and show that the solution
+   works.
+
+Recurrence tree method
+======================
+The recursive tree method is a graphical approach used to solve recurrence
+relations, especially in the context of analyzing the time complexity of
+recursive algorithms in computer science. It can also be used to generate an
+educated guess as to the closed-form solution of a recurrence relation, which
+can then be verified by the substitution method.
+
+#. Draw a recursion tree.
+
+   #. Start by representing the initial recurrence as the root of the tree.
+   #. For each recursive call made by the algorithm, draw a child node. The
+      number of child nodes corresponds to the number of recursive calls.
+   #. Label each node with the cost of the non-recursive work done at that
+      level.
+   #. Continue this process until you reach the base case of the recurrence.
+
+#. Compute the cost of each level
+
+   For each level of the tree, sum up the costs of all the nodes at that level.
+
+#. Compute the total cost
+
+Master method
+=============
+The Master Method is a popular technique in computer science to determine the
+time complexity of divide-and-conquer algorithms. It provides a simple and
+general way to analyze the time complexity of recursive algorithms without
+having to solve the recurrence relation explicitly.
+
+The Master Method deals with recurrences of the following form:
+
+.. math::
+   T(N) = aT(N/b) + f(N)
+
+where:
+
++ :math:`n`: the size of the problem
++ :math:`a`: the number of subproblems in the recursion
++ :math:`b`: The factor by which the problem size is divided in each recursive
+  call.
++ :math:`f(N)`: The cost of the work done outside the recursive calls, which
+  typically includes the cost of dividing the problem and cost of merging
+  the solutions.
+
+Three cases
+-----------
+The Master Method provides three cases to determine the time complexity:
+
++ Case 1:
+
+  If :math:`f(n) = O(n^c)` where :math:`c < \log_b a`, then: :math:`T(n) =
+  \Theta(n^{\log_b a})`
+
++ Case 2:
+
+  If :math:`f(n) = \Theta(n^{\log_b a} \cdot \log^k n)` for a :math:`k \geq 0`,
+  then: :math:`T(n) = \Theta(n^{\log_b a} \cdot \log^{k+1} n)`
+
++ Case 3:
+
+  If :math:`f(n) = \Omega(n^c)` where :math:`c > \log_b a`, and if :math:`a
+  f\left(\frac{n}{b}\right) \leq k f(n)` for some :math:`k < 1` and
+  sufficiently large :math:`n`, then: :math:`T(n) = \Theta(f(n))`
+
+Intuitions for the three cases
+------------------------------
++ Case 1:
+
+  If the cost of the work done outside the recursive calls is small enough,
+  then the overall running time is still dominated by the cost of the recursive
+  calls.
+
++ Case 2:
+
+  If the cost of the work done outside the recursive calls is nearly the same
+  across all levels of the recursion.
+
++ Case 3:
+
+  If the cost of the work done outside the recursive calls is large enough,
+  then the overall running time is dominated by the cost of the work done
+  outside the recursive calls.
+
+Master method examples
+----------------------
+For the recurrence relation of the Merge Sort algorithm:
+
+:math:`T(n) = 2T\left(\frac{n}{2}\right) + n`
+
+We have:
+
++ :math:`a = 2`
++ :math:`b = 2`
++ :math:`f(n) = n`
+
+Using the Master Method:
+
++ :math:`\log_b a = \log_2 2 = 1`
++ :math:`f(n) = n = \Theta(n^1)`
+
+This falls under Case 2 with :math:`k = 0`. Thus, the solution is: :math:`T(n)
+= \Theta(n \log n)`
+
