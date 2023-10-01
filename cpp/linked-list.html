@@ -17,6 +17,7 @@
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/cpp/linked-list.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -68,13 +69,36 @@ nodes. The term <strong>link</strong> means pointers pointing from one node to a
 <p><span class="caption-text">a minimal linked-list</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
+<section id="characteristics">
+<h2>Characteristics<a class="headerlink" href="#characteristics" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>A data structure based on linked nodes</p></li>
+<li><p>Nodes are linked together by links</p></li>
+<li><p>Logically contiguous, physically non-contiguous</p></li>
+<li><p>Advantages</p>
+<ul>
+<li><p>Dynamic size</p></li>
+<li><p>Ease of insertion/deletion</p></li>
+<li><p>Not requiring contiguous memory</p></li>
+<li><p>Sequential access</p></li>
+</ul>
+</li>
+<li><p>Limitations</p>
+<ul>
+<li><p>Inefficient/no random access</p></li>
+<li><p>Extra memory space for links</p></li>
+</ul>
+</li>
+</ul>
+</section>
 <section id="implementation-variations">
 <h2>Implementation Variations<a class="headerlink" href="#implementation-variations" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>Minimal implementation</p>
+<li><p>Minimal implementation: a head pointer; singly-linked</p></li>
+<li><p>Reference pointers</p>
 <ul>
 <li><p>head pointer</p></li>
-<li><p>singly-linked</p></li>
+<li><p>tail pointer</p></li>
 </ul>
 </li>
 <li><p>Number of links per node</p>
@@ -92,6 +116,25 @@ nodes. The term <strong>link</strong> means pointers pointing from one node to a
 <li><p>Dummy node before the first node</p>
 <ul>
 <li><p>simplifies empty list and first node handling</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="behaviors">
+<h2>Behaviors<a class="headerlink" href="#behaviors" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Insertion</p>
+<ul>
+<li><p>at the beginning</p></li>
+<li><p>at the end</p></li>
+<li><p>at a specified position (by value, by index)</p></li>
+</ul>
+</li>
+<li><p>Removal</p>
+<ul>
+<li><p>at the beginning</p></li>
+<li><p>at the end</p></li>
+<li><p>at a specified position (by value, by index)</p></li>
 </ul>
 </li>
 </ul>
@@ -115,7 +158,20 @@ nodes. The term <strong>link</strong> means pointers pointing from one node to a
 </li>
 </ul>
 </li>
-<li><p>Templated for more generic usages</p></li>
+<li><p>Use class templates for generalization</p>
+<ul>
+<li><p>type of data stored in nodes can be parameterized</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="time-complexity">
+<h2>Time Complexity<a class="headerlink" href="#time-complexity" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Search by value <span class="math notranslate nohighlight">\(O(n)\)</span></p></li>
+<li><p>Indexing (access kth element) <span class="math notranslate nohighlight">\(O(n)\)</span></p></li>
+<li><p>Insert <span class="math notranslate nohighlight">\(O(1)\)</span> (<span class="math notranslate nohighlight">\(O(n)\)</span> if locate the insertion point first)</p></li>
+<li><p>Remove <span class="math notranslate nohighlight">\(O(1)\)</span> (<span class="math notranslate nohighlight">\(O(n)\)</span> if locate the removal point first)</p></li>
 </ul>
 </section>
 <section id="pitfalls">
@@ -154,8 +210,11 @@ linked-list algorithms</p>
     <h3><a href="../index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">Linked-List Data Structure</a><ul>
+<li><a class="reference internal" href="#characteristics">Characteristics</a></li>
 <li><a class="reference internal" href="#implementation-variations">Implementation Variations</a></li>
+<li><a class="reference internal" href="#behaviors">Behaviors</a></li>
 <li><a class="reference internal" href="#c-implementation-details">C++ Implementation Details</a></li>
+<li><a class="reference internal" href="#time-complexity">Time Complexity</a></li>
 <li><a class="reference internal" href="#pitfalls">Pitfalls</a></li>
 <li><a class="reference internal" href="#linked-list-glossary">Linked-list Glossary</a></li>
 </ul>

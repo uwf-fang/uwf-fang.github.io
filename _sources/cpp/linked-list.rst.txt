@@ -20,12 +20,30 @@ nodes. The term **link** means pointers pointing from one node to another.
       b:ref:c -> c:data [arrowhead=vee, arrowtail=dot, dir=both, tailclip=false];
   }
 
+Characteristics
+===============
++ A data structure based on linked nodes
++ Nodes are linked together by links
++ Logically contiguous, physically non-contiguous
++ Advantages
+
+  * Dynamic size
+  * Ease of insertion/deletion
+  * Not requiring contiguous memory
+  * Sequential access
+
++ Limitations
+
+  * Inefficient/no random access
+  * Extra memory space for links
+
 Implementation Variations
 =========================
-+ Minimal implementation
++ Minimal implementation: a head pointer; singly-linked
++ Reference pointers
 
   * head pointer
-  * singly-linked
+  * tail pointer
 
 + Number of links per node
 
@@ -41,6 +59,20 @@ Implementation Variations
 
   * simplifies empty list and first node handling
 
+Behaviors
+=========
++ Insertion
+
+  * at the beginning
+  * at the end
+  * at a specified position (by value, by index)
+
++ Removal
+
+  * at the beginning
+  * at the end
+  * at a specified position (by value, by index)
+
 C++ Implementation Details
 ==========================
 + Classes
@@ -55,7 +87,16 @@ C++ Implementation Details
     - top-level class, not nested (preferred most of the time)
     - nested class/struct (better information hiding)
 
-+ Templated for more generic usages
++ Use class templates for generalization
+
+  * type of data stored in nodes can be parameterized
+
+Time Complexity
+===============
++ Search by value :math:`O(n)`
++ Indexing (access kth element) :math:`O(n)`
++ Insert :math:`O(1)` (:math:`O(n)` if locate the insertion point first)
++ Remove :math:`O(1)` (:math:`O(n)` if locate the removal point first)
 
 Pitfalls
 ========
