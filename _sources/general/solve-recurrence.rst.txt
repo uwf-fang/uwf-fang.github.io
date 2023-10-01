@@ -99,6 +99,74 @@ guessed solution is correct.
 2. Use mathematical induction to find the constants and show that the solution
    works.
 
+Substitution method examples
+----------------------------
+Assume that we have the recurrence relation:
+
+.. math::
+
+    \begin{align*}
+    f(n) &= 3f(n-1) + 3n \\
+    f(1) &= 1
+    \end{align*}
+
+1. We guess the solution is :math:`f(n) = An^2 + Bn + C` where :math`A`,
+   :math`B`, :math`C` are constants.
+
+  Use substitution to find :math`A`, :math`B`, :math`C`.
+
+  .. math::
+
+    \begin{align*}
+    f(n) &= f(n-1) + 3n \\
+    An^2 + Bn + C &= A(n-1)^2 + B(n-1) + C + 3n \\
+    An^2 + Bn + C &= An^2 - 2An + A + Bn - B + C + 3n \\
+    \end{align*}
+
+  So, we have
+
+  .. math::
+
+    \begin{align*}
+    A &= A \\
+    B &= -2A + B + 3 \\
+    C &= A - B + C \\
+    f(1) &= A + B + C = 1 \\
+    \end{align*}
+
+  Solve them to get
+
+  .. math::
+
+    \begin{align*}
+    A = 1.5 \\
+    B = 1.5 \\
+    C = -2 \\
+    \end{align*}
+
+  The final formula is :math`f(n) = 1.5n^2 + 1.5n - 2`.
+
+2. Mathematical induction to prove the formula is correct.
+
+  To prove the formula :math:`f(n) = 1.5n^2 + 1.5n - 2` is correct for all $n$.
+
+  * Base case: :math:`f(1) = 1.5 + 1.5 - 2 = 1`. Correct!
+  * If the formula is correct for :math:`n-1`, which means :math:`f(n-1) =
+    1.5(n-1)^2 + 1.5n - 2` then
+
+    .. math::
+
+      \begin{align*}
+      f(n) &= f(n-1) + 3n \\
+      &= (1.5(n-1)^2 + 1.5(n-1) - 2) + 3n \\
+      &= 1.5n^2 - 3n + 1.5 + 1.5n - 1.5 - 2 + 3n \\
+      &= 1.5n^2 + 1.5n - 2 \\
+      \end{align*}
+
+    So, the formula is correct for :math`n`.
+
+  * Done!
+
 Recurrence tree method
 ======================
 The recursive tree method is a graphical approach used to solve recurrence
@@ -122,10 +190,33 @@ can then be verified by the substitution method.
 
 #. Compute the total cost
 
+Recursion Tree Examples
+-----------------------
+For the :math:`T(n) = 3T(n/4) + \Theta(n^2)` recurrence relation.
+Step 1 - 3:
+
+1. Draw the root node.
+2. Draw the level 1 nodes.
+3. Draw the level 2 nodes.
+
+.. image:: /_static/recursion_tree1.png
+  :width: 800
+
+4. Draw all levels
+
+Step 4:
+
+.. image:: /_static/recursion_tree2.png
+  :width: 800
+
+.. container:: footnote
+
+  Credit: Introduction to Algorithms, 4th Ed., T. Cormen et al.
+
 Master method
 =============
 The Master Method is a popular technique in computer science to determine the
-time complexity of divide-and-conquer algorithms. It provides a simple and
+time complexity of **divide-and-conquer** algorithms. It provides a simple and
 general way to analyze the time complexity of recursive algorithms without
 having to solve the recurrence relation explicitly.
 

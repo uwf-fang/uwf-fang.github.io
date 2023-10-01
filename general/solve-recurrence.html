@@ -22,7 +22,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Midterm 1 Review" href="../course/cop4534/mid1-review.html" />
-    <link rel="prev" title="Module 6: Solving Recurrence" href="../course/cop4534/m06.html" /> 
+    <link rel="prev" title="Module 6: Solving Recurrence 1" href="../course/cop4534/m06.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -34,11 +34,11 @@
           <a href="../course/cop4534/mid1-review.html" title="Midterm 1 Review"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="../course/cop4534/m06.html" title="Module 6: Solving Recurrence"
+          <a href="../course/cop4534/m06.html" title="Module 6: Solving Recurrence 1"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../course/cop4534/m06.html" accesskey="U">Module 6: Solving Recurrence</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../course/cop4534/m06.html" accesskey="U">Module 6: Solving Recurrence 1</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Solving Recurrence</a></li> 
       </ul>
     </div>  
@@ -143,6 +143,65 @@ guessed solution is correct.</p>
 <li><p>Use mathematical induction to find the constants and show that the solution
 works.</p></li>
 </ol>
+<section id="substitution-method-examples">
+<h3>Substitution method examples<a class="headerlink" href="#substitution-method-examples" title="Permalink to this heading">¶</a></h3>
+<p>Assume that we have the recurrence relation:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+f(n) &amp;= 3f(n-1) + 3n \\
+f(1) &amp;= 1
+\end{align*}\end{split}\]</div>
+<ol class="arabic simple">
+<li><p>We guess the solution is <span class="math notranslate nohighlight">\(f(n) = An^2 + Bn + C\)</span> where :math`A`,
+:math`B`, :math`C` are constants.</p></li>
+</ol>
+<blockquote>
+<div><p>Use substitution to find :math`A`, :math`B`, :math`C`.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+f(n) &amp;= f(n-1) + 3n \\
+An^2 + Bn + C &amp;= A(n-1)^2 + B(n-1) + C + 3n \\
+An^2 + Bn + C &amp;= An^2 - 2An + A + Bn - B + C + 3n \\
+\end{align*}\end{split}\]</div>
+<p>So, we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+A &amp;= A \\
+B &amp;= -2A + B + 3 \\
+C &amp;= A - B + C \\
+f(1) &amp;= A + B + C = 1 \\
+\end{align*}\end{split}\]</div>
+<p>Solve them to get</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+A = 1.5 \\
+B = 1.5 \\
+C = -2 \\
+\end{align*}\end{split}\]</div>
+<p>The final formula is :math`f(n) = 1.5n^2 + 1.5n - 2`.</p>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><p>Mathematical induction to prove the formula is correct.</p></li>
+</ol>
+<blockquote>
+<div><p>To prove the formula <span class="math notranslate nohighlight">\(f(n) = 1.5n^2 + 1.5n - 2\)</span> is correct for all $n$.</p>
+<ul>
+<li><p>Base case: <span class="math notranslate nohighlight">\(f(1) = 1.5 + 1.5 - 2 = 1\)</span>. Correct!</p></li>
+<li><p>If the formula is correct for <span class="math notranslate nohighlight">\(n-1\)</span>, which means <span class="math notranslate nohighlight">\(f(n-1) =
+1.5(n-1)^2 + 1.5n - 2\)</span> then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+f(n) &amp;= f(n-1) + 3n \\
+&amp;= (1.5(n-1)^2 + 1.5(n-1) - 2) + 3n \\
+&amp;= 1.5n^2 - 3n + 1.5 + 1.5n - 1.5 - 2 + 3n \\
+&amp;= 1.5n^2 + 1.5n - 2 \\
+\end{align*}\end{split}\]</div>
+<p>So, the formula is correct for :math`n`.</p>
+</li>
+<li><p>Done!</p></li>
+</ul>
+</div></blockquote>
+</section>
 </section>
 <section id="recurrence-tree-method">
 <h2>Recurrence tree method<a class="headerlink" href="#recurrence-tree-method" title="Permalink to this heading">¶</a></h2>
@@ -167,11 +226,30 @@ level.</p></li>
 </li>
 <li><p>Compute the total cost</p></li>
 </ol>
+<section id="recursion-tree-examples">
+<h3>Recursion Tree Examples<a class="headerlink" href="#recursion-tree-examples" title="Permalink to this heading">¶</a></h3>
+<p>For the <span class="math notranslate nohighlight">\(T(n) = 3T(n/4) + \Theta(n^2)\)</span> recurrence relation.
+Step 1 - 3:</p>
+<ol class="arabic simple">
+<li><p>Draw the root node.</p></li>
+<li><p>Draw the level 1 nodes.</p></li>
+<li><p>Draw the level 2 nodes.</p></li>
+</ol>
+<a class="reference internal image-reference" href="../_images/recursion_tree1.png"><img alt="../_images/recursion_tree1.png" src="../_images/recursion_tree1.png" style="width: 800px;" /></a>
+<ol class="arabic simple" start="4">
+<li><p>Draw all levels</p></li>
+</ol>
+<p>Step 4:</p>
+<a class="reference internal image-reference" href="../_images/recursion_tree2.png"><img alt="../_images/recursion_tree2.png" src="../_images/recursion_tree2.png" style="width: 800px;" /></a>
+<div class="footnote docutils container">
+<p>Credit: Introduction to Algorithms, 4th Ed., T. Cormen et al.</p>
+</div>
+</section>
 </section>
 <section id="master-method">
 <h2>Master method<a class="headerlink" href="#master-method" title="Permalink to this heading">¶</a></h2>
 <p>The Master Method is a popular technique in computer science to determine the
-time complexity of divide-and-conquer algorithms. It provides a simple and
+time complexity of <strong>divide-and-conquer</strong> algorithms. It provides a simple and
 general way to analyze the time complexity of recursive algorithms without
 having to solve the recurrence relation explicitly.</p>
 <p>The Master Method deals with recurrences of the following form:</p>
@@ -266,8 +344,14 @@ outside the recursive calls.</p>
 <li><a class="reference internal" href="#common-approaches">Common Approaches</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#substitution-method">Substitution method</a></li>
-<li><a class="reference internal" href="#recurrence-tree-method">Recurrence tree method</a></li>
+<li><a class="reference internal" href="#substitution-method">Substitution method</a><ul>
+<li><a class="reference internal" href="#substitution-method-examples">Substitution method examples</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#recurrence-tree-method">Recurrence tree method</a><ul>
+<li><a class="reference internal" href="#recursion-tree-examples">Recursion Tree Examples</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#master-method">Master method</a><ul>
 <li><a class="reference internal" href="#three-cases">Three cases</a></li>
 <li><a class="reference internal" href="#intuitions-for-the-three-cases">Intuitions for the three cases</a></li>
@@ -282,7 +366,7 @@ outside the recursive calls.</p>
   <div>
     <h4>Previous topic</h4>
     <p class="topless"><a href="../course/cop4534/m06.html"
-                          title="previous chapter">Module 6: Solving Recurrence</a></p>
+                          title="previous chapter">Module 6: Solving Recurrence 1</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -320,11 +404,11 @@ outside the recursive calls.</p>
           <a href="../course/cop4534/mid1-review.html" title="Midterm 1 Review"
              >next</a> |</li>
         <li class="right" >
-          <a href="../course/cop4534/m06.html" title="Module 6: Solving Recurrence"
+          <a href="../course/cop4534/m06.html" title="Module 6: Solving Recurrence 1"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../course/cop4534/m06.html" >Module 6: Solving Recurrence</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../course/cop4534/m06.html" >Module 6: Solving Recurrence 1</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Solving Recurrence</a></li> 
       </ul>
     </div>
