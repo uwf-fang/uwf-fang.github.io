@@ -9,6 +9,14 @@ Common Linear ADTs
 
 List
 ----
++ Characteristics
+
+  * Sequential - the elements are ordered in a sequence
+  * Finite - known number of elements
+  * Indexable - each element has a unique positional index to allow random
+    access
+  * Dynamic - the size of the list can change
+
 + Behaviors
 
   * add/remove/access by index
@@ -23,19 +31,23 @@ List
 
 Stack
 -----
++ Characteristics
+
+  * Finite
+  * Last-in-first-out (LIFO)
+  * Dynamic
+
 + Behaviors
 
-  * add/remove/access at one end
-
-    - push
-    - pop
-
+  * push
+  * pop
+  * peek/top
   * check empty
 
 + Implementation
 
   * C array (add/remove at the tail, limited max length)
-  * linked-list (unlimited max length)
+  * linked-list (add/remove at either end, unlimited max length)
 
 + Application
 
@@ -44,13 +56,16 @@ Stack
 
 Queue
 -----
++ Characteristics
+
+  * Finite
+  * First-in-first-out (FIFO)
+  * Dynamic
+
 + Behaviors
 
-  * add at one end, remove/access at another end
-
-    - enqueue
-    - dequeue
-
+  * enqueue
+  * dequeue
   * check empty
 
 + Implementation
@@ -61,27 +76,32 @@ Queue
 + Application
 
   * Breadth-first traversal
-  * A\* search
 
 Deque
 -----
++ Characteristics
+
+  * Finite
+  * First-in-first-out (FIFO) and Last-in-first-out (LIFO)
+  * Dynamic
+
 + Behaviors
 
-  * add/remove/access at either end
+  * FIFO and LIFO
   * check empty
 
 + Implementation
 
   * circular C array (limited max length)
   * linked-list (unlimited max length)
-  * vector of vectors
+  * vector of vectors (std::deque in C++ STL)
 
 Data Structures
 ===============
 There are many data structures suitable in the implementation of the above
 ADTs. They should be selected according to the requirements.
 
-+ C Array
++ C style Array
 
   * Fast indexing
   * Slow insertion, or pre-pending
@@ -96,44 +116,35 @@ ADTs. They should be selected according to the requirements.
   * Complex logics
   * More space overhead
 
-.. note::
++ Other STL containers and their implementations
 
-  You can always employer other STL containers in the implementation of your own
-  ADTs. For instance, you can use array, vector, deque containers to implement a
-  stack ADT.
+  * std::array
 
-Related STL containers
-======================
-Many STL container classes are available as implementations of linear ADTs.
-Always chose the one that fit your requirement best.
+    - fixed size
+    - static C array
 
-+ array
+  * std::vector
 
-  * fixed size
-  * static C array
+    - resizable (slow)
+    - dynamic C array
 
-+ vector
+  * std::list
 
-  * resizable (slow)
-  * dynamic C array
+    - doubly-linked-list
 
-+ list
+  * std::forward_list
 
-  * doubly-linked-list
+    - singly-linked-list
 
-+ forward_list
+  * std::deque
 
-  * singly-linked-list
+    - vector of vectors
 
-+ deque
+  * std::stack
 
-  * vector of vectors
+    - wrapper of other STL containers
 
-+ stack
+  * std::queue
 
-  * wrapper of other STL containers
-
-+ queue
-
-  * wrapper of other STL containers
+    - wrapper of other STL containers
 
