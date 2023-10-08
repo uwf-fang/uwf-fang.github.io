@@ -36,7 +36,7 @@
           <a href="parallel-env.html" title="Development Environment For Parallel Programming"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">COP 5520 Parallel and Distributed Programming</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">COP 5522 Parallel and Distributed Programming</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">C Language</a></li> 
       </ul>
     </div>  
@@ -65,15 +65,20 @@ compatible to the <code class="docutils literal notranslate"><span class="pre">g
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">gcc</span></code> from the XCode Command-line tool on Mac OS is an alias of
-<code class="docutils literal notranslate"><span class="pre">clang</span></code>, which is the LLVM C compiler.</p>
+<code class="docutils literal notranslate"><span class="pre">clang</span></code>, which is the LLVM C compiler. It has some known differences with
+the <code class="docutils literal notranslate"><span class="pre">OpenMP</span></code> for <code class="docutils literal notranslate"><span class="pre">gcc</span></code> covered in class.</p>
 </div>
 </section>
 <section id="compilation-command">
 <h3>Compilation Command<a class="headerlink" href="#compilation-command" title="Permalink to this heading">¶</a></h3>
 <p>A typical <code class="docutils literal notranslate"><span class="pre">gcc</span></code> compilation command looks like:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gcc</span> <span class="o">-</span><span class="n">o</span> <span class="n">main</span> <span class="n">main</span><span class="o">.</span><span class="n">c</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gcc</span> <span class="o">&lt;</span><span class="n">flags</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">arguments</span><span class="o">&gt;</span>
 </pre></div>
 </div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;flags&gt;</span></code> are the compilation flags</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;arguments&gt;</span></code> are the source files (.c) and libraries (.o)</p></li>
+</ul>
 </section>
 <section id="useful-compilation-flags">
 <h3>Useful Compilation Flags<a class="headerlink" href="#useful-compilation-flags" title="Permalink to this heading">¶</a></h3>
@@ -88,18 +93,26 @@ compatible to the <code class="docutils literal notranslate"><span class="pre">g
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-I</span></code> specifies the path to include headers</p>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">-I.</span></code></p></li>
+<li><p>No space between <code class="docutils literal notranslate"><span class="pre">-I</span></code> and the path!</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-I.</span></code> means to look for headers in the current directory</p></li>
 </ul>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-l</span></code> specifies the libraries to use</p>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">-lpthread</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-lpthread</span></code> POSIX thread library</p></li>
 </ul>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-f</span></code> specifies flags</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">-fpic</span></code>  Position dependent</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-fopenmp</span></code>  enable OpenMP support</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-m</span></code> specifies the architecture</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">-march=native</span></code>  use the native architecture</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-m64</span></code>  use 64-bit architecture</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-msse4.2</span></code>  use SSE4.2 instruction set</p></li>
 </ul>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-std</span></code> specifies the C language standard</p>
@@ -113,17 +126,50 @@ compatible to the <code class="docutils literal notranslate"><span class="pre">g
 </ul>
 </section>
 </section>
-<section id="performance-related-operations-in-c">
-<h2>Performance Related Operations in C<a class="headerlink" href="#performance-related-operations-in-c" title="Permalink to this heading">¶</a></h2>
-<ul class="simple">
-<li><p>Memory operations</p>
+<section id="performance-optimization-in-c-language">
+<h2>Performance Optimization in C Language<a class="headerlink" href="#performance-optimization-in-c-language" title="Permalink to this heading">¶</a></h2>
 <ul>
-<li><p>malloc</p></li>
-<li><p>calloc</p></li>
-<li><p>aligned_alloc (C11)</p></li>
-<li><p>free</p></li>
-<li><p>memset</p></li>
-<li><p>memcpy</p></li>
+<li><p>Compilation optimization</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-O2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-O3</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-Ofast</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-ffast-math</span></code></p></li>
+</ul>
+</li>
+<li><p>Selected Optimization Approaches</p>
+<ul class="simple">
+<li><p>Loop unrolling</p></li>
+<li><p>Cache awareness</p>
+<ul>
+<li><p>Optimize the memory access pattern for better cache performance</p></li>
+<li><p>Loop interchange</p></li>
+<li><p>Loop tiling</p></li>
+</ul>
+</li>
+<li><p>Vectorization (hardware architecture dependent)</p>
+<ul>
+<li><p>Intel MMX, SSE, AVX</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Memory operations</p>
+<p>Block memory operations are usually faster than element-wise operations. The strategy is to use block memory operations whenever possible. The following functions are frequently used in this course:</p>
+<ul class="simple">
+<li><p>Memory allocation/deallocation</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">malloc</span></code> and <code class="docutils literal notranslate"><span class="pre">free</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">calloc</span></code> and <code class="docutils literal notranslate"><span class="pre">free</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">aligned_alloc</span></code> and <code class="docutils literal notranslate"><span class="pre">free</span></code> (C11)</p></li>
+</ul>
+</li>
+<li><p>Memory block copy/set</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">memcpy</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">memset</span></code></p></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -147,7 +193,7 @@ compatible to the <code class="docutils literal notranslate"><span class="pre">g
 <li><a class="reference internal" href="#useful-compilation-flags">Useful Compilation Flags</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#performance-related-operations-in-c">Performance Related Operations in C</a></li>
+<li><a class="reference internal" href="#performance-optimization-in-c-language">Performance Optimization in C Language</a></li>
 </ul>
 </li>
 </ul>
@@ -197,7 +243,7 @@ compatible to the <code class="docutils literal notranslate"><span class="pre">g
           <a href="parallel-env.html" title="Development Environment For Parallel Programming"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" >COP 5520 Parallel and Distributed Programming</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >COP 5522 Parallel and Distributed Programming</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">C Language</a></li> 
       </ul>
     </div>

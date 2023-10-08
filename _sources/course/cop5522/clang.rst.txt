@@ -20,13 +20,17 @@ Windows subsystem of Linux, WSL). Use other compilers at your own risk.
 .. warning::
 
   The ``gcc`` from the XCode Command-line tool on Mac OS is an alias of
-  ``clang``, which is the LLVM C compiler.
+  ``clang``, which is the LLVM C compiler. It has some known differences with
+  the ``OpenMP`` for ``gcc`` covered in class.
 
 Compilation Command
 -------------------
 A typical ``gcc`` compilation command looks like::
 
-  gcc -o main main.c
+  gcc <flags> <arguments>
+
++ ``<flags>`` are the compilation flags
++ ``<arguments>`` are the source files (.c) and libraries (.o)
 
 Useful Compilation Flags
 ------------------------
@@ -39,16 +43,23 @@ Useful Compilation Flags
 
 + ``-I`` specifies the path to include headers
 
-  * ``-I.``
+  * No space between ``-I`` and the path!
+  * ``-I.`` means to look for headers in the current directory
 
 + ``-l`` specifies the libraries to use
 
-  * ``-lpthread``
+  * ``-lpthread`` POSIX thread library
 
 + ``-f`` specifies flags
 
   * ``-fpic``  Position dependent
   * ``-fopenmp``  enable OpenMP support
+
++ ``-m`` specifies the architecture
+
+  * ``-march=native``  use the native architecture
+  * ``-m64``  use 64-bit architecture
+  * ``-msse4.2``  use SSE4.2 instruction set
 
 + ``-std`` specifies the C language standard
 
@@ -57,13 +68,39 @@ Useful Compilation Flags
   * ``-std=c99 -pedantic``
   * ``-std=c11 -pedantic``
 
-Performance Related Operations in C
-===================================
+Performance Optimization in C Language
+======================================
++ Compilation optimization
+
+  * ``-O2``
+  * ``-O3``
+  * ``-Ofast``
+  * ``-ffast-math``
+
++ Selected Optimization Approaches
+
+  * Loop unrolling
+  * Cache awareness
+
+    - Optimize the memory access pattern for better cache performance
+    - Loop interchange
+    - Loop tiling
+
+  * Vectorization (hardware architecture dependent)
+
+    - Intel MMX, SSE, AVX
+
 + Memory operations
 
-  * malloc
-  * calloc
-  * aligned_alloc (C11)
-  * free
-  * memset
-  * memcpy
+  Block memory operations are usually faster than element-wise operations. The strategy is to use block memory operations whenever possible. The following functions are frequently used in this course:
+
+  * Memory allocation/deallocation
+
+    - ``malloc`` and ``free``
+    - ``calloc`` and ``free``
+    - ``aligned_alloc`` and ``free`` (C11)
+
+  * Memory block copy/set
+
+    - ``memcpy``
+    - ``memset``
