@@ -1,0 +1,223 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Greedy Solution to Hoffman Coding Problem &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/general/problems/greedy-huffman.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Midterm 1 Review" href="../../course/cop4534/mid1-review.html" />
+    <link rel="prev" title="Greedy Solution to Bin Packing Problem" href="greedy-bin-packing.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../course/cop4534/mid1-review.html" title="Midterm 1 Review"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="greedy-bin-packing.html" title="Greedy Solution to Bin Packing Problem"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop4534/m08.html" >Module 8: Greedy Algorithms</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="../algorithm/greedy.html" accesskey="U">Greedy Algorithms</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Greedy Solution to Hoffman Coding Problem</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="greedy-solution-to-hoffman-coding-problem">
+<h1>Greedy Solution to Hoffman Coding Problem<a class="headerlink" href="#greedy-solution-to-hoffman-coding-problem" title="Permalink to this heading">¶</a></h1>
+<section id="huffman-coding">
+<h2>Huffman Coding<a class="headerlink" href="#huffman-coding" title="Permalink to this heading">¶</a></h2>
+<p>Huffman coding is a lossless data compression algorithm. The idea is to assign
+variable-length codes to input characters, lengths of the assigned codes are
+based on the frequencies of corresponding characters. The most frequent
+character gets the smallest code and the least frequent character gets the
+largest code.</p>
+</section>
+<section id="characteristics">
+<h2>Characteristics<a class="headerlink" href="#characteristics" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Prefix code (a.k.a Prefix-free code)</p>
+<ul>
+<li><p>No codeword appears as a prefix of any other codeword.</p></li>
+<li><p>No ambiguity when decoding a bitstream.</p></li>
+</ul>
+</li>
+<li><p>Optimal code</p>
+<ul>
+<li><p>Minimizes the length of the encoded bitstream.</p></li>
+<li><p>The most frequent character are encoded with the least number of bits.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="applications">
+<h2>Applications<a class="headerlink" href="#applications" title="Permalink to this heading">¶</a></h2>
+<p>As a fundamental algorithm in data compression, Huffman coding is used in
+various compression schemes such as JPEG, MP3, and DEFLATE (PKZIP). It is also
+used in other algorithms or applications that require lossless compression and
+depression like in network transmission software.</p>
+</section>
+<section id="prefix-coding-tree">
+<h2>Prefix Coding Tree<a class="headerlink" href="#prefix-coding-tree" title="Permalink to this heading">¶</a></h2>
+<p>The coding tree is a binary tree that represents the mapping between characters
+and their corresponding codewords.</p>
+<ul class="simple">
+<li><p>Full binary tree</p></li>
+<li><p>Leaf nodes are characters (guaranteed prefix code)</p></li>
+<li><p>Each internal node means a bit in the codeword</p></li>
+</ul>
+</section>
+<section id="example-coding-trees">
+<h2>Example coding trees<a class="headerlink" href="#example-coding-trees" title="Permalink to this heading">¶</a></h2>
+<img alt="Prefix coding trees" src="_static/prefix-coding-trees.png" />
+<div class="footnote docutils container">
+<p>Credit: Introduction to Algorithms, 4th Ed., T. Cormen et al.</p>
+</div>
+<ul>
+<li><p>Left: Fixed length encoding</p>
+<p>Total space: 3 * (45 + 13 + 12 + 16 + 9 + 5) = 300 bits</p>
+</li>
+<li><p>Right: Huffman coding</p>
+<p>Total space: 1 * 45 + 2 * 13 + 2 * 12 + 3 * 16 + 4 * 9 + 4 * 5 = 199 bits</p>
+</li>
+<li><p>Contents in nodes:</p>
+<ul class="simple">
+<li><p>Leaf node: &lt;character&gt;: &lt;frequency&gt;</p></li>
+<li><p>Internal node: &lt;frequency of subtree&gt;</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="algorithm-to-build-a-huffman-coding-tree">
+<h2>Algorithm to build a Huffman coding tree<a class="headerlink" href="#algorithm-to-build-a-huffman-coding-tree" title="Permalink to this heading">¶</a></h2>
+<p>This is a greedy algorithm that builds the tree bottom-up from the least
+frequent characters to the most frequent characters.</p>
+<ul class="simple">
+<li><p>Create a leaf node for each symbol and add it to the priority queue.</p></li>
+<li><p>While there is more than one node in the queue:</p>
+<ul>
+<li><p>Remove the two nodes of lowest frequency from the queue</p></li>
+<li><p>Create a new internal node with these two nodes as children and with
+frequency equal to the sum of the two nodes’ frequency.</p></li>
+<li><p>Add the new node to the queue.</p></li>
+</ul>
+</li>
+<li><p>The remaining node is the root node and the tree is complete.</p></li>
+</ul>
+<div class="footnote docutils container">
+<p>Credit: Pseudo-code from <a class="reference external" href="https://en.wikipedia.org/wiki/Huffman_coding">Wikipedia</a></p>
+</div>
+</section>
+<section id="steps-to-build-the-example-tree">
+<h2>Steps to build the example tree<a class="headerlink" href="#steps-to-build-the-example-tree" title="Permalink to this heading">¶</a></h2>
+<img alt="Steps to Build the Example Tree" src="_static/huffman-steps.png" />
+<div class="footnote docutils container">
+<p>Credit: Introduction to Algorithms, 4th Ed., T. Cormen et al.</p>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Greedy Solution to Hoffman Coding Problem</a><ul>
+<li><a class="reference internal" href="#huffman-coding">Huffman Coding</a></li>
+<li><a class="reference internal" href="#characteristics">Characteristics</a></li>
+<li><a class="reference internal" href="#applications">Applications</a></li>
+<li><a class="reference internal" href="#prefix-coding-tree">Prefix Coding Tree</a></li>
+<li><a class="reference internal" href="#example-coding-trees">Example coding trees</a></li>
+<li><a class="reference internal" href="#algorithm-to-build-a-huffman-coding-tree">Algorithm to build a Huffman coding tree</a></li>
+<li><a class="reference internal" href="#steps-to-build-the-example-tree">Steps to build the example tree</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="greedy-bin-packing.html"
+                          title="previous chapter">Greedy Solution to Bin Packing Problem</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../../course/cop4534/mid1-review.html"
+                          title="next chapter">Midterm 1 Review</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/general/problems/greedy-huffman.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../course/cop4534/mid1-review.html" title="Midterm 1 Review"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="greedy-bin-packing.html" title="Greedy Solution to Bin Packing Problem"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop4534/m08.html" >Module 8: Greedy Algorithms</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="../algorithm/greedy.html" >Greedy Algorithms</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Greedy Solution to Hoffman Coding Problem</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2023, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>
