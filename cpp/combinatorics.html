@@ -130,21 +130,9 @@ operations</p></li>
 </ul>
 <section id="enumerate-all-us-phone-numbers">
 <h3>Enumerate All US Phone Numbers<a class="headerlink" href="#enumerate-all-us-phone-numbers" title="Permalink to this heading">¶</a></h3>
-<div class="flex-container docutils container">
-<div class="half docutils container">
-<ul class="simple">
-<li><p>Order matters? Yes</p></li>
-<li><p>Repetition allowed? Yes</p></li>
-<li><p>Size of problem? 10</p></li>
-<li><p>Type of problem? Permutation with repetition</p></li>
-<li><p>Counting principle? Product rule</p></li>
-<li><p>Formula? <span class="math notranslate nohighlight">\(10^{10}\)</span></p></li>
-<li><p>Goal? Enumerate</p></li>
-<li><p>Write code? Yes</p></li>
-<li><p>Algorithmic paradigm? Brute force</p></li>
-</ul>
-</div>
-<div class="half docutils container">
+<p>In this problem, we want to enumerate all US phone numbers.</p>
+<p>This is a permutation problem that allow repetition. As an enumeration problem,
+we can solve this problem using brute force.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">enumeratePhoneNumbers</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="n">prefix</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">prefix</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
@@ -156,7 +144,27 @@ operations</p></li>
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
+</section>
+<section id="integer-partition-problem">
+<h3>Integer Partition Problem<a class="headerlink" href="#integer-partition-problem" title="Permalink to this heading">¶</a></h3>
+<p>In this problem we take advantage of the recurrence relation of the integer
+partition problem. <span class="math notranslate nohighlight">\(p(n, k) = p(n - k, k) + p(n, k - 1)\)</span>.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">partition</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// Base cases</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">  </span><span class="c1">// One way to partition 0 using no numbers</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">  </span><span class="c1">// No way to partition with negative number or no numbers left</span>
+
+<span class="w">  </span><span class="c1">// Recursive cases</span>
+<span class="w">  </span><span class="c1">// Include k in the partition and recursively partition n-k with k</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">include_k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">partition</span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// Exclude k from the partition and recursively partition n with k-1</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">exclude_k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">partition</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">include_k</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">exclude_k</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 </section>
 </section>
@@ -177,6 +185,7 @@ operations</p></li>
 <li><a class="reference internal" href="#typical-approaches">Typical Approaches</a></li>
 <li><a class="reference internal" href="#related-c-features">Related C++ Features</a><ul>
 <li><a class="reference internal" href="#enumerate-all-us-phone-numbers">Enumerate All US Phone Numbers</a></li>
+<li><a class="reference internal" href="#integer-partition-problem">Integer Partition Problem</a></li>
 </ul>
 </li>
 </ul>

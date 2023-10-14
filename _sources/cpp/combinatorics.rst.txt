@@ -67,31 +67,42 @@ Related C++ Features
 
 Enumerate All US Phone Numbers
 ------------------------------
-.. container:: flex-container
+In this problem, we want to enumerate all US phone numbers.
 
-  .. container:: half
+This is a permutation problem that allow repetition. As an enumeration problem,
+we can solve this problem using brute force.
 
-    + Order matters? Yes
-    + Repetition allowed? Yes
-    + Size of problem? 10
-    + Type of problem? Permutation with repetition
-    + Counting principle? Product rule
-    + Formula? :math:`10^{10}`
-    + Goal? Enumerate
-    + Write code? Yes
-    + Algorithmic paradigm? Brute force
+.. code-block:: cpp
 
-  .. container:: half
+  void enumeratePhoneNumbers(int n, string prefix) {
+    if (n == 0) {
+      cout << prefix << endl;
+      return;
+    }
+    for (int i = 0; i < 10; i++) {
+      enumeratePhoneNumbers(n - 1, prefix + to_string(i));
+    }
+  }
 
-    .. code-block:: cpp
+Integer Partition Problem
+-------------------------
+In this problem we take advantage of the recurrence relation of the integer
+partition problem. :math:`p(n, k) = p(n - k, k) + p(n, k - 1)`.
 
-      void enumeratePhoneNumbers(int n, string prefix) {
-        if (n == 0) {
-          cout << prefix << endl;
-          return;
-        }
-        for (int i = 0; i < 10; i++) {
-          enumeratePhoneNumbers(n - 1, prefix + to_string(i));
-        }
-      }
+.. code-block:: cpp
 
+  int partition(int n, int k) {
+    // Base cases
+    if (n == 0) return 1;  // One way to partition 0 using no numbers
+    if (n < 0 || k <= 0)
+      return 1;  // No way to partition with negative number or no numbers left
+
+    // Recursive cases
+    // Include k in the partition and recursively partition n-k with k
+    int include_k = partition(n - k, k);
+
+    // Exclude k from the partition and recursively partition n with k-1
+    int exclude_k = partition(n, k - 1);
+
+    return include_k + exclude_k;
+  }
