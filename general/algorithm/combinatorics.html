@@ -1,0 +1,556 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Combinatorics And Counting &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/general/algorithm/combinatorics.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Combinatorics Problems That Needs Algorithms" href="../../cpp/combinatorics.html" />
+    <link rel="prev" title="Module 9: Combinatorics and Counting" href="../../course/cop4534/m09.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../cpp/combinatorics.html" title="Combinatorics Problems That Needs Algorithms"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../../course/cop4534/m09.html" title="Module 9: Combinatorics and Counting"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop4534/m09.html" accesskey="U">Module 9: Combinatorics and Counting</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Combinatorics And Counting</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="combinatorics-and-counting">
+<h1>Combinatorics And Counting<a class="headerlink" href="#combinatorics-and-counting" title="Permalink to this heading">¶</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
+<p>Combinatorics is a branch of mathematics that deals with counting, arrangement,
+and combination of objects. It is about finding ‘how many’ possible structures
+of a certain kind exist. Combinatorics provides tools to answer questions like:</p>
+<ul class="simple">
+<li><p>How many ways can a set of objects be arranged?</p></li>
+<li><p>How many combinations or selections can be made from a group?</p></li>
+</ul>
+</section>
+<section id="significance">
+<h2>Significance<a class="headerlink" href="#significance" title="Permalink to this heading">¶</a></h2>
+<p>Combinatorics is important in computer science because it is the mathematical
+foundation for many algorithms and data structures. Combinatorics can be used
+to:</p>
+<ul class="simple">
+<li><p>Analyze the complexity of algorithms</p></li>
+<li><p>Design efficient algorithms</p></li>
+<li><p>Develop data structures that can efficiently store and retrieve data</p></li>
+<li><p>Solve problems in cryptography, machine learning, and other areas of computer
+science</p></li>
+</ul>
+</section>
+<section id="counting-principles">
+<h2>Counting Principles<a class="headerlink" href="#counting-principles" title="Permalink to this heading">¶</a></h2>
+<ul>
+<li><p>The Sum Rule:</p>
+<p>If an event can occur in m ways and another event can occur in n ways, and
+the two events are mutually exclusive (meaning that they cannot both occur at
+the same time), then the total number of ways that either event can occur is
+m+n.</p>
+<p>Example: If you are allowed to choose one from 3 shirts and 4 pants, then you
+have a total of <span class="math notranslate nohighlight">\(3+4=7\)</span> different pieces of clothing to choose from.</p>
+</li>
+<li><p>The Product Rule:</p>
+<p>If an event can occur in m ways and another event can occur in n ways, both
+events should happen as the same time, and the two events are independent
+(meaning that the occurrence of one event does not affect the probability of
+the other event occurring), then the total number of ways that both events
+can occur is <span class="math notranslate nohighlight">\(m \times n\)</span>.</p>
+<p>Example: Using the same clothing example, if you want to decide on an outfit
+combination of one shirt and one pants out of the 3 shirts and 4 pants,
+then you have <span class="math notranslate nohighlight">\(3×4=12\)</span> possible combinations to choose from.</p>
+</li>
+<li><p>The Division Rule:</p>
+<p>If out of the total n ways of doing something, every item is counted m times,
+then the number of different ways of doing that thing is n/m. This is a
+method to correct consistent overcounting.</p>
+<p>Example: If you count n edges of a polygon by starting vertex and ending
+vertex, then each edge is counted twice. So, the number of edges is n/2.</p>
+</li>
+<li><p>Include-exclude principle</p>
+<p>The Inclusion-Exclusion Principle is a counting technique used to compute the
+number of elements in the union of several sets. This principle helps to
+correct the overcounting that occurs when using just the sum of the sizes of
+individual sets.</p>
+</li>
+<li><p>Two sets <span class="math notranslate nohighlight">\(|A \cup B| = |A| + |B| - |A \cap B|\)</span></p></li>
+<li><p>Three sets <span class="math notranslate nohighlight">\(|A \cup B \cup C| = |A| + |B| + |C| - |A \cap B| - |B
+\cap C| - |A \cap C| + |A \cap B \cap C|\)</span></p>
+<ul>
+<li><p>Pigeonhole principle</p>
+<p>If n items are put into m containers, with <span class="math notranslate nohighlight">\(n&gt;m\)</span>, then at least one
+container must contain more than one item.</p>
+</li>
+<li><p>Recurrence relations</p>
+<p>Count sub-problems and combine the results to get the final answer.</p>
+</li>
+</ul>
+</li>
+</ul>
+<img alt="Pigeon Hole Principle" src="../../_images/pigeon-hole.jpg" />
+<div class="footnote docutils container">
+<p>Credit: <a class="reference external" href="https://en.wikipedia.org/wiki/Pigeonholing">https://en.wikipedia.org/wiki/Pigeonholing</a></p>
+</div>
+</section>
+<section id="category-of-problems">
+<h2>Category of problems<a class="headerlink" href="#category-of-problems" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Arrangement</p>
+<ul>
+<li><p>Ordering and organizing objects</p></li>
+<li><p>Permutation (order matters)</p>
+<ul>
+<li><p>standard</p>
+<ul>
+<li><p>all objects: <span class="math notranslate nohighlight">\(P^n = n!\)</span></p></li>
+<li><p>r objects: <span class="math notranslate nohighlight">\(P^n_r = \frac{n!}{(n-r)!}\)</span></p></li>
+</ul>
+</li>
+<li><p>circular</p>
+<ul>
+<li><p>all objects: <span class="math notranslate nohighlight">\((n-1)!\)</span></p></li>
+<li><p>r objects: <span class="math notranslate nohighlight">\(C^n_r \times (r-1)!\)</span></p></li>
+</ul>
+</li>
+<li><p>allow repetition</p>
+<ul>
+<li><p>r objects: <span class="math notranslate nohighlight">\(n^r\)</span></p></li>
+</ul>
+</li>
+<li><p>multi-set</p>
+<ul>
+<li><p>all objects with multiple duplicate sets</p></li>
+<li><p><span class="math notranslate nohighlight">\(\frac{n!}{n_1!n_2!...n_k!}\)</span></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Selection (order does not matter)</p>
+<ul>
+<li><p>Selecting objects from a set</p></li>
+<li><p>Order does not matter</p></li>
+<li><p>Combination</p>
+<ul>
+<li><p>Find permutation first, then divide by r! to correct overcounting</p></li>
+<li><p>standard <span class="math notranslate nohighlight">\(C^n_r = \frac{n!}{r!(n-r)!}\)</span></p></li>
+<li><p>allow repetition <span class="math notranslate nohighlight">\(\frac{(n+r-1)!}{r!(n-1)!}\)</span></p></li>
+</ul>
+</li>
+<li><p>Subset</p>
+<ul>
+<li><p>Number of all subsets <span class="math notranslate nohighlight">\(2^n\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\sum_{k=0}^n C^n_k = 2^n\)</span></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Distribution (Partition)</p>
+<ul>
+<li><p>Distributing objects into groups</p></li>
+<li><p>Distributing n identical objects into r distinct groups</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(C^{n+r-1}_n\)</span></p></li>
+</ul>
+</li>
+<li><p>Distributing n distinct objects into r distinct groups</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(r^n\)</span></p></li>
+</ul>
+</li>
+<li><p>Integer partition - represent integer n as sum of positive integers (value
+up to k)</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(p(n,k) = p(n,k-1) + p(n-k,k)\)</span></p></li>
+<li><p>recursive algorithm</p></li>
+<li><p>hard to find closed form solution in math</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Geometric counting</p>
+<ul>
+<li><p>Catalan numbers</p></li>
+</ul>
+</li>
+</ul>
+<section id="correct-overcounting-in-selection">
+<h3>Correct Overcounting In Selection<a class="headerlink" href="#correct-overcounting-in-selection" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Example. Select 3 letters from A, B, C, D. Order does not matter.</p></li>
+<li><p>To solve the problem a good strategy is to first find the number of
+permutations and then divide by the number of ways to arrange the 3 letters.</p></li>
+</ul>
+<img alt="Overcounting" src="_static/overcounting.png" />
+<ul class="simple">
+<li><p>Each row represent all permutations of a unique combination. As each row have
+<span class="math notranslate nohighlight">\(3!\)</span> permutations, using the division rule, we can correct the
+overcounting.</p></li>
+<li><p>The final result is <span class="math notranslate nohighlight">\(C^4_3 = P^4_3/P^3_3 = 4\)</span>.</p></li>
+</ul>
+</section>
+</section>
+<section id="some-strategies">
+<h2>Some Strategies<a class="headerlink" href="#some-strategies" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Direct counting</p></li>
+<li><p>Break down into cases</p>
+<ul>
+<li><p>sum - exclusive events</p></li>
+<li><p>product - independent events</p></li>
+</ul>
+</li>
+<li><p>Counting by complement</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(Count = Total - \overline{Count}\)</span></p></li>
+</ul>
+</li>
+<li><p>Counting by recursion</p>
+<ul>
+<li><p>May resort to an algorithm</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="solve-combinatorics-problems">
+<h2>Solve Combinatorics Problems<a class="headerlink" href="#solve-combinatorics-problems" title="Permalink to this heading">¶</a></h2>
+<section id="steps">
+<h3>Steps<a class="headerlink" href="#steps" title="Permalink to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Identify the type of problem</p>
+<ul class="simple">
+<li><p>Arrangement</p></li>
+<li><p>Selection</p></li>
+<li><p>Distribution/Partition</p></li>
+</ul>
+</li>
+<li><p>Identify the constraints</p>
+<ul class="simple">
+<li><p>Repetition</p></li>
+<li><p>Order</p></li>
+<li><p>Grouping</p></li>
+</ul>
+</li>
+<li><p>Identify the counting principle</p></li>
+</ol>
+</section>
+<section id="ron-s-greasy-spoon">
+<h3>Ron’s Greasy Spoon<a class="headerlink" href="#ron-s-greasy-spoon" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Definition: Build your own breakfast from the menu:</p>
+<ul>
+<li><p>1 egg dish 4 choices: Scrambled, Fried, Poached, Omelette</p></li>
+<li><p>2 sides 5 choices:  Bacon, Sausage, Hash Browns, Toast, Pancakes</p></li>
+<li><p>1 drink 4 choices: Coffee, Tea, Milk, Orange Juice</p></li>
+<li><p>How many different breakfasts can you order?</p></li>
+</ul>
+</li>
+<li><p>Solution:</p>
+<ul>
+<li><p>Product rule: choose 1 egg dish, 2 sides, 1 drink, independent events</p></li>
+<li><p>Choose 1 egg dish: 4 ways</p></li>
+<li><p>Choose 2 sides: <span class="math notranslate nohighlight">\(C^5_2 = 10\)</span> ways</p></li>
+<li><p>Choose 1 drink: 4 ways</p></li>
+<li><p>Total number of breakfasts: <span class="math notranslate nohighlight">\(4 \times 10 \times 4 = 160\)</span></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="more-arrangement-selection-problems">
+<h3>More Arrangement/Selection Problems<a class="headerlink" href="#more-arrangement-selection-problems" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>How many 8 bit strings start with either 110 or 101?</p>
+<ul>
+<li><p>Sum rule: select two 5 bit strings, exclusive to each other</p></li>
+<li><p>For each: size 5 permutation with repetition <span class="math notranslate nohighlight">\(2^5\)</span></p></li>
+<li><p>Total: <span class="math notranslate nohighlight">\(2^5 + 2^5 = 64\)</span></p></li>
+</ul>
+</li>
+<li><p>Six person committee { a, b, c, d, e, f}. Select President, Vice President,
+and Treasurer and either a or b must be President. Each person can have only
+one role.</p>
+<ul>
+<li><p>Product rule: Select 3 roles, independent events</p></li>
+<li><p>Order matter? Yes, President, Vice President, Treasurer are different roles</p></li>
+<li><p>President: 2 choices</p></li>
+<li><p>Vice President: 4 choices (anyone but President)</p></li>
+<li><p>Treasurer: 3 choices (anyone but President and Vice President)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="anagram">
+<h3>Anagram<a class="headerlink" href="#anagram" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>An anagram of a string is another string that contains the same characters,
+possibly in a different order. For example, “listen” can be rearranged to
+form “silent” or “enlist”, making them anagrams.</p></li>
+<li><p>Question: How many anagrams of the word “mississippi” are there?</p>
+<ul>
+<li><p>Order matters: permutation</p></li>
+<li><p>Repetition: 4 i’s, 4 s’s, 2 p’s</p></li>
+<li><p>Division rule to correct overcounting</p>
+<ul>
+<li><p>E.g. The order of the 4 i’s does not matter, so divide by 4!</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Total number of anagrams: <span class="math notranslate nohighlight">\(\frac{11!}{4!4!2!} = 34650\)</span></p></li>
+</ul>
+</section>
+<section id="how-many-ways-to-give-5-gifts-of-the-same-type-to-3-children">
+<h3>How many ways to give 5 gifts of the same type to 3 children?<a class="headerlink" href="#how-many-ways-to-give-5-gifts-of-the-same-type-to-3-children" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>This is a partition problem to distribute 5 identical items to 3 distinct
+bins.</p></li>
+<li><p>The well-known method called “star and bar”:</p>
+<ul>
+<li><p>The idea is to put 5 items (*) together with 2 separators (|) in a line
+like: * * * | * *|.</p></li>
+<li><p>Out of the total 7 positions, pick 5 positions to put the stars.</p></li>
+</ul>
+</li>
+<li><p>A less efficient method is to use the sum rule and break down into cases.
+Calculate the number of ways for various partitions of 5 items into 3 bins.
+Like 5-0-0, 4-1-0, 3-2-0, 3-1-1, etc. Then add them up.</p></li>
+</ul>
+</section>
+<section id="poker-game">
+<h3>Poker Game<a class="headerlink" href="#poker-game" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>To find number of possible hands when you draw 5 random cards.</p></li>
+<li><p>Total number of possible hands:</p>
+<ul>
+<li><p>5 cards from 52 cards</p></li>
+<li><p><span class="math notranslate nohighlight">\(C^{52}_5 = 2598960\)</span></p></li>
+</ul>
+</li>
+<li><p>Royal flush: 1 each suit, 4 total</p></li>
+<li><p>Straight flush: 36 ways</p>
+<ul>
+<li><p>5 consecutive cards, same suit</p></li>
+<li><p>Select starting card from <cite>Ace, 2, … to 10</cite> 10 ways per suit:
+<span class="math notranslate nohighlight">\(C^10_1\)</span></p></li>
+<li><p>Select suit: <span class="math notranslate nohighlight">\(C^4_1\)</span></p></li>
+<li><p>Remove over counting: royal flush</p></li>
+</ul>
+</li>
+<li><p>Four of a kind: 624 ways</p>
+<ul>
+<li><p>Select 2 ranks (order matters): <span class="math notranslate nohighlight">\(P^{13}_2\)</span></p></li>
+<li><p>Select a suite for 1 rank: <span class="math notranslate nohighlight">\(C^4_1\)</span></p></li>
+</ul>
+</li>
+<li><p>Full house: 3744 ways</p>
+<ul>
+<li><p>Select 2 ranks from 13 ranks (order matters) <span class="math notranslate nohighlight">\(P^13_2\)</span></p></li>
+<li><p>Select 3 suits for the first rank: <span class="math notranslate nohighlight">\(C^4_3\)</span></p></li>
+<li><p>Select 2 suits for the second rank: <span class="math notranslate nohighlight">\(C^4_2\)</span></p></li>
+</ul>
+</li>
+<li><p>Flush: 5108 ways</p>
+<ul>
+<li><p>Select 5 ranks from 13 ranks: <span class="math notranslate nohighlight">\(C^{13}_5\)</span></p></li>
+<li><p>Select a suit: <span class="math notranslate nohighlight">\(C^4_1\)</span></p></li>
+<li><p>Remove overcounting: straight flush, royal flush</p></li>
+</ul>
+</li>
+<li><p>Straight 10200 ways</p>
+<ul>
+<li><p>Product rule</p></li>
+<li><p>Select the starting card: <span class="math notranslate nohighlight">\(C^{10}_1\)</span></p></li>
+<li><p>Select the suits for each card (repetition allowed) : <span class="math notranslate nohighlight">\(4^5\)</span></p></li>
+<li><p>Remove overcounting: straight flush, royal flush</p></li>
+</ul>
+</li>
+<li><p>Three of a kind: 54912 ways</p>
+<ul>
+<li><p>Product rule</p></li>
+<li><p>Select a rank for 3 cards: <span class="math notranslate nohighlight">\(C^13_1\)</span></p></li>
+<li><p>Select the suits for 3 cards: <span class="math notranslate nohighlight">\(C^4_3\)</span></p></li>
+<li><p>Select 2 ranks for the other 2 cards: <span class="math notranslate nohighlight">\(C^{12}_2\)</span></p></li>
+<li><p>Select the suits for the other 2 cards: <span class="math notranslate nohighlight">\(4^2\)</span></p></li>
+</ul>
+</li>
+<li><p>Two pairs: 123552 ways</p>
+<ul>
+<li><p>Product rule</p></li>
+<li><p>Select 2 ranks for the pairs: <span class="math notranslate nohighlight">\(C^{13}_2\)</span> ways</p></li>
+<li><p>Select 1 rank for the other card: <span class="math notranslate nohighlight">\(C^{11}_1\)</span> ways</p></li>
+<li><p>Select 2 suits for the first pair: <span class="math notranslate nohighlight">\(C^4_2\)</span> ways</p></li>
+<li><p>Select 2 suits for the second pair: <span class="math notranslate nohighlight">\(C^4_2\)</span> ways</p></li>
+<li><p>Select 1 suit for the other card: <span class="math notranslate nohighlight">\(C^4_1\)</span> ways</p></li>
+</ul>
+</li>
+<li><p>One pair 1,098,240 ways (exercise)</p></li>
+<li><p>High card</p>
+<ul>
+<li><p>Hard to count directly because of the many cases of overcounting</p></li>
+<li><p>Use complement: Total - all other hands</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="poker-game-partial-hands">
+<h3>Poker Game: Partial Hands<a class="headerlink" href="#poker-game-partial-hands" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Rule of thumb:</p>
+<ul>
+<li><p>Anything you do not know is assumed to be equally likely to be any of the
+remaining cards.</p></li>
+</ul>
+</li>
+<li><p>With two spades in hand? How many ways to get a flush?</p>
+<ul>
+<li><p>3 spades in the remaining 11 spades</p></li>
+<li><p><span class="math notranslate nohighlight">\(C^{11}_3 = 165\)</span></p></li>
+</ul>
+</li>
+<li><p>Two Aces in hand? How many ways to get a full house?</p>
+<ul>
+<li><p>Case 1: 1 Ace and a pair</p>
+<ul>
+<li><p>Select 1 Ace (2 left): <span class="math notranslate nohighlight">\(C^2_1\)</span></p></li>
+<li><p>Select 1 rank for the pair: <span class="math notranslate nohighlight">\(C^{12}_1\)</span></p></li>
+<li><p>Select 2 suits for the pair: <span class="math notranslate nohighlight">\(C^4_2\)</span></p></li>
+</ul>
+</li>
+<li><p>Case 2: 3 of a kind</p>
+<ul>
+<li><p>Select 1 rank for the 3 of a kind: <span class="math notranslate nohighlight">\(C^{12}_1\)</span></p></li>
+<li><p>Select 3 suits for the 3 of a kind: <span class="math notranslate nohighlight">\(C^4_3\)</span></p></li>
+</ul>
+</li>
+<li><p>Add the two cases because they are exclusive</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Combinatorics And Counting</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#significance">Significance</a></li>
+<li><a class="reference internal" href="#counting-principles">Counting Principles</a></li>
+<li><a class="reference internal" href="#category-of-problems">Category of problems</a><ul>
+<li><a class="reference internal" href="#correct-overcounting-in-selection">Correct Overcounting In Selection</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#some-strategies">Some Strategies</a></li>
+<li><a class="reference internal" href="#solve-combinatorics-problems">Solve Combinatorics Problems</a><ul>
+<li><a class="reference internal" href="#steps">Steps</a></li>
+<li><a class="reference internal" href="#ron-s-greasy-spoon">Ron’s Greasy Spoon</a></li>
+<li><a class="reference internal" href="#more-arrangement-selection-problems">More Arrangement/Selection Problems</a></li>
+<li><a class="reference internal" href="#anagram">Anagram</a></li>
+<li><a class="reference internal" href="#how-many-ways-to-give-5-gifts-of-the-same-type-to-3-children">How many ways to give 5 gifts of the same type to 3 children?</a></li>
+<li><a class="reference internal" href="#poker-game">Poker Game</a></li>
+<li><a class="reference internal" href="#poker-game-partial-hands">Poker Game: Partial Hands</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../../course/cop4534/m09.html"
+                          title="previous chapter">Module 9: Combinatorics and Counting</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../../cpp/combinatorics.html"
+                          title="next chapter">Combinatorics Problems That Needs Algorithms</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/general/algorithm/combinatorics.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../cpp/combinatorics.html" title="Combinatorics Problems That Needs Algorithms"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../../course/cop4534/m09.html" title="Module 9: Combinatorics and Counting"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop4534/m09.html" >Module 9: Combinatorics and Counting</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Combinatorics And Counting</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2023, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>

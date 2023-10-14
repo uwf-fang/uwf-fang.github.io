@@ -1,0 +1,97 @@
+********************************************
+Combinatorics Problems That Needs Algorithms
+********************************************
+
+.. container:: subtitle
+
+  Demonstrated in C++
+
+Why Writing Algorithms?
+=======================
++ Prove correctness of your solution using math
++ Too hard to solve using math
++ When we want to see the solution in addition to the count
+
+Typical Approaches
+==================
++ Strategy: Other algorithmic paradigms
++ Enumeration problems
+
+  * Simple enumeration: brute force, backtracking
+  * With overlapping sub-problems: dynamic programming
+
++ Optimization problems (Combinatorial optimization)
+
+  * With overlapping sub-problems: greedy algorithm, dynamic programming
+  * Without overlapping sub-problems: greedy algorithm
+  * Heuristic algorithms: simulated annealing, genetic algorithm, etc.
+  * Linear programming
+
+Related C++ Features
+====================
++ Recursion
+
+  * art of memorization (manipulate parameter and return value)
+
++ STL algorithms (``<algorithm>`` header)
+
+  * ``next_permutation`` function
+  * ``is_permutation`` function
+  * ``sort`` function
+  * ``is_sorted`` function
+  * ``reverse`` function
+  * ``rotate`` function
+  * ``shuffle`` function
+
++ Useful data structures
+
+  * ``std::vector<bool>`` (bitset)
+
+    - to memorize visited/processed/seen states
+    - small number of total states
+    - :math:`O(1)` time complexity for ``set`` and ``test`` operations
+
+  * ``std::set`` to memorize visited/processed/seen states
+
+    - large number of total states
+    - Self-balancing binary search tree
+    - :math:`O(\log n)` time complexity for ``insert`` and ``find`` operations
+    - :math:`O(n)` time complexity for ``erase`` operation
+
+  * ``std::unordered_set`` to memorize visited/processed/seen states
+
+    - large number of total states
+    - Hash table
+    - :math:`O(1)` time complexity for ``insert``, ``find``, and ``erase``
+      operations
+
+Enumerate All US Phone Numbers
+------------------------------
+.. container:: flex-container
+
+  .. container:: half
+
+    + Order matters? Yes
+    + Repetition allowed? Yes
+    + Size of problem? 10
+    + Type of problem? Permutation with repetition
+    + Counting principle? Product rule
+    + Formula? :math:`10^{10}`
+    + Goal? Enumerate
+    + Write code? Yes
+    + Algorithmic paradigm? Brute force
+
+  .. container:: half
+
+    .. code-block:: cpp
+
+      void enumeratePhoneNumbers(int n, string prefix) {
+        if (n == 0) {
+          cout << prefix << endl;
+          return;
+        }
+        for (int i = 0; i < 10; i++) {
+          enumeratePhoneNumbers(n - 1, prefix + to_string(i));
+        }
+      }
+
