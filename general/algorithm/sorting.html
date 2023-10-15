@@ -21,8 +21,8 @@
     <link rel="canonical" href="https://uwf-fang.github.io/general/algorithm/sorting.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Module 10 Hashing" href="../../course/cop3530/m10.html" />
-    <link rel="prev" title="Sorting Algorithms" href="../../course/cop3530/sorting.html" /> 
+    <link rel="next" title="Quick sort" href="quicksort.html" />
+    <link rel="prev" title="Module 9 Sorting" href="../../course/cop3530/m09.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -31,15 +31,14 @@
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../../course/cop3530/m10.html" title="Module 10 Hashing"
+          <a href="quicksort.html" title="Quick sort"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="../../course/cop3530/sorting.html" title="Sorting Algorithms"
+          <a href="../../course/cop3530/m09.html" title="Module 9 Sorting"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../../course/cop3530/m09.html" >Module 9 Sorting</a> &#187;</li>
-          <li class="nav-item nav-item-3"><a href="../../course/cop3530/sorting.html" accesskey="U">Sorting Algorithms</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3530/m09.html" accesskey="U">Module 9 Sorting</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Sorting Algorithms</a></li> 
       </ul>
     </div>  
@@ -66,9 +65,9 @@ visualizations of common algorithms and data structures.</p>
 <li><p>Categories</p>
 <p>All algorithms not mentioned in the book is for your information only. Only
 algorithm with bold names are covered in the book.</p>
-<ul class="simple">
-<li><p>Comparison based</p>
 <ul>
+<li><p>Comparison based</p>
+<ul class="simple">
 <li><p>Selection</p></li>
 <li><p>Insertion</p></li>
 <li><p>Bubble</p></li>
@@ -79,28 +78,38 @@ algorithm with bold names are covered in the book.</p>
 </ul>
 </li>
 <li><p>Non-comparison based</p>
-<ul>
+<ul class="simple">
 <li><p>Bucket</p></li>
 <li><p>Radix</p></li>
 <li><p>Counting</p></li>
 </ul>
 </li>
-<li><p>Divide-and-conquer <span class="math notranslate nohighlight">\(O(nlog(n))\)</span></p>
-<ul>
+<li><p>Divide-and-conquer <span class="math notranslate nohighlight">\(O(n \log n)\)</span></p>
+<ul class="simple">
 <li><p>Quick</p></li>
 <li><p>Merge</p></li>
 </ul>
 </li>
-<li><p>simple <span class="math notranslate nohighlight">\(O(n^{2})\)</span></p>
-<ul>
+<li><p>simple/naive <span class="math notranslate nohighlight">\(O(n^{2})\)</span></p>
+<ul class="simple">
 <li><p>Selection</p></li>
 <li><p>Insertion</p></li>
 <li><p>Bubble</p></li>
 </ul>
 </li>
 <li><p>Hybrid</p>
-<ul>
+<ul class="simple">
 <li><p>Tim sort: combination of merge sort and insertion sort</p></li>
+</ul>
+</li>
+<li><p>Stable</p>
+<p>The order of equal elements is preserved after sorting.</p>
+<ul class="simple">
+<li><p>Insertion</p></li>
+<li><p>Merge</p></li>
+<li><p>Counting</p></li>
+<li><p>Bucket</p></li>
+<li><p>Radix</p></li>
 </ul>
 </li>
 </ul>
@@ -108,11 +117,13 @@ algorithm with bold names are covered in the book.</p>
 <li><p>Time complexity</p>
 <ul class="simple">
 <li><p>simple <span class="math notranslate nohighlight">\(O(n^{2})\)</span>: insert, selection, bubble</p></li>
-<li><p>fast <span class="math notranslate nohighlight">\(O(nlog(n))\)</span>: quick, merge, heap</p></li>
+<li><p>fast <span class="math notranslate nohighlight">\(O(n \log n)\)</span>: quick, merge, heap</p></li>
 <li><p>linear: radix <span class="math notranslate nohighlight">\(O(nk) = O(n)\)</span>, bucket <span class="math notranslate nohighlight">\(O(n + k) = O(n)\)</span></p></li>
 </ul>
 </li>
 <li><p>Space complexity</p>
+<p>The following discussion is on array only. For linked list, the space
+complexity is always <span class="math notranslate nohighlight">\(O(1)\)</span>.</p>
 <ul class="simple">
 <li><p>in-place (swap based) <span class="math notranslate nohighlight">\(O(1)\)</span></p>
 <ul>
@@ -130,24 +141,29 @@ algorithm with bold names are covered in the book.</p>
 </li>
 </ul>
 </section>
-<section id="implementation-variations">
-<h2>Implementation Variations<a class="headerlink" href="#implementation-variations" title="Permalink to this heading">¶</a></h2>
+<section id="array-vs-linked-list">
+<h2>Array vs Linked-list<a class="headerlink" href="#array-vs-linked-list" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Sorting an array</p>
 <ul>
 <li><p>Array property</p>
 <ul>
 <li><p>fast access by index</p></li>
-<li><p>slow reconstruction of new array</p></li>
 <li><p>slow insertion and deletion of elements except at the end</p></li>
 </ul>
 </li>
-<li><p>best fit: in-place algorithms that swaps elements</p></li>
-<li><p>less efficient: out-of-place algorithms that creates new arrays and moves
-data around frequently</p></li>
+<li><p>With the same time complexity, consider data movement overhead</p></li>
+<li><p>Preferred general purpose sorting algorithms</p>
+<ul>
+<li><p>Quick sort</p></li>
+<li><p>Merge sort</p></li>
+<li><p>Heap sort</p></li>
+<li><p>Shell sort</p></li>
 </ul>
 </li>
-<li><p>Sorting a linked-list based</p>
+</ul>
+</li>
+<li><p>Sorting a linked-list</p>
 <ul>
 <li><p>Linked-list property</p>
 <ul>
@@ -156,8 +172,92 @@ data around frequently</p></li>
 <li><p>fast access to neighboring nodes</p></li>
 </ul>
 </li>
-<li><p>best fit: insertion sort, merge sort, bucket sort</p></li>
-<li><p>not suitable: shell sort, and heap sort require slow access by index</p></li>
+<li><p>With the same time complexity, consider data movement overhead</p></li>
+<li><p>Preferred general purpose sorting algorithms</p>
+<ul>
+<li><p>Merge sort</p></li>
+<li><p>Insertion sort</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="real-world-choices">
+<h2>Real-World Choices<a class="headerlink" href="#real-world-choices" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>In real-world scenarios, there are more considerations.</strong></p>
+<ul>
+<li><p>Data size is not always large</p></li>
+<li><p>Performance boost from cache is often significant</p></li>
+<li><p>We can always make more complicated sorting algorithms</p></li>
+</ul>
+</li>
+<li><p>For small arrays</p>
+<ul>
+<li><p>Insertion sort</p>
+<ul>
+<li><p>Fast</p></li>
+<li><p>Simple</p></li>
+<li><p>Stable (original order of equal elements is preserved)</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>For large arrays</p>
+<ul>
+<li><p>Quick sort &gt; Merge sort &gt; Heap sort</p>
+<ul>
+<li><p>Quick sort is faster than merge sort and heap sort in practice,
+inconsistent complexity.</p></li>
+<li><p>Merge sort is stable, has consistent complexity, but requires extra space</p></li>
+<li><p>Heap sort is in-place but is not stable and cannot make good use of cache</p></li>
+</ul>
+</li>
+<li><p>In parallel environment</p>
+<ul>
+<li><p>Merge sort</p></li>
+<li><p>Quick sort</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>The overall winner for array is</p>
+<ul>
+<li><p>Hybrid</p>
+<ul>
+<li><p>Use divide-and-conquer to divide the array into small subarrays and then
+use insertion sort to sort the small subarrays</p></li>
+<li><p>Quick sort + Insertion sort</p></li>
+<li><p>Merge sort + Insertion sort</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>For linked list</p>
+<ul>
+<li><p>Out-of-place algorithms are no longer requiring <span class="math notranslate nohighlight">\(O(n)\)</span> space</p></li>
+<li><p>Cache is not helping at all</p></li>
+<li><p>Direct sort</p>
+<ul>
+<li><p>Merge sort for large linked list (can be parallelized)</p></li>
+<li><p>Insertion sort for small linked list</p></li>
+</ul>
+</li>
+<li><p>Sort as array</p>
+<ul>
+<li><p>Make an array from the linked list</p></li>
+<li><p>Sort the array</p></li>
+<li><p>Create the new linked list according to the sorted array</p></li>
+</ul>
+</li>
+<li><p>Sort as array of pointers</p>
+<ul>
+<li><p>Make an array of pointers</p></li>
+<li><p>Sort the array of pointers</p></li>
+<li><p>Generate the new linked list according to the sorted array</p></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -176,7 +276,8 @@ data around frequently</p></li>
     <ul>
 <li><a class="reference internal" href="#">Sorting Algorithms</a><ul>
 <li><a class="reference internal" href="#overview">Overview</a></li>
-<li><a class="reference internal" href="#implementation-variations">Implementation Variations</a></li>
+<li><a class="reference internal" href="#array-vs-linked-list">Array vs Linked-list</a></li>
+<li><a class="reference internal" href="#real-world-choices">Real-World Choices</a></li>
 </ul>
 </li>
 </ul>
@@ -184,13 +285,13 @@ data around frequently</p></li>
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="../../course/cop3530/sorting.html"
-                          title="previous chapter">Sorting Algorithms</a></p>
+    <p class="topless"><a href="../../course/cop3530/m09.html"
+                          title="previous chapter">Module 9 Sorting</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="../../course/cop3530/m10.html"
-                          title="next chapter">Module 10 Hashing</a></p>
+    <p class="topless"><a href="quicksort.html"
+                          title="next chapter">Quick sort</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -220,15 +321,14 @@ data around frequently</p></li>
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../../course/cop3530/m10.html" title="Module 10 Hashing"
+          <a href="quicksort.html" title="Quick sort"
              >next</a> |</li>
         <li class="right" >
-          <a href="../../course/cop3530/sorting.html" title="Sorting Algorithms"
+          <a href="../../course/cop3530/m09.html" title="Module 9 Sorting"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../../course/cop3530/m09.html" >Module 9 Sorting</a> &#187;</li>
-          <li class="nav-item nav-item-3"><a href="../../course/cop3530/sorting.html" >Sorting Algorithms</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Sorting Algorithms</a></li> 
       </ul>
     </div>

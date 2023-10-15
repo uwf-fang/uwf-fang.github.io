@@ -1,0 +1,81 @@
+**********
+Radix Sort
+**********
+
+Overview
+========
+The concept behind Radix Sort can be traced back to traditional manual sorting
+methods used long before the advent of digital computers.
+
+Radix Sort is a non-comparative sorting algorithm that processes individual
+digits of numbers to sort them. It handles one digit at a time, starting either
+from the most significant digit (MSD) or the least significant digit (LSD), and
+groups numbers based on each digit. Typically used for sorting integers or
+strings, it follows a digit-by-digit approach until all the digits have been
+considered.
+
+Characteristics
+===============
++ Non-comparison-based sorting algorithm
++ Only works with integers, strings whose length is finite
++ Digit/character-based
++ Stable
++ Out-of-place
+
+Algorithm Details
+=================
++ There are many variations depending on what type of data to sort.
++ Example Steps (sorting decimal integers)
+
+  #. Initialize a list of buckets, one for each digit (0-9)
+  #. Group by digits (two methods):
+
+     * LSD: Start from the least significant digit (rightmost) and group the
+       numbers into buckets based on that digit
+     * MSD: Start from the most significant digit (leftmost) and group the
+       numbers into buckets based on that digit
+
+  #. Collect the numbers from the buckets in order
+  #. Move to the next digit and repeat the group and collect steps until all
+     digits have been processed
+
++ Other details
+
+  * Zero-padding
+  * Negative number support
+  * Bucket storage
+
+    - Single array method
+
+      + Create a new array of size n to store the buckets
+      + Use an array of size 10 (0-9) to store the sizes of buckets
+      + Scan the original array to calculate the sizes and the starting indices
+        of buckets
+      + Scan the original array again to group elements into buckets and then
+        copy them back to the original array
+      + Move to the next digit and repeat the steps above until all digits have
+        been processed
+
+    - Multiple arrays/vectors
+
+      + Create 10 arrays/vectors to store the buckets
+
+Complexity
+==========
++ Time: :math:`O(nk)`
+
+  * n: number of elements
+  * k: number of digits
+
++ Space: :math:`O(n+k)` (single array method)
++ When k is a constant or much smaller than n, time complexity is :math:`O(n)`.
+
+Visualization
+=============
++ The single array method is demonstrated.
+
+  * https://www.cs.usfca.edu/~galles/visualization/RadixSort.html
+
++ The more abstract version is demonstrated without implementation details
+
+  * https://visualgo.net/en/sorting

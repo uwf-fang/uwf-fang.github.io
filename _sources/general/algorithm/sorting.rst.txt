@@ -37,12 +37,12 @@ Overview
     - Radix
     - Counting
 
-  * Divide-and-conquer :math:`O(nlog(n))`
+  * Divide-and-conquer :math:`O(n \log n)`
 
     - Quick
     - Merge
 
-  * simple :math:`O(n^{2})`
+  * simple/naive :math:`O(n^{2})`
 
     - Selection
     - Insertion
@@ -52,13 +52,26 @@ Overview
 
     - Tim sort: combination of merge sort and insertion sort
 
+  * Stable
+
+    The order of equal elements is preserved after sorting.
+
+    - Insertion
+    - Merge
+    - Counting
+    - Bucket
+    - Radix
+
 + Time complexity
 
   * simple :math:`O(n^{2})`: insert, selection, bubble
-  * fast :math:`O(nlog(n))`: quick, merge, heap
+  * fast :math:`O(n \log n)`: quick, merge, heap
   * linear: radix :math:`O(nk) = O(n)`, bucket :math:`O(n + k) = O(n)`
 
 + Space complexity
+
+  The following discussion is on array only. For linked list, the space
+  complexity is always :math:`O(1)`.
 
   * in-place (swap based) :math:`O(1)`
 
@@ -70,21 +83,24 @@ Overview
     - bucket sort
     - radix sort
 
-Implementation Variations
-=========================
+Array vs Linked-list
+====================
 + Sorting an array
 
   * Array property
 
     - fast access by index
-    - slow reconstruction of new array
     - slow insertion and deletion of elements except at the end
 
-  * best fit: in-place algorithms that swaps elements
-  * less efficient: out-of-place algorithms that creates new arrays and moves
-    data around frequently
+  * With the same time complexity, consider data movement overhead
+  * Preferred general purpose sorting algorithms
 
-+ Sorting a linked-list based
+    - Quick sort
+    - Merge sort
+    - Heap sort
+    - Shell sort
+
++ Sorting a linked-list
 
   * Linked-list property
 
@@ -92,5 +108,68 @@ Implementation Variations
     - fast reconstruction of new list
     - fast access to neighboring nodes
 
-  * best fit: insertion sort, merge sort, bucket sort
-  * not suitable: shell sort, and heap sort require slow access by index
+  * With the same time complexity, consider data movement overhead
+  * Preferred general purpose sorting algorithms
+
+    - Merge sort
+    - Insertion sort
+
+Real-World Choices
+==================
++ **In real-world scenarios, there are more considerations.**
+
+  * Data size is not always large
+  * Performance boost from cache is often significant
+  * We can always make more complicated sorting algorithms
+
++ For small arrays
+
+  * Insertion sort
+
+    - Fast
+    - Simple
+    - Stable (original order of equal elements is preserved)
+
++ For large arrays
+
+  * Quick sort > Merge sort > Heap sort
+
+    - Quick sort is faster than merge sort and heap sort in practice,
+      inconsistent complexity.
+    - Merge sort is stable, has consistent complexity, but requires extra space
+    - Heap sort is in-place but is not stable and cannot make good use of cache
+
+  * In parallel environment
+
+    - Merge sort
+    - Quick sort
+
++ The overall winner for array is
+
+  * Hybrid
+
+    - Use divide-and-conquer to divide the array into small subarrays and then
+      use insertion sort to sort the small subarrays
+    - Quick sort + Insertion sort
+    - Merge sort + Insertion sort
+
++ For linked list
+
+  * Out-of-place algorithms are no longer requiring :math:`O(n)` space
+  * Cache is not helping at all
+  * Direct sort
+
+    - Merge sort for large linked list (can be parallelized)
+    - Insertion sort for small linked list
+
+  * Sort as array
+
+    - Make an array from the linked list
+    - Sort the array
+    - Create the new linked list according to the sorted array
+
+  * Sort as array of pointers
+
+    - Make an array of pointers
+    - Sort the array of pointers
+    - Generate the new linked list according to the sorted array

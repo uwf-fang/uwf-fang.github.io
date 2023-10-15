@@ -1,0 +1,131 @@
+**********
+Quick sort
+**********
+Overview
+========
+Quick sort, often simply referred to as "quick", was developed by Sir Tony
+Hoare in 1959. It has since become one of the most widely used and studied
+algorithms due to its efficiency and simplicity.
+
+At its core, quick sort is a comparison-based sorting algorithm that operates
+on the divide-and-conquer principle. It involves selecting a 'pivot' element
+from the list and partitioning the other elements into two sublists according
+to whether they are less than or greater than the pivot. The same process is
+then repeated recursively on each sublist until it is empty or contains only
+one element.
+
+Characteristics
+---------------
++ Divide and conquer algorithm
++ Comparison based (general purpose)
++ Recursive
++ In-place
++ Efficient
++ Unstable - relative order of equal elements is not preserved
+
+Algorithm Details
+=================
++ Quick partition algorithm
+
+  * The core of quick sort
+  * Steps
+
+    #. Pick an element, called a pivot, from the list.
+    #. Use the pivot to partition the list into two sublists.
+    #. Reorder the list in the process so that all elements less than the pivot
+       come before the pivot, and all elements greater than the pivot come
+       after it.
+    #. Return the location of the partition.
+
+  * Select the pivot
+
+    - First element as pivot
+    - Last element as pivot
+    - Median of first, middle, and last element as pivot
+    - Median of several random elements as pivot
+    - Random element as pivot
+
+  * Partition the list
+
+    - Lomuto's partition scheme (FYI)
+    - Hoare's partition scheme
+
+      #. Let two cursor indices to point to the first and last element of the
+         list respectively.
+      #. Move the left cursor to the right until it points to an element
+         greater and equal than the pivot.
+      #. Move the right cursor to the left until it points to an element less
+         and equal than the pivot.
+      #. If the left cursor meets the right cursor, the partition is complete.
+         Return the right cursor.
+      #. Swap the elements pointed by the two cursors.
+      #. Repeat steps 2-5 until the partition is complete (step 4 returns).
+
+  * Example algorithm
+
+    - Hoare's partition scheme
+    - Middle element as pivot
+
+    .. code::
+
+      function hoare_partition(arr, low, high):
+        // Select the middle element as the pivot
+        pivot_index = (low + high) / 2
+        pivot = arr[pivot_index]
+
+        i = low
+        j = high
+
+        while True:
+          // Find leftmost element greater than or equal to pivot
+          while arr[i] < pivot:
+            i = i + 1
+
+          // Find rightmost element less than or equal to pivot
+          while arr[j] > pivot
+            j = j - 1
+
+          // If pointers cross, partition is complete
+          if i >= j:
+            return j  // Return the rightmost index
+
+          // Swap arr[i] and arr[j]
+          swap(arr, i, j)
+
++ Quick sort algorithm (recursive, in-place)
+
+  #. If the list contains only one element or is empty, return.
+  #. Call quick partition algorithm to partition the list into two sublists.
+  #. Recursively call quick sort on both sublists.
+
+Complexity
+==========
++ Time
+
+  * :math:`O(n \log n)` average case
+  * :math:`O(n^2)` worst case
+
++ Space - :math:`O(1)`
++ Improvement attempts
+
+  * Pivot selection
+
+    - Randomized quick sort
+    - Median of medians
+
+  * Shuffling the list before sorting
+
+Visualization Website
+=====================
+Unfortunately, the visualization websites are all using different
+configurations and are not compatible with our demonstration.
+
++ Some of them uses Lomuto's scheme (shorter code, FYI)
+
+  * http://me.dt.in.th/page/Quicksort/
+  * http://www.sorting-algorithms.com/quick-sort
+  * https://visualgo.net/en/sorting
+
++ Some of them uses Hoare's scheme but select a different pivot
+
+  * http://www.cs.usfca.edu/~galles/visualization/ComparisonSort.html

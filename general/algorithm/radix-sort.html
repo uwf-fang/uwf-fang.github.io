@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Radix Sort &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/general/algorithm/radix-sort.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Module 10 Hashing" href="../../course/cop3530/m10.html" />
+    <link rel="prev" title="Mergesort" href="mergesort.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../course/cop3530/m10.html" title="Module 10 Hashing"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mergesort.html" title="Mergesort"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3530/m09.html" accesskey="U">Module 9 Sorting</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Radix Sort</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="radix-sort">
+<h1>Radix Sort<a class="headerlink" href="#radix-sort" title="Permalink to this heading">¶</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
+<p>The concept behind Radix Sort can be traced back to traditional manual sorting
+methods used long before the advent of digital computers.</p>
+<p>Radix Sort is a non-comparative sorting algorithm that processes individual
+digits of numbers to sort them. It handles one digit at a time, starting either
+from the most significant digit (MSD) or the least significant digit (LSD), and
+groups numbers based on each digit. Typically used for sorting integers or
+strings, it follows a digit-by-digit approach until all the digits have been
+considered.</p>
+</section>
+<section id="characteristics">
+<h2>Characteristics<a class="headerlink" href="#characteristics" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Non-comparison-based sorting algorithm</p></li>
+<li><p>Only works with integers, strings whose length is finite</p></li>
+<li><p>Digit/character-based</p></li>
+<li><p>Stable</p></li>
+<li><p>Out-of-place</p></li>
+</ul>
+</section>
+<section id="algorithm-details">
+<h2>Algorithm Details<a class="headerlink" href="#algorithm-details" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>There are many variations depending on what type of data to sort.</p></li>
+<li><p>Example Steps (sorting decimal integers)</p>
+<ol class="arabic simple">
+<li><p>Initialize a list of buckets, one for each digit (0-9)</p></li>
+<li><p>Group by digits (two methods):</p>
+<ul>
+<li><p>LSD: Start from the least significant digit (rightmost) and group the
+numbers into buckets based on that digit</p></li>
+<li><p>MSD: Start from the most significant digit (leftmost) and group the
+numbers into buckets based on that digit</p></li>
+</ul>
+</li>
+<li><p>Collect the numbers from the buckets in order</p></li>
+<li><p>Move to the next digit and repeat the group and collect steps until all
+digits have been processed</p></li>
+</ol>
+</li>
+<li><p>Other details</p>
+<ul>
+<li><p>Zero-padding</p></li>
+<li><p>Negative number support</p></li>
+<li><p>Bucket storage</p>
+<ul>
+<li><p>Single array method</p>
+<ul>
+<li><p>Create a new array of size n to store the buckets</p></li>
+<li><p>Use an array of size 10 (0-9) to store the sizes of buckets</p></li>
+<li><p>Scan the original array to calculate the sizes and the starting indices
+of buckets</p></li>
+<li><p>Scan the original array again to group elements into buckets and then
+copy them back to the original array</p></li>
+<li><p>Move to the next digit and repeat the steps above until all digits have
+been processed</p></li>
+</ul>
+</li>
+<li><p>Multiple arrays/vectors</p>
+<ul>
+<li><p>Create 10 arrays/vectors to store the buckets</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="complexity">
+<h2>Complexity<a class="headerlink" href="#complexity" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Time: <span class="math notranslate nohighlight">\(O(nk)\)</span></p>
+<ul>
+<li><p>n: number of elements</p></li>
+<li><p>k: number of digits</p></li>
+</ul>
+</li>
+<li><p>Space: <span class="math notranslate nohighlight">\(O(n+k)\)</span> (single array method)</p></li>
+<li><p>When k is a constant or much smaller than n, time complexity is <span class="math notranslate nohighlight">\(O(n)\)</span>.</p></li>
+</ul>
+</section>
+<section id="visualization">
+<h2>Visualization<a class="headerlink" href="#visualization" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>The single array method is demonstrated.</p>
+<ul>
+<li><p><a class="reference external" href="https://www.cs.usfca.edu/~galles/visualization/RadixSort.html">https://www.cs.usfca.edu/~galles/visualization/RadixSort.html</a></p></li>
+</ul>
+</li>
+<li><p>The more abstract version is demonstrated without implementation details</p>
+<ul>
+<li><p><a class="reference external" href="https://visualgo.net/en/sorting">https://visualgo.net/en/sorting</a></p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Radix Sort</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#characteristics">Characteristics</a></li>
+<li><a class="reference internal" href="#algorithm-details">Algorithm Details</a></li>
+<li><a class="reference internal" href="#complexity">Complexity</a></li>
+<li><a class="reference internal" href="#visualization">Visualization</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="mergesort.html"
+                          title="previous chapter">Mergesort</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../../course/cop3530/m10.html"
+                          title="next chapter">Module 10 Hashing</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/general/algorithm/radix-sort.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../course/cop3530/m10.html" title="Module 10 Hashing"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mergesort.html" title="Mergesort"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3530/m09.html" >Module 9 Sorting</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Radix Sort</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2023, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>
