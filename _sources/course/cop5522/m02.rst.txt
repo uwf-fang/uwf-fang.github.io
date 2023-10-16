@@ -4,52 +4,95 @@ Module 2: Parallel Hardware and Software
 
 Serial System
 =============
-+ The von Neumann architecture
+The traditional von Neumann architecture
+----------------------------------------
+* CPU
 
-  * CPU
+  - Control unit
+  - Arithmetic logic unit (ALU)
 
-    * Control unit
-    * Arithmetic logic unit (ALU)
+* Memory
+* Input/Output (I/O)
 
-  * Memory
-  * Input/Output (I/O)
+Operating system
+----------------
+* Process
 
-+ Operating system
+  - Multitasking
 
-  * Process
+* Thread
 
-    - Multitasking
+Cache
+-----
 
-  * Thread
+* Definition: A cache is a smaller, faster type of volatile computer memory
+  that provides high-speed data access to the processor and stores frequently
+  used computer programs, applications, and data.
+* Locality
 
-+ Cache
+  - Temporal locality
 
-  * Definition: A cache is a smaller, faster type of volatile computer memory
-    that provides high-speed data access to the processor and stores frequently
-    used computer programs, applications, and data.
-  * Leveled
+    + A memory location that is referenced once is likely to be referenced
+      again soon.
 
-    - L1, L2, L3, ... from faster/smaller to slower/larger
+  - Spatial locality
 
-  * Cache line
-  * Cache address mapping
-  * Cache hit/miss
-  * Cache eviction policy
+    + A memory location near the location  that is referenced once is likely
+      to be referenced again soon.
 
-+ Virtual memory
+* Leveled
 
-  * Page - Fixed length block like a fixed length C array
-  * Swapping - unused page moved to secondary storage
-  * Virtual address
+  - L1, L2, L3, ... from faster/smaller to slower/larger
 
-+ Instruction level parallelism (ILP)
+* Cache line
+* Cache address mapping
+* Cache hit/miss
+* Cache mapping
 
-  Internal feature of a CPU to allow parallelism. Hardware dependant.
+  - Direct mapping (temporal locality)
 
-  * pipeline - unique subunit
-  * multiple issue - replicated subunits
+    + Select one cache line to store in the cache
+    + A line of data can be stored in any cache line
 
-+ Thread level parallelism (TLP)
+  - Full associative mapping (spatial locality)
+
+    + Select a block around the line of data and store the whole block in the
+      cache
+    + The whole cache is occupied by the block
+    + A line of data can only be stored in one cache line
+
+  - Set-associative mapping (both)
+
+    + Split the cache into several sets
+    + Select a block around the line of data and store the whole block in the
+      cache
+    + A set is occupied by the block
+    + A line of data can only be stored in one cache line per set. Thus,
+      there are the number of sets possible way to store the line of data.
+
+* Cache eviction policy
+
+Virtual memory
+--------------
+* Use secondary storage as an extension of main memory
+* Page - Fixed length block
+* Swapping - unused page moved to secondary storage
+* Virtual address
+* Page table - mapping from virtual address to physical address
+
+  - Translation lookaside buffer (TLB) - cache for page table
+
+* Page fault - page not in memory
+
+Instruction level parallelism (ILP)
+-----------------------------------
+Internal feature of a CPU to allow parallelism. Hardware dependant.
+
+* pipeline - unique subunit
+* multiple issue - replicated subunits
+
+Thread level parallelism (TLP)
+------------------------------
 
 Parallel Hardware
 =================
@@ -58,87 +101,184 @@ Parallel Hardware
   * data parallelism
   * task parallelism
 
-+ Categorized with Flynn's taxonomy
-+ Single instruction single data (SISD)
+Flynn's taxonomy
+----------------
++ Single instruction single data stream (SISD)
 
   * classic von Neumann
 
 + Single instruction multiple data (SIMD)
 
   * Vector processor
-  * single core GPUs (Graphical Processing Unit)
 
-+ Multiple instruction multiple data (MIMD)
+    - Dedicated vector processor
+    - General CPUs with vector instructions
+
+      + Intel SIMD intrinsics: MMX, SSE, AVX
+
+  * GPUs single core (Graphical Processing Unit)
+
++ Multiple instruction multiple data stream (MIMD)
 
   * Types
 
-    - shared-memory vs distributed memory
-    - homogeneous vs heterogeneous
+    - shared-memory
+    - distributed memory
 
-  * interconnections
+Shared-memory SIMD
+------------------
++ Memory access
 
-    - bus
-    - switch
+  * UMA (Uniform Memory Access)
+  * NUMA (Non-Uniform Memory Access)
 
-      + direct
-      + indirect
++ interconnections
 
-    - bisect width/bandwidth
+  * bus
+  * switch
 
-  * cache coherence in shared-memory system
+    - crossbar
 
-    - solution
+Distributed-memory SIMD
+-----------------------
++ interconnections
 
-      + snooping
-      + directory
+  * direct (nodes are connected by a single switch)
 
-    - false sharing - different part of a cache line is shared
+    - fully connected
+    - hypercube
+
+  * indirect (nodes are connected by multiple switches)
+
+    - crossbar
+    - omega network
+
+  * Time to send a message
+
+    - latency - preparation time
+    - bandwidth - transfer time
+    - :math:`time = latency + size/bandwidth`
+
+  * bisect width/bandwidth
+
+
+Cache coherence in shared-memory system
+---------------------------------------
++ Solutions
+
+  * snooping
+  * directory
+
++ false sharing - different part of a cache line is shared
 
 Parallel Software
 =================
-+ Focusing on homogeneous MIMD systems
-+ Single program multiple data (SPMD) programs
++ Focus on Single program multiple data (SPMD) programs
 
-  * shared-memory -> threads
-  * distributed-memory -> processes/computation nodes
+  * A single program is executed by multiple processes/threads/nodes
+  * Each process/thread/node executes the same program
+  * Each process/thread/node has its own data
 
-+ In shared-memory system
+Shared-memory system
+--------------------
++ Threads
 
-  * Communicating by I/O to the shared memory
+  * Dynamic threads
+
+    - fork-join model
+
+  * Static threads
+
++ Communicating by I/O to the shared memory
+
   * nondeterminism
-  * racing condition
-  * critical section
-  * mutual exclusion lock (MUTEX)
-  * thread-safety
-  * Libraries
 
-    * POSIX thread
-    * OpenMP
+    - racing condition
+    - critical section
+    - mutual exclusion lock (MUTEX)
 
-+ In distributed-memory system
++ Input/Output
 
-  * Communicating by message passing
-  * The Message-Passing Interface (MPI) standard
+  * Always have one thread for stdin
+  * Usually have one thread for stdout, stderr
 
-    - MPICH
-    - OpenMPI
++ Thread-safety
++ Libraries
+
+  * POSIX thread (fork-join model)
+  * OpenMP
+
+Distributed-memory system
+-------------------------
++ Communicating by message passing
++ The Message-Passing Interface (MPI) standard
+
+  * MPICH
+  * OpenMPI
 
 Performance Model
 =================
-+ Problem size ``N``
-+ Speedup ``S``
-+ Efficiency ``E``
-+ Number of processes/threads/nodes ``P``
+Variables
+---------
++ Serial run-time :math:`T_{serial}`
++ Parallel run-time :math:`T_{parallel}`
++ Number of processes/threads/nodes :math:`p`
++ Problem size :math:`N`
+
+Metrics
+-------
++ Speedup :math:`S = T_{serial}/T_{parallel}`
++ Efficiency :math:`E = \frac{S}{p} = \frac{T_{serial}}{p \cdot T_{parallel}}`
+
+Relationships
+-------------
++ Ideal
+
+  * :math:`S = T_{serial}/T_{parallel} = p`
+
++ With overhead
+
+  * :math:`T_{parallel} = T_{serial}/p + T_{overhead}`
+  * :math:`S = T_{serial}/T_{parallel} < p`
+
 + Amdahl's law
+
+  * Let :math:`f` be the fraction of the program that can be parallelized
+  * Then the speedup
+
+    :math:`S = \frac{1}{\(1-f\) + \frac{f}{p}}`
+
+  * Diminished return
+
+.. image:: /_static/amdahls_law.png
+  :alt: Amdahl's law
+  :width: 400px
+
+.. container:: footnote
+
+  credit: https://en.wikipedia.org/wiki/Amdahl%27s_law
+
 + Scalability
 
-  * strong
+  * strong scaling
 
-    - plot: ``E/S`` vs ``P`` with fixed ``N``
+    - Constant :math:`E` with increasing :math:`p` for a fixed
+      :math:`N`
+    - plot:
+
+      + :math:`E` vs :math:`P`
+      + fixed :math:`N`
+      + Expect nearly flat line
 
   * weak
 
-    - plot: ``E`` vs ``P`` with fixed ``N/P`` ratio
+    - Constant :math:`E` with increasing :math:`p` for a fixed
+      :math:`N/p` ratio
+    - plot:
+
+      + :math:`E` vs :math:`P`
+      + fixed :math:`N/p`
+      + Expect nearly flat line
 
 + Timing
 
@@ -146,9 +286,14 @@ Parallel Program Design
 =======================
 + Foster's methodology
 
-  * partition
-  * agglomeration
-  * mapping
+  #. Partition
+  #. Communication
+  #. Agglomeration
+  #. Mapping
+
++ Histogram example
+
+  * code example available
 
 Addition Content
 ================

@@ -17,6 +17,7 @@
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/course/cop5522/m02.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -50,8 +51,8 @@
 <h1>Module 2: Parallel Hardware and Software<a class="headerlink" href="#module-2-parallel-hardware-and-software" title="Permalink to this heading">¶</a></h1>
 <section id="serial-system">
 <h2>Serial System<a class="headerlink" href="#serial-system" title="Permalink to this heading">¶</a></h2>
-<ul>
-<li><p>The von Neumann architecture</p>
+<section id="the-traditional-von-neumann-architecture">
+<h3>The traditional von Neumann architecture<a class="headerlink" href="#the-traditional-von-neumann-architecture" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>CPU</p>
 <ul>
@@ -62,8 +63,9 @@
 <li><p>Memory</p></li>
 <li><p>Input/Output (I/O)</p></li>
 </ul>
-</li>
-<li><p>Operating system</p>
+</section>
+<section id="operating-system">
+<h3>Operating system<a class="headerlink" href="#operating-system" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Process</p>
 <ul>
@@ -72,12 +74,29 @@
 </li>
 <li><p>Thread</p></li>
 </ul>
-</li>
-<li><p>Cache</p>
+</section>
+<section id="cache">
+<h3>Cache<a class="headerlink" href="#cache" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Definition: A cache is a smaller, faster type of volatile computer memory
 that provides high-speed data access to the processor and stores frequently
 used computer programs, applications, and data.</p></li>
+<li><p>Locality</p>
+<ul>
+<li><p>Temporal locality</p>
+<ul>
+<li><p>A memory location that is referenced once is likely to be referenced
+again soon.</p></li>
+</ul>
+</li>
+<li><p>Spatial locality</p>
+<ul>
+<li><p>A memory location near the location  that is referenced once is likely
+to be referenced again soon.</p></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><p>Leveled</p>
 <ul>
 <li><p>L1, L2, L3, … from faster/smaller to slower/larger</p></li>
@@ -86,25 +105,63 @@ used computer programs, applications, and data.</p></li>
 <li><p>Cache line</p></li>
 <li><p>Cache address mapping</p></li>
 <li><p>Cache hit/miss</p></li>
+<li><p>Cache mapping</p>
+<ul>
+<li><p>Direct mapping (temporal locality)</p>
+<ul>
+<li><p>Select one cache line to store in the cache</p></li>
+<li><p>A line of data can be stored in any cache line</p></li>
+</ul>
+</li>
+<li><p>Full associative mapping (spatial locality)</p>
+<ul>
+<li><p>Select a block around the line of data and store the whole block in the
+cache</p></li>
+<li><p>The whole cache is occupied by the block</p></li>
+<li><p>A line of data can only be stored in one cache line</p></li>
+</ul>
+</li>
+<li><p>Set-associative mapping (both)</p>
+<ul>
+<li><p>Split the cache into several sets</p></li>
+<li><p>Select a block around the line of data and store the whole block in the
+cache</p></li>
+<li><p>A set is occupied by the block</p></li>
+<li><p>A line of data can only be stored in one cache line per set. Thus,
+there are the number of sets possible way to store the line of data.</p></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><p>Cache eviction policy</p></li>
 </ul>
-</li>
-<li><p>Virtual memory</p>
+</section>
+<section id="virtual-memory">
+<h3>Virtual memory<a class="headerlink" href="#virtual-memory" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
-<li><p>Page - Fixed length block like a fixed length C array</p></li>
+<li><p>Use secondary storage as an extension of main memory</p></li>
+<li><p>Page - Fixed length block</p></li>
 <li><p>Swapping - unused page moved to secondary storage</p></li>
 <li><p>Virtual address</p></li>
+<li><p>Page table - mapping from virtual address to physical address</p>
+<ul>
+<li><p>Translation lookaside buffer (TLB) - cache for page table</p></li>
 </ul>
 </li>
-<li><p>Instruction level parallelism (ILP)</p>
+<li><p>Page fault - page not in memory</p></li>
+</ul>
+</section>
+<section id="instruction-level-parallelism-ilp">
+<h3>Instruction level parallelism (ILP)<a class="headerlink" href="#instruction-level-parallelism-ilp" title="Permalink to this heading">¶</a></h3>
 <p>Internal feature of a CPU to allow parallelism. Hardware dependant.</p>
 <ul class="simple">
 <li><p>pipeline - unique subunit</p></li>
 <li><p>multiple issue - replicated subunits</p></li>
 </ul>
-</li>
-<li><p>Thread level parallelism (TLP)</p></li>
-</ul>
+</section>
+<section id="thread-level-parallelism-tlp">
+<h3>Thread level parallelism (TLP)<a class="headerlink" href="#thread-level-parallelism-tlp" title="Permalink to this heading">¶</a></h3>
+</section>
 </section>
 <section id="parallel-hardware">
 <h2>Parallel Hardware<a class="headerlink" href="#parallel-hardware" title="Permalink to this heading">¶</a></h2>
@@ -115,24 +172,49 @@ used computer programs, applications, and data.</p></li>
 <li><p>task parallelism</p></li>
 </ul>
 </li>
-<li><p>Categorized with Flynn’s taxonomy</p></li>
-<li><p>Single instruction single data (SISD)</p>
+</ul>
+<section id="flynn-s-taxonomy">
+<h3>Flynn’s taxonomy<a class="headerlink" href="#flynn-s-taxonomy" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Single instruction single data stream (SISD)</p>
 <ul>
 <li><p>classic von Neumann</p></li>
 </ul>
 </li>
 <li><p>Single instruction multiple data (SIMD)</p>
 <ul>
-<li><p>Vector processor</p></li>
-<li><p>single core GPUs (Graphical Processing Unit)</p></li>
+<li><p>Vector processor</p>
+<ul>
+<li><p>Dedicated vector processor</p></li>
+<li><p>General CPUs with vector instructions</p>
+<ul>
+<li><p>Intel SIMD intrinsics: MMX, SSE, AVX</p></li>
 </ul>
 </li>
-<li><p>Multiple instruction multiple data (MIMD)</p>
+</ul>
+</li>
+<li><p>GPUs single core (Graphical Processing Unit)</p></li>
+</ul>
+</li>
+<li><p>Multiple instruction multiple data stream (MIMD)</p>
 <ul>
 <li><p>Types</p>
 <ul>
-<li><p>shared-memory vs distributed memory</p></li>
-<li><p>homogeneous vs heterogeneous</p></li>
+<li><p>shared-memory</p></li>
+<li><p>distributed memory</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="shared-memory-simd">
+<h3>Shared-memory SIMD<a class="headerlink" href="#shared-memory-simd" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Memory access</p>
+<ul>
+<li><p>UMA (Uniform Memory Access)</p></li>
+<li><p>NUMA (Non-Uniform Memory Access)</p></li>
 </ul>
 </li>
 <li><p>interconnections</p>
@@ -140,16 +222,46 @@ used computer programs, applications, and data.</p></li>
 <li><p>bus</p></li>
 <li><p>switch</p>
 <ul>
-<li><p>direct</p></li>
-<li><p>indirect</p></li>
+<li><p>crossbar</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="distributed-memory-simd">
+<h3>Distributed-memory SIMD<a class="headerlink" href="#distributed-memory-simd" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>interconnections</p>
+<ul>
+<li><p>direct (nodes are connected by a single switch)</p>
+<ul>
+<li><p>fully connected</p></li>
+<li><p>hypercube</p></li>
+</ul>
+</li>
+<li><p>indirect (nodes are connected by multiple switches)</p>
+<ul>
+<li><p>crossbar</p></li>
+<li><p>omega network</p></li>
+</ul>
+</li>
+<li><p>Time to send a message</p>
+<ul>
+<li><p>latency - preparation time</p></li>
+<li><p>bandwidth - transfer time</p></li>
+<li><p><span class="math notranslate nohighlight">\(time = latency + size/bandwidth\)</span></p></li>
 </ul>
 </li>
 <li><p>bisect width/bandwidth</p></li>
 </ul>
 </li>
-<li><p>cache coherence in shared-memory system</p>
-<ul>
-<li><p>solution</p>
+</ul>
+</section>
+<section id="cache-coherence-in-shared-memory-system">
+<h3>Cache coherence in shared-memory system<a class="headerlink" href="#cache-coherence-in-shared-memory-system" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Solutions</p>
 <ul>
 <li><p>snooping</p></li>
 <li><p>directory</p></li>
@@ -157,39 +269,61 @@ used computer programs, applications, and data.</p></li>
 </li>
 <li><p>false sharing - different part of a cache line is shared</p></li>
 </ul>
-</li>
-</ul>
-</li>
-</ul>
+</section>
 </section>
 <section id="parallel-software">
 <h2>Parallel Software<a class="headerlink" href="#parallel-software" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>Focusing on homogeneous MIMD systems</p></li>
-<li><p>Single program multiple data (SPMD) programs</p>
+<li><p>Focus on Single program multiple data (SPMD) programs</p>
 <ul>
-<li><p>shared-memory -&gt; threads</p></li>
-<li><p>distributed-memory -&gt; processes/computation nodes</p></li>
+<li><p>A single program is executed by multiple processes/threads/nodes</p></li>
+<li><p>Each process/thread/node executes the same program</p></li>
+<li><p>Each process/thread/node has its own data</p></li>
 </ul>
 </li>
-<li><p>In shared-memory system</p>
+</ul>
+<section id="shared-memory-system">
+<h3>Shared-memory system<a class="headerlink" href="#shared-memory-system" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Threads</p>
 <ul>
-<li><p>Communicating by I/O to the shared memory</p></li>
-<li><p>nondeterminism</p></li>
+<li><p>Dynamic threads</p>
+<ul>
+<li><p>fork-join model</p></li>
+</ul>
+</li>
+<li><p>Static threads</p></li>
+</ul>
+</li>
+<li><p>Communicating by I/O to the shared memory</p>
+<ul>
+<li><p>nondeterminism</p>
+<ul>
 <li><p>racing condition</p></li>
 <li><p>critical section</p></li>
 <li><p>mutual exclusion lock (MUTEX)</p></li>
-<li><p>thread-safety</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Input/Output</p>
+<ul>
+<li><p>Always have one thread for stdin</p></li>
+<li><p>Usually have one thread for stdout, stderr</p></li>
+</ul>
+</li>
+<li><p>Thread-safety</p></li>
 <li><p>Libraries</p>
 <ul>
-<li><p>POSIX thread</p></li>
+<li><p>POSIX thread (fork-join model)</p></li>
 <li><p>OpenMP</p></li>
 </ul>
 </li>
 </ul>
-</li>
-<li><p>In distributed-memory system</p>
-<ul>
+</section>
+<section id="distributed-memory-system">
+<h3>Distributed-memory system<a class="headerlink" href="#distributed-memory-system" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
 <li><p>Communicating by message passing</p></li>
 <li><p>The Message-Passing Interface (MPI) standard</p>
 <ul>
@@ -198,27 +332,81 @@ used computer programs, applications, and data.</p></li>
 </ul>
 </li>
 </ul>
-</li>
-</ul>
+</section>
 </section>
 <section id="performance-model">
 <h2>Performance Model<a class="headerlink" href="#performance-model" title="Permalink to this heading">¶</a></h2>
+<section id="variables">
+<h3>Variables<a class="headerlink" href="#variables" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
-<li><p>Problem size <code class="docutils literal notranslate"><span class="pre">N</span></code></p></li>
-<li><p>Speedup <code class="docutils literal notranslate"><span class="pre">S</span></code></p></li>
-<li><p>Efficiency <code class="docutils literal notranslate"><span class="pre">E</span></code></p></li>
-<li><p>Number of processes/threads/nodes <code class="docutils literal notranslate"><span class="pre">P</span></code></p></li>
-<li><p>Amdahl’s law</p></li>
+<li><p>Serial run-time <span class="math notranslate nohighlight">\(T_{serial}\)</span></p></li>
+<li><p>Parallel run-time <span class="math notranslate nohighlight">\(T_{parallel}\)</span></p></li>
+<li><p>Number of processes/threads/nodes <span class="math notranslate nohighlight">\(p\)</span></p></li>
+<li><p>Problem size <span class="math notranslate nohighlight">\(N\)</span></p></li>
+</ul>
+</section>
+<section id="metrics">
+<h3>Metrics<a class="headerlink" href="#metrics" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Speedup <span class="math notranslate nohighlight">\(S = T_{serial}/T_{parallel}\)</span></p></li>
+<li><p>Efficiency <span class="math notranslate nohighlight">\(E = \frac{S}{p} = \frac{T_{serial}}{p \cdot T_{parallel}}\)</span></p></li>
+</ul>
+</section>
+<section id="relationships">
+<h3>Relationships<a class="headerlink" href="#relationships" title="Permalink to this heading">¶</a></h3>
+<ul>
+<li><p>Ideal</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(S = T_{serial}/T_{parallel} = p\)</span></p></li>
+</ul>
+</li>
+<li><p>With overhead</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(T_{parallel} = T_{serial}/p + T_{overhead}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(S = T_{serial}/T_{parallel} &lt; p\)</span></p></li>
+</ul>
+</li>
+<li><p>Amdahl’s law</p>
+<ul>
+<li><p>Let <span class="math notranslate nohighlight">\(f\)</span> be the fraction of the program that can be parallelized</p></li>
+<li><p>Then the speedup</p>
+<p><span class="math notranslate nohighlight">\(S = \frac{1}{\(1-f\) + \frac{f}{p}}\)</span></p>
+</li>
+<li><p>Diminished return</p></li>
+</ul>
+</li>
+</ul>
+<a class="reference internal image-reference" href="../../_images/amdahls_law.png"><img alt="Amdahl's law" src="../../_images/amdahls_law.png" style="width: 400px;" /></a>
+<div class="footnote docutils container">
+<p>credit: <a class="reference external" href="https://en.wikipedia.org/wiki/Amdahl%27s_law">https://en.wikipedia.org/wiki/Amdahl%27s_law</a></p>
+</div>
+<ul class="simple">
 <li><p>Scalability</p>
 <ul>
-<li><p>strong</p>
+<li><p>strong scaling</p>
 <ul>
-<li><p>plot: <code class="docutils literal notranslate"><span class="pre">E/S</span></code> vs <code class="docutils literal notranslate"><span class="pre">P</span></code> with fixed <code class="docutils literal notranslate"><span class="pre">N</span></code></p></li>
+<li><p>Constant <span class="math notranslate nohighlight">\(E\)</span> with increasing <span class="math notranslate nohighlight">\(p\)</span> for a fixed
+<span class="math notranslate nohighlight">\(N\)</span></p></li>
+<li><p>plot:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(E\)</span> vs <span class="math notranslate nohighlight">\(P\)</span></p></li>
+<li><p>fixed <span class="math notranslate nohighlight">\(N\)</span></p></li>
+<li><p>Expect nearly flat line</p></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><p>weak</p>
 <ul>
-<li><p>plot: <code class="docutils literal notranslate"><span class="pre">E</span></code> vs <code class="docutils literal notranslate"><span class="pre">P</span></code> with fixed <code class="docutils literal notranslate"><span class="pre">N/P</span></code> ratio</p></li>
+<li><p>Constant <span class="math notranslate nohighlight">\(E\)</span> with increasing <span class="math notranslate nohighlight">\(p\)</span> for a fixed
+<span class="math notranslate nohighlight">\(N/p\)</span> ratio</p></li>
+<li><p>plot:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(E\)</span> vs <span class="math notranslate nohighlight">\(P\)</span></p></li>
+<li><p>fixed <span class="math notranslate nohighlight">\(N/p\)</span></p></li>
+<li><p>Expect nearly flat line</p></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -226,14 +414,21 @@ used computer programs, applications, and data.</p></li>
 <li><p>Timing</p></li>
 </ul>
 </section>
+</section>
 <section id="parallel-program-design">
 <h2>Parallel Program Design<a class="headerlink" href="#parallel-program-design" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Foster’s methodology</p>
+<ol class="arabic simple">
+<li><p>Partition</p></li>
+<li><p>Communication</p></li>
+<li><p>Agglomeration</p></li>
+<li><p>Mapping</p></li>
+</ol>
+</li>
+<li><p>Histogram example</p>
 <ul>
-<li><p>partition</p></li>
-<li><p>agglomeration</p></li>
-<li><p>mapping</p></li>
+<li><p>code example available</p></li>
 </ul>
 </li>
 </ul>
@@ -271,10 +466,33 @@ used computer programs, applications, and data.</p></li>
     <h3><a href="../../index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">Module 2: Parallel Hardware and Software</a><ul>
-<li><a class="reference internal" href="#serial-system">Serial System</a></li>
-<li><a class="reference internal" href="#parallel-hardware">Parallel Hardware</a></li>
-<li><a class="reference internal" href="#parallel-software">Parallel Software</a></li>
-<li><a class="reference internal" href="#performance-model">Performance Model</a></li>
+<li><a class="reference internal" href="#serial-system">Serial System</a><ul>
+<li><a class="reference internal" href="#the-traditional-von-neumann-architecture">The traditional von Neumann architecture</a></li>
+<li><a class="reference internal" href="#operating-system">Operating system</a></li>
+<li><a class="reference internal" href="#cache">Cache</a></li>
+<li><a class="reference internal" href="#virtual-memory">Virtual memory</a></li>
+<li><a class="reference internal" href="#instruction-level-parallelism-ilp">Instruction level parallelism (ILP)</a></li>
+<li><a class="reference internal" href="#thread-level-parallelism-tlp">Thread level parallelism (TLP)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#parallel-hardware">Parallel Hardware</a><ul>
+<li><a class="reference internal" href="#flynn-s-taxonomy">Flynn’s taxonomy</a></li>
+<li><a class="reference internal" href="#shared-memory-simd">Shared-memory SIMD</a></li>
+<li><a class="reference internal" href="#distributed-memory-simd">Distributed-memory SIMD</a></li>
+<li><a class="reference internal" href="#cache-coherence-in-shared-memory-system">Cache coherence in shared-memory system</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#parallel-software">Parallel Software</a><ul>
+<li><a class="reference internal" href="#shared-memory-system">Shared-memory system</a></li>
+<li><a class="reference internal" href="#distributed-memory-system">Distributed-memory system</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#performance-model">Performance Model</a><ul>
+<li><a class="reference internal" href="#variables">Variables</a></li>
+<li><a class="reference internal" href="#metrics">Metrics</a></li>
+<li><a class="reference internal" href="#relationships">Relationships</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#parallel-program-design">Parallel Program Design</a></li>
 <li><a class="reference internal" href="#addition-content">Addition Content</a></li>
 </ul>
