@@ -1,0 +1,304 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>B-Tree &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/gen-programming/ds/b-tree.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Algorithmic Paradigms" href="../alg-paradigms.html" />
+    <link rel="prev" title="Module 4 B-Trees; Intro to Algorithmic Paradigms" href="../../course/cop4534/m04.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../alg-paradigms.html" title="Algorithmic Paradigms"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../../course/cop4534/m04.html" title="Module 4 B-Trees; Intro to Algorithmic Paradigms"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop4534/m04.html" accesskey="U">Module 4 B-Trees; Intro to Algorithmic Paradigms</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">B-Tree</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="b-tree">
+<h1>B-Tree<a class="headerlink" href="#b-tree" title="Permalink to this heading">¶</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
+<p>The name B-Tree is after the name of its inventors, Bayer and McCreight. It
+also suggests that it is “balanced”.</p>
+<p>A B-tree, short for “balanced tree,” is a self-balancing tree data structure
+used in computer science for organizing and storing data efficiently. It is
+designed to provide fast access to data, especially in situations where the
+data set is large and dynamic. B-trees are commonly used in database management
+systems and file systems.</p>
+</section>
+<section id="definition">
+<h2>Definition<a class="headerlink" href="#definition" title="Permalink to this heading">¶</a></h2>
+<p>A B-tree of order <span class="math notranslate nohighlight">\(m\)</span> is a tree which satisfies the following properties:</p>
+<ul class="simple">
+<li><p>Every node has at most <span class="math notranslate nohighlight">\(m\)</span> children and <span class="math notranslate nohighlight">\(m-1\)</span> keys.</p></li>
+<li><p>Every internal node has at least <span class="math notranslate nohighlight">\(\lceil m/2 \rceil\)</span> children.</p></li>
+<li><p>The root has at least 2 children if it is not a leaf node.</p></li>
+<li><p>All leaves appear on the same level.</p></li>
+<li><p>A non-leaf node with <span class="math notranslate nohighlight">\(k\)</span> children contains <span class="math notranslate nohighlight">\(k-1\)</span> keys.</p></li>
+</ul>
+<img alt="B-Tree of order 5" src="../../_images/b-tree.png" />
+</section>
+<section id="characteristics">
+<h2>Characteristics<a class="headerlink" href="#characteristics" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Balanced</p>
+<ul>
+<li><p>All leaves appear on the same level.</p></li>
+<li><p>The height of the tree is always <span class="math notranslate nohighlight">\(O(\log n)\)</span>.</p></li>
+</ul>
+</li>
+<li><p>N-ary search tree</p>
+<ul>
+<li><p>In-order traversal of a B-tree will provide a sorted sequence.</p></li>
+<li><p>Each node defines a range of keys stored in the subtree rooted at that
+node.</p></li>
+<li><p>The keys in each node partitions the keys in the subtree it rooted at.</p></li>
+<li><p><span class="math notranslate nohighlight">\(m-1\)</span> keys partition keys into <span class="math notranslate nohighlight">\(m\)</span> sections that correspond to
+<span class="math notranslate nohighlight">\(m\)</span> children.</p></li>
+</ul>
+</li>
+<li><p>Self-balancing</p>
+<ul>
+<li><p>The tree is always balanced.</p></li>
+<li><p>The balance is maintained by redistribution of keys</p>
+<ul>
+<li><p>splitting and merging nodes.</p></li>
+<li><p>borrowing keys from sibling nodes.</p></li>
+</ul>
+</li>
+<li><p>The height of the tree changes only when the root is split or merged.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="terminology">
+<h2>Terminology<a class="headerlink" href="#terminology" title="Permalink to this heading">¶</a></h2>
+<p>There are two sets of terminology for B-trees. One focus on “order” and another
+focus on “degree”. They are not the same as what they mean in general tree and
+graph theory. Be careful when reading the literature.</p>
+<ul class="simple">
+<li><p>Order (B-tree) <strong>Preferred</strong></p>
+<ul>
+<li><p>The maximum number of children a node can have: <span class="math notranslate nohighlight">\(m\)</span>.</p></li>
+<li><p>The maximum number of keys a node can have is always one less: <span class="math notranslate nohighlight">\(m-1\)</span>.</p></li>
+<li><p>This is the same as what we defined as “degree of a tree” in general tree
+theory.</p></li>
+<li><p>Sometimes referred as “maximum degree”.</p></li>
+</ul>
+</li>
+<li><p>Degree <span class="math notranslate nohighlight">\(t\)</span> (B-tree)</p>
+<ul>
+<li><p>It is actually short for “minimum degree”.</p></li>
+<li><p>The minimum number of children an internal node may have.</p></li>
+<li><p>Sometimes referred as <span class="math notranslate nohighlight">\(t\)</span> in the literature.</p></li>
+<li><p>This term is very confusing because it is not the same as what we defined
+as “degree” in tree theory.</p></li>
+<li><p>It is even more confusing in some places where it is called “order”.</p></li>
+<li><p>This term cannot describe all possible B-trees.</p></li>
+<li><p>We will prefer to stay away from this term!</p></li>
+</ul>
+</li>
+</ul>
+<p>We will use the term “order” in this document.</p>
+</section>
+<section id="id1">
+<h2>Characteristics<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Balanced</p></li>
+<li><p>N-ary search tree</p></li>
+<li><p>Sorted</p></li>
+</ul>
+</section>
+<section id="behavior">
+<h2>Behavior<a class="headerlink" href="#behavior" title="Permalink to this heading">¶</a></h2>
+<ul>
+<li><p>Insertion</p>
+<ul class="simple">
+<li><p>Start at the root node.</p></li>
+<li><p>Find the leaf node where the key should be inserted.</p></li>
+<li><p>If the node is not full, insert the key into the node.</p></li>
+<li><p>If the node is full, split the node into two nodes.</p></li>
+<li><p>Insert the key into the appropriate child.</p></li>
+<li><p>Insert the median key into the parent node.</p></li>
+<li><p>If the parent node is full after insertion of the median key, split the
+parent node.</p></li>
+<li><p>Repeat until the root node is reached.</p></li>
+</ul>
+<p>In this method, when split a full node, the split happens before the key is
+inserted. This method does not work well with 2-3 trees because finding a
+median out of 2 keys will create an empty child.</p>
+<p>There is another way to insert a key to a full node. In that method, the key
+is inserted to the node first, which causes a temporary overflow, then the
+node is split. After that, the median key is inserted to the parent node. An
+equivalent version is to take the new key into consideration when finding the
+median key. This method works well with 2-3 trees.</p>
+</li>
+<li><p>Deletion</p>
+<ul class="simple">
+<li><p>Start at the root node.</p></li>
+<li><p>Find the node where the key should be deleted.</p></li>
+<li><p>If the node is a leaf node, delete the key from the node.</p></li>
+<li><p>If the node is an internal node, replace the key with the predecessor or
+successor key. Then delete the predecessor or successor key from the leaf
+node.</p></li>
+<li><p>If the node is underfilled, borrow a key from a sibling node.</p></li>
+<li><p>If the node is underfilled and no sibling node can lend a key, merge the
+node with a sibling node.</p></li>
+<li><p>If the merge causes the parent node to be underfilled, repeat the process
+on the parent node.</p></li>
+<li><p>Repeat until the root node is reached.</p></li>
+</ul>
+</li>
+<li><p>Visualization</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.cs.usfca.edu/~galles/visualization/BTree.html">B-Tree Visualization</a></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="variations">
+<h2>Variations<a class="headerlink" href="#variations" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>B+ Tree (Textbook example)</p>
+<ul>
+<li><p>A B+ tree of order <span class="math notranslate nohighlight">\(m\)</span> satisfies the following properties:</p>
+<ul>
+<li><p>All data are stored in the leaves.</p></li>
+<li><p>All leaves are linked together for better sequential access.</p></li>
+<li><p>All internal nodes are keys only for faster search.</p></li>
+<li><p>All internal nodes have between <span class="math notranslate nohighlight">\(\lceil m/2 \rceil\)</span> and <span class="math notranslate nohighlight">\(m\)</span>
+children.</p></li>
+<li><p>All leaves have between <span class="math notranslate nohighlight">\(\lceil l/2 \rceil\)</span> and <span class="math notranslate nohighlight">\(l\)</span> keys.</p></li>
+</ul>
+</li>
+<li><p>The <span class="math notranslate nohighlight">\(l\)</span> can be adjusted according to the block size of the disk.</p></li>
+<li><p>Ideal as a file system or database index.</p></li>
+<li><p>Reduced number of disk accesses.</p></li>
+<li><p>Reduced potential key redistribution when inserting or deleting.</p></li>
+<li><p>Visualization</p>
+<ul>
+<li><p><a class="reference external" href="https://www.cs.usfca.edu/~galles/visualization/BPlusTree.html">B+ Tree visualization</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<img alt="B+ Tree of order 5" src="../../_images/b-plus-tree.png" />
+<ul class="simple">
+<li><p>B* Tree (FYI)</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">B-Tree</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#definition">Definition</a></li>
+<li><a class="reference internal" href="#characteristics">Characteristics</a></li>
+<li><a class="reference internal" href="#terminology">Terminology</a></li>
+<li><a class="reference internal" href="#id1">Characteristics</a></li>
+<li><a class="reference internal" href="#behavior">Behavior</a></li>
+<li><a class="reference internal" href="#variations">Variations</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../../course/cop4534/m04.html"
+                          title="previous chapter">Module 4 B-Trees; Intro to Algorithmic Paradigms</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../alg-paradigms.html"
+                          title="next chapter">Algorithmic Paradigms</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/gen-programming/ds/b-tree.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../alg-paradigms.html" title="Algorithmic Paradigms"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../../course/cop4534/m04.html" title="Module 4 B-Trees; Intro to Algorithmic Paradigms"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop4534/m04.html" >Module 4 B-Trees; Intro to Algorithmic Paradigms</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">B-Tree</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2023, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>

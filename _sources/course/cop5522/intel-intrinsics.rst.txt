@@ -45,14 +45,13 @@ SSE4 Intrinsics in C language
 
   * Compiler: gcc
 
-    - ``-msse4`` flag
+    - ``-march=native`` flag on a computer with intel CPU
 
   * Hardware: Intel CPUs
 
 + Include header file
 
-  * ``#include <smmintrin.h>``
-  * ``#include <nmmintrin.h>``
+  * ``#include <immintrin.h>``
 
 SSE4 Example
 ============
@@ -62,9 +61,9 @@ building block for block-wise matrix multiplication, where the multiplication
 is efficiently computed in smaller chunks. This approach enhances computational
 efficiency and scalability when dealing with matrices of larger dimensions.
 
-`Link to code example <sse_example_>`_
+`Link to code example <intel_example_>`_
 
-.. _sse_example: https://github.com/uwf-fang/cop5522-examples/blob/main/m02/sse-example.c
+.. _intel_example: https://github.com/uwf-fang/cop5522-examples/blob/main/m02/intel-simd-example.c
 
 
 + ``__m128``
@@ -90,6 +89,15 @@ efficiency and scalability when dealing with matrices of larger dimensions.
   This intrinsic adds two ``__m128`` registers element-wise and returns the
   result in a ``__m128`` register.
 
++ The ``_mm_hadd_ps`` intrinsic
+
+  This intrinsic adds two ``__m128`` registers horizontally and returns the
+  result in a ``__m128`` register. This horizontal addition adds the
+  neighboring two elements from the two registers to create a new register. The
+  first two elements of the result register are the sums from the first
+  register, and the last two elements of the result register are the sums from
+  the second register.
+
 + The ``_mm_mul_ps`` intrinsic
 
   This intrinsic multiplies two ``__m128`` registers element-wise and returns
@@ -98,5 +106,4 @@ efficiency and scalability when dealing with matrices of larger dimensions.
 + All intrinsics used in the example are the unaligned versions. The aligned
   versions are faster but require the memory addresses to be aligned to 16
   bytes.
-
 

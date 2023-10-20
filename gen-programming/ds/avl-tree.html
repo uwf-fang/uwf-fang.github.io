@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>AVL Tree &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/gen-programming/ds/avl-tree.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Module 4 B-Trees; Intro to Algorithmic Paradigms" href="../../course/cop4534/m04.html" />
+    <link rel="prev" title="Self-balancing Trees" href="self-balancing-tree.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../course/cop4534/m04.html" title="Module 4 B-Trees; Intro to Algorithmic Paradigms"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="self-balancing-tree.html" title="Self-balancing Trees"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop4534/m03.html" accesskey="U">Module 3 Tree Revisit; AVL Tree</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">AVL Tree</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="avl-tree">
+<h1>AVL Tree<a class="headerlink" href="#avl-tree" title="Permalink to this heading">¶</a></h1>
+<section id="definition">
+<h2>Definition<a class="headerlink" href="#definition" title="Permalink to this heading">¶</a></h2>
+<p>An AVL tree, named after its inventors Adelson-Velsky and Landis, is a
+self-balancing binary search tree data structure. It is designed to maintain a
+balanced tree structure at all times, ensuring that the height difference
+(balance factor) between the left and right subtrees of any node is limited to
+no more than one.</p>
+</section>
+<section id="characteristics">
+<h2>Characteristics<a class="headerlink" href="#characteristics" title="Permalink to this heading">¶</a></h2>
+<p>In addition to the standard binary search tree states and operations, AVL trees
+should also support the following:</p>
+<ul>
+<li><p>Balance factor: Each node in an AVL tree has a balance factor, which is
+calculated as the difference between the height of its left subtree and the
+height of its right subtree. The balance factor can be one of -1, 0, or 1.</p></li>
+<li><p>Height-Balanced: The height of an AVL tree is guaranteed to be logarithmic
+<span class="math notranslate nohighlight">\(O(log(n))\)</span>, ensuring efficient search, insert, and delete operations
+even in worst-case scenarios.</p></li>
+<li><p>Imbalance: an insertion or deletion operation that causes the balance factor
+of a node to be -2 or 2.</p></li>
+<li><p>Self-Balancing: AVL trees are self-balancing, meaning that after each insert
+or delete operation, the tree is automatically adjusted to maintain its
+balance, preventing it from becoming skewed or unbalanced.</p></li>
+<li><p>Balancing operation: the process of restructuring an AVL tree to maintain the
+AVL balance factor property. Operations are performed bottom-up, starting
+with the deepest unbalanced node. It is done by performing rotations. There
+are four type of rotations to restore four cases of imbalance:</p>
+<ul class="simple">
+<li><p>Left-Left (LL) Imbalance:</p>
+<ul>
+<li><p>Scenario: This imbalance occurs when the left subtree of the left child
+of a node is taller by more than one level than the right subtree of the
+left child.</p></li>
+<li><p>Rotation: To balance, perform a <strong>right rotation</strong> on the node.</p></li>
+</ul>
+</li>
+<li><p>Right-Right (RR) Imbalance:</p>
+<ul>
+<li><p>Scenario: This imbalance occurs when the right subtree of the right child
+of a node is taller by more than one level than the left subtree of the
+right child.</p></li>
+<li><p>Rotation: To balance, perform a <strong>left rotation</strong> on the node.</p></li>
+</ul>
+</li>
+<li><p>Left-Right (LR) Imbalance:</p>
+<ul>
+<li><p>Scenario: This imbalance occurs when the right subtree of the left child
+of a node is taller by more than one level than the left subtree of the
+left child.</p></li>
+<li><p>Rotation: To balance, perform a left rotation on the left child, followed
+by a right rotation on the node. Known as <strong>left-right double rotation</strong>.</p></li>
+</ul>
+</li>
+<li><p>Right-Left (RL) Imbalance:</p>
+<ul>
+<li><p>Scenario: This imbalance occurs when the left subtree of the right child
+of a node is taller by more than one level than the right subtree of the
+right child.</p></li>
+<li><p>Rotation: To balance, perform a right rotation on the right child,
+followed by a left rotation on the node. Known as <strong>right-left double
+rotation</strong>.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Alternative terminologies</p>
+<p>When two capital letter is used, it describes the type of imbalance.</p>
+<ul class="simple">
+<li><p>Left rotation: RR rotation; rotation with right child</p></li>
+<li><p>Right rotation: LL rotation; rotation with left child</p></li>
+<li><p>Left-right double rotation: LR rotation; double rotation with left child</p></li>
+<li><p>Right-left double rotation: RL rotation; double rotation with right child</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">AVL Tree</a><ul>
+<li><a class="reference internal" href="#definition">Definition</a></li>
+<li><a class="reference internal" href="#characteristics">Characteristics</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="self-balancing-tree.html"
+                          title="previous chapter">Self-balancing Trees</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../../course/cop4534/m04.html"
+                          title="next chapter">Module 4 B-Trees; Intro to Algorithmic Paradigms</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/gen-programming/ds/avl-tree.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../course/cop4534/m04.html" title="Module 4 B-Trees; Intro to Algorithmic Paradigms"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="self-balancing-tree.html" title="Self-balancing Trees"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop4534/m03.html" >Module 3 Tree Revisit; AVL Tree</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">AVL Tree</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2023, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>

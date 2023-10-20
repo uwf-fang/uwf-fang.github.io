@@ -1,0 +1,420 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Solving Recurrence &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/gen-programming/solve-recurrence.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Module 7: Solving Recurrence 2" href="../course/cop4534/m07.html" />
+    <link rel="prev" title="Module 6: Solving Recurrence 1" href="../course/cop4534/m06.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../course/cop4534/m07.html" title="Module 7: Solving Recurrence 2"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../course/cop4534/m06.html" title="Module 6: Solving Recurrence 1"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../course/cop4534/m06.html" accesskey="U">Module 6: Solving Recurrence 1</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Solving Recurrence</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="solving-recurrence">
+<h1>Solving Recurrence<a class="headerlink" href="#solving-recurrence" title="Permalink to this heading">¶</a></h1>
+<p>The term “solving recurrence” refers to the process of finding the time
+function <span class="math notranslate nohighlight">\(T(n)\)</span> for an algorithm, when the algorithm is implemented
+recursively. As the time function is usually expressed as a recurrence
+relation, the process of solving recurrence is also known as solving recurrence
+relation.</p>
+<section id="recursive-relation">
+<h2>Recursive relation<a class="headerlink" href="#recursive-relation" title="Permalink to this heading">¶</a></h2>
+<p>Many algorithms are either recursive in nature or can be efficiently
+implemented as an recursive algorithm. Among these are the divide-and-conquer
+algorithms, dynamic programming algorithms, the backtracking algorithms, and so
+on. In the analysis of these recursive implementations of algorithms, the time
+function <span class="math notranslate nohighlight">\(T(n)\)</span> can be described by a recurrence relation.</p>
+<section id="definition">
+<h3>Definition<a class="headerlink" href="#definition" title="Permalink to this heading">¶</a></h3>
+<p>A recurrence relation is an equation that recursively defines a sequence, where
+each term is a function of one or more of the preceding terms.</p>
+<p>E.g. The recursive relation for a merge sort is: <span class="math notranslate nohighlight">\(T(n) = 2T(n/2) +
+\Theta(n)\)</span></p>
+</section>
+<section id="general-forms">
+<h3>General forms<a class="headerlink" href="#general-forms" title="Permalink to this heading">¶</a></h3>
+<p>There are many forms of recurrence relations. The following are the most common
+forms found in the analysis of algorithms.</p>
+<ol class="arabic">
+<li><p>Divide-and-conquer recurrence</p>
+<div class="math notranslate nohighlight">
+\[T(n) = aT(n/b) + f(n)\]</div>
+<p>where <span class="math notranslate nohighlight">\(a \geq 1\)</span> and <span class="math notranslate nohighlight">\(b &gt; 1\)</span> are constants and <span class="math notranslate nohighlight">\(f(n)\)</span> is a
+given function.</p>
+<ul class="simple">
+<li><p>Merge sort</p></li>
+<li><p>Binary search</p></li>
+<li><p>Maximum subarray</p></li>
+<li><p>Strassen’s matrix multiplication</p></li>
+</ul>
+</li>
+<li><p>Linear recurrence (first order)</p>
+<div class="math notranslate nohighlight">
+\[T(n) = aT(n-1) + f(n)\]</div>
+<p>where <span class="math notranslate nohighlight">\(a \geq 1\)</span> is a constant and <span class="math notranslate nohighlight">\(f(n)\)</span> is a given function.</p>
+<ul class="simple">
+<li><p>Linear search (recursive version)</p></li>
+<li><p>Insertion sort/Selection sort (recursive version)</p></li>
+<li><p>Euclidean’s GCD algorithm</p></li>
+</ul>
+</li>
+<li><p>Linear recurrence (second order)</p>
+<div class="math notranslate nohighlight">
+\[T(n) = aT(n-1) + bT(n-2) + f(n)\]</div>
+<p>where <span class="math notranslate nohighlight">\(a \geq 1\)</span> and <span class="math notranslate nohighlight">\(b \geq 1\)</span> are constants and <span class="math notranslate nohighlight">\(f(n)\)</span> is
+a given function.</p>
+<ul class="simple">
+<li><p>Fibonacci numbers (naive recursive version)</p></li>
+</ul>
+</li>
+</ol>
+<p>There are many other forms of recurrence relations. Some of them can be very
+complicated and difficult to solve. Fortunately, they are not commonly found in
+the analysis of algorithms.</p>
+</section>
+</section>
+<section id="solution-to-a-recurrence-relation">
+<h2>Solution to a recurrence relation<a class="headerlink" href="#solution-to-a-recurrence-relation" title="Permalink to this heading">¶</a></h2>
+<p>A closed-form expression, also known as an explicit formula, is a mathematical
+expression that directly provides the value of a function or a sequence for any
+given input or term, without the need for further computation or recursion. In
+essence, it represents a formulaic solution that expresses the relationship
+between the input or term and the output in a straightforward, algebraic
+manner.</p>
+<p>E.g. <span class="math notranslate nohighlight">\(n^2 + 2n + 1\)</span></p>
+<p>The solution of a recurrence relation is a closed-form expression for the
+function <span class="math notranslate nohighlight">\(T(n)\)</span> in terms of <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<p>E.g. The close form solution of <span class="math notranslate nohighlight">\(T(n) = 2T(n/2) + n\)</span> is <span class="math notranslate nohighlight">\(O(n\log
+n)\)</span></p>
+<section id="common-approaches">
+<h3>Common Approaches<a class="headerlink" href="#common-approaches" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Substitution method</p></li>
+<li><p>Recursion-tree method</p></li>
+<li><p>Master method</p></li>
+</ul>
+</section>
+</section>
+<section id="substitution-method">
+<h2>Substitution method<a class="headerlink" href="#substitution-method" title="Permalink to this heading">¶</a></h2>
+<p>The key idea behind the substitution method is to guess a solution for the
+recurrence relation and then use mathematical induction to prove that the
+guessed solution is correct.</p>
+<ol class="arabic simple">
+<li><p>Guess the form of the solution.</p></li>
+<li><p>Use mathematical induction to find the constants and show that the solution
+works.</p></li>
+</ol>
+<section id="substitution-method-examples">
+<h3>Substitution method examples<a class="headerlink" href="#substitution-method-examples" title="Permalink to this heading">¶</a></h3>
+<p>Assume that we have the recurrence relation:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+f(n) &amp;= 3f(n-1) + 3n \\
+f(1) &amp;= 1
+\end{align*}\end{split}\]</div>
+<ol class="arabic simple">
+<li><p>We guess the solution is <span class="math notranslate nohighlight">\(f(n) = An^2 + Bn + C\)</span> where :math`A`,
+:math`B`, :math`C` are constants.</p></li>
+</ol>
+<blockquote>
+<div><p>Use substitution to find :math`A`, :math`B`, :math`C`.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+f(n) &amp;= f(n-1) + 3n \\
+An^2 + Bn + C &amp;= A(n-1)^2 + B(n-1) + C + 3n \\
+An^2 + Bn + C &amp;= An^2 - 2An + A + Bn - B + C + 3n \\
+\end{align*}\end{split}\]</div>
+<p>So, we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+A &amp;= A \\
+B &amp;= -2A + B + 3 \\
+C &amp;= A - B + C \\
+f(1) &amp;= A + B + C = 1 \\
+\end{align*}\end{split}\]</div>
+<p>Solve them to get</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+A = 1.5 \\
+B = 1.5 \\
+C = -2 \\
+\end{align*}\end{split}\]</div>
+<p>The final formula is :math`f(n) = 1.5n^2 + 1.5n - 2`.</p>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><p>Mathematical induction to prove the formula is correct.</p></li>
+</ol>
+<blockquote>
+<div><p>To prove the formula <span class="math notranslate nohighlight">\(f(n) = 1.5n^2 + 1.5n - 2\)</span> is correct for all $n$.</p>
+<ul>
+<li><p>Base case: <span class="math notranslate nohighlight">\(f(1) = 1.5 + 1.5 - 2 = 1\)</span>. Correct!</p></li>
+<li><p>If the formula is correct for <span class="math notranslate nohighlight">\(n-1\)</span>, which means <span class="math notranslate nohighlight">\(f(n-1) =
+1.5(n-1)^2 + 1.5n - 2\)</span> then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+f(n) &amp;= f(n-1) + 3n \\
+&amp;= (1.5(n-1)^2 + 1.5(n-1) - 2) + 3n \\
+&amp;= 1.5n^2 - 3n + 1.5 + 1.5n - 1.5 - 2 + 3n \\
+&amp;= 1.5n^2 + 1.5n - 2 \\
+\end{align*}\end{split}\]</div>
+<p>So, the formula is correct for :math`n`.</p>
+</li>
+<li><p>Done!</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="recurrence-tree-method">
+<h2>Recurrence tree method<a class="headerlink" href="#recurrence-tree-method" title="Permalink to this heading">¶</a></h2>
+<p>The recursive tree method is a graphical approach used to solve recurrence
+relations, especially in the context of analyzing the time complexity of
+recursive algorithms in computer science. It can also be used to generate an
+educated guess as to the closed-form solution of a recurrence relation, which
+can then be verified by the substitution method.</p>
+<ol class="arabic">
+<li><p>Draw a recursion tree.</p>
+<ol class="arabic simple">
+<li><p>Start by representing the initial recurrence as the root of the tree.</p></li>
+<li><p>For each recursive call made by the algorithm, draw a child node. The
+number of child nodes corresponds to the number of recursive calls.</p></li>
+<li><p>Label each node with the cost of the non-recursive work done at that
+level.</p></li>
+<li><p>Continue this process until you reach the base case of the recurrence.</p></li>
+</ol>
+</li>
+<li><p>Compute the cost of each level</p>
+<p>For each level of the tree, sum up the costs of all the nodes at that level.</p>
+</li>
+<li><p>Compute the total cost</p></li>
+</ol>
+<section id="recursion-tree-examples">
+<h3>Recursion Tree Examples<a class="headerlink" href="#recursion-tree-examples" title="Permalink to this heading">¶</a></h3>
+<p>For the <span class="math notranslate nohighlight">\(T(n) = 3T(n/4) + \Theta(n^2)\)</span> recurrence relation.
+Step 1 - 3:</p>
+<ol class="arabic simple">
+<li><p>Draw the root node.</p></li>
+<li><p>Draw the level 1 nodes.</p></li>
+<li><p>Draw the level 2 nodes.</p></li>
+</ol>
+<a class="reference internal image-reference" href="../_images/recursion_tree1.png"><img alt="../_images/recursion_tree1.png" src="../_images/recursion_tree1.png" style="width: 800px;" /></a>
+<ol class="arabic simple" start="4">
+<li><p>Draw all levels</p></li>
+</ol>
+<p>Step 4:</p>
+<a class="reference internal image-reference" href="../_images/recursion_tree2.png"><img alt="../_images/recursion_tree2.png" src="../_images/recursion_tree2.png" style="width: 800px;" /></a>
+<div class="footnote docutils container">
+<p>Credit: Introduction to Algorithms, 4th Ed., T. Cormen et al.</p>
+</div>
+</section>
+</section>
+<section id="master-method">
+<h2>Master method<a class="headerlink" href="#master-method" title="Permalink to this heading">¶</a></h2>
+<p>The Master Method is a popular technique in computer science to determine the
+time complexity of <strong>divide-and-conquer</strong> algorithms. It provides a simple and
+general way to analyze the time complexity of recursive algorithms without
+having to solve the recurrence relation explicitly.</p>
+<p>The Master Method deals with recurrences of the following form:</p>
+<div class="math notranslate nohighlight">
+\[T(n) = aT(n/b) + f(n)\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(n\)</span>: the size of the problem</p></li>
+<li><p><span class="math notranslate nohighlight">\(a\)</span>: the number of subproblems in the recursion</p></li>
+<li><p><span class="math notranslate nohighlight">\(b\)</span>: The factor by which the problem size is divided in each recursive
+call.</p></li>
+<li><p><span class="math notranslate nohighlight">\(f(n)\)</span>: The cost of the work done outside the recursive calls, which
+typically includes the cost of dividing the problem and cost of merging
+the solutions.</p></li>
+</ul>
+<section id="three-cases">
+<h3>Three cases<a class="headerlink" href="#three-cases" title="Permalink to this heading">¶</a></h3>
+<p>The Master Method provides three cases to determine the time complexity:</p>
+<ul>
+<li><p>Case 1:</p>
+<p>If <span class="math notranslate nohighlight">\(f(n) = O(n^c)\)</span> where <span class="math notranslate nohighlight">\(c &lt; \log_b a\)</span>, then: <span class="math notranslate nohighlight">\(T(n) =
+\Theta(n^{\log_b a})\)</span></p>
+</li>
+<li><p>Case 2:</p>
+<p>If <span class="math notranslate nohighlight">\(f(n) = \Theta(n^{\log_b a} \cdot \log^k n)\)</span> for a <span class="math notranslate nohighlight">\(k \geq 0\)</span>,
+then: <span class="math notranslate nohighlight">\(T(n) = \Theta(n^{\log_b a} \cdot \log^{k+1} n)\)</span></p>
+</li>
+<li><p>Case 3:</p>
+<p>If <span class="math notranslate nohighlight">\(f(n) = \Omega(n^c)\)</span> where <span class="math notranslate nohighlight">\(c &gt; \log_b a\)</span>, and if <span class="math notranslate nohighlight">\(a
+f\left(\frac{n}{b}\right) \leq k f(n)\)</span> for some <span class="math notranslate nohighlight">\(k &lt; 1\)</span> and
+sufficiently large <span class="math notranslate nohighlight">\(n\)</span>, then: <span class="math notranslate nohighlight">\(T(n) = \Theta(f(n))\)</span></p>
+</li>
+</ul>
+</section>
+<section id="intuitions-for-the-three-cases">
+<h3>Intuitions for the three cases<a class="headerlink" href="#intuitions-for-the-three-cases" title="Permalink to this heading">¶</a></h3>
+<ul>
+<li><p>Case 1:</p>
+<p>If the cost of the work done outside the recursive calls is small enough,
+then the overall running time is still dominated by the cost of the recursive
+calls.</p>
+</li>
+<li><p>Case 2:</p>
+<p>If the cost of the work done outside the recursive calls is nearly the same
+across all levels of the recursion.</p>
+</li>
+<li><p>Case 3:</p>
+<p>If the cost of the work done outside the recursive calls is large enough,
+then the overall running time is dominated by the cost of the work done
+outside the recursive calls.</p>
+</li>
+</ul>
+</section>
+<section id="master-method-examples">
+<h3>Master method examples<a class="headerlink" href="#master-method-examples" title="Permalink to this heading">¶</a></h3>
+<p>For the recurrence relation of the Merge Sort algorithm:</p>
+<p><span class="math notranslate nohighlight">\(T(n) = 2T\left(\frac{n}{2}\right) + n\)</span></p>
+<p>We have:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(a = 2\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(b = 2\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(f(n) = n\)</span></p></li>
+</ul>
+<p>Using the Master Method:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\log_b a = \log_2 2 = 1\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(f(n) = n = \Theta(n^1)\)</span></p></li>
+</ul>
+<p>This falls under Case 2 with <span class="math notranslate nohighlight">\(k = 0\)</span>. Thus, the solution is: <span class="math notranslate nohighlight">\(T(n)
+= \Theta(n \log n)\)</span></p>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Solving Recurrence</a><ul>
+<li><a class="reference internal" href="#recursive-relation">Recursive relation</a><ul>
+<li><a class="reference internal" href="#definition">Definition</a></li>
+<li><a class="reference internal" href="#general-forms">General forms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#solution-to-a-recurrence-relation">Solution to a recurrence relation</a><ul>
+<li><a class="reference internal" href="#common-approaches">Common Approaches</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#substitution-method">Substitution method</a><ul>
+<li><a class="reference internal" href="#substitution-method-examples">Substitution method examples</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#recurrence-tree-method">Recurrence tree method</a><ul>
+<li><a class="reference internal" href="#recursion-tree-examples">Recursion Tree Examples</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#master-method">Master method</a><ul>
+<li><a class="reference internal" href="#three-cases">Three cases</a></li>
+<li><a class="reference internal" href="#intuitions-for-the-three-cases">Intuitions for the three cases</a></li>
+<li><a class="reference internal" href="#master-method-examples">Master method examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../course/cop4534/m06.html"
+                          title="previous chapter">Module 6: Solving Recurrence 1</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../course/cop4534/m07.html"
+                          title="next chapter">Module 7: Solving Recurrence 2</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/gen-programming/solve-recurrence.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../course/cop4534/m07.html" title="Module 7: Solving Recurrence 2"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../course/cop4534/m06.html" title="Module 6: Solving Recurrence 1"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../course/cop4534/m06.html" >Module 6: Solving Recurrence 1</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Solving Recurrence</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2023, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>
