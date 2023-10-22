@@ -21,9 +21,16 @@ Characteristics
 
 Hash function for hash tables
 =============================
-+ :math:`h(x)`
-+ any key type mapping to integer from 0 to N - 1 (indices in a size N array)
-+ modulo operator on any integer generating hash function
++ :math:`h(key)` a special type of hash function used by hash table
++ Maps a key of a certain type to an integer in a certain range :math:`1, 2,
+  \ldots, size - 1`, where :math:`size` is the size of the hash table
++ Modulo arithmetic
++ Considerations
+
+  * Deterministic
+  * Fast to compute
+  * Uniform distribution
+
 
 Collision resolution
 ====================
@@ -35,6 +42,22 @@ Chaining
 + Nodes in the linked-list keeps key, value and next pointer
 + unlimited storage space
 + Performance degradation when over-filled
++ ``vector<vector<pair<keyType, valueType>>> hashTable`` Vector of vectors of
+  pair objects.
++ ``vector<LinkedListNode<keyType, valueType> *> hashTable`` Vector of pointers
+  to linked list.
++ ``LinkedListNode<keyType, valueType> ** hashTable`` One dimensional dynamic
+  array of pointers to a linked list.
+
+.. code-block:: cpp
+
+  template <typename keyType, typename valueType>
+  struct LikedListNode {
+    keyType key;
+    valueType value;
+    LinkedListNode * next;
+    LinkedListNode * prev;
+  };
 
 Open addressing
 ---------------
@@ -57,6 +80,20 @@ Open addressing
 
   * each bucket keeps both key and value
   * differentiate **empty-since-start** vs **empty-after-removal**
+
++ ``Bucket<keyType, valueType> * hashTable`` One dimensional dynamic array of
+  bucket objects.
++ ``vector<Bucket<keyType, valueType>> hashTable`` Vector of bucket objects.
+
+.. code-block:: cpp
+
+  template <typename keyType, typename valueType>
+  struct Bucket {
+    keyType key;
+    valueType value;
+    bool isEmpty = true;
+    bool isDeleted = false;
+  };
 
 Applications
 ============
@@ -86,8 +123,8 @@ Hash set
   + ``void intersect(anotherSet)``
   + ``void union(anotherSet)``
 
-Chaining Example
-================
+Chaining Hash Map Example
+=========================
 
 ::
 

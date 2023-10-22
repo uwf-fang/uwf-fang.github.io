@@ -17,6 +17,7 @@
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/gen-programming/algorithm/divide-and-conquer.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -39,6 +40,156 @@
             
   <section id="divide-and-conquer-algorithms">
 <h1>Divide and Conquer Algorithms<a class="headerlink" href="#divide-and-conquer-algorithms" title="Permalink to this heading">¶</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
+<p><strong>Divide and Conquer</strong> is a fundamental algorithmic paradigm deeply rooted in
+computer science and mathematics. At its core, this paradigm revolves around
+tackling a complex problem by breaking it down into smaller, more manageable
+subproblems. These subproblems, which are similar in nature but simpler than
+the original problem, are then solved individually. Finally, the solutions to
+these subproblems are combined to form the solution to the original problem.</p>
+<p>To provide a basic analogy, imagine trying to solve a jigsaw puzzle. Rather
+than attempting to fit all the pieces together at once, you might first
+separate out the edge pieces and assemble the border. Next, you could divide
+the remaining pieces based on colors or recognizable patterns, assemble each
+section, and finally, fit these sections together to complete the entire
+puzzle. This approach mirrors the essence of the Divide and Conquer paradigm.</p>
+<img alt="Jigsaw Puzzle" src="../../_images/jigsaw-puzzle.jpg" />
+<div class="footnote docutils container">
+<p>Credit: Photo by Bianca Ackermann on Unsplash</p>
+</div>
+</section>
+<section id="three-stages">
+<h2>Three Stages<a class="headerlink" href="#three-stages" title="Permalink to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Divide</strong>: The primary step is to split or decompose the original problem
+into smaller instances of the same problem. These instances, known as
+subproblems, are typically easier to handle and comprehend than the original
+challenge. The division continues until the subproblems reach a size where
+they can be solved directly.</p></li>
+<li><p><strong>Conquer:</strong> In this phase, each of the subproblems is tackled individually,
+often using recursive approaches. If a subproblem is still too large, it may
+again be divided, and the process repeats. Otherwise, it’s solved directly.</p></li>
+<li><p><strong>Combine:</strong> Once the subproblems are solved, their solutions are merged or
+synthesized to produce the solution to the main problem. The method of
+combination can vary widely based on the problem at hand. Sometimes it’s
+straightforward, while other times it may involve additional computations or
+considerations.</p></li>
+</ol>
+<p>Sometimes, the three stages of Divide and Conquer may not be distinct. For
+example, in Quick Sort, the division and combination steps are combined into a
+single partitioning step.</p>
+</section>
+<section id="benefits">
+<h2>Benefits<a class="headerlink" href="#benefits" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Simplification of Complex Problems:</strong> The primary advantage of the Divide
+and Conquer paradigm is its ability to break down intricate problems into
+simpler ones. This iterative decomposition often results in subproblems that
+are much easier to understand and solve than the overarching issue.</p></li>
+<li><p><strong>Efficiency Improvements:</strong> Divide and Conquer algorithms can lead to
+substantial reductions in computation time, especially when the method of
+division exploits certain characteristics of the problem. For instance,
+algorithms like Merge Sort and Quick Sort often outperform basic sorting
+algorithms, especially for larger datasets.</p></li>
+<li><p><strong>Parallel Processing Potential:</strong> The nature of breaking problems down means
+that subproblems can sometimes be processed simultaneously, leading to
+potential parallelization. Modern multi-core processors or distributed
+computing systems can take advantage of this to solve multiple subproblems in
+parallel, further improving efficiency.</p></li>
+<li><p><strong>Flexibility and Versatility:</strong> The paradigm is broad and adaptable, making
+it applicable to a wide range of problems across various domains. Whether
+it’s searching, sorting, matrix operations, or geometrical problems, Divide
+and Conquer offers a viable strategy.</p></li>
+</ul>
+</section>
+<section id="drawbacks">
+<h2>Drawbacks<a class="headerlink" href="#drawbacks" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Recursive Overhead:</strong> The recursive nature of many Divide and Conquer
+algorithms can introduce overhead. Each recursive call might add to the
+stack, consuming more memory and sometimes making the algorithm slower for
+smaller inputs compared to iterative methods.</p></li>
+<li><p><strong>Risk of Stack Overflow:</strong> Deep recursions, especially on problems with
+large input sizes, can lead to stack overflow errors, as the system stack
+might run out of space due to the accumulation of recursive frames.</p></li>
+<li><p><strong>Not Always Optimal for Small Inputs:</strong> For certain problems and especially
+smaller input sizes, a Divide and Conquer approach might be overkill.
+Simpler, iterative methods might prove faster and more straightforward in
+these cases.</p></li>
+<li><p><strong>Complexity in Design:</strong> While the paradigm itself is conceptually simple,
+designing an efficient Divide and Conquer algorithm for a particular problem
+can be challenging. It requires a clear understanding of how to best divide
+the problem, conquer the subproblems, and then combine the results optimally.</p></li>
+</ul>
+</section>
+<section id="algorithms-using-divide-and-conquer">
+<h2>Algorithms Using Divide and Conquer<a class="headerlink" href="#algorithms-using-divide-and-conquer" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Quick Sort</p></li>
+<li><p>Merge Sort</p></li>
+<li><p>Binary Search</p></li>
+<li><p>Max Subarray Sum</p></li>
+<li><p>Closest Pair of Points</p></li>
+<li><p>Strassen’s Matrix Multiplication</p></li>
+<li><p>Fast Fourier Transform (FFT)</p></li>
+</ul>
+</section>
+<section id="complexity-analysis">
+<h2>Complexity Analysis<a class="headerlink" href="#complexity-analysis" title="Permalink to this heading">¶</a></h2>
+<section id="time-complexity">
+<h3>Time Complexity<a class="headerlink" href="#time-complexity" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Steps</p>
+<ul>
+<li><p>Find recurrence relation</p></li>
+<li><p>Solve recurrence relation using Master Theorem</p></li>
+</ul>
+</li>
+<li><p>Quick Sort <span class="math notranslate nohighlight">\(T(n) = T(k) + T(n-k-1) + \Theta (n)\)</span>, where <span class="math notranslate nohighlight">\(k\)</span> is the
+number of elements which are smaller than pivot</p></li>
+<li><p>Merge Sort <span class="math notranslate nohighlight">\(T(n) = 2T(2/n) + \Theta (n)\)</span></p></li>
+<li><p>Binary Search <span class="math notranslate nohighlight">\(T(n) = T(n/2) + \Theta (1)\)</span></p></li>
+<li><p>Max Subarray Sum <span class="math notranslate nohighlight">\(T(n) = 2T(n/2) + \Theta (n)\)</span></p></li>
+<li><p>Closest Pair of Points <span class="math notranslate nohighlight">\(T(n) = 2T(n/2) + \Theta (n \log n)\)</span></p></li>
+<li><p>Strassen’s Matrix Multiplication <span class="math notranslate nohighlight">\(T(n) = 7T(n/2) + \Theta (n^2)\)</span></p></li>
+<li><p>Fast Fourier Transform (FFT) <span class="math notranslate nohighlight">\(T(n) = 2T(2/n) + \Theta (n)\)</span></p></li>
+</ul>
+<p><strong>Exercise:</strong> Solve the recurrence relation for each of the above algorithms</p>
+</section>
+</section>
+<section id="relationships-to-other-paradigms">
+<h2>Relationships to Other Paradigms<a class="headerlink" href="#relationships-to-other-paradigms" title="Permalink to this heading">¶</a></h2>
+<ul>
+<li><p>Dynamic Programming</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Properties</p></th>
+<th class="head"><p>Divide and Conquer</p></th>
+<th class="head"><p>Dynamic Programming</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Subproblems</p></td>
+<td><p>Distinct</p></td>
+<td><p>Overlapping</p></td>
+</tr>
+<tr class="row-odd"><td><p>Direction</p></td>
+<td><p>Top-down</p></td>
+<td><p>Bottom-up</p></td>
+</tr>
+<tr class="row-even"><td><p>Parallelism</p></td>
+<td><p>Friendly</p></td>
+<td><p>Friendly</p></td>
+</tr>
+</tbody>
+</table>
+<p>Dynamic Programming is considered an extension of Divide and Conquer in many
+cases. However, we employed a narrower definition of Divide and Conquer in
+this lecture so they are treated as separate paradigms.</p>
+</li>
+</ul>
+</section>
 </section>
 
 
@@ -48,6 +199,25 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Divide and Conquer Algorithms</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#three-stages">Three Stages</a></li>
+<li><a class="reference internal" href="#benefits">Benefits</a></li>
+<li><a class="reference internal" href="#drawbacks">Drawbacks</a></li>
+<li><a class="reference internal" href="#algorithms-using-divide-and-conquer">Algorithms Using Divide and Conquer</a></li>
+<li><a class="reference internal" href="#complexity-analysis">Complexity Analysis</a><ul>
+<li><a class="reference internal" href="#time-complexity">Time Complexity</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#relationships-to-other-paradigms">Relationships to Other Paradigms</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">

@@ -70,9 +70,17 @@ slow with linked-list data structure)</p>
 <section id="hash-function-for-hash-tables">
 <h2>Hash function for hash tables<a class="headerlink" href="#hash-function-for-hash-tables" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(h(x)\)</span></p></li>
-<li><p>any key type mapping to integer from 0 to N - 1 (indices in a size N array)</p></li>
-<li><p>modulo operator on any integer generating hash function</p></li>
+<li><p><span class="math notranslate nohighlight">\(h(key)\)</span> a special type of hash function used by hash table</p></li>
+<li><p>Maps a key of a certain type to an integer in a certain range <span class="math notranslate nohighlight">\(1, 2,
+\ldots, size - 1\)</span>, where <span class="math notranslate nohighlight">\(size\)</span> is the size of the hash table</p></li>
+<li><p>Modulo arithmetic</p></li>
+<li><p>Considerations</p>
+<ul>
+<li><p>Deterministic</p></li>
+<li><p>Fast to compute</p></li>
+<li><p>Uniform distribution</p></li>
+</ul>
+</li>
 </ul>
 </section>
 <section id="collision-resolution">
@@ -85,7 +93,22 @@ slow with linked-list data structure)</p>
 <li><p>Nodes in the linked-list keeps key, value and next pointer</p></li>
 <li><p>unlimited storage space</p></li>
 <li><p>Performance degradation when over-filled</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vector&lt;vector&lt;pair&lt;keyType,</span> <span class="pre">valueType&gt;&gt;&gt;</span> <span class="pre">hashTable</span></code> Vector of vectors of
+pair objects.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vector&lt;LinkedListNode&lt;keyType,</span> <span class="pre">valueType&gt;</span> <span class="pre">*&gt;</span> <span class="pre">hashTable</span></code> Vector of pointers
+to linked list.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LinkedListNode&lt;keyType,</span> <span class="pre">valueType&gt;</span> <span class="pre">**</span> <span class="pre">hashTable</span></code> One dimensional dynamic
+array of pointers to a linked list.</p></li>
 </ul>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">keyType</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">valueType</span><span class="o">&gt;</span>
+<span class="linenos">2</span><span class="k">struct</span><span class="w"> </span><span class="nc">LikedListNode</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">3</span><span class="w">  </span><span class="n">keyType</span><span class="w"> </span><span class="n">key</span><span class="p">;</span>
+<span class="linenos">4</span><span class="w">  </span><span class="n">valueType</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="linenos">5</span><span class="w">  </span><span class="n">LinkedListNode</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">next</span><span class="p">;</span>
+<span class="linenos">6</span><span class="w">  </span><span class="n">LinkedListNode</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">prev</span><span class="p">;</span>
+<span class="linenos">7</span><span class="p">};</span>
+</pre></div>
+</div>
 </section>
 <section id="open-addressing">
 <h3>Open addressing<a class="headerlink" href="#open-addressing" title="Permalink to this heading">¶</a></h3>
@@ -108,7 +131,19 @@ slow with linked-list data structure)</p>
 <li><p>differentiate <strong>empty-since-start</strong> vs <strong>empty-after-removal</strong></p></li>
 </ul>
 </li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Bucket&lt;keyType,</span> <span class="pre">valueType&gt;</span> <span class="pre">*</span> <span class="pre">hashTable</span></code> One dimensional dynamic array of
+bucket objects.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vector&lt;Bucket&lt;keyType,</span> <span class="pre">valueType&gt;&gt;</span> <span class="pre">hashTable</span></code> Vector of bucket objects.</p></li>
 </ul>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">keyType</span><span class="p">,</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">valueType</span><span class="o">&gt;</span>
+<span class="linenos">2</span><span class="k">struct</span><span class="w"> </span><span class="nc">Bucket</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos">3</span><span class="w">  </span><span class="n">keyType</span><span class="w"> </span><span class="n">key</span><span class="p">;</span>
+<span class="linenos">4</span><span class="w">  </span><span class="n">valueType</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="linenos">5</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">isEmpty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="linenos">6</span><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">isDeleted</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="linenos">7</span><span class="p">};</span>
+</pre></div>
+</div>
 </section>
 </section>
 <section id="applications">
@@ -148,8 +183,8 @@ slow with linked-list data structure)</p>
 </ul>
 </section>
 </section>
-<section id="chaining-example">
-<h2>Chaining Example<a class="headerlink" href="#chaining-example" title="Permalink to this heading">¶</a></h2>
+<section id="chaining-hash-map-example">
+<h2>Chaining Hash Map Example<a class="headerlink" href="#chaining-hash-map-example" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">class</span><span class="w"> </span><span class="nc">Node</span><span class="w"> </span><span class="p">{</span>
 <span class="linenos"> 2</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">key</span><span class="p">;</span>
 <span class="linenos"> 3</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
@@ -270,7 +305,7 @@ addressing collision resolution approach</p>
 <li><a class="reference internal" href="#hash-set">Hash set</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#chaining-example">Chaining Example</a></li>
+<li><a class="reference internal" href="#chaining-hash-map-example">Chaining Hash Map Example</a></li>
 <li><a class="reference internal" href="#open-addressing-example">Open addressing example</a></li>
 <li><a class="reference internal" href="#hash-table-glossary">Hash Table Glossary</a></li>
 </ul>

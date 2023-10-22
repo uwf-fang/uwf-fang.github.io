@@ -1,3 +1,141 @@
 *****************************
 Divide and Conquer Algorithms
 *****************************
+
+Overview
+========
+**Divide and Conquer** is a fundamental algorithmic paradigm deeply rooted in
+computer science and mathematics. At its core, this paradigm revolves around
+tackling a complex problem by breaking it down into smaller, more manageable
+subproblems. These subproblems, which are similar in nature but simpler than
+the original problem, are then solved individually. Finally, the solutions to
+these subproblems are combined to form the solution to the original problem.
+
+To provide a basic analogy, imagine trying to solve a jigsaw puzzle. Rather
+than attempting to fit all the pieces together at once, you might first
+separate out the edge pieces and assemble the border. Next, you could divide
+the remaining pieces based on colors or recognizable patterns, assemble each
+section, and finally, fit these sections together to complete the entire
+puzzle. This approach mirrors the essence of the Divide and Conquer paradigm.
+
+.. image:: /_static/jigsaw-puzzle.jpg
+  :alt: Jigsaw Puzzle
+
+.. container:: footnote
+
+  Credit: Photo by Bianca Ackermann on Unsplash
+
+Three Stages
+============
+1. **Divide**: The primary step is to split or decompose the original problem
+   into smaller instances of the same problem. These instances, known as
+   subproblems, are typically easier to handle and comprehend than the original
+   challenge. The division continues until the subproblems reach a size where
+   they can be solved directly.
+
+2. **Conquer:** In this phase, each of the subproblems is tackled individually,
+   often using recursive approaches. If a subproblem is still too large, it may
+   again be divided, and the process repeats. Otherwise, it's solved directly.
+
+3. **Combine:** Once the subproblems are solved, their solutions are merged or
+   synthesized to produce the solution to the main problem. The method of
+   combination can vary widely based on the problem at hand. Sometimes it's
+   straightforward, while other times it may involve additional computations or
+   considerations.
+
+Sometimes, the three stages of Divide and Conquer may not be distinct. For
+example, in Quick Sort, the division and combination steps are combined into a
+single partitioning step.
+
+Benefits
+========
++ **Simplification of Complex Problems:** The primary advantage of the Divide
+  and Conquer paradigm is its ability to break down intricate problems into
+  simpler ones. This iterative decomposition often results in subproblems that
+  are much easier to understand and solve than the overarching issue.
++ **Efficiency Improvements:** Divide and Conquer algorithms can lead to
+  substantial reductions in computation time, especially when the method of
+  division exploits certain characteristics of the problem. For instance,
+  algorithms like Merge Sort and Quick Sort often outperform basic sorting
+  algorithms, especially for larger datasets.
++ **Parallel Processing Potential:** The nature of breaking problems down means
+  that subproblems can sometimes be processed simultaneously, leading to
+  potential parallelization. Modern multi-core processors or distributed
+  computing systems can take advantage of this to solve multiple subproblems in
+  parallel, further improving efficiency.
++ **Flexibility and Versatility:** The paradigm is broad and adaptable, making
+  it applicable to a wide range of problems across various domains. Whether
+  it's searching, sorting, matrix operations, or geometrical problems, Divide
+  and Conquer offers a viable strategy.
+
+Drawbacks
+=========
++ **Recursive Overhead:** The recursive nature of many Divide and Conquer
+  algorithms can introduce overhead. Each recursive call might add to the
+  stack, consuming more memory and sometimes making the algorithm slower for
+  smaller inputs compared to iterative methods.
++ **Risk of Stack Overflow:** Deep recursions, especially on problems with
+  large input sizes, can lead to stack overflow errors, as the system stack
+  might run out of space due to the accumulation of recursive frames.
++ **Not Always Optimal for Small Inputs:** For certain problems and especially
+  smaller input sizes, a Divide and Conquer approach might be overkill.
+  Simpler, iterative methods might prove faster and more straightforward in
+  these cases.
++ **Complexity in Design:** While the paradigm itself is conceptually simple,
+  designing an efficient Divide and Conquer algorithm for a particular problem
+  can be challenging. It requires a clear understanding of how to best divide
+  the problem, conquer the subproblems, and then combine the results optimally.
+
+Algorithms Using Divide and Conquer
+===================================
++ Quick Sort
++ Merge Sort
++ Binary Search
++ Max Subarray Sum
++ Closest Pair of Points
++ Strassen’s Matrix Multiplication
++ Fast Fourier Transform (FFT)
+
+Complexity Analysis
+===================
+Time Complexity
+---------------
++ Steps
+
+  * Find recurrence relation
+  * Solve recurrence relation using Master Theorem
+
++ Quick Sort :math:`T(n) = T(k) + T(n-k-1) + \Theta (n)`, where :math:`k` is the
+  number of elements which are smaller than pivot
++ Merge Sort :math:`T(n) = 2T(2/n) + \Theta (n)`
++ Binary Search :math:`T(n) = T(n/2) + \Theta (1)`
++ Max Subarray Sum :math:`T(n) = 2T(n/2) + \Theta (n)`
++ Closest Pair of Points :math:`T(n) = 2T(n/2) + \Theta (n \log n)`
++ Strassen’s Matrix Multiplication :math:`T(n) = 7T(n/2) + \Theta (n^2)`
++ Fast Fourier Transform (FFT) :math:`T(n) = 2T(2/n) + \Theta (n)`
+
+**Exercise:** Solve the recurrence relation for each of the above algorithms
+
+Relationships to Other Paradigms
+================================
++ Dynamic Programming
+
+  .. list-table::
+    :header-rows: 1
+
+    * - Properties
+      - Divide and Conquer
+      - Dynamic Programming
+    * - Subproblems
+      - Distinct
+      - Overlapping
+    * - Direction
+      - Top-down
+      - Bottom-up
+    * - Parallelism
+      - Friendly
+      - Friendly
+
+  Dynamic Programming is considered an extension of Divide and Conquer in many
+  cases. However, we employed a narrower definition of Divide and Conquer in
+  this lecture so they are treated as separate paradigms.
