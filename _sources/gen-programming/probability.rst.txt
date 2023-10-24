@@ -1,0 +1,214 @@
+*******************************
+Probability in Computer Science
+*******************************
+Overview
+========
++ **Definition:** Probability quantifies the likelihood of an event or outcome
+  occurring. It is a measure between 0 (implying the event cannot happen) and 1
+  (implying the event is certain to happen).
+
+  It is often represented as a fraction, decimal, or percentage. For instance,
+  the probability of flipping a fair coin to get heads is 0.5 or 50%.
+
++ **Applications:**
+
+  - Algorithm Efficiency
+
+    Many algorithms, especially randomized algorithms, rely on probabilistic
+    principles to optimize efficiency and provide approximate solutions to
+    complex problems.
+
+  - Data Analysis and Predictive Modeling
+
+    Probabilistic models help in predicting future events based on historical
+    data, which is crucial in machine learning and data mining.
+
+  - System Reliability
+
+    Probability helps in evaluating the reliability and performance of systems,
+    networks, and software, enabling better design and troubleshooting.
+
++ **Relationship to combinatorics:**
+
+  By understanding the total number of possible outcomes (from combinatorics)
+  and the number of desired outcomes, we can assess the likelihood of specific
+  events.
+
+Types of Probability
+====================
++ Classical Probability
+
+  Defined for situations where outcomes are equally likely. This method is
+  deterministic in nature. This method is related to combinatorics.
+
+  **Examples**:
+
+    - Flipping a fair coin: The probability of getting a head or tail is
+      equally 0.5.
+    - Rolling a fair six-sided die: The probability of any given side is 1/6.
+
++ Empirical (or Experimental) Probability (FYI)
+
+  Based on observations, experiments, or historical data rather than
+  theoretical calculation.
+
++ Subjective Probability (FYI)
+
+  Derived from personal judgment, intuition, or belief, rather than any
+  objective or empirical evidence. It's less formal and more based on
+  individual perspectives.
+
+Basic Rules and Principles of Probability
+=========================================
+
+Probability of an Event
+-----------------------
+Every event has a probability between 0 and 1, inclusive.
+
+- :math:`0 \leq P(A) \leq 1` for any event :math:`A`.
+- **Interpretation**:
+
+  - A probability of 0 means the event is impossible.
+  - A probability of 1 means the event is certain.
+
+Sample Space and Events
+-----------------------
+The set of all possible outcomes of an experiment is the sample space, and any
+subset of this sample space is an event.
+
+- Tossing a coin: Sample space = {Heads, Tails}.
+
+The Additive Rule
+-----------------
+For two mutually exclusive (or disjoint) events, the probability that either
+occurs is the sum of their probabilities.
+
+- :math:`P(A \cup B) = P(A) + P(B)` for mutually exclusive events :math:`A` and
+  :math:`B`.
+
+Complementary Events
+--------------------
+The event that A doesn't happen is called the complement of A.
+
+- :math:`P(A') = 1 - P(A)`, where :math:`A'` is the complement of :math:`A`.
+
+Multiplicative Rule
+-------------------
+For two independent events, the probability that both occur is the product of
+their probabilities.
+
+- :math:`P(A \cap B) = P(A) \times P(B)` for independent events :math:`A` and
+  :math:`B`.
+
+Conditional Probability (FYI)
+-----------------------------
+The probability of an event :math:`A` given that another event :math:`B` has
+occurred.
+
+- :math:`P(A|B) = \frac{P(A \cap B)}{P(B)}`, provided :math:`P(B) \neq 0`.
+
+- **Interpretation**: Provides a way to update our probability based on new
+  evidence.
+
+
+Bayes' Theorem (FYI)
+====================
+
+The Formula
+-----------
+Bayes' Theorem provides a way to find a probability when certain other
+probabilities are known.
+
+- **Formula**:
+
+  .. math::
+
+     P(A|B) = \frac{P(B|A) \times P(A)}{P(B)}
+
+  Where:
+
+  - :math:`P(A|B)` is the posterior probability: the probability of hypothesis
+       :math:`A` given data :math:`B`.
+  - :math:`P(B|A)` is the likelihood: the probability of data :math:`B` given
+       hypothesis :math:`A`.
+  - :math:`P(A)` is the prior probability: the probability of hypothesis
+       :math:`A` before seeing the data.
+  - :math:`P(B)` is the marginal likelihood: the total probability of observing
+       data :math:`B`.
+
+Significance in Computer Science
+--------------------------------
+Bayes' Theorem is foundational in various computer science domains, especially
+those that require inference from data.
+
+- **Machine Learning**
+- **Data Analysis**
+- **Decision Making**
+- **Filtering and Prediction**
+
+Applying Combinatorics in Classic Probability
+=============================================
+In classic probability, all events have a same likelihood. Thus, we can use
+combinatorics to determine the total number of possible outcomes and the number
+of desired outcomes, which allows us to calculate the probability of an event.
+
+.. note::
+
+  :math:`P` denotes probability, not permutation here!
+
+Card Games (Poker Hands)
+------------------------
+**Question**: What is the probability of getting a royal flush in poker when
+dealt 5 cards from a standard 52-card deck?
+
+- **Solution**:
+
+  - Combinatorial Approach: There are :math:`C^{52}_{5}` ways to choose 5
+    cards from 52, and only 4 ways to get a royal flush (one for each suit).
+  - Probability: :math:`P(\text{Royal Flush}) = \frac{4}{C^{52}_{5}}`
+
+Dice Games (Yahtzee)
+--------------------
+**Question**: What is the probability of rolling a Yahtzee (five dice showing
+the same number) in one roll?
+
+- **Solution**:
+
+  - Combinatorial Approach: There are :math:`6^5` possible outcomes when
+    rolling 5 dice, and 6 possible Yahtzees (one for each number 1-6).
+  - Probability: :math:`P(\text{Yahtzee}) = \frac{6}{6^5}`
+
+Lottery Drawings
+----------------
+**Question**: What is the probability of winning a lottery where you must
+correctly pick 6 numbers out of 49?
+
+- **Solution**:
+
+  - Combinatorial Approach: There are :math:`C^{49}_{6}` ways to choose 6
+    numbers from 49.
+  - Probability: :math:`P(\text{Winning}) = \frac{1}{C^{49}_{6}}`
+
+Arranging Books on a Shelf
+--------------------------
+**Question**: If you have 10 different books and want to place 2 specific books
+next to each other, what's the probability this happens at random?
+
+- **Solution**:
+
+  - Combinatorial Approach: Consider the 2 specific books as one item. There
+    are 9! ways to arrange these 9 items, and 2! ways to arrange the 2 books
+    among themselves. There are 10! ways to arrange all books without any
+    restrictions.
+  - Probability: :math:`P(\text{2 Books Together}) = \frac{9! \times 2!}{10!}`
+
+Drawing Colored Balls from a Bag
+--------------------------------
+**Question**: In a bag with 5 red, 4 blue, and 6 green balls, what's the
+probability of drawing 2 red balls consecutively without replacement?
+
+- **Solution**:
+
+  - Combinatorial Approach: There are :math:`C^{5}_{2}` ways to choose 2 red
+    balls and :math:`C^{15}_{2}` ways to choose any 2 balls from 15.
+  - Probability: :math:`P(\text{2 Red Balls}) = \frac{C^{5}_{2}}{C^{15}_{2}}`

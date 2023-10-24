@@ -1,0 +1,369 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Probability in Computer Science &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/gen-programming/probability.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Probability in Computer Science</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="probability-in-computer-science">
+<h1>Probability in Computer Science<a class="headerlink" href="#probability-in-computer-science" title="Permalink to this heading">¶</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
+<ul>
+<li><p><strong>Definition:</strong> Probability quantifies the likelihood of an event or outcome
+occurring. It is a measure between 0 (implying the event cannot happen) and 1
+(implying the event is certain to happen).</p>
+<p>It is often represented as a fraction, decimal, or percentage. For instance,
+the probability of flipping a fair coin to get heads is 0.5 or 50%.</p>
+</li>
+<li><p><strong>Applications:</strong></p>
+<ul>
+<li><p>Algorithm Efficiency</p>
+<p>Many algorithms, especially randomized algorithms, rely on probabilistic
+principles to optimize efficiency and provide approximate solutions to
+complex problems.</p>
+</li>
+<li><p>Data Analysis and Predictive Modeling</p>
+<p>Probabilistic models help in predicting future events based on historical
+data, which is crucial in machine learning and data mining.</p>
+</li>
+<li><p>System Reliability</p>
+<p>Probability helps in evaluating the reliability and performance of systems,
+networks, and software, enabling better design and troubleshooting.</p>
+</li>
+</ul>
+</li>
+<li><p><strong>Relationship to combinatorics:</strong></p>
+<p>By understanding the total number of possible outcomes (from combinatorics)
+and the number of desired outcomes, we can assess the likelihood of specific
+events.</p>
+</li>
+</ul>
+</section>
+<section id="types-of-probability">
+<h2>Types of Probability<a class="headerlink" href="#types-of-probability" title="Permalink to this heading">¶</a></h2>
+<ul>
+<li><p>Classical Probability</p>
+<p>Defined for situations where outcomes are equally likely. This method is
+deterministic in nature. This method is related to combinatorics.</p>
+<p><strong>Examples</strong>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Flipping a fair coin: The probability of getting a head or tail is
+equally 0.5.</p></li>
+<li><p>Rolling a fair six-sided die: The probability of any given side is 1/6.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Empirical (or Experimental) Probability (FYI)</p>
+<p>Based on observations, experiments, or historical data rather than
+theoretical calculation.</p>
+</li>
+<li><p>Subjective Probability (FYI)</p>
+<p>Derived from personal judgment, intuition, or belief, rather than any
+objective or empirical evidence. It’s less formal and more based on
+individual perspectives.</p>
+</li>
+</ul>
+</section>
+<section id="basic-rules-and-principles-of-probability">
+<h2>Basic Rules and Principles of Probability<a class="headerlink" href="#basic-rules-and-principles-of-probability" title="Permalink to this heading">¶</a></h2>
+<section id="probability-of-an-event">
+<h3>Probability of an Event<a class="headerlink" href="#probability-of-an-event" title="Permalink to this heading">¶</a></h3>
+<p>Every event has a probability between 0 and 1, inclusive.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(0 \leq P(A) \leq 1\)</span> for any event <span class="math notranslate nohighlight">\(A\)</span>.</p></li>
+<li><p><strong>Interpretation</strong>:</p>
+<ul>
+<li><p>A probability of 0 means the event is impossible.</p></li>
+<li><p>A probability of 1 means the event is certain.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="sample-space-and-events">
+<h3>Sample Space and Events<a class="headerlink" href="#sample-space-and-events" title="Permalink to this heading">¶</a></h3>
+<p>The set of all possible outcomes of an experiment is the sample space, and any
+subset of this sample space is an event.</p>
+<ul class="simple">
+<li><p>Tossing a coin: Sample space = {Heads, Tails}.</p></li>
+</ul>
+</section>
+<section id="the-additive-rule">
+<h3>The Additive Rule<a class="headerlink" href="#the-additive-rule" title="Permalink to this heading">¶</a></h3>
+<p>For two mutually exclusive (or disjoint) events, the probability that either
+occurs is the sum of their probabilities.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P(A \cup B) = P(A) + P(B)\)</span> for mutually exclusive events <span class="math notranslate nohighlight">\(A\)</span> and
+<span class="math notranslate nohighlight">\(B\)</span>.</p></li>
+</ul>
+</section>
+<section id="complementary-events">
+<h3>Complementary Events<a class="headerlink" href="#complementary-events" title="Permalink to this heading">¶</a></h3>
+<p>The event that A doesn’t happen is called the complement of A.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P(A') = 1 - P(A)\)</span>, where <span class="math notranslate nohighlight">\(A'\)</span> is the complement of <span class="math notranslate nohighlight">\(A\)</span>.</p></li>
+</ul>
+</section>
+<section id="multiplicative-rule">
+<h3>Multiplicative Rule<a class="headerlink" href="#multiplicative-rule" title="Permalink to this heading">¶</a></h3>
+<p>For two independent events, the probability that both occur is the product of
+their probabilities.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P(A \cap B) = P(A) \times P(B)\)</span> for independent events <span class="math notranslate nohighlight">\(A\)</span> and
+<span class="math notranslate nohighlight">\(B\)</span>.</p></li>
+</ul>
+</section>
+<section id="conditional-probability-fyi">
+<h3>Conditional Probability (FYI)<a class="headerlink" href="#conditional-probability-fyi" title="Permalink to this heading">¶</a></h3>
+<p>The probability of an event <span class="math notranslate nohighlight">\(A\)</span> given that another event <span class="math notranslate nohighlight">\(B\)</span> has
+occurred.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P(A|B) = \frac{P(A \cap B)}{P(B)}\)</span>, provided <span class="math notranslate nohighlight">\(P(B) \neq 0\)</span>.</p></li>
+<li><p><strong>Interpretation</strong>: Provides a way to update our probability based on new
+evidence.</p></li>
+</ul>
+</section>
+</section>
+<section id="bayes-theorem-fyi">
+<h2>Bayes’ Theorem (FYI)<a class="headerlink" href="#bayes-theorem-fyi" title="Permalink to this heading">¶</a></h2>
+<section id="the-formula">
+<h3>The Formula<a class="headerlink" href="#the-formula" title="Permalink to this heading">¶</a></h3>
+<p>Bayes’ Theorem provides a way to find a probability when certain other
+probabilities are known.</p>
+<ul>
+<li><p><strong>Formula</strong>:</p>
+<div class="math notranslate nohighlight">
+\[P(A|B) = \frac{P(B|A) \times P(A)}{P(B)}\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><span class="math notranslate nohighlight">\(P(A|B)\)</span> is the posterior probability: the probability of hypothesis</dt><dd><p><span class="math notranslate nohighlight">\(A\)</span> given data <span class="math notranslate nohighlight">\(B\)</span>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><span class="math notranslate nohighlight">\(P(B|A)\)</span> is the likelihood: the probability of data <span class="math notranslate nohighlight">\(B\)</span> given</dt><dd><p>hypothesis <span class="math notranslate nohighlight">\(A\)</span>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><span class="math notranslate nohighlight">\(P(A)\)</span> is the prior probability: the probability of hypothesis</dt><dd><p><span class="math notranslate nohighlight">\(A\)</span> before seeing the data.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><span class="math notranslate nohighlight">\(P(B)\)</span> is the marginal likelihood: the total probability of observing</dt><dd><p>data <span class="math notranslate nohighlight">\(B\)</span>.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="significance-in-computer-science">
+<h3>Significance in Computer Science<a class="headerlink" href="#significance-in-computer-science" title="Permalink to this heading">¶</a></h3>
+<p>Bayes’ Theorem is foundational in various computer science domains, especially
+those that require inference from data.</p>
+<ul class="simple">
+<li><p><strong>Machine Learning</strong></p></li>
+<li><p><strong>Data Analysis</strong></p></li>
+<li><p><strong>Decision Making</strong></p></li>
+<li><p><strong>Filtering and Prediction</strong></p></li>
+</ul>
+</section>
+</section>
+<section id="applying-combinatorics-in-classic-probability">
+<h2>Applying Combinatorics in Classic Probability<a class="headerlink" href="#applying-combinatorics-in-classic-probability" title="Permalink to this heading">¶</a></h2>
+<p>In classic probability, all events have a same likelihood. Thus, we can use
+combinatorics to determine the total number of possible outcomes and the number
+of desired outcomes, which allows us to calculate the probability of an event.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><span class="math notranslate nohighlight">\(P\)</span> denotes probability, not permutation here!</p>
+</div>
+<section id="card-games-poker-hands">
+<h3>Card Games (Poker Hands)<a class="headerlink" href="#card-games-poker-hands" title="Permalink to this heading">¶</a></h3>
+<p><strong>Question</strong>: What is the probability of getting a royal flush in poker when
+dealt 5 cards from a standard 52-card deck?</p>
+<ul class="simple">
+<li><p><strong>Solution</strong>:</p>
+<ul>
+<li><p>Combinatorial Approach: There are <span class="math notranslate nohighlight">\(C^{52}_{5}\)</span> ways to choose 5
+cards from 52, and only 4 ways to get a royal flush (one for each suit).</p></li>
+<li><p>Probability: <span class="math notranslate nohighlight">\(P(\text{Royal Flush}) = \frac{4}{C^{52}_{5}}\)</span></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="dice-games-yahtzee">
+<h3>Dice Games (Yahtzee)<a class="headerlink" href="#dice-games-yahtzee" title="Permalink to this heading">¶</a></h3>
+<p><strong>Question</strong>: What is the probability of rolling a Yahtzee (five dice showing
+the same number) in one roll?</p>
+<ul class="simple">
+<li><p><strong>Solution</strong>:</p>
+<ul>
+<li><p>Combinatorial Approach: There are <span class="math notranslate nohighlight">\(6^5\)</span> possible outcomes when
+rolling 5 dice, and 6 possible Yahtzees (one for each number 1-6).</p></li>
+<li><p>Probability: <span class="math notranslate nohighlight">\(P(\text{Yahtzee}) = \frac{6}{6^5}\)</span></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="lottery-drawings">
+<h3>Lottery Drawings<a class="headerlink" href="#lottery-drawings" title="Permalink to this heading">¶</a></h3>
+<p><strong>Question</strong>: What is the probability of winning a lottery where you must
+correctly pick 6 numbers out of 49?</p>
+<ul class="simple">
+<li><p><strong>Solution</strong>:</p>
+<ul>
+<li><p>Combinatorial Approach: There are <span class="math notranslate nohighlight">\(C^{49}_{6}\)</span> ways to choose 6
+numbers from 49.</p></li>
+<li><p>Probability: <span class="math notranslate nohighlight">\(P(\text{Winning}) = \frac{1}{C^{49}_{6}}\)</span></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="arranging-books-on-a-shelf">
+<h3>Arranging Books on a Shelf<a class="headerlink" href="#arranging-books-on-a-shelf" title="Permalink to this heading">¶</a></h3>
+<p><strong>Question</strong>: If you have 10 different books and want to place 2 specific books
+next to each other, what’s the probability this happens at random?</p>
+<ul class="simple">
+<li><p><strong>Solution</strong>:</p>
+<ul>
+<li><p>Combinatorial Approach: Consider the 2 specific books as one item. There
+are 9! ways to arrange these 9 items, and 2! ways to arrange the 2 books
+among themselves. There are 10! ways to arrange all books without any
+restrictions.</p></li>
+<li><p>Probability: <span class="math notranslate nohighlight">\(P(\text{2 Books Together}) = \frac{9! \times 2!}{10!}\)</span></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="drawing-colored-balls-from-a-bag">
+<h3>Drawing Colored Balls from a Bag<a class="headerlink" href="#drawing-colored-balls-from-a-bag" title="Permalink to this heading">¶</a></h3>
+<p><strong>Question</strong>: In a bag with 5 red, 4 blue, and 6 green balls, what’s the
+probability of drawing 2 red balls consecutively without replacement?</p>
+<ul class="simple">
+<li><p><strong>Solution</strong>:</p>
+<ul>
+<li><p>Combinatorial Approach: There are <span class="math notranslate nohighlight">\(C^{5}_{2}\)</span> ways to choose 2 red
+balls and <span class="math notranslate nohighlight">\(C^{15}_{2}\)</span> ways to choose any 2 balls from 15.</p></li>
+<li><p>Probability: <span class="math notranslate nohighlight">\(P(\text{2 Red Balls}) = \frac{C^{5}_{2}}{C^{15}_{2}}\)</span></p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Probability in Computer Science</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#types-of-probability">Types of Probability</a></li>
+<li><a class="reference internal" href="#basic-rules-and-principles-of-probability">Basic Rules and Principles of Probability</a><ul>
+<li><a class="reference internal" href="#probability-of-an-event">Probability of an Event</a></li>
+<li><a class="reference internal" href="#sample-space-and-events">Sample Space and Events</a></li>
+<li><a class="reference internal" href="#the-additive-rule">The Additive Rule</a></li>
+<li><a class="reference internal" href="#complementary-events">Complementary Events</a></li>
+<li><a class="reference internal" href="#multiplicative-rule">Multiplicative Rule</a></li>
+<li><a class="reference internal" href="#conditional-probability-fyi">Conditional Probability (FYI)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bayes-theorem-fyi">Bayes’ Theorem (FYI)</a><ul>
+<li><a class="reference internal" href="#the-formula">The Formula</a></li>
+<li><a class="reference internal" href="#significance-in-computer-science">Significance in Computer Science</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#applying-combinatorics-in-classic-probability">Applying Combinatorics in Classic Probability</a><ul>
+<li><a class="reference internal" href="#card-games-poker-hands">Card Games (Poker Hands)</a></li>
+<li><a class="reference internal" href="#dice-games-yahtzee">Dice Games (Yahtzee)</a></li>
+<li><a class="reference internal" href="#lottery-drawings">Lottery Drawings</a></li>
+<li><a class="reference internal" href="#arranging-books-on-a-shelf">Arranging Books on a Shelf</a></li>
+<li><a class="reference internal" href="#drawing-colored-balls-from-a-bag">Drawing Colored Balls from a Bag</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/gen-programming/probability.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Probability in Computer Science</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2023, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>
