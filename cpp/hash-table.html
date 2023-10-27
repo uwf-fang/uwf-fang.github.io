@@ -83,6 +83,30 @@ slow with linked-list data structure)</p>
 </li>
 </ul>
 </section>
+<section id="behaviors">
+<h2>Behaviors<a class="headerlink" href="#behaviors" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>The hash table stores either key-value pairs or only keys</p></li>
+<li><p>Behaviors (defers according to the data it stores)</p>
+<ul>
+<li><p>Set a key-value pair/add a key</p></li>
+<li><p>Get the value of a key/lookup a key</p></li>
+<li><p>Delete a key-value pair/delete a key</p></li>
+<li><p>Check size</p></li>
+<li><p>Check empty</p></li>
+<li><p>Rehashing (resize)</p>
+<ul>
+<li><p>Create a new hash table with a larger size and copy all the elements from
+the old hash table to the new one</p></li>
+<li><p>When the load factor <span class="math notranslate nohighlight">\(\alpha\)</span> is too large</p></li>
+<li><p>When the load factor <span class="math notranslate nohighlight">\(\alpha\)</span> is too small</p></li>
+<li><p>When there is a large number of tombstone buckets (open addressing)</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
 <section id="collision-resolution">
 <h2>Collision resolution<a class="headerlink" href="#collision-resolution" title="Permalink to this heading">¶</a></h2>
 <p>Methods to handle collision when multiple keys are mapped to a same bucket.</p>
@@ -115,18 +139,27 @@ array of pointers to a linked list.</p></li>
 <ul>
 <li><p>find another available bucket to store the value when a collision occurs</p></li>
 <li><p>probing sequence: the sequence of the buckets to check when collision happens</p></li>
-<li><p>linear probing:</p>
-<p><span class="math notranslate nohighlight">\((h1(key) + C_{1} * i) \% NUM\_BUCKETS, i = 0, 1, 2, 3 \dots\)</span></p>
+<li><p>Linear probing:</p>
+<p><span class="math notranslate nohighlight">\((h1(key) + C_{1} * i) \% size, i = 0, 1, 2, 3 \dots size - 1\)</span></p>
 </li>
 <li><p>quadratic probing:</p>
-<p><span class="math notranslate nohighlight">\((h1(key) + C_{1} * i + C_{2} * i^2) \% NUM\_BUCKETS, i = 0, 1, 2,
-3 \dots\)</span></p>
+<p><span class="math notranslate nohighlight">\((h1(key) + C_{1} * i^2) \% size, i = 0, 1, 2, 3 \dots size - 1\)</span></p>
 </li>
 <li><p>double hashing probing:</p>
-<p><span class="math notranslate nohighlight">\((h1(key) + i * h2(key)) \% NUM\_BUCKETS, i = 0, 1, 2, 3 \dots\)</span></p>
+<p><span class="math notranslate nohighlight">\((h1(key) + C_{1} * i * h2(key)) \% size, i = 0, 1, 2, 3 \dots size -
+1\)</span></p>
 </li>
-<li><p>lookup/insertion/removal implementation</p>
+</ul>
+<div class="footnote docutils container">
 <ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(h1(key)\)</span> is the primary hash function</p></li>
+<li><p><span class="math notranslate nohighlight">\(h2(key)\)</span> is the secondary hash function</p></li>
+<li><p><span class="math notranslate nohighlight">\(C_{1}\)</span> and <span class="math notranslate nohighlight">\(C_{2}\)</span>, etc. are constants</p></li>
+</ul>
+</div>
+<ul class="simple">
+<li><p>lookup/insertion/removal implementation</p>
+<ul>
 <li><p>each bucket keeps both key and value</p></li>
 <li><p>differentiate <strong>empty-since-start</strong> vs <strong>empty-after-removal</strong></p></li>
 </ul>
@@ -295,6 +328,7 @@ addressing collision resolution approach</p>
 <li><a class="reference internal" href="#">Hash Table in C++</a><ul>
 <li><a class="reference internal" href="#characteristics">Characteristics</a></li>
 <li><a class="reference internal" href="#hash-function-for-hash-tables">Hash function for hash tables</a></li>
+<li><a class="reference internal" href="#behaviors">Behaviors</a></li>
 <li><a class="reference internal" href="#collision-resolution">Collision resolution</a><ul>
 <li><a class="reference internal" href="#chaining">Chaining</a></li>
 <li><a class="reference internal" href="#open-addressing">Open addressing</a></li>

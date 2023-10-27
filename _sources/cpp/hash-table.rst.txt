@@ -31,6 +31,23 @@ Hash function for hash tables
   * Fast to compute
   * Uniform distribution
 
+Behaviors
+=========
++ The hash table stores either key-value pairs or only keys
++ Behaviors (defers according to the data it stores)
+
+  * Set a key-value pair/add a key
+  * Get the value of a key/lookup a key
+  * Delete a key-value pair/delete a key
+  * Check size
+  * Check empty
+  * Rehashing (resize)
+
+    - Create a new hash table with a larger size and copy all the elements from
+      the old hash table to the new one
+    - When the load factor :math:`\alpha` is too large
+    - When the load factor :math:`\alpha` is too small
+    - When there is a large number of tombstone buckets (open addressing)
 
 Collision resolution
 ====================
@@ -63,18 +80,24 @@ Open addressing
 ---------------
 + find another available bucket to store the value when a collision occurs
 + probing sequence: the sequence of the buckets to check when collision happens
-+ linear probing:
++ Linear probing:
 
-  :math:`(h1(key) + C_{1} * i) \% NUM\_BUCKETS, i = 0, 1, 2, 3 \dots`
+  :math:`(h1(key) + C_{1} * i) \% size, i = 0, 1, 2, 3 \dots size - 1`
 
 + quadratic probing:
 
-  :math:`(h1(key) + C_{1} * i + C_{2} * i^2) \% NUM\_BUCKETS, i = 0, 1, 2,
-  3 \dots`
+  :math:`(h1(key) + C_{1} * i^2) \% size, i = 0, 1, 2, 3 \dots size - 1`
 
 + double hashing probing:
 
-  :math:`(h1(key) + i * h2(key)) \% NUM\_BUCKETS, i = 0, 1, 2, 3 \dots`
+  :math:`(h1(key) + C_{1} * i * h2(key)) \% size, i = 0, 1, 2, 3 \dots size -
+  1`
+
+.. container:: footnote
+
+  * :math:`h1(key)` is the primary hash function
+  * :math:`h2(key)` is the secondary hash function
+  * :math:`C_{1}` and :math:`C_{2}`, etc. are constants
 
 + lookup/insertion/removal implementation
 
