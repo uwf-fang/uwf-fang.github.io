@@ -1,0 +1,265 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Dynamic Programming &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/gen-programming/algorithm/dp.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Midterm 1 Review" href="../../course/cop4534/mid1-review.html" />
+    <link rel="prev" title="Module 10: Divide and Conquer" href="../../course/cop4534/m11.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../course/cop4534/mid1-review.html" title="Midterm 1 Review"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../../course/cop4534/m11.html" title="Module 10: Divide and Conquer"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop4534/m11.html" accesskey="U">Module 10: Divide and Conquer</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Dynamic Programming</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="dynamic-programming">
+<h1>Dynamic Programming<a class="headerlink" href="#dynamic-programming" title="Permalink to this heading">¶</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
+<p>Dynamic programming is a powerful problem-solving technique (an algorithmic
+paradigm) that simplifies complex problems by breaking them into smaller,
+manageable subproblems. It involves solving these subproblems just once and
+efficiently storing their solutions using a memory-based data structure like an
+array or map. Each subproblem’s solution is associated with an index, often
+based on its input parameters, enabling easy retrieval. This way, when
+encountering the same subproblem in the future, instead of recalculating its
+solution, one can simply retrieve the previously computed solution, thus
+conserving computational resources while incurring a potentially modest
+increase in storage space usage.</p>
+</section>
+<section id="characteristics">
+<h2>Characteristics<a class="headerlink" href="#characteristics" title="Permalink to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Optimal Substructure</strong>: Dynamic programming breaks down a problem into
+smaller, interconnected subproblems. The optimal solution to the can be
+constructed by combining the optimal solutions of its smaller,
+interconnected subproblems.</p></li>
+<li><p><strong>Overlapping Subproblems</strong>: Dynamic programming identifies that the same
+subproblems are often encountered multiple times while solving a problem. To
+avoid redundant calculations, it stores and reuses the solutions to these
+subproblems.</p></li>
+<li><p><strong>Memoization</strong>: To store the solutions to subproblems, dynamic programming
+uses memoization techniques, such as arrays or maps. This allows for quick
+retrieval of previously computed results when needed.</p></li>
+<li><p><strong>Recursive Formulation</strong>: Dynamic programming often involves a recursive
+formulation, where the solution to a larger problem depends on the solutions
+to smaller subproblems. These recursive relationships are used to derive the
+optimal solution.</p></li>
+<li><p><strong>Bottom-Up or Top-Down Approach</strong>: Dynamic programming can be implemented
+using either a bottom-up approach, where solutions to smaller subproblems
+are computed first and combined to solve larger ones, or a top-down
+approach, which starts with the original problem and recursively solves its
+subproblems.</p></li>
+<li><p><strong>Efficiency</strong>: While dynamic programming saves computational time by
+avoiding redundant calculations, it may require additional storage space to
+store intermediate results. The trade-off between time and space efficiency
+depends on the problem and the chosen implementation.</p></li>
+</ol>
+</section>
+<section id="applications">
+<h2>Applications<a class="headerlink" href="#applications" title="Permalink to this heading">¶</a></h2>
+<p>Dynamic programming can be employed to solve a wide range of well-known
+computational problems including:</p>
+<ul class="simple">
+<li><p>Fibonacci numbers: computing the nth Fibonacci number.</p></li>
+<li><p>Knapsack problem: finding the optimal combination of items to fit in a
+knapsack.</p></li>
+<li><p>Longest common subsequence: finding the longest subsequence common to two
+sequences.</p></li>
+<li><p>Integer partition: finding the ways to partition an integer.</p></li>
+<li><p>Coin change: finding the optimal way to make change for a given amount and a
+set of coin denominations.</p></li>
+<li><p>Rod cutting: finding the optimal way to cut a rod into smaller pieces and
+maximize the profit.</p></li>
+<li><p>Matrix chain multiplication: finding the optimal way to multiply a chain of
+matrices.</p></li>
+</ul>
+<p><strong>Quick Exercises:</strong>
++ Can you categorize the above problems by their problem types?
++ Why dynamic programming is not a good fit for bin packing problems?</p>
+</section>
+<section id="benefits">
+<h2>Benefits<a class="headerlink" href="#benefits" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Optimal Solutions:</strong> Dynamic programming guarantees finding the optimal
+solution to a problem.</p></li>
+<li><p><strong>Efficiency:</strong> It reduces redundant calculations by storing and reusing
+solutions to subproblems, making it more efficient than brute force
+approaches.</p></li>
+<li><p><strong>Versatility:</strong> Dynamic programming can be applied to a wide range of
+problems across various disciplines.</p></li>
+<li><p><strong>Clarity:</strong> It often leads to clean and structured algorithms that are
+easier to understand and implement.</p></li>
+</ul>
+</section>
+<section id="challenges">
+<h2>Challenges<a class="headerlink" href="#challenges" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Memory Usage:</strong> Storing solutions to subproblems may require substantial
+memory, especially for problems with many subproblems.</p></li>
+<li><p><strong>Identifying Subproblems:</strong> Determining the right subproblems and their
+relationships can be complex in some cases.</p></li>
+<li><p><strong>Algorithm Design:</strong> Designing a dynamic programming algorithm can be
+challenging and may require a deep understanding of the problem domain.</p></li>
+<li><p><strong>Time Complexity:</strong> While dynamic programming reduces time complexity in
+many cases, as an exact algorithmic paradigm, it can still have very high
+complexity.</p></li>
+</ul>
+</section>
+<section id="approaches">
+<h2>Approaches<a class="headerlink" href="#approaches" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Top-down approach: This approach is also known as memoization. It starts with
+the original problem and recursively breaks it down into smaller subproblems.
+It then stores and reuses the solutions to these subproblems to solve the
+original problem.</p></li>
+<li><p>Bottom-up approach: This approach is also known as tabulation. It starts with
+the smallest subproblems and iteratively combines their solutions to solve
+larger subproblems until the original problem is solved.</p></li>
+</ul>
+</section>
+<section id="complexity">
+<h2>Complexity<a class="headerlink" href="#complexity" title="Permalink to this heading">¶</a></h2>
+<section id="time-complexity">
+<h3>Time complexity<a class="headerlink" href="#time-complexity" title="Permalink to this heading">¶</a></h3>
+<p>Although dynamic programming can be defined in terms of a recursive algorithm,
+the complexity is not the same as that of a divide and conquer algorithm. The
+reason is that solving subproblem may not take the same amount of time as some
+of the subproblems may have been solved before. Therefore, the time complexity
+of a dynamic programming algorithm is not simply the number of subproblems
+multiplied by the time to solve each subproblem. Instead, it is the number of
+distinct subproblems times the time to solve each subproblem.</p>
+<p>For example, the time complexity of the Fibonacci number algorithm is
+<span class="math notranslate nohighlight">\(O(n)\)</span> as there are <span class="math notranslate nohighlight">\(n\)</span> distinct subproblems and each subproblem
+takes <span class="math notranslate nohighlight">\(O(1)\)</span> time to solve.</p>
+<p>Top-down approach and bottom-up approach can be more efficient than each other
+depending on the problem.</p>
+</section>
+<section id="space-complexity">
+<h3>Space complexity<a class="headerlink" href="#space-complexity" title="Permalink to this heading">¶</a></h3>
+<p>As dynamic programming algorithms store the solutions to subproblems, they
+require additional memory to store the solutions. Therefore, the space
+complexity of a dynamic programming algorithm is the size of the table used to
+store the solutions to subproblems.</p>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Dynamic Programming</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#characteristics">Characteristics</a></li>
+<li><a class="reference internal" href="#applications">Applications</a></li>
+<li><a class="reference internal" href="#benefits">Benefits</a></li>
+<li><a class="reference internal" href="#challenges">Challenges</a></li>
+<li><a class="reference internal" href="#approaches">Approaches</a></li>
+<li><a class="reference internal" href="#complexity">Complexity</a><ul>
+<li><a class="reference internal" href="#time-complexity">Time complexity</a></li>
+<li><a class="reference internal" href="#space-complexity">Space complexity</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../../course/cop4534/m11.html"
+                          title="previous chapter">Module 10: Divide and Conquer</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../../course/cop4534/mid1-review.html"
+                          title="next chapter">Midterm 1 Review</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/gen-programming/algorithm/dp.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../course/cop4534/mid1-review.html" title="Midterm 1 Review"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../../course/cop4534/m11.html" title="Module 10: Divide and Conquer"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop4534/m11.html" >Module 10: Divide and Conquer</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Dynamic Programming</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2023, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>
