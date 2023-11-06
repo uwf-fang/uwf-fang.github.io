@@ -1,0 +1,205 @@
+************************
+Max Sum Subarray Problem
+************************
+
+Introduction
+============
+Overview
+--------
+The Max Sum Subarray Problem, often associated with Kadane's algorithm, is a
+classic question in the realm of computer science and algorithm design. It
+seeks to find the contiguous subarray within a one-dimensional array of numbers
+which has the largest sum.
+
+Applications
+------------
+This problem not only serves as an excellent example to illustrate the
+efficiency of dynamic programming but also has practical applications in
+numerous fields. Analysts in computational biology use it to find the most
+significant sequence of elements, while those in finance may apply it to
+determine the optimal buy and sell points for stocks. In computer vision,
+identifying features in an image can also be translated into a similar problem.
+The objective is simple yet powerful: given an array of integers, find the
+non-empty, contiguous subarray that adds up to the highest possible sum.
+
+Problem Statement
+-----------------
+The problem is defined by an array of :math:`n` integers, which could contain
+both positive and negative numbers. The goal is to determine the maximum sum
+possible from a contiguous subarray. The output is the sum itself, not
+necessarily the subarray, although identifying the subarray is often a related
+secondary requirement.
+
+A straightforward example would be the array :math:`[-2, -3, 4, -1, -2, 1, 5,
+-3]`. The max sum subarray is :math:`[4, -1, -2, 1, 5]` with a sum of
+:math:`7`.
+
+Despite its apparent simplicity, the challenge arises from the need to find an
+optimal solution that scales well with large inputs, which is where the brute
+force approach fails.
+
+Solutions
+---------
+Three solutions to the Max Sum Subarray problem are presented here from the
+order of increasing efficiency:
+
+#. Brute-force :math:`\Theta(n^2)`
+#. Divide and conquer :math:`\Theta(n \log n)`
+#. Dynamic Programming (Kadane's algorithm) :math:`\Theta(n)`
+
+Baseline: Brute-force
+=====================
+The brute-force solution to the Max Sum Subarray problem involves calculating
+the sum of every possible subarray in the given array and then returning the
+maximum of these sums. The process is straightforward: for each element in the
+array, consider it as a starting point, then iterate through all the end points
+that come after the current start, accumulating sums and keeping track of the
+maximum sum encountered.
+
+The time complexity of this brute-force solution is :math:`\Theta(n^2)`, where
+n is the number of elements in the array. Due to its inefficiency with
+large datasets, this approach is not practical for real-world applications
+where the size of the input can be very large.
+
+Pseudocode for Brute-Force Max Sum Subarray
+-------------------------------------------
+
+.. code-block::
+
+    function brute_force_max_subarray(arr):
+      max_sum = -infinity
+
+      for start from 0 to length(arr) - 1:
+        sum_of_subarray = 0
+
+        for end from start to length(arr) - 1:
+          sum_of_subarray = sum_of_subarray + arr[end]
+
+          if sum_of_subarray > max_sum:
+            max_sum = sum_of_subarray
+
+      return max_sum
+
+Divide and Conquer Solution
+===========================
+The divide and conquer approach to the Max Sum Subarray problem is a recursive
+strategy that breaks down the problem into smaller subproblems, solves these
+subproblems individually, and combines their solutions to get the final result
+for the original problem. It is based on the observation that the maximum
+subarray sum will either be:
+
+#. In the left half of the array,
+#. In the right half of the array, or
+#. Crossing the midpoint, including elements from both halves.
+
+Here’s how the divide and conquer method works:
+
+#. **Divide**: Split the array into two halves around the midpoint.
+#. **Conquer**: Recursively find the maximum subarray sum in the left half and
+   the right half.
+#. **Combine**: Find the maximum subarray sum that crosses the midpoint and
+   spans both halves. This is done by finding the maximum sum starting from the
+   midpoint and extending towards the beginning of the array (left subarray),
+   and the maximum sum starting from the midpoint+1 and extending towards the
+   end of the array (right subarray), and then combining these two sums.
+#. The maximum of these three sums (left, right, and crossing) is the solution
+   to the problem for the current array segment.
+
+The base case of the recursion is when the array has only one element, in which
+case the maximum subarray sum is the element itself if it's positive, or zero
+if it's negative (assuming we want non-negative sums).
+
+This method requires recursively splitting the array, which leads to a time
+complexity of :math:`\Theta(n \log n)`, where :math:`n` is the number of
+elements in the array. The divide and conquer approach is significantly faster
+than the brute-force method.
+
+Pseudocode for Divide and Conquer Max Sum Subarray
+--------------------------------------------------
+
+.. code-block::
+
+    function max_crossing_sum(arr, low, mid, high):
+        left_sum = -infinity
+        sum = 0
+        for i from mid downto low:
+            sum = sum + arr[i]
+            if sum > left_sum:
+                left_sum = sum
+
+        right_sum = -infinity
+        sum = 0
+        for j from mid + 1 to high:
+            sum = sum + arr[j]
+            if sum > right_sum:
+                right_sum = sum
+
+        return left_sum + right_sum
+
+    function max_subarray(arr, low, high):
+        if low == high:
+            return arr[low]
+
+        mid = (low + high) / 2
+        return max(max_subarray(arr, low, mid),
+                   max_subarray(arr, mid + 1, high),
+                   max_crossing_sum(arr, low, mid, high))
+
+Kadane’s Algorithm: Dynamic Programming Solution
+================================================
+Kadane's algorithm stands out for its simplicity and elegance as a dynamic
+programming solution to the Max Sum Subarray Problem. It operates on the
+principle that the maximum subarray at any given point in the array is either
+the current element itself or the current element combined with the maximum
+subarray ending at the previous position. This leads to the identification of
+two types of maxima at each step: the local maximum subarray ending at the
+current index and the global maximum subarray found so far.
+
+The algorithm initializes two variables: the current maximum subarray sum
+`current_max` and the overall maximum subarray sum found `global_max`. As
+it iterates through the array, it continually updates these variables. If
+`current_max` is greater than `global_max` at any point, `global_max` is
+updated to the value of `current_max`.
+
+To illustrate, consider the array :math:`[-2, 1, -3, 4, -1, 2, 1, -5, 4]`.
+Kadane's algorithm would process the elements as follows:
+
+- Start with :math:`current_max = 0` and :math:`global_max = -infinity`.
+- At the first element (-2), :math:`current_max` becomes -2. Since it's the
+  first element, :math:`global_max` also becomes -2.
+- At the second element (1), :math:`current_max` is :math:`max(-2+1, 1)`, which
+  is 1. :math:`global_max` is now :math:`max(-2, 1)`, which is 1.
+- This process continues, updating :math:`current_max` and :math:`global_max`
+  with each new element.
+- By the end of the array, :math:`global_max` contains the maximum sum, which
+  in this case is 6.
+
+This approach requires only a single pass through the array, making it highly
+efficient.
+
+Complexity Analysis
+-------------------
+Kadane’s algorithm has a time complexity of :math:`\Theta(n)`, which means the
+time to solve the problem increases linearly with the size of the input array.
+This is a significant improvement over the divide and conquer approach, which
+has a time complexity of :math:`\Theta(n \log n)`.
+
+Moreover, Kadane's algorithm is also space-efficient. The space complexity of
+the algorithm is :math:`\Theta(1)`.
+
+Pseudocode for Kadane's Algorithm
+---------------------------------
+
+.. code-block::
+
+    function kadane_algorithm(arr):
+      current_max = global_max = arr[0]
+
+      for index from 1 to length(arr) - 1:
+        current_max = max(arr[index], current_max + arr[index])
+
+        if current_max > global_max:
+          global_max = current_max
+
+      return global_max
+

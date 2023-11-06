@@ -1,0 +1,338 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Max Sum Subarray Problem &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/gen-programming/problems/max-sum-subarray.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Chain Matrix Multiplication Problem" href="chain-matrix-multiplication.html" />
+    <link rel="prev" title="Module 12: Dynamic Programming Examples" href="../../course/cop4534/m12.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="chain-matrix-multiplication.html" title="Chain Matrix Multiplication Problem"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../../course/cop4534/m12.html" title="Module 12: Dynamic Programming Examples"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop4534/m12.html" accesskey="U">Module 12: Dynamic Programming Examples</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Max Sum Subarray Problem</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="max-sum-subarray-problem">
+<h1>Max Sum Subarray Problem<a class="headerlink" href="#max-sum-subarray-problem" title="Permalink to this heading">¶</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h2>
+<section id="overview">
+<h3>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h3>
+<p>The Max Sum Subarray Problem, often associated with Kadane’s algorithm, is a
+classic question in the realm of computer science and algorithm design. It
+seeks to find the contiguous subarray within a one-dimensional array of numbers
+which has the largest sum.</p>
+</section>
+<section id="applications">
+<h3>Applications<a class="headerlink" href="#applications" title="Permalink to this heading">¶</a></h3>
+<p>This problem not only serves as an excellent example to illustrate the
+efficiency of dynamic programming but also has practical applications in
+numerous fields. Analysts in computational biology use it to find the most
+significant sequence of elements, while those in finance may apply it to
+determine the optimal buy and sell points for stocks. In computer vision,
+identifying features in an image can also be translated into a similar problem.
+The objective is simple yet powerful: given an array of integers, find the
+non-empty, contiguous subarray that adds up to the highest possible sum.</p>
+</section>
+<section id="problem-statement">
+<h3>Problem Statement<a class="headerlink" href="#problem-statement" title="Permalink to this heading">¶</a></h3>
+<p>The problem is defined by an array of <span class="math notranslate nohighlight">\(n\)</span> integers, which could contain
+both positive and negative numbers. The goal is to determine the maximum sum
+possible from a contiguous subarray. The output is the sum itself, not
+necessarily the subarray, although identifying the subarray is often a related
+secondary requirement.</p>
+<p>A straightforward example would be the array <span class="math notranslate nohighlight">\([-2, -3, 4, -1, -2, 1, 5,
+-3]\)</span>. The max sum subarray is <span class="math notranslate nohighlight">\([4, -1, -2, 1, 5]\)</span> with a sum of
+<span class="math notranslate nohighlight">\(7\)</span>.</p>
+<p>Despite its apparent simplicity, the challenge arises from the need to find an
+optimal solution that scales well with large inputs, which is where the brute
+force approach fails.</p>
+</section>
+<section id="solutions">
+<h3>Solutions<a class="headerlink" href="#solutions" title="Permalink to this heading">¶</a></h3>
+<p>Three solutions to the Max Sum Subarray problem are presented here from the
+order of increasing efficiency:</p>
+<ol class="arabic simple">
+<li><p>Brute-force <span class="math notranslate nohighlight">\(\Theta(n^2)\)</span></p></li>
+<li><p>Divide and conquer <span class="math notranslate nohighlight">\(\Theta(n \log n)\)</span></p></li>
+<li><p>Dynamic Programming (Kadane’s algorithm) <span class="math notranslate nohighlight">\(\Theta(n)\)</span></p></li>
+</ol>
+</section>
+</section>
+<section id="baseline-brute-force">
+<h2>Baseline: Brute-force<a class="headerlink" href="#baseline-brute-force" title="Permalink to this heading">¶</a></h2>
+<p>The brute-force solution to the Max Sum Subarray problem involves calculating
+the sum of every possible subarray in the given array and then returning the
+maximum of these sums. The process is straightforward: for each element in the
+array, consider it as a starting point, then iterate through all the end points
+that come after the current start, accumulating sums and keeping track of the
+maximum sum encountered.</p>
+<p>The time complexity of this brute-force solution is <span class="math notranslate nohighlight">\(\Theta(n^2)\)</span>, where
+n is the number of elements in the array. Due to its inefficiency with
+large datasets, this approach is not practical for real-world applications
+where the size of the input can be very large.</p>
+<section id="pseudocode-for-brute-force-max-sum-subarray">
+<h3>Pseudocode for Brute-Force Max Sum Subarray<a class="headerlink" href="#pseudocode-for-brute-force-max-sum-subarray" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">brute_force_max_subarray</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+  <span class="n">max_sum</span> <span class="o">=</span> <span class="o">-</span><span class="n">infinity</span>
+
+  <span class="k">for</span> <span class="n">start</span> <span class="kn">from</span> <span class="mi">0</span> <span class="n">to</span> <span class="n">length</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="n">sum_of_subarray</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">end</span> <span class="kn">from</span> <span class="nn">start</span> <span class="n">to</span> <span class="n">length</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+      <span class="n">sum_of_subarray</span> <span class="o">=</span> <span class="n">sum_of_subarray</span> <span class="o">+</span> <span class="n">arr</span><span class="p">[</span><span class="n">end</span><span class="p">]</span>
+
+      <span class="k">if</span> <span class="n">sum_of_subarray</span> <span class="o">&gt;</span> <span class="n">max_sum</span><span class="p">:</span>
+        <span class="n">max_sum</span> <span class="o">=</span> <span class="n">sum_of_subarray</span>
+
+  <span class="k">return</span> <span class="n">max_sum</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="divide-and-conquer-solution">
+<h2>Divide and Conquer Solution<a class="headerlink" href="#divide-and-conquer-solution" title="Permalink to this heading">¶</a></h2>
+<p>The divide and conquer approach to the Max Sum Subarray problem is a recursive
+strategy that breaks down the problem into smaller subproblems, solves these
+subproblems individually, and combines their solutions to get the final result
+for the original problem. It is based on the observation that the maximum
+subarray sum will either be:</p>
+<ol class="arabic simple">
+<li><p>In the left half of the array,</p></li>
+<li><p>In the right half of the array, or</p></li>
+<li><p>Crossing the midpoint, including elements from both halves.</p></li>
+</ol>
+<p>Here’s how the divide and conquer method works:</p>
+<ol class="arabic simple">
+<li><p><strong>Divide</strong>: Split the array into two halves around the midpoint.</p></li>
+<li><p><strong>Conquer</strong>: Recursively find the maximum subarray sum in the left half and
+the right half.</p></li>
+<li><p><strong>Combine</strong>: Find the maximum subarray sum that crosses the midpoint and
+spans both halves. This is done by finding the maximum sum starting from the
+midpoint and extending towards the beginning of the array (left subarray),
+and the maximum sum starting from the midpoint+1 and extending towards the
+end of the array (right subarray), and then combining these two sums.</p></li>
+<li><p>The maximum of these three sums (left, right, and crossing) is the solution
+to the problem for the current array segment.</p></li>
+</ol>
+<p>The base case of the recursion is when the array has only one element, in which
+case the maximum subarray sum is the element itself if it’s positive, or zero
+if it’s negative (assuming we want non-negative sums).</p>
+<p>This method requires recursively splitting the array, which leads to a time
+complexity of <span class="math notranslate nohighlight">\(\Theta(n \log n)\)</span>, where <span class="math notranslate nohighlight">\(n\)</span> is the number of
+elements in the array. The divide and conquer approach is significantly faster
+than the brute-force method.</p>
+<section id="pseudocode-for-divide-and-conquer-max-sum-subarray">
+<h3>Pseudocode for Divide and Conquer Max Sum Subarray<a class="headerlink" href="#pseudocode-for-divide-and-conquer-max-sum-subarray" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">max_crossing_sum</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">low</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="n">high</span><span class="p">):</span>
+    <span class="n">left_sum</span> <span class="o">=</span> <span class="o">-</span><span class="n">infinity</span>
+    <span class="nb">sum</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="kn">from</span> <span class="nn">mid</span> <span class="n">downto</span> <span class="n">low</span><span class="p">:</span>
+        <span class="nb">sum</span> <span class="o">=</span> <span class="nb">sum</span> <span class="o">+</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">sum</span> <span class="o">&gt;</span> <span class="n">left_sum</span><span class="p">:</span>
+            <span class="n">left_sum</span> <span class="o">=</span> <span class="nb">sum</span>
+
+    <span class="n">right_sum</span> <span class="o">=</span> <span class="o">-</span><span class="n">infinity</span>
+    <span class="nb">sum</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="kn">from</span> <span class="nn">mid</span> <span class="o">+</span> <span class="mi">1</span> <span class="n">to</span> <span class="n">high</span><span class="p">:</span>
+        <span class="nb">sum</span> <span class="o">=</span> <span class="nb">sum</span> <span class="o">+</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">sum</span> <span class="o">&gt;</span> <span class="n">right_sum</span><span class="p">:</span>
+            <span class="n">right_sum</span> <span class="o">=</span> <span class="nb">sum</span>
+
+    <span class="k">return</span> <span class="n">left_sum</span> <span class="o">+</span> <span class="n">right_sum</span>
+
+<span class="n">function</span> <span class="n">max_subarray</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">low</span> <span class="o">==</span> <span class="n">high</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">arr</span><span class="p">[</span><span class="n">low</span><span class="p">]</span>
+
+    <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">low</span> <span class="o">+</span> <span class="n">high</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_subarray</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">low</span><span class="p">,</span> <span class="n">mid</span><span class="p">),</span>
+               <span class="n">max_subarray</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">high</span><span class="p">),</span>
+               <span class="n">max_crossing_sum</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">low</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="n">high</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="kadanes-algorithm-dynamic-programming-solution">
+<h2>Kadane’s Algorithm: Dynamic Programming Solution<a class="headerlink" href="#kadanes-algorithm-dynamic-programming-solution" title="Permalink to this heading">¶</a></h2>
+<p>Kadane’s algorithm stands out for its simplicity and elegance as a dynamic
+programming solution to the Max Sum Subarray Problem. It operates on the
+principle that the maximum subarray at any given point in the array is either
+the current element itself or the current element combined with the maximum
+subarray ending at the previous position. This leads to the identification of
+two types of maxima at each step: the local maximum subarray ending at the
+current index and the global maximum subarray found so far.</p>
+<p>The algorithm initializes two variables: the current maximum subarray sum
+<cite>current_max</cite> and the overall maximum subarray sum found <cite>global_max</cite>. As
+it iterates through the array, it continually updates these variables. If
+<cite>current_max</cite> is greater than <cite>global_max</cite> at any point, <cite>global_max</cite> is
+updated to the value of <cite>current_max</cite>.</p>
+<p>To illustrate, consider the array <span class="math notranslate nohighlight">\([-2, 1, -3, 4, -1, 2, 1, -5, 4]\)</span>.
+Kadane’s algorithm would process the elements as follows:</p>
+<ul class="simple">
+<li><p>Start with <span class="math notranslate nohighlight">\(current_max = 0\)</span> and <span class="math notranslate nohighlight">\(global_max = -infinity\)</span>.</p></li>
+<li><p>At the first element (-2), <span class="math notranslate nohighlight">\(current_max\)</span> becomes -2. Since it’s the
+first element, <span class="math notranslate nohighlight">\(global_max\)</span> also becomes -2.</p></li>
+<li><p>At the second element (1), <span class="math notranslate nohighlight">\(current_max\)</span> is <span class="math notranslate nohighlight">\(max(-2+1, 1)\)</span>, which
+is 1. <span class="math notranslate nohighlight">\(global_max\)</span> is now <span class="math notranslate nohighlight">\(max(-2, 1)\)</span>, which is 1.</p></li>
+<li><p>This process continues, updating <span class="math notranslate nohighlight">\(current_max\)</span> and <span class="math notranslate nohighlight">\(global_max\)</span>
+with each new element.</p></li>
+<li><p>By the end of the array, <span class="math notranslate nohighlight">\(global_max\)</span> contains the maximum sum, which
+in this case is 6.</p></li>
+</ul>
+<p>This approach requires only a single pass through the array, making it highly
+efficient.</p>
+<section id="complexity-analysis">
+<h3>Complexity Analysis<a class="headerlink" href="#complexity-analysis" title="Permalink to this heading">¶</a></h3>
+<p>Kadane’s algorithm has a time complexity of <span class="math notranslate nohighlight">\(\Theta(n)\)</span>, which means the
+time to solve the problem increases linearly with the size of the input array.
+This is a significant improvement over the divide and conquer approach, which
+has a time complexity of <span class="math notranslate nohighlight">\(\Theta(n \log n)\)</span>.</p>
+<p>Moreover, Kadane’s algorithm is also space-efficient. The space complexity of
+the algorithm is <span class="math notranslate nohighlight">\(\Theta(1)\)</span>.</p>
+</section>
+<section id="pseudocode-for-kadane-s-algorithm">
+<h3>Pseudocode for Kadane’s Algorithm<a class="headerlink" href="#pseudocode-for-kadane-s-algorithm" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">kadane_algorithm</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+  <span class="n">current_max</span> <span class="o">=</span> <span class="n">global_max</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+  <span class="k">for</span> <span class="n">index</span> <span class="kn">from</span> <span class="mi">1</span> <span class="n">to</span> <span class="n">length</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="n">current_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">current_max</span> <span class="o">+</span> <span class="n">arr</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">current_max</span> <span class="o">&gt;</span> <span class="n">global_max</span><span class="p">:</span>
+      <span class="n">global_max</span> <span class="o">=</span> <span class="n">current_max</span>
+
+  <span class="k">return</span> <span class="n">global_max</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Max Sum Subarray Problem</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#applications">Applications</a></li>
+<li><a class="reference internal" href="#problem-statement">Problem Statement</a></li>
+<li><a class="reference internal" href="#solutions">Solutions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#baseline-brute-force">Baseline: Brute-force</a><ul>
+<li><a class="reference internal" href="#pseudocode-for-brute-force-max-sum-subarray">Pseudocode for Brute-Force Max Sum Subarray</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#divide-and-conquer-solution">Divide and Conquer Solution</a><ul>
+<li><a class="reference internal" href="#pseudocode-for-divide-and-conquer-max-sum-subarray">Pseudocode for Divide and Conquer Max Sum Subarray</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#kadanes-algorithm-dynamic-programming-solution">Kadane’s Algorithm: Dynamic Programming Solution</a><ul>
+<li><a class="reference internal" href="#complexity-analysis">Complexity Analysis</a></li>
+<li><a class="reference internal" href="#pseudocode-for-kadane-s-algorithm">Pseudocode for Kadane’s Algorithm</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../../course/cop4534/m12.html"
+                          title="previous chapter">Module 12: Dynamic Programming Examples</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="chain-matrix-multiplication.html"
+                          title="next chapter">Chain Matrix Multiplication Problem</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/gen-programming/problems/max-sum-subarray.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="chain-matrix-multiplication.html" title="Chain Matrix Multiplication Problem"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../../course/cop4534/m12.html" title="Module 12: Dynamic Programming Examples"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop4534/m12.html" >Module 12: Dynamic Programming Examples</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Max Sum Subarray Problem</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2023, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>

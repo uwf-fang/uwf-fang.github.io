@@ -1,0 +1,272 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Chain Matrix Multiplication Problem &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/gen-programming/problems/chain-matrix-multiplication.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Midterm 1 Review" href="../../course/cop4534/mid1-review.html" />
+    <link rel="prev" title="Max Sum Subarray Problem" href="max-sum-subarray.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../course/cop4534/mid1-review.html" title="Midterm 1 Review"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="max-sum-subarray.html" title="Max Sum Subarray Problem"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop4534/m12.html" accesskey="U">Module 12: Dynamic Programming Examples</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Chain Matrix Multiplication Problem</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="chain-matrix-multiplication-problem">
+<h1>Chain Matrix Multiplication Problem<a class="headerlink" href="#chain-matrix-multiplication-problem" title="Permalink to this heading">¶</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h2>
+<p>Matrix multiplication is a fundamental operation in numerous scientific and
+engineering disciplines. It is not only a cornerstone of linear algebra but
+also a crucial operation in graphics, physics simulations, and machine
+learning, among other fields.</p>
+<p>Optimal parenthesization in matrix multiplication is a well-known problem that
+seeks to find the most efficient way to multiply a given sequence of matrices.
+The efficiency of matrix multiplication is measured in terms of the number of
+scalar multiplications performed, which directly impacts the computational
+cost. The challenge arises because the associative property of matrix
+multiplication allows for different orders of operations, which can lead to
+significantly different computational workloads.</p>
+</section>
+<section id="the-chain-matrix-multiplication-problem">
+<h2>The Chain Matrix Multiplication Problem<a class="headerlink" href="#the-chain-matrix-multiplication-problem" title="Permalink to this heading">¶</a></h2>
+<p>The Chain Matrix Multiplication (CMM) Problem can be stated as follows: Given a
+chain of matrices <span class="math notranslate nohighlight">\(A_1, A_2, ..., A_n\)</span>, where each matrix <span class="math notranslate nohighlight">\(A_i\)</span> has
+dimensions <span class="math notranslate nohighlight">\(p_{i-1} \times p_i\)</span>, determine the most efficient way to
+multiply these matrices together. The goal is to minimize the total number of
+scalar multiplications needed to compute the product <span class="math notranslate nohighlight">\(A_1A_2...A_n\)</span>.</p>
+<p>For example, consider the multiplication of four matrices A, B, C, and D with
+dimensions <span class="math notranslate nohighlight">\(10 \times 30\)</span>, <span class="math notranslate nohighlight">\(30 \times 5\)</span>, <span class="math notranslate nohighlight">\(5 \times 60\)</span>, and
+<span class="math notranslate nohighlight">\(60 \times 10\)</span>, respectively. We can fully parenthesize the product in
+five distinct ways:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(((AB)C)D\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\((A(BC))D\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\((AB)(CD)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(A((BC)D)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(A(B(CD))\)</span></p></li>
+</ol>
+<p>Each parenthesization leads to a different number of total scalar
+multiplications, which can be computed based on the matrix dimensions. The
+number of scalar multiplications required for each option is:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(((10 \times 30 \times 5) + (10 \times 5 \times 60) + (10 \times 60
+\times 10)) = 1500 + 3000 + 6000 = 10500\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(((30 \times 5 \times 60) + (10 \times 30 \times 60) + (10 \times 60
+\times 10)) = 9000 + 18000 + 6000 = 33000\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(((10 \times 30 \times 5) + (5 \times 60 \times 10) + (10 \times 30
+\times 10)) = 1500 + 3000 + 3000 = 7500\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(((30 \times 5 \times 60) + (10 \times 30 \times 60) + (10 \times 60
+\times 10)) = 9000 + 18000 + 6000 = 33000\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(((5 \times 60 \times 10) + (30 \times 5 \times 10) + (10 \times 30
+\times 10)) = 3000 + 1500 + 3000 = 7500\)</span></p></li>
+</ol>
+<p>Options 3 and 5 require the least number of scalar multiplications (7500).
+Without a systematic approach to determine the optimal parenthesization, one
+might have to compute the cost of all possible parenthesizations to find the
+most efficient order, which is not feasible as the number of matrices grows.</p>
+<p>The Chain Matrix Multiplication problem seeks to identify the optimal
+parenthesization that minimizes the number of scalar multiplications needed to
+multiply a given sequence of matrices. As the number of matrices increases, the
+brute-force approach to this problem, which entails evaluating every possible
+parenthesization, becomes exponentially complex. Thus, more sophisticated
+methods such as dynamic programming are needed to find an optimal solution in a
+reasonable amount of time.</p>
+</section>
+<section id="brute-force-approach">
+<h2>Brute-Force Approach<a class="headerlink" href="#brute-force-approach" title="Permalink to this heading">¶</a></h2>
+<p>The brute-force approach to the Matrix Chain Multiplication problem involves
+exhaustively checking all possible ways of parenthesizing the product to
+determine the one that results in the least number of scalar multiplications.</p>
+<ol class="arabic simple">
+<li><p><strong>Enumeration of All Possibilities</strong>: The brute-force method entails
+generating all possible parenthesizations of the matrix chain. Given
+<span class="math notranslate nohighlight">\(n\)</span> matrices, there are <span class="math notranslate nohighlight">\(C_{n-1}\)</span> possible parenthesizations,
+where <span class="math notranslate nohighlight">\(C_n\)</span> is the <span class="math notranslate nohighlight">\(n-th\)</span> <strong>Catalan number</strong>. This number grows
+exponentially with <span class="math notranslate nohighlight">\(n\)</span>, making the brute-force approach
+computationally expensive.</p></li>
+<li><p><strong>Computing Scalar Multiplications</strong>: For each parenthesization, the
+brute-force algorithm computes the number of scalar multiplications
+required. This requires performing the actual matrix multiplications
+according to each parenthesization scheme, or calculating the multiplication
+costs based on matrix dimensions without carrying out the multiplications.</p></li>
+<li><p><strong>Identifying the Minimum</strong>: After calculating the multiplication costs for
+all parenthesizations, the brute-force algorithm identifies the one with the
+minimum cost. This is the optimal solution for the matrix chain
+multiplication problem under the brute-force strategy.</p></li>
+</ol>
+<p>The brute-force approach to matrix chain multiplication has an exponential time
+complexity due to the number of possible parenthesizations. For <span class="math notranslate nohighlight">\(n\)</span>
+matrices, there are the <span class="math notranslate nohighlight">\((n-1)-th\)</span> Catalan number of ways to
+parenthesize, which is approximately
+<span class="math notranslate nohighlight">\(\Theta(\frac{4^n}{n^{3/2}\sqrt{\pi}})\)</span>.</p>
+</section>
+<section id="dynamic-programming-approach">
+<h2>Dynamic Programming Approach<a class="headerlink" href="#dynamic-programming-approach" title="Permalink to this heading">¶</a></h2>
+<p>Dynamic programming is an algorithmic technique that solves complex problems by
+breaking them down into simpler subproblems. It is particularly effective for
+optimization problems where the solution can be constructed from solutions to
+subproblems. This approach is applicable to the Matrix Chain Multiplication
+problem because the problem exhibits both optimal substructure and overlapping
+subproblems—two key properties that make a problem amenable to dynamic
+programming.</p>
+<p>In the context of matrix chain multiplication, dynamic programming efficiently
+finds the optimal multiplication order by systematically examining all possible
+ways to fully parenthesize the product and choosing the one with the lowest
+cost. This is done by solving smaller instances of the problem (i.e., optimal
+multiplication orders for shorter chains of matrices) and using these solutions
+to construct the solution for the full problem.</p>
+<p>The Matrix Chain Order algorithm utilizes dynamic programming to determine the
+optimal multiplication order. It proceeds as follows:</p>
+<ol class="arabic simple">
+<li><p><strong>Initialization:</strong> Create a table <cite>m</cite> to store the minimum number of scalar
+multiplications needed for each subchain of matrices. The table <cite>m[i][j]</cite>
+will represent the minimum cost of multiplying matrices from <span class="math notranslate nohighlight">\(A_i\)</span>
+through <span class="math notranslate nohighlight">\(A_j\)</span>.</p></li>
+<li><p><strong>Optimal Substructure Identification:</strong> Determine the optimal split point
+<cite>k</cite> for each subchain, where <span class="math notranslate nohighlight">\(i \leq k &lt; j\)</span>. This split divides the
+problem into two smaller subproblems: multiplying the chain from <span class="math notranslate nohighlight">\(A_i\)</span>
+to <span class="math notranslate nohighlight">\(A_k\)</span> and from <span class="math notranslate nohighlight">\(A_{k+1}\)</span> to <span class="math notranslate nohighlight">\(A_j\)</span>.</p></li>
+<li><p><strong>Recursive Solution:</strong> Compute the cost of all possible splits to find the
+minimum cost for each subchain. This involves calculating the cost of
+multiplying the two subchains plus the cost of multiplying the resulting two
+matrices together.</p></li>
+<li><p><strong>Build Solution:</strong> Construct the solution to the problem using the results
+stored in the table by backtracking through the split points, which yields
+the optimal parenthesization.</p></li>
+</ol>
+<p>This algorithmic framework transforms the problem from one that may seem to
+require brute force into one that can be solved in polynomial time, by reusing
+solutions to smaller problems to solve larger ones.</p>
+</section>
+<section id="computational-complexity">
+<h2>Computational Complexity<a class="headerlink" href="#computational-complexity" title="Permalink to this heading">¶</a></h2>
+<p>The computational complexity of an algorithm is a measure of the amount of
+computing resources it uses as a function of the size of the input:</p>
+<ol class="arabic simple">
+<li><p><strong>Time Complexity Analysis</strong>: The time complexity of the Matrix Chain Order
+algorithm is primarily determined by the number of subproblems that need to
+be solved and the time taken to solve each one. The time complexity is
+<span class="math notranslate nohighlight">\(O(n^3)\)</span>, where <span class="math notranslate nohighlight">\(n\)</span> is the number of matrices, since for each of
+the <span class="math notranslate nohighlight">\(O(n^2)\)</span> subproblems, the algorithm performs <span class="math notranslate nohighlight">\(O(n)\)</span>
+computations to find the optimal split.</p></li>
+<li><p><strong>Space Complexity Analysis</strong>: The space complexity is concerned with the
+amount of memory space required by the algorithm. For the Matrix Chain Order
+algorithm, this is <span class="math notranslate nohighlight">\(O(n^2)\)</span>, due to the storage needed for the
+two-dimensional memoization table.</p></li>
+</ol>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Chain Matrix Multiplication Problem</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#the-chain-matrix-multiplication-problem">The Chain Matrix Multiplication Problem</a></li>
+<li><a class="reference internal" href="#brute-force-approach">Brute-Force Approach</a></li>
+<li><a class="reference internal" href="#dynamic-programming-approach">Dynamic Programming Approach</a></li>
+<li><a class="reference internal" href="#computational-complexity">Computational Complexity</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="max-sum-subarray.html"
+                          title="previous chapter">Max Sum Subarray Problem</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../../course/cop4534/mid1-review.html"
+                          title="next chapter">Midterm 1 Review</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/gen-programming/problems/chain-matrix-multiplication.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../course/cop4534/mid1-review.html" title="Midterm 1 Review"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="max-sum-subarray.html" title="Max Sum Subarray Problem"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop4534/m12.html" >Module 12: Dynamic Programming Examples</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Chain Matrix Multiplication Problem</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2023, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>
