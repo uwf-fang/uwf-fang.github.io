@@ -126,21 +126,16 @@ optimal multiplication order. It proceeds as follows:
    problem into two smaller subproblems: multiplying the chain from :math:`A_i`
    to :math:`A_k` and from :math:`A_{k+1}` to :math:`A_j`.
 
-3. **Recursive Solution:** Compute the cost of all possible splits to find the
-   minimum cost for each subchain. This involves calculating the cost of
-   multiplying the two subchains plus the cost of multiplying the resulting two
-   matrices together.
-
-4. **Build Solution:** Construct the solution to the problem using the results
-   stored in the table by backtracking through the split points, which yields
-   the optimal parenthesization.
-
-This algorithmic framework transforms the problem from one that may seem to
-require brute force into one that can be solved in polynomial time, by reusing
-solutions to smaller problems to solve larger ones.
+3. **Iteratively Build the Solution:** Build the solution for each subchain
+   based on the solutions to the smaller subproblems. The chain length `L`
+   which represents the size of the subproblem, is iterated from 2 to `n`,
+   where `n` is the total number of matrices. The optimal cost is computed for
+   each subchain of length `L` and the optimal split point `k` is stored in the
+   table `s`. The optimal cost for each subchain is computed by considering all
+   possible split points `k` and choosing the one with the lowest cost.
 
 Computational Complexity
-========================
+------------------------
 The computational complexity of an algorithm is a measure of the amount of
 computing resources it uses as a function of the size of the input:
 
@@ -156,3 +151,39 @@ computing resources it uses as a function of the size of the input:
    algorithm, this is :math:`O(n^2)`, due to the storage needed for the
    two-dimensional memoization table.
 
+Pseudocode
+----------
+
+.. code-block::
+
+  function MatrixChainOrder(p, n) {
+    /* For simplicity of the program, one extra row and one
+         extra column are allocated in m[][]. 0th row and 0th
+         column of m[][] are not used
+       s[i][j] is used to save the position of parenthesis
+       m[i][j] = Minimum number of scalar multiplications needed
+         to compute the matrix A[i]A[i+1]...A[j] = A[i..j] where
+         dimension of A[i] is p[i-1] x p[i] */
+
+    //cost is zero when multiplying one matrix
+    for (i = 1; i < n; i++)
+        m[i][i] = 0;
+
+    // L is chain length
+    for (L = 2; L < n; L++) {
+      for (i = 1; i < n - L + 1; i++) {
+        j = i + L - 1;
+        m[i][j] = INT_MAX;
+        for (k = i; k <= j - 1; k++) {
+          // q = cost/scalar multiplications
+          q = m[i][k] + m[k + 1][j] + p[i - 1] * p[k] * p[j];
+          if (q < m[i][j]) {
+            m[i][j] = q;
+            s[i][j] = k; // Save k for the optimal parenthesization
+          }
+        }
+      }
+    }
+
+    return m; // The first cell of the matrix m[][] contains the minimum cost
+  }
