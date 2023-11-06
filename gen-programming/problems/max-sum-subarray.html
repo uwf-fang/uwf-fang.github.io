@@ -199,25 +199,26 @@ subarray ending at the previous position. This leads to the identification of
 two types of maxima at each step: the local maximum subarray ending at the
 current index and the global maximum subarray found so far.</p>
 <p>The algorithm initializes two variables: the current maximum subarray sum
-<cite>current_max</cite> and the overall maximum subarray sum found <cite>global_max</cite>. As
-it iterates through the array, it continually updates these variables. If
-<cite>current_max</cite> is greater than <cite>global_max</cite> at any point, <cite>global_max</cite> is
-updated to the value of <cite>current_max</cite>.</p>
+<cite>current_max</cite> and the overall maximum subarray sum found <cite>global_max</cite>. As it
+iterates through the array, it continually updates these variables. The
+<cite>current_max</cite> is updated by taking the maximum between the current array value
+and the sum of <cite>current_max</cite> and the current array value. If <cite>current_max</cite> is
+greater than <cite>global_max</cite> at any point, <cite>global_max</cite> is updated to the value of
+<cite>current_max</cite>.</p>
 <p>To illustrate, consider the array <span class="math notranslate nohighlight">\([-2, 1, -3, 4, -1, 2, 1, -5, 4]\)</span>.
 Kadane’s algorithm would process the elements as follows:</p>
 <ul class="simple">
-<li><p>Start with <span class="math notranslate nohighlight">\(current\_max = 0\)</span> and <span class="math notranslate nohighlight">\(global\_max = -infinity\)</span>.</p></li>
-<li><p>At the first element (-2), <span class="math notranslate nohighlight">\(current\_max\)</span> becomes -2. Since it’s the
-first element, <span class="math notranslate nohighlight">\(global\_max\)</span> also becomes -2.</p></li>
+<li><p>Start with <span class="math notranslate nohighlight">\(current\_max = arr[0] = -2\)</span> and <span class="math notranslate nohighlight">\(global\_max = -2\)</span>.</p></li>
 <li><p>At the second element (1), <span class="math notranslate nohighlight">\(current\_max\)</span> is <span class="math notranslate nohighlight">\(max(-2+1, 1)\)</span>,
 which is 1. <span class="math notranslate nohighlight">\(global\_max\)</span> is now <span class="math notranslate nohighlight">\(max(-2, 1)\)</span>, which is 1.</p></li>
 <li><p>This process continues, updating <span class="math notranslate nohighlight">\(current\_max\)</span> and <span class="math notranslate nohighlight">\(global\_max\)</span>
 with each new element.</p></li>
 <li><p>By the end of the array, <span class="math notranslate nohighlight">\(global\_max\)</span> contains the maximum sum, which
-in this case is 6.</p></li>
+in this case is 6 from the subarray <span class="math notranslate nohighlight">\([4, -1, 2, 1]\)</span>.</p></li>
 </ul>
 <p>This approach requires only a single pass through the array, making it highly
-efficient.</p>
+efficient. Code will be more complicated if you want to memorize the start and
+end indices of the subarray.</p>
 <section id="complexity-analysis">
 <h3>Complexity Analysis<a class="headerlink" href="#complexity-analysis" title="Permalink to this heading">¶</a></h3>
 <p>Kadane’s algorithm has a time complexity of <span class="math notranslate nohighlight">\(\Theta(n)\)</span>, which means the
