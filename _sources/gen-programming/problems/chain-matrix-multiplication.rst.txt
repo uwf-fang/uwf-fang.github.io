@@ -41,18 +41,18 @@ Each parenthesization leads to a different number of total scalar
 multiplications, which can be computed based on the matrix dimensions. The
 number of scalar multiplications required for each option is:
 
-1. :math:`((10 \times 30 \times 5) + (10 \times 5 \times 60) + (10 \times 60
-   \times 10)) = 1500 + 3000 + 6000 = 10500`
-2. :math:`((30 \times 5 \times 60) + (10 \times 30 \times 60) + (10 \times 60
-   \times 10)) = 9000 + 18000 + 6000 = 33000`
-3. :math:`((10 \times 30 \times 5) + (5 \times 60 \times 10) + (10 \times 30
-   \times 10)) = 1500 + 3000 + 3000 = 7500`
-4. :math:`((30 \times 5 \times 60) + (10 \times 30 \times 60) + (10 \times 60
-   \times 10)) = 9000 + 18000 + 6000 = 33000`
-5. :math:`((5 \times 60 \times 10) + (30 \times 5 \times 10) + (10 \times 30
-   \times 10)) = 3000 + 1500 + 3000 = 7500`
+1. :math:`(10 \times 30 \times 5) + (10 \times 5 \times 60) + (10 \times 60
+   \times 10) = 1500 + 3000 + 6000 = 10500`
+2. :math:`(30 \times 5 \times 60) + (10 \times 30 \times 60) + (10 \times 60
+   \times 10) = 9000 + 18000 + 6000 = 33000`
+3. :math:`(10 \times 30 \times 5) + (5 \times 60 \times 10) + (10 \times 5
+   \times 10) = 1500 + 3000 + 500 = 5000`
+4. :math:`(30 \times 5 \times 60) + (30 \times 60 \times 10) + (10 \times 30
+   \times 10) = 9000 + 18000 + 3000 = 30000`
+5. :math:`(5 \times 60 \times 10) + (30 \times 5 \times 10) + (10 \times 30
+   \times 10) = 3000 + 1500 + 3000 = 7500`
 
-Options 3 and 5 require the least number of scalar multiplications (7500).
+Option 3 require the least number of scalar multiplications (5000).
 Without a systematic approach to determine the optimal parenthesization, one
 might have to compute the cost of all possible parenthesizations to find the
 most efficient order, which is not feasible as the number of matrices grows.
@@ -74,7 +74,7 @@ determine the one that results in the least number of scalar multiplications.
 1. **Enumeration of All Possibilities**: The brute-force method entails
    generating all possible parenthesizations of the matrix chain. Given
    :math:`n` matrices, there are :math:`C_{n-1}` possible parenthesizations,
-   where :math:`C_n` is the :math:`n-th` **Catalan number**. This number grows
+   where :math:`C_n` is the :math:`n`-th **Catalan number**. This number grows
    exponentially with :math:`n`, making the brute-force approach
    computationally expensive.
 
@@ -91,7 +91,7 @@ determine the one that results in the least number of scalar multiplications.
 
 The brute-force approach to matrix chain multiplication has an exponential time
 complexity due to the number of possible parenthesizations. For :math:`n`
-matrices, there are the :math:`(n-1)-th` Catalan number of ways to
+matrices, there are the :math:`(n-1)`-th Catalan number of ways to
 parenthesize, which is approximately
 :math:`\Theta(\frac{4^n}{n^{3/2}\sqrt{\pi}})`.
 
@@ -154,36 +154,34 @@ computing resources it uses as a function of the size of the input:
 Pseudocode
 ----------
 
-.. code-block::
+.. code-block:: c++
 
-  function MatrixChainOrder(p, n) {
-    /* For simplicity of the program, one extra row and one
-         extra column are allocated in m[][]. 0th row and 0th
-         column of m[][] are not used
-       s[i][j] is used to save the position of parenthesis
-       m[i][j] = Minimum number of scalar multiplications needed
-         to compute the matrix A[i]A[i+1]...A[j] = A[i..j] where
-         dimension of A[i] is p[i-1] x p[i] */
+  int matrixChainOrder(int p[], int n) {
+    // Create a table to store the solutions to the subproblems
+    int m[n][n];
 
-    //cost is zero when multiplying one matrix
-    for (i = 1; i < n; i++)
-        m[i][i] = 0;
+    // Initialize the table
+    for (int i = 1; i < n; i++) {
+      m[i][i] = 0;
+    }
 
-    // L is chain length
-    for (L = 2; L < n; L++) {
-      for (i = 1; i < n - L + 1; i++) {
-        j = i + L - 1;
+    // L is the chain length
+    for (int L = 2; L < n; L++) {
+      for (int i = 1; i < n - L + 1; i++) {
+        int j = i + L - 1;
         m[i][j] = INT_MAX;
-        for (k = i; k <= j - 1; k++) {
-          // q = cost/scalar multiplications
-          q = m[i][k] + m[k + 1][j] + p[i - 1] * p[k] * p[j];
+
+        // Try all possible split points
+        for (int k = i; k <= j - 1; k++) {
+          int q = m[i][k] + m[k + 1][j] + p[i - 1] * p[k] * p[j];
           if (q < m[i][j]) {
             m[i][j] = q;
-            s[i][j] = k; // Save k for the optimal parenthesization
           }
         }
       }
     }
 
-    return m; // The first cell of the matrix m[][] contains the minimum cost
+    // Return the minimum number of scalar multiplications needed
+    // to multiply the original chain
+    return m[1][n - 1];
   }
