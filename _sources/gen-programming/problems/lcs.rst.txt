@@ -55,6 +55,39 @@ to its inefficiency, particularly with long sequences, this method is
 impractical for real-world applications where time and computational resources
 are factors to consider.
 
+Divide and Conquer Approach
+---------------------------
+The divide-and-conquer solution to the Longest Common Subsequence (LCS) problem
+leverages the concept of breaking down the problem into smaller subproblems. It
+begins by employing the subproblem definition of LCS, where the LCS of two
+strings is found by considering the LCS of their substrings. The algorithm
+recursively divides the original problem into smaller subproblems by examining
+characters from the end of the two input strings. When the last characters of
+the strings match, it incrementally builds the LCS length and continues with
+shorter substrings. If the last characters do not match, it explores both
+possibilities: removing the last character from one of the strings and keeping
+the other intact, selecting the longer LCS length among these alternatives.
+This divide-and-conquer approach effectively explores all possible combinations
+and ultimately returns the length of the LCS for the entire input strings.
+
+This approach still computes redundant subproblems, which results in a time
+complexity of :math:`O(2^n)`.
+
+.. code-block::
+
+  function findLCSLength(s1, s2, m, n):
+      // Base case: If either of the strings is empty, LCS length is 0
+      if m == 0 or n == 0:
+          return 0
+
+      // If the last characters of both strings match
+      if s1[m-1] == s2[n-1]:
+          return 1 + findLCSLength(s1, s2, m-1, n-1)
+
+      // If the last characters of both strings don't match
+      return max(findLCSLength(s1, s2, m, n-1), findLCSLength(s1, s2, m-1, n))
+
+
 DP Solution for LCS
 ===================
 - DP Table: Create a table with rows and columns corresponding to the lengths
