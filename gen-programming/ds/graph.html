@@ -20,7 +20,9 @@
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/gen-programming/ds/graph.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Dijkstra’s shortest path" href="../algorithm/shortest-path.html" />
+    <link rel="prev" title="Chapter 14 Graph" href="../../course/cop3530/ch14.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -28,7 +30,15 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../algorithm/shortest-path.html" title="Dijkstra’s shortest path"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../../course/cop3530/ch14.html" title="Chapter 14 Graph"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3530/ch14.html" accesskey="U">Chapter 14 Graph</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Graph</a></li> 
       </ul>
     </div>  
@@ -83,17 +93,17 @@
 </section>
 <section id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h2>
-<figure class="align-default" id="id2">
+<figure class="align-default" id="id1">
 <div class="graphviz"><img src="../../_images/graphviz-55cf75b6439b993e2ac1c1eda0abcba1a8db5744.png" alt="digraph G {
   node[shape=circle];
   a -&gt; {b, c, d};
   b -&gt; {a, d};
 }" class="graphviz" /></div>
 <figcaption>
-<p><span class="caption-text">Directed connected cyclic graph</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<p><span class="caption-text">Directed connected cyclic graph</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
-<figure class="align-default" id="id3">
+<figure class="align-default" id="id2">
 <div class="graphviz"><img src="../../_images/graphviz-e2546d5a8189d3e1f67b8850abc83237bcbf71ce.png" alt="graph G {
   node[shape=ellipse];
   Atlanta -- Dallas [label=4];
@@ -103,10 +113,10 @@
   Dallas -- Orlando [label=6];
 }" class="graphviz" /></div>
 <figcaption>
-<p><span class="caption-text">Undirected connected cyclic weighted graph</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+<p><span class="caption-text">Undirected connected cyclic weighted graph</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
-<figure class="align-default" id="id4">
+<figure class="align-default" id="id3">
 <div class="graphviz"><img src="../../_images/graphviz-b5be1442ee3aa41eefb10686900598646a8e6a4f.png" alt="graph G {
   node[shape=circle];
   b -- a;
@@ -114,10 +124,10 @@
   b -- {e, f};
 }" class="graphviz" /></div>
 <figcaption>
-<p><span class="caption-text">Undirected connected acyclic graph (Tree)</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+<p><span class="caption-text">Undirected connected acyclic graph (Tree)</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
-<figure class="align-default" id="id5">
+<figure class="align-default" id="id4">
 <div class="graphviz"><img src="../../_images/graphviz-a4c73410ba8d4ec907570402922acb709bf419cf.png" alt="digraph G {
   rankdir=LR;
   node[shape=box];
@@ -127,7 +137,7 @@
   task4 -&gt; task6;
 }" class="graphviz" /></div>
 <figcaption>
-<p><span class="caption-text">Directed acyclic graph (DAG) task planning</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+<p><span class="caption-text">Directed acyclic graph (DAG) task planning</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 </section>
@@ -155,8 +165,8 @@ matrix represents the edge between the two vertices.</p>
 <p>Assume that we have a graph with <span class="math notranslate nohighlight">\(V\)</span> vertices and <span class="math notranslate nohighlight">\(E\)</span> edges. The
 average number of neighbors is <span class="math notranslate nohighlight">\(N\)</span>. For a full graph, <span class="math notranslate nohighlight">\(N = V - 1\)</span>.
 For a sparse matrix, <span class="math notranslate nohighlight">\(N &lt;&lt; V\)</span>.</p>
-<table class="docutils align-default" id="id6">
-<caption><span class="caption-text">Adjacency list vs Adjacency Matrix</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
+<table class="docutils align-default" id="id5">
+<caption><span class="caption-text">Adjacency list vs Adjacency Matrix</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head stub"></th>
 <th class="head"><p>Adjacency list</p></th>
@@ -200,21 +210,6 @@ distances to the starting vertex.</p>
 </ul>
 </li>
 </ul>
-</section>
-<section id="algorithms">
-<h2>Algorithms<a class="headerlink" href="#algorithms" title="Permalink to this heading">¶</a></h2>
-<section id="dijkstra-s-shortest-path">
-<h3>Dijkstra’s shortest path<a class="headerlink" href="#dijkstra-s-shortest-path" title="Permalink to this heading">¶</a></h3>
-<p>Among the many variations of the shortest path algorithms, single-source
-shortest path algorithm is most commonly discussed. The objective is to find
-the shortest path of all other vertices to given a vertex (source). Shortest
-path problem with unweighted graph can be solved using BFS. Dijkstra’s approach
-works with weighted (non-negative weight) graph. See <a class="reference external" href="https://visualgo.net/en/sssp">visualization</a></p>
-<ul class="simple">
-<li><p>invented by Edsger Dijkstra</p></li>
-<li><p>employs a priority queue ADT</p></li>
-</ul>
-</section>
 </section>
 <section id="graph-glossary">
 <h2>Graph Glossary<a class="headerlink" href="#graph-glossary" title="Permalink to this heading">¶</a></h2>
@@ -277,15 +272,21 @@ distances to the starting vertex.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#graph-traversal">Graph Traversal</a></li>
-<li><a class="reference internal" href="#algorithms">Algorithms</a><ul>
-<li><a class="reference internal" href="#dijkstra-s-shortest-path">Dijkstra’s shortest path</a></li>
-</ul>
-</li>
 <li><a class="reference internal" href="#graph-glossary">Graph Glossary</a></li>
 </ul>
 </li>
 </ul>
 
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../../course/cop3530/ch14.html"
+                          title="previous chapter">Chapter 14 Graph</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../algorithm/shortest-path.html"
+                          title="next chapter">Dijkstra’s shortest path</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -314,7 +315,15 @@ distances to the starting vertex.</p>
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="../algorithm/shortest-path.html" title="Dijkstra’s shortest path"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../../course/cop3530/ch14.html" title="Chapter 14 Graph"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3530/ch14.html" >Chapter 14 Graph</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Graph</a></li> 
       </ul>
     </div>
