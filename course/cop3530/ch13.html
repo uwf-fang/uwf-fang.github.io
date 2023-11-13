@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Module 5 Recursion &#8212; IanFang Course Note Hosting  documentation</title>
+    <title>Chapter 13 Brute-Force and Backtracking Algorithm &#8212; IanFang Course Note Hosting  documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -17,11 +17,9 @@
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/sphinx_highlight.js"></script>
-    <link rel="canonical" href="https://uwf-fang.github.io/course/cop3530/m05.html" />
+    <link rel="canonical" href="https://uwf-fang.github.io/course/cop3530/ch13.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Recursion" href="../../cpp/recursion.html" />
-    <link rel="prev" title="Complexity Analysis" href="../../gen-programming/complexity.html" /> 
+    <link rel="search" title="Search" href="../../search.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -29,15 +27,8 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../cpp/recursion.html" title="Recursion"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="../../gen-programming/complexity.html" title="Complexity Analysis"
-             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Module 5 Recursion</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Chapter 13 Brute-Force and Backtracking Algorithm</a></li> 
       </ul>
     </div>  
 
@@ -46,16 +37,24 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="module-5-recursion">
-<h1>Module 5 Recursion<a class="headerlink" href="#module-5-recursion" title="Permalink to this heading">¶</a></h1>
+  <section id="chapter-13-brute-force-and-backtracking-algorithm">
+<h1>Chapter 13 Brute-Force and Backtracking Algorithm<a class="headerlink" href="#chapter-13-brute-force-and-backtracking-algorithm" title="Permalink to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../cpp/recursion.html">Recursion</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../cpp/recursion.html#definition">Definition</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../cpp/recursion.html#recursive-algorithm">Recursive Algorithm</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../cpp/recursion.html#recursive-data-structure">Recursive Data Structure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../cpp/recursion.html#pitfall">Pitfall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gen-programming/algorithm/brute-force.html">Brute-force Algorithms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../gen-programming/algorithm/brute-force.html#characteristics">Characteristics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gen-programming/algorithm/brute-force.html#application-domain">Application Domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gen-programming/algorithm/brute-force.html#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../gen-programming/algorithm/backtracking.html">Backtracking</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../gen-programming/algorithm/backtracking.html#definition">Definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gen-programming/algorithm/backtracking.html#core-concepts">Core Concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gen-programming/algorithm/backtracking.html#implementation">Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gen-programming/algorithm/backtracking.html#application-domain">Application Domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gen-programming/algorithm/backtracking.html#related-algorithms-and-paradigms">Related Algorithms and Paradigms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gen-programming/algorithm/backtracking.html#comparison">Comparison</a></li>
 </ul>
 </li>
 </ul>
@@ -69,20 +68,10 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="../../gen-programming/complexity.html"
-                          title="previous chapter">Complexity Analysis</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="../../cpp/recursion.html"
-                          title="next chapter">Recursion</a></p>
-  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../../_sources/course/cop3530/m05.rst.txt"
+      <li><a href="../../_sources/course/cop3530/ch13.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -106,15 +95,8 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
-        <li class="right" >
-          <a href="../../cpp/recursion.html" title="Recursion"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="../../gen-programming/complexity.html" title="Complexity Analysis"
-             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Module 5 Recursion</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Chapter 13 Brute-Force and Backtracking Algorithm</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
