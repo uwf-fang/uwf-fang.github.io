@@ -83,6 +83,19 @@ Examples
 
 Representations
 ===============
+For the undirected graph:
+
+.. graphviz::
+  :caption: Undirected graph
+
+  graph g1 {
+    rankdir=LR;
+    1 -- 3, 4;
+    2 -- 1;
+    3 -- 4, 5;
+    4 -- 5;
+  }
+
 + List of edges
 
   A list of edges is a 1d array in which every element in the array represents
@@ -90,10 +103,52 @@ Representations
   to store a graph in a relational database. It is not efficient for most graph
   algorithms though.
 
+  .. csv-table::
+
+    1, 2
+    1, 3
+    1, 4
+    3, 4
+    3, 5
+    4, 5
+
 + Adjacency list
 
   An adjacency list is a 1d array in which every element in the array
   represents a vertex and points to a list of its neighbors.
+
+  .. graphviz::
+    :caption: Adjacency list
+
+    digraph ll {
+      rankdir=LR;
+      node [shape=record];
+      first[label="<f1> 1|<f2> 2|<f3> 3|<f4> 4|<f5> 5", height=5];
+      a1 [label="{ <data> 2 | <ref>  }"];
+      b1 [label="{ <data> 3 | <ref>  }"];
+      c1 [label="{ <data> 4 | <ref>  }"];
+      a2 [label="{ <data> 2 | <ref>  }"];
+      a3 [label="{ <data> 1 | <ref>  }"];
+      b3 [label="{ <data> 4 | <ref>  }"];
+      c3 [label="{ <data> 5 | <ref>  }"];
+      a4 [label="{ <data> 1 | <ref>  }"];
+      b4 [label="{ <data> 3 | <ref>  }"];
+      c4 [label="{ <data> 5 | <ref>  }"];
+      a5 [label="{ <data> 3 | <ref>  }"];
+      b5 [label="{ <data> 4 | <ref>  }"];
+      first:f1 -> a1:data:w;
+      a1:ref:c -> b1:data;
+      b1:ref:c -> c1:data;
+      first:f2 -> a2:data:w;
+      first:f3 -> a3:data:w;
+      a3:ref:c -> b3:data;
+      b3:ref:c -> c3:data;
+      first:f4 -> a4:data:w;
+      a4:ref:c -> b4:data;
+      b4:ref:c -> c4:data;
+      first:f5 -> a5:data:w;
+      a5:ref:c -> b5:data;
+    }
 
 + Adjacency matrix
 
@@ -101,6 +156,16 @@ Representations
   vertex and each column represents a destination vertex. The elements in the
   matrix represents the edge between the two vertices.
 
+  .. csv-table:: Adjacency Matrix
+    :header-rows: 1
+    :stub-columns: 1
+
+     _, 1, 2, 3, 4, 5
+     1, 0, 1, 1, 1, 0
+     2, 1, 0, 0, 0, 0
+     3, 1, 0, 0, 1, 1
+     4, 1, 0, 1, 0, 1
+     5, 0, 0, 1, 1, 0
 
 Graph Traversal
 ===============
