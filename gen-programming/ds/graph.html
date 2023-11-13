@@ -143,21 +143,139 @@
 </section>
 <section id="representations">
 <h2>Representations<a class="headerlink" href="#representations" title="Permalink to this heading">¶</a></h2>
+<p>For the undirected graph:</p>
+<figure class="align-default" id="id5">
+<div class="graphviz"><img src="../../_images/graphviz-42ef7554a9a0112fa3768fb03836cd9302fab1b4.png" alt="graph g1 {
+  rankdir=LR;
+  1 -- 3, 4;
+  2 -- 1;
+  3 -- 4, 5;
+  4 -- 5;
+}" class="graphviz" /></div>
+<figcaption>
+<p><span class="caption-text">Undirected graph</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 <ul>
 <li><p>List of edges</p>
 <p>A list of edges is a 1d array in which every element in the array represents
 an edge. It is the simplest way to represent a graph. It is also an easy way
 to store a graph in a relational database. It is not efficient for most graph
 algorithms though.</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>5</p></td>
+</tr>
+</tbody>
+</table>
 </li>
 <li><p>Adjacency list</p>
 <p>An adjacency list is a 1d array in which every element in the array
 represents a vertex and points to a list of its neighbors.</p>
+<figure class="align-default" id="id6">
+<div class="graphviz"><img src="../../_images/graphviz-194d45acb23b7e35d1a29aba0251279ee95a1a1c.png" alt="digraph ll {
+  rankdir=LR;
+  node [shape=record];
+  first[label=&quot;&lt;f1&gt; 1|&lt;f2&gt; 2|&lt;f3&gt; 3|&lt;f4&gt; 4|&lt;f5&gt; 5&quot;, height=5];
+  a1 [label=&quot;{ &lt;data&gt; 2 | &lt;ref&gt;  }&quot;];
+  b1 [label=&quot;{ &lt;data&gt; 3 | &lt;ref&gt;  }&quot;];
+  c1 [label=&quot;{ &lt;data&gt; 4 | &lt;ref&gt;  }&quot;];
+  a2 [label=&quot;{ &lt;data&gt; 2 | &lt;ref&gt;  }&quot;];
+  a3 [label=&quot;{ &lt;data&gt; 1 | &lt;ref&gt;  }&quot;];
+  b3 [label=&quot;{ &lt;data&gt; 4 | &lt;ref&gt;  }&quot;];
+  c3 [label=&quot;{ &lt;data&gt; 5 | &lt;ref&gt;  }&quot;];
+  a4 [label=&quot;{ &lt;data&gt; 1 | &lt;ref&gt;  }&quot;];
+  b4 [label=&quot;{ &lt;data&gt; 3 | &lt;ref&gt;  }&quot;];
+  c4 [label=&quot;{ &lt;data&gt; 5 | &lt;ref&gt;  }&quot;];
+  a5 [label=&quot;{ &lt;data&gt; 3 | &lt;ref&gt;  }&quot;];
+  b5 [label=&quot;{ &lt;data&gt; 4 | &lt;ref&gt;  }&quot;];
+  first:f1 -&gt; a1:data:w;
+  a1:ref:c -&gt; b1:data;
+  b1:ref:c -&gt; c1:data;
+  first:f2 -&gt; a2:data:w;
+  first:f3 -&gt; a3:data:w;
+  a3:ref:c -&gt; b3:data;
+  b3:ref:c -&gt; c3:data;
+  first:f4 -&gt; a4:data:w;
+  a4:ref:c -&gt; b4:data;
+  b4:ref:c -&gt; c4:data;
+  first:f5 -&gt; a5:data:w;
+  a5:ref:c -&gt; b5:data;
+}" class="graphviz" /></div>
+<figcaption>
+<p><span class="caption-text">Adjacency list</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
 </li>
 <li><p>Adjacency matrix</p>
 <p>An adjacency matrix is a 2d array in which each row represents a source
 vertex and each column represents a destination vertex. The elements in the
 matrix represents the edge between the two vertices.</p>
+<table class="docutils align-default" id="id7">
+<caption><span class="caption-text">Adjacency Matrix</span><a class="headerlink" href="#id7" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head stub"><p>_</p></th>
+<th class="head"><p>1</p></th>
+<th class="head"><p>2</p></th>
+<th class="head"><p>3</p></th>
+<th class="head"><p>4</p></th>
+<th class="head"><p>5</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><th class="stub"><p>1</p></th>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>2</p></th>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>3</p></th>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>4</p></th>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>5</p></th>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
 </li>
 </ul>
 <section id="complexity">
@@ -165,8 +283,8 @@ matrix represents the edge between the two vertices.</p>
 <p>Assume that we have a graph with <span class="math notranslate nohighlight">\(V\)</span> vertices and <span class="math notranslate nohighlight">\(E\)</span> edges. The
 average number of neighbors is <span class="math notranslate nohighlight">\(N\)</span>. For a full graph, <span class="math notranslate nohighlight">\(N = V - 1\)</span>.
 For a sparse matrix, <span class="math notranslate nohighlight">\(N &lt;&lt; V\)</span>.</p>
-<table class="docutils align-default" id="id5">
-<caption><span class="caption-text">Adjacency list vs Adjacency Matrix</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
+<table class="docutils align-default" id="id8">
+<caption><span class="caption-text">Adjacency list vs Adjacency Matrix</span><a class="headerlink" href="#id8" title="Permalink to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head stub"></th>
 <th class="head"><p>Adjacency list</p></th>
