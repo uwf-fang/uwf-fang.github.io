@@ -51,45 +51,78 @@
   <section id="graph">
 <h1>Graph<a class="headerlink" href="#graph" title="Permalink to this heading">¶</a></h1>
 <p>An ADT to model complex, non-linear relationships among entities.</p>
-<section id="concepts">
-<h2>Concepts<a class="headerlink" href="#concepts" title="Permalink to this heading">¶</a></h2>
+<section id="graph-concepts">
+<h2>Graph Concepts<a class="headerlink" href="#graph-concepts" title="Permalink to this heading">¶</a></h2>
+<p>Graphs are fundamental data structures used to represent various relationships
+and connections in a wide range of applications. Understanding the basic
+concepts related to graphs is essential for working with them effectively. This
+section introduces key graph-related terms and concepts.</p>
+<section id="vertices-nodes">
+<h3>Vertices/Nodes<a class="headerlink" href="#vertices-nodes" title="Permalink to this heading">¶</a></h3>
+<p>A <strong>vertex</strong> or <strong>node</strong> is a fundamental element in a graph. It represents an
+entity or an object within the graph. Each vertex may have associated
+properties, and in some cases, a <strong>degree</strong> is used to describe the number of
+edges connected to a vertex.</p>
+</section>
+<section id="edges-arcs">
+<h3>Edges/Arcs<a class="headerlink" href="#edges-arcs" title="Permalink to this heading">¶</a></h3>
+<p>An <strong>edge</strong> or <strong>arc</strong> is a connection between two vertices in a graph,
+representing a relationship or association between them. Edges can have
+different characteristics:</p>
 <ul class="simple">
-<li><p>Vertex/Node</p>
-<ul>
-<li><p>degree</p></li>
+<li><p><strong>Directed</strong>: In a directed graph (also known as a digraph), edges have a
+specific direction, indicating that there is a one-way relationship from one
+vertex to another.</p></li>
+<li><p><strong>Undirected</strong>: In an undirected graph, edges do not have a direction,
+signifying a bidirectional relationship between vertices.</p></li>
+<li><p><strong>Weighted</strong>: Edges can be weighted, meaning they have associated numerical
+values or weights that represent the cost, distance, or strength of the
+relationship.</p></li>
 </ul>
-</li>
-<li><p>Edge/Arc</p>
-<ul>
-<li><p>directed</p></li>
-<li><p>undirected</p></li>
-<li><p>weighted</p></li>
+</section>
+<section id="connectivity">
+<h3>Connectivity<a class="headerlink" href="#connectivity" title="Permalink to this heading">¶</a></h3>
+<p>Connectivity refers to how vertices in a graph are connected to each other.
+Several concepts related to connectivity include:</p>
+<ul class="simple">
+<li><p><strong>Path Between Two Vertices</strong>: A <strong>path</strong> is a sequence of edges that connect
+two vertices. The <strong>length</strong> of a path is determined by the number of edges
+it contains.</p></li>
+<li><p><strong>Distance Between Two Vertices</strong>: The <strong>distance</strong> between two vertices is
+the length of the shortest path connecting them.</p></li>
+<li><p><strong>Adjacent</strong>: Two vertices are said to be <strong>adjacent</strong> if there is an edge
+connecting them directly.</p></li>
+<li><p><strong>Connected</strong>: A graph is considered <strong>connected</strong> if there is a path between
+any pair of vertices. Otherwise, it is <strong>unconnected</strong>.</p></li>
+<li><p><strong>Cyclic</strong>: A graph is <strong>cyclic</strong> if it contains at least one cycle, which is
+a closed path that returns to the same vertex without repeating any edge.</p></li>
+<li><p><strong>Acyclic</strong>: A graph is <strong>acyclic</strong> if it does not contain any cycles.</p></li>
 </ul>
-</li>
-<li><p>Connectivity</p>
-<ul>
-<li><p>path between two vertices</p>
-<ul>
-<li><p>length</p></li>
+</section>
+<section id="graph-properties">
+<h3>Graph Properties<a class="headerlink" href="#graph-properties" title="Permalink to this heading">¶</a></h3>
+<p>Graphs can possess various properties that define their characteristics. Some
+of the key graph properties include:</p>
+<ul class="simple">
+<li><p><strong>Directed/Undirected</strong>: A graph can be classified as <strong>directed</strong> if it
+contains directed edges, and <strong>undirected</strong> if it contains undirected edges.</p></li>
+<li><p><strong>Weighted/Unweighted</strong>: Graphs can be <strong>weighted</strong> if they have edges with
+associated weights, or <strong>unweighted</strong> if all edges have equal weight.</p></li>
+<li><p><strong>Cyclic/Acyclic</strong>: Graphs can be <strong>cyclic</strong> if they contain cycles, or
+<strong>acyclic</strong> if they do not have any cycles.</p></li>
+<li><p><strong>Connected/Unconnected</strong>: A graph can be <strong>connected</strong> if there is a path
+between all pairs of vertices, or <strong>unconnected</strong> if there are isolated
+components without connections.</p></li>
+<li><p><strong>Dense/Sparse</strong>: A graph can be <strong>dense</strong> if it has a large number of edges
+relative to the number of vertices, or <strong>sparse</strong> if it has relatively few
+edges.</p></li>
 </ul>
-</li>
-<li><p>distance between two vertices</p></li>
-<li><p>adjacent</p></li>
-<li><p>connected</p></li>
-<li><p>cyclic</p></li>
-<li><p>acyclic</p></li>
-</ul>
-</li>
-<li><p>Graph properties</p>
-<ul>
-<li><p>directed/undirected</p></li>
-<li><p>weighted/unweighted</p></li>
-<li><p>cyclic/acyclic</p></li>
-<li><p>connected/unconnected</p></li>
-<li><p>dense/sparse</p></li>
-</ul>
-</li>
-</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For undirected graph, only outgoing edges are counted when working with
+degree, path, distance, cycle, connectivity, and so on.</p>
+</div>
+</section>
 </section>
 <section id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h2>
@@ -143,7 +176,11 @@
 </section>
 <section id="representations">
 <h2>Representations<a class="headerlink" href="#representations" title="Permalink to this heading">¶</a></h2>
-<p>For the undirected graph:</p>
+<p>Unlike linked list, and tree, graph are seldom represented using nodes and
+pointers due to the complexity of the data structure. Instead, graph are
+represented using one of the following methods:</p>
+<ul>
+<li><p>Example undirected graph:</p>
 <figure class="align-default" id="id5">
 <div class="graphviz"><img src="../../_images/graphviz-42ef7554a9a0112fa3768fb03836cd9302fab1b4.png" alt="graph g1 {
   rankdir=LR;
@@ -156,30 +193,35 @@
 <p><span class="caption-text">Undirected graph</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
-<ul>
+</li>
 <li><p>List of edges</p>
 <p>A list of edges is a 1d array in which every element in the array represents
 an edge. It is the simplest way to represent a graph. It is also an easy way
 to store a graph in a relational database. It is not efficient for most graph
 algorithms though.</p>
 <table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>n1</p></th>
+<th class="head"><p>n2</p></th>
+</tr>
+</thead>
 <tbody>
-<tr class="row-odd"><td><p>1</p></td>
+<tr class="row-even"><td><p>1</p></td>
 <td><p>2</p></td>
 </tr>
-<tr class="row-even"><td><p>1</p></td>
+<tr class="row-odd"><td><p>1</p></td>
 <td><p>3</p></td>
 </tr>
-<tr class="row-odd"><td><p>1</p></td>
-<td><p>4</p></td>
-</tr>
-<tr class="row-even"><td><p>3</p></td>
+<tr class="row-even"><td><p>1</p></td>
 <td><p>4</p></td>
 </tr>
 <tr class="row-odd"><td><p>3</p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
 <td><p>5</p></td>
 </tr>
-<tr class="row-even"><td><p>4</p></td>
+<tr class="row-odd"><td><p>4</p></td>
 <td><p>5</p></td>
 </tr>
 </tbody>
@@ -193,10 +235,11 @@ represents a vertex and points to a list of its neighbors.</p>
 <p>An adjacency matrix is a 2d array in which each row represents a source
 vertex and each column represents a destination vertex. The elements in the
 matrix represents the edge between the two vertices.</p>
+<p><strong>The matrix will be symmetric for undirected graph.</strong></p>
 <table class="docutils align-default" id="id6">
 <caption><span class="caption-text">Adjacency Matrix</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
 <thead>
-<tr class="row-odd"><th class="head stub"><p>_</p></th>
+<tr class="row-odd"><th class="head stub"></th>
 <th class="head"><p>1</p></th>
 <th class="head"><p>2</p></th>
 <th class="head"><p>3</p></th>
@@ -247,27 +290,31 @@ matrix represents the edge between the two vertices.</p>
 <section id="complexity">
 <h3>Complexity<a class="headerlink" href="#complexity" title="Permalink to this heading">¶</a></h3>
 <p>Assume that we have a graph with <span class="math notranslate nohighlight">\(V\)</span> vertices and <span class="math notranslate nohighlight">\(E\)</span> edges. The
-average number of neighbors is <span class="math notranslate nohighlight">\(N\)</span>. For a full graph, <span class="math notranslate nohighlight">\(N = V - 1\)</span>.
-For a sparse matrix, <span class="math notranslate nohighlight">\(N &lt;&lt; V\)</span>.</p>
+average number of neighbors is <span class="math notranslate nohighlight">\(N\)</span>. For a full graph: <span class="math notranslate nohighlight">\(N = V - 1;
+E=V(V-1)/2\)</span>. For a sparse matrix, <span class="math notranslate nohighlight">\(N &lt;&lt; V; E &lt;&lt; V(V-1)/2\)</span>.</p>
 <table class="docutils align-default" id="id7">
 <caption><span class="caption-text">Adjacency list vs Adjacency Matrix</span><a class="headerlink" href="#id7" title="Permalink to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head stub"></th>
+<th class="head"><p>List of edges</p></th>
 <th class="head"><p>Adjacency list</p></th>
 <th class="head"><p>Adjacency matrix</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><th class="stub"><p>Space</p></th>
+<tr class="row-even"><th class="stub"><p>Space Complexity</p></th>
+<td><p><span class="math notranslate nohighlight">\(O(E)\)</span></p></td>
 <td><p><span class="math notranslate nohighlight">\(O(V*N)\)</span></p></td>
 <td><p><span class="math notranslate nohighlight">\(O(V*V)\)</span></p></td>
 </tr>
-<tr class="row-odd"><th class="stub"><p>Check adjacency of two vertices</p></th>
-<td><p><span class="math notranslate nohighlight">\(O(n)\)</span></p></td>
+<tr class="row-odd"><th class="stub"><p>Time to check adjacency</p></th>
+<td><p><span class="math notranslate nohighlight">\(O(E)\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(O(N)\)</span></p></td>
 <td><p><span class="math notranslate nohighlight">\(O(1)\)</span></p></td>
 </tr>
-<tr class="row-even"><th class="stub"><p>Find all neighbors of a vertex</p></th>
-<td><p><span class="math notranslate nohighlight">\(O(n)\)</span></p></td>
+<tr class="row-even"><th class="stub"><p>Time to find all neighbors</p></th>
+<td><p><span class="math notranslate nohighlight">\(O(E)\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(O(N)\)</span></p></td>
 <td><p><span class="math notranslate nohighlight">\(O(V)\)</span></p></td>
 </tr>
 </tbody>
@@ -349,7 +396,13 @@ distances to the starting vertex.</p>
     <h3><a href="../../index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">Graph</a><ul>
-<li><a class="reference internal" href="#concepts">Concepts</a></li>
+<li><a class="reference internal" href="#graph-concepts">Graph Concepts</a><ul>
+<li><a class="reference internal" href="#vertices-nodes">Vertices/Nodes</a></li>
+<li><a class="reference internal" href="#edges-arcs">Edges/Arcs</a></li>
+<li><a class="reference internal" href="#connectivity">Connectivity</a></li>
+<li><a class="reference internal" href="#graph-properties">Graph Properties</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#examples">Examples</a></li>
 <li><a class="reference internal" href="#representations">Representations</a><ul>
 <li><a class="reference internal" href="#complexity">Complexity</a></li>

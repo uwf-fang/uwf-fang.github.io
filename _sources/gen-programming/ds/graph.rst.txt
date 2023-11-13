@@ -3,37 +3,78 @@ Graph
 *****
 An ADT to model complex, non-linear relationships among entities.
 
-Concepts
-========
-+ Vertex/Node
+Graph Concepts
+==============
 
-  * degree
+Graphs are fundamental data structures used to represent various relationships
+and connections in a wide range of applications. Understanding the basic
+concepts related to graphs is essential for working with them effectively. This
+section introduces key graph-related terms and concepts.
 
-+ Edge/Arc
+Vertices/Nodes
+--------------
 
-  * directed
-  * undirected
-  * weighted
+A **vertex** or **node** is a fundamental element in a graph. It represents an
+entity or an object within the graph. Each vertex may have associated
+properties, and in some cases, a **degree** is used to describe the number of
+edges connected to a vertex.
 
-+ Connectivity
+Edges/Arcs
+-----------
 
-  * path between two vertices
+An **edge** or **arc** is a connection between two vertices in a graph,
+representing a relationship or association between them. Edges can have
+different characteristics:
 
-    - length
+- **Directed**: In a directed graph (also known as a digraph), edges have a
+  specific direction, indicating that there is a one-way relationship from one
+  vertex to another.
+- **Undirected**: In an undirected graph, edges do not have a direction,
+  signifying a bidirectional relationship between vertices.
+- **Weighted**: Edges can be weighted, meaning they have associated numerical
+  values or weights that represent the cost, distance, or strength of the
+  relationship.
 
-  * distance between two vertices
-  * adjacent
-  * connected
-  * cyclic
-  * acyclic
+Connectivity
+------------
+Connectivity refers to how vertices in a graph are connected to each other.
+Several concepts related to connectivity include:
 
-+ Graph properties
+- **Path Between Two Vertices**: A **path** is a sequence of edges that connect
+  two vertices. The **length** of a path is determined by the number of edges
+  it contains.
+- **Distance Between Two Vertices**: The **distance** between two vertices is
+  the length of the shortest path connecting them.
+- **Adjacent**: Two vertices are said to be **adjacent** if there is an edge
+  connecting them directly.
+- **Connected**: A graph is considered **connected** if there is a path between
+  any pair of vertices. Otherwise, it is **unconnected**.
+- **Cyclic**: A graph is **cyclic** if it contains at least one cycle, which is
+  a closed path that returns to the same vertex without repeating any edge.
+- **Acyclic**: A graph is **acyclic** if it does not contain any cycles.
 
-  * directed/undirected
-  * weighted/unweighted
-  * cyclic/acyclic
-  * connected/unconnected
-  * dense/sparse
+Graph Properties
+----------------
+Graphs can possess various properties that define their characteristics. Some
+of the key graph properties include:
+
+- **Directed/Undirected**: A graph can be classified as **directed** if it
+  contains directed edges, and **undirected** if it contains undirected edges.
+- **Weighted/Unweighted**: Graphs can be **weighted** if they have edges with
+  associated weights, or **unweighted** if all edges have equal weight.
+- **Cyclic/Acyclic**: Graphs can be **cyclic** if they contain cycles, or
+  **acyclic** if they do not have any cycles.
+- **Connected/Unconnected**: A graph can be **connected** if there is a path
+  between all pairs of vertices, or **unconnected** if there are isolated
+  components without connections.
+- **Dense/Sparse**: A graph can be **dense** if it has a large number of edges
+  relative to the number of vertices, or **sparse** if it has relatively few
+  edges.
+
+.. note::
+
+  For undirected graph, only outgoing edges are counted when working with
+  degree, path, distance, cycle, connectivity, and so on.
 
 .. graph-examples:
 
@@ -85,18 +126,23 @@ Examples
 
 Representations
 ===============
-For the undirected graph:
+Unlike linked list, and tree, graph are seldom represented using nodes and
+pointers due to the complexity of the data structure. Instead, graph are
+represented using one of the following methods:
 
-.. graphviz::
-  :caption: Undirected graph
 
-  graph g1 {
-    rankdir=LR;
-    1 -- 3, 4;
-    2 -- 1;
-    3 -- 4, 5;
-    4 -- 5;
-  }
++ Example undirected graph:
+
+  .. graphviz::
+    :caption: Undirected graph
+
+    graph g1 {
+      rankdir=LR;
+      1 -- 3, 4;
+      2 -- 1;
+      3 -- 4, 5;
+      4 -- 5;
+    }
 
 + List of edges
 
@@ -106,7 +152,9 @@ For the undirected graph:
   algorithms though.
 
   .. csv-table::
+    :header-rows: 1
 
+    n1, n2
     1, 2
     1, 3
     1, 4
@@ -159,11 +207,13 @@ For the undirected graph:
   vertex and each column represents a destination vertex. The elements in the
   matrix represents the edge between the two vertices.
 
+  **The matrix will be symmetric for undirected graph.**
+
   .. csv-table:: Adjacency Matrix
     :header-rows: 1
     :stub-columns: 1
 
-     _, 1, 2, 3, 4, 5
+      , 1, 2, 3, 4, 5
      1, 0, 1, 1, 1, 0
      2, 1, 0, 0, 0, 0
      3, 1, 0, 0, 1, 1
@@ -175,24 +225,28 @@ For the undirected graph:
 Complexity
 ----------
 Assume that we have a graph with :math:`V` vertices and :math:`E` edges. The
-average number of neighbors is :math:`N`. For a full graph, :math:`N = V - 1`.
-For a sparse matrix, :math:`N << V`.
+average number of neighbors is :math:`N`. For a full graph: :math:`N = V - 1;
+E=V(V-1)/2`. For a sparse matrix, :math:`N << V; E << V(V-1)/2`.
 
 .. list-table:: Adjacency list vs Adjacency Matrix
   :header-rows: 1
   :stub-columns: 1
 
   * -
+    - List of edges
     - Adjacency list
     - Adjacency matrix
-  * - Space
+  * - Space Complexity
+    - :math:`O(E)`
     - :math:`O(V*N)`
     - :math:`O(V*V)`
-  * - Check adjacency of two vertices
-    - :math:`O(n)`
+  * - Time to check adjacency
+    - :math:`O(E)`
+    - :math:`O(N)`
     - :math:`O(1)`
-  * - Find all neighbors of a vertex
-    - :math:`O(n)`
+  * - Time to find all neighbors
+    - :math:`O(E)`
+    - :math:`O(N)`
     - :math:`O(V)`
 
 Graph Traversal
@@ -212,7 +266,6 @@ Graph Traversal
   distances to the starting vertex.
 
   * iterative using a queue
-
 
 Graph Glossary
 ==============
