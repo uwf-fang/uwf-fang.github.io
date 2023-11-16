@@ -1,0 +1,145 @@
+**************************
+Graph Traversal Algorithms
+**************************
+
+Overview
+========
+Graph traversals are essential techniques for exploring and analyzing graph
+structures. They involve systematically visiting nodes within a graph to gather
+information, discover paths, establish connectivity, and unveil relationships.
+Graph traversals are a key component of many graph algorithms and play a
+crucial role in solving complex problems involving graphs.
+
++ Start from a designated source node
++ Visit all reachable nodes in a systematic order
+
+Depth-First Search (DFS)
+========================
+It explores a graph like walking through a maze, going as far as possible along
+a branch before backtracking at a dead end or a visited spot.
+
+Algorithm Overview
+-------------------
+Depth-First Search (DFS) is a graph traversal algorithm that explores as far as
+possible along a branch before backtracking at a dead end or visited spot. It
+starts from a source node and recursively visits neighboring nodes until it
+reaches the end of a branch before moving on to another branch. DFS is often
+implemented using a stack or a recursive function call.
+
+Stack-Based Approach
+--------------------
+In the stack-based approach, DFS uses a stack data structure to keep track of
+nodes to be visited. It starts with the source node, pushes it onto the stack,
+and then repeatedly pops nodes from the stack, explores their neighbors, and
+pushes unvisited neighbors onto the stack. This process continues until the
+stack is empty or a specific condition is met.
+
+Recursive Approach
+-------------------
+Alternatively, DFS can be implemented using recursion. In this method, a
+recursive function is called to visit nodes and their neighbors. The function
+explores a node's neighbors, calling itself recursively for unvisited neighbors
+until all reachable nodes are visited. Recursion effectively emulates the
+behavior of a stack.
+
+Pseudo-Code
+-----------
+
+.. code-block::
+  :caption: DFS traversal using recursion
+
+  function dfs(vertex, visited):
+    if vertex is not visited:
+      mark vertex as visited
+      visit(node)  # Perform an action on the vertex
+
+      for each neighbor of the vertex:
+        if neighbor is not visited:
+            dfs(neighbor, visited)
+
+.. code-block::
+  :caption: Iterative DFS traversal using a stack
+
+  function dfs(startVertex):
+    create a new stack
+
+    push startVertex onto the stack
+    mark startVertex as visited
+
+    while the stack is not empty:
+      current = pop from the stack
+      process(current)  # Perform an action on the current node
+
+      for each neighbor in current.neighbors:
+        if neighbor is not in visited set:
+          push neighbor onto the stack
+          add neighbor to the visited set
+
+Breadth-First Search (BFS)
+===========================
+It explores a graph like a wave of water, spreading out from the source node to
+all its neighbors before moving on to the next level of neighbors.
+
+Algorithm Overview
+-------------------
+Breadth-First Search (BFS) is another graph traversal algorithm that explores a
+graph in layers or levels. Starting from a source node, BFS visits all its
+neighbors before moving on to their neighbors, ensuring that nodes at a given
+level are visited before nodes at the next level. BFS typically uses a queue
+data structure to manage the order of node exploration.
+
+Queue-Based Approach
+--------------------
+In the queue-based approach, BFS uses a queue to keep track of nodes to be
+visited. It starts with the source node, enqueues it, and then repeatedly
+dequeues nodes, explores their neighbors, and enqueues unvisited neighbors.
+This process continues until the queue is empty or a specific condition is met.
+
+Pseudo-Code
+-----------
+
+.. code-block::
+  :caption: BFS traversal using a queue
+
+  function bfs(startVertex):
+    create a new queue
+
+    enqueue the startVertex
+    mark the startVertex as visited
+
+    while the queue is not empty:
+      dequeue a vertex from the queue
+      process(vertex)  # Perform an action on the vertex
+
+      for each neighbor of the vertex:
+        if neighbor is not visited:
+          mark the neighbor as visited
+          enqueue the neighbor
+
+Comparison between DFS and BFS
+===============================
+
+Time and Space Complexity
+--------------------------
+- Depth-First Search (DFS) generally has a lower space complexity than
+  Breadth-First Search (BFS) because it only needs to store the path from the
+  source node to the current node, while BFS stores all nodes at a given level.
+- In terms of time complexity, both DFS and BFS have O(V + E) time complexity,
+  where V is the number of vertices (nodes) and E is the number of edges in the
+  graph.
+
+When to Use DFS or BFS
+-----------------------
+- Use DFS when you want to explore as deeply as possible before backtracking,
+  such as finding paths and cycles.
+- Use BFS when you need to find the shortest path, explore a graph layer by
+  layer, or perform tasks like minimum spanning tree construction.
+
+Trade-offs and Considerations
+-------------------------------
+- DFS may be more memory-efficient but can get stuck in deep branches with a
+  high branching factor.
+- BFS ensures the shortest path but may consume more memory due to its
+  queue-based approach.
+- The choice between DFS and BFS depends on the specific problem requirements
+  and constraints.

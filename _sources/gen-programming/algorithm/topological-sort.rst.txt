@@ -1,0 +1,62 @@
+****************
+Topological Sort
+****************
+
+Overview
+========
+Topological sorting is a crucial algorithm in graph theory. It is used to
+linearly order the nodes of a directed graph in such a way that for every
+directed edge (u, v), node 'u' comes before node 'v' in the ordering. This
+linear order is essential in various applications like task scheduling,
+dependency resolution, and compiler optimization.
+
++ The graph must be a Directed Acyclic Graph (DAG).
++ The order of neighbors for each node is known.
+
+Properties of Topological Sort
+-------------------------------
+Topological sorting is specifically applicable to Directed Acyclic Graphs
+(DAGs). Some key properties include:
+
+- Unique Ordering: There is only one valid topological order for a given DAG.
+- Linear Order: The result of topological sort is a linear order that respects
+  the directed edges in the graph.
+
+Use Cases
+---------
+Topological sorting finds applications in various fields:
+
+- **Task Scheduling:** Organizing tasks based on dependencies to ensure they
+  execute in the correct order.
+- **Dependency Resolution:** Resolving software or data dependencies in a
+  systematic manner.
+- **Compiler Optimization:** Optimizing the compilation process by determining
+  a suitable order for code generation.
+
+Algorithm for Topological Sort
+-------------------------------
+The topological sort algorithm primarily relies on Depth-First Search (DFS) to
+order the nodes in a directed acyclic graph (DAG). Here's the pseudocode for
+the topological sort algorithm:
+
++ visualization https://www.cs.usfca.edu/~galles/visualization/TopoSortDFS.html
+
+.. code-block::
+
+    function topologicalSort(graph):
+      initialize an empty list 'result' to store the topological order
+      initialize a set 'visited' to keep track of visited nodes
+
+      for each node 'v' in graph:
+        if 'v' is not in 'visited':
+          performDFS(v, visited, result)
+
+    return 'result' in reverse order
+
+    function performDFS(node, visited, result):
+      mark 'node' as visited
+      for each neighbor 'n' of 'node':
+        if 'n' is not in 'visited':
+          performDFS(n, visited, result)
+      append 'node' to 'result'
+

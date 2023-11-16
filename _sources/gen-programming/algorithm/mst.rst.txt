@@ -1,3 +1,155 @@
 *********************
 Minimal Spanning Tree
 *********************
+
+Spanning Tree
+=============
+A spanning tree of a graph is a subgraph that contains all vertices of the
+graph and is a tree. A tree is a connected graph with no cycles.
+
++ A graph can have multiple spanning trees.
++ Both DFS and BFS can be used to find a spanning tree of a graph.
+
+Minimal Spanning Tree
+=====================
+A Minimum Spanning Tree (MST) is a subgraph of a weighted, connected graph that
+spans all vertices with the minimum possible total edge weight. MSTs have
+various practical applications in network design, clustering, and more.
+
++ Prim's Algorithm
++ Kruskal's Algorithm
++ Other
+
+  * Boruvka's Algorithm
+  * Reverse-Delete Algorithm
+
++ Visualization
+
+  * https://visualgo.net/en/mst
+  * https://www.cs.usfca.edu/~galles/visualization/Prim.html
+  * https://www.cs.usfca.edu/~galles/visualization/Kruskal.html
+
+Prim's Algorithm
+================
+Prim's algorithm is a greedy algorithm used to find the Minimum Spanning Tree of a graph. It starts with an arbitrary vertex and repeatedly adds the shortest edge that connects a vertex in the MST to a vertex outside the MST.
+
++ invented by Czech mathematician Vojtěch Jarník in 1930
++ rediscovered and republished by computer scientists Robert C. Prim in 1957
+  and Edsger W. Dijkstra in 1959
++ use a priority queue to keep track of the vertices and their weights
++ store the MST in a separate data structure
+
+Algorithm Steps
+----------------
+1. Create an empty MST.
+2. Initialize a priority queue with all vertices and their respective weights.
+3. Start with an arbitrary vertex as the current vertex.
+4. Mark the current vertex as visited.
+5. While the priority queue is not empty:
+
+   a. Dequeue the vertex with the smallest weight from the priority queue.
+   b. If the dequeued vertex is not in the MST, add it to the MST and update
+      its neighbors' weights in the priority queue.
+
+6. Repeat steps 4-5 until all vertices are in the MST.
+
+Pseudo-code for Prim's Algorithm
+---------------------------------
+.. code-block::
+  :caption: Prim's Algorithm
+
+  function prim(graph):
+    create an empty MST
+    create a priority queue with vertices and their weights
+    start with an arbitrary vertex as the current vertex
+    mark the current vertex as visited
+
+    while the priority queue is not empty:
+      dequeue the vertex with the smallest weight from the priority queue
+      if the dequeued vertex is not in the MST:
+        add it to the MST
+        update the weights of its neighbors in the priority queue
+
+Kruskal's Algorithm
+===================
+Kruskal's algorithm is another greedy algorithm used to find the Minimum
+Spanning Tree of a graph. It starts with an empty set of edges and repeatedly
+adds the shortest edge that does not form a cycle with the edges already
+selected.
+
++ invented by Joseph Kruskal in 1956
++ use a disjoint-set data structure to keep track of connected components to
+  avoid cycles
+
+Algorithm Steps
+----------------
+
+1. Create an empty MST.
+2. Sort all edges in the graph in ascending order of their weights.
+3. Initialize a disjoint-set data structure to keep track of connected
+   components.
+4. For each edge in sorted order:
+
+   a. If adding the edge to the MST does not create a cycle, add it to the MST.
+
+5. Repeat step 4 until the MST has (n-1) edges, where n is the number of
+   vertices in the graph.
+
+Pseudo-code for Kruskal's Algorithm
+------------------------------------
+
+.. code-block::
+  :caption: Kruskal's Algorithm
+
+  function kruskal(graph):
+    create an empty MST
+    sort all edges in the graph in ascending order of their weights
+    initialize a disjoint-set data structure
+
+    for each edge in sorted order:
+      if adding the edge to the MST does not create a cycle:
+        add it to the MST
+        update the disjoint-set data structure
+
+.. _minimum_spanning_tree_algorithm_comparison:
+
+Comparison of Prim's and Kruskal's Algorithms
+=============================================
+
+.. list-table:: Comparison of two MST algorithms
+
+  * - Comparison Criteria
+    - Prim's Algorithm
+    - Kruskal's Algorithm
+  * - Type
+    - Greedy
+    - Greedy
+  * - Graph elements
+    - Vertices
+    - Edges
+  * - Efficient for
+    - Dense graphs
+    - Sparse graphs
+  * - Data structure/ADT
+    - Priority queue
+    - Disjoint-set
+  * - Parallelization
+    - Not suitable
+    - Suitable
+  * - Connected results
+    - Yes
+    - Yes (extra step)
+
+Overall Considerations
+----------------------
+
+- Prim's Algorithm:
+
+  - Well-suited for dense graphs and highly connected graphs.
+  - More efficient when a priority queue can be efficiently implemented.
+
+- Kruskal's Algorithm:
+
+  - Well-suited for sparse graphs and graphs with multiple disconnected
+    components.
+  - Suitable for parallel and distributed computing environments.

@@ -19,7 +19,9 @@
     <script src="../../_static/sphinx_highlight.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/gen-programming/algorithm/mst.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Midterm 1 Review" href="../../course/cop4534/mid1-review.html" />
+    <link rel="prev" title="Topological Sort" href="topological-sort.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -27,7 +29,15 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../course/cop4534/mid1-review.html" title="Midterm 1 Review"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="topological-sort.html" title="Topological Sort"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop4534/m13.html" accesskey="U">Module 13: Graph Algorithms 1</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Minimal Spanning Tree</a></li> 
       </ul>
     </div>  
@@ -39,6 +49,184 @@
             
   <section id="minimal-spanning-tree">
 <h1>Minimal Spanning Tree<a class="headerlink" href="#minimal-spanning-tree" title="Permalink to this heading">¶</a></h1>
+<section id="spanning-tree">
+<h2>Spanning Tree<a class="headerlink" href="#spanning-tree" title="Permalink to this heading">¶</a></h2>
+<p>A spanning tree of a graph is a subgraph that contains all vertices of the
+graph and is a tree. A tree is a connected graph with no cycles.</p>
+<ul class="simple">
+<li><p>A graph can have multiple spanning trees.</p></li>
+<li><p>Both DFS and BFS can be used to find a spanning tree of a graph.</p></li>
+</ul>
+</section>
+<section id="id1">
+<h2>Minimal Spanning Tree<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
+<p>A Minimum Spanning Tree (MST) is a subgraph of a weighted, connected graph that
+spans all vertices with the minimum possible total edge weight. MSTs have
+various practical applications in network design, clustering, and more.</p>
+<ul class="simple">
+<li><p>Prim’s Algorithm</p></li>
+<li><p>Kruskal’s Algorithm</p></li>
+<li><p>Other</p>
+<ul>
+<li><p>Boruvka’s Algorithm</p></li>
+<li><p>Reverse-Delete Algorithm</p></li>
+</ul>
+</li>
+<li><p>Visualization</p>
+<ul>
+<li><p><a class="reference external" href="https://visualgo.net/en/mst">https://visualgo.net/en/mst</a></p></li>
+<li><p><a class="reference external" href="https://www.cs.usfca.edu/~galles/visualization/Prim.html">https://www.cs.usfca.edu/~galles/visualization/Prim.html</a></p></li>
+<li><p><a class="reference external" href="https://www.cs.usfca.edu/~galles/visualization/Kruskal.html">https://www.cs.usfca.edu/~galles/visualization/Kruskal.html</a></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="prim-s-algorithm">
+<h2>Prim’s Algorithm<a class="headerlink" href="#prim-s-algorithm" title="Permalink to this heading">¶</a></h2>
+<p>Prim’s algorithm is a greedy algorithm used to find the Minimum Spanning Tree of a graph. It starts with an arbitrary vertex and repeatedly adds the shortest edge that connects a vertex in the MST to a vertex outside the MST.</p>
+<ul class="simple">
+<li><p>invented by Czech mathematician Vojtěch Jarník in 1930</p></li>
+<li><p>rediscovered and republished by computer scientists Robert C. Prim in 1957
+and Edsger W. Dijkstra in 1959</p></li>
+<li><p>use a priority queue to keep track of the vertices and their weights</p></li>
+<li><p>store the MST in a separate data structure</p></li>
+</ul>
+<section id="algorithm-steps">
+<h3>Algorithm Steps<a class="headerlink" href="#algorithm-steps" title="Permalink to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Create an empty MST.</p></li>
+<li><p>Initialize a priority queue with all vertices and their respective weights.</p></li>
+<li><p>Start with an arbitrary vertex as the current vertex.</p></li>
+<li><p>Mark the current vertex as visited.</p></li>
+<li><p>While the priority queue is not empty:</p>
+<ol class="loweralpha simple">
+<li><p>Dequeue the vertex with the smallest weight from the priority queue.</p></li>
+<li><p>If the dequeued vertex is not in the MST, add it to the MST and update
+its neighbors’ weights in the priority queue.</p></li>
+</ol>
+</li>
+<li><p>Repeat steps 4-5 until all vertices are in the MST.</p></li>
+</ol>
+</section>
+<section id="pseudo-code-for-prim-s-algorithm">
+<h3>Pseudo-code for Prim’s Algorithm<a class="headerlink" href="#pseudo-code-for-prim-s-algorithm" title="Permalink to this heading">¶</a></h3>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Prim’s Algorithm</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">prim</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+  <span class="n">create</span> <span class="n">an</span> <span class="n">empty</span> <span class="n">MST</span>
+  <span class="n">create</span> <span class="n">a</span> <span class="n">priority</span> <span class="n">queue</span> <span class="k">with</span> <span class="n">vertices</span> <span class="ow">and</span> <span class="n">their</span> <span class="n">weights</span>
+  <span class="n">start</span> <span class="k">with</span> <span class="n">an</span> <span class="n">arbitrary</span> <span class="n">vertex</span> <span class="k">as</span> <span class="n">the</span> <span class="n">current</span> <span class="n">vertex</span>
+  <span class="n">mark</span> <span class="n">the</span> <span class="n">current</span> <span class="n">vertex</span> <span class="k">as</span> <span class="n">visited</span>
+
+  <span class="k">while</span> <span class="n">the</span> <span class="n">priority</span> <span class="n">queue</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">empty</span><span class="p">:</span>
+    <span class="n">dequeue</span> <span class="n">the</span> <span class="n">vertex</span> <span class="k">with</span> <span class="n">the</span> <span class="n">smallest</span> <span class="n">weight</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">priority</span> <span class="n">queue</span>
+    <span class="k">if</span> <span class="n">the</span> <span class="n">dequeued</span> <span class="n">vertex</span> <span class="ow">is</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">MST</span><span class="p">:</span>
+      <span class="n">add</span> <span class="n">it</span> <span class="n">to</span> <span class="n">the</span> <span class="n">MST</span>
+      <span class="n">update</span> <span class="n">the</span> <span class="n">weights</span> <span class="n">of</span> <span class="n">its</span> <span class="n">neighbors</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">priority</span> <span class="n">queue</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="kruskal-s-algorithm">
+<h2>Kruskal’s Algorithm<a class="headerlink" href="#kruskal-s-algorithm" title="Permalink to this heading">¶</a></h2>
+<p>Kruskal’s algorithm is another greedy algorithm used to find the Minimum
+Spanning Tree of a graph. It starts with an empty set of edges and repeatedly
+adds the shortest edge that does not form a cycle with the edges already
+selected.</p>
+<ul class="simple">
+<li><p>invented by Joseph Kruskal in 1956</p></li>
+<li><p>use a disjoint-set data structure to keep track of connected components to
+avoid cycles</p></li>
+</ul>
+<section id="id2">
+<h3>Algorithm Steps<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Create an empty MST.</p></li>
+<li><p>Sort all edges in the graph in ascending order of their weights.</p></li>
+<li><p>Initialize a disjoint-set data structure to keep track of connected
+components.</p></li>
+<li><p>For each edge in sorted order:</p>
+<ol class="loweralpha simple">
+<li><p>If adding the edge to the MST does not create a cycle, add it to the MST.</p></li>
+</ol>
+</li>
+<li><p>Repeat step 4 until the MST has (n-1) edges, where n is the number of
+vertices in the graph.</p></li>
+</ol>
+</section>
+<section id="pseudo-code-for-kruskal-s-algorithm">
+<h3>Pseudo-code for Kruskal’s Algorithm<a class="headerlink" href="#pseudo-code-for-kruskal-s-algorithm" title="Permalink to this heading">¶</a></h3>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Kruskal’s Algorithm</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">kruskal</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
+  <span class="n">create</span> <span class="n">an</span> <span class="n">empty</span> <span class="n">MST</span>
+  <span class="n">sort</span> <span class="nb">all</span> <span class="n">edges</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">graph</span> <span class="ow">in</span> <span class="n">ascending</span> <span class="n">order</span> <span class="n">of</span> <span class="n">their</span> <span class="n">weights</span>
+  <span class="n">initialize</span> <span class="n">a</span> <span class="n">disjoint</span><span class="o">-</span><span class="nb">set</span> <span class="n">data</span> <span class="n">structure</span>
+
+  <span class="k">for</span> <span class="n">each</span> <span class="n">edge</span> <span class="ow">in</span> <span class="nb">sorted</span> <span class="n">order</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">adding</span> <span class="n">the</span> <span class="n">edge</span> <span class="n">to</span> <span class="n">the</span> <span class="n">MST</span> <span class="n">does</span> <span class="ow">not</span> <span class="n">create</span> <span class="n">a</span> <span class="n">cycle</span><span class="p">:</span>
+      <span class="n">add</span> <span class="n">it</span> <span class="n">to</span> <span class="n">the</span> <span class="n">MST</span>
+      <span class="n">update</span> <span class="n">the</span> <span class="n">disjoint</span><span class="o">-</span><span class="nb">set</span> <span class="n">data</span> <span class="n">structure</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="comparison-of-prim-s-and-kruskal-s-algorithms">
+<span id="minimum-spanning-tree-algorithm-comparison"></span><h2>Comparison of Prim’s and Kruskal’s Algorithms<a class="headerlink" href="#comparison-of-prim-s-and-kruskal-s-algorithms" title="Permalink to this heading">¶</a></h2>
+<table class="docutils align-default" id="id5">
+<caption><span class="caption-text">Comparison of two MST algorithms</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
+<tbody>
+<tr class="row-odd"><td><p>Comparison Criteria</p></td>
+<td><p>Prim’s Algorithm</p></td>
+<td><p>Kruskal’s Algorithm</p></td>
+</tr>
+<tr class="row-even"><td><p>Type</p></td>
+<td><p>Greedy</p></td>
+<td><p>Greedy</p></td>
+</tr>
+<tr class="row-odd"><td><p>Graph elements</p></td>
+<td><p>Vertices</p></td>
+<td><p>Edges</p></td>
+</tr>
+<tr class="row-even"><td><p>Efficient for</p></td>
+<td><p>Dense graphs</p></td>
+<td><p>Sparse graphs</p></td>
+</tr>
+<tr class="row-odd"><td><p>Data structure/ADT</p></td>
+<td><p>Priority queue</p></td>
+<td><p>Disjoint-set</p></td>
+</tr>
+<tr class="row-even"><td><p>Parallelization</p></td>
+<td><p>Not suitable</p></td>
+<td><p>Suitable</p></td>
+</tr>
+<tr class="row-odd"><td><p>Connected results</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes (extra step)</p></td>
+</tr>
+</tbody>
+</table>
+<section id="overall-considerations">
+<h3>Overall Considerations<a class="headerlink" href="#overall-considerations" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Prim’s Algorithm:</p>
+<ul>
+<li><p>Well-suited for dense graphs and highly connected graphs.</p></li>
+<li><p>More efficient when a priority queue can be efficiently implemented.</p></li>
+</ul>
+</li>
+<li><p>Kruskal’s Algorithm:</p>
+<ul>
+<li><p>Well-suited for sparse graphs and graphs with multiple disconnected
+components.</p></li>
+<li><p>Suitable for parallel and distributed computing environments.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
 </section>
 
 
@@ -48,6 +236,41 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Minimal Spanning Tree</a><ul>
+<li><a class="reference internal" href="#spanning-tree">Spanning Tree</a></li>
+<li><a class="reference internal" href="#id1">Minimal Spanning Tree</a></li>
+<li><a class="reference internal" href="#prim-s-algorithm">Prim’s Algorithm</a><ul>
+<li><a class="reference internal" href="#algorithm-steps">Algorithm Steps</a></li>
+<li><a class="reference internal" href="#pseudo-code-for-prim-s-algorithm">Pseudo-code for Prim’s Algorithm</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#kruskal-s-algorithm">Kruskal’s Algorithm</a><ul>
+<li><a class="reference internal" href="#id2">Algorithm Steps</a></li>
+<li><a class="reference internal" href="#pseudo-code-for-kruskal-s-algorithm">Pseudo-code for Kruskal’s Algorithm</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#comparison-of-prim-s-and-kruskal-s-algorithms">Comparison of Prim’s and Kruskal’s Algorithms</a><ul>
+<li><a class="reference internal" href="#overall-considerations">Overall Considerations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="topological-sort.html"
+                          title="previous chapter">Topological Sort</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../../course/cop4534/mid1-review.html"
+                          title="next chapter">Midterm 1 Review</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -75,7 +298,15 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="../../course/cop4534/mid1-review.html" title="Midterm 1 Review"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="topological-sort.html" title="Topological Sort"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop4534/m13.html" >Module 13: Graph Algorithms 1</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Minimal Spanning Tree</a></li> 
       </ul>
     </div>

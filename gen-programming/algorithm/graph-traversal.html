@@ -1,0 +1,296 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Graph Traversal Algorithms &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/gen-programming/algorithm/graph-traversal.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Topological Sort" href="topological-sort.html" />
+    <link rel="prev" title="Module 13: Graph Algorithms 1" href="../../course/cop4534/m13.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="topological-sort.html" title="Topological Sort"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../../course/cop4534/m13.html" title="Module 13: Graph Algorithms 1"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop4534/m13.html" accesskey="U">Module 13: Graph Algorithms 1</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Graph Traversal Algorithms</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="graph-traversal-algorithms">
+<h1>Graph Traversal Algorithms<a class="headerlink" href="#graph-traversal-algorithms" title="Permalink to this heading">¶</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
+<p>Graph traversals are essential techniques for exploring and analyzing graph
+structures. They involve systematically visiting nodes within a graph to gather
+information, discover paths, establish connectivity, and unveil relationships.
+Graph traversals are a key component of many graph algorithms and play a
+crucial role in solving complex problems involving graphs.</p>
+<ul class="simple">
+<li><p>Start from a designated source node</p></li>
+<li><p>Visit all reachable nodes in a systematic order</p></li>
+</ul>
+</section>
+<section id="depth-first-search-dfs">
+<h2>Depth-First Search (DFS)<a class="headerlink" href="#depth-first-search-dfs" title="Permalink to this heading">¶</a></h2>
+<p>It explores a graph like walking through a maze, going as far as possible along
+a branch before backtracking at a dead end or a visited spot.</p>
+<section id="algorithm-overview">
+<h3>Algorithm Overview<a class="headerlink" href="#algorithm-overview" title="Permalink to this heading">¶</a></h3>
+<p>Depth-First Search (DFS) is a graph traversal algorithm that explores as far as
+possible along a branch before backtracking at a dead end or visited spot. It
+starts from a source node and recursively visits neighboring nodes until it
+reaches the end of a branch before moving on to another branch. DFS is often
+implemented using a stack or a recursive function call.</p>
+</section>
+<section id="stack-based-approach">
+<h3>Stack-Based Approach<a class="headerlink" href="#stack-based-approach" title="Permalink to this heading">¶</a></h3>
+<p>In the stack-based approach, DFS uses a stack data structure to keep track of
+nodes to be visited. It starts with the source node, pushes it onto the stack,
+and then repeatedly pops nodes from the stack, explores their neighbors, and
+pushes unvisited neighbors onto the stack. This process continues until the
+stack is empty or a specific condition is met.</p>
+</section>
+<section id="recursive-approach">
+<h3>Recursive Approach<a class="headerlink" href="#recursive-approach" title="Permalink to this heading">¶</a></h3>
+<p>Alternatively, DFS can be implemented using recursion. In this method, a
+recursive function is called to visit nodes and their neighbors. The function
+explores a node’s neighbors, calling itself recursively for unvisited neighbors
+until all reachable nodes are visited. Recursion effectively emulates the
+behavior of a stack.</p>
+</section>
+<section id="pseudo-code">
+<h3>Pseudo-Code<a class="headerlink" href="#pseudo-code" title="Permalink to this heading">¶</a></h3>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">DFS traversal using recursion</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">dfs</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="n">visited</span><span class="p">):</span>
+  <span class="k">if</span> <span class="n">vertex</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">visited</span><span class="p">:</span>
+    <span class="n">mark</span> <span class="n">vertex</span> <span class="k">as</span> <span class="n">visited</span>
+    <span class="n">visit</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>  <span class="c1"># Perform an action on the vertex</span>
+
+    <span class="k">for</span> <span class="n">each</span> <span class="n">neighbor</span> <span class="n">of</span> <span class="n">the</span> <span class="n">vertex</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">neighbor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">visited</span><span class="p">:</span>
+          <span class="n">dfs</span><span class="p">(</span><span class="n">neighbor</span><span class="p">,</span> <span class="n">visited</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Iterative DFS traversal using a stack</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">dfs</span><span class="p">(</span><span class="n">startVertex</span><span class="p">):</span>
+  <span class="n">create</span> <span class="n">a</span> <span class="n">new</span> <span class="n">stack</span>
+
+  <span class="n">push</span> <span class="n">startVertex</span> <span class="n">onto</span> <span class="n">the</span> <span class="n">stack</span>
+  <span class="n">mark</span> <span class="n">startVertex</span> <span class="k">as</span> <span class="n">visited</span>
+
+  <span class="k">while</span> <span class="n">the</span> <span class="n">stack</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">empty</span><span class="p">:</span>
+    <span class="n">current</span> <span class="o">=</span> <span class="n">pop</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">stack</span>
+    <span class="n">process</span><span class="p">(</span><span class="n">current</span><span class="p">)</span>  <span class="c1"># Perform an action on the current node</span>
+
+    <span class="k">for</span> <span class="n">each</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="n">current</span><span class="o">.</span><span class="n">neighbors</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">neighbor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span> <span class="nb">set</span><span class="p">:</span>
+        <span class="n">push</span> <span class="n">neighbor</span> <span class="n">onto</span> <span class="n">the</span> <span class="n">stack</span>
+        <span class="n">add</span> <span class="n">neighbor</span> <span class="n">to</span> <span class="n">the</span> <span class="n">visited</span> <span class="nb">set</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="breadth-first-search-bfs">
+<h2>Breadth-First Search (BFS)<a class="headerlink" href="#breadth-first-search-bfs" title="Permalink to this heading">¶</a></h2>
+<p>It explores a graph like a wave of water, spreading out from the source node to
+all its neighbors before moving on to the next level of neighbors.</p>
+<section id="id1">
+<h3>Algorithm Overview<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h3>
+<p>Breadth-First Search (BFS) is another graph traversal algorithm that explores a
+graph in layers or levels. Starting from a source node, BFS visits all its
+neighbors before moving on to their neighbors, ensuring that nodes at a given
+level are visited before nodes at the next level. BFS typically uses a queue
+data structure to manage the order of node exploration.</p>
+</section>
+<section id="queue-based-approach">
+<h3>Queue-Based Approach<a class="headerlink" href="#queue-based-approach" title="Permalink to this heading">¶</a></h3>
+<p>In the queue-based approach, BFS uses a queue to keep track of nodes to be
+visited. It starts with the source node, enqueues it, and then repeatedly
+dequeues nodes, explores their neighbors, and enqueues unvisited neighbors.
+This process continues until the queue is empty or a specific condition is met.</p>
+</section>
+<section id="id2">
+<h3>Pseudo-Code<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h3>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">BFS traversal using a queue</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">bfs</span><span class="p">(</span><span class="n">startVertex</span><span class="p">):</span>
+  <span class="n">create</span> <span class="n">a</span> <span class="n">new</span> <span class="n">queue</span>
+
+  <span class="n">enqueue</span> <span class="n">the</span> <span class="n">startVertex</span>
+  <span class="n">mark</span> <span class="n">the</span> <span class="n">startVertex</span> <span class="k">as</span> <span class="n">visited</span>
+
+  <span class="k">while</span> <span class="n">the</span> <span class="n">queue</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">empty</span><span class="p">:</span>
+    <span class="n">dequeue</span> <span class="n">a</span> <span class="n">vertex</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">queue</span>
+    <span class="n">process</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>  <span class="c1"># Perform an action on the vertex</span>
+
+    <span class="k">for</span> <span class="n">each</span> <span class="n">neighbor</span> <span class="n">of</span> <span class="n">the</span> <span class="n">vertex</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">neighbor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">visited</span><span class="p">:</span>
+        <span class="n">mark</span> <span class="n">the</span> <span class="n">neighbor</span> <span class="k">as</span> <span class="n">visited</span>
+        <span class="n">enqueue</span> <span class="n">the</span> <span class="n">neighbor</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="comparison-between-dfs-and-bfs">
+<h2>Comparison between DFS and BFS<a class="headerlink" href="#comparison-between-dfs-and-bfs" title="Permalink to this heading">¶</a></h2>
+<section id="time-and-space-complexity">
+<h3>Time and Space Complexity<a class="headerlink" href="#time-and-space-complexity" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Depth-First Search (DFS) generally has a lower space complexity than
+Breadth-First Search (BFS) because it only needs to store the path from the
+source node to the current node, while BFS stores all nodes at a given level.</p></li>
+<li><p>In terms of time complexity, both DFS and BFS have O(V + E) time complexity,
+where V is the number of vertices (nodes) and E is the number of edges in the
+graph.</p></li>
+</ul>
+</section>
+<section id="when-to-use-dfs-or-bfs">
+<h3>When to Use DFS or BFS<a class="headerlink" href="#when-to-use-dfs-or-bfs" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Use DFS when you want to explore as deeply as possible before backtracking,
+such as finding paths and cycles.</p></li>
+<li><p>Use BFS when you need to find the shortest path, explore a graph layer by
+layer, or perform tasks like minimum spanning tree construction.</p></li>
+</ul>
+</section>
+<section id="trade-offs-and-considerations">
+<h3>Trade-offs and Considerations<a class="headerlink" href="#trade-offs-and-considerations" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>DFS may be more memory-efficient but can get stuck in deep branches with a
+high branching factor.</p></li>
+<li><p>BFS ensures the shortest path but may consume more memory due to its
+queue-based approach.</p></li>
+<li><p>The choice between DFS and BFS depends on the specific problem requirements
+and constraints.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Graph Traversal Algorithms</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#depth-first-search-dfs">Depth-First Search (DFS)</a><ul>
+<li><a class="reference internal" href="#algorithm-overview">Algorithm Overview</a></li>
+<li><a class="reference internal" href="#stack-based-approach">Stack-Based Approach</a></li>
+<li><a class="reference internal" href="#recursive-approach">Recursive Approach</a></li>
+<li><a class="reference internal" href="#pseudo-code">Pseudo-Code</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#breadth-first-search-bfs">Breadth-First Search (BFS)</a><ul>
+<li><a class="reference internal" href="#id1">Algorithm Overview</a></li>
+<li><a class="reference internal" href="#queue-based-approach">Queue-Based Approach</a></li>
+<li><a class="reference internal" href="#id2">Pseudo-Code</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#comparison-between-dfs-and-bfs">Comparison between DFS and BFS</a><ul>
+<li><a class="reference internal" href="#time-and-space-complexity">Time and Space Complexity</a></li>
+<li><a class="reference internal" href="#when-to-use-dfs-or-bfs">When to Use DFS or BFS</a></li>
+<li><a class="reference internal" href="#trade-offs-and-considerations">Trade-offs and Considerations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../../course/cop4534/m13.html"
+                          title="previous chapter">Module 13: Graph Algorithms 1</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="topological-sort.html"
+                          title="next chapter">Topological Sort</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/gen-programming/algorithm/graph-traversal.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="topological-sort.html" title="Topological Sort"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../../course/cop4534/m13.html" title="Module 13: Graph Algorithms 1"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop4534/m13.html" >Module 13: Graph Algorithms 1</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Graph Traversal Algorithms</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021-2023, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>

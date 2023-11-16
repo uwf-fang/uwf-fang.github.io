@@ -1,13 +1,85 @@
 ************************
-Dijkstra's shortest path
+Shortest Path Algorithms
 ************************
-Among the many variations of the shortest path algorithms, single-source
-shortest path algorithm is most commonly discussed. The objective is to find
-the shortest path of all other vertices to given a vertex (source). Shortest
-path problem with unweighted graph can be solved using BFS. Dijkstra's approach
-works with weighted (non-negative weight) graph. See `visualization`__
 
-.. __: https://visualgo.net/en/sssp
+Single Source Shortest Path Algorithms
+=======================================
+
+Single source shortest path algorithms are essential techniques in graph theory
+and computer science used to find the shortest path from a single source vertex
+to all other vertices in a weighted graph. They have widespread applications in
+various domains, such as network routing, GPS navigation, and optimization
+problems.
+
++ Single source to find the shortest path from a single source vertex to all
+  other vertices in a weighted graph
++ All pairs to find the shortest path between all pairs of vertices in a
+  weighted graph
++ Applications
+
+  + Network routing
+  + GPS navigation
+  + Optimization problems
+
+Dijkstra's Algorithm
+=====================
+
+Dijkstra's algorithm is a widely-used algorithm to find the shortest path from
+a single source vertex to all other vertices in a weighted graph. It works by
+iteratively selecting the vertex with the smallest tentative distance from the
+source and relaxing its neighboring vertices.
 
 + invented by Edsger Dijkstra
-+ employs a priority queue ADT
++ visualization https://visualgo.net/en/sssp
+
+Pseudo-code for Dijkstra's Algorithm
+------------------------------------
+
+.. code-block::
+  :caption: Dijkstra's Algorithm
+
+  function dijkstra(graph, source):
+    create a priority queue Q
+    initialize distances to all vertices as infinity
+    set the distance to the source as 0
+
+    while Q is not empty:
+      current_vertex = vertex with the smallest distance in Q
+      remove current_vertex from Q
+
+      for each neighbor of current_vertex:
+        edge_weight = weight of the edge between current_vertex and neighbor
+        tentative_distance = distance to current_vertex + edge_weight
+        if tentative_distance < distance to neighbor:
+          set distance to neighbor as tentative_distance
+          add neighbor to Q
+
+All Pairs Shortest Path Algorithms
+==================================
+
+Floyd-Warshall Algorithm
+------------------------
+The Floyd-Warshall algorithm uses dynamic programming to iteratively update the
+shortest distances between all pairs of vertices.
+
++ invented by Robert Floyd and Stephen Warshall
+
+Pseudo-code for the Floyd-Warshall Algorithm
+--------------------------------------------
+
+.. code-block::
+  :caption: Floyd-Warshall Algorithm
+
+  function floyd_warshall(graph):
+    initialize a distance matrix with infinite values
+    set diagonal entries to 0 (distance to itself)
+
+    for each edge (u, v) with weight w in the graph:
+      set distance[u][v] = w
+
+    for k in all vertices:
+      for i in all vertices:
+        for j in all vertices:
+          if distance[i][j] > distance[i][k] + distance[k][j]:
+            set distance[i][j] = distance[i][k] + distance[k][j]
+
