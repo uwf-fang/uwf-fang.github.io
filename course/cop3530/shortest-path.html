@@ -17,11 +17,11 @@
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/sphinx_highlight.js"></script>
-    <link rel="canonical" href="https://uwf-fang.github.io/gen-programming/algorithm/shortest-path.html" />
+    <link rel="canonical" href="https://uwf-fang.github.io/course/cop3530/shortest-path.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Midterm 1 Review" href="../../course/cop4534/mid1-review.html" />
-    <link rel="prev" title="Minimal Spanning Tree" href="mst.html" /> 
+    <link rel="next" title="Midterm 1 Topic Review" href="mid1-review.html" />
+    <link rel="prev" title="Graph" href="../../gen-programming/ds/graph.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,14 +30,14 @@
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../../course/cop4534/mid1-review.html" title="Midterm 1 Review"
+          <a href="mid1-review.html" title="Midterm 1 Topic Review"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="mst.html" title="Minimal Spanning Tree"
+          <a href="../../gen-programming/ds/graph.html" title="Graph"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../../course/cop4534/m13.html" accesskey="U">Module 13: Graph Algorithms 1</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="ch14.html" accesskey="U">Chapter 14 Graph</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Shortest Path Algorithms</a></li> 
       </ul>
     </div>  
@@ -104,37 +104,6 @@ source and relaxing its neighboring vertices.</p>
 </div>
 </section>
 </section>
-<section id="all-pairs-shortest-path-algorithms">
-<h2>All Pairs Shortest Path Algorithms<a class="headerlink" href="#all-pairs-shortest-path-algorithms" title="Permalink to this heading">¶</a></h2>
-<section id="floyd-warshall-algorithm">
-<h3>Floyd-Warshall Algorithm<a class="headerlink" href="#floyd-warshall-algorithm" title="Permalink to this heading">¶</a></h3>
-<p>The Floyd-Warshall algorithm uses dynamic programming to iteratively update the
-shortest distances between all pairs of vertices.</p>
-<ul class="simple">
-<li><p>invented by Robert Floyd and Stephen Warshall</p></li>
-</ul>
-</section>
-<section id="pseudo-code-for-the-floyd-warshall-algorithm">
-<h3>Pseudo-code for the Floyd-Warshall Algorithm<a class="headerlink" href="#pseudo-code-for-the-floyd-warshall-algorithm" title="Permalink to this heading">¶</a></h3>
-<div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">Floyd-Warshall Algorithm</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">floyd_warshall</span><span class="p">(</span><span class="n">graph</span><span class="p">):</span>
-  <span class="n">initialize</span> <span class="n">a</span> <span class="n">distance</span> <span class="n">matrix</span> <span class="k">with</span> <span class="n">infinite</span> <span class="n">values</span>
-  <span class="nb">set</span> <span class="n">diagonal</span> <span class="n">entries</span> <span class="n">to</span> <span class="mi">0</span> <span class="p">(</span><span class="n">distance</span> <span class="n">to</span> <span class="n">itself</span><span class="p">)</span>
-
-  <span class="k">for</span> <span class="n">each</span> <span class="n">edge</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">with</span> <span class="n">weight</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">graph</span><span class="p">:</span>
-    <span class="nb">set</span> <span class="n">distance</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">w</span>
-
-  <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">all</span> <span class="n">vertices</span><span class="p">:</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">all</span> <span class="n">vertices</span><span class="p">:</span>
-      <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">all</span> <span class="n">vertices</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">distance</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">distance</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="n">distance</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">]:</span>
-          <span class="nb">set</span> <span class="n">distance</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">distance</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="n">distance</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</section>
-</section>
 </section>
 
 
@@ -153,11 +122,6 @@ shortest distances between all pairs of vertices.</p>
 <li><a class="reference internal" href="#pseudo-code-for-dijkstra-s-algorithm">Pseudo-code for Dijkstra’s Algorithm</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#all-pairs-shortest-path-algorithms">All Pairs Shortest Path Algorithms</a><ul>
-<li><a class="reference internal" href="#floyd-warshall-algorithm">Floyd-Warshall Algorithm</a></li>
-<li><a class="reference internal" href="#pseudo-code-for-the-floyd-warshall-algorithm">Pseudo-code for the Floyd-Warshall Algorithm</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -165,18 +129,18 @@ shortest distances between all pairs of vertices.</p>
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="mst.html"
-                          title="previous chapter">Minimal Spanning Tree</a></p>
+    <p class="topless"><a href="../../gen-programming/ds/graph.html"
+                          title="previous chapter">Graph</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="../../course/cop4534/mid1-review.html"
-                          title="next chapter">Midterm 1 Review</a></p>
+    <p class="topless"><a href="mid1-review.html"
+                          title="next chapter">Midterm 1 Topic Review</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../../_sources/gen-programming/algorithm/shortest-path.rst.txt"
+      <li><a href="../../_sources/course/cop3530/shortest-path.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -201,14 +165,14 @@ shortest distances between all pairs of vertices.</p>
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../../course/cop4534/mid1-review.html" title="Midterm 1 Review"
+          <a href="mid1-review.html" title="Midterm 1 Topic Review"
              >next</a> |</li>
         <li class="right" >
-          <a href="mst.html" title="Minimal Spanning Tree"
+          <a href="../../gen-programming/ds/graph.html" title="Graph"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../../course/cop4534/m13.html" >Module 13: Graph Algorithms 1</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="ch14.html" >Chapter 14 Graph</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Shortest Path Algorithms</a></li> 
       </ul>
     </div>

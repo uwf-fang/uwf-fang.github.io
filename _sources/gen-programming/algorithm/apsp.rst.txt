@@ -1,0 +1,29 @@
+All Pairs Shortest Path Algorithms
+==================================
+
+Floyd-Warshall Algorithm
+------------------------
+The Floyd-Warshall algorithm uses dynamic programming to iteratively update the
+shortest distances between all pairs of vertices.
+
++ invented by Robert Floyd and Stephen Warshall
+
+Pseudo-code for the Floyd-Warshall Algorithm
+--------------------------------------------
+
+.. code-block::
+  :caption: Floyd-Warshall Algorithm
+
+  function floyd_warshall(graph):
+    initialize a distance matrix with infinite values
+    set diagonal entries to 0 (distance to itself)
+
+    for each edge (u, v) with weight w in the graph:
+      set distance[u][v] = w
+
+    for k in all vertices:
+      for i in all vertices:
+        for j in all vertices:
+          if distance[i][j] > distance[i][k] + distance[k][j]:
+            set distance[i][j] = distance[i][k] + distance[k][j]
+
