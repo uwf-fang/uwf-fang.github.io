@@ -51,7 +51,6 @@ for remaining element.</p>
 <section id="characteristics">
 <h2>Characteristics<a class="headerlink" href="#characteristics" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>Divide and conquer algorithm</p></li>
 <li><p>Comparison based (general purpose)</p></li>
 <li><p>Iterative</p></li>
 <li><p>In-place</p></li>
@@ -70,6 +69,44 @@ for remaining element.</p>
 </ul>
 </li>
 </ol>
+</section>
+<section id="pseudo-code">
+<h2>Pseudo Code<a class="headerlink" href="#pseudo-code" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">heapSort</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+  <span class="n">n</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+
+  <span class="c1"># Heapify the array</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="kn">from</span> <span class="nn">n</span><span class="o">/</span><span class="mi">2</span><span class="o">-</span><span class="mi">1</span> <span class="n">down</span> <span class="n">to</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">percolateDown</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+
+  <span class="c1"># Extract elements from the heap one by one</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="kn">from</span> <span class="nn">n</span> <span class="o">-</span> <span class="mi">1</span> <span class="n">down</span> <span class="n">to</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="c1"># Swap the root (maximum element) with the last element</span>
+    <span class="n">swap</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">percolateDown</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+
+<span class="n">function</span> <span class="n">percolateDown</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+  <span class="n">largest</span> <span class="o">:=</span> <span class="n">i</span>
+  <span class="n">left</span> <span class="o">:=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+  <span class="n">right</span> <span class="o">:=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">2</span>
+
+  <span class="c1"># Compare with left child</span>
+  <span class="k">if</span> <span class="n">left</span> <span class="o">&lt;=</span> <span class="n">n</span> <span class="ow">and</span> <span class="n">arr</span><span class="p">[</span><span class="n">left</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">arr</span><span class="p">[</span><span class="n">largest</span><span class="p">]:</span>
+    <span class="n">largest</span> <span class="o">:=</span> <span class="n">left</span>
+
+  <span class="c1"># Compare with right child</span>
+  <span class="k">if</span> <span class="n">right</span> <span class="o">&lt;=</span> <span class="n">n</span> <span class="ow">and</span> <span class="n">arr</span><span class="p">[</span><span class="n">right</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">arr</span><span class="p">[</span><span class="n">largest</span><span class="p">]:</span>
+    <span class="n">largest</span> <span class="o">:=</span> <span class="n">right</span>
+
+  <span class="c1"># If the largest element is not the root, swap them</span>
+  <span class="k">if</span> <span class="n">largest</span> <span class="o">!=</span> <span class="n">i</span><span class="p">:</span>
+    <span class="n">swap</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">arr</span><span class="p">[</span><span class="n">largest</span><span class="p">])</span>
+
+    <span class="c1"># Recursively percolate down the affected sub-tree</span>
+    <span class="n">percolateDown</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">largest</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
 <section id="complexity">
 <h2>Complexity<a class="headerlink" href="#complexity" title="Permalink to this heading">¶</a></h2>
@@ -100,6 +137,7 @@ for remaining element.</p>
 <li><a class="reference internal" href="#overview">Overview</a></li>
 <li><a class="reference internal" href="#characteristics">Characteristics</a></li>
 <li><a class="reference internal" href="#algorithm-details">Algorithm Details</a></li>
+<li><a class="reference internal" href="#pseudo-code">Pseudo Code</a></li>
 <li><a class="reference internal" href="#complexity">Complexity</a></li>
 <li><a class="reference internal" href="#visualization">Visualization</a></li>
 </ul>
