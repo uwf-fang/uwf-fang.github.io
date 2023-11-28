@@ -4,9 +4,10 @@ Final Review
 
 How to use this document
 ========================
++ Only contains the topics after the midterm 2 and the cross-module concepts
 + Self-test using this document to see what concepts are challenging to you.
 + The slides are the most concise and focused document you can start with.
-+ Course content website is the systematic view for tips, pitfalls.
++ Course supplement material website is the systematic view for tips, pitfalls.
 + Practice your ability to work on an algorithm on paper. Play with the
   visualization website to see how the algorithm works step by step.
 + Refer to the practice exam for the format of the exam and the types of
@@ -25,17 +26,72 @@ Topics
 ======
 Dynamic programming
 -------------------
++ Two core components to justify dynamic programming
+
+  * Overlapping subproblems
+  * Optimal substructure
+
++ Other characteristics
++ Approach
+
+  * Top-down (memoization)
+  * Bottom-up (tabulation) - preferred for efficiency
+
++ Complexity depending on the problem
 
 Graph algorithms
 ----------------
++ Concepts
++ Types
++ Graph representation
+
+  * Edge list
+  * Adjacency matrix
+  * Adjacency list
+
++ Complexity depending on representations (important)
+
+  * Find all neighbors of a vertex
+  * Check if two vertices are connected / or check weight
+
++ Graph traversal
+
+  * BFS - Queue ADT
+  * DFS - Stack ADT or recursive
 
 Probability
 -----------
++ Classic only - all events have equal probability
++ Events
+
+  * range of probability
+
++ Sample space
++ Principles and rules
+
+  * Complement rule
+  * Addition rule
+  * Multiplication rule
+
++ Calculation of classic probability
+
+  * Count first
+  * Count of specific events / total number of possible events
+  * Example: dice, coin, cards, balls from a bag, lottery
 
 Randomized Algorithms
 ---------------------
++ Types
 
+  * Monte Carlo - approximate algorithms to solve hard problems that are
+    impractical to solve exactly
 
+    - Random sampling
+    - Use statistics to estimate a property of interest
+
+  * Las Vegas - exact, randomness to improve efficiency
+
++ Genetic algorithm (employs some Monte Carlo techniques)
 
 Cross-Module Concepts
 =====================
@@ -46,7 +102,7 @@ Cross-Module Concepts
     - Optimization problems
     - Approximate algorithms
 
-      * Exceptions: Huffman coding, Prin's, Krukal's, Dijkstra's will provide
+      * Exceptions: Huffman coding, Prim's, Krukal's, Dijkstra's will provide
         the best solution
 
     - Mostly :math:'\Theta(n)`
@@ -107,30 +163,135 @@ Cross-Module Concepts
 
   * TSP
 
+    - Optimization
     - NP-hard: prefer approximate algorithms because exact algorithms are
       not practical
     - Circular permutation
 
       * :math:`\Theta(n!)` brute force
 
+    - Exact algorithms only for small number of cities
+
+      * Brute force
+      * DP
+
+    - Approximate algorithms
+
+      * Greedy (not covered)
+      * Genetic algorithm
+
   * Bin packing
 
+    - Optimization
     - NP-hard: prefer approximate algorithms because exact algorithms are
       not practical
     - Online vs offline
+    - DP is possible but greedy is usually good enough but faster
     - Greedy: First fit, best fit, next fit
-    - Permutation + next fit brute force
+
+      * near optimal result
+
+    - Permutation + next fit brute force for small problem size
 
       - :math:`\Theta(n!)`
 
   * Huffman coding
 
+    - Optimization
+    - Priority Queue ADT
     - Full binary tree
     - Prefix code
-    - Greedy algorithm
+    - Greedy algorithm as an exact algorithm
+
+      * :math:`\Theta(n)`
 
   * Max sum subarray
+
+    - Optimization
+    - Brute force :math:`\Theta(n^2)`
+    - Divide and conquer :math:`\Theta(n\log n)`
+    - DP (Kadane's) :math:`\Theta(n)`
+    - **Know how they work on paper!**
+
   * Chain matrix multiplication
+
+    - Different ways to parenthesize
+    - Minimize the number of scalar multiplications (optimization)
+    - NP-hard: prefer approximate algorithms
+    - Brute force Catalan number impractical
+    - Space complexity
+    - DP
+
+      * Bottom-up
+      * Iterate chain length L, start index i, bisect index k
+        :math:`\Theta(n^3)`
+
   * Longest common subsequence
-  * Minimal spanning tree
-  * Shortest path
+
+    - Optimization
+    - Brute force :math:`\Theta(2^n)`
+    - DP
+
+      * Bottom-up
+      * :math:`\Theta(mn)`
+      * (m+1)(n+1) table or 2(m+1) table (find length only)
+      * backtracking to find the sequence (know how it works on a table)
+
+  * Graph: Minimal spanning tree
+
+    - Optimization
+    - Brute force: find V-1 edges out of E edges without cycle,
+    - Prim's algorithm
+
+      * Priority Queue ADT
+      * Greedy
+      * Focus on vertices
+      * Better for dense graph
+      * Start from an arbitrary vertex and grow the tree greedily by adding
+        the shortest edge that connects the tree to a vertex not in the tree
+      * Complexity depending on graph representation and priority queue
+        implementation
+
+    - Krukal's algorithm
+
+      * Sorted array data structure
+      * Disjoint-set data structure to memorize the forest (unconnected trees)
+      * Greedy
+      * Focus on edges
+      * Better for sparse graph (with less edges)
+      * Better for parallel implementation
+      * Adding edges in increasing order of weight without loop until all
+        vertices are connected
+      * Complexity depending on graph representation and disjoint-set
+        implementation
+
+    - Know how they work on paper!
+
+  * Graph: Shortest path
+
+    - Single source shortest path (SSSP)
+
+      - Dijkstra's algorithm
+
+        * Priority Queue ADT
+        * Greedy
+        * Close to Prim's algorithm
+        * Complexity depending on graph representation and priority queue
+          implementation
+        * Know how it works on paper!
+
+    - All pairs shortest path (APSP)
+
+      - Floyd-Warshall algorithm
+
+        * DP
+        * Bottom-up
+        * :math:`\Theta(n^3)`
+
+  * Estimation of Pi
+
+    - Monte Carlo
+    - Random sampling of x and y
+    - Find the ratio of points inside the circle to the total number of points
+    - :math:`\pi = 4 \times ratio`
+    - Know how it works on paper!
