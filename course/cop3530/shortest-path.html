@@ -85,20 +85,21 @@ source and relaxing its neighboring vertices.</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">Dijkstra’s Algorithm</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">dijkstra</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
-  <span class="n">create</span> <span class="n">a</span> <span class="n">priority</span> <span class="n">queue</span> <span class="n">Q</span>
+  <span class="n">create</span> <span class="n">a</span> <span class="n">priority</span> <span class="n">queue</span> <span class="n">PQ</span>
   <span class="n">initialize</span> <span class="n">distances</span> <span class="n">to</span> <span class="nb">all</span> <span class="n">vertices</span> <span class="k">as</span> <span class="n">infinity</span>
   <span class="nb">set</span> <span class="n">the</span> <span class="n">distance</span> <span class="n">to</span> <span class="n">the</span> <span class="n">source</span> <span class="k">as</span> <span class="mi">0</span>
+  <span class="n">enqueue</span> <span class="n">source</span> <span class="n">to</span> <span class="n">PQ</span>
 
-  <span class="k">while</span> <span class="n">Q</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">empty</span><span class="p">:</span>
-    <span class="n">current_vertex</span> <span class="o">=</span> <span class="n">vertex</span> <span class="k">with</span> <span class="n">the</span> <span class="n">smallest</span> <span class="n">distance</span> <span class="ow">in</span> <span class="n">Q</span>
-    <span class="n">remove</span> <span class="n">current_vertex</span> <span class="kn">from</span> <span class="nn">Q</span>
+  <span class="k">while</span> <span class="n">PQ</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">empty</span><span class="p">:</span>
+    <span class="n">current_vertex</span> <span class="o">=</span> <span class="n">vertex</span> <span class="k">with</span> <span class="n">the</span> <span class="n">smallest</span> <span class="n">distance</span> <span class="ow">in</span> <span class="n">PQ</span>
+    <span class="n">remove</span> <span class="n">current_vertex</span> <span class="kn">from</span> <span class="nn">PQ</span>
 
     <span class="k">for</span> <span class="n">each</span> <span class="n">neighbor</span> <span class="n">of</span> <span class="n">current_vertex</span><span class="p">:</span>
       <span class="n">edge_weight</span> <span class="o">=</span> <span class="n">weight</span> <span class="n">of</span> <span class="n">the</span> <span class="n">edge</span> <span class="n">between</span> <span class="n">current_vertex</span> <span class="ow">and</span> <span class="n">neighbor</span>
       <span class="n">tentative_distance</span> <span class="o">=</span> <span class="n">distance</span> <span class="n">to</span> <span class="n">current_vertex</span> <span class="o">+</span> <span class="n">edge_weight</span>
       <span class="k">if</span> <span class="n">tentative_distance</span> <span class="o">&lt;</span> <span class="n">distance</span> <span class="n">to</span> <span class="n">neighbor</span><span class="p">:</span>
         <span class="nb">set</span> <span class="n">distance</span> <span class="n">to</span> <span class="n">neighbor</span> <span class="k">as</span> <span class="n">tentative_distance</span>
-        <span class="n">add</span> <span class="n">neighbor</span> <span class="n">to</span> <span class="n">Q</span>
+        <span class="n">add</span> <span class="n">neighbor</span> <span class="n">to</span> <span class="n">PQ</span>
 </pre></div>
 </div>
 </div>

@@ -19,9 +19,7 @@
     <script src="../../_static/sphinx_highlight.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/gen-programming/algorithm/shortest-path.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Module 14: Graph Algorithms 2" href="../../course/cop4534/m14.html" />
-    <link rel="prev" title="Minimal Spanning Tree" href="mst.html" /> 
+    <link rel="search" title="Search" href="../../search.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -29,15 +27,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../course/cop4534/m14.html" title="Module 14: Graph Algorithms 2"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="mst.html" title="Minimal Spanning Tree"
-             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../../course/cop4534/m13.html" accesskey="U">Module 13: Graph Algorithms 1</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Shortest Path Algorithms</a></li> 
       </ul>
     </div>  
@@ -85,20 +75,21 @@ source and relaxing its neighboring vertices.</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">Dijkstra’s Algorithm</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">dijkstra</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
-  <span class="n">create</span> <span class="n">a</span> <span class="n">priority</span> <span class="n">queue</span> <span class="n">Q</span>
+  <span class="n">create</span> <span class="n">a</span> <span class="n">priority</span> <span class="n">queue</span> <span class="n">PQ</span>
   <span class="n">initialize</span> <span class="n">distances</span> <span class="n">to</span> <span class="nb">all</span> <span class="n">vertices</span> <span class="k">as</span> <span class="n">infinity</span>
   <span class="nb">set</span> <span class="n">the</span> <span class="n">distance</span> <span class="n">to</span> <span class="n">the</span> <span class="n">source</span> <span class="k">as</span> <span class="mi">0</span>
+  <span class="n">enqueue</span> <span class="n">source</span> <span class="n">to</span> <span class="n">PQ</span>
 
-  <span class="k">while</span> <span class="n">Q</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">empty</span><span class="p">:</span>
-    <span class="n">current_vertex</span> <span class="o">=</span> <span class="n">vertex</span> <span class="k">with</span> <span class="n">the</span> <span class="n">smallest</span> <span class="n">distance</span> <span class="ow">in</span> <span class="n">Q</span>
-    <span class="n">remove</span> <span class="n">current_vertex</span> <span class="kn">from</span> <span class="nn">Q</span>
+  <span class="k">while</span> <span class="n">PQ</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">empty</span><span class="p">:</span>
+    <span class="n">current_vertex</span> <span class="o">=</span> <span class="n">vertex</span> <span class="k">with</span> <span class="n">the</span> <span class="n">smallest</span> <span class="n">distance</span> <span class="ow">in</span> <span class="n">PQ</span>
+    <span class="n">remove</span> <span class="n">current_vertex</span> <span class="kn">from</span> <span class="nn">PQ</span>
 
     <span class="k">for</span> <span class="n">each</span> <span class="n">neighbor</span> <span class="n">of</span> <span class="n">current_vertex</span><span class="p">:</span>
       <span class="n">edge_weight</span> <span class="o">=</span> <span class="n">weight</span> <span class="n">of</span> <span class="n">the</span> <span class="n">edge</span> <span class="n">between</span> <span class="n">current_vertex</span> <span class="ow">and</span> <span class="n">neighbor</span>
       <span class="n">tentative_distance</span> <span class="o">=</span> <span class="n">distance</span> <span class="n">to</span> <span class="n">current_vertex</span> <span class="o">+</span> <span class="n">edge_weight</span>
       <span class="k">if</span> <span class="n">tentative_distance</span> <span class="o">&lt;</span> <span class="n">distance</span> <span class="n">to</span> <span class="n">neighbor</span><span class="p">:</span>
         <span class="nb">set</span> <span class="n">distance</span> <span class="n">to</span> <span class="n">neighbor</span> <span class="k">as</span> <span class="n">tentative_distance</span>
-        <span class="n">add</span> <span class="n">neighbor</span> <span class="n">to</span> <span class="n">Q</span>
+        <span class="n">add</span> <span class="n">neighbor</span> <span class="n">to</span> <span class="n">PQ</span>
 </pre></div>
 </div>
 </div>
@@ -163,16 +154,6 @@ shortest distances between all pairs of vertices.</p>
 </ul>
 
   </div>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="mst.html"
-                          title="previous chapter">Minimal Spanning Tree</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="../../course/cop4534/m14.html"
-                          title="next chapter">Module 14: Graph Algorithms 2</a></p>
-  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -200,15 +181,7 @@ shortest distances between all pairs of vertices.</p>
         <li class="right" style="margin-right: 10px">
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
-        <li class="right" >
-          <a href="../../course/cop4534/m14.html" title="Module 14: Graph Algorithms 2"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="mst.html" title="Minimal Spanning Tree"
-             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../../course/cop4534/m13.html" >Module 13: Graph Algorithms 1</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Shortest Path Algorithms</a></li> 
       </ul>
     </div>
