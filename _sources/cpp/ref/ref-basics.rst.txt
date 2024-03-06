@@ -7,6 +7,17 @@
 Reference Type Basics
 *********************
 
+TR;DR
+=====
++ Ampersand (&) after type to make a derived type
++ Works like an alias to another variable
++ Must be initialized
++ Will never be reassigned
++ Later access/modification will only affect the variable bound to it rather
+  than the reference itself
+
+Overview
+========
 Reference type is employed to provide an alias to another variable. There are
 both lvalue references and rvalue references but **only lvalue references** are
 discussed in this document.
@@ -49,25 +60,17 @@ Examples
   int a = 10;
   int b = 100;
 
-  // the type is "int &"
-  // reference variable can only be assigned once to be bound to a lvalue
-  // any later assignment will be redirected to the bound variable
 
   int &myRef1 = a; // initialization, myRef1 is now an alias of a
-  myRef1 = b; // assignment, myRef1 will not refer to b, it is same as a = b; value of a become 10
+  myRef1 = b; // assignment, it is same as a = b; value of a become 10
   int &myRef2 = myRef1;  // myRef2 will also bind to a
 
   // ---- wrong ----
   int a;
   int &alias;  // no initialization
 
-  int &alias = &a;  // alias is not a pointer, it takes a lvalue, not a memory address
+  int &alias = &a;  // alias is not a pointer
 
   int &&alias1 = alias;  // there is no ref to ref type!
 
   cout << *alias;  // not a pointer, no need of * to dereference
-
-Related Topics
-==============
-+ :doc:`/cpp/ref/ref-passing`
-+ :doc:`/cpp/ref/ref-vs-ptr`

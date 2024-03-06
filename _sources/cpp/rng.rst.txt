@@ -14,11 +14,11 @@ tool, driving innovation, ensuring data integrity, and fostering trust in
 digital systems.
 
 In modern C++, random number generation is facilitated through a combination of
-engines and distributions. Engines, like std::mt19937, provide the core random
-sequences, which can be seeded deterministically or with non-deterministic
-sources like std::random_device. These raw sequences are then transformed by
-distributions, such as std::uniform_int_distribution<> or
-std::uniform_real_distribution<>, to produce numbers fitting specific
+engines and distributions. Engines, like ``std::mt19937``, provide the core
+random sequences, which can be seeded deterministically or with
+non-deterministic sources like ``std::random_device``. These raw sequences are
+then transformed by distributions, such as ``std::uniform_int_distribution<>``
+or ``std::uniform_real_distribution<>``, to produce numbers fitting specific
 statistical patterns. This approach offers a robust, flexible, and precise
 method for generating random numbers, catering to a wide range of applications.
 
@@ -99,6 +99,8 @@ Comparison with the Old Way
   - ``srand()`` was used to seed the generator, often with the current time.
   - ``rand()`` produced integers between 0 and ``RAND_MAX``.
   - To get a random number in a range, modulo arithmetic and scaling were used.
+  - WARNING: ``rand() % n`` is not a good way to get a random number between 0
+    and n-1, as it's biased if ``RAND_MAX`` is not divisible by n.
 
 **Modern Method**:
 

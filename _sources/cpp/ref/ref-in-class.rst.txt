@@ -1,0 +1,63 @@
+.. highlight:: c++
+  :linenothreshold: 5
+
+.. _ref-in-class:
+
+******************************************
+Reference-typed Instance Variable in Class
+******************************************
+
+TR;DR
+=====
++ Reference-typed instance variable must be initialized in the constructor
+  using initializer list syntax!
++ Will never be reassigned
++ Later access/modification will only affect the variable bound to it rather
+  than the reference itself
+
+Overview
+========
++ To be able to refer to an external object without copying it
++ It must be passed to the constructor of the class
++ Reference-typed instance variable must be initialized in the constructor
+  using initializer list syntax
+
+.. _ref-in-class-example:
+
+Example
+=======
+
+::
+
+  // ==== Reference type in class ====
+
+  // Sharable configuration class
+  class Config {
+    int value;
+   public:
+    Config(int value) : config(value) {}  // constructor
+    int getValue() { return value; }
+  };
+
+  // ---- correct ----
+  // Class that need to keep a reference to the configuration
+  class MyClass {
+    Config &conf;
+   public:
+    explicit MyClass(Config &conf) : conf(conf) {}
+    // other methods can now use "conf" as if it's a Config object
+  };
+
+  // ---- Usage ----
+  Config config(10);
+  MyClass myClass(config);  // so myClass.conf is bound to config
+
+  // ---- wrong ----
+  class MyClass {
+    Config &conf;
+   public:
+    explicit MyClass(Config &conf) {
+      this->conf = conf;
+    }
+  };
+

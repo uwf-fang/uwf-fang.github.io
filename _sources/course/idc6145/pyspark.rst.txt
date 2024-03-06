@@ -17,10 +17,22 @@ PySpark Basics
       A fundamental building block of PySpark which is fault-tolerant, immutable distributed collection of objects
 
     DataFrame
-      A distributed collection of data organized into named columns.
+      A distributed collection of data organized into named columns. Optional
+      in this course.
 
     DataSet
-      Similar to DataFrame but with strict types.
+      Similar to DataFrame but with strict types. Optional in this course.
+
+Why RDD only in this course?
+----------------------------
+The DataFrame and DataSet APIs are optional as it is not a typical way in big
+data processing where data are mostly not structured. They are both closer to
+either the SQL or the Pandas way of data manipulation and can be learned easily
+if you are familiar with them.
+
+On the other hand, RDD is the fundamental data API that provides more
+capability to work with unstructured/semi-structured data. It the unique way to
+work with big data in PySpark and is the focus of this course.
 
 Related Python Concepts
 =======================
@@ -56,13 +68,6 @@ Lambda Functions
 
 RDD (Resilient Distributed Dataset)
 ===================================
-+ Why focusing on RDD in this course?
-
-  RDD is the fundamental data API that provides more capability to work with
-  unstructured/semi-structured data. Other APIs like DataFrame and DataSet rely
-  on 2D table like structured data mostly and are not as widely useful as RDD
-  in data wangling process when data are mostly not structured.
-
 + External readings
 
   * `RDD Programming Guide <rdd1_>`_
@@ -73,22 +78,25 @@ RDD (Resilient Distributed Dataset)
 
 + Characteristics
 
-  * Distributed
-  * Immutable
-  * Lazy evaluation
+  * Distributed (data is distributed across multiple machines)
+  * Immutable (once created, it cannot be changed)
+  * Lazy evaluation (transformations are not executed until an action is
+    called)
 
 + Two types of operations
 
+  * As extensions to traditional map/reduce paradigm
   * Transformations
 
     - Takes an RDD and return another RDD
-    - Distributed to distributed
+    - Distributed RDD to distributed RDD
+    - Can be chained
     - Include but more than just mapping
 
   * Actions
 
     - Take an RDD and return a single object
-    - Distributed to local
+    - Distributed RDD to local object
     - Include but more than just reducing
 
 + Useful transformations
@@ -99,7 +107,8 @@ RDD (Resilient Distributed Dataset)
 
 + Useful actions
 
-  * ``collect()``, collect all data and return a local list
+  * ``collect()``, collect all data and return a local list, be careful with
+    large dataset
   * ``count()``
   * ``first()``
   * ``take(num)``, take the first num of values and return a local list

@@ -60,13 +60,24 @@ and achieve certain big data processing tasks.</p>
 </dd>
 <dt id="term-RDD-Resilient-Distributed-Dataset">RDD (Resilient Distributed Dataset)<a class="headerlink" href="#term-RDD-Resilient-Distributed-Dataset" title="Permalink to this term">¶</a></dt><dd><p>A fundamental building block of PySpark which is fault-tolerant, immutable distributed collection of objects</p>
 </dd>
-<dt id="term-DataFrame">DataFrame<a class="headerlink" href="#term-DataFrame" title="Permalink to this term">¶</a></dt><dd><p>A distributed collection of data organized into named columns.</p>
+<dt id="term-DataFrame">DataFrame<a class="headerlink" href="#term-DataFrame" title="Permalink to this term">¶</a></dt><dd><p>A distributed collection of data organized into named columns. Optional
+in this course.</p>
 </dd>
-<dt id="term-DataSet">DataSet<a class="headerlink" href="#term-DataSet" title="Permalink to this term">¶</a></dt><dd><p>Similar to DataFrame but with strict types.</p>
+<dt id="term-DataSet">DataSet<a class="headerlink" href="#term-DataSet" title="Permalink to this term">¶</a></dt><dd><p>Similar to DataFrame but with strict types. Optional in this course.</p>
 </dd>
 </dl>
 </li>
 </ul>
+<section id="why-rdd-only-in-this-course">
+<h3>Why RDD only in this course?<a class="headerlink" href="#why-rdd-only-in-this-course" title="Permalink to this heading">¶</a></h3>
+<p>The DataFrame and DataSet APIs are optional as it is not a typical way in big
+data processing where data are mostly not structured. They are both closer to
+either the SQL or the Pandas way of data manipulation and can be learned easily
+if you are familiar with them.</p>
+<p>On the other hand, RDD is the fundamental data API that provides more
+capability to work with unstructured/semi-structured data. It the unique way to
+work with big data in PySpark and is the focus of this course.</p>
+</section>
 </section>
 <section id="related-python-concepts">
 <h2>Related Python Concepts<a class="headerlink" href="#related-python-concepts" title="Permalink to this heading">¶</a></h2>
@@ -107,15 +118,9 @@ lines using new line character as delimiters</p></li>
 </section>
 <section id="rdd-resilient-distributed-dataset">
 <h2>RDD (Resilient Distributed Dataset)<a class="headerlink" href="#rdd-resilient-distributed-dataset" title="Permalink to this heading">¶</a></h2>
-<ul>
-<li><p>Why focusing on RDD in this course?</p>
-<p>RDD is the fundamental data API that provides more capability to work with
-unstructured/semi-structured data. Other APIs like DataFrame and DataSet rely
-on 2D table like structured data mostly and are not as widely useful as RDD
-in data wangling process when data are mostly not structured.</p>
-</li>
-<li><p>External readings</p>
 <ul class="simple">
+<li><p>External readings</p>
+<ul>
 <li><p><a class="reference external" href="https://spark.apache.org/docs/latest/rdd-programming-guide.html">RDD Programming Guide</a></p></li>
 <li><p><a class="reference external" href="https://www.analyticsvidhya.com/blog/2021/10/a-comprehensive-guide-to-pyspark-rdd-operations/">A Comprehensive Guide to PySpark RDD Operations</a></p></li>
 </ul>
@@ -124,24 +129,27 @@ in data wangling process when data are mostly not structured.</p>
 <ul>
 <li><p>Characteristics</p>
 <ul class="simple">
-<li><p>Distributed</p></li>
-<li><p>Immutable</p></li>
-<li><p>Lazy evaluation</p></li>
+<li><p>Distributed (data is distributed across multiple machines)</p></li>
+<li><p>Immutable (once created, it cannot be changed)</p></li>
+<li><p>Lazy evaluation (transformations are not executed until an action is
+called)</p></li>
 </ul>
 </li>
 <li><p>Two types of operations</p>
 <ul class="simple">
+<li><p>As extensions to traditional map/reduce paradigm</p></li>
 <li><p>Transformations</p>
 <ul>
 <li><p>Takes an RDD and return another RDD</p></li>
-<li><p>Distributed to distributed</p></li>
+<li><p>Distributed RDD to distributed RDD</p></li>
+<li><p>Can be chained</p></li>
 <li><p>Include but more than just mapping</p></li>
 </ul>
 </li>
 <li><p>Actions</p>
 <ul>
 <li><p>Take an RDD and return a single object</p></li>
-<li><p>Distributed to local</p></li>
+<li><p>Distributed RDD to local object</p></li>
 <li><p>Include but more than just reducing</p></li>
 </ul>
 </li>
@@ -156,7 +164,8 @@ in data wangling process when data are mostly not structured.</p>
 </li>
 <li><p>Useful actions</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">collect()</span></code>, collect all data and return a local list</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">collect()</span></code>, collect all data and return a local list, be careful with
+large dataset</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">count()</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">first()</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">take(num)</span></code>, take the first num of values and return a local list</p></li>
@@ -225,7 +234,10 @@ pair) to sort the pairs</p></li>
     <h3><a href="../../index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">PySpark Programming for Beginner</a><ul>
-<li><a class="reference internal" href="#pyspark-basics">PySpark Basics</a></li>
+<li><a class="reference internal" href="#pyspark-basics">PySpark Basics</a><ul>
+<li><a class="reference internal" href="#why-rdd-only-in-this-course">Why RDD only in this course?</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#related-python-concepts">Related Python Concepts</a><ul>
 <li><a class="reference internal" href="#lambda-functions">Lambda Functions</a></li>
 </ul>

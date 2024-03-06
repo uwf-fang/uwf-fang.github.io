@@ -85,8 +85,8 @@ nodes. The term <strong>link</strong> means pointers pointing from one node to a
 </li>
 <li><p>Limitations</p>
 <ul>
-<li><p>Inefficient/no random access</p></li>
-<li><p>Extra memory space for links</p></li>
+<li><p>Inefficient random access</p></li>
+<li><p>Extra memory space</p></li>
 </ul>
 </li>
 </ul>
@@ -95,6 +95,8 @@ nodes. The term <strong>link</strong> means pointers pointing from one node to a
 <h2>Implementation Variations<a class="headerlink" href="#implementation-variations" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Minimal implementation: a head pointer; singly-linked</p></li>
+<li><p>Ideal implementation: a head pointer, a tail pointer; a size/count instance
+variable; doubly-linked</p></li>
 <li><p>Reference pointers</p>
 <ul>
 <li><p>head pointer</p></li>
@@ -107,15 +109,17 @@ nodes. The term <strong>link</strong> means pointers pointing from one node to a
 <li><p>doubly-linked - pointers to previous and next nodes</p></li>
 </ul>
 </li>
-<li><p>Terminal node handling</p>
+<li><p>Terminal node handling (FYI)</p>
 <ul>
-<li><p>cyclic - link(s) connecting the first and last nodes</p></li>
+<li><p>cyclic - link(s) connecting the first and last nodes; not useful</p></li>
 <li><p>acyclic</p></li>
 </ul>
 </li>
-<li><p>Dummy node before the first node</p>
+<li><p>Dummy node before the first node (FYI)</p>
 <ul>
 <li><p>simplifies empty list and first node handling</p></li>
+<li><p>complicates other operations</p></li>
+<li><p>not useful</p></li>
 </ul>
 </li>
 </ul>
@@ -148,12 +152,13 @@ nodes. The term <strong>link</strong> means pointers pointing from one node to a
 <ul>
 <li><p>head pointer</p></li>
 <li><p>tail pointer</p></li>
+<li><p>size/count instance variable</p></li>
 </ul>
 </li>
 <li><p>node class/struct</p>
 <ul>
-<li><p>top-level class, not nested (preferred most of the time)</p></li>
-<li><p>nested class/struct (better information hiding)</p></li>
+<li><p>Option 1: top-level class, not nested (preferred most of the time)</p></li>
+<li><p>Option 2: nested class/struct (better information hiding)</p></li>
 </ul>
 </li>
 </ul>
@@ -161,13 +166,23 @@ nodes. The term <strong>link</strong> means pointers pointing from one node to a
 <li><p>Use class templates for generalization</p>
 <ul>
 <li><p>type of data stored in nodes can be parameterized</p></li>
+<li><p>make a header only module</p></li>
 </ul>
 </li>
+<li><p>Insert before a given node</p>
+<ul>
+<li><p>cannot handle insertion after the last node</p></li>
+</ul>
+</li>
+<li><p>Append</p></li>
+<li><p>Remove</p></li>
 </ul>
 </section>
 <section id="time-complexity">
 <h2>Time Complexity<a class="headerlink" href="#time-complexity" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
+<li><p>Based on the <strong>Ideal Implementation</strong> (head pointer, tail pointer, size/count
+instance variable; doubly-linked)</p></li>
 <li><p>Search by value <span class="math notranslate nohighlight">\(O(n)\)</span></p></li>
 <li><p>Indexing (access kth element) <span class="math notranslate nohighlight">\(O(n)\)</span></p></li>
 <li><p>Insert <span class="math notranslate nohighlight">\(O(1)\)</span> (<span class="math notranslate nohighlight">\(O(n)\)</span> if locate the insertion point first)</p></li>

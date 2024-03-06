@@ -34,12 +34,14 @@ Characteristics
 
 + Limitations
 
-  * Inefficient/no random access
-  * Extra memory space for links
+  * Inefficient random access
+  * Extra memory space
 
 Implementation Variations
 =========================
 + Minimal implementation: a head pointer; singly-linked
++ Ideal implementation: a head pointer, a tail pointer; a size/count instance
+  variable; doubly-linked
 + Reference pointers
 
   * head pointer
@@ -50,14 +52,16 @@ Implementation Variations
   * singly-linked - a pointer to next node
   * doubly-linked - pointers to previous and next nodes
 
-+ Terminal node handling
++ Terminal node handling (FYI)
 
-  * cyclic - link(s) connecting the first and last nodes
+  * cyclic - link(s) connecting the first and last nodes; not useful
   * acyclic
 
-+ Dummy node before the first node
++ Dummy node before the first node (FYI)
 
   * simplifies empty list and first node handling
+  * complicates other operations
+  * not useful
 
 Behaviors
 =========
@@ -81,18 +85,29 @@ C++ Implementation Details
 
     - head pointer
     - tail pointer
+    - size/count instance variable
 
   * node class/struct
 
-    - top-level class, not nested (preferred most of the time)
-    - nested class/struct (better information hiding)
+    - Option 1: top-level class, not nested (preferred most of the time)
+    - Option 2: nested class/struct (better information hiding)
 
 + Use class templates for generalization
 
   * type of data stored in nodes can be parameterized
+  * make a header only module
+
++ Insert before a given node
+
+  * cannot handle insertion after the last node
+
++ Append
++ Remove
 
 Time Complexity
 ===============
++ Based on the **Ideal Implementation** (head pointer, tail pointer, size/count
+  instance variable; doubly-linked)
 + Search by value :math:`O(n)`
 + Indexing (access kth element) :math:`O(n)`
 + Insert :math:`O(1)` (:math:`O(n)` if locate the insertion point first)

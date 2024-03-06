@@ -20,8 +20,8 @@
     <link rel="canonical" href="https://uwf-fang.github.io/cpp/ref/ref-basics.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Passing References To/From Functions" href="ref-passing.html" />
-    <link rel="prev" title="Passing Arrays To/From Functions" href="../array/array-passing.html" /> 
+    <link rel="next" title="Array Basics" href="../array/array-basics.html" />
+    <link rel="prev" title="Type, Variable, Assignment, and Expression" href="../variable-type/variable-type.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,14 +30,14 @@
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="ref-passing.html" title="Passing References To/From Functions"
+          <a href="../array/array-basics.html" title="Array Basics"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="../array/array-passing.html" title="Passing Arrays To/From Functions"
+          <a href="../variable-type/variable-type.html" title="Type, Variable, Assignment, and Expression"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch03.html" accesskey="U">Chapter 3 User-defined Functions and Modular Development</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch02.html" accesskey="U">Chapter 2 Variables, Expressions and Control Structures</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Reference Type Basics</a></li> 
       </ul>
     </div>  
@@ -49,6 +49,19 @@
             
   <section id="reference-type-basics">
 <span id="ref-basics"></span><h1>Reference Type Basics<a class="headerlink" href="#reference-type-basics" title="Permalink to this heading">¶</a></h1>
+<section id="tr-dr">
+<h2>TR;DR<a class="headerlink" href="#tr-dr" title="Permalink to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Ampersand (&amp;) after type to make a derived type</p></li>
+<li><p>Works like an alias to another variable</p></li>
+<li><p>Must be initialized</p></li>
+<li><p>Will never be reassigned</p></li>
+<li><p>Later access/modification will only affect the variable bound to it rather
+than the reference itself</p></li>
+</ul>
+</section>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
 <p>Reference type is employed to provide an alias to another variable. There are
 both lvalue references and rvalue references but <strong>only lvalue references</strong> are
 discussed in this document.</p>
@@ -73,6 +86,7 @@ most code snippets are not practical.</p>
 </ul>
 </li>
 </ul>
+</section>
 <section id="pitfalls">
 <h2>Pitfalls<a class="headerlink" href="#pitfalls" title="Permalink to this heading">¶</a></h2>
 <blockquote>
@@ -91,32 +105,22 @@ most code snippets are not practical.</p>
 <span class="linenos"> 4</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
 <span class="linenos"> 5</span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span>
 <span class="linenos"> 6</span>
-<span class="linenos"> 7</span><span class="c1">// the type is &quot;int &amp;&quot;</span>
-<span class="linenos"> 8</span><span class="c1">// reference variable can only be assigned once to be bound to a lvalue</span>
-<span class="linenos"> 9</span><span class="c1">// any later assignment will be redirected to the bound variable</span>
-<span class="linenos">10</span>
-<span class="linenos">11</span><span class="kt">int</span><span class="w"> </span><span class="o">&amp;</span><span class="n">myRef1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"> </span><span class="c1">// initialization, myRef1 is now an alias of a</span>
-<span class="linenos">12</span><span class="n">myRef1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w"> </span><span class="c1">// assignment, myRef1 will not refer to b, it is same as a = b; value of a become 10</span>
-<span class="linenos">13</span><span class="kt">int</span><span class="w"> </span><span class="o">&amp;</span><span class="n">myRef2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">myRef1</span><span class="p">;</span><span class="w">  </span><span class="c1">// myRef2 will also bind to a</span>
-<span class="linenos">14</span>
-<span class="linenos">15</span><span class="c1">// ---- wrong ----</span>
-<span class="linenos">16</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
-<span class="linenos">17</span><span class="kt">int</span><span class="w"> </span><span class="o">&amp;</span><span class="n">alias</span><span class="p">;</span><span class="w">  </span><span class="c1">// no initialization</span>
-<span class="linenos">18</span>
-<span class="linenos">19</span><span class="kt">int</span><span class="w"> </span><span class="o">&amp;</span><span class="n">alias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">a</span><span class="p">;</span><span class="w">  </span><span class="c1">// alias is not a pointer, it takes a lvalue, not a memory address</span>
-<span class="linenos">20</span>
-<span class="linenos">21</span><span class="kt">int</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="n">alias1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alias</span><span class="p">;</span><span class="w">  </span><span class="c1">// there is no ref to ref type!</span>
-<span class="linenos">22</span>
-<span class="linenos">23</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="o">*</span><span class="n">alias</span><span class="p">;</span><span class="w">  </span><span class="c1">// not a pointer, no need of * to dereference</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="kt">int</span><span class="w"> </span><span class="o">&amp;</span><span class="n">myRef1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"> </span><span class="c1">// initialization, myRef1 is now an alias of a</span>
+<span class="linenos"> 9</span><span class="n">myRef1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w"> </span><span class="c1">// assignment, it is same as a = b; value of a become 10</span>
+<span class="linenos">10</span><span class="kt">int</span><span class="w"> </span><span class="o">&amp;</span><span class="n">myRef2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">myRef1</span><span class="p">;</span><span class="w">  </span><span class="c1">// myRef2 will also bind to a</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="c1">// ---- wrong ----</span>
+<span class="linenos">13</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="linenos">14</span><span class="kt">int</span><span class="w"> </span><span class="o">&amp;</span><span class="n">alias</span><span class="p">;</span><span class="w">  </span><span class="c1">// no initialization</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="kt">int</span><span class="w"> </span><span class="o">&amp;</span><span class="n">alias</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">a</span><span class="p">;</span><span class="w">  </span><span class="c1">// alias is not a pointer</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span><span class="kt">int</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="n">alias1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alias</span><span class="p">;</span><span class="w">  </span><span class="c1">// there is no ref to ref type!</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="o">*</span><span class="n">alias</span><span class="p">;</span><span class="w">  </span><span class="c1">// not a pointer, no need of * to dereference</span>
 </pre></div>
 </div>
-</section>
-<section id="related-topics">
-<h2>Related Topics<a class="headerlink" href="#related-topics" title="Permalink to this heading">¶</a></h2>
-<ul class="simple">
-<li><p><a class="reference internal" href="ref-passing.html"><span class="doc">Passing References To/From Functions</span></a></p></li>
-<li><p><a class="reference internal" href="ref-vs-ptr.html"><span class="doc">Ref type vs pointer type</span></a></p></li>
-</ul>
 </section>
 </section>
 
@@ -131,9 +135,10 @@ most code snippets are not practical.</p>
     <h3><a href="../../index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">Reference Type Basics</a><ul>
+<li><a class="reference internal" href="#tr-dr">TR;DR</a></li>
+<li><a class="reference internal" href="#overview">Overview</a></li>
 <li><a class="reference internal" href="#pitfalls">Pitfalls</a></li>
 <li><a class="reference internal" href="#examples">Examples</a></li>
-<li><a class="reference internal" href="#related-topics">Related Topics</a></li>
 </ul>
 </li>
 </ul>
@@ -141,13 +146,13 @@ most code snippets are not practical.</p>
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="../array/array-passing.html"
-                          title="previous chapter">Passing Arrays To/From Functions</a></p>
+    <p class="topless"><a href="../variable-type/variable-type.html"
+                          title="previous chapter">Type, Variable, Assignment, and Expression</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="ref-passing.html"
-                          title="next chapter">Passing References To/From Functions</a></p>
+    <p class="topless"><a href="../array/array-basics.html"
+                          title="next chapter">Array Basics</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -177,14 +182,14 @@ most code snippets are not practical.</p>
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="ref-passing.html" title="Passing References To/From Functions"
+          <a href="../array/array-basics.html" title="Array Basics"
              >next</a> |</li>
         <li class="right" >
-          <a href="../array/array-passing.html" title="Passing Arrays To/From Functions"
+          <a href="../variable-type/variable-type.html" title="Type, Variable, Assignment, and Expression"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch03.html" >Chapter 3 User-defined Functions and Modular Development</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch02.html" >Chapter 2 Variables, Expressions and Control Structures</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Reference Type Basics</a></li> 
       </ul>
     </div>

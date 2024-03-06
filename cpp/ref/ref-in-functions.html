@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Passing References To/From Functions &#8212; IanFang Course Note Hosting  documentation</title>
+    <title>Reference-type in Functions &#8212; IanFang Course Note Hosting  documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -17,11 +17,11 @@
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/sphinx_highlight.js"></script>
-    <link rel="canonical" href="https://uwf-fang.github.io/cpp/ref/ref-passing.html" />
+    <link rel="canonical" href="https://uwf-fang.github.io/cpp/ref/ref-in-functions.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Modular Development" href="../building/modular.html" />
-    <link rel="prev" title="Reference Type Basics" href="ref-basics.html" /> 
+    <link rel="prev" title="Passing Arrays To/From Functions" href="../array/array-passing.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -33,12 +33,12 @@
           <a href="../building/modular.html" title="Modular Development"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="ref-basics.html" title="Reference Type Basics"
+          <a href="../array/array-passing.html" title="Passing Arrays To/From Functions"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch03.html" accesskey="U">Chapter 3 User-defined Functions and Modular Development</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Passing References To/From Functions</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Reference-type in Functions</a></li> 
       </ul>
     </div>  
 
@@ -47,8 +47,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="passing-references-to-from-functions">
-<span id="ref-passing"></span><h1>Passing References To/From Functions<a class="headerlink" href="#passing-references-to-from-functions" title="Permalink to this heading">¶</a></h1>
+  <section id="reference-type-in-functions">
+<span id="ref-in-functions"></span><h1>Reference-type in Functions<a class="headerlink" href="#reference-type-in-functions" title="Permalink to this heading">¶</a></h1>
 <section id="pass-by-reference">
 <span id="pass-by-ref"></span><h2>Pass by reference<a class="headerlink" href="#pass-by-reference" title="Permalink to this heading">¶</a></h2>
 <ul>
@@ -62,25 +62,30 @@
 <span class="linenos"> 7</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="linenos"> 8</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
 <span class="linenos"> 9</span><span class="w">  </span><span class="n">addOne</span><span class="p">(</span><span class="n">a</span><span class="p">);</span><span class="w">  </span><span class="c1">// the actual parameter is a, must be an lvalue</span>
-<span class="linenos">10</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos">10</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w">  </span><span class="c1">// 11</span>
+<span class="linenos">11</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos">12</span><span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Avoid duplication of the value (reduce overhead when the value is an
+object):</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">string</span><span class="w"> </span><span class="nf">processText</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">inputText</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 2</span><span class="w">  </span><span class="n">string</span><span class="w"> </span><span class="n">processedText</span><span class="p">;</span>
+<span class="linenos"> 3</span><span class="w">  </span><span class="c1">// process the text</span>
+<span class="linenos"> 4</span><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">processedText</span><span class="p">;</span>
+<span class="linenos"> 5</span><span class="p">}</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos"> 8</span><span class="w">  </span><span class="n">string</span><span class="w"> </span><span class="n">inputText</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;This is a very long text&quot;</span><span class="p">;</span>
+<span class="linenos"> 9</span><span class="w">  </span><span class="n">string</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">processText</span><span class="p">(</span><span class="n">inputText</span><span class="p">);</span>
+<span class="linenos">10</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
 <span class="linenos">11</span><span class="p">}</span>
 </pre></div>
 </div>
 </li>
-<li><p>Avoid duplication of the value (reduce overhead when the value is huge):</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">string</span><span class="w"> </span><span class="nf">parseText</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">largeText</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="linenos"> 2</span><span class="w">  </span><span class="c1">// process the text</span>
-<span class="linenos"> 3</span><span class="p">}</span>
-<span class="linenos"> 4</span>
-<span class="linenos"> 5</span><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="linenos"> 6</span><span class="w">  </span><span class="n">string</span><span class="w"> </span><span class="n">inputText</span><span class="p">;</span>
-<span class="linenos"> 7</span><span class="w">  </span><span class="c1">// set the content</span>
-<span class="linenos"> 8</span><span class="w">  </span><span class="n">string</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parseText</span><span class="p">(</span><span class="n">inputText</span><span class="p">);</span>
-<span class="linenos"> 9</span><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
-<span class="linenos">10</span><span class="p">}</span>
-</pre></div>
-</div>
-</li>
+<li><p>It is a good practice to always use pass-by-reference for objects
+(class-typed variables)</p></li>
 <li><p>Extensively used in many scenarios</p>
 <ul class="simple">
 <li><p>copy constructor</p></li>
@@ -135,7 +140,7 @@ instance variable is fine.</p>
   <div>
     <h3><a href="../../index.html">Table of Contents</a></h3>
     <ul>
-<li><a class="reference internal" href="#">Passing References To/From Functions</a><ul>
+<li><a class="reference internal" href="#">Reference-type in Functions</a><ul>
 <li><a class="reference internal" href="#pass-by-reference">Pass by reference</a></li>
 <li><a class="reference internal" href="#returning-a-reference">Returning a Reference</a></li>
 </ul>
@@ -145,8 +150,8 @@ instance variable is fine.</p>
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="ref-basics.html"
-                          title="previous chapter">Reference Type Basics</a></p>
+    <p class="topless"><a href="../array/array-passing.html"
+                          title="previous chapter">Passing Arrays To/From Functions</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -156,7 +161,7 @@ instance variable is fine.</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../../_sources/cpp/ref/ref-passing.rst.txt"
+      <li><a href="../../_sources/cpp/ref/ref-in-functions.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -184,12 +189,12 @@ instance variable is fine.</p>
           <a href="../building/modular.html" title="Modular Development"
              >next</a> |</li>
         <li class="right" >
-          <a href="ref-basics.html" title="Reference Type Basics"
+          <a href="../array/array-passing.html" title="Passing Arrays To/From Functions"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch03.html" >Chapter 3 User-defined Functions and Modular Development</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Passing References To/From Functions</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Reference-type in Functions</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

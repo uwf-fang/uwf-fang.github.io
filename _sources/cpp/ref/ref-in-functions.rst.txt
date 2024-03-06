@@ -1,11 +1,11 @@
 .. highlight:: c++
   :linenothreshold: 5
 
-.. _ref-passing:
+.. _ref-in-functions:
 
-************************************
-Passing References To/From Functions
-************************************
+***************************
+Reference-type in Functions
+***************************
 
 .. _pass-by-ref:
 
@@ -22,22 +22,27 @@ Pass by reference
     int main() {
       int a = 10;
       addOne(a);  // the actual parameter is a, must be an lvalue
+      cout << a << endl;  // 11
       return 0;
     }
 
-+ Avoid duplication of the value (reduce overhead when the value is huge)::
++ Avoid duplication of the value (reduce overhead when the value is an
+  object)::
 
-    string parseText(const string &largeText) {
+    string processText(const string &inputText) {
+      string processedText;
       // process the text
+      return processedText;
     }
 
     int main() {
-      string inputText;
-      // set the content
-      string result = parseText(inputText);
+      string inputText = "This is a very long text";
+      string result = processText(inputText);
       cout << result << endl;
     }
 
++ It is a good practice to always use pass-by-reference for objects
+  (class-typed variables)
 + Extensively used in many scenarios
 
   * copy constructor
