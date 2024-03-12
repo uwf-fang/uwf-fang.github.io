@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Greedy Solution to Hoffman Coding Problem &#8212; IanFang Course Note Hosting  documentation</title>
+    <title>Greedy Solution to Huffman Coding Problem &#8212; IanFang Course Note Hosting  documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -39,7 +39,7 @@
           <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../../course/cop4534/m09.html" >Module 9: Greedy Algorithms 1</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="../algorithm/greedy.html" accesskey="U">Greedy Algorithms</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Greedy Solution to Hoffman Coding Problem</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Greedy Solution to Huffman Coding Problem</a></li> 
       </ul>
     </div>  
 
@@ -48,8 +48,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="greedy-solution-to-hoffman-coding-problem">
-<h1>Greedy Solution to Hoffman Coding Problem<a class="headerlink" href="#greedy-solution-to-hoffman-coding-problem" title="Permalink to this heading">¶</a></h1>
+  <section id="greedy-solution-to-huffman-coding-problem">
+<h1>Greedy Solution to Huffman Coding Problem<a class="headerlink" href="#greedy-solution-to-huffman-coding-problem" title="Permalink to this heading">¶</a></h1>
 <section id="huffman-coding">
 <h2>Huffman Coding<a class="headerlink" href="#huffman-coding" title="Permalink to this heading">¶</a></h2>
 <p>Huffman coding is a lossless data compression algorithm. The idea is to assign
@@ -60,15 +60,19 @@ largest code.</p>
 </section>
 <section id="characteristics">
 <h2>Characteristics<a class="headerlink" href="#characteristics" title="Permalink to this heading">¶</a></h2>
-<ul class="simple">
+<ul>
 <li><p>Prefix code (a.k.a Prefix-free code)</p>
 <ul>
 <li><p>No codeword appears as a prefix of any other codeword.</p></li>
-<li><p>No ambiguity when decoding a bitstream.</p></li>
+<li><p>No ambiguity when decoding a bitstream.</p>
+<p>For example, if ‘a’ is encoded as ‘01’, ‘b’ cannot be encoded as ‘0’.
+Otherwise, when decoding ‘01’, it is ambiguous whether it is an ‘a’ (01) or
+a ‘b’ (0) followed by something (1).</p>
+</li>
 </ul>
 </li>
 <li><p>Optimal code</p>
-<ul>
+<ul class="simple">
 <li><p>Minimizes the length of the encoded bitstream.</p></li>
 <li><p>The most frequent character are encoded with the least number of bits.</p></li>
 </ul>
@@ -98,17 +102,21 @@ and their corresponding codewords.</p>
 <div class="footnote docutils container">
 <p>Credit: Introduction to Algorithms, 4th Ed., T. Cormen et al.</p>
 </div>
-<ul>
+<ul class="simple">
 <li><p>Left: Fixed length encoding</p>
-<p>Total space: 3 * (45 + 13 + 12 + 16 + 9 + 5) = 300 bits</p>
+<ul>
+<li><p>Total space: 3 * (45 + 13 + 12 + 16 + 9 + 5) = 300 bits</p></li>
+</ul>
 </li>
 <li><p>Right: Huffman coding</p>
-<p>Total space: 1 * 45 + 2 * 13 + 2 * 12 + 3 * 16 + 4 * 9 + 4 * 5 = 199 bits</p>
+<ul>
+<li><p>Total space: 1 * 45 + 3 * (13 + 12 + 16) + 4 * (9 + 5) = 224 bits</p></li>
+</ul>
 </li>
 <li><p>Contents in nodes:</p>
-<ul class="simple">
+<ul>
 <li><p>Leaf node: &lt;character&gt;: &lt;frequency&gt;</p></li>
-<li><p>Internal node: &lt;frequency of subtree&gt;</p></li>
+<li><p>Internal node: &lt;total frequency of the subtree&gt;</p></li>
 </ul>
 </li>
 </ul>
@@ -121,16 +129,17 @@ frequent characters to the most frequent characters.</p>
 <li><p>Create a leaf node for each symbol and add it to the priority queue.</p></li>
 <li><p>While there is more than one node in the queue:</p>
 <ul>
-<li><p>Remove the two nodes of lowest frequency from the queue</p></li>
-<li><p>Create a new internal node with these two nodes as children and with
-frequency equal to the sum of the two nodes’ frequency.</p></li>
-<li><p>Add the new node to the queue.</p></li>
+<li><p>Dequeue two nodes with the lowest frequencies from the queue</p></li>
+<li><p>Create a new internal node with these two nodes as its children (order does
+not matter) and with frequency equal to the sum of the two nodes’
+frequency.</p></li>
+<li><p>Add the new node to the priority queue.</p></li>
 </ul>
 </li>
 <li><p>The remaining node is the root node and the tree is complete.</p></li>
 </ul>
 <div class="footnote docutils container">
-<p>Credit: Pseudo-code from <a class="reference external" href="https://en.wikipedia.org/wiki/Huffman_coding">Wikipedia</a></p>
+<p>Credit: Pseudo-code adopted from <a class="reference external" href="https://en.wikipedia.org/wiki/Huffman_coding">Wikipedia</a></p>
 </div>
 </section>
 <section id="steps-to-build-the-example-tree">
@@ -152,7 +161,7 @@ frequency equal to the sum of the two nodes’ frequency.</p></li>
   <div>
     <h3><a href="../../index.html">Table of Contents</a></h3>
     <ul>
-<li><a class="reference internal" href="#">Greedy Solution to Hoffman Coding Problem</a><ul>
+<li><a class="reference internal" href="#">Greedy Solution to Huffman Coding Problem</a><ul>
 <li><a class="reference internal" href="#huffman-coding">Huffman Coding</a></li>
 <li><a class="reference internal" href="#characteristics">Characteristics</a></li>
 <li><a class="reference internal" href="#applications">Applications</a></li>
@@ -212,7 +221,7 @@ frequency equal to the sum of the two nodes’ frequency.</p></li>
           <li class="nav-item nav-item-1"><a href="../../course/cop4534/index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="../../course/cop4534/m09.html" >Module 9: Greedy Algorithms 1</a> &#187;</li>
           <li class="nav-item nav-item-3"><a href="../algorithm/greedy.html" >Greedy Algorithms</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Greedy Solution to Hoffman Coding Problem</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Greedy Solution to Huffman Coding Problem</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

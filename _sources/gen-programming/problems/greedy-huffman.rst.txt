@@ -1,4 +1,4 @@
-Greedy Solution to Hoffman Coding Problem
+Greedy Solution to Huffman Coding Problem
 =========================================
 
 Huffman Coding
@@ -15,6 +15,10 @@ Characteristics
 
   * No codeword appears as a prefix of any other codeword.
   * No ambiguity when decoding a bitstream.
+
+    For example, if 'a' is encoded as '01', 'b' cannot be encoded as '0'.
+    Otherwise, when decoding '01', it is ambiguous whether it is an 'a' (01) or
+    a 'b' (0) followed by something (1).
 
 + Optimal code
 
@@ -49,16 +53,16 @@ Example coding trees
 
 + Left: Fixed length encoding
 
-  Total space: 3 * (45 + 13 + 12 + 16 + 9 + 5) = 300 bits
+  * Total space: 3 * (45 + 13 + 12 + 16 + 9 + 5) = 300 bits
 
 + Right: Huffman coding
 
-  Total space: 1 * 45 + 2 * 13 + 2 * 12 + 3 * 16 + 4 * 9 + 4 * 5 = 199 bits
+  * Total space: 1 * 45 + 3 * (13 + 12 + 16) + 4 * (9 + 5) = 224 bits
 
 + Contents in nodes:
 
   * Leaf node: <character>: <frequency>
-  * Internal node: <frequency of subtree>
+  * Internal node: <total frequency of the subtree>
 
 Algorithm to build a Huffman coding tree
 ----------------------------------------
@@ -68,16 +72,18 @@ frequent characters to the most frequent characters.
 + Create a leaf node for each symbol and add it to the priority queue.
 + While there is more than one node in the queue:
 
-  * Remove the two nodes of lowest frequency from the queue
-  * Create a new internal node with these two nodes as children and with
-    frequency equal to the sum of the two nodes' frequency.
-  * Add the new node to the queue.
+  * Dequeue two nodes with the lowest frequencies from the queue
+  * Create a new internal node with these two nodes as its children (order does
+    not matter) and with frequency equal to the sum of the two nodes'
+    frequency.
+  * Add the new node to the priority queue.
 
 + The remaining node is the root node and the tree is complete.
 
 .. container:: footnote
 
-  Credit: Pseudo-code from `Wikipedia <https://en.wikipedia.org/wiki/Huffman_coding>`_
+  Credit: Pseudo-code adopted from `Wikipedia
+  <https://en.wikipedia.org/wiki/Huffman_coding>`_
 
 Steps to build the example tree
 -------------------------------
