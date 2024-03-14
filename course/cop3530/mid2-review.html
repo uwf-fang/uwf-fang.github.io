@@ -66,8 +66,12 @@ the help from any editor/ IDE</p></li>
 <h2>Templates<a class="headerlink" href="#templates" title="Permalink to this heading">¶</a></h2>
 <section id="concepts">
 <h3>Concepts<a class="headerlink" href="#concepts" title="Permalink to this heading">¶</a></h3>
-<p>Templated functions or classes are templates, not functions or classes any
-more. They must be instantiated to give concrete functions or classes</p>
+<ul class="simple">
+<li><p>A function template is not a function</p></li>
+<li><p>The instance of a function template is a function</p></li>
+<li><p>A class template is not a class</p></li>
+<li><p>The instance of a class template is a class</p></li>
+</ul>
 </section>
 <section id="syntax">
 <h3>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading">¶</a></h3>
@@ -76,14 +80,10 @@ more. They must be instantiated to give concrete functions or classes</p>
 <ul>
 <li><p>function declarations and definitions</p></li>
 <li><p>class declarations</p></li>
-<li><p>method definitions</p></li>
+<li><p>out-of-line method definitions</p></li>
 </ul>
 </li>
-<li><p>Splitting templates into multiple files is tricky.</p>
-<ul>
-<li><p>Put in a single hpp is the easiest way.</p></li>
-</ul>
-</li>
+<li><p>Single header module for templates</p></li>
 </ul>
 </section>
 </section>
@@ -97,6 +97,7 @@ more. They must be instantiated to give concrete functions or classes</p>
 <li><p>head pointer</p></li>
 <li><p>tail pointer (optional)</p></li>
 <li><p>node with next pointer</p></li>
+<li><p>Cannot access previous node easily</p></li>
 </ul>
 </li>
 <li><p>doubly-linked</p>
@@ -106,50 +107,109 @@ more. They must be instantiated to give concrete functions or classes</p>
 <li><p>node with next and prev pointers</p></li>
 </ul>
 </li>
-<li><p>with dummy node (make the head node not a special node and avoid empty list)</p></li>
-<li><p>circular (not useful)</p></li>
-<li><p>compare and contrast</p></li>
-<li><p>methods</p>
+<li><p>Implementation details</p>
 <ul>
 <li><p>recursive vs iterative</p></li>
-<li><p>first, last and middle nodes handled differently</p></li>
-<li><p>destructor</p></li>
+<li><p>empty linked list is handled as a special case</p></li>
+<li><p>first, last and middle nodes are handled differently</p></li>
+<li><p>big three</p></li>
 <li><p>search</p></li>
 <li><p>insert before</p></li>
 <li><p>insert after</p></li>
-<li><p>remove (IMPORTANT)</p></li>
+<li><p>remove</p></li>
+</ul>
+</li>
+<li><p>Compared to Array</p>
+<ul>
+<li><p>dynamic size</p></li>
+<li><p>insertion and removal are efficient</p></li>
+<li><p>access by index is inefficient</p></li>
 </ul>
 </li>
 </ul>
 </section>
-<section id="vs-array">
-<h3>Vs Array<a class="headerlink" href="#vs-array" title="Permalink to this heading">¶</a></h3>
-<ul class="simple">
-<li><p>Pro: faster insertion, removal in the middle; variable size</p></li>
-<li><p>Con: more storage space; slow access by index to middle elements</p></li>
-</ul>
 </section>
-</section>
-<section id="sequential-adts">
-<h2>Sequential ADTs<a class="headerlink" href="#sequential-adts" title="Permalink to this heading">¶</a></h2>
+<section id="linear-adts">
+<h2>Linear ADTs<a class="headerlink" href="#linear-adts" title="Permalink to this heading">¶</a></h2>
 <section id="list">
 <h3>List<a class="headerlink" href="#list" title="Permalink to this heading">¶</a></h3>
-<p>Sequential; add and remove anywhere; access by index</p>
+<ul class="simple">
+<li><p>Sequential</p></li>
+<li><p>Behaviors</p>
+<ul>
+<li><p>add and remove at any position</p></li>
+<li><p>search</p></li>
+<li><p>access by index</p></li>
+<li><p>check size</p></li>
+</ul>
+</li>
+</ul>
 </section>
 <section id="stack">
 <h3>Stack<a class="headerlink" href="#stack" title="Permalink to this heading">¶</a></h3>
-<p>Sequential; add and remove at one end;</p>
+<ul class="simple">
+<li><p>LIFO or FILO</p></li>
+<li><p>Implementation</p>
+<ul>
+<li><p>Mostly as a linear data structure</p></li>
+<li><p>linked-list</p></li>
+<li><p>partially filled array</p></li>
+</ul>
+</li>
+<li><p>Behaviors</p>
+<ul>
+<li><p>push</p></li>
+<li><p>pop</p></li>
+<li><p>peek/top</p></li>
+<li><p>check empty</p></li>
+</ul>
+</li>
+</ul>
 </section>
 <section id="queue">
 <h3>Queue<a class="headerlink" href="#queue" title="Permalink to this heading">¶</a></h3>
-<p>Sequential; add at one end and remove at another end;</p>
+<ul class="simple">
+<li><p>FIFO or LILO</p></li>
+<li><p>Implementation</p>
+<ul>
+<li><p>Mostly as a linear data structure</p></li>
+<li><p>linked-list</p></li>
+<li><p>circular partially filled array (FYI)</p></li>
+</ul>
+</li>
+<li><p>Behaviors</p>
+<ul>
+<li><p>enqueue</p></li>
+<li><p>dequeue</p></li>
+<li><p>peek</p></li>
+<li><p>check empty</p></li>
+</ul>
+</li>
+</ul>
 </section>
 <section id="deque">
 <h3>Deque<a class="headerlink" href="#deque" title="Permalink to this heading">¶</a></h3>
-<p>Sequential; add and remove at both ends;</p>
+<ul class="simple">
+<li><p>Double-ended queue</p></li>
+<li><p>Implementation</p>
+<ul>
+<li><p>Mostly as a linear data structure</p></li>
+<li><p>linked-list</p></li>
+<li><p>circular partially filled array (FYI)</p></li>
+</ul>
+</li>
+<li><p>Behaviors</p>
+<ul>
+<li><p>enqueue at both ends</p></li>
+<li><p>dequeue at both ends</p></li>
+<li><p>peek at both ends</p></li>
+<li><p>check size</p></li>
+</ul>
+</li>
+</ul>
 </section>
-<section id="wrapper">
-<h3>Wrapper<a class="headerlink" href="#wrapper" title="Permalink to this heading">¶</a></h3>
+<section id="wrapper-class">
+<h3>Wrapper class<a class="headerlink" href="#wrapper-class" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>One ADT can cover the usage of another ADT</p></li>
 <li><p>Wrapper class</p></li>
@@ -157,34 +217,38 @@ more. They must be instantiated to give concrete functions or classes</p>
 <li><p>E.g. wrap Deque to implement Stack and Queue</p></li>
 </ul>
 </section>
-<section id="choose-implementations">
-<h3>Choose Implementations<a class="headerlink" href="#choose-implementations" title="Permalink to this heading">¶</a></h3>
-<ul class="simple">
-<li><p>Depends on whether common operations are efficient.</p></li>
-<li><p>Depends on the algorithm</p></li>
-</ul>
-</section>
 </section>
 <section id="sorting">
 <h2>Sorting<a class="headerlink" href="#sorting" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>Complexities</p>
+<li><p>Sorting algorithms concepts</p>
 <ul>
-<li><p>fast or not</p></li>
-<li><p>general purpose (usually comparison based) or not</p></li>
+<li><p>in-place (only swap) vs out-of-place (move data to another array)</p></li>
+<li><p>general purpose (comparison based) sorting algorithms vs non-comparison
+based sorting algorithms</p></li>
+<li><p>stable vs unstable (whether the original order of duplicate elements is
+preserved, FYI)</p></li>
 <li><p>best complexity for comparison based sorting algorithms <span class="math notranslate nohighlight">\(O(n \log n)\)</span></p></li>
 </ul>
 </li>
 <li><p>Quick sort</p>
 <ul>
-<li><p>pivot selection - start, end, middle, random</p></li>
-<li><p>Quick partition - Hoare’s algorithm</p></li>
+<li><p><strong>Quick partition</strong> as a sub-algorithm</p>
+<ul>
+<li><p>Our variation of Hoare’s scheme (different from the zybook algorithm,
+refer to the lab)</p></li>
+</ul>
+</li>
+<li><p>in-place algorithm</p></li>
+<li><p>time complexity: <span class="math notranslate nohighlight">\(O(n \log n)\)</span> or <span class="math notranslate nohighlight">\(O(n^2)\)</span> in the worst case</p></li>
 </ul>
 </li>
 <li><p>Merge sort</p>
 <ul>
 <li><p>top-down merge sort</p></li>
 <li><p>out-of-place algorithm</p></li>
+<li><p><strong>sorted merge</strong> as a sub-algorithm</p></li>
+<li><p>time complexity <span class="math notranslate nohighlight">\(O(n \log n)\)</span></p></li>
 <li><p>space complexity <span class="math notranslate nohighlight">\(O(n)\)</span></p></li>
 </ul>
 </li>
@@ -192,17 +256,20 @@ more. They must be instantiated to give concrete functions or classes</p>
 <ul>
 <li><p>not a general algorithm</p></li>
 <li><p>out-of-place algorithm</p></li>
+<li><p>time complexity <span class="math notranslate nohighlight">\(O(nk)\)</span> where <span class="math notranslate nohighlight">\(k\)</span> is the number of digits</p></li>
+<li><p>space complexity <span class="math notranslate nohighlight">\(O(n)\)</span></p></li>
 </ul>
 </li>
 <li><p>Linked-list based sorting</p>
 <ul>
 <li><p>recursive vs iterative</p></li>
-<li><p>insertion</p>
+<li><p>not all sorting algorithms are suitable</p></li>
+<li><p>insertion sort</p>
 <ul>
 <li><p>sorted insert</p></li>
 </ul>
 </li>
-<li><p>merge</p>
+<li><p>merge sort</p>
 <ul>
 <li><p>sorted merge</p></li>
 </ul>
@@ -214,9 +281,11 @@ more. They must be instantiated to give concrete functions or classes</p>
 <section id="hashing">
 <h2>Hashing<a class="headerlink" href="#hashing" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
+<li><p>Applications: hash table, cryptography, fingerprinting, checksum, etc.</p></li>
 <li><p>Hash function</p>
 <ul>
-<li><p>collision</p></li>
+<li><p>mapping data to data</p></li>
+<li><p>collision - different keys mapped to the same hash value</p></li>
 </ul>
 </li>
 </ul>
@@ -225,11 +294,20 @@ more. They must be instantiated to give concrete functions or classes</p>
 <ul class="simple">
 <li><p>Hash table</p>
 <ul>
+<li><p>Requirements</p>
+<ul>
+<li><p>Unique keys</p></li>
+</ul>
+</li>
 <li><p>Characteristics</p>
 <ul>
-<li><p>fast lookup</p></li>
+<li><p>fast lookup <span class="math notranslate nohighlight">\(O(1)\)</span></p></li>
 <li><p>redundant storage space</p></li>
-<li><p>performance degradation when overfilled</p></li>
+<li><p>performance degradation when overfilled</p>
+<ul>
+<li><p>load factor</p></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><p>buckets</p></li>
@@ -239,13 +317,21 @@ more. They must be instantiated to give concrete functions or classes</p>
 <li><p>modulo operator</p></li>
 </ul>
 </li>
-<li><p>collision resolution</p>
+<li><p>collision</p>
 <ul>
-<li><p>chaining</p></li>
-<li><p>probing</p>
+<li><p>different keys mapped to the same index</p></li>
+<li><p>something we always need to handle</p></li>
+</ul>
+</li>
+<li><p>collision resolution methods</p>
+<ul>
+<li><p>chaining: let each bucket hold more than one element</p></li>
+<li><p>open addressing: find another empty bucket</p>
+<ul>
+<li><p>Probing methods</p>
 <ul>
 <li><p>linear <span class="math notranslate nohighlight">\([h(key) + c*i]\%n\)</span></p></li>
-<li><p>quadratic <span class="math notranslate nohighlight">\([h(key) + c*i^2]\%n\)</span></p></li>
+<li><p>quadratic <span class="math notranslate nohighlight">\([h(key) + c_1*i + c_2*i^2]\%n\)</span></p></li>
 <li><p>double hashing <span class="math notranslate nohighlight">\([h1(key) + c*i*h2(key)]\%n\)</span></p></li>
 </ul>
 </li>
@@ -253,10 +339,16 @@ more. They must be instantiated to give concrete functions or classes</p>
 </li>
 </ul>
 </li>
-<li><p>ADTs based on hash tables</p>
+</ul>
+</li>
+<li><p>ADTs that are implemented using hash tables</p>
 <ul>
-<li><p>map</p></li>
-<li><p>set</p></li>
+<li><p>hash map (key-value pairs)</p></li>
+<li><p>hash set (only keys)</p>
+<ul>
+<li><p>when we do not care about values</p></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -265,24 +357,24 @@ more. They must be instantiated to give concrete functions or classes</p>
 <section id="patterns">
 <h2>Patterns<a class="headerlink" href="#patterns" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>Write a templated function</p></li>
-<li><p>Write a templated class</p></li>
-<li><p>Write class declarations of all sequential ADTs</p></li>
+<li><p>Write a function template</p></li>
+<li><p>Write a class template</p></li>
+<li><p>Write C++ class declarations to describe ADTs (only need to write the
+declarations of public methods)</p></li>
 <li><p>Write methods of common operations of linked-lists</p></li>
 <li><p>Write sorting algorithms as functions (take C array as parameter)</p></li>
-<li><p>Mimic sorting algorithms on paper (e.g. quick partition)</p></li>
+<li><p>Master how quick partition works on paper</p></li>
+<li><p>Master how sorted merge works on paper</p></li>
 <li><p>Write insertion sort on linked-list</p></li>
-<li><p>Mimic multiple insertion, removal and look up operations on a simple hash
-table</p>
+<li><p>Master open addressing collision resolution methods on paper</p>
 <ul>
-<li><p>Calculate probing sequence by hand</p></li>
-<li><p>Mimic probing methods on paper</p></li>
+<li><p>Calculate</p>
+<ul>
+<li><p>hash value</p></li>
+<li><p>probing sequence</p></li>
 </ul>
 </li>
-<li><p>Mimic algorithms</p>
-<ul>
-<li><p>result after n rounds</p></li>
-<li><p>how many comparisons/swaps</p></li>
+<li><p>Simulate how probing works on paper</p></li>
 </ul>
 </li>
 </ul>
@@ -308,16 +400,14 @@ table</p>
 </li>
 <li><a class="reference internal" href="#linked-list">Linked-List</a><ul>
 <li><a class="reference internal" href="#implementations">Implementations</a></li>
-<li><a class="reference internal" href="#vs-array">Vs Array</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#sequential-adts">Sequential ADTs</a><ul>
+<li><a class="reference internal" href="#linear-adts">Linear ADTs</a><ul>
 <li><a class="reference internal" href="#list">List</a></li>
 <li><a class="reference internal" href="#stack">Stack</a></li>
 <li><a class="reference internal" href="#queue">Queue</a></li>
 <li><a class="reference internal" href="#deque">Deque</a></li>
-<li><a class="reference internal" href="#wrapper">Wrapper</a></li>
-<li><a class="reference internal" href="#choose-implementations">Choose Implementations</a></li>
+<li><a class="reference internal" href="#wrapper-class">Wrapper class</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#sorting">Sorting</a></li>

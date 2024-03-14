@@ -17,8 +17,10 @@ Templates
 =========
 Concepts
 --------
-Templated functions or classes are templates, not functions or classes any
-more. They must be instantiated to give concrete functions or classes
++ A function template is not a function
++ The instance of a function template is a function
++ A class template is not a class
++ The instance of a class template is a class
 
 Syntax
 ------
@@ -26,11 +28,9 @@ Syntax
 
   * function declarations and definitions
   * class declarations
-  * method definitions
+  * out-of-line method definitions
 
-+ Splitting templates into multiple files is tricky.
-
-  * Put in a single hpp is the easiest way.
++ Single header module for templates
 
 Linked-List
 ===========
@@ -41,6 +41,7 @@ Implementations
   * head pointer
   * tail pointer (optional)
   * node with next pointer
+  * Cannot access previous node easily
 
 + doubly-linked
 
@@ -48,141 +49,207 @@ Implementations
   * tail pointer (optional)
   * node with next and prev pointers
 
-+ with dummy node (make the head node not a special node and avoid empty list)
-+ circular (not useful)
-+ compare and contrast
-+ methods
++ Implementation details
 
   * recursive vs iterative
-  * first, last and middle nodes handled differently
-  * destructor
+  * empty linked list is handled as a special case
+  * first, last and middle nodes are handled differently
+  * big three
   * search
   * insert before
   * insert after
-  * remove (IMPORTANT)
+  * remove
 
-Vs Array
---------
-+ Pro: faster insertion, removal in the middle; variable size
-+ Con: more storage space; slow access by index to middle elements
++ Compared to Array
 
-Sequential ADTs
-===============
+  * dynamic size
+  * insertion and removal are efficient
+  * access by index is inefficient
+
+Linear ADTs
+===========
 List
 ----
-Sequential; add and remove anywhere; access by index
++ Sequential
++ Behaviors
+
+  * add and remove at any position
+  * search
+  * access by index
+  * check size
 
 Stack
 -----
-Sequential; add and remove at one end;
++ LIFO or FILO
++ Implementation
+
+  * Mostly as a linear data structure
+  * linked-list
+  * partially filled array
+
++ Behaviors
+
+  * push
+  * pop
+  * peek/top
+  * check empty
 
 Queue
 -----
-Sequential; add at one end and remove at another end;
++ FIFO or LILO
++ Implementation
+
+  * Mostly as a linear data structure
+  * linked-list
+  * circular partially filled array (FYI)
+
++ Behaviors
+
+  * enqueue
+  * dequeue
+  * peek
+  * check empty
 
 Deque
 -----
-Sequential; add and remove at both ends;
++ Double-ended queue
++ Implementation
 
-Wrapper
--------
+  * Mostly as a linear data structure
+  * linked-list
+  * circular partially filled array (FYI)
+
++ Behaviors
+
+  * enqueue at both ends
+  * dequeue at both ends
+  * peek at both ends
+  * check size
+
+Wrapper class
+-------------
 + One ADT can cover the usage of another ADT
 + Wrapper class
 + E.g. wrap the std::vector class to implement a Stack
 + E.g. wrap Deque to implement Stack and Queue
 
-Choose Implementations
-----------------------
-+ Depends on whether common operations are efficient.
-+ Depends on the algorithm
-
 Sorting
 =======
-+ Complexities
++ Sorting algorithms concepts
 
-  * fast or not
-  * general purpose (usually comparison based) or not
+  * in-place (only swap) vs out-of-place (move data to another array)
+  * general purpose (comparison based) sorting algorithms vs non-comparison
+    based sorting algorithms
+  * stable vs unstable (whether the original order of duplicate elements is
+    preserved, FYI)
   * best complexity for comparison based sorting algorithms :math:`O(n \log n)`
 
 + Quick sort
 
-  * pivot selection - start, end, middle, random
-  * Quick partition - Hoare's algorithm
+  * **Quick partition** as a sub-algorithm
+
+    - Our variation of Hoare's scheme (different from the zybook algorithm,
+      refer to the lab)
+
+  * in-place algorithm
+  * time complexity: :math:`O(n \log n)` or :math:`O(n^2)` in the worst case
 
 + Merge sort
 
   * top-down merge sort
   * out-of-place algorithm
+  * **sorted merge** as a sub-algorithm
+  * time complexity :math:`O(n \log n)`
   * space complexity :math:`O(n)`
 
 + Radix sort
 
   * not a general algorithm
   * out-of-place algorithm
+  * time complexity :math:`O(nk)` where :math:`k` is the number of digits
+  * space complexity :math:`O(n)`
 
 + Linked-list based sorting
 
   * recursive vs iterative
-  * insertion
+  * not all sorting algorithms are suitable
+  * insertion sort
 
     - sorted insert
 
-  * merge
+  * merge sort
 
     - sorted merge
 
 Hashing
 =======
++ Applications: hash table, cryptography, fingerprinting, checksum, etc.
 + Hash function
 
-  * collision
+  * mapping data to data
+  * collision - different keys mapped to the same hash value
 
 Hash table
 ----------
 + Hash table
 
+  * Requirements
+
+    - Unique keys
+
   * Characteristics
 
-    - fast lookup
+    - fast lookup :math:`O(1)`
     - redundant storage space
     - performance degradation when overfilled
+
+      + load factor
 
   * buckets
   * hash function
 
-    - key -> index
+    - key -\> index
     - modulo operator
 
-  * collision resolution
+  * collision
 
-    - chaining
-    - probing
+    - different keys mapped to the same index
+    - something we always need to handle
 
-      + linear :math:`[h(key) + c*i]\%n`
-      + quadratic :math:`[h(key) + c*i^2]\%n`
-      + double hashing :math:`[h1(key) + c*i*h2(key)]\%n`
+  * collision resolution methods
 
-+ ADTs based on hash tables
+    - chaining: let each bucket hold more than one element
+    - open addressing: find another empty bucket
 
-  * map
-  * set
+      + Probing methods
+
+        * linear :math:`[h(key) + c*i]\%n`
+        * quadratic :math:`[h(key) + c_1*i + c_2*i^2]\%n`
+        * double hashing :math:`[h1(key) + c*i*h2(key)]\%n`
+
++ ADTs that are implemented using hash tables
+
+  * hash map (key-value pairs)
+  * hash set (only keys)
+
+    - when we do not care about values
 
 Patterns
 ========
-+ Write a templated function
-+ Write a templated class
-+ Write class declarations of all sequential ADTs
++ Write a function template
++ Write a class template
++ Write C++ class declarations to describe ADTs (only need to write the
+  declarations of public methods)
 + Write methods of common operations of linked-lists
 + Write sorting algorithms as functions (take C array as parameter)
-+ Mimic sorting algorithms on paper (e.g. quick partition)
++ Master how quick partition works on paper
++ Master how sorted merge works on paper
 + Write insertion sort on linked-list
-+ Mimic multiple insertion, removal and look up operations on a simple hash
-  table
++ Master open addressing collision resolution methods on paper
 
-  * Calculate probing sequence by hand
-  * Mimic probing methods on paper
+  * Calculate
 
-+ Mimic algorithms
+    - hash value
+    - probing sequence
 
-  * result after n rounds
-  * how many comparisons/swaps
+  * Simulate how probing works on paper
