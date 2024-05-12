@@ -20,8 +20,8 @@
     <link rel="canonical" href="https://uwf-fang.github.io/course/idc6145/m02.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="File systems/Storage services for Big Data" href="storage.html" />
-    <link rel="prev" title="Module 1a: Big Data Life Cycle" href="m01a.html" /> 
+    <link rel="next" title="Data Storage For Big Data" href="../../big_data/storage.html" />
+    <link rel="prev" title="Big Data Life Cycle" href="../../big_data/big_data_lifecycle.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,10 +30,10 @@
           <a href="../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="storage.html" title="File systems/Storage services for Big Data"
+          <a href="../../big_data/storage.html" title="Data Storage For Big Data"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="m01a.html" title="Module 1a: Big Data Life Cycle"
+          <a href="../../big_data/big_data_lifecycle.html" title="Big Data Life Cycle"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">IDC 6145 Big Data for Data Science</a> &#187;</li>
@@ -48,211 +48,16 @@
             
   <section id="module-2-data-storage-for-big-data">
 <h1>Module 2: Data Storage For Big Data<a class="headerlink" href="#module-2-data-storage-for-big-data" title="Permalink to this heading">¶</a></h1>
-<section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
 <p>In Module 2, we will delve into the crucial aspect of data storage for big
 data. Understanding how to effectively store and manage large volumes of data
 is essential for organizations dealing with big data challenges. In this
 module, we will explore the key considerations and techniques involved in
 storing big data.</p>
-<section id="what-we-care-most">
-<h3>What we care most<a class="headerlink" href="#what-we-care-most" title="Permalink to this heading">¶</a></h3>
-<p>When it comes to data storage for big data, there are several factors that we
-prioritize to ensure optimal performance and cost-effectiveness. Let’s examine
-the key aspects that we care most about:</p>
-<ul>
-<li><p>Scalability - Volume</p>
-<p>Scalability is crucial when dealing with big data as the volume of data can
-be immense. Traditional storage systems may not be able to handle the growing
-volume effectively. Therefore, we focus on employing scalable storage
-solutions that can accommodate the increasing volume of data without
-compromising performance.</p>
-<p>For example, organizations often utilize distributed file systems like Apache
-Hadoop Distributed File System (HDFS) or object storage systems like Amazon
-S3 that can scale horizontally by adding more storage nodes as the data
-volume expands.</p>
-</li>
-<li><p>Cost - Volume</p>
-<p>Big data storage can become expensive if not managed efficiently. As the
-volume of data grows, the cost of storage infrastructure, maintenance, and
-operations can increase significantly. Therefore, we emphasize cost-effective
-storage solutions that balance performance and cost considerations.</p>
-<p>For instance, cloud storage services such as Amazon Glacier or Google Cloud
-Storage Nearline offer lower-cost options for storing infrequently accessed
-or archival data, reducing overall storage expenses.</p>
-</li>
-<li><p>Performance - Velocity, Volume</p>
-<p>Big data is often characterized by high velocity, where data is generated and
-consumed at a rapid pace. Additionally, the sheer volume of data can pose
-performance challenges if not handled properly. Hence, we focus on storage
-systems that can deliver high-performance capabilities to handle the velocity
-and volume of data effectively.</p>
-<p>One approach to achieve high performance is through distributed storage
-architectures like Apache Cassandra, which employs a peer-to-peer model for
-storing and retrieving data across multiple nodes, enabling parallel
-processing and faster data access.</p>
-</li>
-<li><p>Data organization and structure - Variety</p>
-<p>Big data encompasses various types of data, including structured,
-semi-structured, and unstructured data. Efficient organization and structure
-are crucial to enable effective data analysis and processing. Therefore, we
-prioritize storage solutions that support different data formats and enable
-efficient data organization.</p>
-<p>For example, NoSQL databases like MongoDB provide flexible schema designs,
-allowing for the storage and retrieval of diverse data structures, making
-them suitable for handling the variety of big data.</p>
-</li>
-<li><p>Robustness, error tolerance - Veracity, Variety</p>
-<p>Big data sources may be prone to errors, inconsistencies, and outliers, which
-can impact the quality and reliability of the data. Hence, we emphasize
-robust storage mechanisms that ensure data integrity and error tolerance,
-especially when dealing with diverse and potentially unreliable data sources.</p>
-<p>Techniques such as data replication, distributed storage redundancy, and
-error detection mechanisms like checksums or data checksumming algorithms
-help ensure the veracity and reliability of big data.</p>
-</li>
-</ul>
-</section>
-<section id="traditional-data-storage">
-<h3>Traditional data storage<a class="headerlink" href="#traditional-data-storage" title="Permalink to this heading">¶</a></h3>
-<p>When discussing data storage for big data, it is important to understand the
-traditional approaches that have been commonly used. Let’s examine two widely
-used traditional data storage methods:</p>
-<ul>
-<li><p>File system (local) - unstructured, and semi-structured data</p>
-<p>File systems have long been used to store unstructured and semi-structured
-data. They provide a hierarchical structure for organizing files and folders.
-Traditional file systems, such as those found in operating systems like
-Windows, Mac OS or Linux, are suitable for storing individual files or small
-datasets.</p>
-<p>However, when dealing with big data, the limitations of local file systems
-become obvious. They may struggle to handle large volumes of data
-efficiently, lack scalability, and suffer from performance bottlenecks when
-accessed concurrently by multiple users or processes.</p>
-</li>
-<li><p>Relational Database Management System (RDBMS) - structured data</p>
-<p>Relational Database Management Systems (RDBMS) have been the go-to solution
-for structured data storage for many years. RDBMS offer a structured and
-tabular format for data storage, where data is organized into tables with
-predefined schemas and relationships defined by primary and foreign keys.</p>
-<p>RDBMS provide powerful querying capabilities using SQL (Structured Query
-Language) and support transactional integrity. They are well-suited for
-applications that require data consistency and complex relational queries.</p>
-<p>However, when dealing with big data, RDBMS may face challenges in terms of
-scalability and performance. The rigid schema and ACID (Atomicity,
-Consistency, Isolation, Durability) properties of RDBMS may hinder the
-efficient processing of large volumes of data and the flexibility required
-for handling diverse data types.</p>
-</li>
-</ul>
-</section>
-<section id="types-of-data-storage-for-big-data">
-<h3>Types of Data storage for big data<a class="headerlink" href="#types-of-data-storage-for-big-data" title="Permalink to this heading">¶</a></h3>
-<p>In the context of big data, various types of data storage technologies have
-emerged to address the unique requirements and challenges posed by large
-volumes of data. Let’s explore three prominent types of data storage solutions
-for big data:</p>
-<ul>
-<li><p>Distributed file system</p>
-<p>A distributed file system is designed to handle massive amounts of data by
-distributing it across multiple storage nodes. Some popular examples of
-distributed file systems include Hadoop Distributed File System (HDFS) and
-Google File System (GFS). Here are the key characteristics of distributed
-file systems:</p>
-<ul class="simple">
-<li><p>Data organized as files: In a distributed file system, data is organized
-and accessed as files, similar to traditional file systems. This allows for
-the storage of unstructured and semi-structured data.</p></li>
-<li><p>High performance: Distributed file systems leverage parallel processing and
-data replication to achieve high-performance data storage and retrieval.
-They can efficiently handle large-scale data processing tasks by
-distributing the workload across multiple nodes.</p></li>
-<li><p>Good scalability: Distributed file systems are designed to scale
-horizontally by adding more storage nodes as data volume increases. This
-scalability enables organizations to accommodate the growing demands of big
-data storage.</p></li>
-<li><p>File system access protocol: Distributed file systems typically provide
-their own access protocols for interacting with the stored data. For
-example, HDFS uses the Hadoop Distributed File System Protocol (HDFS
-protocol) for file operations.</p></li>
-</ul>
-</li>
-<li><p>Object store</p>
-<p>An object store is a storage architecture that organizes data as objects
-rather than files or blocks. It offers highly scalable and cost-effective
-storage solutions for big data. Notable examples of object stores include
-Amazon S3 (Simple Storage Service) and Google Cloud Storage. Let’s explore
-the characteristics of object stores:</p>
-<ul class="simple">
-<li><p>Data organized as objects: In an object store, data is organized as
-discrete objects, each with its own unique identifier and associated
-metadata. This approach enables efficient storage and retrieval of
-unstructured and semi-structured data.</p></li>
-<li><p>Perfect scalability: Object stores are designed for near-limitless
-scalability, allowing organizations to store and manage vast amounts of
-data without worrying about storage capacity constraints.</p></li>
-<li><p>Low cost: Object stores often offer cost-effective storage options,
-especially for infrequently accessed or archival data. By leveraging
-storage tiers and lifecycle policies, organizations can optimize costs by
-moving data to lower-cost storage tiers as it becomes less frequently
-accessed.</p></li>
-<li><p>RESTful API, HTTP protocol: Object stores typically provide a RESTful API
-(Application Programming Interface) that allows developers to interact with
-the stored objects using HTTP-based operations. This makes it easy to
-integrate and access data from various applications and systems.d</p></li>
-</ul>
-</li>
-<li><p>NoSQL database</p>
-<p>NoSQL (Not Only SQL) databases are designed to handle the requirements of
-storing and processing large volumes of structured and semi-structured data.
-NoSQL databases offer excellent scalability and flexibility for big data
-storage. Let’s examine the characteristics of NoSQL databases:</p>
-<ul class="simple">
-<li><p>Data organized as records, documents, and nodes: NoSQL databases employ
-various data models, such as key-value, document, columnar, or graph, to
-organize and store data. Each data model provides specific benefits for
-different types of data.</p></li>
-<li><p>Perfect scalability: NoSQL databases are built for horizontal scalability,
-allowing them to handle massive data volumes and high-velocity data
-ingestion. They can distribute data across multiple nodes and scale
-seamlessly as data grows.</p></li>
-<li><p>Optimized for structures: NoSQL databases optimize data storage and
-retrieval for specific data structures. For example, document-oriented
-NoSQL databases like MongoDB excel at storing and querying JSON-like
-documents, making them ideal for handling semi-structured data.</p></li>
-<li><p>Query protocol: Each NoSQL database offers its own query protocol or API
-for interacting with the data. For instance, MongoDB utilizes a flexible
-and powerful query language called MongoDB Query Language (MQL) for
-querying and manipulating data.</p></li>
-</ul>
-</li>
-</ul>
-</section>
-</section>
-<section id="storage-options">
-<h2>Storage Options<a class="headerlink" href="#storage-options" title="Permalink to this heading">¶</a></h2>
-<p>Detailed information about storage options for big data can be found in the
-following documents.</p>
 <div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Storage Options</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="storage.html">File systems/Storage services for Big Data</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="storage.html#hadoop-distributed-file-system-hdfs">Hadoop Distributed File System (HDFS)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="storage.html#amazon-s3-object-store-service">Amazon S3 object store service</a></li>
-<li class="toctree-l2"><a class="reference internal" href="storage.html#azure-data-lake-storage-adls">Azure Data Lake Storage (ADLS)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="storage.html#google-cloud-storage">Google Cloud Storage</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="nosql.html">NoSQL Databases</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="nosql.html#introduction-to-nosql-databases">Introduction to NoSQL databases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nosql.html#types-of-nosql-databases">Types of NoSQL databases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nosql.html#use-cases-of-nosql-databases">Use cases of NoSQL databases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="nosql.html#references">References</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../big_data/storage.html">Data Storage For Big Data</a></li>
 </ul>
 </div>
-</section>
 </section>
 
 
@@ -263,30 +68,14 @@ following documents.</p>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <div>
-    <h3><a href="../../index.html">Table of Contents</a></h3>
-    <ul>
-<li><a class="reference internal" href="#">Module 2: Data Storage For Big Data</a><ul>
-<li><a class="reference internal" href="#overview">Overview</a><ul>
-<li><a class="reference internal" href="#what-we-care-most">What we care most</a></li>
-<li><a class="reference internal" href="#traditional-data-storage">Traditional data storage</a></li>
-<li><a class="reference internal" href="#types-of-data-storage-for-big-data">Types of Data storage for big data</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#storage-options">Storage Options</a></li>
-</ul>
-</li>
-</ul>
-
-  </div>
-  <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="m01a.html"
-                          title="previous chapter">Module 1a: Big Data Life Cycle</a></p>
+    <p class="topless"><a href="../../big_data/big_data_lifecycle.html"
+                          title="previous chapter">Big Data Life Cycle</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="storage.html"
-                          title="next chapter">File systems/Storage services for Big Data</a></p>
+    <p class="topless"><a href="../../big_data/storage.html"
+                          title="next chapter">Data Storage For Big Data</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -316,10 +105,10 @@ following documents.</p>
           <a href="../../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="storage.html" title="File systems/Storage services for Big Data"
+          <a href="../../big_data/storage.html" title="Data Storage For Big Data"
              >next</a> |</li>
         <li class="right" >
-          <a href="m01a.html" title="Module 1a: Big Data Life Cycle"
+          <a href="../../big_data/big_data_lifecycle.html" title="Big Data Life Cycle"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" >IDC 6145 Big Data for Data Science</a> &#187;</li>
