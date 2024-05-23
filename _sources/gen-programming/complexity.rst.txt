@@ -37,27 +37,12 @@ Concepts
     Because the accurate measurement of time consumption is impossible, we
     usually count the number of constant time operations to estimate the time
     consumption. A constant time operation is an operation that always consume a
-    certain amount of time regardless of the problem size n.
+    certain amount of time regardless of the problem size `n`.
 
   Growth rate
     How much more resource is needed when the problem size grows. It is usually
     described using simple math functions. It is a simple way to visualize the
     complexity.
-
-  Asymptotic notation
-    The math language we use to describe the complexity in a formal way. It
-    includes :math:`O` (big-O), :math:`\Omega` (big-omega), :math:`\Theta`
-    (big-theta) notations.
-
-  Lower bound
-    The best (least resource) complexity of a given algorithm. Related to the best case and the :math:`\Omega` (big-omega) notation.
-
-  Upper bound
-    The worst (most resource) complexity of a given algorithm. Related to the worst case and the :math:`O` (big-O) notation.
-
-  Exact bound
-    When a same complexity can be found for both the upper and lower bound, it
-    is the exact bound :math:`\Theta`
 
 .. image:: /_static/complexity.png
   :width: 400
@@ -66,13 +51,34 @@ Concepts
 
 Asymptotic notation
 ===================
-A.k.a Bachmann–Landau notation. A mathematical notation system to describe the
-limiting behavior of a function.
+Asymptotic notation is the math language we use to describe the complexity in a
+formal way. It is formally known as Bachmann–Landau notation. A mathematical
+notation system to describe the limiting behavior of a function. It includes
+:math:`O` (big-O), :math:`\Omega` (big-omega), :math:`\Theta` (big-theta)
+notations.
 
 .. note::
 
   Time complexity is more useful and is focused in the following sections. Most
   of the rules can be used with space complexity with little modification.
+
+Motivation
+----------
+Time, space or other kind of complexities are functions of the problem size
+:math:`n`. They are not too helpful to describe the complexity of an algorithm
+for the following reason:
+
+#. They can be very complex functions that cannot be easily described or
+   compared.
+#. They can be very different for different problem sizes, while we are more
+   interested in the general trend when the problem size grows large.
+
+Thus, we need a method to describe the complexity as simpler math functions and focus on the general trend when the problem size grows large.
+
+E.g. :math:`T(n) = 3n^2 + 10n + 4` is a time function of a certain algorithm.
+It can be simplified to asymptotic notation :math:`\Theta(n^2)`, which is good
+enough to describe how the resource consumption grows with the problem size
+when the problem size is large.
 
 Formal Definitions
 ------------------
@@ -98,10 +104,52 @@ such that :math:`T(n) < cf(n)` for all :math:`n \geq n_{0}`.
   The :math:`=` used in equations like :math:`T(n) = O(f(n))` does not mean
   *equal*! It means *in* or *belong to*.
 
-All notations :math:`O(f(n))`, :math:`\Omega(f(n))`, :math:`T(n) =
-\Theta(f(n))` and :math:`T(n) = o(f(n))` define sets of functions that have the
-same *order*. Thus, the set will be the same of the function :math:`f(n)` has
-the same order. For example, :math:`O(n^2)=O(2*n^2)=O(n^2+3n)=\dots`
+All notations :math:`O(f(n))`, :math:`\Omega(f(n))`, and :math:`\Theta(f(n))`
+define sets of functions that have the same *order*. Thus, the set will be the
+same of the function :math:`f(n)` has the same order. For example,
+:math:`\Theta(n^2)=\Theta(2*n^2)=\Theta(n^2+3n)=\dots` so we can use the
+simplest form of the function to represent the set.
+
+How they work and which one to choose
+-------------------------------------
++ For a complexity, there exist infinite upper and lower bounds and we should
+  focus on the "tightest" bound.
++ If a big theta notation exists, it is guaranteed to be the tightest upper and
+  lower bound.
++ The big theta notation, :math:`\Theta(f(n))` is the most precise notation and
+  is preferred as possible. However, it may not always exist in practice.
++ When we cannot find the big theta notation, we can use big O :math:`O(f(n))`
+  to describe the upper bound of the complexity. As it describe the upper bound,
+  which is a guarantee that the complexity will not exceed this value.
+
+E.g. :math:`T(n) = 3n^2 + 10n + 4` is a time function of a certain algorithm.
+It has the big theta notation :math:`\Theta(n^2)`, which is the tightest bound.
+It also has the tightest upper bound :math:`O(n^2)` and tightest lower bound
+:math:`\Omega(n^2)`. Other upper bounds like :math:`O(n^3)`, :math:`O(n^4)` are
+also valid but not as tight as :math:`O(n^2)`. Other lower bounds like
+:math:`\Omega(n)`, :math:`\Omega(\log n)` are also valid but not as tight as
+:math:`\Omega(n^2)`.
+
+E.g. Mark Zuckerberg's income is an upper bound to your income but it is not
+helpful to estimate your income because it is not a "tight" upper bound.
+
+Considering Cases
+-----------------
+In complexity analysis, various cases are considered to assess the efficiency
+and performance of algorithms. These cases help us understand how algorithms
+behave under different scenarios and input distributions.
+
++ Best Case: The minimum amount of resources required by the algorithm.
++ Worst Case: The maximum amount of resources required by the algorithm.
++ Average Case: The average amount of resources required by the algorithm.
+
+.. warning::
+
+  **Bounds and cases are not directly related. Do not treat upper bound as
+  worst case and lower bound as best case!**
+
+  Each case provides a complexity as a function of problem size and we can use
+  upper/lower/exact bound to estimate the growth rate of this function.
 
 Representative Algorithms of Certain Complexity
 -----------------------------------------------
@@ -111,52 +159,52 @@ Representative Algorithms of Certain Complexity
    :header-rows: 1
 
    * - Name
-     - Complexity (Big O)
+     - Bound (prefer big theta)
      - Representative Algorithms
    * - Constant
-     - :math:`O(1)`
+     - :math:`\Theta(1)`
      - Array indexing, Hash table lookups
    * - Logarithmic
-     - :math:`O(log(n))`
+     - :math:`\Theta(\log n)`
      - Binary Search, Balanced Binary Search Trees (e.g., AVL, Red-Black)
    * - Linear
-     - :math:`O(n)`
+     - :math:`\Theta(n)`
      - Linear Search, Most Simple Array/Linked List Operations
    * - Linearithmic
-     - :math:`O(n log(n))`
+     - :math:`\Theta(n \log n)`
      - Merge Sort, Heap Sort, Quick sort
    * - Quadratic
-     - :math:`O(n^2)`
+     - :math:`\Theta(n^2)`
      - Bubble Sort, Selection Sort, Insertion Sort
    * - Polynomial (k > 2)
-     - :math:`O(n^k)`
+     - :math:`\Theta(n^k)`
      - Matrix Multiplication (naive approach)
    * - Exponential
-     - :math:`O(2^n)`
+     - :math:`\Theta(2^n)`
      - Recursive algorithms without memoization (e.g., naive Fibonacci)
    * - Factorial
-     - :math:`O(n!)`
+     - :math:`\Theta(n!)`
      - Traveling Salesman Problem (naive solution)
 
 Properties
 ----------
-+ :math:`O(f(n))` is a **set** of functions that have the same order as
++ :math:`\Theta(f(n))` is a **set** of functions that have the same order as
   :math:`f(n)`.
 
-  + E.g. :math:`O(n^2) = O(2n^2) = O(n^2 + 3n) = \dots` because they all have
-    the same order :math:`n^2`.
+  + E.g. :math:`\Theta(n^2) = \Theta(2n^2) = \Theta(n^2 + 3n) = \dots` because
+    they all have the same order :math:`n^2`.
   + Thus, we will always use the simplest form of :math:`f(n)` to represent the
-    set. E.g. :math:`O(2n^2 + 10n - 4) = O(n^2)`. This step is called
+    set. E.g. :math:`\Theta(2n^2 + 10n - 4) = \Theta(n^2)`. This step is called
     **simplification**.
 
-+ If :math:`T(n) = O(f(n))` and :math:`g(n)` is a function with higher order
-  than :math:`f(n)`, then :math:`T(n) = O(g(n))`.
++ If :math:`T(n) = \Theta(f(n))` and :math:`g(n)` is a function with higher
+  order than :math:`f(n)`, then :math:`T(n) = \Theta(g(n))`.
 
-  + E.g. if :math:`T(n) = 3n^2 + 10n + 4 = O(n^2)`, then :math:`T(n) = O(n^3) =
-    O(n^4) = \cdots`, All functions with higher order than :math:`n^2` is a
-    possible upper bound of :math:`T(n)`.
+  + E.g. if :math:`T(n) = 3n^2 + 10n + 4 = \Theta(n^2)`, then :math:`T(n) =
+    \Theta(n^3) = \Theta(n^4) = \cdots`, All functions with higher order than
+    :math:`n^2` is a possible upper bound of :math:`T(n)`.
   + Thus, we should always use the lowest-possible order to represent the set,
-    :math:`O(n^2)` in this case. Because higher order functions is always a
+    :math:`\Theta(n^2)` in this case. Because higher order functions is always a
     possible upper bound, they become less meaningful.
 
 + Summary, **We should always use the simplest form of the lowest-possible
@@ -164,8 +212,8 @@ Properties
 
 Steps to Find Complexity
 ========================
-+ Option 1: Find :math:`T(n)` and then find :math:`O(f(n))`.
-+ Option 2: Estimate :math:`O(f(n))` directly.
++ Option 1: Find :math:`T(n)` and then find :math:`\Theta(f(n))`.
++ Option 2: Estimate :math:`\Theta(f(n))` directly.
 
 Find :math:`T(n)`
 -----------------
@@ -185,14 +233,14 @@ Find :math:`T(n)`
   * ``std::swap, cout <<, getline`` are constant time.
   * ``std::sort, std::search, std::shuffle`` are not constant time.
 
-Find :math:`O` given :math:`T(n)`
----------------------------------
+Find :math:`\Theta` given :math:`T(n)`
+--------------------------------------
 + Keep the term with highest order. Drop the coefficient and lower order terms
   go provide the simplest form.
 + Example:
 
-  * :math:`T(n) = 20 \times n^2 + 10 \times n + 12 = O(n^2)`
-  * :math:`T(n) = 5 \times 2^n + 3 \times n^3 = O(2^n)`
+  * :math:`T(n) = 20 \times n^2 + 10 \times n + 12 = \Theta(n^2)`
+  * :math:`T(n) = 5 \times 2^n + 3 \times n^3 = \Theta(2^n)`
 
 .. list-table:: Common Growth Rates, from low to high order
    :widths: 25 25
@@ -203,11 +251,11 @@ Find :math:`O` given :math:`T(n)`
    * - Constant Time
      - :math:`1`
    * - Logarithmic
-     - :math:`log(n)`
+     - :math:`\log n`
    * - Linear
      - :math:`n`
    * - Linearithmic
-     - :math:`n log(n)`
+     - :math:`n \log n`
    * - Quadratic
      - :math:`n^2`
    * - Cubic
@@ -217,29 +265,29 @@ Find :math:`O` given :math:`T(n)`
    * - Factorial
      - :math:`n!`
 
-
-Find :math:`O` directly
------------------------
+Find :math:`\Theta` directly
+----------------------------
 + additive (sequential, branch)
 
-  * :math:`O(f(n)) + O(g(n)) = O(f(n) + g(n))`
-  * E.g. :math:`O(n^2) + O(n) = O(n^2 + n) = O(n^2)`
+  * :math:`\Theta(f(n)) + \Theta(g(n)) = \Theta(f(n) + g(n))`
+  * E.g. :math:`\Theta(n^2) + \Theta(n) = \Theta(n^2 + n) = \Theta(n^2)`
 
 + multiplicative (loop, recursion)
 
-  * for a layer of loop: :math:`O(f(n)) \times O(g(n)) = O(f(n) \times g(n))`
-  * complexity of number of iterations :math:`O(f(n))`
+  * for a layer of loop: :math:`\Theta(f(n)) \times \Theta(g(n)) = \Theta(f(n)
+    \times g(n))`
+  * complexity of number of iterations :math:`\Theta(f(n))`
 
     - how problem size is reduced in each iteration`
-    - reduce by half each round: :math:`O(log(n))`
-    - reduce by a constant each round: :math:`O(n)`
+    - reduce by half each round: :math:`\Theta(\log n)`
+    - reduce by a constant each round: :math:`\Theta(n)`
 
-  * complexity in each iteration :math:`O(g(n))`
-  * E.g. For merge sort, the number of iterations is :math:`O(log(n))` and the
-    complexity in each iteration is :math:`O(n)`. Thus, the total complexity is
-    :math:`O(logn) \times O(n) = O(n log(n))`.
+  * complexity in each iteration :math:`\Theta(g(n))`
+  * E.g. For merge sort, the number of iterations is :math:`\Theta(\log n)` and
+    the complexity in each iteration is :math:`\Theta(n)`. Thus, the total
+    complexity is :math:`\Theta(\log n) \times \Theta(n) = \Theta(n \log n)`.
 
 Pitfalls
 ========
-+ Confusing :math:`T(n)` to :math:`O(f(n))`
-+ Not all function calls are constant time operations (a.k.a. :math:`O(1)`)
++ Confusing :math:`T(n)` to :math:`\Theta(f(n))`
++ Not all function calls are constant time operations (a.k.a. :math:`\Theta(1)`)
