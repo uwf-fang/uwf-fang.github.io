@@ -17,7 +17,7 @@
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
-    <link rel="canonical" href="https://uwf-fang.github.io/big_data/data_processing.html" />
+    <link rel="canonical" href="https://uwf-fang.github.io/big_data/big_data_processing.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Module 4: PySpark Programming For Beginner" href="../course/idc6145/m04.html" />
@@ -269,16 +269,16 @@ the frequency of each word in the file.</p>
 </div>
 <p>The MapReduce job consists of two main parts: the mapper and the reducer. We
 also need a driver to run the mapper and reducer.</p>
-<p>Mapper:
+<p><strong>Mapper:</strong>
 In the mapper, we take the input text file and split it into individual words.
 For each word, we emit a key-value pair where the key is the word itself and
 the value is an integer 1.</p>
-<p>Reducer:
+<p><strong>Reducer:</strong>
 In the reducer, we receive the key-value pairs emitted by the mapper. We group
 together all the values associated with each key and add them up to get the
 total count for that word. We then emit a final key-value pair where the key is
 the word and the value is the total count.</p>
-<p>Driver:
+<p><strong>Driver:</strong>
 In the driver code, we set up the configuration for the MapReduce job,
 specifying the input and output file paths, the mapper and reducer classes, and
 the output key and value types. We also set the combiner class, which is an
@@ -296,10 +296,11 @@ to the reducer. Finally, we run the job and wait for it to complete.</p>
 process large-scale data and perform real-time analytics. It was initially
 developed at UC Berkeley’s AMPLab in 2009 and later became an Apache Software
 Foundation project in 2013.</p>
-<p>Spark is designed to be faster and more efficient than its predecessor, Hadoop
-MapReduce, by providing in-memory processing and a more expressive and concise
-programming model. Spark provides a unified platform for batch processing, SQL
-queries, stream processing, machine learning, and graph processing.</p>
+<p>Spark is designed to be faster and more efficient drop-in replacement of Hadoop
+MapReduce. It provides in-memory processing and a more expressive and concise
+programming model. It soon grew into a more comprehensive data processing
+framework. Spark provides a unified platform for batch processing, SQL queries,
+stream processing, machine learning, and graph processing.</p>
 <p>While Spark can run independently, it can also be run on top of Hadoop
 Distributed File System (HDFS) and can be integrated with other Hadoop
 components, such as YARN and HBase. Spark can also leverage Hadoop’s
@@ -336,6 +337,55 @@ programming language.</p></li>
 <li><p>Structured Streaming: A high-level API of Spark that provides a unified
 programming model for batch and streaming data processing. It allows users to
 process data in real-time using Spark’s SQL and DataFrame APIs.</p></li>
+</ul>
+</section>
+<section id="external-libraries">
+<h3>External Libraries<a class="headerlink" href="#external-libraries" title="Permalink to this heading">¶</a></h3>
+<ul>
+<li><p>Resource manager</p>
+<ul class="simple">
+<li><p>Baseline stand-alone mode: Spark can run in a stand-alone mode without any
+external resource manager.</p></li>
+<li><p>YARN: Yet Another Resource Negotiator, a resource management layer that
+schedules and manages resources in a Hadoop cluster.</p></li>
+<li><p>Mesos: A distributed systems kernel that provides resource isolation and
+sharing across distributed applications.</p></li>
+</ul>
+</li>
+<li><p>Storage</p>
+<p>Spark does not have its own storage system. It can work with various storage
+systems, including:</p>
+<ul class="simple">
+<li><p>Distributed file systems</p>
+<ul>
+<li><p>HDFS: Hadoop Distributed File System</p></li>
+<li><p>DBFS: Databricks File System</p></li>
+<li><p>ADLS: Azure Data Lake Storage</p></li>
+</ul>
+</li>
+<li><p>Object store</p>
+<ul>
+<li><p>Amazon S3: Simple Storage Service</p></li>
+<li><p>Google Cloud Storage</p></li>
+<li><p>Azure Blob Storage</p></li>
+</ul>
+</li>
+<li><p>NoSQL database</p>
+<ul>
+<li><p>Apache Cassandra: A distributed NoSQL database</p></li>
+<li><p>Apache HBase: A distributed, scalable, NoSQL database</p></li>
+</ul>
+</li>
+<li><p>Relational database</p>
+<ul>
+<li><p>MySQL</p></li>
+<li><p>PostgreSQL</p></li>
+<li><p>Oracle</p></li>
+<li><p>MS SQL</p></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </section>
 <section id="comparison-to-hadoop-mapreduce">
@@ -546,6 +596,7 @@ components. All three data APIs are demonstrated here.</p>
 </li>
 <li><a class="reference internal" href="#spark">Spark</a><ul>
 <li><a class="reference internal" href="#components">Components</a></li>
+<li><a class="reference internal" href="#external-libraries">External Libraries</a></li>
 <li><a class="reference internal" href="#comparison-to-hadoop-mapreduce">Comparison to Hadoop MapReduce</a></li>
 <li><a class="reference internal" href="#data-apis">Data APIs</a></li>
 <li><a class="reference internal" href="#pyspark-code-examples">PySpark Code Examples</a></li>
@@ -569,7 +620,7 @@ components. All three data APIs are demonstrated here.</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/big_data/data_processing.rst.txt"
+      <li><a href="../_sources/big_data/big_data_processing.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>

@@ -240,18 +240,18 @@ the frequency of each word in the file.
 The MapReduce job consists of two main parts: the mapper and the reducer. We
 also need a driver to run the mapper and reducer.
 
-Mapper:
+**Mapper:**
 In the mapper, we take the input text file and split it into individual words.
 For each word, we emit a key-value pair where the key is the word itself and
 the value is an integer 1.
 
-Reducer:
+**Reducer:**
 In the reducer, we receive the key-value pairs emitted by the mapper. We group
 together all the values associated with each key and add them up to get the
 total count for that word. We then emit a final key-value pair where the key is
 the word and the value is the total count.
 
-Driver:
+**Driver:**
 In the driver code, we set up the configuration for the MapReduce job,
 specifying the input and output file paths, the mapper and reducer classes, and
 the output key and value types. We also set the combiner class, which is an
@@ -274,10 +274,11 @@ process large-scale data and perform real-time analytics. It was initially
 developed at UC Berkeley's AMPLab in 2009 and later became an Apache Software
 Foundation project in 2013.
 
-Spark is designed to be faster and more efficient than its predecessor, Hadoop
-MapReduce, by providing in-memory processing and a more expressive and concise
-programming model. Spark provides a unified platform for batch processing, SQL
-queries, stream processing, machine learning, and graph processing.
+Spark is designed to be faster and more efficient drop-in replacement of Hadoop
+MapReduce. It provides in-memory processing and a more expressive and concise
+programming model. It soon grew into a more comprehensive data processing
+framework. Spark provides a unified platform for batch processing, SQL queries,
+stream processing, machine learning, and graph processing.
 
 While Spark can run independently, it can also be run on top of Hadoop
 Distributed File System (HDFS) and can be integrated with other Hadoop
@@ -316,6 +317,46 @@ streaming data analysis. Here are some of the key components of Spark:
 + Structured Streaming: A high-level API of Spark that provides a unified
   programming model for batch and streaming data processing. It allows users to
   process data in real-time using Spark's SQL and DataFrame APIs.
+
+External Libraries
+------------------
++ Resource manager
+
+  * Baseline stand-alone mode: Spark can run in a stand-alone mode without any
+    external resource manager.
+  * YARN: Yet Another Resource Negotiator, a resource management layer that
+    schedules and manages resources in a Hadoop cluster.
+  * Mesos: A distributed systems kernel that provides resource isolation and
+    sharing across distributed applications.
+
++ Storage
+
+  Spark does not have its own storage system. It can work with various storage
+  systems, including:
+
+  * Distributed file systems
+
+    - HDFS: Hadoop Distributed File System
+    - DBFS: Databricks File System
+    - ADLS: Azure Data Lake Storage
+
+  * Object store
+
+    - Amazon S3: Simple Storage Service
+    - Google Cloud Storage
+    - Azure Blob Storage
+
+  * NoSQL database
+
+    - Apache Cassandra: A distributed NoSQL database
+    - Apache HBase: A distributed, scalable, NoSQL database
+
+  * Relational database
+
+    - MySQL
+    - PostgreSQL
+    - Oracle
+    - MS SQL
 
 Comparison to Hadoop MapReduce
 ------------------------------
