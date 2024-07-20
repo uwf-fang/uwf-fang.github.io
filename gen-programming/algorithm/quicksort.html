@@ -76,6 +76,7 @@ one element.</p>
 <section id="algorithm-details">
 <h2>Algorithm Details<a class="headerlink" href="#algorithm-details" title="Permalink to this heading">¶</a></h2>
 <ul>
+<li><p>We employs the zyBook’s version. There are many other implementations!</p></li>
 <li><p>Quick partition algorithm</p>
 <ul>
 <li><p>The core of quick sort</p></li>
@@ -88,15 +89,6 @@ come before the pivot, and all elements greater than the pivot come
 after it.</p></li>
 <li><p>Return the location of the partition.</p></li>
 </ol>
-</li>
-<li><p>Select the pivot</p>
-<ul class="simple">
-<li><p>First element as pivot</p></li>
-<li><p>Last element as pivot</p></li>
-<li><p>Median of first, middle, and last element as pivot</p></li>
-<li><p>Median of several random elements as pivot</p></li>
-<li><p>Random element as pivot</p></li>
-</ul>
 </li>
 <li><p>Partition the list</p>
 <ul class="simple">
@@ -112,7 +104,8 @@ and equal than the pivot.</p></li>
 <li><p>If the left cursor meets the right cursor, the partition is complete.
 Return the right cursor.</p></li>
 <li><p>Swap the elements pointed by the two cursors.</p></li>
-<li><p>Repeat steps 2-5 until the partition is complete (step 4 returns).</p></li>
+<li><p>Move both cursors</p></li>
+<li><p>Repeat steps 2-6 until the partition is complete (step 4 returns).</p></li>
 </ol>
 </li>
 </ul>
@@ -124,7 +117,7 @@ Return the right cursor.</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">hoare_partition</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">):</span>
   <span class="o">//</span> <span class="n">Select</span> <span class="n">the</span> <span class="n">middle</span> <span class="n">element</span> <span class="k">as</span> <span class="n">the</span> <span class="n">pivot</span>
-  <span class="n">pivot_index</span> <span class="o">=</span> <span class="p">(</span><span class="n">low</span> <span class="o">+</span> <span class="n">high</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+  <span class="n">pivot_index</span> <span class="o">=</span> <span class="p">(</span><span class="n">low</span> <span class="o">+</span> <span class="n">high</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>  <span class="o">//</span> <span class="n">same</span> <span class="k">as</span> <span class="n">low</span> <span class="o">+</span> <span class="p">(</span><span class="n">high</span> <span class="o">-</span> <span class="n">low</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
   <span class="n">pivot</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">pivot_index</span><span class="p">]</span>
 
   <span class="n">i</span> <span class="o">=</span> <span class="n">low</span>
@@ -136,15 +129,21 @@ Return the right cursor.</p></li>
       <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
 
     <span class="o">//</span> <span class="n">Find</span> <span class="n">rightmost</span> <span class="n">element</span> <span class="n">less</span> <span class="n">than</span> <span class="ow">or</span> <span class="n">equal</span> <span class="n">to</span> <span class="n">pivot</span>
-    <span class="k">while</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">pivot</span>
+    <span class="k">while</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">pivot</span><span class="p">:</span>
       <span class="n">j</span> <span class="o">=</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span>
 
     <span class="o">//</span> <span class="n">If</span> <span class="n">pointers</span> <span class="n">cross</span><span class="p">,</span> <span class="n">partition</span> <span class="ow">is</span> <span class="n">complete</span>
     <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">j</span><span class="p">:</span>
-      <span class="k">return</span> <span class="n">j</span>  <span class="o">//</span> <span class="n">Return</span> <span class="n">the</span> <span class="n">rightmost</span> <span class="n">index</span>
+      <span class="k">break</span>
 
     <span class="o">//</span> <span class="n">Swap</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
     <span class="n">swap</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+
+    <span class="o">//</span> <span class="n">move</span> <span class="n">cursor</span> <span class="n">to</span> <span class="nb">next</span> <span class="n">element</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span>
+
+  <span class="k">return</span> <span class="n">j</span>
 </pre></div>
 </div>
 </li>
@@ -156,6 +155,35 @@ Return the right cursor.</p></li>
 <li><p>Call quick partition algorithm to partition the list into two sublists.</p></li>
 <li><p>Recursively call quick sort on both sublists.</p></li>
 </ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>function quick_sort(arr, low, high):
+  if low &lt; high:
+    // Partition the list
+    pivot = hoare_partition(arr, low, high)
+
+    // Recursively sort the sublists
+    quick_sort(arr, low, pivot)  // not pivot - 1!!!
+    quick_sort(arr, pivot + 1, high)
+</pre></div>
+</div>
+</li>
+<li><p>Variations of quick sort</p>
+<ul class="simple">
+<li><p>Select a pivot</p>
+<ul>
+<li><p>First element as pivot</p></li>
+<li><p>Last element as pivot</p></li>
+<li><p>Median of first, middle, and last element as pivot (State of art)</p></li>
+<li><p>Median of several random elements as pivot</p></li>
+<li><p>Random element as pivot</p></li>
+</ul>
+</li>
+<li><p>Moving the cursor</p>
+<ul>
+<li><p>Lomuto’s partition scheme - i and j move in the same direction</p></li>
+<li><p>Hoare’s partition scheme - i and j move in opposite directions</p></li>
+</ul>
+</li>
+</ul>
 </li>
 </ul>
 </section>
@@ -168,13 +196,18 @@ Return the right cursor.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\Theta(n^2)\)</span> worst case</p></li>
 </ul>
 </li>
-<li><p>Space - <span class="math notranslate nohighlight">\(\Theta(1)\)</span></p></li>
+<li><p>Space</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\Theta(\log n)\)</span> average case</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Theta(n)\)</span> worst case</p></li>
+</ul>
+</li>
 <li><p>Improvement attempts</p>
 <ul>
 <li><p>Pivot selection</p>
 <ul>
 <li><p>Randomized quick sort</p></li>
-<li><p>Median of medians</p></li>
+<li><p>Median of three</p></li>
 </ul>
 </li>
 <li><p>Shuffling the list before sorting</p></li>
