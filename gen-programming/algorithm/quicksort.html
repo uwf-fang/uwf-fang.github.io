@@ -95,16 +95,16 @@ after it.</p></li>
 <li><p>Lomuto’s partition scheme (FYI)</p></li>
 <li><p>Hoare’s partition scheme</p>
 <ol class="arabic simple">
-<li><p>Let two cursor indices to point to the first and last element of the
-list respectively.</p></li>
-<li><p>Move the left cursor to the right until it points to an element
+<li><p>Let two cursor indices to point to the first - 1 and last + 1
+positions of the list respectively.</p></li>
+<li><p>Keep moving the left cursor to the right until it points to an element
 greater and equal than the pivot.</p></li>
-<li><p>Move the right cursor to the left until it points to an element less
-and equal than the pivot.</p></li>
-<li><p>If the left cursor meets the right cursor, the partition is complete.
-Return the right cursor.</p></li>
+<li><p>Keep moving the right cursor to the left until it points to an element
+less and equal than the pivot.</p></li>
+<li><p>If the left cursor meets or passes the right cursor, the partition is
+complete. Return the right cursor.</p></li>
 <li><p>Swap the elements pointed by the two cursors.</p></li>
-<li><p>Move both cursors</p></li>
+<li><p>Move both cursors one more step</p></li>
 <li><p>Repeat steps 2-6 until the partition is complete (step 4 returns).</p></li>
 </ol>
 </li>
@@ -187,6 +187,34 @@ Return the right cursor.</p></li>
 </li>
 </ul>
 </section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this heading">¶</a></h2>
+<p>This example demonstrates the quick sort algorithm using the zybook’s variation
+of Hoare’s partition scheme. You may try to use this format in the quiz or exam.</p>
+<ul class="simple">
+<li><p>Given an int array <code class="docutils literal notranslate"><span class="pre">{42,</span> <span class="pre">7,</span> <span class="pre">85,</span> <span class="pre">23,</span> <span class="pre">64,</span> <span class="pre">91,</span> <span class="pre">9,</span> <span class="pre">73,</span> <span class="pre">18,</span> <span class="pre">56}</span></code></p></li>
+<li><p>First round of partitioning</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>// low is 0, high is 9 initially
+middle = (low + high) / 2 = 4
+pivot = arr[middle] = 64
+
+{42, 7, 85, 23, 64, 91, 9, 73, 18, 56} find position
+        l                          h
+{42, 7, 56, 23, 64, 91, 9, 73, 18, 85} swap 85, 56, and move by 1
+            l                  h
+{42, 7, 56, 23, 64, 91, 9, 73, 18, 85} find position (hit pivot)
+                l              h
+{42, 7, 56, 23, 18, 91, 9, 73, 64, 85} swap 64, 18, and move by 1
+                    l      h
+{42, 7, 56, 23, 18, 91, 9, 73, 64, 85} find position
+                    l   h
+{42, 7, 56, 23, 18, 9, 91, 91, 64, 85} swap 91, 9, and move by 1
+                    h  l
+h &lt;= l, return h; left: low to h, right: h + 1 to high
+</pre></div>
+</div>
+</section>
 <section id="complexity">
 <h2>Complexity<a class="headerlink" href="#complexity" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
@@ -252,6 +280,7 @@ configurations and are not compatible with our demonstration.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#algorithm-details">Algorithm Details</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
 <li><a class="reference internal" href="#complexity">Complexity</a></li>
 <li><a class="reference internal" href="#visualization-website">Visualization Website</a></li>
 </ul>

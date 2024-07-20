@@ -43,16 +43,16 @@ Algorithm Details
     - Lomuto's partition scheme (FYI)
     - Hoare's partition scheme
 
-      #. Let two cursor indices to point to the first and last element of the
-         list respectively.
-      #. Move the left cursor to the right until it points to an element
+      #. Let two cursor indices to point to the first - 1 and last + 1
+         positions of the list respectively.
+      #. Keep moving the left cursor to the right until it points to an element
          greater and equal than the pivot.
-      #. Move the right cursor to the left until it points to an element less
-         and equal than the pivot.
-      #. If the left cursor meets the right cursor, the partition is complete.
-         Return the right cursor.
+      #. Keep moving the right cursor to the left until it points to an element
+         less and equal than the pivot.
+      #. If the left cursor meets or passes the right cursor, the partition is
+         complete. Return the right cursor.
       #. Swap the elements pointed by the two cursors.
-      #. Move both cursors
+      #. Move both cursors one more step
       #. Repeat steps 2-6 until the partition is complete (step 4 returns).
 
   * Example algorithm
@@ -123,6 +123,34 @@ Algorithm Details
 
     - Lomuto's partition scheme - i and j move in the same direction
     - Hoare's partition scheme - i and j move in opposite directions
+
+Example
+=======
+This example demonstrates the quick sort algorithm using the zybook's variation
+of Hoare's partition scheme. You may try to use this format in the quiz or exam.
+
++ Given an int array ``{42, 7, 85, 23, 64, 91, 9, 73, 18, 56}``
++ First round of partitioning
+
+.. code-block:: text
+
+  // low is 0, high is 9 initially
+  middle = (low + high) / 2 = 4
+  pivot = arr[middle] = 64
+
+  {42, 7, 85, 23, 64, 91, 9, 73, 18, 56} find position
+          l                          h
+  {42, 7, 56, 23, 64, 91, 9, 73, 18, 85} swap 85, 56, and move by 1
+              l                  h
+  {42, 7, 56, 23, 64, 91, 9, 73, 18, 85} find position (hit pivot)
+                  l              h
+  {42, 7, 56, 23, 18, 91, 9, 73, 64, 85} swap 64, 18, and move by 1
+                      l      h
+  {42, 7, 56, 23, 18, 91, 9, 73, 64, 85} find position
+                      l   h
+  {42, 7, 56, 23, 18, 9, 91, 91, 64, 85} swap 91, 9, and move by 1
+                      h  l
+  h <= l, return h; left: low to h, right: h + 1 to high
 
 Complexity
 ==========
