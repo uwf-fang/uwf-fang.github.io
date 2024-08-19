@@ -20,7 +20,7 @@
     <link rel="canonical" href="https://uwf-fang.github.io/big_data/pyspark.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Module 5: Data Analysis for Big Data" href="../course/idc6145/m05.html" />
+    <link rel="next" title="PySpark Programming: RDD" href="pyspark_rdd.html" />
     <link rel="prev" title="PySpark Environment For Learning" href="pyspark_colab_env.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -30,14 +30,14 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../course/idc6145/m05.html" title="Module 5: Data Analysis for Big Data"
+          <a href="pyspark_rdd.html" title="PySpark Programming: RDD"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="pyspark_colab_env.html" title="PySpark Environment For Learning"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../course/idc6145/index.html" >IDC 6145 Big Data for Data Science</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../course/idc6145/m04.html" accesskey="U">Module 4: PySpark Programming For Beginner</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../course/idc6145/m04.html" accesskey="U">Module 4: PySpark Programming: Environment, Basics, RDD</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">PySpark Programming for Big Data</a></li> 
       </ul>
     </div>  
@@ -100,16 +100,6 @@ in this course.</p>
 </dl>
 </li>
 </ul>
-<section id="why-rdd-only-here">
-<h3>Why RDD only here?<a class="headerlink" href="#why-rdd-only-here" title="Permalink to this heading">¶</a></h3>
-<p>The DataFrame and DataSet APIs are optional as it is not a typical way in big
-data processing where data are mostly not structured. They are both closer to
-either the SQL or the Pandas way of data manipulation and can be learned easily
-if you are familiar with them.</p>
-<p>On the other hand, RDD is the fundamental data API that provides more
-capability to work with unstructured/semi-structured data. It the unique way to
-work with big data in PySpark and is the focus here.</p>
-</section>
 </section>
 <section id="related-python-concepts">
 <h2>Related Python Concepts<a class="headerlink" href="#related-python-concepts" title="Permalink to this heading">¶</a></h2>
@@ -117,7 +107,49 @@ work with big data in PySpark and is the focus here.</p>
 some Python concepts to work with PySpark. Please refer to the Python
 programming resources online if you are not familiar with Python.</p>
 <p>We will learn some useful python concepts to be used in data manipulation using
-PySpark APIs.</p>
+PySpark APIs. For details refer to any Python programming resources online.</p>
+<section id="suggested-learning-resources">
+<h3>Suggested learning resources<a class="headerlink" href="#suggested-learning-resources" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.geeksforgeeks.org/python-programming-language-tutorial/">G4G Python Tutorial</a></p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/reference/">Official Python Reference</a></p></li>
+<li><p>Ask Chatbot on specific questions: ChatGPT, Google Gemini, Claude AI, etc.</p></li>
+</ul>
+</section>
+<section id="python-basics">
+<h3>Python Basics<a class="headerlink" href="#python-basics" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Python is a high-level, interpreted, interactive, and object-oriented
+scripting language.</p></li>
+<li><p>Data types</p>
+<ul>
+<li><p>int</p></li>
+<li><p>float</p></li>
+<li><p>str</p></li>
+<li><p>tuple - immutable list of objects of any type</p></li>
+<li><p>list - mutable list of objects of any type</p></li>
+<li><p>dict - key-value pair of objects of any type</p></li>
+</ul>
+</li>
+<li><p>Control structures</p>
+<ul>
+<li><p>if-elif-else</p></li>
+<li><p>for loop</p></li>
+<li><p>while loop</p></li>
+</ul>
+</li>
+<li><p>Functions</p>
+<ul>
+<li><p>def keyword</p></li>
+<li><p>return keyword</p></li>
+<li><p>positional arguments</p></li>
+<li><p>keyword arguments</p></li>
+<li><p>default arguments</p></li>
+<li><p>lambda functions</p></li>
+</ul>
+</li>
+</ul>
+</section>
 <section id="lambda-functions">
 <h3>Lambda Functions<a class="headerlink" href="#lambda-functions" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
@@ -151,111 +183,6 @@ lines using new line character as delimiters</p></li>
 </ul>
 </section>
 </section>
-<section id="rdd-resilient-distributed-dataset">
-<h2>RDD (Resilient Distributed Dataset)<a class="headerlink" href="#rdd-resilient-distributed-dataset" title="Permalink to this heading">¶</a></h2>
-<ul class="simple">
-<li><p>External readings</p>
-<ul>
-<li><p><a class="reference external" href="https://spark.apache.org/docs/latest/rdd-programming-guide.html">RDD Programming Guide</a></p></li>
-<li><p><a class="reference external" href="https://www.analyticsvidhya.com/blog/2021/10/a-comprehensive-guide-to-pyspark-rdd-operations/">A Comprehensive Guide to PySpark RDD Operations</a></p></li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><p>Characteristics</p>
-<ul class="simple">
-<li><p>Distributed (data is distributed across multiple machines)</p></li>
-<li><p>Immutable (once created, it cannot be changed)</p></li>
-<li><p>Lazy evaluation (transformations are not executed until an action is
-called)</p></li>
-</ul>
-</li>
-<li><p>Two types of operations</p>
-<ul class="simple">
-<li><p>As extensions to traditional map/reduce paradigm</p></li>
-<li><p>Transformations</p>
-<ul>
-<li><p>Takes an RDD and return another RDD</p></li>
-<li><p>Distributed RDD to distributed RDD</p></li>
-<li><p>Can be chained</p></li>
-<li><p>Include but more than just mapping</p></li>
-</ul>
-</li>
-<li><p>Actions</p>
-<ul>
-<li><p>Take an RDD and return a single object</p></li>
-<li><p>Distributed RDD to local object</p></li>
-<li><p>Include but more than just reducing</p></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Useful transformations</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">map(func)</span></code>, func should transform one item to another</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">flatMap(func)</span></code>, func should take one item and generate a list</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">filter(func)</span></code>, func should return True or False according to the input</p></li>
-</ul>
-</li>
-<li><p>Useful actions</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">collect()</span></code>, collect all data and return a local list, be careful with
-large dataset</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">count()</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">first()</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">take(num)</span></code>, take the first num of values and return a local list</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">reduce(func)</span></code>, func should take two parameters and give one result</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sum()</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">max()</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">min()</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">mean()</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">countByValue()</span></code></p>
-<ul>
-<li><p>Python dict like type as output <code class="docutils literal notranslate"><span class="pre">{key1:</span> <span class="pre">value1,</span> <span class="pre">key2:</span> <span class="pre">value2,</span> <span class="pre">...}</span></code></p></li>
-<li><p>models key-value pair</p></li>
-<li><p>key must be unique</p></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Pair RDD</p>
-<p>PySpark provides a specialized group of operations for working with Pair
-RDDs. In PySpark, pair RDDs are a specialized subtype of the RDD data
-structure that take the form of key-value pairs.</p>
-<ul class="simple">
-<li><p>example <code class="docutils literal notranslate"><span class="pre">[(key1,</span> <span class="pre">value1),</span> <span class="pre">(key2,</span> <span class="pre">value2),</span> <span class="pre">...]</span></code></p></li>
-<li><p>Useful transformations for pair RDDs</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">sortByKey(ascending=True)</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sortBy(func,</span> <span class="pre">ascending=True)</span></code></p>
-<ul>
-<li><p>func should take an item and return the value used to perform sorting</p></li>
-<li><p>e.g. <code class="docutils literal notranslate"><span class="pre">pairs.sortBy(lambda</span> <span class="pre">p:</span> <span class="pre">p[1])</span></code> use the value (second item in the
-pair) to sort the pairs</p></li>
-</ul>
-</li>
-<li><p><code class="docutils literal notranslate"><span class="pre">groupByKey()</span></code></p>
-<ul>
-<li><p>create a new RDD with each item being pairs with a same key</p></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Useful actions for pair RDDs</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">reduceByKey(func)</span></code></p>
-<ul>
-<li><p>func should take two values (second item in the pair) and return one</p></li>
-<li><p>used to combine values that have a same key</p></li>
-</ul>
-</li>
-<li><p><code class="docutils literal notranslate"><span class="pre">countByKey()</span></code></p></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</section>
 </section>
 
 
@@ -270,15 +197,13 @@ pair) to sort the pairs</p></li>
     <ul>
 <li><a class="reference internal" href="#">PySpark Programming for Big Data</a><ul>
 <li><a class="reference internal" href="#why-pyspark">Why PySpark</a></li>
-<li><a class="reference internal" href="#pyspark-basics">PySpark Basics</a><ul>
-<li><a class="reference internal" href="#why-rdd-only-here">Why RDD only here?</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#pyspark-basics">PySpark Basics</a></li>
 <li><a class="reference internal" href="#related-python-concepts">Related Python Concepts</a><ul>
+<li><a class="reference internal" href="#suggested-learning-resources">Suggested learning resources</a></li>
+<li><a class="reference internal" href="#python-basics">Python Basics</a></li>
 <li><a class="reference internal" href="#lambda-functions">Lambda Functions</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#rdd-resilient-distributed-dataset">RDD (Resilient Distributed Dataset)</a></li>
 </ul>
 </li>
 </ul>
@@ -291,8 +216,8 @@ pair) to sort the pairs</p></li>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="../course/idc6145/m05.html"
-                          title="next chapter">Module 5: Data Analysis for Big Data</a></p>
+    <p class="topless"><a href="pyspark_rdd.html"
+                          title="next chapter">PySpark Programming: RDD</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -322,14 +247,14 @@ pair) to sort the pairs</p></li>
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../course/idc6145/m05.html" title="Module 5: Data Analysis for Big Data"
+          <a href="pyspark_rdd.html" title="PySpark Programming: RDD"
              >next</a> |</li>
         <li class="right" >
           <a href="pyspark_colab_env.html" title="PySpark Environment For Learning"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../course/idc6145/index.html" >IDC 6145 Big Data for Data Science</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../course/idc6145/m04.html" >Module 4: PySpark Programming For Beginner</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../course/idc6145/m04.html" >Module 4: PySpark Programming: Environment, Basics, RDD</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">PySpark Programming for Big Data</a></li> 
       </ul>
     </div>

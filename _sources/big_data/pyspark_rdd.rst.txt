@@ -1,0 +1,103 @@
+************************
+PySpark Programming: RDD
+************************
+
+RDD (Resilient Distributed Dataset)
+===================================
++ External readings
+
+  * `RDD Programming Guide <rdd1_>`_
+  * `A Comprehensive Guide to PySpark RDD Operations <av1_>`_
+
+.. _rdd1: https://spark.apache.org/docs/latest/rdd-programming-guide.html
+.. _av1: https://www.analyticsvidhya.com/blog/2021/10/a-comprehensive-guide-to-pyspark-rdd-operations/
+
++ The low-level abstraction in PySpark
++ Can do anything with RDDs but the DataFrame and DataSet APIs are more
+  user-friendly and efficient for structured data
++ RDDs are more flexible and can be used for unstructured and semi-structured
+  data
++ Characteristics
+
+  * Distributed (data is distributed across multiple machines)
+  * Immutable (once created, it cannot be changed)
+  * Lazy evaluation (operations are not executed until a operation that
+    requires shuffling is called)
+
++ Two types of operations
+
+  * As extensions to traditional map/reduce paradigm
+  * Transformations
+
+    - Takes an RDD and return another RDD
+    - Distributed RDD to distributed RDD
+    - Can be chained
+    - Include but more than just mapping
+    - Most transformations are lazy
+    - Some transformations may trigger shuffling
+
+  * Actions
+
+    - Take an RDD and return a single object
+    - Distributed RDD to local object
+    - Include but more than just reducing
+    - All actions will trigger the execution of the DAG
+
++ Useful transformations
+
+  * ``map(func)``, apply a function to every element in an iterable, func
+    should transform one item to another
+  * ``flatMap(func)``, apply a function to every element in an iterable and
+    flatten the resulting list, func should take one item and
+    generate a list
+  * ``filter(func)``, filter elements elements according to the returned value
+    of a boolean function applied to every element, func should return True or
+    False according to the input
+
++ Useful actions
+
+  * ``collect()``, collect all data and return a local list, **Never use with
+    large dataset**
+  * ``count()``
+  * ``first()``
+  * ``take(num)``, take the first num of values and return a local list
+  * ``reduce(func)``, func should take two parameters and give one result
+  * ``sum()``
+  * ``max()``
+  * ``min()``
+  * ``mean()``
+  * ``countByValue()``
+
+    - Python dict like type as output ``{key1: value1, key2: value2, ...}``
+    - models key-value pair
+    - key must be unique
+
++ Pair RDD
+
+  PySpark provides a specialized group of operations for working with Pair
+  RDDs. In PySpark, pair RDDs are a specialized subtype of the RDD data
+  structure that take the form of key-value pairs.
+
+  * example ``[(key1, value1), (key2, value2), ...]``
+  * Useful transformations for pair RDDs
+
+    - ``sortByKey(ascending=True)``
+    - ``sortBy(func, ascending=True)``
+
+      * func should take an item and return the value used to perform sorting
+      * e.g. ``pairs.sortBy(lambda p: p[1])`` use the value (second item in the
+        pair) to sort the pairs
+
+    - ``groupByKey()``
+
+      * create a new RDD with each item being pairs with a same key
+
+  * Useful actions for pair RDDs
+
+    - ``reduceByKey(func)``
+
+      * func should take two values (second item in the pair) and return one
+      * used to combine values that have a same key
+
+    - ``countByKey()``
+

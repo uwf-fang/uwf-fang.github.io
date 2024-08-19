@@ -50,17 +50,6 @@ PySpark Basics
     DataSet
       Similar to DataFrame but with strict types. Optional in this course.
 
-Why RDD only here?
-------------------
-The DataFrame and DataSet APIs are optional as it is not a typical way in big
-data processing where data are mostly not structured. They are both closer to
-either the SQL or the Pandas way of data manipulation and can be learned easily
-if you are familiar with them.
-
-On the other hand, RDD is the fundamental data API that provides more
-capability to work with unstructured/semi-structured data. It the unique way to
-work with big data in PySpark and is the focus here.
-
 Related Python Concepts
 =======================
 As the programming language used in PySpark is Python, we will need to know
@@ -68,7 +57,42 @@ some Python concepts to work with PySpark. Please refer to the Python
 programming resources online if you are not familiar with Python.
 
 We will learn some useful python concepts to be used in data manipulation using
-PySpark APIs.
+PySpark APIs. For details refer to any Python programming resources online.
+
+Suggested learning resources
+----------------------------
++ `G4G Python Tutorial
+  <https://www.geeksforgeeks.org/python-programming-language-tutorial/>`_
++ `Official Python Reference <https://docs.python.org/3/reference/>`_
++ Ask Chatbot on specific questions: ChatGPT, Google Gemini, Claude AI, etc.
+
+Python Basics
+-------------
++ Python is a high-level, interpreted, interactive, and object-oriented
+  scripting language.
++ Data types
+
+  * int
+  * float
+  * str
+  * tuple - immutable list of objects of any type
+  * list - mutable list of objects of any type
+  * dict - key-value pair of objects of any type
+
++ Control structures
+
+  * if-elif-else
+  * for loop
+  * while loop
+
++ Functions
+
+  * def keyword
+  * return keyword
+  * positional arguments
+  * keyword arguments
+  * default arguments
+  * lambda functions
 
 Lambda Functions
 ----------------
@@ -96,90 +120,3 @@ Lambda Functions
   * ``lambda pair: pair[1]``, return the second element of the pair
   * ``lambda x, y: x+y``, sum up two value
   * ``lambda p1, p2: p1[1] + p2[1]``, sum up the second values in two pairs
-
-RDD (Resilient Distributed Dataset)
-===================================
-+ External readings
-
-  * `RDD Programming Guide <rdd1_>`_
-  * `A Comprehensive Guide to PySpark RDD Operations <av1_>`_
-
-.. _rdd1: https://spark.apache.org/docs/latest/rdd-programming-guide.html
-.. _av1: https://www.analyticsvidhya.com/blog/2021/10/a-comprehensive-guide-to-pyspark-rdd-operations/
-
-+ Characteristics
-
-  * Distributed (data is distributed across multiple machines)
-  * Immutable (once created, it cannot be changed)
-  * Lazy evaluation (transformations are not executed until an action is
-    called)
-
-+ Two types of operations
-
-  * As extensions to traditional map/reduce paradigm
-  * Transformations
-
-    - Takes an RDD and return another RDD
-    - Distributed RDD to distributed RDD
-    - Can be chained
-    - Include but more than just mapping
-
-  * Actions
-
-    - Take an RDD and return a single object
-    - Distributed RDD to local object
-    - Include but more than just reducing
-
-+ Useful transformations
-
-  * ``map(func)``, func should transform one item to another
-  * ``flatMap(func)``, func should take one item and generate a list
-  * ``filter(func)``, func should return True or False according to the input
-
-+ Useful actions
-
-  * ``collect()``, collect all data and return a local list, be careful with
-    large dataset
-  * ``count()``
-  * ``first()``
-  * ``take(num)``, take the first num of values and return a local list
-  * ``reduce(func)``, func should take two parameters and give one result
-  * ``sum()``
-  * ``max()``
-  * ``min()``
-  * ``mean()``
-  * ``countByValue()``
-
-    - Python dict like type as output ``{key1: value1, key2: value2, ...}``
-    - models key-value pair
-    - key must be unique
-
-+ Pair RDD
-
-  PySpark provides a specialized group of operations for working with Pair
-  RDDs. In PySpark, pair RDDs are a specialized subtype of the RDD data
-  structure that take the form of key-value pairs.
-
-  * example ``[(key1, value1), (key2, value2), ...]``
-  * Useful transformations for pair RDDs
-
-    - ``sortByKey(ascending=True)``
-    - ``sortBy(func, ascending=True)``
-
-      * func should take an item and return the value used to perform sorting
-      * e.g. ``pairs.sortBy(lambda p: p[1])`` use the value (second item in the
-        pair) to sort the pairs
-
-    - ``groupByKey()``
-
-      * create a new RDD with each item being pairs with a same key
-
-  * Useful actions for pair RDDs
-
-    - ``reduceByKey(func)``
-
-      * func should take two values (second item in the pair) and return one
-      * used to combine values that have a same key
-
-    - ``countByKey()``
-
