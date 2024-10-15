@@ -60,37 +60,22 @@ Algorithm Details
     - Hoare's partition scheme
     - Middle element as pivot
 
-    .. code::
+    .. code:: c++
 
-      function hoare_partition(arr, low, high):
-        // Select the middle element as the pivot
-        pivot_index = (low + high) / 2  // same as low + (high - low) / 2
-        pivot = arr[pivot_index]
-
-        i = low
-        j = high
-
-        while True:
-          // Find leftmost element greater than or equal to pivot
-          while arr[i] < pivot:
-            i = i + 1
-
-          // Find rightmost element less than or equal to pivot
-          while arr[j] > pivot:
-            j = j - 1
-
-          // If pointers cross, partition is complete
-          if i >= j:
-            break
-
-          // Swap arr[i] and arr[j]
-          swap(arr, i, j)
-
-          // move cursor to next element
-          i = i + 1
-          j = j - 1
-
-        return j
+      int quickPartition(int *arr, int low, int high) {
+        int mid = (high + low) / 2;
+        // int mid = low + (high - low) / 2;
+        int pivot = arr[mid];
+        while (true) {
+          while (arr[low] < pivot) ++low;
+          while (arr[high] > pivot) --high;
+          if (low >= high) break;
+          swap(arr[low], arr[high]);
+          ++low;
+          --high;
+        }
+        return high;
+      }
 
 + Quick sort algorithm (recursive, in-place)
 
@@ -98,16 +83,18 @@ Algorithm Details
   #. Call quick partition algorithm to partition the list into two sublists.
   #. Recursively call quick sort on both sublists.
 
-  .. code::
+  .. code:: c++
 
-    function quick_sort(arr, low, high):
-      if low < high:
-        // Partition the list
-        pivot = hoare_partition(arr, low, high)
+    void quicksort(int *arr, int size) {
+      quicksortHelper(arr, 0, size - 1);
+    }
 
-        // Recursively sort the sublists
-        quick_sort(arr, low, pivot)  // not pivot - 1!!!
-        quick_sort(arr, pivot + 1, high)
+    void quicksortHelper(int *arr, int low, int high) {
+      if (low >= high) return;
+      int part = quickPartition(arr, low, high);
+      quicksortHelper(arr, low, part);
+      quicksortHelper(arr, part + 1, high);
+    }
 
 + Variations of quick sort
 
@@ -150,7 +137,9 @@ of Hoare's partition scheme. You may try to use this format in the quiz or exam.
                       l   h
   {42, 7, 56, 23, 18, 9, 91, 91, 64, 85} swap 91, 9, and move by 1
                       h  l
-  h <= l, return h; left: low to h, right: h + 1 to high
+  h <= l, return h
+  left section: index low to h
+  right section: index h + 1 to high
 
 Complexity
 ==========
