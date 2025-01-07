@@ -1,29 +1,25 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Compilation Using g++ &#8212; IanFang Course Note Hosting  documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css?v=279e0f84" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=fa3f9a06" />
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/cpp/building/gpp.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="GNU Make" href="../../tools/make.html" />
     <link rel="prev" title="Modular Development" href="modular.html" /> 
   </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -36,9 +32,10 @@
           <a href="modular.html" title="Modular Development"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch03.html" >Chapter 3 User-defined Functions and Modular Development</a> &#187;</li>
-          <li class="nav-item nav-item-3"><a href="modular.html" accesskey="U">Modular Development</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="../../course/cop3014/ch03.html" >Chapter 3 User-defined Functions and Modular Development</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="modular.html" accesskey="U">Modular Development</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Compilation Using g++</a></li> 
       </ul>
     </div>  
@@ -49,12 +46,12 @@
           <div class="body" role="main">
             
   <section id="compilation-using-g">
-<h1>Compilation Using g++<a class="headerlink" href="#compilation-using-g" title="Permalink to this heading">¶</a></h1>
+<h1>Compilation Using g++<a class="headerlink" href="#compilation-using-g" title="Link to this heading">¶</a></h1>
 <p>Compilation is a process to translate source codes into executables or
 libraries. A compiled programming language requires source codes to be compiled
 before they can be executed. C++ is typical compiled programming language.</p>
 <section id="mainstream-compilation-systems">
-<h2>Mainstream Compilation Systems<a class="headerlink" href="#mainstream-compilation-systems" title="Permalink to this heading">¶</a></h2>
+<h2>Mainstream Compilation Systems<a class="headerlink" href="#mainstream-compilation-systems" title="Link to this heading">¶</a></h2>
 <p>There are many mainstream C/C++ compilers available to various operating
 systems:</p>
 <ul class="simple">
@@ -94,16 +91,16 @@ compatibility issues and you must perform a final test on a Linux system
 </div>
 </section>
 <section id="building-process-of-c-c-projects">
-<h2>Building process of C/C++ projects<a class="headerlink" href="#building-process-of-c-c-projects" title="Permalink to this heading">¶</a></h2>
+<h2>Building process of C/C++ projects<a class="headerlink" href="#building-process-of-c-c-projects" title="Link to this heading">¶</a></h2>
 <p>General compilation process of C/C++ projects contains three main stages:
 preprocessing, compilation, and linking.</p>
 <dl class="simple glossary">
-<dt id="term-Preprocessing-step">Preprocessing step<a class="headerlink" href="#term-Preprocessing-step" title="Permalink to this term">¶</a></dt><dd><p>Process preprocessing directives like #include, #define, etc. Performs
+<dt id="term-Preprocessing-step">Preprocessing step<a class="headerlink" href="#term-Preprocessing-step" title="Link to this term">¶</a></dt><dd><p>Process preprocessing directives like #include, #define, etc. Performs
 textual manipulations mostly.</p>
 </dd>
-<dt id="term-Compilation-step">Compilation step<a class="headerlink" href="#term-Compilation-step" title="Permalink to this term">¶</a></dt><dd><p>Translate the source code (.cpp) files to object (.o) files.</p>
+<dt id="term-Compilation-step">Compilation step<a class="headerlink" href="#term-Compilation-step" title="Link to this term">¶</a></dt><dd><p>Translate the source code (.cpp) files to object (.o) files.</p>
 </dd>
-<dt id="term-Linking-step">Linking step<a class="headerlink" href="#term-Linking-step" title="Permalink to this term">¶</a></dt><dd><p>Link object (.o) files to produce an executables (or a library)</p>
+<dt id="term-Linking-step">Linking step<a class="headerlink" href="#term-Linking-step" title="Link to this term">¶</a></dt><dd><p>Link object (.o) files to produce an executables (or a library)</p>
 </dd>
 </dl>
 <p>The three steps of preprocessing, compilation, and linking can be performed
@@ -113,21 +110,21 @@ typical step-wise compilation process involves two steps: preprocessing and
 compilation, followed by linking.</p>
 </section>
 <section id="the-g-command">
-<h2>The g++ command<a class="headerlink" href="#the-g-command" title="Permalink to this heading">¶</a></h2>
+<h2>The g++ command<a class="headerlink" href="#the-g-command" title="Link to this heading">¶</a></h2>
 <p>g++ is the GNU C++ compiler invocation command. It builds C++ source codes to
 produce libraries or executables. It serves as pre-processor, compiler, and
 linker for C++ projects.</p>
 <section id="g-command-line">
-<h3>g++ command-line<a class="headerlink" href="#g-command-line" title="Permalink to this heading">¶</a></h3>
+<h3>g++ command-line<a class="headerlink" href="#g-command-line" title="Link to this heading">¶</a></h3>
 <p>A typical g++ compilation command-line looks like:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>g++<span class="w"> </span>&lt;options&gt;<span class="w"> </span>&lt;arguments&gt;
 </pre></div>
 </div>
 <dl class="simple glossary">
-<dt id="term-g-options">g++ options<a class="headerlink" href="#term-g-options" title="Permalink to this term">¶</a></dt><dd><p>Something started with a hyphen character. They are provided to control the
+<dt id="term-g-options">g++ options<a class="headerlink" href="#term-g-options" title="Link to this term">¶</a></dt><dd><p>Something started with a hyphen character. They are provided to control the
 behavior of the compilation. Some options come with their own arguments.</p>
 </dd>
-<dt id="term-g-arguments">g++ arguments<a class="headerlink" href="#term-g-arguments" title="Permalink to this term">¶</a></dt><dd><p>Everything in the command-line that are not options. They usually specify
+<dt id="term-g-arguments">g++ arguments<a class="headerlink" href="#term-g-arguments" title="Link to this term">¶</a></dt><dd><p>Everything in the command-line that are not options. They usually specify
 the source of the compilation. They can be either .cpp file or .o file
 names.</p>
 </dd>
@@ -136,31 +133,31 @@ names.</p>
 <code class="docutils literal notranslate"><span class="pre">-std=c++14</span></code> and <code class="docutils literal notranslate"><span class="pre">-o</span> <span class="pre">main</span></code> are options and <code class="docutils literal notranslate"><span class="pre">main.cpp</span></code> is an argument.</p>
 </section>
 <section id="common-g-options">
-<h3>Common g++ options<a class="headerlink" href="#common-g-options" title="Permalink to this heading">¶</a></h3>
+<h3>Common g++ options<a class="headerlink" href="#common-g-options" title="Link to this heading">¶</a></h3>
 <dl class="simple glossary">
-<dt id="term-o">-o<a class="headerlink" href="#term-o" title="Permalink to this term">¶</a></dt><dd><p>This option specify the name of the output file. It must be followed by a
+<dt id="term-o">-o<a class="headerlink" href="#term-o" title="Link to this term">¶</a></dt><dd><p>This option specify the name of the output file. It must be followed by a
 name. For example, <code class="docutils literal notranslate"><span class="pre">-o</span> <span class="pre">main</span></code> to generate a file called <code class="docutils literal notranslate"><span class="pre">main</span></code>.</p>
 </dd>
-<dt id="term-c">-c<a class="headerlink" href="#term-c" title="Permalink to this term">¶</a></dt><dd><p>This option tell g++ to compile only without linking. It will generate an
+<dt id="term-c">-c<a class="headerlink" href="#term-c" title="Link to this term">¶</a></dt><dd><p>This option tell g++ to compile only without linking. It will generate an
 object (.o) file.</p>
 </dd>
-<dt id="term-std-c-14">-std=c++14<a class="headerlink" href="#term-std-c-14" title="Permalink to this term">¶</a></dt><dd><p>Use the C++ standard 14 to compile. There are other C++ standards available
+<dt id="term-std-c-14">-std=c++14<a class="headerlink" href="#term-std-c-14" title="Link to this term">¶</a></dt><dd><p>Use the C++ standard 14 to compile. There are other C++ standards available
 such as C++ 11, C++ 17, C++20, etc.</p>
 </dd>
-<dt id="term-Wall">-Wall<a class="headerlink" href="#term-Wall" title="Permalink to this term">¶</a></dt><dd><p>Show common warning messages. Many warning messages are helpful to give you
+<dt id="term-Wall">-Wall<a class="headerlink" href="#term-Wall" title="Link to this term">¶</a></dt><dd><p>Show common warning messages. Many warning messages are helpful to give you
 hints on potential problem in your code.</p>
 </dd>
-<dt id="term-g">-g<a class="headerlink" href="#term-g" title="Permalink to this term">¶</a></dt><dd><p>Store debugging information during compilation to allow future use of
+<dt id="term-g">-g<a class="headerlink" href="#term-g" title="Link to this term">¶</a></dt><dd><p>Store debugging information during compilation to allow future use of
 debuggers like <code class="docutils literal notranslate"><span class="pre">gdb</span></code> or <code class="docutils literal notranslate"><span class="pre">valgrind</span></code>.</p>
 </dd>
-<dt id="term-O0-O1-O2-O3">-O0, -O1, -O2, -O3<a class="headerlink" href="#term-O0-O1-O2-O3" title="Permalink to this term">¶</a></dt><dd><p>Optimize the generated code. The higher the number, the more optimization
+<dt id="term-O0-O1-O2-O3">-O0, -O1, -O2, -O3<a class="headerlink" href="#term-O0-O1-O2-O3" title="Link to this term">¶</a></dt><dd><p>Optimize the generated code. The higher the number, the more optimization
 will be performed. The default is -O2.</p>
 </dd>
 </dl>
 </section>
 </section>
 <section id="preprocessor-directives">
-<h2>Preprocessor directives<a class="headerlink" href="#preprocessor-directives" title="Permalink to this heading">¶</a></h2>
+<h2>Preprocessor directives<a class="headerlink" href="#preprocessor-directives" title="Link to this heading">¶</a></h2>
 <p>Preprocessor directives are instructions that are mixed in with C++ statements
 in your source code. They direct the preprocessor to manipulate the text of the
 source code files before they are compiled. These directives are identified by
@@ -227,9 +224,9 @@ included more than once. It is preferred over the alternative way using
 </ul>
 </section>
 <section id="styles-of-building">
-<h2>Styles of building<a class="headerlink" href="#styles-of-building" title="Permalink to this heading">¶</a></h2>
+<h2>Styles of building<a class="headerlink" href="#styles-of-building" title="Link to this heading">¶</a></h2>
 <section id="one-step-building">
-<h3>One step building<a class="headerlink" href="#one-step-building" title="Permalink to this heading">¶</a></h3>
+<h3>One step building<a class="headerlink" href="#one-step-building" title="Link to this heading">¶</a></h3>
 <p>You may use a single g++ command to produce the executable from the source code
 files. In this method, all three stages are invoked by one g++ command.</p>
 <p>You can list all cpp files in the command line as arguments and specify the
@@ -248,7 +245,7 @@ a main function:</p>
 </div>
 </section>
 <section id="modular-building">
-<h3>Modular building<a class="headerlink" href="#modular-building" title="Permalink to this heading">¶</a></h3>
+<h3>Modular building<a class="headerlink" href="#modular-building" title="Link to this heading">¶</a></h3>
 <p>In the modular building approach, the preprocessing + compilation and linking
 steps are performed separately to provide fine control over arguments and fine
 grained error handling.</p>
@@ -271,7 +268,7 @@ automated using building tools such as GNU make, etc.</p>
 </div>
 </section>
 <section id="pitfalls">
-<h3>Pitfalls<a class="headerlink" href="#pitfalls" title="Permalink to this heading">¶</a></h3>
+<h3>Pitfalls<a class="headerlink" href="#pitfalls" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>List header files in the g++ command</p></li>
 </ul>
@@ -280,7 +277,7 @@ automated using building tools such as GNU make, etc.</p>
 </div>
 </section>
 <section id="common-error-messages-from-g">
-<span id="gpp-diag"></span><h3>Common Error Messages From g++<a class="headerlink" href="#common-error-messages-from-g" title="Permalink to this heading">¶</a></h3>
+<span id="gpp-diag"></span><h3>Common Error Messages From g++<a class="headerlink" href="#common-error-messages-from-g" title="Link to this heading">¶</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Some error messages are misleading. Thus, do not stick to it if you cannot
@@ -346,7 +343,7 @@ function</p></li>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
   <div>
     <h3><a href="../../index.html">Table of Contents</a></h3>
@@ -389,7 +386,7 @@ function</p></li>
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
@@ -397,13 +394,13 @@ function</p></li>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -416,15 +413,16 @@ function</p></li>
           <a href="modular.html" title="Modular Development"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch03.html" >Chapter 3 User-defined Functions and Modular Development</a> &#187;</li>
-          <li class="nav-item nav-item-3"><a href="modular.html" >Modular Development</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="../../course/cop3014/ch03.html" >Chapter 3 User-defined Functions and Modular Development</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="modular.html" >Modular Development</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Compilation Using g++</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2021-2024, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    &#169; Copyright 2021-2024, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     </div>
   </body>
 </html>

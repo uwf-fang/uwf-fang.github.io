@@ -1,22 +1,18 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Complexity Analysis &#8212; IanFang Course Note Hosting  documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=279e0f84" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=fa3f9a06" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/gen-programming/complexity.html" />
     <link rel="index" title="Index" href="../genindex.html" />
@@ -24,7 +20,7 @@
     <link rel="next" title="Module 5 Recursion" href="../course/cop3530/m05.html" />
     <link rel="prev" title="Algorithm Analysis" href="alg-anal.html" /> 
   </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -49,7 +45,7 @@
           <div class="body" role="main">
             
   <section id="complexity-analysis">
-<h1>Complexity Analysis<a class="headerlink" href="#complexity-analysis" title="Permalink to this heading">¶</a></h1>
+<h1>Complexity Analysis<a class="headerlink" href="#complexity-analysis" title="Link to this heading">¶</a></h1>
 <p>Computational complexity analysis plays a pivotal role in the theoretical
 analysis of algorithms. It involves assessing how the performance of an
 algorithm scales with the size of the input, enabling us to make predictions
@@ -57,38 +53,39 @@ about an algorithm’s efficiency in terms of time and space usage. This analysi
 is crucial for understanding the inherent difficulty of solving computational
 problems and for comparing and selecting algorithms for various tasks.</p>
 <section id="concepts">
-<h2>Concepts<a class="headerlink" href="#concepts" title="Permalink to this heading">¶</a></h2>
+<h2>Concepts<a class="headerlink" href="#concepts" title="Link to this heading">¶</a></h2>
 <dl class="simple glossary">
-<dt id="term-Computational-complexity">Computational complexity<a class="headerlink" href="#term-Computational-complexity" title="Permalink to this term">¶</a></dt><dd><p>The computational resources consumed by an algorithm as a function of the
+<dt id="term-Computational-complexity">Computational complexity<a class="headerlink" href="#term-Computational-complexity" title="Link to this term">¶</a></dt><dd><p>The computational resources consumed by an algorithm as a function of the
 size of the problem.</p>
 </dd>
-<dt id="term-Time-complexity">Time complexity<a class="headerlink" href="#term-Time-complexity" title="Permalink to this term">¶</a></dt><dd><p>The computational time consumed by an algorithm as a function of the size of
+<dt id="term-Time-complexity">Time complexity<a class="headerlink" href="#term-Time-complexity" title="Link to this term">¶</a></dt><dd><p>The computational time consumed by an algorithm as a function of the size of
 the problem. It is usually described using a function <span class="math notranslate nohighlight">\(T(n)\)</span>.</p>
 </dd>
-<dt id="term-Space-complexity">Space complexity<a class="headerlink" href="#term-Space-complexity" title="Permalink to this term">¶</a></dt><dd><p>The computational storage space (usually refer to memory) consumed by an
+<dt id="term-Space-complexity">Space complexity<a class="headerlink" href="#term-Space-complexity" title="Link to this term">¶</a></dt><dd><p>The computational storage space (usually refer to memory) consumed by an
 algorithm as a function of the size of the problem. <strong>auxiliary space
 complexity</strong> is the space complexity excluding the input data. It is usually
 described using a function <span class="math notranslate nohighlight">\(S(n)\)</span>.</p>
 </dd>
-<dt id="term-Best-case-worst-case-and-average-case">Best case, worst case, and average case<a class="headerlink" href="#term-Best-case-worst-case-and-average-case" title="Permalink to this term">¶</a></dt><dd><p>Best case is the scenario in which the algorithm finished with the least
+<dt id="term-Best-case-worst-case-and-average-case">Best case, worst case, and average case<a class="headerlink" href="#term-Best-case-worst-case-and-average-case" title="Link to this term">¶</a></dt><dd><p>Best case is the scenario in which the algorithm finished with the least
 resource consumed. Worst case is the scenario in which the algorithm
 finished with the most resource consumed. Sometimes we will use average
 case, which is the average over all possible inputs.</p>
 </dd>
-<dt id="term-Constant-time-operation">Constant time operation<a class="headerlink" href="#term-Constant-time-operation" title="Permalink to this term">¶</a></dt><dd><p>Because the accurate measurement of time consumption is impossible, we
+<dt id="term-Constant-time-operation">Constant time operation<a class="headerlink" href="#term-Constant-time-operation" title="Link to this term">¶</a></dt><dd><p>Because the accurate measurement of time consumption is impossible, we
 usually count the number of constant time operations to estimate the time
 consumption. A constant time operation is an operation that always consume a
 certain amount of time regardless of the problem size <cite>n</cite>.</p>
 </dd>
-<dt id="term-Growth-rate">Growth rate<a class="headerlink" href="#term-Growth-rate" title="Permalink to this term">¶</a></dt><dd><p>How much more resource is needed when the problem size grows. It is usually
+<dt id="term-Growth-rate">Growth rate<a class="headerlink" href="#term-Growth-rate" title="Link to this term">¶</a></dt><dd><p>How much more resource is needed when the problem size grows. It is usually
 described using simple math functions. It is a simple way to visualize the
 complexity.</p>
 </dd>
 </dl>
-<a class="reference internal image-reference" href="../_images/complexity.png"><img alt="Complexity" class="align-center" src="../_images/complexity.png" style="width: 400px;" /></a>
+<a class="reference internal image-reference" href="../_images/complexity.png"><img alt="Complexity" class="align-center" src="../_images/complexity.png" style="width: 400px;" />
+</a>
 </section>
 <section id="asymptotic-notation">
-<h2>Asymptotic notation<a class="headerlink" href="#asymptotic-notation" title="Permalink to this heading">¶</a></h2>
+<h2>Asymptotic notation<a class="headerlink" href="#asymptotic-notation" title="Link to this heading">¶</a></h2>
 <p>Asymptotic notation is the math language we use to describe the complexity in a
 formal way. It is formally known as Bachmann–Landau notation. A mathematical
 notation system to describe the limiting behavior of a function. It includes
@@ -100,7 +97,7 @@ notations.</p>
 of the rules can be used with space complexity with little modification.</p>
 </div>
 <section id="motivation">
-<h3>Motivation<a class="headerlink" href="#motivation" title="Permalink to this heading">¶</a></h3>
+<h3>Motivation<a class="headerlink" href="#motivation" title="Link to this heading">¶</a></h3>
 <p>Time, space or other kind of complexities are functions of the problem size
 <span class="math notranslate nohighlight">\(n\)</span>. They are not too helpful to describe the complexity of an algorithm
 for the following reason:</p>
@@ -117,7 +114,7 @@ enough to describe how the resource consumption grows with the problem size
 when the problem size is large.</p>
 </section>
 <section id="formal-definitions">
-<h3>Formal Definitions<a class="headerlink" href="#formal-definitions" title="Permalink to this heading">¶</a></h3>
+<h3>Formal Definitions<a class="headerlink" href="#formal-definitions" title="Link to this heading">¶</a></h3>
 <p>Given <span class="math notranslate nohighlight">\(T(n)\)</span> the time function of the problem size <span class="math notranslate nohighlight">\(n\)</span></p>
 <p>We will write <span class="math notranslate nohighlight">\(T(n) = O(f(n))\)</span> or <span class="math notranslate nohighlight">\(T(n) \in O(f(n))\)</span> if there
 exists a certain positive constant <span class="math notranslate nohighlight">\(c\)</span> and a problem size <span class="math notranslate nohighlight">\(n_{0}\)</span>,
@@ -142,7 +139,7 @@ same of the function <span class="math notranslate nohighlight">\(f(n)\)</span> 
 simplest form of the function to represent the set.</p>
 </section>
 <section id="how-they-work-and-which-one-to-choose">
-<h3>How they work and which one to choose<a class="headerlink" href="#how-they-work-and-which-one-to-choose" title="Permalink to this heading">¶</a></h3>
+<h3>How they work and which one to choose<a class="headerlink" href="#how-they-work-and-which-one-to-choose" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>For a complexity, there exist infinite upper and lower bounds and we should
 focus on the “tightest” bound.</p></li>
@@ -165,7 +162,7 @@ also valid but not as tight as <span class="math notranslate nohighlight">\(O(n^
 helpful to estimate your income because it is not a “tight” upper bound.</p>
 </section>
 <section id="considering-cases">
-<h3>Considering Cases<a class="headerlink" href="#considering-cases" title="Permalink to this heading">¶</a></h3>
+<h3>Considering Cases<a class="headerlink" href="#considering-cases" title="Link to this heading">¶</a></h3>
 <p>In complexity analysis, various cases are considered to assess the efficiency
 and performance of algorithms. These cases help us understand how algorithms
 behave under different scenarios and input distributions.</p>
@@ -183,9 +180,9 @@ upper/lower/exact bound to estimate the growth rate of this function.</p>
 </div>
 </section>
 <section id="representative-algorithms-of-certain-complexity">
-<h3>Representative Algorithms of Certain Complexity<a class="headerlink" href="#representative-algorithms-of-certain-complexity" title="Permalink to this heading">¶</a></h3>
+<h3>Representative Algorithms of Certain Complexity<a class="headerlink" href="#representative-algorithms-of-certain-complexity" title="Link to this heading">¶</a></h3>
 <table class="docutils align-default" id="id1">
-<caption><span class="caption-text">Typical Complexity and Representative Algorithms</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-text">Typical Complexity and Representative Algorithms</span><a class="headerlink" href="#id1" title="Link to this table">¶</a></caption>
 <colgroup>
 <col style="width: 20.0%" />
 <col style="width: 30.0%" />
@@ -234,7 +231,7 @@ upper/lower/exact bound to estimate the growth rate of this function.</p>
 </table>
 </section>
 <section id="properties">
-<h3>Properties<a class="headerlink" href="#properties" title="Permalink to this heading">¶</a></h3>
+<h3>Properties<a class="headerlink" href="#properties" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\Theta(f(n))\)</span> is a <strong>set</strong> of functions that have the same order as
 <span class="math notranslate nohighlight">\(f(n)\)</span>.</p>
@@ -263,13 +260,13 @@ order to represent the set</strong>.</p></li>
 </section>
 </section>
 <section id="steps-to-find-complexity">
-<h2>Steps to Find Complexity<a class="headerlink" href="#steps-to-find-complexity" title="Permalink to this heading">¶</a></h2>
+<h2>Steps to Find Complexity<a class="headerlink" href="#steps-to-find-complexity" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Option 1: Find <span class="math notranslate nohighlight">\(T(n)\)</span> and then find <span class="math notranslate nohighlight">\(\Theta(f(n))\)</span>.</p></li>
 <li><p>Option 2: Estimate <span class="math notranslate nohighlight">\(\Theta(f(n))\)</span> directly.</p></li>
 </ul>
 <section id="find-t-n">
-<h3>Find <span class="math notranslate nohighlight">\(T(n)\)</span><a class="headerlink" href="#find-t-n" title="Permalink to this heading">¶</a></h3>
+<h3>Find <span class="math notranslate nohighlight">\(T(n)\)</span><a class="headerlink" href="#find-t-n" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(T(n)\)</span> = number of operations</p></li>
 <li><p>Count the number of constant time operations</p></li>
@@ -292,7 +289,7 @@ input are more complicate and you better check the reference.</p>
 </ul>
 </section>
 <section id="find-theta-given-t-n">
-<h3>Find <span class="math notranslate nohighlight">\(\Theta\)</span> given <span class="math notranslate nohighlight">\(T(n)\)</span><a class="headerlink" href="#find-theta-given-t-n" title="Permalink to this heading">¶</a></h3>
+<h3>Find <span class="math notranslate nohighlight">\(\Theta\)</span> given <span class="math notranslate nohighlight">\(T(n)\)</span><a class="headerlink" href="#find-theta-given-t-n" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Keep the term with highest order. Drop the coefficient and lower order terms
 go provide the simplest form.</p></li>
@@ -304,7 +301,7 @@ go provide the simplest form.</p></li>
 </li>
 </ul>
 <table class="docutils align-default" id="id2">
-<caption><span class="caption-text">Common Growth Rates, from low to high order</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-text">Common Growth Rates, from low to high order</span><a class="headerlink" href="#id2" title="Link to this table">¶</a></caption>
 <colgroup>
 <col style="width: 50.0%" />
 <col style="width: 50.0%" />
@@ -343,7 +340,7 @@ go provide the simplest form.</p></li>
 </table>
 </section>
 <section id="find-theta-directly">
-<h3>Find <span class="math notranslate nohighlight">\(\Theta\)</span> directly<a class="headerlink" href="#find-theta-directly" title="Permalink to this heading">¶</a></h3>
+<h3>Find <span class="math notranslate nohighlight">\(\Theta\)</span> directly<a class="headerlink" href="#find-theta-directly" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>additive (sequential, branch)</p>
 <ul>
@@ -372,7 +369,7 @@ complexity is <span class="math notranslate nohighlight">\(\Theta(\log n) \times
 </section>
 </section>
 <section id="pitfalls">
-<h2>Pitfalls<a class="headerlink" href="#pitfalls" title="Permalink to this heading">¶</a></h2>
+<h2>Pitfalls<a class="headerlink" href="#pitfalls" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Confusing <span class="math notranslate nohighlight">\(T(n)\)</span> to <span class="math notranslate nohighlight">\(\Theta(f(n))\)</span></p></li>
 <li><p>Not all function calls are constant time operations (a.k.a. <span class="math notranslate nohighlight">\(\Theta(1)\)</span>)</p></li>
@@ -385,7 +382,7 @@ complexity is <span class="math notranslate nohighlight">\(\Theta(\log n) \times
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
   <div>
     <h3><a href="../index.html">Table of Contents</a></h3>
@@ -430,7 +427,7 @@ complexity is <span class="math notranslate nohighlight">\(\Theta(\log n) \times
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
@@ -438,13 +435,13 @@ complexity is <span class="math notranslate nohighlight">\(\Theta(\log n) \times
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -463,8 +460,8 @@ complexity is <span class="math notranslate nohighlight">\(\Theta(\log n) \times
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2021-2024, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    &#169; Copyright 2021-2024, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     </div>
   </body>
 </html>

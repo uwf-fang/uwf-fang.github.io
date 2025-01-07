@@ -1,29 +1,25 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Testing in C++ &#8212; IanFang Course Note Hosting  documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css?v=279e0f84" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=fa3f9a06" />
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/cpp/testing/testing.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Chapter 4 Objects and Classes" href="../../course/cop3014/ch04.html" />
     <link rel="prev" title="GNU Make" href="../../tools/make.html" /> 
   </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -36,9 +32,10 @@
           <a href="../../tools/make.html" title="GNU Make"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch03.html" >Chapter 3 User-defined Functions and Modular Development</a> &#187;</li>
-          <li class="nav-item nav-item-3"><a href="../building/modular.html" accesskey="U">Modular Development</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="../../course/cop3014/ch03.html" >Chapter 3 User-defined Functions and Modular Development</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="../building/modular.html" accesskey="U">Modular Development</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Testing in C++</a></li> 
       </ul>
     </div>  
@@ -49,9 +46,9 @@
           <div class="body" role="main">
             
   <section id="testing-in-c">
-<h1>Testing in C++<a class="headerlink" href="#testing-in-c" title="Permalink to this heading">¶</a></h1>
+<h1>Testing in C++<a class="headerlink" href="#testing-in-c" title="Link to this heading">¶</a></h1>
 <section id="motivation">
-<h2>Motivation<a class="headerlink" href="#motivation" title="Permalink to this heading">¶</a></h2>
+<h2>Motivation<a class="headerlink" href="#motivation" title="Link to this heading">¶</a></h2>
 <p>Testing in software development is the process of evaluating and validating a
 software system to ensure its correctness, functionality, and performance.
 Automated testing is especially important for large projects.</p>
@@ -68,25 +65,25 @@ automated with the help of testing frameworks.</p>
 <li><p>Testable code is usually modular and well-organized.</p></li>
 </ul>
 <dl class="simple glossary">
-<dt id="term-Unit-test">Unit test<a class="headerlink" href="#term-Unit-test" title="Permalink to this term">¶</a></dt><dd><p>It is a type of testing strategy to test software units individually in
+<dt id="term-Unit-test">Unit test<a class="headerlink" href="#term-Unit-test" title="Link to this term">¶</a></dt><dd><p>It is a type of testing strategy to test software units individually in
 isolation. To ensure <em>isolation</em>, techniques like mocking, stubbing, and
 faking are introduced.</p>
 </dd>
-<dt id="term-Integration-test">Integration test<a class="headerlink" href="#term-Integration-test" title="Permalink to this term">¶</a></dt><dd><p>It is a type of testing strategy to test how a group of units works
+<dt id="term-Integration-test">Integration test<a class="headerlink" href="#term-Integration-test" title="Link to this term">¶</a></dt><dd><p>It is a type of testing strategy to test how a group of units works
 together. Isolation can also be reinforced, similar to unit testing.</p>
 </dd>
-<dt id="term-System-test">System test<a class="headerlink" href="#term-System-test" title="Permalink to this term">¶</a></dt><dd><p>It is a type of testing strategy to test the whole software system as a
+<dt id="term-System-test">System test<a class="headerlink" href="#term-System-test" title="Link to this term">¶</a></dt><dd><p>It is a type of testing strategy to test the whole software system as a
 whole.</p>
 </dd>
-<dt id="term-Acceptance-test">Acceptance test<a class="headerlink" href="#term-Acceptance-test" title="Permalink to this term">¶</a></dt><dd><p>It is a final system test that runs the whole software system all together
+<dt id="term-Acceptance-test">Acceptance test<a class="headerlink" href="#term-Acceptance-test" title="Link to this term">¶</a></dt><dd><p>It is a final system test that runs the whole software system all together
 in order to decide if the project can be accepted as a finished work.</p>
 </dd>
-<dt id="term-Testing-framework">Testing framework<a class="headerlink" href="#term-Testing-framework" title="Permalink to this term">¶</a></dt><dd><p>A library/software to facilitate the testing process.</p>
+<dt id="term-Testing-framework">Testing framework<a class="headerlink" href="#term-Testing-framework" title="Link to this term">¶</a></dt><dd><p>A library/software to facilitate the testing process.</p>
 </dd>
 </dl>
 </section>
 <section id="simple-test-run">
-<h2>Simple Test Run<a class="headerlink" href="#simple-test-run" title="Permalink to this heading">¶</a></h2>
+<h2>Simple Test Run<a class="headerlink" href="#simple-test-run" title="Link to this heading">¶</a></h2>
 <p>As a beginner taking entry-level courses, you should learn testing as soon as
 possible to build a correct workflow on project. You can start writing tests by
 simply add <code class="docutils literal notranslate"><span class="pre">cout</span></code> and <code class="docutils literal notranslate"><span class="pre">if</span></code> statements to check whether your function or
@@ -96,7 +93,7 @@ main.cpp.</p>
 <p>For example, assume that we have two classes <code class="docutils literal notranslate"><span class="pre">StoreItem</span></code> and <code class="docutils literal notranslate"><span class="pre">Store</span></code> to
 test. A test driver may look like this:</p>
 <div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">test-driver.cpp</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">test-driver.cpp</span><a class="headerlink" href="#id2" title="Link to this code">¶</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
 <span class="linenos"> 2</span>
 <span class="linenos"> 3</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;store.hpp&quot;</span>
@@ -137,14 +134,14 @@ test. A test driver may look like this:</p>
 </div>
 </section>
 <section id="assertions">
-<h2>Assertions<a class="headerlink" href="#assertions" title="Permalink to this heading">¶</a></h2>
+<h2>Assertions<a class="headerlink" href="#assertions" title="Link to this heading">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">assert</span></code> macro function (similar to a function when used) allows a more
 efficient way to run tests. This macro takes a bool parameter and abort your
 program when the bool expression evaluates to false. You can add as many as you
 like in your program during debugging and disable all of them by adding a line
 of <code class="docutils literal notranslate"><span class="pre">#define</span> <span class="pre">NDEBUG</span></code> before the <code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&lt;cassert&gt;</span></code> directive.</p>
 <div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-text">test.cpp</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">test.cpp</span><a class="headerlink" href="#id3" title="Link to this code">¶</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
 <span class="linenos"> 2</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cassert&gt;</span>
 <span class="linenos"> 3</span>
@@ -179,13 +176,13 @@ of <code class="docutils literal notranslate"><span class="pre">#define</span> <
 </div>
 </section>
 <section id="testing-frameworks">
-<h2>Testing Frameworks<a class="headerlink" href="#testing-frameworks" title="Permalink to this heading">¶</a></h2>
+<h2>Testing Frameworks<a class="headerlink" href="#testing-frameworks" title="Link to this heading">¶</a></h2>
 <p>Choosing a good testing framework is more effective in terms of easier test
 writing and creation, better test organization, and better test result
 presentations. We choose the Catch2 framework to write tests in some projects.
 It is simple but feature-rich. The syntax to write tests are simple:</p>
 <div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-text">test-catch.cpp</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">test-catch.cpp</span><a class="headerlink" href="#id4" title="Link to this code">¶</a></div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
 <span class="linenos"> 2</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cassert&gt;</span>
 <span class="linenos"> 3</span>
@@ -224,7 +221,7 @@ will see <code class="docutils literal notranslate"><span class="pre">CHECK</spa
 <p>A comprehensive <a class="reference external" href="https://github.com/catchorg/Catch2/blob/devel/docs/tutorial.md">official tutorial</a> is available online.</p>
 </section>
 <section id="testability">
-<h2>Testability<a class="headerlink" href="#testability" title="Permalink to this heading">¶</a></h2>
+<h2>Testability<a class="headerlink" href="#testability" title="Link to this heading">¶</a></h2>
 <p>Some codes are easier to test than others. In most of the cases, a more
 testable code base has better quality than something not very testable.
 Testable codes are usually well-designed.</p>
@@ -246,7 +243,7 @@ rules we can follow:</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
   <div>
     <h3><a href="../../index.html">Table of Contents</a></h3>
@@ -279,7 +276,7 @@ rules we can follow:</p>
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
@@ -287,13 +284,13 @@ rules we can follow:</p>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -306,15 +303,16 @@ rules we can follow:</p>
           <a href="../../tools/make.html" title="GNU Make"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="../../course/cop3014/ch03.html" >Chapter 3 User-defined Functions and Modular Development</a> &#187;</li>
-          <li class="nav-item nav-item-3"><a href="../building/modular.html" >Modular Development</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="../../course/cop3014/ch03.html" >Chapter 3 User-defined Functions and Modular Development</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="../building/modular.html" >Modular Development</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Testing in C++</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2021-2024, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    &#169; Copyright 2021-2024, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     </div>
   </body>
 </html>

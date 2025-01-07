@@ -1,22 +1,18 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Longest Common Subsequence Problem &#8212; IanFang Course Note Hosting  documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css?v=279e0f84" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=fa3f9a06" />
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/gen-programming/problems/lcs.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -24,7 +20,7 @@
     <link rel="next" title="Module 13-14: Graph Algorithms" href="../../course/cop4534/m13_14.html" />
     <link rel="prev" title="Chain Matrix Multiplication Problem" href="chain-matrix-multiplication.html" /> 
   </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -49,11 +45,11 @@
           <div class="body" role="main">
             
   <section id="longest-common-subsequence-problem">
-<h1>Longest Common Subsequence Problem<a class="headerlink" href="#longest-common-subsequence-problem" title="Permalink to this heading">¶</a></h1>
+<h1>Longest Common Subsequence Problem<a class="headerlink" href="#longest-common-subsequence-problem" title="Link to this heading">¶</a></h1>
 <section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h2>
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
 <section id="sequence-comparison">
-<h3>Sequence Comparison<a class="headerlink" href="#sequence-comparison" title="Permalink to this heading">¶</a></h3>
+<h3>Sequence Comparison<a class="headerlink" href="#sequence-comparison" title="Link to this heading">¶</a></h3>
 <p>Sequences and subsequences are foundational concepts in the study of
 computational problems. A sequence is an ordered list of elements, while a
 subsequence is a series of elements that appear in the same order as in the
@@ -63,7 +59,7 @@ to align DNA sequences, and in computer science for text comparison and file
 differencing tools.</p>
 </section>
 <section id="lcs-problem">
-<h3>LCS Problem<a class="headerlink" href="#lcs-problem" title="Permalink to this heading">¶</a></h3>
+<h3>LCS Problem<a class="headerlink" href="#lcs-problem" title="Link to this heading">¶</a></h3>
 <p>The Longest Common Subsequence (LCS) problem is a classic computer science
 challenge. It involves finding the longest sequence of elements that are common
 and in the same order in two given sequences without necessarily being
@@ -74,7 +70,7 @@ version control systems to identify changes between file versions.</p>
 and “BDCABC”. The LCS for these sequences is “BCAB”.</p>
 </section>
 <section id="optimal-substructure">
-<h3>Optimal Substructure<a class="headerlink" href="#optimal-substructure" title="Permalink to this heading">¶</a></h3>
+<h3>Optimal Substructure<a class="headerlink" href="#optimal-substructure" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>For sequences <cite>X</cite> and <cite>Y</cite>, if <cite>X[m]</cite> equals <cite>Y[n]</cite>, the LCS includes <cite>X[m]</cite>
 and is one more than <cite>LCS(X[1..m-1], Y[1..n-1])</cite>.</p>
@@ -92,7 +88,7 @@ Y[1..n-1])</cite> or <cite>LCS(X[1..m-1], Y[1..n])</cite>.</p>
 </ul>
 </section>
 <section id="overlapping-subproblems">
-<h3>Overlapping Subproblems<a class="headerlink" href="#overlapping-subproblems" title="Permalink to this heading">¶</a></h3>
+<h3>Overlapping Subproblems<a class="headerlink" href="#overlapping-subproblems" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Calculating <cite>LCS(X[1..m], Y[1..n])</cite> will often require recalculating
 <cite>LCS(X[1..m-1], Y[1..n-1])</cite>, <cite>LCS(X[1..m], Y[1..n-1])</cite>, and <cite>LCS(X[1..m-1],
@@ -101,7 +97,7 @@ Y[1..n])</cite> multiple times.</p></li>
 </section>
 </section>
 <section id="brute-force-approach">
-<h2>Brute Force Approach<a class="headerlink" href="#brute-force-approach" title="Permalink to this heading">¶</a></h2>
+<h2>Brute Force Approach<a class="headerlink" href="#brute-force-approach" title="Link to this heading">¶</a></h2>
 <p>A naive method to find the Longest Common Subsequence is to compare all
 subsequences of the first sequence against all subsequences of the second
 sequence. This brute force approach examines every possible pair of
@@ -110,7 +106,7 @@ to its inefficiency, particularly with long sequences, this method is
 impractical for real-world applications where time and computational resources
 are factors to consider.</p>
 <section id="divide-and-conquer-approach">
-<h3>Divide and Conquer Approach<a class="headerlink" href="#divide-and-conquer-approach" title="Permalink to this heading">¶</a></h3>
+<h3>Divide and Conquer Approach<a class="headerlink" href="#divide-and-conquer-approach" title="Link to this heading">¶</a></h3>
 <p>The divide-and-conquer solution to the Longest Common Subsequence (LCS) problem
 leverages the concept of breaking down the problem into smaller subproblems. It
 begins by employing the subproblem definition of LCS, where the LCS of two
@@ -141,7 +137,7 @@ complexity of <span class="math notranslate nohighlight">\(\Theta(2^n)\)</span>.
 </section>
 </section>
 <section id="dp-solution-for-lcs">
-<h2>DP Solution for LCS<a class="headerlink" href="#dp-solution-for-lcs" title="Permalink to this heading">¶</a></h2>
+<h2>DP Solution for LCS<a class="headerlink" href="#dp-solution-for-lcs" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>DP Table: Create a table with rows and columns corresponding to the lengths
 of the two sequences being compared plus one. The extra row and column are
@@ -159,7 +155,7 @@ are the lengths of the sequences.</p></li>
 </ul>
 </section>
 <section id="traceback-to-find-the-lcs">
-<h2>Traceback to Find the LCS<a class="headerlink" href="#traceback-to-find-the-lcs" title="Permalink to this heading">¶</a></h2>
+<h2>Traceback to Find the LCS<a class="headerlink" href="#traceback-to-find-the-lcs" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p><strong>Can only find one LCS</strong></p></li>
 <li><p>After the DP table is filled, the LCS is not immediately apparent; it must be
@@ -175,13 +171,14 @@ whichever has a higher value.</p></li>
 <li><p>The traceback continues until it reaches <cite>dp[0][0]</cite>, reconstructing the LCS
 in reverse.</p></li>
 </ul>
-<a class="reference internal image-reference" href="../../_images/lcs-traceback.png"><img alt="../../_images/lcs-traceback.png" class="align-center" src="../../_images/lcs-traceback.png" style="width: 400px;" /></a>
+<a class="reference internal image-reference" href="../../_images/lcs-traceback.png"><img alt="../../_images/lcs-traceback.png" class="align-center" src="../../_images/lcs-traceback.png" style="width: 400px;" />
+</a>
 <div class="footnote docutils container">
 <p>Credit: Introduction to Algorithms, 4th Ed., T. Cormen et al.</p>
 </div>
 </section>
 <section id="pseudocode">
-<h2>Pseudocode<a class="headerlink" href="#pseudocode" title="Permalink to this heading">¶</a></h2>
+<h2>Pseudocode<a class="headerlink" href="#pseudocode" title="Link to this heading">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Function</span> <span class="n">LCS</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
     <span class="n">m</span> <span class="o">=</span> <span class="n">length</span> <span class="n">of</span> <span class="n">X</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">length</span> <span class="n">of</span> <span class="n">Y</span>
@@ -189,14 +186,14 @@ in reverse.</p></li>
 
     <span class="c1"># Initialize the table with 0&#39;s, as the LCS of an empty sequence</span>
     <span class="c1"># with any sequence is 0</span>
-    <span class="n">For</span> <span class="n">i</span> <span class="kn">from</span> <span class="mi">0</span> <span class="n">to</span> <span class="n">m</span><span class="p">:</span>
+    <span class="n">For</span> <span class="n">i</span> <span class="kn">from</span><span class="w"> </span><span class="mi">0</span> <span class="n">to</span> <span class="n">m</span><span class="p">:</span>
         <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">For</span> <span class="n">j</span> <span class="kn">from</span> <span class="mi">0</span> <span class="n">to</span> <span class="n">n</span><span class="p">:</span>
+    <span class="n">For</span> <span class="n">j</span> <span class="kn">from</span><span class="w"> </span><span class="mi">0</span> <span class="n">to</span> <span class="n">n</span><span class="p">:</span>
         <span class="n">dp</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="c1"># Fill the dp table</span>
-    <span class="n">For</span> <span class="n">i</span> <span class="kn">from</span> <span class="mi">1</span> <span class="n">to</span> <span class="n">m</span><span class="p">:</span>
-        <span class="n">For</span> <span class="n">j</span> <span class="kn">from</span> <span class="mi">1</span> <span class="n">to</span> <span class="n">n</span><span class="p">:</span>
+    <span class="n">For</span> <span class="n">i</span> <span class="kn">from</span><span class="w"> </span><span class="mi">1</span> <span class="n">to</span> <span class="n">m</span><span class="p">:</span>
+        <span class="n">For</span> <span class="n">j</span> <span class="kn">from</span><span class="w"> </span><span class="mi">1</span> <span class="n">to</span> <span class="n">n</span><span class="p">:</span>
             <span class="n">If</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">Y</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
                 <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
             <span class="n">Else</span><span class="p">:</span>
@@ -223,7 +220,7 @@ in reverse.</p></li>
 </div>
 </section>
 <section id="variations">
-<h2>Variations<a class="headerlink" href="#variations" title="Permalink to this heading">¶</a></h2>
+<h2>Variations<a class="headerlink" href="#variations" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p><strong>All LCSs</strong>: The DP solution only finds one LCS. To find all LCSs, use
 backtracking to find all possible paths in the DP table that lead to the
@@ -244,7 +241,7 @@ and previous rows of the DP table.</p></li>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
   <div>
     <h3><a href="../../index.html">Table of Contents</a></h3>
@@ -287,7 +284,7 @@ and previous rows of the DP table.</p></li>
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
@@ -295,13 +292,13 @@ and previous rows of the DP table.</p></li>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -320,8 +317,8 @@ and previous rows of the DP table.</p></li>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2021-2024, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    &#169; Copyright 2021-2024, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     </div>
   </body>
 </html>

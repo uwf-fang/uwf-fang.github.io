@@ -1,29 +1,25 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>PySpark Programming: Spark SQL and DataFrame API &#8212; IanFang Course Note Hosting  documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=279e0f84" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=fa3f9a06" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/big_data/pyspark_df.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Module 6: Data Analysis for Big Data" href="../course/idc6145/m06.html" />
     <link rel="prev" title="Module 5: PySpark Programming: Spark SQL and DataFrame" href="../course/idc6145/m05.html" /> 
   </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -48,9 +44,9 @@
           <div class="body" role="main">
             
   <section id="pyspark-programming-spark-sql-and-dataframe-api">
-<h1>PySpark Programming: Spark SQL and DataFrame API<a class="headerlink" href="#pyspark-programming-spark-sql-and-dataframe-api" title="Permalink to this heading">¶</a></h1>
+<h1>PySpark Programming: Spark SQL and DataFrame API<a class="headerlink" href="#pyspark-programming-spark-sql-and-dataframe-api" title="Link to this heading">¶</a></h1>
 <section id="outline">
-<h2>Outline<a class="headerlink" href="#outline" title="Permalink to this heading">¶</a></h2>
+<h2>Outline<a class="headerlink" href="#outline" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Spark SQL Overview</p></li>
 <li><p>Performance optimizations</p></li>
@@ -59,7 +55,7 @@
 </ul>
 </section>
 <section id="spark-sql-overview">
-<h2>Spark SQL Overview<a class="headerlink" href="#spark-sql-overview" title="Permalink to this heading">¶</a></h2>
+<h2>Spark SQL Overview<a class="headerlink" href="#spark-sql-overview" title="Link to this heading">¶</a></h2>
 <p>Spark SQL is a Spark module for structured data processing. It is one of the
 five Spark components: <strong>Spark Core, Spark SQL, Spark Streaming, MLlib,
 GraphX</strong></p>
@@ -74,7 +70,7 @@ paradigm. The SQL queries are more friendly to data analysts who are familiar
 with SQL, who can create SQL queries as strings and execute them using Spark
 SQL.</p>
 <div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">Example of DataFrame API</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">Example of DataFrame API</span><a class="headerlink" href="#id1" title="Link to this code">¶</a></div>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># df1 and df2 are DataFrames</span>
 <span class="n">df1</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;key&quot;</span><span class="p">)</span> \
     <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">df1</span><span class="o">.</span><span class="n">age</span> <span class="o">&gt;</span> <span class="mi">21</span><span class="p">)</span> \
@@ -84,7 +80,7 @@ SQL.</p>
 </div>
 </div>
 <div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">Example of SQL query</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">Example of SQL query</span><a class="headerlink" href="#id2" title="Link to this code">¶</a></div>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">createOrReplaceTempView</span><span class="p">(</span><span class="s2">&quot;table1&quot;</span><span class="p">)</span>
 <span class="n">df2</span><span class="o">.</span><span class="n">createOrReplaceTempView</span><span class="p">(</span><span class="s2">&quot;table2&quot;</span><span class="p">)</span>
 
@@ -100,7 +96,7 @@ SQL.</p>
 </div>
 </section>
 <section id="performance-optimizations">
-<h2>Performance optimizations<a class="headerlink" href="#performance-optimizations" title="Permalink to this heading">¶</a></h2>
+<h2>Performance optimizations<a class="headerlink" href="#performance-optimizations" title="Link to this heading">¶</a></h2>
 <p>Some are general optimizations, while some are conditional optimizations based
 on the data source and the query.</p>
 <ul class="simple">
@@ -120,7 +116,7 @@ source supports it)</p></li>
 </ul>
 </section>
 <section id="applications-of-spark-sql">
-<h2>Applications of Spark SQL<a class="headerlink" href="#applications-of-spark-sql" title="Permalink to this heading">¶</a></h2>
+<h2>Applications of Spark SQL<a class="headerlink" href="#applications-of-spark-sql" title="Link to this heading">¶</a></h2>
 <p>Spark SQL provides a unified data access layer for various data sources, and can even work directly on top of combined data from different sources.</p>
 <ul class="simple">
 <li><p>ETL: Extract, Transform, Load data from various sources</p></li>
@@ -134,7 +130,7 @@ sources efficiently and providing a unified interface for data management.</p></
 </ul>
 </section>
 <section id="dataframe">
-<h2>DataFrame<a class="headerlink" href="#dataframe" title="Permalink to this heading">¶</a></h2>
+<h2>DataFrame<a class="headerlink" href="#dataframe" title="Link to this heading">¶</a></h2>
 <p>The DataFrame API is the high-level abstraction in PySpark, designed to
 efficiently handle structured data. Although based on RDDs (Resilient
 Distributed Datasets), the DataFrame API provides more additional
@@ -153,8 +149,8 @@ to optimize the execution plan.</p>
 <p>To access all functionalities of the DataFrame API, you need to create a
 <code class="code docutils literal notranslate"><span class="pre">SparkSession</span></code> object.</p>
 <div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-text">Create a SparkSession object</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<div class="code-block-caption"><span class="caption-text">Create a SparkSession object</span><a class="headerlink" href="#id3" title="Link to this code">¶</a></div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span>
 
 <span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span> \
             <span class="n">master</span><span class="p">(</span><span class="s2">&quot;local[*]&quot;</span><span class="p">)</span><span class="o">.</span> \
@@ -164,13 +160,13 @@ to optimize the execution plan.</p>
 </div>
 </div>
 <section id="create-dataframes">
-<h3>Create DataFrames<a class="headerlink" href="#create-dataframes" title="Permalink to this heading">¶</a></h3>
+<h3>Create DataFrames<a class="headerlink" href="#create-dataframes" title="Link to this heading">¶</a></h3>
 <ol class="arabic simple">
 <li><p>From RDD</p></li>
 </ol>
 <blockquote>
 <div><div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-text">Create DataFrames from RDD</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">Create DataFrames from RDD</span><a class="headerlink" href="#id4" title="Link to this code">¶</a></div>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># toDF method</span>
 <span class="n">data</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Jane&quot;</span><span class="p">,</span> <span class="mi">35</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="mi">42</span><span class="p">)]</span>
 <span class="n">rdd</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">parallelize</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
@@ -190,7 +186,7 @@ to optimize the execution plan.</p>
 Avro, etc. It also supports reading data from databases though JDBC or other
 adaptors.</p>
 <div class="literal-block-wrapper docutils container" id="id5">
-<div class="code-block-caption"><span class="caption-text">Load DataFrames from data sources</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">Load DataFrames from data sources</span><a class="headerlink" href="#id5" title="Link to this code">¶</a></div>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;path/to/file.csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">json</span><span class="p">(</span><span class="s2">&quot;path/to/file.json&quot;</span><span class="p">)</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s2">&quot;path/to/file.parquet&quot;</span><span class="p">)</span>
@@ -199,11 +195,11 @@ adaptors.</p>
 </div>
 </section>
 <section id="save-dataframes">
-<h3>Save DataFrames<a class="headerlink" href="#save-dataframes" title="Permalink to this heading">¶</a></h3>
+<h3>Save DataFrames<a class="headerlink" href="#save-dataframes" title="Link to this heading">¶</a></h3>
 <p>DataFrames can be saved to various data sources like CSV, JSON, Parquet, ORC,
 Avro, etc.</p>
 <div class="literal-block-wrapper docutils container" id="id6">
-<div class="code-block-caption"><span class="caption-text">Save DataFrames to data sources</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">Save DataFrames to data sources</span><a class="headerlink" href="#id6" title="Link to this code">¶</a></div>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">&quot;overwrite&quot;</span><span class="p">)</span><span class="o">.</span> \
     <span class="n">option</span><span class="p">(</span><span class="s2">&quot;header&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;path/to/save&quot;</span><span class="p">)</span>
 </pre></div>
@@ -211,7 +207,7 @@ Avro, etc.</p>
 </div>
 </section>
 <section id="dataframe-operations-with-functions">
-<h3>DataFrame Operations with Functions<a class="headerlink" href="#dataframe-operations-with-functions" title="Permalink to this heading">¶</a></h3>
+<h3>DataFrame Operations with Functions<a class="headerlink" href="#dataframe-operations-with-functions" title="Link to this heading">¶</a></h3>
 <p>The PySpark DataFrame does not directly accept Python functions. Instead,
 PySpark provides a rich collection of built-in functions through the
 spark.sql.functions package. These built-in functions offer various
@@ -245,7 +241,7 @@ use of built-in functions.</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
   <div>
     <h3><a href="../index.html">Table of Contents</a></h3>
@@ -283,7 +279,7 @@ use of built-in functions.</p>
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
@@ -291,13 +287,13 @@ use of built-in functions.</p>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -316,8 +312,8 @@ use of built-in functions.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2021-2024, Ian Fang.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    &#169; Copyright 2021-2024, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     </div>
   </body>
 </html>
