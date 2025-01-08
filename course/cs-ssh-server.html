@@ -16,7 +16,7 @@
     <link rel="canonical" href="https://uwf-fang.github.io/course/cs-ssh-server.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Programming Projects" href="cop3014/project.html" />
+    <link rel="next" title="Version Control System and Git" href="../tools/git.html" />
     <link rel="prev" title="C/C++ Development Environment" href="../cpp/ccpp-env.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="Related">
@@ -26,15 +26,14 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="cop3014/project.html" title="Programming Projects"
+          <a href="../tools/git.html" title="Version Control System and Git"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="../cpp/ccpp-env.html" title="C/C++ Development Environment"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
-          <li class="nav-item nav-item-3"><a href="cop3014/env.html" accesskey="U">Development Environment</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="cop3530/env.html" accesskey="U">Development Environment</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Remote Linux Server Tutorial</a></li> 
       </ul>
     </div>  
@@ -58,6 +57,18 @@ providing support for these environments.</p>
 <p>There are several Linux servers available to CS students for teaching purposes.
 The servers can be accessed through secure shell (SSH). The host name for the
 servers is <strong>cs-ssh.uwf.edu</strong>.</p>
+<section id="vs-code-remote-ssh">
+<h2>VS Code Remote SSH<a class="headerlink" href="#vs-code-remote-ssh" title="Link to this heading">¶</a></h2>
+<p>The easiest way to work with the remote server is to use the <strong>Remote - SSH</strong>
+extension in Visual Studio Code. You can install the extension from the
+extension marketplace. Once installed, you can connect to the remote server
+using the <strong>Remote - SSH: Connect to Host…</strong> command in the command palette
+(<code class="docutils literal notranslate"><span class="pre">Ctrl+Shift+P</span></code>). You will be asked to input the host name. Input the host
+name <code class="docutils literal notranslate"><span class="pre">cs-ssh.uwf.edu</span></code> and you will be asked to input your username and
+password. Once connected, you can open a terminal in VS Code and work with the
+remote server as if you are working on your local machine. You can also open
+folders on the remote server and edit files directly in VS Code.</p>
+</section>
 <section id="ssh-client">
 <h2>SSH client<a class="headerlink" href="#ssh-client" title="Link to this heading">¶</a></h2>
 <p>You will need an SSH client to connect to the remote server. The standard
@@ -72,13 +83,8 @@ Putty. You can find it free online and install it.</p>
 <section id="ssh-command">
 <h2>SSH command<a class="headerlink" href="#ssh-command" title="Link to this heading">¶</a></h2>
 <p>You need to know the basic SSH command usage to connect to a remote server in
-your terminal. The syntax looked like:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>ssh<span class="w"> </span>cs-ssh.uwf.edu
-</pre></div>
-</div>
-<p>You may want to specify the username to be used to log into the server. Use the
-following command and replace <code class="docutils literal notranslate"><span class="pre">uname</span></code> with your uwf email ID (part before &#64;
-in your UWF email address):</p>
+your terminal. Use the following command and <strong>replace ``uname`` with your uwf
+email ID</strong> (part before &#64; in your UWF email address):</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>ssh<span class="w"> </span>uname@cs-ssh.uwf.edu
 </pre></div>
 </div>
@@ -107,8 +113,8 @@ paste to the terminal window.</p>
 </ul>
 </section>
 </section>
-<section id="linux-server">
-<h2>Linux server<a class="headerlink" href="#linux-server" title="Link to this heading">¶</a></h2>
+<section id="work-with-linux">
+<h2>Work with Linux<a class="headerlink" href="#work-with-linux" title="Link to this heading">¶</a></h2>
 <p>Once you are logged in. You will be manipulating the remote Linux the same way
 as you can do with your local Linux in its terminal. You need some knowledge of
 basic Linux commands to do your work on the server. The common Linux commands
@@ -169,30 +175,6 @@ nano if you prefer a simpler editor.</p>
 to the server. So you do not have to edit in the terminal window.</p>
 </div>
 </section>
-<section id="use-linux-heredoc">
-<h3>Use Linux Heredoc<a class="headerlink" href="#use-linux-heredoc" title="Link to this heading">¶</a></h3>
-<p><strong>This is an alternative method to input content and save to a file in the
-command line environment without any editor. You may skip this section if you
-are ok with an editor</strong></p>
-<p>There is a concept called “heredoc” in Linux that allows user to pass a
-multiline block of text to a command. You can use it to paste code into a file
-using the following command.</p>
-<p>Assuming that we are creating a file called main.cpp. We can use the following
-snippet. The first line and the last line is part of the command while
-everything in the middle is the content to be saved in the file. The content
-can be either typed or pasted.</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; main.cpp</span>
-<span class="s">#include &lt;iostream&gt;</span>
-<span class="s">using namespace std;</span>
-
-<span class="s">int main() {</span>
-<span class="s">  cout &lt;&lt; &quot;Hello World!&quot; &lt;&lt; endl;</span>
-<span class="s">  return 0;</span>
-<span class="s">}</span>
-<span class="s">EOF</span>
-</pre></div>
-</div>
-</section>
 </section>
 <section id="file-transfer">
 <h2>File Transfer<a class="headerlink" href="#file-transfer" title="Link to this heading">¶</a></h2>
@@ -228,15 +210,15 @@ will provide the option.</p>
     <h3><a href="../index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">Remote Linux Server Tutorial</a><ul>
+<li><a class="reference internal" href="#vs-code-remote-ssh">VS Code Remote SSH</a></li>
 <li><a class="reference internal" href="#ssh-client">SSH client</a></li>
 <li><a class="reference internal" href="#ssh-command">SSH command</a><ul>
 <li><a class="reference internal" href="#typical-ssh-errors">Typical SSH Errors</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#linux-server">Linux server</a></li>
+<li><a class="reference internal" href="#work-with-linux">Work with Linux</a></li>
 <li><a class="reference internal" href="#edit-in-the-ssh-window">Edit in the SSH window</a><ul>
 <li><a class="reference internal" href="#use-vim-editor">Use vim editor</a></li>
-<li><a class="reference internal" href="#use-linux-heredoc">Use Linux Heredoc</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#file-transfer">File Transfer</a></li>
@@ -252,8 +234,8 @@ will provide the option.</p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="cop3014/project.html"
-                          title="next chapter">Programming Projects</a></p>
+    <p class="topless"><a href="../tools/git.html"
+                          title="next chapter">Version Control System and Git</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -283,15 +265,14 @@ will provide the option.</p>
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="cop3014/project.html" title="Programming Projects"
+          <a href="../tools/git.html" title="Version Control System and Git"
              >next</a> |</li>
         <li class="right" >
           <a href="../cpp/ccpp-env.html" title="C/C++ Development Environment"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="cop3014/index.html" >COP 3014 Algorithm and Program Design</a> &#187;</li>
-          <li class="nav-item nav-item-3"><a href="cop3014/env.html" >Development Environment</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="cop3530/env.html" >Development Environment</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Remote Linux Server Tutorial</a></li> 
       </ul>
     </div>
