@@ -154,34 +154,27 @@ Chaining Hash Map Example
 
 ::
 
-    class Node {
+  class HashMap1 {
+    struct Node {
       int key;
       int value;
       Node *next;
-     public:
-      Node(int key, int value);
-      int getKey() const;
-      int getValue() const;
-      void setNext(Node *next);
-      Node *getNext() const;
     };
-
-    // HashMap
-    // chaining
-    class HashMap {
-      int capacity;
-      Node **buckets;  // 1D array of pointers to linked-lists
-      int hashFunction(int key);
-     public:
-      HashMap(int capacity = 100);
-      HashMap(const HashMap &other);
-      HashMap &operator=(const HashMap &other);
-      ~HashMap();
-      void set(int key, int value);
-      bool remove(int key);
-      int lookUp(int key);
-    };
-
+    int capacity;
+    int size;
+    Node **buckets;  // 1D array of pointers to linked lists
+    int hashFunction(int key) const;
+  public:
+    HashMap1(int capacity = 101);  // prime number
+    HashMap1(const HashMap1 &other);
+    HashMap1 &operator=(const HashMap1 &other);
+    ~HashMap1();
+    void resize(int newCapacity); // rehashing
+    void put(int key, int value);
+    bool remove(int key);
+    int get(int key) const;
+    int size() const;
+  };
 
 Open addressing example
 =======================
