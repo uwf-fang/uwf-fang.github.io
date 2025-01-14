@@ -1,0 +1,97 @@
+# SSH Key Authentication Setup Guide
+
+## Introduction
+As your instructor for this course, I'll guide you through setting up SSH key
+authentication for accessing our CS server (cs-ssh.uwf.edu). This method is
+both more secure and convenient than traditional password authentication,
+eliminating the need to enter your password each time you connect.
+
+## Key Concepts
+
+### Public Key Authentication
+SSH key authentication uses a pair of cryptographic keys:
+
+* **Public Key**: Like a padlock that you can freely share. It's placed on the
+  server you want to access.
+* **Private Key**: Like the unique key that opens your padlock. Must be kept
+  secret and secure on your computer.
+
+### Benefits
+* Increased security through cryptographic strength
+* No need to remember or type passwords
+* Protection against brute-force attacks
+* Automated secure file transfers and remote operations
+
+## Step-by-Step Instructions
+
+### 1. Generate Your SSH Key Pair
+Open a bash terminal and run:
+```bash
+ssh-keygen -t ed25519 -C "your_email@uwf.edu"
+```
+
+When prompted:
+* Press Enter to accept the default file location
+* Enter a passphrase (recommended) or press Enter twice for no passphrase
+
+### 2. Verify Key Generation
+Check that your keys were created:
+
+```bash
+ls ~/.ssh/
+```
+
+You should see two files:
+* id_ed25519 (private key)
+* id_ed25519.pub (public key)
+
+### 3. Copy Public Key to Server
+```bash
+ssh-copy-id -i ~/.ssh/id_ed25519.pub your_username@cs-ssh.uwf.edu
+```
+
+
+### 4. Test Connection
+Try connecting to the server:
+```bash
+ssh your_username@cs-ssh.uwf.edu
+```
+
+You should now connect without being prompted for a password.
+
+## Important Security Notes
+* Never share your private key
+* Keep your private key file secure (600 permissions on Unix-like systems)
+* Back up your private key securely
+* If using a passphrase, remember it can't be recovered if forgotten
+
+## Troubleshooting
+If you encounter issues:
+
+1. Check file permissions:
+```bash
+# On Linux/macOS
+chmod 600 ~/.ssh/id_ed25519
+chmod 600 ~/.ssh/id_ed25519.pub
+```
+
+2. Verify public key installation:
+```bash
+ssh your_username@cs-ssh.uwf.edu "cat ~/.ssh/authorized_keys"
+```
+
+3. Enable verbose SSH output for debugging:
+```bash
+ssh -v your_username@cs-ssh.uwf.edu
+```
+
+## Support
+If you continue to experience problems, please:
+* Check your key file locations and permissions
+* Ensure you're using the correct username
+* Contact me during office hours or via email for assistance
+
+You can now use this SSH key authentication to securely access our CS server
+for compiling and running your C++ and Java assignments without password
+prompts.
+
