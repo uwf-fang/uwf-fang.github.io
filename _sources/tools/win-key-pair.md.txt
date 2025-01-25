@@ -1,0 +1,88 @@
+# Windows SSH Authentication Setup Guide
+
+## Introduction
+I'll guide you through setting up SSH key authentication for accessing our CS
+server (cs-ssh.uwf.edu). This method is both more secure and convenient than
+traditional password authentication, eliminating the need to enter your
+password each time you connect.
+
+## Key Concepts
+
+### Public Key Authentication
+SSH key authentication uses a pair of cryptographic keys:
+
+* **Public Key**: Like a padlock that you can freely share. It's placed on the
+  server you want to access.
+* **Private Key**: Like the unique key that opens your padlock. Must be kept
+  secret and secure on your computer.
+
+### Benefits
+* Increased security through cryptographic strength
+* No need to remember or type passwords
+* Protection against brute-force attacks
+* Automated secure file transfers and remote operations
+
+## Installing OpenSSH on Windows
+
+.. note::
+
+    Pre-installed on classroom computers.
+
+### Using Windows Settings (Recommended)
+1. Open Windows Settings
+2. Navigate to Apps -> Optional Features
+3. Click "Add a feature"
+4. Search for "OpenSSH Client"
+5. Click Install
+
+### Verify Installation
+Open Command Prompt or PowerShell and type:
+```powershell
+ssh -V
+```
+This should display the OpenSSH version number.
+
+## Generating SSH Key Pair
+
+1. Open Command Prompt or PowerShell
+2. Generate the key pair:
+```powershell
+ssh-keygen -t ed25519 -C "your_email@uwf.edu"
+```
+3. When prompted for file location, press Enter to accept the default:
+   - Default location: `C:\Users\YourUsername\.ssh\id_ed25519`
+4. Optional: Enter a passphrase (recommended) or press Enter twice for no passphrase
+
+## Installing Public Key on Remote Server
+
+### Method 1: Using PowerShell
+```powershell
+type $env:USERPROFILE\.ssh\id_ed25519.pub | ssh your_username@cs-ssh.uwf.edu "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
+```
+
+### Method 2: Manual Copy-Paste
+1. Open your public key file:
+2. Copy the entire content
+3. Paste it at the end of the `
+
+
+## Testing SSH Connection
+
+In your powershell terminal:
+```powershell
+ssh your_username@cs-ssh.uwf.edu
+```
+You should connect without being prompted for a password.
+
+## Best Practices
+
+1. Key Management:
+   - Keep private key secure
+   - Never share private key
+   - Use a strong passphrase
+   - Back up `.ssh` folder
+
+## Additional Resources
+- [OpenSSH Documentation](https://docs.microsoft.com/windows-server/administration/openssh/openssh_overview)
+- [VS Code Remote Development](https://code.visualstudio.com/docs/remote/ssh)
+- Contact system administrator for server-specific issues

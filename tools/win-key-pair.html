@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Windows SSH Authentication Setup Guide &#8212; IanFang Course Note Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=279e0f84" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=fa3f9a06" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/tools/win-key-pair.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Windows SSH Authentication Setup Guide</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="windows-ssh-authentication-setup-guide">
+<h1>Windows SSH Authentication Setup Guide<a class="headerlink" href="#windows-ssh-authentication-setup-guide" title="Link to this heading">¶</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h2>
+<p>I’ll guide you through setting up SSH key authentication for accessing our CS
+server (cs-ssh.uwf.edu). This method is both more secure and convenient than
+traditional password authentication, eliminating the need to enter your
+password each time you connect.</p>
+</section>
+<section id="key-concepts">
+<h2>Key Concepts<a class="headerlink" href="#key-concepts" title="Link to this heading">¶</a></h2>
+<section id="public-key-authentication">
+<h3>Public Key Authentication<a class="headerlink" href="#public-key-authentication" title="Link to this heading">¶</a></h3>
+<p>SSH key authentication uses a pair of cryptographic keys:</p>
+<ul class="simple">
+<li><p><strong>Public Key</strong>: Like a padlock that you can freely share. It’s placed on the
+server you want to access.</p></li>
+<li><p><strong>Private Key</strong>: Like the unique key that opens your padlock. Must be kept
+secret and secure on your computer.</p></li>
+</ul>
+</section>
+<section id="benefits">
+<h3>Benefits<a class="headerlink" href="#benefits" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Increased security through cryptographic strength</p></li>
+<li><p>No need to remember or type passwords</p></li>
+<li><p>Protection against brute-force attacks</p></li>
+<li><p>Automated secure file transfers and remote operations</p></li>
+</ul>
+</section>
+</section>
+<section id="installing-openssh-on-windows">
+<h2>Installing OpenSSH on Windows<a class="headerlink" href="#installing-openssh-on-windows" title="Link to this heading">¶</a></h2>
+<p>… note::</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Pre-installed on classroom computers.
+</pre></div>
+</div>
+<section id="using-windows-settings-recommended">
+<h3>Using Windows Settings (Recommended)<a class="headerlink" href="#using-windows-settings-recommended" title="Link to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Open Windows Settings</p></li>
+<li><p>Navigate to Apps -&gt; Optional Features</p></li>
+<li><p>Click “Add a feature”</p></li>
+<li><p>Search for “OpenSSH Client”</p></li>
+<li><p>Click Install</p></li>
+</ol>
+</section>
+<section id="verify-installation">
+<h3>Verify Installation<a class="headerlink" href="#verify-installation" title="Link to this heading">¶</a></h3>
+<p>Open Command Prompt or PowerShell and type:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="n">-V</span>
+</pre></div>
+</div>
+<p>This should display the OpenSSH version number.</p>
+</section>
+</section>
+<section id="generating-ssh-key-pair">
+<h2>Generating SSH Key Pair<a class="headerlink" href="#generating-ssh-key-pair" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Open Command Prompt or PowerShell</p></li>
+<li><p>Generate the key pair:</p></li>
+</ol>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">ssh-keygen</span> <span class="n">-t</span> <span class="n">ed25519</span> <span class="n">-C</span> <span class="s2">&quot;your_email@uwf.edu&quot;</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>When prompted for file location, press Enter to accept the default:</p>
+<ul class="simple">
+<li><p>Default location: <code class="docutils literal notranslate"><span class="pre">C:\Users\YourUsername\.ssh\id_ed25519</span></code></p></li>
+</ul>
+</li>
+<li><p>Optional: Enter a passphrase (recommended) or press Enter twice for no passphrase</p></li>
+</ol>
+</section>
+<section id="installing-public-key-on-remote-server">
+<h2>Installing Public Key on Remote Server<a class="headerlink" href="#installing-public-key-on-remote-server" title="Link to this heading">¶</a></h2>
+<section id="method-1-using-powershell">
+<h3>Method 1: Using PowerShell<a class="headerlink" href="#method-1-using-powershell" title="Link to this heading">¶</a></h3>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">type </span><span class="nv">$env:USERPROFILE</span><span class="p">\.</span><span class="n">ssh</span><span class="p">\</span><span class="n">id_ed25519</span><span class="p">.</span><span class="n">pub</span> <span class="p">|</span> <span class="n">ssh</span> <span class="n">your_username</span><span class="nv">@cs</span><span class="n">-ssh</span><span class="p">.</span><span class="n">uwf</span><span class="p">.</span><span class="n">edu</span> <span class="s2">&quot;mkdir -p ~/.ssh &amp;&amp; cat &gt;&gt; ~/.ssh/authorized_keys&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="method-2-manual-copy-paste">
+<h3>Method 2: Manual Copy-Paste<a class="headerlink" href="#method-2-manual-copy-paste" title="Link to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Open your public key file:</p></li>
+<li><p>Copy the entire content</p></li>
+<li><p>Paste it at the end of the `</p></li>
+</ol>
+</section>
+</section>
+<section id="testing-ssh-connection">
+<h2>Testing SSH Connection<a class="headerlink" href="#testing-ssh-connection" title="Link to this heading">¶</a></h2>
+<p>In your powershell terminal:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="n">your_username</span><span class="nv">@cs</span><span class="n">-ssh</span><span class="p">.</span><span class="n">uwf</span><span class="p">.</span><span class="n">edu</span>
+</pre></div>
+</div>
+<p>You should connect without being prompted for a password.</p>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Key Management:</p>
+<ul class="simple">
+<li><p>Keep private key secure</p></li>
+<li><p>Never share private key</p></li>
+<li><p>Use a strong passphrase</p></li>
+<li><p>Back up <code class="docutils literal notranslate"><span class="pre">.ssh</span></code> folder</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="additional-resources">
+<h2>Additional Resources<a class="headerlink" href="#additional-resources" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.microsoft.com/windows-server/administration/openssh/openssh_overview">OpenSSH Documentation</a></p></li>
+<li><p><a class="reference external" href="https://code.visualstudio.com/docs/remote/ssh">VS Code Remote Development</a></p></li>
+<li><p>Contact system administrator for server-specific issues</p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Windows SSH Authentication Setup Guide</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#key-concepts">Key Concepts</a><ul>
+<li><a class="reference internal" href="#public-key-authentication">Public Key Authentication</a></li>
+<li><a class="reference internal" href="#benefits">Benefits</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#installing-openssh-on-windows">Installing OpenSSH on Windows</a><ul>
+<li><a class="reference internal" href="#using-windows-settings-recommended">Using Windows Settings (Recommended)</a></li>
+<li><a class="reference internal" href="#verify-installation">Verify Installation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#generating-ssh-key-pair">Generating SSH Key Pair</a></li>
+<li><a class="reference internal" href="#installing-public-key-on-remote-server">Installing Public Key on Remote Server</a><ul>
+<li><a class="reference internal" href="#method-1-using-powershell">Method 1: Using PowerShell</a></li>
+<li><a class="reference internal" href="#method-2-manual-copy-paste">Method 2: Manual Copy-Paste</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#testing-ssh-connection">Testing SSH Connection</a></li>
+<li><a class="reference internal" href="#best-practices">Best Practices</a></li>
+<li><a class="reference internal" href="#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/tools/win-key-pair.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang Course Note Hosting  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Windows SSH Authentication Setup Guide</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2021-2024, Ian Fang.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>
