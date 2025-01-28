@@ -1,0 +1,153 @@
+Example of a simple grammar
+===========================
+
+Description
+-----------
+This is a simple grammar for a calculator. The calculator can handle addition,
+subtraction, multiplication, and division.
+
+Grammar:
+
+- identifier: a sequence of letters and digits starting with a letter
+- integer: a sequence of digits
+- letter: a single letter from 'a' to 'z' (lowercase only)
+- digit: a single digit from '0' to '9'
+
+Simple expressions::
+
+  a
+  123
+  abc
+  x1y2
+
+With operators::
+
+  a + b
+  123 * 456
+  x + y * z
+  a - b / c
+
+With parentheses::
+
+  (a + b)
+  (123) * (456)
+  (x + y) * (a - b)
+  ((a))
+
+Invalid strings::
+
+  +a (operator must have operands)
+  (a+) (incomplete expression)
+  12a34 (mixing digits into number)
+  _abc (underscore not in letter set)
+
+Standard EBNF
+-------------
+The EBNF syntax follows the ISO/IEC 14977 standard.
+
+Syntax:
+
+- () parentheses for grouping
+- [] square brackets for optional elements (0 or 1 time)
+- {} curly braces for repetition (0 or more times)
+- \| vertical bar for alternatives
+- , comma for concatenation
+- = for definition
+- ; semicolon for termination
+- "" double quotes for literals
+
+.. code-block::
+
+  expr = term, { ("+" | "-"), term } ;
+  term = factor, { ("*" | "/"), factor } ;
+  factor = identifier | integer | "(" expr ")" ;
+  identifier = letter, { letter | digit } ;
+  integer = digit, { digit } ;
+  letter =  "a" | "b" | "c" | ... | "z" ;
+  digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+
+Standard BNF
+------------
+The BNF syntax follows the ALGOL 60 report. It is a more concise representation
+of the grammar. However, it is less readable than the EBNF syntax because of
+the recursive rules.
+
+Syntax:
+
+- ::= for definition
+- \| for alternatives
+- <> for non-terminal symbols
+- "" double quotes for terminal symbols
+
+.. code-block::
+
+  <expr> ::= <term> | <expr> "+" <term> | <expr> "-" <term>
+  <term> ::= <factor> | <term> "*" <factor> | <term> "/" <factor>
+  <factor> ::= <identifier> | <integer> | "(" <expr> ")"
+  <identifier> ::= <letter> | <identifier> <letter> | <identifier> <digit>
+  <integer> ::= <digit> | <integer> <digit>
+  <letter> ::=  "a" | "b" | "c" | ... | "z"
+  <digit> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+
+------------
+
+The following is the Dragon Book's modern BNF syntax. This syntax is more
+suitable for syntax analyzer design.
+
+Syntax:
+
+- → for definition
+- \| for alternatives
+- ε for empty string
+- () parentheses for grouping
+- \* for zero or more times
+- \+ for one or more times
+- adjacent symbols for concatenation
+
+.. code-block::
+
+  expr    → term term_tail
+  term    → factor factor_tail
+  term_tail → + term term_tail
+            | - term term_tail
+            | ε
+  factor_tail → * factor factor_tail
+              | / factor factor_tail
+              | ε
+  factor  → id
+          | number
+          | ( expr )
+  id      → letter (letter | digit)*
+  number  → digit+
+  letter  →  a | b | c | ... | z
+  digit   → 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+
+Chomsky's Formal Language Syntax
+--------------------------------
+The Chomsky's formal language syntax is a more abstract representation of the
+grammar.
+
+Concepts:
+
+- V: set of variables
+- Σ: set of terminals
+- P: set of productions
+- S: start symbol
+- G: grammar
+
+.. code-block::
+
+  V = {E, T, F, I, N, L, D}
+  Σ = {+, -, *, /, (, ), a, b, c, ..., z, 0, 1, 2, ..., 9}
+  S = E
+  P = {
+    E → T | E + T | E - T,
+    T → F | T * F | T / F,
+    F → I | N | (E),
+    I → L | IL | ID,
+    N → D | ND,
+    L → a | b | ... | z,
+    D → 0 | 1 | 2 | ... | 9
+  }
+  G = (V, Σ, P, S)
+
