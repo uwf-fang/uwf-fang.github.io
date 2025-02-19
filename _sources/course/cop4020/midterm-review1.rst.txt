@@ -1,0 +1,136 @@
+*******************
+Topics in Midterm 1
+*******************
+
+Close Book Exam
+===============
++ Know the concepts and relationships
+
+Introduction To Programming Languages
+=====================================
++ Language evaluation criteria
++ Language categories
+
+  * Paradigms
+
+    - Imperative (same as Von Neumann architecture, most fundamental)
+    - Functional
+    - Logic
+    - Object-Oriented
+
+  * Implementation
+
+    - Compilation: C, C++
+    - Interpretation: Python, Ruby
+    - Hybrid: Java
+
+Formal Language Theory
+======================
++ Definition of a language
+
+  * Alphabet
+  * String
+  * Language
+  * Grammar
+
++ Chomsky hierarchy
+
+  * Regular, Type 3, Finite automata (FA)
+  * Context-free, Type 2, Pushdown automata (PDA)
+  * Context-sensitive, Type 1, Linear bounded automata (LBA)
+  * Recursively enumerable, Type 0, Turing machine (TM)
+
+Describing Syntax
+=================
++ Syntax
+
+  + Format of a program
+  + Language at lexeme/token level (lexical analysis)
+
+    - Regular language (type 3)
+    - Lexer/Scanner design
+
+  + Language at program level (syntax analysis)
+
+    - Context-free language (type 2)
+    - Parser design
+
+  + Notations system
+
+    - Regular expression (for lexeme/token)
+    - BNF (Backus-Naur Form) for CFG (Context-Free Grammar)
+    - EBNF (Extended BNF) for CFG (Context-Free Grammar)
+
++ Semantics
+
+  + Meaning of a program
+  + Context-sensitive grammar
+
+Lexical and Syntax Analysis
+===========================
++ Motivation: Essential part of compiler and interpreter design
++ Lexical analysis
+
+  + Input: Source code
+  + Output: Stream of tokens
+
+    - Token: Lexeme + Token type
+    - Lexeme: String of characters
+    - Token type: Category of lexeme
+
+  + Tools: Regular expression, Finite automata (More powerful tools for
+    context-free grammar like EBNF will also work)
+
++ Syntax analysis
+
+  + Input: Stream of tokens
+  + Output: Parse tree
+  + Tools: BNF, EBNF, Pushdown automata
+
++ Lexer/Scanner/Tokenizer design
+
+  + State diagram to code
+  + `Example lexer in C <lexer_>`_
+
++ Parser design
+
+  * LL(1) parser
+
+    - `Example LL(1) parser in C <rdp_>`_
+    - a kind of recursive descent parser (RDP is one kind of top-down parser)
+    - left-to-right
+    - leftmost derivation
+    - 1 token lookahead
+    - Express the grammar in EBNF
+    - Each non-terminal has a function
+
+  + LR parser
+
+    - `Example LR parser in C <srp_>`_
+    - a kind of shift-reduce parser (SRP is one kind of bottom-up parser)
+    - left-to-right
+    - rightmost derivation
+    - Create two tables: Action and Goto
+    - Implement a push down automata
+
+      - Stack: Keep track of the state
+      - State: Current state of the parser
+      - Action: Shift, Reduce, Accept, Error
+      - Goto: Next state
+
+.. _lexer: https://github.com/uwf-fang/cop4020-examples/blob/main/ch04/lexer/lexer.c
+
+.. _rdp: https://github.com/uwf-fang/cop4020-examples/blob/main/ch04/top-down-parser/parser.c
+
+.. _srp: https://github.com/uwf-fang/cop4020-examples/blob/main/ch04/bottom-up-parser/parser.c
+
+-------------------
+
+Midterm 1 Take Home Part
+========================
++ Language example representation interconversion
+
+  + Sample code, existing programming language
+  + BNF
+  + EBNF
+
