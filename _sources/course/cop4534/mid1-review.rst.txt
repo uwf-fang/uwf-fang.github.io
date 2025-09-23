@@ -12,7 +12,6 @@ How to use this document
   questions.
 + Refer to the test exam for how the Honorlock will work.
 
-
 Type of Questions
 =================
 + True/False (TF)
@@ -30,7 +29,6 @@ Environment
 + Building process of modular programs
 
   * Three steps: preprocessing, compilation, linking
-  * Driver vs library/module
   * Multi-step compilation:
 
     1. Preprocessing + compilation: `g++ -c`
@@ -38,7 +36,8 @@ Environment
 
   * Makefile (basics only)
 
-    - Write a simple rule
+    - Write a simple rule with three parts: target, dependencies,
+      recipe/commands
     - ``clean`` target
     - Triggering rules ``make <target>``, ``make``, ``make <target list>``
 
@@ -54,8 +53,9 @@ Environment
 
 + Conventions in this class
 
-  * Naming, casing
-  * File extensions
+  * Naming, casing: camelCase for functions and variables, PascalCase
+    for classes and structs, all lowercase for file names
+  * File extensions: hpp, cpp
   * Documentation and comments
 
 + git
@@ -165,13 +165,18 @@ AVL Tree
   * triggered: insertion/deletion causes balance factor to be +2/-2
   * recursively check balance factor and rotate from bottom up
 
-+ Imbalance and rotation
++ Imbalance and rotation types
 
-  * Know how they work on paper
-  * LL imbalance - LL rotation/right rotation
-  * RR imbalance - RR rotation/left rotation
-  * LR imbalance - LR rotation/left-right double rotation
-  * RL imbalance - RL rotation/right-left double rotation
+  * LL imbalance - right rotation
+  * RR imbalance - left rotation
+  * LR imbalance - left-right double rotation
+  * RL imbalance - right-left double rotation
+
++ Tricky points
+
+  * -1 for nullptr as a subtree height
+  * Positive BF means left subtree is taller; negative BF means right subtree
+    is taller
 
 B-Tree
 ------
@@ -197,7 +202,7 @@ B-Tree
 
     - internal or leaf node
     - how successor/predecessor is used when deleting from internal node
-    - adjustment when underfill
+    - adjustment when underflow
 
       + borrow from sibling
       + merge with sibling
@@ -206,8 +211,10 @@ B+ Tree
 -------
 + Difference from B-tree
 
-  * internal nodes do not store data
-  * leaf nodes are linked together
+  * internal nodes do not store data, it stores the duplicate keys of its
+    predecessor or successor position in leaves
+  * leaf nodes are linked together to allow sequential access
+  * all data are stored in leaves
 
 + Pro and con vs B-tree
 
@@ -220,13 +227,12 @@ B+ Tree
 
 Problem Classification By The Goal
 ----------------------------------
-+ Enumeration
++ Enumeration: can cover optimization, counting, search, decision
 + Search
-+ Optimization
++ Optimization: allows approximate algorithms
 + Decision
 + Counting
 + Evaluation
-
 
 Algorithmic Classification
 --------------------------
@@ -250,7 +256,6 @@ Algorithmic Classification
 
   * Exact vs approximate
   * Deterministic vs randomized (non deterministic)
-  * Neuristic and metaheuristic
 
 Brute-Force
 -----------
