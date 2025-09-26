@@ -96,9 +96,13 @@ Core Components
   independent of each other. The string can also be interpreted as a
   permutation, where each gene represents a position in the permutation.
 
-  E.g. A binary encoded individual with 5 genes: 10101; Traveling Salesman
-  Problem: A permutation of the indices of cities. Each gene is an integer
-  representing a city. The chromosome is a permutation of the cities.
+  * Binary Encoding: Each gene is represented as a binary digit (0 or 1).
+  * Integer Encoding: Each gene is represented as an integer value. (Characters
+    can also be represented as integers using their ASCII values.)
+  * Real-Valued Encoding: Each gene is represented as a real number.
+  * Permutation Encoding: Each gene represents a position in a permutation. It
+    is usually stored as an array of indices. No duplicate indices are allowed.
+    E.g. ``[8, 4, 7, 3, 6, 2, 5, 1, 9, 0]``
 
 + **Population**
 
@@ -249,13 +253,91 @@ Representative Algorithms/Strategies
   * Steady-State Replacement: Only a portion of the old generation is replaced
     by the new generation. The rest of the individuals are carried over.
 
-+ Crossover Techniques:
++ Crossover Techniques for String-like Encoding (include binary, integer,
+  real-valued):
 
-  * One-Point Crossover: A crossover point is selected, and genes from one
-    parent are combined with genes from another parent based on this point.
-  * Two-Point Crossover: Two crossover points are selected, and genes between
-    the two points are swapped between the parents.
-  * Uniform Crossover: Genes from both parents are mixed uniformly.
+  These methods are suitable for string-like representations where genes are
+  independent, such as binary or integer encoding.
+
+  * **One-Point Crossover**: A single crossover point is randomly selected in
+    the parent chromosomes. All data beyond that point is swapped between the
+    two parents.
+
+    For example, consider two parents with binary encoding:
+    Parent 1: ``11011 | 00100``
+    Parent 2: ``10001 | 11011``
+    Crossover Point: 5
+
+    Offspring 1: ``11011 | 11011``
+    Offspring 2: ``10001 | 00100``
+
+  * **Two-Point Crossover**: Two crossover points are randomly selected. The
+    genes between the two points are swapped between the parents.
+
+    For example:
+    Parent 1: ``110 | 11001 | 00``
+    Parent 2: ``100 | 01110 | 11``
+    Crossover Points: 3 and 8
+
+    Offspring 1: ``110 | 01110 | 00``
+    Offspring 2: ``100 | 11001 | 11``
+
+  * **Uniform Crossover**: Each gene is treated separately. For each gene, a
+    random choice is made to decide which parent it will be inherited from.
+    This is often implemented by using a crossover mask, a binary string of the
+    same length as the chromosomes.
+
+    For example:
+    Parent 1: ``1 1 0 1 1 0 0 1 0 0``
+    Parent 2: ``1 0 0 0 1 1 1 0 1 1``
+    Mask:     ``0 1 1 0 1 0 0 1 1 0`` (0 for Parent 1, 1 for Parent 2)
+
+    Offspring 1: ``1 0 0 1 1 0 0 0 1 0``
+    (Genes from Parent 1 at indices where mask is 0, and from Parent 2 where mask is 1)
+
++ Crossover for Permutation Encoding:
+
+  For problems where the solution is represented as a permutation of elements
+  (e.g., Traveling Salesman Problem), standard crossover methods like one-point
+  or two-point crossover can produce invalid offspring. Therefore, specialized
+  crossover operators are needed.
+
+  * **Ordered Crossover (OX)**: This operator preserves the relative order of
+    genes. A random subsequence is selected from one parent and copied to the
+    offspring. The remaining genes are filled in the order they appear in the
+    other parent.
+
+    For example, consider two parents:
+    Parent 1: ``[8, 4, 7, 3, 6, 2, 5, 1, 9, 0]``
+    Parent 2: ``[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]``
+
+    1. Select a random substring from Parent 1, e.g., from index 3 to 6: ``[3,
+       6, 2, 5]``.
+    2. Copy this substring to the offspring in the same position: ``[_, _, _,
+       3, 6, 2, 5, _, _, _]``.
+    3. Fill the remaining positions from Parent 2, skipping elements already in
+       the offspring. The order of elements from parent 2 is ``[0, 1, 2, 3, 4,
+       5, 6, 7, 8, 9]``.
+
+       - 0 is not in the offspring, add it. Offspring: ``[0, _, _, 3, 6, 2, 5,
+         _, _, _]``
+       - 1 is not in the offspring, add it. Offspring: ``[0, 1, _, 3, 6, 2, 5,
+         _, _, _]``
+       - 2, 3 are in the offspring, skip.
+       - 4 is not in the offspring, add it. Offspring: ``[0, 1, 4, 3, 6, 2, 5,
+         _, _, _]``
+       - 5, 6 are in the offspring, skip.
+       - 7 is not in the offspring, add it. Offspring: ``[0, 1, 4, 3, 6, 2, 5,
+         7, _, _]``
+       - 8 is not in the offspring, add it. Offspring: ``[0, 1, 4, 3, 6, 2, 5,
+         7, 8, _]``
+       - 9 is not in the offspring, add it. Offspring: ``[0, 1, 4, 3, 6, 2, 5,
+         7, 8, 9]``
+
+    The final offspring is ``[0, 1, 4, 3, 6, 2, 5, 7, 8, 9]``.
+
+  * **Partially Mapped Crossover (PMX)**
+  * **Cycle Crossover (CX)**
 
 + Mutation Methods:
 
@@ -286,7 +368,6 @@ applications:
 
 + **Game Development**
 + **Art and Design**
-
 
 Advantages and Limitations
 ==========================
@@ -329,5 +410,5 @@ Limitations
 References
 ==========
 + `Wikipedia <https://en.wikipedia.org/wiki/Genetic_algorithm>`_
-+ `Tutorialspoint <https://https://www.tutorialspoint.com/genetic_algorithms/genetic_algorithms_introduction.htm>`_
++ `Machine Learning Mastery <https://machinelearningmastery.com/simple-genetic-algorithm-from-scratch-in-python/>`_
 + :doc:`Using Random Number Generators in C++ </cpp/rng>`

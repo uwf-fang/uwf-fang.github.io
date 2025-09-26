@@ -141,9 +141,15 @@ represented as a string of bits, where each bit is called a gene. The term
 real-valued. The string is known as the chromosome. The genes can be
 independent of each other. The string can also be interpreted as a
 permutation, where each gene represents a position in the permutation.</p>
-<p>E.g. A binary encoded individual with 5 genes: 10101; Traveling Salesman
-Problem: A permutation of the indices of cities. Each gene is an integer
-representing a city. The chromosome is a permutation of the cities.</p>
+<ul class="simple">
+<li><p>Binary Encoding: Each gene is represented as a binary digit (0 or 1).</p></li>
+<li><p>Integer Encoding: Each gene is represented as an integer value. (Characters
+can also be represented as integers using their ASCII values.)</p></li>
+<li><p>Real-Valued Encoding: Each gene is represented as a real number.</p></li>
+<li><p>Permutation Encoding: Each gene represents a position in a permutation. It
+is usually stored as an array of indices. No duplicate indices are allowed.
+E.g. <code class="docutils literal notranslate"><span class="pre">[8,</span> <span class="pre">4,</span> <span class="pre">7,</span> <span class="pre">3,</span> <span class="pre">6,</span> <span class="pre">2,</span> <span class="pre">5,</span> <span class="pre">1,</span> <span class="pre">9,</span> <span class="pre">0]</span></code></p></li>
+</ul>
 </li>
 <li><p><strong>Population</strong></p>
 <p>At the heart of every GA is a population, which is essentially a collection
@@ -267,9 +273,9 @@ a specific problem.</p>
 </section>
 <section id="representative-algorithms-strategies">
 <h2>Representative Algorithms/Strategies<a class="headerlink" href="#representative-algorithms-strategies" title="Link to this heading">¶</a></h2>
-<ul class="simple">
-<li><p>Selection Methods:</p>
 <ul>
+<li><p>Selection Methods:</p>
+<ul class="simple">
 <li><p>Roulette Wheel Selection: Individuals are selected with a probability
 proportional to their fitness.</p></li>
 <li><p>Tournament Selection: A random subset of individuals is selected, and the
@@ -279,7 +285,7 @@ probability of selection is proportional to their rank.</p></li>
 </ul>
 </li>
 <li><p>Replacement Strategies:</p>
-<ul>
+<ul class="simple">
 <li><p>Elitism: The best individuals from the old generation are carried over to
 the new generation.</p></li>
 <li><p>Generational Replacement: The entire old generation is replaced by the new
@@ -288,17 +294,90 @@ generation.</p></li>
 by the new generation. The rest of the individuals are carried over.</p></li>
 </ul>
 </li>
-<li><p>Crossover Techniques:</p>
+<li><p>Crossover Techniques for String-like Encoding (include binary, integer,
+real-valued):</p>
+<p>These methods are suitable for string-like representations where genes are
+independent, such as binary or integer encoding.</p>
 <ul>
-<li><p>One-Point Crossover: A crossover point is selected, and genes from one
-parent are combined with genes from another parent based on this point.</p></li>
-<li><p>Two-Point Crossover: Two crossover points are selected, and genes between
-the two points are swapped between the parents.</p></li>
-<li><p>Uniform Crossover: Genes from both parents are mixed uniformly.</p></li>
+<li><p><strong>One-Point Crossover</strong>: A single crossover point is randomly selected in
+the parent chromosomes. All data beyond that point is swapped between the
+two parents.</p>
+<p>For example, consider two parents with binary encoding:
+Parent 1: <code class="docutils literal notranslate"><span class="pre">11011</span> <span class="pre">|</span> <span class="pre">00100</span></code>
+Parent 2: <code class="docutils literal notranslate"><span class="pre">10001</span> <span class="pre">|</span> <span class="pre">11011</span></code>
+Crossover Point: 5</p>
+<p>Offspring 1: <code class="docutils literal notranslate"><span class="pre">11011</span> <span class="pre">|</span> <span class="pre">11011</span></code>
+Offspring 2: <code class="docutils literal notranslate"><span class="pre">10001</span> <span class="pre">|</span> <span class="pre">00100</span></code></p>
+</li>
+<li><p><strong>Two-Point Crossover</strong>: Two crossover points are randomly selected. The
+genes between the two points are swapped between the parents.</p>
+<p>For example:
+Parent 1: <code class="docutils literal notranslate"><span class="pre">110</span> <span class="pre">|</span> <span class="pre">11001</span> <span class="pre">|</span> <span class="pre">00</span></code>
+Parent 2: <code class="docutils literal notranslate"><span class="pre">100</span> <span class="pre">|</span> <span class="pre">01110</span> <span class="pre">|</span> <span class="pre">11</span></code>
+Crossover Points: 3 and 8</p>
+<p>Offspring 1: <code class="docutils literal notranslate"><span class="pre">110</span> <span class="pre">|</span> <span class="pre">01110</span> <span class="pre">|</span> <span class="pre">00</span></code>
+Offspring 2: <code class="docutils literal notranslate"><span class="pre">100</span> <span class="pre">|</span> <span class="pre">11001</span> <span class="pre">|</span> <span class="pre">11</span></code></p>
+</li>
+<li><p><strong>Uniform Crossover</strong>: Each gene is treated separately. For each gene, a
+random choice is made to decide which parent it will be inherited from.
+This is often implemented by using a crossover mask, a binary string of the
+same length as the chromosomes.</p>
+<p>For example:
+Parent 1: <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">1</span> <span class="pre">0</span> <span class="pre">1</span> <span class="pre">1</span> <span class="pre">0</span> <span class="pre">0</span> <span class="pre">1</span> <span class="pre">0</span> <span class="pre">0</span></code>
+Parent 2: <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">0</span> <span class="pre">0</span> <span class="pre">0</span> <span class="pre">1</span> <span class="pre">1</span> <span class="pre">1</span> <span class="pre">0</span> <span class="pre">1</span> <span class="pre">1</span></code>
+Mask:     <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">1</span> <span class="pre">1</span> <span class="pre">0</span> <span class="pre">1</span> <span class="pre">0</span> <span class="pre">0</span> <span class="pre">1</span> <span class="pre">1</span> <span class="pre">0</span></code> (0 for Parent 1, 1 for Parent 2)</p>
+<p>Offspring 1: <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">0</span> <span class="pre">0</span> <span class="pre">1</span> <span class="pre">1</span> <span class="pre">0</span> <span class="pre">0</span> <span class="pre">0</span> <span class="pre">1</span> <span class="pre">0</span></code>
+(Genes from Parent 1 at indices where mask is 0, and from Parent 2 where mask is 1)</p>
+</li>
+</ul>
+</li>
+<li><p>Crossover for Permutation Encoding:</p>
+<p>For problems where the solution is represented as a permutation of elements
+(e.g., Traveling Salesman Problem), standard crossover methods like one-point
+or two-point crossover can produce invalid offspring. Therefore, specialized
+crossover operators are needed.</p>
+<ul>
+<li><p><strong>Ordered Crossover (OX)</strong>: This operator preserves the relative order of
+genes. A random subsequence is selected from one parent and copied to the
+offspring. The remaining genes are filled in the order they appear in the
+other parent.</p>
+<p>For example, consider two parents:
+Parent 1: <code class="docutils literal notranslate"><span class="pre">[8,</span> <span class="pre">4,</span> <span class="pre">7,</span> <span class="pre">3,</span> <span class="pre">6,</span> <span class="pre">2,</span> <span class="pre">5,</span> <span class="pre">1,</span> <span class="pre">9,</span> <span class="pre">0]</span></code>
+Parent 2: <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4,</span> <span class="pre">5,</span> <span class="pre">6,</span> <span class="pre">7,</span> <span class="pre">8,</span> <span class="pre">9]</span></code></p>
+<ol class="arabic simple">
+<li><p>Select a random substring from Parent 1, e.g., from index 3 to 6: <code class="docutils literal notranslate"><span class="pre">[3,</span>
+<span class="pre">6,</span> <span class="pre">2,</span> <span class="pre">5]</span></code>.</p></li>
+<li><p>Copy this substring to the offspring in the same position: <code class="docutils literal notranslate"><span class="pre">[_,</span> <span class="pre">_,</span> <span class="pre">_,</span>
+<span class="pre">3,</span> <span class="pre">6,</span> <span class="pre">2,</span> <span class="pre">5,</span> <span class="pre">_,</span> <span class="pre">_,</span> <span class="pre">_]</span></code>.</p></li>
+<li><p>Fill the remaining positions from Parent 2, skipping elements already in
+the offspring. The order of elements from parent 2 is <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4,</span>
+<span class="pre">5,</span> <span class="pre">6,</span> <span class="pre">7,</span> <span class="pre">8,</span> <span class="pre">9]</span></code>.</p>
+<ul class="simple">
+<li><p>0 is not in the offspring, add it. Offspring: <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">_,</span> <span class="pre">_,</span> <span class="pre">3,</span> <span class="pre">6,</span> <span class="pre">2,</span> <span class="pre">5,</span>
+<span class="pre">_,</span> <span class="pre">_,</span> <span class="pre">_]</span></code></p></li>
+<li><p>1 is not in the offspring, add it. Offspring: <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">_,</span> <span class="pre">3,</span> <span class="pre">6,</span> <span class="pre">2,</span> <span class="pre">5,</span>
+<span class="pre">_,</span> <span class="pre">_,</span> <span class="pre">_]</span></code></p></li>
+<li><p>2, 3 are in the offspring, skip.</p></li>
+<li><p>4 is not in the offspring, add it. Offspring: <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">4,</span> <span class="pre">3,</span> <span class="pre">6,</span> <span class="pre">2,</span> <span class="pre">5,</span>
+<span class="pre">_,</span> <span class="pre">_,</span> <span class="pre">_]</span></code></p></li>
+<li><p>5, 6 are in the offspring, skip.</p></li>
+<li><p>7 is not in the offspring, add it. Offspring: <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">4,</span> <span class="pre">3,</span> <span class="pre">6,</span> <span class="pre">2,</span> <span class="pre">5,</span>
+<span class="pre">7,</span> <span class="pre">_,</span> <span class="pre">_]</span></code></p></li>
+<li><p>8 is not in the offspring, add it. Offspring: <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">4,</span> <span class="pre">3,</span> <span class="pre">6,</span> <span class="pre">2,</span> <span class="pre">5,</span>
+<span class="pre">7,</span> <span class="pre">8,</span> <span class="pre">_]</span></code></p></li>
+<li><p>9 is not in the offspring, add it. Offspring: <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">4,</span> <span class="pre">3,</span> <span class="pre">6,</span> <span class="pre">2,</span> <span class="pre">5,</span>
+<span class="pre">7,</span> <span class="pre">8,</span> <span class="pre">9]</span></code></p></li>
+</ul>
+</li>
+</ol>
+<p>The final offspring is <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">4,</span> <span class="pre">3,</span> <span class="pre">6,</span> <span class="pre">2,</span> <span class="pre">5,</span> <span class="pre">7,</span> <span class="pre">8,</span> <span class="pre">9]</span></code>.</p>
+</li>
+<li><p><strong>Partially Mapped Crossover (PMX)</strong></p></li>
+<li><p><strong>Cycle Crossover (CX)</strong></p></li>
 </ul>
 </li>
 <li><p>Mutation Methods:</p>
-<ul>
+<ul class="simple">
 <li><p>Bit Flip Mutation: A random bit in the individual’s encoding is flipped.</p></li>
 <li><p>Swap Mutation: Two random genes in the individual’s encoding are swapped.</p></li>
 <li><p>Inversion Mutation: A random subset of genes in the individual’s encoding
@@ -378,7 +457,7 @@ the population.</p></li>
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia</a></p></li>
-<li><p><a class="reference external" href="https://https://www.tutorialspoint.com/genetic_algorithms/genetic_algorithms_introduction.htm">Tutorialspoint</a></p></li>
+<li><p><a class="reference external" href="https://machinelearningmastery.com/simple-genetic-algorithm-from-scratch-in-python/">Machine Learning Mastery</a></p></li>
 <li><p><a class="reference internal" href="../../cpp/rng.html"><span class="doc">Using Random Number Generators in C++</span></a></p></li>
 </ul>
 </section>
