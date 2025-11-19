@@ -1,0 +1,96 @@
+***************************************
+Problem A - Snakey String With Solution
+***************************************
+
+A **snakey string** is a fancy rendering of an otherwise normal string of text. When a string is made snakey, it is placed on a 2D grid such that the following conditions are met:
+
+* The first character of the string is on the first column of the grid, the second on the second column, …, and the last on the last column.
+* Each character in the string occupies either the row directly above or directly below the row of the previous character.
+
+::
+
+      G
+    I   S   U
+  B       O   T
+                H
+
+*Figure 1: The snakey string in the sample case.*
+
+Given a snakey string, can you recover the original string?
+
+Input
+=====
+
+The first line of input contains two integers **r** and **c** (2 ≤ r, c ≤ 100), the number of rows and columns of the grid.
+
+The next **r** lines each contain **c** characters that form the 2D grid containing the snakey string.
+Empty cells are encoded with a period (`.`), while uppercase letters (A–Z) represent characters in the original string.
+Every column in the grid contains **exactly one** uppercase letter. It is possible that some rows contain no uppercase letters.
+
+Output
+======
+
+Output a single string — the original string that was used to build this snakey string.
+
+
+Sample Input 1
+==============
+
+::
+
+  4 8
+  ..G.....
+  .I.S.U..
+  B...O.T.
+  .......H
+
+Sample Output 1
+===============
+
+::
+
+  BIGSOUTH
+
+
+Here is a **simple explanation** and a **clean Python 3 solution**.
+
+Solution
+========
+
+Explanation
+-----------
+
+* You are given an **r × c** grid.
+* **Each column contains exactly ONE uppercase letter** (the others are dots).
+* To recover the original string, you just:
+
+  1. Look at **each column from left to right**.
+  2. Find the **uppercase letter** in that column.
+  3. Append it to the result.
+
+That's it—no actual snake traversal is needed because the puzzle guarantees exactly one letter per column.
+
+Python 3 Solution
+-----------------
+
+.. code-block:: python3
+
+  def solve():
+      r, c = map(int, input().split())
+      grid = [input().strip() for _ in range(r)]
+
+      result = []
+
+      # For each column, find the one uppercase letter
+      for col in range(c):
+          for row in range(r):
+              ch = grid[row][col]
+              if 'A' <= ch <= 'Z':  # meaningful letter
+                  result.append(ch)
+                  break
+
+      print("".join(result))
+
+  if __name__ == "__main__":
+      solve()
+

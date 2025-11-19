@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Problem J - Game of Nines — Solution &#8212; IanFang Teaching Material Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=279e0f84" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=fa3f9a06" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/icpc/j-solution.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="SSH Key Authentication Setup Guide" href="../tools/ssh-key-pair.html" />
+    <link rel="prev" title="Problem J — Game of Nines" href="j.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../tools/ssh-key-pair.html" title="SSH Key Authentication Setup Guide"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="j.html" title="Problem J — Game of Nines"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang Teaching Material Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="icpc.html" >International Collegiate Programming Contest</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="seusa2025.html" accesskey="U">Southeast Regional Contest</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Problem J - Game of Nines — Solution</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="problem-j-game-of-nines-solution">
+<h1>Problem J - Game of Nines — Solution<a class="headerlink" href="#problem-j-game-of-nines-solution" title="Link to this heading">¶</a></h1>
+<section id="story-style-intuition">
+<h2>1. Story-style intuition<a class="headerlink" href="#story-style-intuition" title="Link to this heading">¶</a></h2>
+<p>Picture your digits <span class="math notranslate nohighlight">\(0\)</span>–<span class="math notranslate nohighlight">\(8\)</span> as tokens on a <strong>10-hour clock</strong> (positions <span class="math notranslate nohighlight">\(0\)</span> through <span class="math notranslate nohighlight">\(9\)</span>).
+When you “add digit <span class="math notranslate nohighlight">\(a\)</span> to digit <span class="math notranslate nohighlight">\(b\)</span>”, you <strong>move</strong> token <span class="math notranslate nohighlight">\(b\)</span> forward by <span class="math notranslate nohighlight">\(a\)</span> ticks around the clock.
+If you land exactly on <span class="math notranslate nohighlight">\(9\)</span>, that token disappears.</p>
+<p>Two important facts drive everything:</p>
+<ol class="arabic">
+<li><p><strong>Helpers don’t get used up.</strong></p>
+<p>A digit you use as an adder stays on the table. You can reuse it indefinitely.</p>
+</li>
+<li><p><strong>Only the total step size matters.</strong></p>
+<p>Adders are reusable and order doesn’t matter, so what matters is the <strong>set of step sizes you can produce in total</strong> modulo <span class="math notranslate nohighlight">\(10\)</span>.</p>
+</li>
+</ol>
+<p>We call this set of reusable digits the <strong>helper set</strong> <span class="math notranslate nohighlight">\(H\)</span>.</p>
+</section>
+<section id="what-is-d">
+<h2>2. What is <span class="math notranslate nohighlight">\(d\)</span>?<a class="headerlink" href="#what-is-d" title="Link to this heading">¶</a></h2>
+<p>Given a helper set <span class="math notranslate nohighlight">\(H\)</span>, the achievable total steps (mod <span class="math notranslate nohighlight">\(10\)</span>) are exactly the multiples of:</p>
+<div class="math notranslate nohighlight">
+\[d := \gcd\bigl(10,\; \text{all digits in } H\bigr).\]</div>
+<p>This is because the sums of helpers form a subgroup of <span class="math notranslate nohighlight">\(\mathbb{Z}_{10}\)</span>, and every subgroup is
+<span class="math notranslate nohighlight">\(\{0,d,2d,\ldots,10-d\}\)</span> for some <span class="math notranslate nohighlight">\(d\in\{1,2,5,10\}\)</span>.</p>
+<p>Interpretation: <strong>:math:`d` is your tick size</strong> around the circle.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(d=1\)</span> → can move any number of steps</p></li>
+<li><p><span class="math notranslate nohighlight">\(d=2\)</span> → even steps only</p></li>
+<li><p><span class="math notranslate nohighlight">\(d=5\)</span> → only multiples of 5</p></li>
+<li><p><span class="math notranslate nohighlight">\(d=10\)</span> → no movement possible</p></li>
+</ul>
+<p>A token <span class="math notranslate nohighlight">\(b\)</span> is eliminable <strong>iff</strong>:</p>
+<div class="math notranslate nohighlight">
+\[b \text{ is eliminable using } H \iff d \mid (9-b).\]</div>
+</section>
+<section id="everything-reduces-to-one-gcd">
+<h2>3. Everything reduces to one gcd<a class="headerlink" href="#everything-reduces-to-one-gcd" title="Link to this heading">¶</a></h2>
+<p>Take <span class="math notranslate nohighlight">\(H\)</span> to be <strong>all digits</strong> you have. Define:</p>
+<div class="math notranslate nohighlight">
+\[g = \gcd(10, a_1, a_2, \dots, a_n).\]</div>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(g=1\)</span>, you can produce every step size → you can eliminate tokens until only <strong>one</strong> remains.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(g\in\{2,5,10\}\)</span>, no <span class="math notranslate nohighlight">\(9-b\)</span> is divisible by <span class="math notranslate nohighlight">\(g\)</span>, so <strong>nothing can be eliminated</strong>.</p></li>
+</ul>
+<p>Thus:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\text{Answer} =
+\begin{cases}
+1 &amp; \text{if } \gcd(10, a_1,\dots,a_n)=1,\\[4pt]
+n &amp; \text{otherwise.}
+\end{cases}\end{split}\]</div>
+</section>
+<section id="constructive-play-when-g-1">
+<h2>4. Constructive play when <span class="math notranslate nohighlight">\(g=1\)</span><a class="headerlink" href="#constructive-play-when-g-1" title="Link to this heading">¶</a></h2>
+<p><strong>Case 1:</strong> You have a digit in <span class="math notranslate nohighlight">\(\{1,3,7\}\)</span> (coprime with 10).
+Keep one; repeatedly add it to any other digit until that digit becomes <span class="math notranslate nohighlight">\(9\)</span> and disappears.</p>
+<p><strong>Case 2:</strong> Otherwise, <span class="math notranslate nohighlight">\(g=1\)</span> implies you have a <span class="math notranslate nohighlight">\(5\)</span> and a nonzero even <span class="math notranslate nohighlight">\(e\in\{2,4,6,8\}\)</span>.
+Keep <span class="math notranslate nohighlight">\(\{e,5\}\)</span> as helpers.</p>
+<p>For a target <span class="math notranslate nohighlight">\(b\)</span>:</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(b\)</span> is odd → eliminate using repeated <span class="math notranslate nohighlight">\(e\)</span> moves.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(b\)</span> is even → apply <span class="math notranslate nohighlight">\(5\)</span> once to make it odd, then finish with <span class="math notranslate nohighlight">\(e\)</span>.</p></li>
+</ul>
+<p>You can also eliminate the <span class="math notranslate nohighlight">\(5\)</span> using <span class="math notranslate nohighlight">\(e\)</span> because
+<span class="math notranslate nohighlight">\(5 + ke \equiv 9 \pmod{10}\)</span> always has a solution.</p>
+</section>
+<section id="short-proof">
+<h2>5. Short proof<a class="headerlink" href="#short-proof" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Achievable totals form a subgroup of <span class="math notranslate nohighlight">\(\mathbb{Z}_{10}\)</span> → equal to multiples of <span class="math notranslate nohighlight">\(d\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(b\)</span> is eliminable ⇔ <span class="math notranslate nohighlight">\(b+t\equiv9\pmod{10}\)</span> for some achievable <span class="math notranslate nohighlight">\(t\)</span> ⇔ <span class="math notranslate nohighlight">\(d\mid(9-b)\)</span>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(g=1\)</span>, all digits are eliminable; if <span class="math notranslate nohighlight">\(g\in\{2,5,10\}\)</span>, none are.</p></li>
+<li><p>A move consumes two digits but removes at most one, so <strong>one token remaining</strong> is optimal.</p></li>
+</ol>
+</section>
+<section id="algorithm">
+<h2>6. Algorithm<a class="headerlink" href="#algorithm" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Read <span class="math notranslate nohighlight">\(n\)</span> and digits <span class="math notranslate nohighlight">\(a_i\)</span>.</p></li>
+<li><p>Compute <span class="math notranslate nohighlight">\(g=\gcd(10,a_1,\ldots,a_n)\)</span>.</p></li>
+<li><p>Output <strong>1</strong> if <span class="math notranslate nohighlight">\(g=1\)</span>, else <span class="math notranslate nohighlight">\(n\)</span>.</p></li>
+</ol>
+<ul class="simple">
+<li><p><strong>Time:</strong> <span class="math notranslate nohighlight">\(\Theta(n)\)</span></p></li>
+<li><p><strong>Memory:</strong> <span class="math notranslate nohighlight">\(\Theta(1)\)</span></p></li>
+</ul>
+</section>
+<section id="reference-implementations">
+<h2>7. Reference implementations<a class="headerlink" href="#reference-implementations" title="Link to this heading">¶</a></h2>
+<section id="python">
+<h3>Python<a class="headerlink" href="#python" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">solve</span><span class="p">():</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">gcd</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="n">g</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">solve</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="quick-sanity-checks">
+<h2>8. Quick sanity checks<a class="headerlink" href="#quick-sanity-checks" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(2 3 6\)</span> ⇒ <span class="math notranslate nohighlight">\(\gcd(10,2,3,6)=1\)</span> ⇒ output <strong>1</strong></p></li>
+<li><p><span class="math notranslate nohighlight">\(4 4\)</span> ⇒ <span class="math notranslate nohighlight">\(\gcd(10,4,4)=2\)</span> ⇒ output <strong>2</strong></p></li>
+<li><p><span class="math notranslate nohighlight">\(0 5 5\)</span> ⇒ <span class="math notranslate nohighlight">\(\gcd(10,0,5,5)=5\)</span> ⇒ output <strong>3</strong></p></li>
+<li><p><span class="math notranslate nohighlight">\(2 5\)</span> ⇒ <span class="math notranslate nohighlight">\(\gcd(10,2,5)=1\)</span> ⇒ output <strong>1</strong></p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Problem J - Game of Nines — Solution</a><ul>
+<li><a class="reference internal" href="#story-style-intuition">1. Story-style intuition</a></li>
+<li><a class="reference internal" href="#what-is-d">2. What is <span class="math notranslate nohighlight">\(d\)</span>?</a></li>
+<li><a class="reference internal" href="#everything-reduces-to-one-gcd">3. Everything reduces to one gcd</a></li>
+<li><a class="reference internal" href="#constructive-play-when-g-1">4. Constructive play when <span class="math notranslate nohighlight">\(g=1\)</span></a></li>
+<li><a class="reference internal" href="#short-proof">5. Short proof</a></li>
+<li><a class="reference internal" href="#algorithm">6. Algorithm</a></li>
+<li><a class="reference internal" href="#reference-implementations">7. Reference implementations</a><ul>
+<li><a class="reference internal" href="#python">Python</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#quick-sanity-checks">8. Quick sanity checks</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="j.html"
+                          title="previous chapter">Problem J — Game of Nines</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../tools/ssh-key-pair.html"
+                          title="next chapter">SSH Key Authentication Setup Guide</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/icpc/j-solution.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../tools/ssh-key-pair.html" title="SSH Key Authentication Setup Guide"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="j.html" title="Problem J — Game of Nines"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang Teaching Material Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="icpc.html" >International Collegiate Programming Contest</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="seusa2025.html" >Southeast Regional Contest</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Problem J - Game of Nines — Solution</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright Copyright © Xingang (Ian) Fang 2022-25.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>

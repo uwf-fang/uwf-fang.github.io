@@ -1,0 +1,157 @@
+*********************************
+Problem C - One Way Only Solution
+*********************************
+
+**Strategy Guide & Solution**
+
+1. The Intuition
+================
+At first glance, this problem looks like it requires complex graph theory or a search algorithm (BFS/DFS). However, the constraints (:math:`r, c \le 10^5`) suggest that an :math:`\Theta(r \times c)` simulation is too slow. We need a linear time solution :math:`\Theta(r+c)`, which implies a **Greedy** approach.
+
+The core insight lies in geometry. A preferred path cuts a rectangular grid into two distinct, non-overlapping regions:
+
+1. **The Upper-Right Region** (Strictly above/right of the path).
+2. **The Lower-Left Region** (Strictly below/left of the path).
+
+Since hikers can only move **Right** and **Down**, they cannot cross *from* the Lower-Left region *to* the Upper-Right region (or vice versa) without crossing the preferred path itself. Therefore, we can solve the problem for these two regions **independently** and sum the results.
+
+2. Deconstructing the Path logic
+================================
+
+Let's analyze how a hiker "cheats" (deviates from the preferred path).
+
+The Upper-Right Deviation
+-------------------------
+In the Upper-Right region, a hiker deviates and rejoins the path under specific conditions:
+
+* **The Deviation (Exit):** The preferred path moves **Down** (`D`). This exposes a tile to the **Right**, allowing a hiker to slip into the upper region.
+* **The Re-entry (Entrance):** Later, the preferred path moves **Right** (`R`). This exposes a tile from **Above**, allowing the hiker to slip back onto the path.
+
+**Goal:** We must break the connection between every "Exit" and its corresponding "Entrance".
+
+The Lower-Left Deviation
+------------------------
+In the Lower-Left region, the logic is mirrored:
+
+* **The Deviation (Exit):** The preferred path moves **Right** (`R`). This exposes a tile **Below**, allowing a hiker to slip into the lower region.
+* **The Re-entry (Entrance):** Later, the preferred path moves **Down** (`D`). This exposes a tile to the **Left**, allowing the hiker to slip back onto the path.
+
+3. The Algorithm: Greedy Matching (Parentheses Balancing)
+=========================================================
+
+We can model this problem exactly like the **"Valid Parentheses"** problem common in Data Structures courses.
+
+Logic for Region 1 (Upper-Right)
+--------------------------------
+We need to find how many times a `D` (Exit) is followed eventually by an `R` (Entrance).
+
+* Treat every `D` as an **Open Parenthesis** `(`.
+* Treat every `R` as a **Closing Parenthesis** `)`.
+* We iterate through the string. Every time we find a matching pair `( ... )`, it represents a valid detour that exists. To block it, we must place an 'X'.
+* **Action:** Count the pairs. Each pair requires 1 `X` to block.
+
+Logic for Region 2 (Lower-Left)
+-------------------------------
+* Treat every `R` as an **Open Parenthesis** `(`.
+* Treat every `D` as a **Closing Parenthesis** `)`.
+* **Action:** Count the pairs. Each pair requires 1 `X`.
+
+Why "Greedy" works
+------------------
+Why don't we need complex flow networks? Because the grid structure is linear along the path. The "earliest" available Exit will always connect to the "earliest" available Entrance. Blocking one tile effectively "consumes" one Exit/Entrance pair.
+
+4. Step-by-Step Walkthrough
+===========================
+
+**Input:** `RRDRD` (Dimensions 3x4)
+
+**Step A: Analyze Upper-Right (Sources=`D`, Sinks=`R`)**
+
+1. `R`: Ignore.
+2. `R`: Ignore.
+3. `D`: **Exit found**. (Open connections: 1)
+4. `R`: **Re-entry found**. We have an open connection!
+
+    * **Action:** Place an X (increment count).
+    * **Update:** Close the connection (Open connections: 0).
+
+5. `D`: **Exit found**. (Open connections: 1)
+6. End of string.
+
+* **Region Result:** 1 tile needed.
+
+**Step B: Analyze Lower-Left (Sources=`R`, Sinks=`D`)**
+
+1. `R`: **Exit found**. (Open connections: 1)
+2. `R`: **Exit found**. (Open connections: 2)
+3. `D`: **Re-entry found**.
+
+    * **Action:** Place an X (increment count).
+    * **Update:** Use one open connection (Open connections: 1).
+
+4. `R`: **Exit found**. (Open connections: 2)
+5. `D`: **Re-entry found**.
+
+    * **Action:** Place an X (increment count).
+    * **Update:** Use one open connection (Open connections: 1).
+
+6. End of string.
+
+* **Region Result:** 2 tiles needed.
+
+**Total:** :math:`1 + 2 = 3`.
+
+5. Complexity Analysis
+======================
+
+* **Time Complexity:** :math:`\Theta(N)`, where :math:`N = r + c - 2`. We iterate through the path string exactly twice (once for each region).
+* **Space Complexity:** :math:`\Theta(N)` to store the input string, or :math:`\Theta(1)` if reading character by character.
+
+6. Python Solution
+==================
+
+.. code-block:: python
+
+  import sys
+
+  def solve():
+      # Reading all input from stdin
+      input_data = sys.stdin.read().split()
+      if not input_data:
+          return
+
+      # While r and c are provided, we primarily need the path string 's'
+      # r = int(input_data[0])
+      # c = int(input_data[1])
+      s = input_data[2]
+
+      total_x_needed = 0
+
+      # --- Pass 1: Upper-Right Region ---
+      # A detour is possible if we go Down (Exit) and later come back via Right (Entrance)
+      # We treat 'D' as open '(' and 'R' as closed ')'
+      balance = 0
+      for char in s:
+          if char == 'D':
+              balance += 1       # Opened a potential detour
+          elif char == 'R':
+              if balance > 0:    # Closing a detour
+                  total_x_needed += 1
+                  balance -= 1   # We blocked this specific pair
+
+      # --- Pass 2: Lower-Left Region ---
+      # A detour is possible if we go Right (Exit) and later come back via Down (Entrance)
+      # We treat 'R' as open '(' and 'D' as closed ')'
+      balance = 0
+      for char in s:
+          if char == 'R':
+              balance += 1       # Opened a potential detour
+          elif char == 'D':
+              if balance > 0:    # Closing a detour
+                  total_x_needed += 1
+                  balance -= 1   # We blocked this specific pair
+
+      print(total_x_needed)
+
+  if __name__ == '__main__':
+      solve()

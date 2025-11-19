@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Problem C - One Way Only Solution &#8212; IanFang Teaching Material Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=279e0f84" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=fa3f9a06" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/icpc/c-solution.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Problem J - Game of Nines" href="j.html" />
+    <link rel="prev" title="Problem C - One Way Only" href="c.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="j.html" title="Problem J - Game of Nines"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="c.html" title="Problem C - One Way Only"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang Teaching Material Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="icpc.html" >International Collegiate Programming Contest</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="seusa2025.html" accesskey="U">Southeast Regional Contest</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Problem C - One Way Only Solution</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="problem-c-one-way-only-solution">
+<h1>Problem C - One Way Only Solution<a class="headerlink" href="#problem-c-one-way-only-solution" title="Link to this heading">¶</a></h1>
+<p><strong>Strategy Guide &amp; Solution</strong></p>
+<section id="the-intuition">
+<h2>1. The Intuition<a class="headerlink" href="#the-intuition" title="Link to this heading">¶</a></h2>
+<p>At first glance, this problem looks like it requires complex graph theory or a search algorithm (BFS/DFS). However, the constraints (<span class="math notranslate nohighlight">\(r, c \le 10^5\)</span>) suggest that an <span class="math notranslate nohighlight">\(\Theta(r \times c)\)</span> simulation is too slow. We need a linear time solution <span class="math notranslate nohighlight">\(\Theta(r+c)\)</span>, which implies a <strong>Greedy</strong> approach.</p>
+<p>The core insight lies in geometry. A preferred path cuts a rectangular grid into two distinct, non-overlapping regions:</p>
+<ol class="arabic simple">
+<li><p><strong>The Upper-Right Region</strong> (Strictly above/right of the path).</p></li>
+<li><p><strong>The Lower-Left Region</strong> (Strictly below/left of the path).</p></li>
+</ol>
+<p>Since hikers can only move <strong>Right</strong> and <strong>Down</strong>, they cannot cross <em>from</em> the Lower-Left region <em>to</em> the Upper-Right region (or vice versa) without crossing the preferred path itself. Therefore, we can solve the problem for these two regions <strong>independently</strong> and sum the results.</p>
+</section>
+<section id="deconstructing-the-path-logic">
+<h2>2. Deconstructing the Path logic<a class="headerlink" href="#deconstructing-the-path-logic" title="Link to this heading">¶</a></h2>
+<p>Let’s analyze how a hiker “cheats” (deviates from the preferred path).</p>
+<section id="the-upper-right-deviation">
+<h3>The Upper-Right Deviation<a class="headerlink" href="#the-upper-right-deviation" title="Link to this heading">¶</a></h3>
+<p>In the Upper-Right region, a hiker deviates and rejoins the path under specific conditions:</p>
+<ul class="simple">
+<li><p><strong>The Deviation (Exit):</strong> The preferred path moves <strong>Down</strong> (<cite>D</cite>). This exposes a tile to the <strong>Right</strong>, allowing a hiker to slip into the upper region.</p></li>
+<li><p><strong>The Re-entry (Entrance):</strong> Later, the preferred path moves <strong>Right</strong> (<cite>R</cite>). This exposes a tile from <strong>Above</strong>, allowing the hiker to slip back onto the path.</p></li>
+</ul>
+<p><strong>Goal:</strong> We must break the connection between every “Exit” and its corresponding “Entrance”.</p>
+</section>
+<section id="the-lower-left-deviation">
+<h3>The Lower-Left Deviation<a class="headerlink" href="#the-lower-left-deviation" title="Link to this heading">¶</a></h3>
+<p>In the Lower-Left region, the logic is mirrored:</p>
+<ul class="simple">
+<li><p><strong>The Deviation (Exit):</strong> The preferred path moves <strong>Right</strong> (<cite>R</cite>). This exposes a tile <strong>Below</strong>, allowing a hiker to slip into the lower region.</p></li>
+<li><p><strong>The Re-entry (Entrance):</strong> Later, the preferred path moves <strong>Down</strong> (<cite>D</cite>). This exposes a tile to the <strong>Left</strong>, allowing the hiker to slip back onto the path.</p></li>
+</ul>
+</section>
+</section>
+<section id="the-algorithm-greedy-matching-parentheses-balancing">
+<h2>3. The Algorithm: Greedy Matching (Parentheses Balancing)<a class="headerlink" href="#the-algorithm-greedy-matching-parentheses-balancing" title="Link to this heading">¶</a></h2>
+<p>We can model this problem exactly like the <strong>“Valid Parentheses”</strong> problem common in Data Structures courses.</p>
+<section id="logic-for-region-1-upper-right">
+<h3>Logic for Region 1 (Upper-Right)<a class="headerlink" href="#logic-for-region-1-upper-right" title="Link to this heading">¶</a></h3>
+<p>We need to find how many times a <cite>D</cite> (Exit) is followed eventually by an <cite>R</cite> (Entrance).</p>
+<ul class="simple">
+<li><p>Treat every <cite>D</cite> as an <strong>Open Parenthesis</strong> <cite>(</cite>.</p></li>
+<li><p>Treat every <cite>R</cite> as a <strong>Closing Parenthesis</strong> <cite>)</cite>.</p></li>
+<li><p>We iterate through the string. Every time we find a matching pair <cite>( … )</cite>, it represents a valid detour that exists. To block it, we must place an ‘X’.</p></li>
+<li><p><strong>Action:</strong> Count the pairs. Each pair requires 1 <cite>X</cite> to block.</p></li>
+</ul>
+</section>
+<section id="logic-for-region-2-lower-left">
+<h3>Logic for Region 2 (Lower-Left)<a class="headerlink" href="#logic-for-region-2-lower-left" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Treat every <cite>R</cite> as an <strong>Open Parenthesis</strong> <cite>(</cite>.</p></li>
+<li><p>Treat every <cite>D</cite> as a <strong>Closing Parenthesis</strong> <cite>)</cite>.</p></li>
+<li><p><strong>Action:</strong> Count the pairs. Each pair requires 1 <cite>X</cite>.</p></li>
+</ul>
+</section>
+<section id="why-greedy-works">
+<h3>Why “Greedy” works<a class="headerlink" href="#why-greedy-works" title="Link to this heading">¶</a></h3>
+<p>Why don’t we need complex flow networks? Because the grid structure is linear along the path. The “earliest” available Exit will always connect to the “earliest” available Entrance. Blocking one tile effectively “consumes” one Exit/Entrance pair.</p>
+</section>
+</section>
+<section id="step-by-step-walkthrough">
+<h2>4. Step-by-Step Walkthrough<a class="headerlink" href="#step-by-step-walkthrough" title="Link to this heading">¶</a></h2>
+<p><strong>Input:</strong> <cite>RRDRD</cite> (Dimensions 3x4)</p>
+<p><strong>Step A: Analyze Upper-Right (Sources=`D`, Sinks=`R`)</strong></p>
+<ol class="arabic">
+<li><p><cite>R</cite>: Ignore.</p></li>
+<li><p><cite>R</cite>: Ignore.</p></li>
+<li><p><cite>D</cite>: <strong>Exit found</strong>. (Open connections: 1)</p></li>
+<li><p><cite>R</cite>: <strong>Re-entry found</strong>. We have an open connection!</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Action:</strong> Place an X (increment count).</p></li>
+<li><p><strong>Update:</strong> Close the connection (Open connections: 0).</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><cite>D</cite>: <strong>Exit found</strong>. (Open connections: 1)</p></li>
+<li><p>End of string.</p></li>
+</ol>
+<ul class="simple">
+<li><p><strong>Region Result:</strong> 1 tile needed.</p></li>
+</ul>
+<p><strong>Step B: Analyze Lower-Left (Sources=`R`, Sinks=`D`)</strong></p>
+<ol class="arabic">
+<li><p><cite>R</cite>: <strong>Exit found</strong>. (Open connections: 1)</p></li>
+<li><p><cite>R</cite>: <strong>Exit found</strong>. (Open connections: 2)</p></li>
+<li><p><cite>D</cite>: <strong>Re-entry found</strong>.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Action:</strong> Place an X (increment count).</p></li>
+<li><p><strong>Update:</strong> Use one open connection (Open connections: 1).</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><cite>R</cite>: <strong>Exit found</strong>. (Open connections: 2)</p></li>
+<li><p><cite>D</cite>: <strong>Re-entry found</strong>.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Action:</strong> Place an X (increment count).</p></li>
+<li><p><strong>Update:</strong> Use one open connection (Open connections: 1).</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>End of string.</p></li>
+</ol>
+<ul class="simple">
+<li><p><strong>Region Result:</strong> 2 tiles needed.</p></li>
+</ul>
+<p><strong>Total:</strong> <span class="math notranslate nohighlight">\(1 + 2 = 3\)</span>.</p>
+</section>
+<section id="complexity-analysis">
+<h2>5. Complexity Analysis<a class="headerlink" href="#complexity-analysis" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Time Complexity:</strong> <span class="math notranslate nohighlight">\(\Theta(N)\)</span>, where <span class="math notranslate nohighlight">\(N = r + c - 2\)</span>. We iterate through the path string exactly twice (once for each region).</p></li>
+<li><p><strong>Space Complexity:</strong> <span class="math notranslate nohighlight">\(\Theta(N)\)</span> to store the input string, or <span class="math notranslate nohighlight">\(\Theta(1)\)</span> if reading character by character.</p></li>
+</ul>
+</section>
+<section id="python-solution">
+<h2>6. Python Solution<a class="headerlink" href="#python-solution" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">solve</span><span class="p">():</span>
+    <span class="c1"># Reading all input from stdin</span>
+    <span class="n">input_data</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">input_data</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="c1"># While r and c are provided, we primarily need the path string &#39;s&#39;</span>
+    <span class="c1"># r = int(input_data[0])</span>
+    <span class="c1"># c = int(input_data[1])</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">input_data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="n">total_x_needed</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># --- Pass 1: Upper-Right Region ---</span>
+    <span class="c1"># A detour is possible if we go Down (Exit) and later come back via Right (Entrance)</span>
+    <span class="c1"># We treat &#39;D&#39; as open &#39;(&#39; and &#39;R&#39; as closed &#39;)&#39;</span>
+    <span class="n">balance</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span>
+            <span class="n">balance</span> <span class="o">+=</span> <span class="mi">1</span>       <span class="c1"># Opened a potential detour</span>
+        <span class="k">elif</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">balance</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>    <span class="c1"># Closing a detour</span>
+                <span class="n">total_x_needed</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">balance</span> <span class="o">-=</span> <span class="mi">1</span>   <span class="c1"># We blocked this specific pair</span>
+
+    <span class="c1"># --- Pass 2: Lower-Left Region ---</span>
+    <span class="c1"># A detour is possible if we go Right (Exit) and later come back via Down (Entrance)</span>
+    <span class="c1"># We treat &#39;R&#39; as open &#39;(&#39; and &#39;D&#39; as closed &#39;)&#39;</span>
+    <span class="n">balance</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span>
+            <span class="n">balance</span> <span class="o">+=</span> <span class="mi">1</span>       <span class="c1"># Opened a potential detour</span>
+        <span class="k">elif</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;D&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">balance</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>    <span class="c1"># Closing a detour</span>
+                <span class="n">total_x_needed</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">balance</span> <span class="o">-=</span> <span class="mi">1</span>   <span class="c1"># We blocked this specific pair</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">total_x_needed</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">solve</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Problem C - One Way Only Solution</a><ul>
+<li><a class="reference internal" href="#the-intuition">1. The Intuition</a></li>
+<li><a class="reference internal" href="#deconstructing-the-path-logic">2. Deconstructing the Path logic</a><ul>
+<li><a class="reference internal" href="#the-upper-right-deviation">The Upper-Right Deviation</a></li>
+<li><a class="reference internal" href="#the-lower-left-deviation">The Lower-Left Deviation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-algorithm-greedy-matching-parentheses-balancing">3. The Algorithm: Greedy Matching (Parentheses Balancing)</a><ul>
+<li><a class="reference internal" href="#logic-for-region-1-upper-right">Logic for Region 1 (Upper-Right)</a></li>
+<li><a class="reference internal" href="#logic-for-region-2-lower-left">Logic for Region 2 (Lower-Left)</a></li>
+<li><a class="reference internal" href="#why-greedy-works">Why “Greedy” works</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#step-by-step-walkthrough">4. Step-by-Step Walkthrough</a></li>
+<li><a class="reference internal" href="#complexity-analysis">5. Complexity Analysis</a></li>
+<li><a class="reference internal" href="#python-solution">6. Python Solution</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="c.html"
+                          title="previous chapter">Problem C - One Way Only</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="j.html"
+                          title="next chapter">Problem J - Game of Nines</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/icpc/c-solution.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="j.html" title="Problem J - Game of Nines"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="c.html" title="Problem C - One Way Only"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang Teaching Material Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="icpc.html" >International Collegiate Programming Contest</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="seusa2025.html" >Southeast Regional Contest</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Problem C - One Way Only Solution</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright Copyright © Xingang (Ian) Fang 2022-25.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>

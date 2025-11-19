@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Problem J - Game of Nines &#8212; IanFang Teaching Material Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=279e0f84" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=fa3f9a06" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/icpc/j.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Problem J - Game of Nines — Solution" href="j-solution.html" />
+    <link rel="prev" title="Problem C - One Way Only" href="c.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="j-solution.html" title="Problem J - Game of Nines — Solution"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="c.html" title="Problem C - One Way Only"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang Teaching Material Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="icpc.html" >International Collegiate Programming Contest</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="seusa2025.html" accesskey="U">Southeast Regional Contest</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Problem J - Game of Nines</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="problem-j-game-of-nines">
+<h1>Problem J - Game of Nines<a class="headerlink" href="#problem-j-game-of-nines" title="Link to this heading">¶</a></h1>
+<p>You are playing a simple game of adding digits. You are given a list of single
+digits between 0 and 8 (inclusive).</p>
+<p>In each move, you may choose any two digits <strong>a</strong> and <strong>b</strong>, add <strong>a</strong> to
+<strong>b</strong>, and replace <strong>b</strong> with the sum <strong>a + b</strong>. If <strong>a + b ≥ 10</strong>, keep only
+the units digit (e.g., 5 + 8 becomes 3; 4 + 6 becomes 0).</p>
+<p>Whenever the sum is <strong>9</strong>, the result is eliminated immediately and cannot
+participate in further additions. Note that you cannot add a digit to itself,
+but you <strong>may</strong> choose two digits <strong>a</strong> and <strong>b</strong> that have the same value.</p>
+<p>Your goal is to eliminate as many digits as possible, using any number of
+moves.</p>
+<section id="input">
+<h2>Input<a class="headerlink" href="#input" title="Link to this heading">¶</a></h2>
+<p>The first line of input contains a single integer <strong>n</strong> (<strong>2 ≤ n ≤ 1000</strong>), the
+number of digits.</p>
+<p>Each of the next <strong>n</strong> lines contains a single digit between <strong>0</strong> and <strong>8</strong>,
+forming the initial list of digits.</p>
+</section>
+<section id="output">
+<h2>Output<a class="headerlink" href="#output" title="Link to this heading">¶</a></h2>
+<p>Output a single integer — the <strong>minimum number of digits</strong> that will remain if
+you play optimally to eliminate as many digits as possible.</p>
+</section>
+<section id="explanation-of-sample-case-1">
+<h2>Explanation of Sample Case 1<a class="headerlink" href="#explanation-of-sample-case-1" title="Link to this heading">¶</a></h2>
+<p>Add <strong>3</strong> to <strong>6</strong> and eliminate one digit (3 + 6 becomes 9). The remaining
+digits are <strong>2</strong> and <strong>3</strong>.</p>
+<p>Then add <strong>2</strong> to <strong>3</strong> three times:</p>
+<ul class="simple">
+<li><p>3 + 2 → 5</p></li>
+<li><p>5 + 2 → 7</p></li>
+<li><p>7 + 2 → 9 (eliminated)</p></li>
+</ul>
+<p>The single digit remaining is <strong>2</strong>. It is also possible to eliminate two
+digits with a different sequence of moves.</p>
+</section>
+<section id="sample-input-1">
+<h2>Sample Input 1<a class="headerlink" href="#sample-input-1" title="Link to this heading">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">3</span>
+<span class="mi">2</span>
+<span class="mi">3</span>
+<span class="mi">6</span>
+</pre></div>
+</div>
+</section>
+<section id="sample-output-1">
+<h2>Sample Output 1<a class="headerlink" href="#sample-output-1" title="Link to this heading">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="sample-input-2">
+<h2>Sample Input 2<a class="headerlink" href="#sample-input-2" title="Link to this heading">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2</span>
+<span class="mi">4</span>
+<span class="mi">4</span>
+</pre></div>
+</div>
+</section>
+<section id="sample-output-2">
+<h2>Sample Output 2<a class="headerlink" href="#sample-output-2" title="Link to this heading">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Problem J - Game of Nines</a><ul>
+<li><a class="reference internal" href="#input">Input</a></li>
+<li><a class="reference internal" href="#output">Output</a></li>
+<li><a class="reference internal" href="#explanation-of-sample-case-1">Explanation of Sample Case 1</a></li>
+<li><a class="reference internal" href="#sample-input-1">Sample Input 1</a></li>
+<li><a class="reference internal" href="#sample-output-1">Sample Output 1</a></li>
+<li><a class="reference internal" href="#sample-input-2">Sample Input 2</a></li>
+<li><a class="reference internal" href="#sample-output-2">Sample Output 2</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="c.html"
+                          title="previous chapter">Problem C - One Way Only</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="j-solution.html"
+                          title="next chapter">Problem J - Game of Nines — Solution</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/icpc/j.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="j-solution.html" title="Problem J - Game of Nines — Solution"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="c.html" title="Problem C - One Way Only"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang Teaching Material Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="icpc.html" >International Collegiate Programming Contest</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="seusa2025.html" >Southeast Regional Contest</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Problem J - Game of Nines</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright Copyright © Xingang (Ian) Fang 2022-25.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>

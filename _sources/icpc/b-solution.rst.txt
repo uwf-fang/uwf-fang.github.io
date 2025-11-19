@@ -1,0 +1,207 @@
+************************************
+Problem B - Blind Bottles — Solution
+************************************
+
+1. The Game in One Minute
+=========================
+
+* There are `n` bottles, each labeled `1..n`, arranged in a secret order.
+* A **guess** is a line of `n` numbers (a rearrangement of `1..n`).
+* After each guess, you’re told **how many positions are exactly right**.
+* You win when **all** positions are right.
+
+Our goal: figure out the secret order using **at most 10,000 guesses** for `n ≤ 100`.
+
+2. Big Idea (No heavy math)
+===========================
+
+We stick to one **baseline guess** all the way through: the simple list::
+
+  1 2 3 ... n
+
+Call its score `B` (how many spots were already right in that baseline).
+
+Now we learn about the secret order by making **very small, controlled changes** to this baseline:
+
+  **Swap just two positions `i` and `j`** in the baseline and ask again.
+
+* If the score **goes up**, then those two positions are **directly related** in the secret ordering (they are neighbors in a loop).
+* If the score **stays the same or goes down**, those positions aren’t directly related.
+
+Doing this for **every pair `(i, j)`** lets us draw a picture (a graph) of who is connected to whom.
+That picture always breaks into **loops**:
+
+* A **single dot** (no connections) means that position was already correct.
+* A **pair of dots** connected to each other is a simple **2‑swap**.
+* Any longer loop (3 or more) means **the correct bottles rotate around** that circle of positions.
+
+After we have these loops, we make at most **one extra test per long loop** to find which way it rotates. Then we can write down the final, correct order and win.
+
+3. Why swapping two spots tells us anything
+===========================================
+
+Think about what the final arrangement looks like around any one position:
+
+* There’s the spot where **this position’s bottle** really belongs.
+* There’s also the spot whose bottle **belongs here**.
+
+Those are the two “neighbors” around that position in the final solution.
+**Swapping** `i` and `j` helps **only** when `i` and `j` are such neighbors (either the bottle from `i` belongs in `j`, or the bottle from `j` belongs in `i`).
+That’s exactly why the score goes **up** when we swap a “neighbor pair”.
+
+4. Step‑by‑step plan
+====================
+
+1. **Baseline.** Ask the identity order `1 2 … n` once. Save the score as `B`.
+2. **Build connections.** For every pair of positions `(i, j)`:
+
+   * Swap only those two in the baseline and ask again.
+   * If the score is **higher than `B`**, draw an edge between `i` and `j`.
+
+3. **Read the loops.**
+
+   * **No edges** → position already correct (leave it as is).
+   * **One edge** → a **2‑swap**; those two positions want each other’s bottles.
+   * **Two edges** → part of a **longer loop** (a circle of 3 or more positions).
+
+4. **Decide the direction (for each long loop).**
+
+   * Try **pushing everyone in the loop one step forward** (a “rotate once” guess),
+     leaving all other positions as in the baseline.
+   * If the score jumps by the loop’s length, that is the **right direction**.
+     Otherwise, it’s the reverse direction.
+
+5. **Write the final answer.** Now we know, for each position, **which position’s bottle belongs here**. Build the full line and print it once.
+
+5. Tiny example (n = 5)
+=======================
+
+Say the secret order is: [3, 5, 2, 1, 4]
+
+* After checking all pair swaps, we discover a single loop:
+
+  positions: 1 → 3 → 2 → 5 → 4 → back to 1
+
+* That means the correct bottles **cycle around** those positions.
+* We do one “rotate once” test on just that loop.
+  If the score jumps by 5, we already have the exact solution; otherwise we reverse the loop.
+* Either way, we now know the final arrangement and can print it.
+
+6. How many questions do we ask?
+================================
+
+* One for the **baseline**.
+* One for **each pair** of positions (there are about `n(n−1)/2` such pairs;
+  for `n = 100` that’s `4950`).
+* At most **one extra** per longer loop (in the worst case, around 33 of them).
+* One final print of the full answer.
+
+* Total ≤ **4,985 guesses** for `n = 100`, well under the `10,000` limit.
+
+7. The Python solution (Accepted by Kattis)
+===========================================
+
+.. code-block:: python
+
+  # Blind Bottles — Python interactive solution
+  # Deterministic O(n^2) queries (<= 4985 for n<=100)
+  # Algorithm: pairwise swaps vs identity to reveal cycle adjacencies,
+  # then 1 query per long cycle to fix its orientation.
+
+  import sys
+
+  def ask(perm):
+      """Print a permutation, flush, and read judge's reply (number of fixed points)."""
+      print(" ".join(map(str, perm)), flush=True)
+      line = sys.stdin.readline()
+      if not line:
+          sys.exit(0)  # judge closed
+      k = int(line.strip())
+      if k == len(perm):
+          sys.exit(0)  # solved; judge ends the game
+      return k
+
+  def main():
+      data = sys.stdin.readline()
+      if not data:
+          return
+      n = int(data.strip())
+
+      # 1) Base query: identity
+      base = list(range(1, n + 1))
+      B = ask(base)
+      if B == n:
+          return  # already solved
+
+      # 2) For every pair (i, j), swap on top of identity and see if score improves.
+      #    If it does, i and j are adjacent in the hidden permutation's cycle.
+      adj = [[] for _ in range(n)]
+      tmp = base[:]  # mutable copy of identity
+      for i in range(n):
+          for j in range(i + 1, n):
+              tmp[i], tmp[j] = tmp[j], tmp[i]
+              s = ask(tmp)
+              if s > B:                    # Δ > 0  -> adjacency between i and j
+                  adj[i].append(j)
+                  adj[j].append(i)
+              tmp[i], tmp[j] = tmp[j], tmp[i]  # restore to identity
+
+      # 3) Reconstruct the permutation.
+      perm = [-1] * n
+      used = [False] * n
+
+      # Fixed points: degree 0
+      for i in range(n):
+          if len(adj[i]) == 0:
+              perm[i] = i + 1
+              used[i] = True
+
+      # 2-cycles: degree 1
+      for i in range(n):
+          if not used[i] and len(adj[i]) == 1:
+              j = adj[i][0]
+              perm[i] = j + 1
+              perm[j] = i + 1
+              used[i] = used[j] = True
+
+      # Cycles of length >= 3: degree 2
+      for i in range(n):
+          if used[i]:
+              continue
+          # Collect one undirected cycle in order
+          cyc = []
+          u = i
+          prev = -1
+          while True:
+              cyc.append(u)
+              used[u] = True
+              a, b = adj[u][0], adj[u][1]   # degree 2, so exactly two neighbors
+              v = a if a != prev else b
+              prev, u = u, v
+              if u == cyc[0]:
+                  break
+
+          L = len(cyc)
+          # 4) Determine orientation with one extra query:
+          #    try mapping cyc[k] -> cyc[k+1]; if we gain L matches, that's the direction.
+          test = base[:]  # identity elsewhere
+          for k in range(L):
+              test[cyc[k]] = cyc[(k + 1) % L] + 1
+          res = ask(test)
+
+          if res - B == L:
+              # forward orientation is correct
+              for k in range(L):
+                  perm[cyc[k]] = cyc[(k + 1) % L] + 1
+          else:
+              # reverse orientation
+              for k in range(L):
+                  perm[cyc[k]] = cyc[(k - 1) % L] + 1
+
+      # 5) Final answer
+      ask(perm)
+
+  if __name__ == "__main__":
+      main()
+
+

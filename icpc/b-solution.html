@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Problem B - Blind Bottles — Solution &#8212; IanFang Teaching Material Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=279e0f84" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=fa3f9a06" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/icpc/b-solution.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Problem J — Game of Nines" href="j.html" />
+    <link rel="prev" title="Problem B - Blind Bottles" href="b.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="j.html" title="Problem J — Game of Nines"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="b.html" title="Problem B - Blind Bottles"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang Teaching Material Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="icpc.html" >International Collegiate Programming Contest</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="seusa2025.html" accesskey="U">Southeast Regional Contest</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Problem B - Blind Bottles — Solution</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="problem-b-blind-bottles-solution">
+<h1>Problem B - Blind Bottles — Solution<a class="headerlink" href="#problem-b-blind-bottles-solution" title="Link to this heading">¶</a></h1>
+<section id="the-game-in-one-minute">
+<h2>1. The Game in One Minute<a class="headerlink" href="#the-game-in-one-minute" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>There are <cite>n</cite> bottles, each labeled <cite>1..n</cite>, arranged in a secret order.</p></li>
+<li><p>A <strong>guess</strong> is a line of <cite>n</cite> numbers (a rearrangement of <cite>1..n</cite>).</p></li>
+<li><p>After each guess, you’re told <strong>how many positions are exactly right</strong>.</p></li>
+<li><p>You win when <strong>all</strong> positions are right.</p></li>
+</ul>
+<p>Our goal: figure out the secret order using <strong>at most 10,000 guesses</strong> for <cite>n ≤ 100</cite>.</p>
+</section>
+<section id="big-idea-no-heavy-math">
+<h2>2. Big Idea (No heavy math)<a class="headerlink" href="#big-idea-no-heavy-math" title="Link to this heading">¶</a></h2>
+<p>We stick to one <strong>baseline guess</strong> all the way through: the simple list:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="o">...</span> <span class="n">n</span>
+</pre></div>
+</div>
+<p>Call its score <cite>B</cite> (how many spots were already right in that baseline).</p>
+<p>Now we learn about the secret order by making <strong>very small, controlled changes</strong> to this baseline:</p>
+<blockquote>
+<div><p><strong>Swap just two positions `i` and `j`</strong> in the baseline and ask again.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>If the score <strong>goes up</strong>, then those two positions are <strong>directly related</strong> in the secret ordering (they are neighbors in a loop).</p></li>
+<li><p>If the score <strong>stays the same or goes down</strong>, those positions aren’t directly related.</p></li>
+</ul>
+<p>Doing this for <strong>every pair `(i, j)`</strong> lets us draw a picture (a graph) of who is connected to whom.
+That picture always breaks into <strong>loops</strong>:</p>
+<ul class="simple">
+<li><p>A <strong>single dot</strong> (no connections) means that position was already correct.</p></li>
+<li><p>A <strong>pair of dots</strong> connected to each other is a simple <strong>2‑swap</strong>.</p></li>
+<li><p>Any longer loop (3 or more) means <strong>the correct bottles rotate around</strong> that circle of positions.</p></li>
+</ul>
+<p>After we have these loops, we make at most <strong>one extra test per long loop</strong> to find which way it rotates. Then we can write down the final, correct order and win.</p>
+</section>
+<section id="why-swapping-two-spots-tells-us-anything">
+<h2>3. Why swapping two spots tells us anything<a class="headerlink" href="#why-swapping-two-spots-tells-us-anything" title="Link to this heading">¶</a></h2>
+<p>Think about what the final arrangement looks like around any one position:</p>
+<ul class="simple">
+<li><p>There’s the spot where <strong>this position’s bottle</strong> really belongs.</p></li>
+<li><p>There’s also the spot whose bottle <strong>belongs here</strong>.</p></li>
+</ul>
+<p>Those are the two “neighbors” around that position in the final solution.
+<strong>Swapping</strong> <cite>i</cite> and <cite>j</cite> helps <strong>only</strong> when <cite>i</cite> and <cite>j</cite> are such neighbors (either the bottle from <cite>i</cite> belongs in <cite>j</cite>, or the bottle from <cite>j</cite> belongs in <cite>i</cite>).
+That’s exactly why the score goes <strong>up</strong> when we swap a “neighbor pair”.</p>
+</section>
+<section id="stepbystep-plan">
+<h2>4. Step‑by‑step plan<a class="headerlink" href="#stepbystep-plan" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Baseline.</strong> Ask the identity order <cite>1 2 … n</cite> once. Save the score as <cite>B</cite>.</p></li>
+<li><p><strong>Build connections.</strong> For every pair of positions <cite>(i, j)</cite>:</p>
+<ul class="simple">
+<li><p>Swap only those two in the baseline and ask again.</p></li>
+<li><p>If the score is <strong>higher than `B`</strong>, draw an edge between <cite>i</cite> and <cite>j</cite>.</p></li>
+</ul>
+</li>
+<li><p><strong>Read the loops.</strong></p>
+<ul class="simple">
+<li><p><strong>No edges</strong> → position already correct (leave it as is).</p></li>
+<li><p><strong>One edge</strong> → a <strong>2‑swap</strong>; those two positions want each other’s bottles.</p></li>
+<li><p><strong>Two edges</strong> → part of a <strong>longer loop</strong> (a circle of 3 or more positions).</p></li>
+</ul>
+</li>
+<li><p><strong>Decide the direction (for each long loop).</strong></p>
+<ul class="simple">
+<li><p>Try <strong>pushing everyone in the loop one step forward</strong> (a “rotate once” guess),
+leaving all other positions as in the baseline.</p></li>
+<li><p>If the score jumps by the loop’s length, that is the <strong>right direction</strong>.
+Otherwise, it’s the reverse direction.</p></li>
+</ul>
+</li>
+<li><p><strong>Write the final answer.</strong> Now we know, for each position, <strong>which position’s bottle belongs here</strong>. Build the full line and print it once.</p></li>
+</ol>
+</section>
+<section id="tiny-example-n-5">
+<h2>5. Tiny example (n = 5)<a class="headerlink" href="#tiny-example-n-5" title="Link to this heading">¶</a></h2>
+<p>Say the secret order is: [3, 5, 2, 1, 4]</p>
+<ul>
+<li><p>After checking all pair swaps, we discover a single loop:</p>
+<p>positions: 1 → 3 → 2 → 5 → 4 → back to 1</p>
+</li>
+<li><p>That means the correct bottles <strong>cycle around</strong> those positions.</p></li>
+<li><p>We do one “rotate once” test on just that loop.
+If the score jumps by 5, we already have the exact solution; otherwise we reverse the loop.</p></li>
+<li><p>Either way, we now know the final arrangement and can print it.</p></li>
+</ul>
+</section>
+<section id="how-many-questions-do-we-ask">
+<h2>6. How many questions do we ask?<a class="headerlink" href="#how-many-questions-do-we-ask" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>One for the <strong>baseline</strong>.</p></li>
+<li><p>One for <strong>each pair</strong> of positions (there are about <cite>n(n−1)/2</cite> such pairs;
+for <cite>n = 100</cite> that’s <cite>4950</cite>).</p></li>
+<li><p>At most <strong>one extra</strong> per longer loop (in the worst case, around 33 of them).</p></li>
+<li><p>One final print of the full answer.</p></li>
+<li><p>Total ≤ <strong>4,985 guesses</strong> for <cite>n = 100</cite>, well under the <cite>10,000</cite> limit.</p></li>
+</ul>
+</section>
+<section id="the-python-solution-accepted-by-kattis">
+<h2>7. The Python solution (Accepted by Kattis)<a class="headerlink" href="#the-python-solution-accepted-by-kattis" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Blind Bottles — Python interactive solution</span>
+<span class="c1"># Deterministic O(n^2) queries (&lt;= 4985 for n&lt;=100)</span>
+<span class="c1"># Algorithm: pairwise swaps vs identity to reveal cycle adjacencies,</span>
+<span class="c1"># then 1 query per long cycle to fix its orientation.</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ask</span><span class="p">(</span><span class="n">perm</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Print a permutation, flush, and read judge&#39;s reply (number of fixed points).&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">perm</span><span class="p">)),</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">line</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># judge closed</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">perm</span><span class="p">):</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># solved; judge ends the game</span>
+    <span class="k">return</span> <span class="n">k</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+    <span class="c1"># 1) Base query: identity</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">ask</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">B</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span>
+        <span class="k">return</span>  <span class="c1"># already solved</span>
+
+    <span class="c1"># 2) For every pair (i, j), swap on top of identity and see if score improves.</span>
+    <span class="c1">#    If it does, i and j are adjacent in the hidden permutation&#39;s cycle.</span>
+    <span class="n">adj</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">base</span><span class="p">[:]</span>  <span class="c1"># mutable copy of identity</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+            <span class="n">tmp</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">tmp</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">tmp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">ask</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="n">B</span><span class="p">:</span>                    <span class="c1"># Δ &gt; 0  -&gt; adjacency between i and j</span>
+                <span class="n">adj</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+                <span class="n">adj</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">tmp</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">tmp</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">tmp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>  <span class="c1"># restore to identity</span>
+
+    <span class="c1"># 3) Reconstruct the permutation.</span>
+    <span class="n">perm</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+    <span class="n">used</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+
+    <span class="c1"># Fixed points: degree 0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">adj</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">perm</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">used</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1"># 2-cycles: degree 1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">used</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">adj</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="n">adj</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">perm</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">perm</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">used</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">used</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1"># Cycles of length &gt;= 3: degree 2</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">used</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="k">continue</span>
+        <span class="c1"># Collect one undirected cycle in order</span>
+        <span class="n">cyc</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="n">prev</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">cyc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+            <span class="n">used</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">adj</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">adj</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>   <span class="c1"># degree 2, so exactly two neighbors</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">a</span> <span class="k">if</span> <span class="n">a</span> <span class="o">!=</span> <span class="n">prev</span> <span class="k">else</span> <span class="n">b</span>
+            <span class="n">prev</span><span class="p">,</span> <span class="n">u</span> <span class="o">=</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span>
+            <span class="k">if</span> <span class="n">u</span> <span class="o">==</span> <span class="n">cyc</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="k">break</span>
+
+        <span class="n">L</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cyc</span><span class="p">)</span>
+        <span class="c1"># 4) Determine orientation with one extra query:</span>
+        <span class="c1">#    try mapping cyc[k] -&gt; cyc[k+1]; if we gain L matches, that&#39;s the direction.</span>
+        <span class="n">test</span> <span class="o">=</span> <span class="n">base</span><span class="p">[:]</span>  <span class="c1"># identity elsewhere</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+            <span class="n">test</span><span class="p">[</span><span class="n">cyc</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span> <span class="o">=</span> <span class="n">cyc</span><span class="p">[(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">L</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">ask</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">res</span> <span class="o">-</span> <span class="n">B</span> <span class="o">==</span> <span class="n">L</span><span class="p">:</span>
+            <span class="c1"># forward orientation is correct</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+                <span class="n">perm</span><span class="p">[</span><span class="n">cyc</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span> <span class="o">=</span> <span class="n">cyc</span><span class="p">[(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">L</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># reverse orientation</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+                <span class="n">perm</span><span class="p">[</span><span class="n">cyc</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span> <span class="o">=</span> <span class="n">cyc</span><span class="p">[(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">L</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="c1"># 5) Final answer</span>
+    <span class="n">ask</span><span class="p">(</span><span class="n">perm</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Problem B - Blind Bottles — Solution</a><ul>
+<li><a class="reference internal" href="#the-game-in-one-minute">1. The Game in One Minute</a></li>
+<li><a class="reference internal" href="#big-idea-no-heavy-math">2. Big Idea (No heavy math)</a></li>
+<li><a class="reference internal" href="#why-swapping-two-spots-tells-us-anything">3. Why swapping two spots tells us anything</a></li>
+<li><a class="reference internal" href="#stepbystep-plan">4. Step‑by‑step plan</a></li>
+<li><a class="reference internal" href="#tiny-example-n-5">5. Tiny example (n = 5)</a></li>
+<li><a class="reference internal" href="#how-many-questions-do-we-ask">6. How many questions do we ask?</a></li>
+<li><a class="reference internal" href="#the-python-solution-accepted-by-kattis">7. The Python solution (Accepted by Kattis)</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="b.html"
+                          title="previous chapter">Problem B - Blind Bottles</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="j.html"
+                          title="next chapter">Problem J — Game of Nines</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/icpc/b-solution.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="j.html" title="Problem J — Game of Nines"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="b.html" title="Problem B - Blind Bottles"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang Teaching Material Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="icpc.html" >International Collegiate Programming Contest</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="seusa2025.html" >Southeast Regional Contest</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Problem B - Blind Bottles — Solution</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright Copyright © Xingang (Ian) Fang 2022-25.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,135 @@
+************************************
+Problem J - Game of Nines — Solution
+************************************
+
+1. Story-style intuition
+========================
+
+Picture your digits :math:`0`–:math:`8` as tokens on a **10-hour clock** (positions :math:`0` through :math:`9`).
+When you “add digit :math:`a` to digit :math:`b`”, you **move** token :math:`b` forward by :math:`a` ticks around the clock.
+If you land exactly on :math:`9`, that token disappears.
+
+Two important facts drive everything:
+
+1. **Helpers don’t get used up.**
+
+   A digit you use as an adder stays on the table. You can reuse it indefinitely.
+
+2. **Only the total step size matters.**
+
+   Adders are reusable and order doesn't matter, so what matters is the **set of step sizes you can produce in total** modulo :math:`10`.
+
+We call this set of reusable digits the **helper set** :math:`H`.
+
+2. What is :math:`d`?
+=====================
+
+Given a helper set :math:`H`, the achievable total steps (mod :math:`10`) are exactly the multiples of:
+
+.. math::
+
+  d := \gcd\bigl(10,\; \text{all digits in } H\bigr).
+
+This is because the sums of helpers form a subgroup of :math:`\mathbb{Z}_{10}`, and every subgroup is
+:math:`\{0,d,2d,\ldots,10-d\}` for some :math:`d\in\{1,2,5,10\}`.
+
+Interpretation: **:math:`d` is your tick size** around the circle.
+
+* :math:`d=1` → can move any number of steps
+* :math:`d=2` → even steps only
+* :math:`d=5` → only multiples of 5
+* :math:`d=10` → no movement possible
+
+A token :math:`b` is eliminable **iff**:
+
+.. math::
+
+  b \text{ is eliminable using } H \iff d \mid (9-b).
+
+3. Everything reduces to one gcd
+================================
+
+Take :math:`H` to be **all digits** you have. Define:
+
+.. math::
+
+  g = \gcd(10, a_1, a_2, \dots, a_n).
+
+* If :math:`g=1`, you can produce every step size → you can eliminate tokens until only **one** remains.
+* If :math:`g\in\{2,5,10\}`, no :math:`9-b` is divisible by :math:`g`, so **nothing can be eliminated**.
+
+Thus:
+
+.. math::
+
+  \text{Answer} =
+  \begin{cases}
+  1 & \text{if } \gcd(10, a_1,\dots,a_n)=1,\\[4pt]
+  n & \text{otherwise.}
+  \end{cases}
+
+4. Constructive play when :math:`g=1`
+=====================================
+
+**Case 1:** You have a digit in :math:`\{1,3,7\}` (coprime with 10).
+Keep one; repeatedly add it to any other digit until that digit becomes :math:`9` and disappears.
+
+**Case 2:** Otherwise, :math:`g=1` implies you have a :math:`5` and a nonzero even :math:`e\in\{2,4,6,8\}`.
+Keep :math:`\{e,5\}` as helpers.
+
+For a target :math:`b`:
+
+* If :math:`b` is odd → eliminate using repeated :math:`e` moves.
+* If :math:`b` is even → apply :math:`5` once to make it odd, then finish with :math:`e`.
+
+You can also eliminate the :math:`5` using :math:`e` because
+:math:`5 + ke \equiv 9 \pmod{10}` always has a solution.
+
+5. Short proof
+==============
+
+1. Achievable totals form a subgroup of :math:`\mathbb{Z}_{10}` → equal to multiples of :math:`d`.
+2. :math:`b` is eliminable ⇔ :math:`b+t\equiv9\pmod{10}` for some achievable :math:`t` ⇔ :math:`d\mid(9-b)`.
+3. If :math:`g=1`, all digits are eliminable; if :math:`g\in\{2,5,10\}`, none are.
+4. A move consumes two digits but removes at most one, so **one token remaining** is optimal.
+
+6. Algorithm
+============
+
+1. Read :math:`n` and digits :math:`a_i`.
+2. Compute :math:`g=\gcd(10,a_1,\ldots,a_n)`.
+3. Output **1** if :math:`g=1`, else :math:`n`.
+
++ **Time:** :math:`\Theta(n)`
++ **Memory:** :math:`\Theta(1)`
+
+7. Reference implementations
+============================
+
+Python
+------
+
+.. code-block:: python
+
+  import sys
+  import math
+
+  def solve():
+      data = sys.stdin.read().strip().split()
+      n = int(data[0])
+      g = 10
+      for i in range(1, n + 1):
+          x = int(data[i])
+          g = math.gcd(g, x)
+      print(1 if g == 1 else n)
+
+  if __name__ == "__main__":
+      solve()
+
+8. Quick sanity checks
+======================
+
+* :math:`2 3 6` ⇒ :math:`\gcd(10,2,3,6)=1` ⇒ output **1**
+* :math:`4 4` ⇒ :math:`\gcd(10,4,4)=2` ⇒ output **2**
+* :math:`0 5 5` ⇒ :math:`\gcd(10,0,5,5)=5` ⇒ output **3**
+* :math:`2 5` ⇒ :math:`\gcd(10,2,5)=1` ⇒ output **1**
