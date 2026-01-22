@@ -15,20 +15,14 @@ destructor, copy constructor, copy assignment operator overloading, etc.
 
 .. note::
 
-  You can safely rely on these implicitly-declared methods when all your
-  instance variables are not dynamic (primitive, class-typed, non-dynamic
-  array, etc.).
+  No dynamic instance variables in class means no special handling is required.
 
 + Default constructor
 
-  * must declare and define explicitly if other constructor is present
-  * use ``MyClass::MyClass()=default;`` if you have to define the default
-    constructor but only the default behavior is desirable
-
-.. warning::
-
-  Implicitly-declared default constructor will not set initial value to
-  non-class-typed instance variables and the values are undefined.
+  * Must declare and define explicitly if other constructor is present
+  * Will only trigger all class-type instance variables' default constructors;
+    primitive types and arrays are not initialized. **Uninitialized primitive
+    types should be avoided to prevent undefined behaviors.**
 
 + Destructor
 + Copy constructor
@@ -98,37 +92,37 @@ Dynamic data in class
 
   * The **big three** methods needed for classes to handle dynamic data
     correctly
-  * destructor
+  * Destructor
 
-    - **mandatory** because it will always be triggered
-    - when an object is destroyed
+    - **Mandatory** because it will always be triggered
+    - When an object is destroyed
 
-      * local object going out of scope
-      * dynamic object being ``delete`` d
+      * Local object going out of scope
+      * Dynamic object being ``delete`` d
 
     - place to ``delete`` dynamic data
 
   * copy constructor
 
-    - **optional** not needed if never triggered
-    - explicit triggering ``MyClass obj2(obj1);``
-    - implicit triggering ``MyClass obj2 = obj1;``
-    - implicit triggering in parameter passing::
+    - **Optional** not needed if never triggered
+    - Explicit triggering ``MyArray obj2(obj1);``
+    - Implicit triggering ``MyArray obj2 = obj1;``
+    - Implicit triggering in parameter passing::
 
         // declaration
-        void function(MyClass myObj);
+        void function(MyArray myObj);
 
         // call
-        MyClass myObj1;
+        MyArray myObj1;
         function(myObj1);
 
-    - **take a const reference parameter to avoid pass-by-value**
-    - perform deep copy here
+    - **Take a const reference parameter to avoid triggering itself**
+    - Perform deep copy here
 
   * copy assignment operator overload
 
     - **optional** not needed if never triggered
-    - explicit triggering ``MyClass obj2; obj2 = obj1;``
+    - explicit triggering ``MyArray obj2; obj2 = obj1;``
     - implicit triggering **Easy to miss**
 
       + parameter passed by value
@@ -137,7 +131,7 @@ Dynamic data in class
     - must clean up old data
     - **take a const reference parameter to avoid pass-by-value**
     - perform deep copy here
-    - ``return *this;`` to return a reference of its own class type ``MyClass
+    - ``return *this;`` to return a reference of its own class type ``MyArray
       &``
 
   .. note::
@@ -149,29 +143,29 @@ Dynamic data in class
 
 ::
 
-  class MyClass {
+  class MyArray {
    private:
     int *arr;
     int size;
    public:
-    MyClass();
-    MyClass(int size);
-    MyClass(const MyClass& other);
-    MyClass & operator=(const MyClass& other);
-    ~MyClass();
+    MyArray();
+    MyArray(int size);
+    MyArray(const MyArray& other);
+    MyArray & operator=(const MyArray& other);
+    ~MyArray();
   }
 
-  MyClass::MyClass() {
+  MyArray::MyArray() {
     size = 0;
     arr = nullptr;
   }
 
-  MyClass::MyClass(int size) {
+  MyArray::MyArray(int size) {
     this->size = size;
     arr = new int[size];
   }
 
-  MyClass::MyClass(const MyClass& other) {
+  MyArray::MyArray(const MyArray& other) {
     // you can access private members of other directly in C++!
     size = other.size;
     arr = new int[size];
@@ -179,7 +173,9 @@ Dynamic data in class
       arr[i] = other.arr[i];
   }
 
-  MyClass & MyClass::operator=(const MyClass& other) {
+  MyArray& MyArray::operator=(const MyArray& other) {
+    if (this == &other)  // self-assignment check
+      return *this;
     size = other.size;
     // must release memory of the old dynamic data first!
     delete [] arr;
@@ -189,7 +185,7 @@ Dynamic data in class
     return *this;  // IMPORTANT! return the current object by reference
   }
 
-  MyClass::~MyClass() {
+  MyArray::~MyArray() {
     delete [] arr;
   }
 
@@ -207,7 +203,7 @@ Dynamic data in class
 ::
 
   // the parameter is no longer 'const' because you will modify it
-  MyClass::MyClass(MyClass && other) {
+  MyArray::MyArray(MyArray && other) {
     size = other.size;
     arr = other.arr;
     // must make the other object ready for destruction
@@ -217,7 +213,9 @@ Dynamic data in class
   }
 
   // the parameter is no longer 'const' because you will modify it
-  MyClass & MyClass::operator=(MyClass && other) {
+  MyArray & MyArray::operator=(MyArray && other) {
+    if (this == &other)  // self-assignment check
+      return *this;
     // Swap both the size and arr with the other object
     // the destructor of the other object will destroy the old data
     swap(size, other.size);
@@ -230,7 +228,7 @@ Ownership of Dynamic Data
 
 .. note::
 
-  This section is for extended reading. It is beneficial to projects and
+  This section is for **extended reading**. It is beneficial to projects and
   self-improving but not essential in exams.
 
 A dynamic data can be created anywhere and passed around. As the ownership
@@ -245,14 +243,14 @@ data after.
     // ...
   };
 
-  class MyClass {
+  class MyArray {
    private:
     DataType *myDynamicData;
    public:
-    MyClass(DataType *initialData = nullptr) {
+    MyArray(DataType *initialData = nullptr) {
       myDynamicData = initialData;
     }
-    ~MyClass() {
+    ~MyArray() {
       // delete here although it is not new'ed in the class
       delete myDynamicData;
     }
@@ -260,7 +258,7 @@ data after.
 
   int main() {
     DataType *initData = new DataType();  // main function owns it
-    MyClass obj1(initData);  // obj1 owns it now
+    MyArray obj1(initData);  // obj1 owns it now
 
     return 0;
   }
@@ -276,11 +274,11 @@ data is shared in this case.
     // ...
   };
 
-  class MyClass {
+  class MyArray {
    private:
     Configuration *config;
    public:
-    MyClass(Configuration *config = nullptr) {
+    MyArray(Configuration *config = nullptr) {
       this->config = config;
     }
   };
@@ -288,8 +286,8 @@ data is shared in this case.
   int main() {
 
     Configuration *config1 = new Configuration();  // main function owns it
-    MyClass obj1(config1);  // obj1 uses it
-    MyClass obj2(config1);  // obj2 uses it
+    MyArray obj1(config1);  // obj1 uses it
+    MyArray obj2(config1);  // obj2 uses it
 
     delete config1;
     return 0;
@@ -301,20 +299,20 @@ Example: The object always owns the data. The recipient just used it.
 
 ::
 
-  class MyClass {
+  class MyArray {
    private:
     int * array;  // always owned by the object
     int size;
    public:
     // ... other methods
     // array is new'ed in some methods
-    ~MyClass() {delete [] array;}
+    ~MyArray() {delete [] array;}
     int *getArray() {return array;}  // expose to outside
     int getSize() {return size;}
   };
 
   int main() {
-    // declare and initialize data in MyClass obj1;
+    // declare and initialize data in MyArray obj1;
     int size = obj1.getSize();
     int *arr = obj1.getArray();
     for (int i = 0; i < size; ++i)
@@ -327,7 +325,7 @@ function to delete the dynamic data. Both are reasonable.
 
 ::
 
-  class MyClass {
+  class MyArray {
    private:
     int * array;  // always owned by the object
     int size;
@@ -338,7 +336,7 @@ function to delete the dynamic data. Both are reasonable.
     int getPositiveCount();
   };
 
-  int * MyClass::getPositiveValues() {
+  int * MyArray::getPositiveValues() {
     int posCount = getPositiveCount();
     int *arr = new int[posCount];  // dynamic data, not meant to be owned
     int j = 0;
@@ -350,7 +348,7 @@ function to delete the dynamic data. Both are reasonable.
     return arr;
   }
 
-  int MyClass::getPositiveCount() {
+  int MyArray::getPositiveCount() {
     int count = 0;
     for (int i = 0; i < size; ++i)
       if (array[i] > 0) ++count;
@@ -358,7 +356,7 @@ function to delete the dynamic data. Both are reasonable.
   }
 
   int main() {
-    // declare and initialize data in MyClass obj1;
+    // declare and initialize data in MyArray obj1;
     int *positiveArray = obj1.getPositiveValues();
     int size = obj1.getPositiveCount();
     for (int i = 0; i < size; ++i)
