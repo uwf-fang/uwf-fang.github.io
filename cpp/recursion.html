@@ -117,6 +117,72 @@ B calls A)</p></li>
 </ul>
 </section>
 </section>
+<section id="example-recursive-linear-search">
+<h2>Example: Recursive Linear Search<a class="headerlink" href="#example-recursive-linear-search" title="Link to this heading">¶</a></h2>
+<p>Linear search can be implemented recursively in multiple ways. Here are three
+common approaches:</p>
+<section id="method-1-using-a-helper-function">
+<h3>Method 1: Using a Helper Function<a class="headerlink" href="#method-1-using-a-helper-function" title="Link to this heading">¶</a></h3>
+<p>This approach uses a helper function with an additional parameter to track the
+current position. The main function provides a clean interface while the helper
+function handles the recursion.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">Main</span> <span class="n">function</span> <span class="k">with</span> <span class="n">clean</span> <span class="n">interface</span>
+<span class="nb">int</span> <span class="n">searchFirst</span><span class="p">(</span><span class="nb">int</span> <span class="o">*</span><span class="n">array</span><span class="p">,</span> <span class="nb">int</span> <span class="n">size</span><span class="p">,</span> <span class="nb">int</span> <span class="n">toSearch</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">searchFirstHelper</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">toSearch</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="o">//</span> <span class="n">Helper</span> <span class="n">function</span> <span class="n">that</span> <span class="n">does</span> <span class="n">the</span> <span class="n">actual</span> <span class="n">recursive</span> <span class="n">work</span>
+<span class="nb">int</span> <span class="n">searchFirstHelper</span><span class="p">(</span><span class="nb">int</span> <span class="o">*</span><span class="n">array</span><span class="p">,</span> <span class="nb">int</span> <span class="n">size</span><span class="p">,</span> <span class="nb">int</span> <span class="n">toSearch</span><span class="p">,</span> <span class="nb">int</span> <span class="n">start</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">start</span> <span class="o">&gt;=</span> <span class="n">size</span><span class="p">)</span>  <span class="o">//</span> <span class="n">base</span> <span class="n">case</span><span class="p">:</span> <span class="n">hit</span> <span class="n">the</span> <span class="n">end</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">array</span><span class="p">[</span><span class="n">start</span><span class="p">]</span> <span class="o">==</span> <span class="n">toSearch</span><span class="p">)</span>  <span class="o">//</span> <span class="n">base</span> <span class="n">case</span><span class="p">:</span> <span class="n">found</span> <span class="n">the</span> <span class="n">element</span>
+    <span class="k">return</span> <span class="n">start</span><span class="p">;</span>
+  <span class="k">return</span> <span class="n">searchFirstHelper</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">toSearch</span><span class="p">,</span> <span class="n">start</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>  <span class="o">//</span> <span class="n">recursive</span> <span class="n">rule</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="method-2-using-default-parameters">
+<h3>Method 2: Using Default Parameters<a class="headerlink" href="#method-2-using-default-parameters" title="Link to this heading">¶</a></h3>
+<p>This approach eliminates the need for a helper function by using a default
+parameter. This provides a cleaner solution with a single function.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">searchFirst1</span><span class="p">(</span><span class="nb">int</span> <span class="o">*</span><span class="n">array</span><span class="p">,</span> <span class="nb">int</span> <span class="n">size</span><span class="p">,</span> <span class="nb">int</span> <span class="n">toSearch</span><span class="p">,</span> <span class="nb">int</span> <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">start</span> <span class="o">&gt;=</span> <span class="n">size</span><span class="p">)</span>  <span class="o">//</span> <span class="n">base</span> <span class="n">case</span><span class="p">:</span> <span class="n">hit</span> <span class="n">the</span> <span class="n">end</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">array</span><span class="p">[</span><span class="n">start</span><span class="p">]</span> <span class="o">==</span> <span class="n">toSearch</span><span class="p">)</span>  <span class="o">//</span> <span class="n">base</span> <span class="n">case</span><span class="p">:</span> <span class="n">found</span> <span class="n">the</span> <span class="n">element</span>
+    <span class="k">return</span> <span class="n">start</span><span class="p">;</span>
+  <span class="k">return</span> <span class="n">searchFirst1</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">toSearch</span><span class="p">,</span> <span class="n">start</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>  <span class="o">//</span> <span class="n">recursive</span> <span class="n">rule</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="method-3-comparing-from-the-end">
+<h3>Method 3: Comparing from the End<a class="headerlink" href="#method-3-comparing-from-the-end" title="Link to this heading">¶</a></h3>
+<p>This approach compares the tail element in each recursive call and reduces the
+array size instead of using an index. This eliminates the need for an extra
+parameter.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">searchLast</span><span class="p">(</span><span class="nb">int</span> <span class="o">*</span><span class="n">array</span><span class="p">,</span> <span class="nb">int</span> <span class="n">size</span><span class="p">,</span> <span class="nb">int</span> <span class="n">toSearch</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>  <span class="o">//</span> <span class="n">base</span> <span class="n">case</span><span class="p">:</span> <span class="n">empty</span> <span class="n">array</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">array</span><span class="p">[</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">toSearch</span><span class="p">)</span>  <span class="o">//</span> <span class="n">base</span> <span class="n">case</span><span class="p">:</span> <span class="n">found</span> <span class="n">the</span> <span class="n">element</span>
+    <span class="k">return</span> <span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="k">else</span>
+    <span class="k">return</span> <span class="n">searchLast</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">toSearch</span><span class="p">);</span>  <span class="o">//</span> <span class="n">recursive</span> <span class="n">rule</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="key-differences">
+<h3>Key Differences<a class="headerlink" href="#key-differences" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><strong>Method 1</strong>: Most structured; separates interface from implementation.</p></li>
+<li><p><strong>Method 2</strong>: Most concise; single function with default parameter.</p></li>
+<li><p><strong>Method 3</strong>: Searches from the end; reduces size instead of incrementing index.</p></li>
+</ul>
+<p>All three methods have the same time complexity of <span class="math notranslate nohighlight">\(\Theta(n)\)</span> and space
+complexity of <span class="math notranslate nohighlight">\(\Theta(n)\)</span> due to the recursion stack.</p>
+</section>
+</section>
 <section id="pitfall">
 <h2>Pitfall<a class="headerlink" href="#pitfall" title="Link to this heading">¶</a></h2>
 <ul class="simple">
@@ -148,6 +214,13 @@ B calls A)</p></li>
 </li>
 <li><a class="reference internal" href="#recursive-data-structure">Recursive Data Structure</a><ul>
 <li><a class="reference internal" href="#recursive-data-structure-in-c">Recursive Data Structure in C++</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#example-recursive-linear-search">Example: Recursive Linear Search</a><ul>
+<li><a class="reference internal" href="#method-1-using-a-helper-function">Method 1: Using a Helper Function</a></li>
+<li><a class="reference internal" href="#method-2-using-default-parameters">Method 2: Using Default Parameters</a></li>
+<li><a class="reference internal" href="#method-3-comparing-from-the-end">Method 3: Comparing from the End</a></li>
+<li><a class="reference internal" href="#key-differences">Key Differences</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#pitfall">Pitfall</a></li>
