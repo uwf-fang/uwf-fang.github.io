@@ -15,7 +15,9 @@
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="canonical" href="https://uwf-fang.github.io/big_data/pyspark_df.html" />
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Chapter 6: Data Analysis for Big Data" href="../course/idc6145/ch06.html" />
+    <link rel="prev" title="PySpark Programming: RDD" href="pyspark_rdd.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
@@ -23,7 +25,15 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../course/idc6145/ch06.html" title="Chapter 6: Data Analysis for Big Data"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pyspark_rdd.html" title="PySpark Programming: RDD"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">IanFang Teaching Material Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../course/idc6145/index.html" >IDC 6145 Big Data for Data Science</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../course/idc6145/ch05.html" accesskey="U">Chapter 5: PySpark Programming</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">PySpark Programming: Spark SQL and DataFrame API</a></li> 
       </ul>
     </div>  
@@ -47,16 +57,16 @@
 <section id="spark-sql-overview">
 <h2>Spark SQL Overview<a class="headerlink" href="#spark-sql-overview" title="Link to this heading">¶</a></h2>
 <p>Spark SQL is a Spark module for structured data processing. It is one of the
-five Spark components: <strong>Spark Core, Spark SQL, Spark Streaming, MLlib,
+major Spark components: <strong>Spark Core, Spark SQL, Structured Streaming, MLlib,
 GraphX</strong></p>
 <p>Spark SQL provides a unified data access layer for various data sources. It
-works on top of Spark Core and provides a higher-level abstractions to work
+works on top of Spark Core and provides higher-level abstractions to work
 with structured data. Typical structured datasets are like tables in a
 relational database or a sheet in Excel.</p>
 <p>You can code in PySpark using the API calls or SQL queries depending on your
-preference. The DataFrame and DataSet APIs provides rich functionalities to
+preference. The DataFrame API provides rich functionalities to
 programmers to work with structured data through object-oriented programming
-paradigm. The SQL queries are more friendly to data analysts who are familiar
+paradigms. SQL queries are more friendly to data analysts who are familiar
 with SQL, who can create SQL queries as strings and execute them using Spark
 SQL.</p>
 <div class="literal-block-wrapper docutils container" id="id1">
@@ -110,7 +120,7 @@ source supports it)</p></li>
 <p>Spark SQL provides a unified data access layer for various data sources, and can even work directly on top of combined data from different sources.</p>
 <ul class="simple">
 <li><p>ETL: Extract, Transform, Load data from various sources</p></li>
-<li><p>Data visualization directly on dataset that exist across multiple data
+<li><p>Data visualization directly on datasets that exist across multiple data
 sources. It skips data movement and processing and directly queries the data
 sources.</p></li>
 <li><p>Serve as a distributed SQL query engine by providing APIs/SQL queries to
@@ -123,7 +133,7 @@ sources efficiently and providing a unified interface for data management.</p></
 <h2>DataFrame<a class="headerlink" href="#dataframe" title="Link to this heading">¶</a></h2>
 <p>The DataFrame API is the high-level abstraction in PySpark, designed to
 efficiently handle structured data. Although based on RDDs (Resilient
-Distributed Datasets), the DataFrame API provides more additional
+Distributed Datasets), the DataFrame API provides additional
 functionality, making it more user-friendly for data manipulation of structured
 data.</p>
 <p>The DataFrame API has several key characteristics. It is distributed, meaning
@@ -159,7 +169,7 @@ to optimize the execution plan.</p>
 <div class="code-block-caption"><span class="caption-text">Create DataFrames from RDD</span><a class="headerlink" href="#id4" title="Link to this code">¶</a></div>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># toDF method</span>
 <span class="n">data</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Jane&quot;</span><span class="p">,</span> <span class="mi">35</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="mi">42</span><span class="p">)]</span>
-<span class="n">rdd</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">parallelize</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">rdd</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">parallelize</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">toDF</span><span class="p">([</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">])</span>
 
 <span class="c1"># createDataFrame method</span>
@@ -252,6 +262,16 @@ use of built-in functions.</p>
 </ul>
 
   </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="pyspark_rdd.html"
+                          title="previous chapter">PySpark Programming: RDD</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../course/idc6145/ch06.html"
+                          title="next chapter">Chapter 6: Data Analysis for Big Data</a></p>
+  </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -279,7 +299,15 @@ use of built-in functions.</p>
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="../course/idc6145/ch06.html" title="Chapter 6: Data Analysis for Big Data"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pyspark_rdd.html" title="PySpark Programming: RDD"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">IanFang Teaching Material Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../course/idc6145/index.html" >IDC 6145 Big Data for Data Science</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../course/idc6145/ch05.html" >Chapter 5: PySpark Programming</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">PySpark Programming: Spark SQL and DataFrame API</a></li> 
       </ul>
     </div>

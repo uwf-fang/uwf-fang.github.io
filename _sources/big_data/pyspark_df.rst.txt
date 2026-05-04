@@ -12,18 +12,18 @@ Outline
 Spark SQL Overview
 ==================
 Spark SQL is a Spark module for structured data processing. It is one of the
-five Spark components: **Spark Core, Spark SQL, Spark Streaming, MLlib,
+major Spark components: **Spark Core, Spark SQL, Structured Streaming, MLlib,
 GraphX**
 
 Spark SQL provides a unified data access layer for various data sources. It
-works on top of Spark Core and provides a higher-level abstractions to work
+works on top of Spark Core and provides higher-level abstractions to work
 with structured data. Typical structured datasets are like tables in a
 relational database or a sheet in Excel.
 
 You can code in PySpark using the API calls or SQL queries depending on your
-preference. The DataFrame and DataSet APIs provides rich functionalities to
+preference. The DataFrame API provides rich functionalities to
 programmers to work with structured data through object-oriented programming
-paradigm. The SQL queries are more friendly to data analysts who are familiar
+paradigms. SQL queries are more friendly to data analysts who are familiar
 with SQL, who can create SQL queries as strings and execute them using Spark
 SQL.
 
@@ -72,7 +72,7 @@ Applications of Spark SQL
 Spark SQL provides a unified data access layer for various data sources, and can even work directly on top of combined data from different sources.
 
 + ETL: Extract, Transform, Load data from various sources
-+ Data visualization directly on dataset that exist across multiple data
++ Data visualization directly on datasets that exist across multiple data
   sources. It skips data movement and processing and directly queries the data
   sources.
 + Serve as a distributed SQL query engine by providing APIs/SQL queries to
@@ -84,7 +84,7 @@ DataFrame
 =========
 The DataFrame API is the high-level abstraction in PySpark, designed to
 efficiently handle structured data. Although based on RDDs (Resilient
-Distributed Datasets), the DataFrame API provides more additional
+Distributed Datasets), the DataFrame API provides additional
 functionality, making it more user-friendly for data manipulation of structured
 data.
 
@@ -121,7 +121,7 @@ Create DataFrames
 
     # toDF method
     data = [(1, "John", 28), (2, "Jane", 35), (3, "Mike", 42)]
-    rdd = sc.parallelize(data)
+    rdd = spark.sparkContext.parallelize(data)
     df = rdd.toDF(["id", "name", "age"])
 
     # createDataFrame method

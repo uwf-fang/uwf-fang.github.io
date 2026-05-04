@@ -101,7 +101,7 @@
 <body>
 
     <h1>Single-Source Dijkstra's</h1>
-    <div class="instructions">Calculates the shortest paths to ALL nodes to form a Shortest-Path Tree.</div>
+    <div class="instructions">Calculates the shortest paths to ALL nodes. Ties are broken alphabetically.</div>
 
     <div class="controls">
         <label for="startNode">Start Node:</label>
@@ -181,16 +181,24 @@
         let evaluatingNode = null;
         let isDone = false;
 
+        // Custom Sort Function for the Priority Queue
+        function sortQueue() {
+            pq.sort((a, b) => {
+                if (a.dist === b.dist) {
+                    return a.node.localeCompare(b.node); // Secondary tie-breaker by label
+                }
+                return a.dist - b.dist; // Primary sort by distance
+            });
+        }
+
         // --- Rendering Logic ---
         function drawGraph() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             // Draw Edges
             edges.forEach(edge => {
-                // Determine if this edge is part of the Shortest Path Tree
                 let isTreeEdge = false;
                 if (previous[edge.target] === edge.source || previous[edge.source] === edge.target) {
-                    // Only color it green if BOTH nodes have been evaluated/visited
                     if (visited.has(edge.source) && visited.has(edge.target) ||
                         (visited.has(edge.source) && evaluatingNode === edge.target) ||
                         (visited.has(edge.target) && evaluatingNode === edge.source)) {
@@ -210,7 +218,6 @@
                 ctx.fillStyle = "#555";
                 ctx.font = "14px Arial";
 
-                // Add white background to text for readability
                 ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
                 ctx.fillRect(midX - 10, midY - 20, 20, 20);
 
@@ -220,11 +227,11 @@
 
             // Draw Nodes
             Object.keys(nodes).forEach(nodeId => {
-                let fill = "#0d6efd"; // default blue (unvisited)
+                let fill = "#0d6efd";
 
-                if (isDone && distances[nodeId] !== Infinity) fill = "#198754"; // green (done)
-                else if (nodeId === evaluatingNode) fill = "#ffc107"; // yellow (evaluating)
-                else if (visited.has(nodeId)) fill = "#6c757d"; // grey (visited)
+                if (isDone && distances[nodeId] !== Infinity) fill = "#198754";
+                else if (nodeId === evaluatingNode) fill = "#ffc107";
+                else if (visited.has(nodeId)) fill = "#6c757d";
 
                 ctx.beginPath();
                 ctx.arc(nodes[nodeId].x, nodes[nodeId].y, 20, 0, 2 * Math.PI);
@@ -277,7 +284,6 @@
             evaluatingNode = null;
             isDone = false;
 
-            // BUG FIX: Re-enable the button AND reset the text
             const btnNext = document.getElementById('btnNext');
             btnNext.disabled = false;
             btnNext.innerText = "Next Step";
@@ -308,8 +314,8 @@
                 return;
             }
 
-            // Sort queue to simulate Priority Queue
-            pq.sort((a, b) => a.dist - b.dist);
+            // Sort using our new deterministic function
+            sortQueue();
 
             // Dequeue the node with smallest distance
             const current = pq.shift();
@@ -336,7 +342,8 @@
                     }
                 });
 
-                pq.sort((a, b) => a.dist - b.dist); // Resort after updates
+                // Re-sort using our new deterministic function after adding neighbors
+                sortQueue();
 
                 let msg = `Evaluating Node ${evaluatingNode}. `;
                 if (neighborUpdates.length > 0) msg += `Updated paths to: ${neighborUpdates.join(', ')}.`;
@@ -349,7 +356,6 @@
             drawGraph();
             updateTables();
 
-            // Auto-complete check
             if (pq.length === 0) {
                 document.getElementById('btnNext').innerText = "Finish";
             }
