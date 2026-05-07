@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Taxonomy of Data Storage: From Local to Cloud (2026 Edition) &#8212; IanFang Teaching Material Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=279e0f84" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=fa3f9a06" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/big_data/storage_taxonomy.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Chapter 3: Data Storage For Big Data" href="../course/idc6145/ch03.html" />
+    <link rel="prev" title="Chapter 2: Big Data Lifecycle" href="../course/idc6145/ch02.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../course/idc6145/ch03.html" title="Chapter 3: Data Storage For Big Data"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../course/idc6145/ch02.html" title="Chapter 2: Big Data Lifecycle"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang Teaching Material Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../course/idc6145/index.html" >IDC 6145 Big Data for Data Science</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../course/idc6145/ch02.html" accesskey="U">Chapter 2: Big Data Lifecycle</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Taxonomy of Data Storage: From Local to Cloud (2026 Edition)</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section class="tex2jax_ignore mathjax_ignore" id="taxonomy-of-data-storage-from-local-to-cloud-2026-edition">
+<h1>Taxonomy of Data Storage: From Local to Cloud (2026 Edition)<a class="headerlink" href="#taxonomy-of-data-storage-from-local-to-cloud-2026-edition" title="Link to this heading">¶</a></h1>
+<p>In the early decades of computing, the choice of data storage was binary: it was either a file on a disk or a row in a database. As we navigate 2026, the landscape has fractured into a sophisticated spectrum of specialized engines. Choosing the right storage layer is no longer just about capacity; it is about balancing latency, consistency guarantees, and the inherent complexity of the modern architectural stack.</p>
+<section id="i-local-single-node-storage-the-foundations">
+<h2><strong>I. Local &amp; Single-Node Storage: The Foundations</strong><a class="headerlink" href="#i-local-single-node-storage-the-foundations" title="Link to this heading">¶</a></h2>
+<p>Every modern system, regardless of its eventual scale, begins with the management of bits on a single physical or virtual machine. Even the most complex cloud architectures often rely on highly optimized local storage to handle caching, configuration, or temporary state.</p>
+<section id="unmanaged-storage-the-raw-file-system">
+<h3><strong>1.1 Unmanaged Storage (The Raw File System)</strong><a class="headerlink" href="#unmanaged-storage-the-raw-file-system" title="Link to this heading">¶</a></h3>
+<p>At the most fundamental level, applications interact directly with the Operating System’s file system—NTFS for Windows, APFS for macOS, or ext4 for Linux. This is “unmanaged” because the developer is responsible for the internal structure, serialization, and retrieval logic of the data.</p>
+<p>While simple, this method is “dumb” storage. There is no built-in query engine, no indexing beyond what the OS provides for filenames, and zero concurrency control. If an application needs to find a specific user record in a 2GB JSON file, it must perform a linear <span class="math notranslate nohighlight">\(O(n)\)</span> scan, loading the entire file into memory and iterating through it—a process that is computationally expensive and slow. In the 2026 landscape, raw file storage is strictly relegated to “static” assets such as high-resolution media, environment variables, or raw logs that are intended for asynchronous ingestion by more capable systems.</p>
+</section>
+<section id="embedded-managed-storage-the-rise-of-the-in-process-engine">
+<h3><strong>1.2 Embedded Managed Storage: The Rise of the In-Process Engine</strong><a class="headerlink" href="#embedded-managed-storage-the-rise-of-the-in-process-engine" title="Link to this heading">¶</a></h3>
+<p>The most significant shift in local storage over the last five years has been the professionalization of the “embedded” engine. An embedded database is not a separate service you connect to over a network; it is a library that lives <em>inside</em> your application process. This eliminates network latency entirely.</p>
+<p><strong>SQLite</strong> remains the undisputed king of this category, providing full ACID compliance in a single file. It is the invisible engine powering everything from mobile apps to the internal state of web browsers. However, 2026 has seen the meteoric rise of <strong>DuckDB</strong>, often called “The SQLite for Analytics.” Unlike SQLite, which is row-based and optimized for quick updates, DuckDB uses a columnar format. This makes it exceptionally fast for local data science; a developer can query a 50-million-row Parquet file directly on their laptop with speeds that rival massive cloud clusters. For high-performance key-value needs, engines like <strong>RocksDB</strong> provide the underlying “storage plumbing” for many larger distributed systems, managing data at the byte-level with extreme efficiency.</p>
+</section>
+<section id="client-server-rdbms-traditional">
+<h3><strong>1.3 Client-Server RDBMS (Traditional)</strong><a class="headerlink" href="#client-server-rdbms-traditional" title="Link to this heading">¶</a></h3>
+<p>The traditional “Database Server” model, exemplified by <strong>PostgreSQL</strong> and <strong>MySQL</strong>, remains the enterprise backbone. In this architecture, the database runs as a separate service (a daemon), allowing multiple independent clients to connect and share data. These systems are the gold standard for transactional integrity. They are optimized for <strong>Vertical Scaling</strong>—the practice of adding more RAM, faster NVMe drives, or more CPU cores to a single machine. While they can be “replicated” for read safety, they fundamentally assume a centralized model of truth, making them the safest bet for financial records and core business logic.</p>
+</section>
+<section id="the-hybrid-approach-sidecar-indexing-custom-parsers">
+<h3><strong>1.4 The Hybrid Approach: Sidecar Indexing &amp; Custom Parsers</strong><a class="headerlink" href="#the-hybrid-approach-sidecar-indexing-custom-parsers" title="Link to this heading">¶</a></h3>
+<p>There is a sophisticated middle ground between “dumb” raw files and “rigid” databases: the <strong>Sidecar Index</strong>. In this model, the data remains in its raw, unmanaged state (e.g., a directory of 10,000 JSON files), but a separate, customized parser scans these files to build a lightweight index store.</p>
+<p>This approach is highly popular in modern “Local-First” AI applications. For example, a system like <strong>LlamaIndex</strong> might crawl a local folder of PDF documents, parse their text, and store only the “metadata” (file path, keywords, or summary) in a small SQLite or Vector index. When a user queries the data, the system searches the fast index first to find the relevant file path, and only then performs a “targeted read” on the raw file. This grants the developer the speed of a managed database without the “lock-in” of a proprietary file format.</p>
+</section>
+</section>
+<section id="ii-distributed-high-scale-storage-the-big-data-era">
+<h2><strong>II. Distributed &amp; High-Scale Storage: The Big Data Era</strong><a class="headerlink" href="#ii-distributed-high-scale-storage-the-big-data-era" title="Link to this heading">¶</a></h2>
+<p>When data grows beyond the physical limits of a single machine, or when the cost of downtime makes a single-node system too risky, we move into the distributed tier.</p>
+<section id="the-decline-of-legacy-distributed-file-systems">
+<h3><strong>2.1 The Decline of Legacy Distributed File Systems</strong><a class="headerlink" href="#the-decline-of-legacy-distributed-file-systems" title="Link to this heading">¶</a></h3>
+<p>The “Big Data” revolution of the early 2010s was built on the <strong>Hadoop Distributed File System (HDFS)</strong>. HDFS allowed a single massive file to be chopped into blocks and mirrored across hundreds of commodity servers. While revolutionary at the time, HDFS is viewed in 2026 as a legacy pillar. Its complexity and the requirement to manage physical server clusters have led most organizations to migrate toward cloud-native object stores (like S3) or “Lakehouse” architectures.</p>
+</section>
+<section id="nosql-and-the-multi-model-evolution">
+<h3><strong>2.2 NoSQL and the Multi-Model Evolution</strong><a class="headerlink" href="#nosql-and-the-multi-model-evolution" title="Link to this heading">¶</a></h3>
+<p>NoSQL was born from the necessity of scaling web applications to millions of concurrent users.</p>
+<ul class="simple">
+<li><p><strong>Document Stores (MongoDB):</strong> Store data as JSON, ideal for evolving catalogs.</p></li>
+<li><p><strong>Wide-Column Stores (Cassandra):</strong> Built for massive global write volumes with zero single points of failure.</p></li>
+<li><p><strong>Graph Databases (Neo4j):</strong> Optimized for traversing complex relationships (social networks, supply chains) rather than tables.</p></li>
+</ul>
+</section>
+<section id="newsql-the-distributed-relational-breakthrough">
+<h3><strong>2.3 NewSQL: The Distributed Relational Breakthrough</strong><a class="headerlink" href="#newsql-the-distributed-relational-breakthrough" title="Link to this heading">¶</a></h3>
+<p><strong>NewSQL</strong> broke the dichotomy between ACID and Scale. Technologies like <strong>Google Spanner</strong> and <strong>CockroachDB</strong> use atomic clocks and consensus algorithms (like Raft) to provide a consistent SQL interface that spans the globe.</p>
+</section>
+</section>
+<section id="iii-the-ai-frontier-vector-databases">
+<h2><strong>III. The AI Frontier: Vector Databases</strong><a class="headerlink" href="#iii-the-ai-frontier-vector-databases" title="Link to this heading">¶</a></h2>
+<p>A 2026 taxonomy would be incomplete without addressing <strong>Vector Databases</strong>. With the explosion of LLMs, the challenge is storing “meaning.” Vector databases like <strong>Pinecone</strong> or <strong>Milvus</strong> store data as high-dimensional mathematical coordinates (embeddings). This allows for “Semantic Search”—finding data by conceptual similarity rather than keyword matching.</p>
+</section>
+<section id="iv-cloud-native-analytical-architectures">
+<h2><strong>IV. Cloud-Native Analytical Architectures</strong><a class="headerlink" href="#iv-cloud-native-analytical-architectures" title="Link to this heading">¶</a></h2>
+<section id="data-warehouse-olap-and-decoupled-compute">
+<h3><strong>4.1 Data Warehouse (OLAP) and Decoupled Compute</strong><a class="headerlink" href="#data-warehouse-olap-and-decoupled-compute" title="Link to this heading">¶</a></h3>
+<p>Modern warehouses like <strong>Snowflake</strong> have perfected the “decoupled” architecture. Storage and compute are billed separately, allowing petabyte-scale storage on cheap cloud tiers with high-power compute triggered only during query execution.</p>
+</section>
+<section id="object-storage-the-infinite-hard-drive">
+<h3><strong>4.2 Object Storage: The “Infinite” Hard Drive</strong><a class="headerlink" href="#object-storage-the-infinite-hard-drive" title="Link to this heading">¶</a></h3>
+<p><strong>AWS S3</strong> and its peers have become the modern baseline. It uses a flat hierarchy where every file is an “object” with a unique URL, serving as the physical layer for almost all other cloud services.</p>
+</section>
+<section id="the-data-lakehouse-the-grand-convergence">
+<h3><strong>4.3 The Data Lakehouse: The Grand Convergence</strong><a class="headerlink" href="#the-data-lakehouse-the-grand-convergence" title="Link to this heading">¶</a></h3>
+<p>Historically, companies had a “Data Lake” (cheap/messy) and a “Data Warehouse” (expensive/clean). The <strong>Lakehouse</strong> merges these. By applying a layer like <strong>Apache Iceberg</strong> on top of S3, organizations get ACID transactions and “time-travel” on their raw data files.</p>
+</section>
+</section>
+<section id="v-technical-selection-matrix">
+<h2><strong>V. Technical Selection Matrix</strong><a class="headerlink" href="#v-technical-selection-matrix" title="Link to this heading">¶</a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Dimension</p></th>
+<th class="head text-left"><p>Local/Embedded</p></th>
+<th class="head text-left"><p>Traditional RDBMS</p></th>
+<th class="head text-left"><p>NoSQL / Vector</p></th>
+<th class="head text-left"><p>Lakehouse/Warehouse</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Primary Scale</strong></p></td>
+<td class="text-left"><p>MB to GB</p></td>
+<td class="text-left"><p>Gigabytes</p></td>
+<td class="text-left"><p>TB to PB</p></td>
+<td class="text-left"><p>PB to EB (Exabytes)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Consistency</strong></p></td>
+<td class="text-left"><p>Strong (Local)</p></td>
+<td class="text-left"><p>Strong (ACID)</p></td>
+<td class="text-left"><p>Eventual to Strong</p></td>
+<td class="text-left"><p>Strong (via Metadata)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Primary Latency</strong></p></td>
+<td class="text-left"><p>Microseconds</p></td>
+<td class="text-left"><p>Milliseconds</p></td>
+<td class="text-left"><p>Single-digit ms</p></td>
+<td class="text-left"><p>Seconds to Minutes</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Ideal User</strong></p></td>
+<td class="text-left"><p>Single App / Dev</p></td>
+<td class="text-left"><p>Multi-user App</p></td>
+<td class="text-left"><p>Real-time Web / AI</p></td>
+<td class="text-left"><p>Data Scientist / Analyst</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="vi-summary-navigating-the-trade-offs">
+<h2><strong>VI. Summary: Navigating the Trade-offs</strong><a class="headerlink" href="#vi-summary-navigating-the-trade-offs" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p><strong>RDBMS vs. NewSQL:</strong> Use <strong>Postgres</strong> for single-region simplicity. Move to <strong>CockroachDB</strong> only when global availability is mandatory.</p></li>
+<li><p><strong>Object Store vs. Lakehouse:</strong> The Object Store is the library shelf; the Lakehouse is the librarian. You need both for an efficient system.</p></li>
+<li><p><strong>Complexity vs. Capability:</strong> Choose only as much complexity as your scale requires. Do not adopt Exabyte solutions for Gigabyte problems.</p></li>
+</ol>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Taxonomy of Data Storage: From Local to Cloud (2026 Edition)</a><ul>
+<li><a class="reference internal" href="#i-local-single-node-storage-the-foundations"><strong>I. Local &amp; Single-Node Storage: The Foundations</strong></a><ul>
+<li><a class="reference internal" href="#unmanaged-storage-the-raw-file-system"><strong>1.1 Unmanaged Storage (The Raw File System)</strong></a></li>
+<li><a class="reference internal" href="#embedded-managed-storage-the-rise-of-the-in-process-engine"><strong>1.2 Embedded Managed Storage: The Rise of the In-Process Engine</strong></a></li>
+<li><a class="reference internal" href="#client-server-rdbms-traditional"><strong>1.3 Client-Server RDBMS (Traditional)</strong></a></li>
+<li><a class="reference internal" href="#the-hybrid-approach-sidecar-indexing-custom-parsers"><strong>1.4 The Hybrid Approach: Sidecar Indexing &amp; Custom Parsers</strong></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ii-distributed-high-scale-storage-the-big-data-era"><strong>II. Distributed &amp; High-Scale Storage: The Big Data Era</strong></a><ul>
+<li><a class="reference internal" href="#the-decline-of-legacy-distributed-file-systems"><strong>2.1 The Decline of Legacy Distributed File Systems</strong></a></li>
+<li><a class="reference internal" href="#nosql-and-the-multi-model-evolution"><strong>2.2 NoSQL and the Multi-Model Evolution</strong></a></li>
+<li><a class="reference internal" href="#newsql-the-distributed-relational-breakthrough"><strong>2.3 NewSQL: The Distributed Relational Breakthrough</strong></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#iii-the-ai-frontier-vector-databases"><strong>III. The AI Frontier: Vector Databases</strong></a></li>
+<li><a class="reference internal" href="#iv-cloud-native-analytical-architectures"><strong>IV. Cloud-Native Analytical Architectures</strong></a><ul>
+<li><a class="reference internal" href="#data-warehouse-olap-and-decoupled-compute"><strong>4.1 Data Warehouse (OLAP) and Decoupled Compute</strong></a></li>
+<li><a class="reference internal" href="#object-storage-the-infinite-hard-drive"><strong>4.2 Object Storage: The “Infinite” Hard Drive</strong></a></li>
+<li><a class="reference internal" href="#the-data-lakehouse-the-grand-convergence"><strong>4.3 The Data Lakehouse: The Grand Convergence</strong></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#v-technical-selection-matrix"><strong>V. Technical Selection Matrix</strong></a></li>
+<li><a class="reference internal" href="#vi-summary-navigating-the-trade-offs"><strong>VI. Summary: Navigating the Trade-offs</strong></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../course/idc6145/ch02.html"
+                          title="previous chapter">Chapter 2: Big Data Lifecycle</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../course/idc6145/ch03.html"
+                          title="next chapter">Chapter 3: Data Storage For Big Data</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/big_data/storage_taxonomy.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../course/idc6145/ch03.html" title="Chapter 3: Data Storage For Big Data"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../course/idc6145/ch02.html" title="Chapter 2: Big Data Lifecycle"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang Teaching Material Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../course/idc6145/index.html" >IDC 6145 Big Data for Data Science</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../course/idc6145/ch02.html" >Chapter 2: Big Data Lifecycle</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Taxonomy of Data Storage: From Local to Cloud (2026 Edition)</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright Copyright © Xingang (Ian) Fang 2022-25.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>

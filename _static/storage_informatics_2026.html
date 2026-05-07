@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taxonomy of Data Storage 2026</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!--
+PLAN AND CONFIRMATION SUMMARY:
+- Palette: "Vibrant Tech Insight" (Primary: #1E1B4B, Accents: #3B82F6, #F59E0B, #10B981, #8B5CF6)
+- Narrative Plan:
+  1. Introduction setting the 2026 landscape.
+  2. Local & Foundation: Visualize the architectural stack and scale limits.
+  3. Distributed Era: Compare capacities and latencies.
+  4. AI Frontier: Conceptualize Vector DB semantic search.
+  5. Lakehouse Convergence: Visualize the merging of Data Lakes and Warehouses.
+  6. Matrix Summary: Radar comparison of trade-offs.
+- Visualization Choices:
+  1. Stack Diagram -> HTML/CSS Grid -> No SVG. Goal: Organize.
+  2. Bar Chart (Log Scale) -> Chart.js Canvas -> No SVG. Goal: Compare capacities.
+  3. Scatter Plot (Semantic Space) -> Chart.js Canvas -> No SVG. Goal: Relationships (AI Vectors).
+  4. Venn Diagram -> HTML/CSS mix-blend-mode -> No SVG. Goal: Organize (Lakehouse).
+  5. Radar Chart -> Chart.js Canvas -> No SVG. Goal: Compare trade-offs.
+- CONFIRMATION: NEITHER Mermaid JS NOR SVG were used anywhere in the output.
+-->
+<style>
+body {
+    background-color: #F8FAFC;
+    color: #0F172A;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 350px;
+    max-height: 400px;
+}
+@media (min-width: 768px) {
+    .chart-container { height: 400px; }
+}
+.venn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: 300px;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+.venn-circle {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    mix-blend-mode: multiply;
+    padding: 1rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+.venn-left {
+    background-color: rgba(59, 130, 246, 0.85);
+    left: 10%;
+}
+.venn-right {
+    background-color: rgba(245, 158, 11, 0.85);
+    right: 10%;
+}
+.venn-center-text {
+    position: absolute;
+    z-index: 10;
+    font-weight: 900;
+    color: #1E1B4B;
+    background: rgba(255,255,255,0.9);
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+.stack-layer {
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+</style>
+</head>
+<body class="antialiased">
+
+<nav class="sticky top-0 z-50 bg-[#1E1B4B] text-white shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+        <h1 class="text-xl md:text-2xl font-bold tracking-tight">Data Storage Taxonomy <span class="text-[#F59E0B]">2026</span></h1>
+        <div class="hidden md:flex space-x-6 text-sm font-medium">
+            <a href="#foundations" class="hover:text-[#3B82F6] transition-colors">Foundations</a>
+            <a href="#distributed" class="hover:text-[#3B82F6] transition-colors">Distributed</a>
+            <a href="#ai-frontier" class="hover:text-[#3B82F6] transition-colors">AI Frontier</a>
+            <a href="#lakehouse" class="hover:text-[#3B82F6] transition-colors">Lakehouse</a>
+        </div>
+    </div>
+</nav>
+
+<header class="bg-gradient-to-b from-[#1E1B4B] to-[#312e81] text-white py-16 md:py-24 px-4 text-center">
+    <div class="max-w-4xl mx-auto">
+        <h2 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">From Local Disks to <span class="text-[#10B981]">Cloud Convergence</span></h2>
+        <p class="text-lg md:text-xl text-gray-300 mb-8 leading-relaxed">
+            In 2026, choosing a data storage layer is no longer a binary choice between a file and a database. It is a complex balancing act of latency, consistency, and scale. Explore the modern architectural spectrum.
+        </p>
+    </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+
+    <section id="foundations" class="col-span-1 md:col-span-2 bg-white rounded-xl shadow-md p-6 md:p-10 border-t-4 border-[#3B82F6]">
+        <h3 class="text-3xl font-bold text-[#1E1B4B] mb-4">I. Local & Single-Node Storage: The Foundations</h3>
+        <p class="text-gray-700 mb-8 text-lg">
+            Every massive cloud architecture begins with managing bits on a single machine. The local storage landscape has evolved from unmanaged raw files to highly professionalized embedded engines like SQLite and DuckDB, providing immense analytical power without network latency.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div>
+                <h4 class="text-xl font-bold text-gray-800 mb-4">The Architectural Stack</h4>
+                <div class="flex flex-col space-y-2">
+                    <div class="stack-layer bg-[#8B5CF6]">Your Application Logic</div>
+                    <div class="flex items-center justify-center py-2 text-gray-400 font-bold">⬇ Database Abstraction ⬇</div>
+                    <div class="stack-layer bg-[#3B82F6]">Managed Engine (SQLite, PostgreSQL, DuckDB)</div>
+                    <div class="flex items-center justify-center py-2 text-gray-400 font-bold">⬇ System Calls ⬇</div>
+                    <div class="stack-layer bg-gray-600">OS File System (NTFS, ext4)</div>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold text-gray-800 mb-4">The Hybrid Reality</h4>
+                <p class="text-gray-600 mb-4">
+                    In 2026, we don't just use databases. The <strong>Sidecar Index</strong> pattern allows developers to keep raw files (like PDFs or JSONs) on disk while using a customized parser to build a lightweight, ultra-fast local index. This prevents vendor lock-in while maintaining high-speed search capabilities, critical for local AI agents.
+                </p>
+                <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-[#3B82F6]">
+                    <span class="font-bold text-[#1E1B4B]">Key Takeaway:</span> Unmanaged raw file storage is now strictly for static assets. Modern apps rely on embedded in-process engines for zero-latency state management.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="distributed" class="col-span-1 bg-white rounded-xl shadow-md p-6 border-t-4 border-[#F59E0B]">
+        <h3 class="text-2xl font-bold text-[#1E1B4B] mb-4">II. The Scale Paradigm</h3>
+        <p class="text-gray-700 mb-6">
+            When single machines reach their physical limits, distributed systems take over. This chart illustrates the massive leaps in primary data scale capabilities as architectures evolve from traditional Client-Server RDBMS to multi-modal Cloud Lakehouses.
+        </p>
+
+        <div class="chart-container">
+            <canvas id="scaleChart"></canvas>
+        </div>
+        <p class="text-sm text-gray-500 mt-4 text-center">
+            Note: Logarithmic scale. Shows the exponential growth in typical deployment sizes, from Gigabytes to Exabytes.
+        </p>
+    </section>
+
+    <section id="ai-frontier" class="col-span-1 bg-white rounded-xl shadow-md p-6 border-t-4 border-[#8B5CF6]">
+        <h3 class="text-2xl font-bold text-[#1E1B4B] mb-4">III. The AI Frontier: Vector DBs</h3>
+        <p class="text-gray-700 mb-6">
+            With the explosion of Large Language Models (LLMs), storing text is no longer enough; we must store "meaning". Vector databases store data as high-dimensional coordinates, allowing for semantic search based on conceptual proximity rather than exact keyword matches.
+        </p>
+
+        <div class="chart-container">
+            <canvas id="vectorChart"></canvas>
+        </div>
+        <p class="text-sm text-gray-500 mt-4 text-center">
+            Conceptual 2D representation of high-dimensional embeddings. Closer points indicate semantic similarity.
+        </p>
+    </section>
+
+    <section id="lakehouse" class="col-span-1 md:col-span-2 bg-white rounded-xl shadow-md p-6 md:p-10 border-t-4 border-[#10B981]">
+        <h3 class="text-3xl font-bold text-[#1E1B4B] mb-4">IV. Cloud-Native: The Lakehouse Convergence</h3>
+        <p class="text-gray-700 mb-8 text-lg md:w-2/3 mx-auto text-center">
+            The most significant architectural trend of 2026. Organizations no longer choose between the cheap scale of a Data Lake and the performance of a Data Warehouse. Management layers like Apache Iceberg provide ACID transactions directly on top of raw Object Storage.
+        </p>
+
+        <div class="flex flex-col md:flex-row items-center justify-center gap-8">
+            <div class="w-full md:w-1/2">
+                <div class="venn-container">
+                    <div class="venn-circle venn-left">
+                        <span class="mt-8 text-sm">Data Lake<br/>(Cheap, Scalable, Raw)</span>
+                    </div>
+                    <div class="venn-circle venn-right">
+                        <span class="mt-8 text-sm">Data Warehouse<br/>(ACID, Fast, Structured)</span>
+                    </div>
+                    <div class="venn-center-text text-center">
+                        <span class="text-sm block text-gray-500 uppercase tracking-wider">The Convergence</span>
+                        Lakehouse
+                    </div>
+                </div>
+            </div>
+            <div class="w-full md:w-1/2 space-y-4">
+                <div class="p-4 bg-gray-50 rounded-lg shadow-sm border border-gray-100">
+                    <h5 class="font-bold text-[#3B82F6]">Object Storage (S3, GCS)</h5>
+                    <p class="text-sm text-gray-600">The "Infinite Hard Drive". A flat hierarchy serving as the physical foundation.</p>
+                </div>
+                <div class="p-4 bg-gray-50 rounded-lg shadow-sm border border-gray-100">
+                    <h5 class="font-bold text-[#F59E0B]">Metadata Layers (Iceberg, Delta)</h5>
+                    <p class="text-sm text-gray-600">The "Software Librarian". Brings schema enforcement and time-travel to raw files.</p>
+                </div>
+                <div class="p-4 bg-gray-50 rounded-lg shadow-sm border border-gray-100">
+                    <h5 class="font-bold text-[#10B981]">Decoupled Compute (Snowflake)</h5>
+                    <p class="text-sm text-gray-600">Pay only for the CPU used during queries, independent of storage volume.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="matrix" class="col-span-1 md:col-span-2 bg-white rounded-xl shadow-md p-6 border-t-4 border-[#1E1B4B]">
+        <h3 class="text-2xl font-bold text-[#1E1B4B] mb-4">V. Navigating the Trade-offs</h3>
+        <p class="text-gray-700 mb-6">
+            Technology choices are rarely about "better" or "worse," but about mapping capabilities to requirements. This matrix compares the fundamental trade-offs between Schema Rigidity, Consistency guarantees, and Latency profiles.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div class="chart-container">
+                <canvas id="radarChart"></canvas>
+            </div>
+            <div>
+                <ul class="space-y-6">
+                    <li class="flex items-start">
+                        <span class="flex-shrink-0 h-8 w-8 rounded-full bg-[#1E1B4B] flex items-center justify-center text-white font-bold mr-4">1</span>
+                        <div>
+                            <h4 class="font-bold text-lg">RDBMS vs. NewSQL</h4>
+                            <p class="text-gray-600">Use Postgres for single-region simplicity. Move to CockroachDB (NewSQL) only when global survival and low local-latency for global users are mandatory.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="flex-shrink-0 h-8 w-8 rounded-full bg-[#3B82F6] flex items-center justify-center text-white font-bold mr-4">2</span>
+                        <div>
+                            <h4 class="font-bold text-lg">NoSQL vs. Warehouse</h4>
+                            <p class="text-gray-600">Use NoSQL (MongoDB) to rapidly capture interactive user data in real-time. Use a Warehouse to analyze that historical data for business insights.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="flex-shrink-0 h-8 w-8 rounded-full bg-[#10B981] flex items-center justify-center text-white font-bold mr-4">3</span>
+                        <div>
+                            <h4 class="font-bold text-lg">Complexity vs. Capability</h4>
+                            <p class="text-gray-600">Choose only as much architectural complexity as your specific scale requires. Do not adopt Exabyte solutions for Gigabyte problems.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="bg-[#0F172A] text-gray-400 py-8 text-center">
+    <p>&copy; 2026 Data Storage Taxonomy Informatics. Created by Ian Fang.</p>
+</footer>
+
+<script>
+const processLabels = (labels) => {
+    return labels.map(label => {
+        if (label.length <= 16) return label;
+        let words = label.split(' ');
+        let lines = [];
+        let currentLine = '';
+        for (let word of words) {
+            if ((currentLine + word).length > 16) {
+                if (currentLine) lines.push(currentLine.trim());
+                currentLine = word + ' ';
+            } else {
+                currentLine += word + ' ';
+            }
+        }
+        if (currentLine) lines.push(currentLine.trim());
+        return lines;
+    });
+};
+
+const tooltipConfig = {
+    callbacks: {
+        title: function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            } else {
+                return label;
+            }
+        }
+    }
+};
+
+const scaleLabelsRaw = ['Local / Embedded', 'Traditional RDBMS', 'Distributed NoSQL', 'Cloud Lakehouse'];
+const scaleLabels = processLabels(scaleLabelsRaw);
+
+const scaleCtx = document.getElementById('scaleChart').getContext('2d');
+new Chart(scaleCtx, {
+    type: 'bar',
+    data: {
+        labels: scaleLabels,
+        datasets: [{
+            label: 'Typical Max Scale (Gigabytes)',
+            data: [1000, 10000, 10000000, 1000000000],
+            backgroundColor: [
+                '#8B5CF6',
+                '#3B82F6',
+                '#F59E0B',
+                '#10B981'
+            ],
+            borderRadius: 6
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: tooltipConfig
+        },
+        scales: {
+            y: {
+                type: 'logarithmic',
+                title: { display: true, text: 'Gigabytes (Log Scale)' },
+                grid: { color: '#E2E8F0' }
+            },
+            x: {
+                grid: { display: false }
+            }
+        }
+    }
+});
+
+const vectorCtx = document.getElementById('vectorChart').getContext('2d');
+new Chart(vectorCtx, {
+    type: 'scatter',
+    data: {
+        datasets: [
+            {
+                label: 'Felines',
+                data: [{x: 2, y: 8}, {x: 2.5, y: 7.5}, {x: 1.5, y: 8.2}],
+                backgroundColor: '#F59E0B',
+                pointRadius: 8
+            },
+            {
+                label: 'Canines',
+                data: [{x: 8, y: 2}, {x: 7.5, y: 2.5}, {x: 8.5, y: 1.8}],
+                backgroundColor: '#3B82F6',
+                pointRadius: 8
+            },
+            {
+                label: 'Vehicles',
+                data: [{x: 2, y: 2}, {x: 2.2, y: 1.5}, {x: 1.8, y: 2.5}],
+                backgroundColor: '#8B5CF6',
+                pointRadius: 8
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        const words = {
+                            'Felines': ['Cat', 'Tiger', 'Lion'],
+                            'Canines': ['Dog', 'Wolf', 'Fox'],
+                            'Vehicles': ['Car', 'Truck', 'Bus']
+                        };
+                        return words[context.dataset.label][context.dataIndex] || context.dataset.label;
+                    }
+                }
+            }
+        },
+        scales: {
+            x: { title: { display: true, text: 'Semantic Dimension 1' }, grid: { color: '#E2E8F0' }, min: 0, max: 10 },
+            y: { title: { display: true, text: 'Semantic Dimension 2' }, grid: { color: '#E2E8F0' }, min: 0, max: 10 }
+        }
+    }
+});
+
+const radarLabelsRaw = ['Schema Rigidity', 'ACID Consistency', 'Read Speed', 'Write Throughput', 'Horizontal Scale'];
+const radarLabels = processLabels(radarLabelsRaw);
+
+const radarCtx = document.getElementById('radarChart').getContext('2d');
+new Chart(radarCtx, {
+    type: 'radar',
+    data: {
+        labels: radarLabels,
+        datasets: [
+            {
+                label: 'RDBMS',
+                data: [90, 100, 70, 50, 30],
+                backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                borderColor: '#3B82F6',
+                pointBackgroundColor: '#3B82F6',
+                borderWidth: 2
+            },
+            {
+                label: 'NoSQL (Wide-Column)',
+                data: [20, 40, 90, 100, 95],
+                backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                borderColor: '#F59E0B',
+                pointBackgroundColor: '#F59E0B',
+                borderWidth: 2
+            },
+            {
+                label: 'Lakehouse',
+                data: [70, 80, 50, 40, 100],
+                backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                borderColor: '#10B981',
+                pointBackgroundColor: '#10B981',
+                borderWidth: 2
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            tooltip: tooltipConfig,
+            legend: { position: 'bottom' }
+        },
+        scales: {
+            r: {
+                angleLines: { color: '#E2E8F0' },
+                grid: { color: '#E2E8F0' },
+                pointLabels: { font: { size: 11 } },
+                suggestedMin: 0,
+                suggestedMax: 100
+            }
+        }
+    }
+});
+</script>
+</body>
+</html>

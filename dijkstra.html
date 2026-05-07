@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single-Source Dijkstra's Algorithm</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+        h1 { margin-bottom: 5px; }
+        .instructions { color: #555; margin-bottom: 20px; }
+
+        .controls {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        select, button {
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        button {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover { background-color: #0b5ed7; }
+        button:disabled { background-color: #a5c8fd; cursor: not-allowed; }
+
+        .main-container {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        canvas {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .data-panels {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex-grow: 1;
+            min-width: 300px;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: 15px;
+        }
+
+        .panel h3 { margin-top: 0; margin-bottom: 10px; font-size: 18px; border-bottom: 2px solid #eee; padding-bottom: 5px; }
+
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background-color: #f8f9fa; font-weight: bold; }
+
+        #status-msg {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e2e3e5;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            width: 100%;
+            max-width: 1000px;
+            box-sizing: border-box;
+        }
+        .status-success { background-color: #d1e7dd !important; color: #0f5132; }
+
+        /* Legend */
+        .legend { display: flex; gap: 15px; margin-top: 10px; font-size: 14px; flex-wrap: wrap;}
+        .legend-item { display: flex; align-items: center; gap: 5px; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+    </style>
+</head>
+<body>
+
+    <h1>Single-Source Dijkstra's</h1>
+    <div class="instructions">Calculates the shortest paths to ALL nodes. Ties are broken alphabetically.</div>
+
+    <div class="controls">
+        <label for="startNode">Start Node:</label>
+        <select id="startNode"></select>
+
+        <button id="btnStart" onclick="initAlgorithm()">Start / Reset</button>
+        <button id="btnNext" onclick="nextStep()" disabled>Next Step</button>
+    </div>
+
+    <div class="main-container">
+        <div>
+            <canvas id="graphCanvas" width="550" height="400"></canvas>
+            <div class="legend">
+                <div class="legend-item"><span class="dot" style="background:#0d6efd"></span> Unvisited</div>
+                <div class="legend-item"><span class="dot" style="background:#ffc107"></span> Evaluating</div>
+                <div class="legend-item"><span class="dot" style="background:#6c757d"></span> Visited</div>
+                <div class="legend-item"><span class="dot" style="background:#198754"></span> Shortest Path Tree</div>
+            </div>
+        </div>
+
+        <div class="data-panels">
+            <div class="panel">
+                <h3>Priority Queue</h3>
+                <table>
+                    <thead><tr><th>Node</th><th>Priority (Dist)</th></tr></thead>
+                    <tbody id="pq-body"></tbody>
+                </table>
+            </div>
+
+            <div class="panel">
+                <h3>Shortest Distances</h3>
+                <table>
+                    <thead><tr><th>Node</th><th>Distance</th><th>Path Via</th></tr></thead>
+                    <tbody id="dist-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="status-msg">Select a start node, then click "Start".</div>
+
+    <script>
+        // Graph Definition
+        const nodes = {
+            A: { x: 80, y: 200 }, B: { x: 230, y: 100 }, C: { x: 230, y: 300 },
+            D: { x: 380, y: 100 }, E: { x: 380, y: 300 }, F: { x: 480, y: 200 }
+        };
+
+        const edges = [
+            { source: 'A', target: 'B', weight: 4 }, { source: 'A', target: 'C', weight: 2 },
+            { source: 'B', target: 'C', weight: 1 }, { source: 'B', target: 'D', weight: 5 },
+            { source: 'C', target: 'D', weight: 8 }, { source: 'C', target: 'E', weight: 10 },
+            { source: 'D', target: 'F', weight: 2 }, { source: 'E', target: 'F', weight: 3 },
+            { source: 'D', target: 'E', weight: 2 }
+        ];
+
+        // Build Adjacency List
+        const adjList = {};
+        Object.keys(nodes).forEach(n => adjList[n] = []);
+        edges.forEach(e => {
+            adjList[e.source].push({ node: e.target, weight: e.weight });
+            adjList[e.target].push({ node: e.source, weight: e.weight });
+        });
+
+        // UI Setup
+        const startSelect = document.getElementById('startNode');
+        Object.keys(nodes).forEach(node => startSelect.add(new Option(node, node)));
+
+        const canvas = document.getElementById('graphCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Algorithm State Variables
+        let pq = [];
+        let distances = {};
+        let previous = {};
+        let visited = new Set();
+        let evaluatingNode = null;
+        let isDone = false;
+
+        // Custom Sort Function for the Priority Queue
+        function sortQueue() {
+            pq.sort((a, b) => {
+                if (a.dist === b.dist) {
+                    return a.node.localeCompare(b.node); // Secondary tie-breaker by label
+                }
+                return a.dist - b.dist; // Primary sort by distance
+            });
+        }
+
+        // --- Rendering Logic ---
+        function drawGraph() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Edges
+            edges.forEach(edge => {
+                let isTreeEdge = false;
+                if (previous[edge.target] === edge.source || previous[edge.source] === edge.target) {
+                    if (visited.has(edge.source) && visited.has(edge.target) ||
+                        (visited.has(edge.source) && evaluatingNode === edge.target) ||
+                        (visited.has(edge.target) && evaluatingNode === edge.source)) {
+                        isTreeEdge = true;
+                    }
+                }
+
+                ctx.beginPath();
+                ctx.moveTo(nodes[edge.source].x, nodes[edge.source].y);
+                ctx.lineTo(nodes[edge.target].x, nodes[edge.target].y);
+                ctx.strokeStyle = isTreeEdge ? "#198754" : "#ddd";
+                ctx.lineWidth = isTreeEdge ? 5 : 2;
+                ctx.stroke();
+
+                const midX = (nodes[edge.source].x + nodes[edge.target].x) / 2;
+                const midY = (nodes[edge.source].y + nodes[edge.target].y) / 2;
+                ctx.fillStyle = "#555";
+                ctx.font = "14px Arial";
+
+                ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+                ctx.fillRect(midX - 10, midY - 20, 20, 20);
+
+                ctx.fillStyle = "#333";
+                ctx.fillText(edge.weight, midX - 4, midY - 6);
+            });
+
+            // Draw Nodes
+            Object.keys(nodes).forEach(nodeId => {
+                let fill = "#0d6efd";
+
+                if (isDone && distances[nodeId] !== Infinity) fill = "#198754";
+                else if (nodeId === evaluatingNode) fill = "#ffc107";
+                else if (visited.has(nodeId)) fill = "#6c757d";
+
+                ctx.beginPath();
+                ctx.arc(nodes[nodeId].x, nodes[nodeId].y, 20, 0, 2 * Math.PI);
+                ctx.fillStyle = fill;
+                ctx.fill();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = "#fff";
+                ctx.stroke();
+
+                ctx.fillStyle = (fill === "#ffc107") ? "#000" : "#fff";
+                ctx.font = "bold 16px Arial";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText(nodeId, nodes[nodeId].x, nodes[nodeId].y);
+            });
+        }
+
+        function updateTables() {
+            const pqBody = document.getElementById('pq-body');
+            pqBody.innerHTML = pq.length === 0 ? "<tr><td colspan='2' style='color:#888'>Empty</td></tr>" : "";
+            pq.forEach(item => {
+                pqBody.innerHTML += `<tr><td><strong>${item.node}</strong></td><td>${item.dist}</td></tr>`;
+            });
+
+            const distBody = document.getElementById('dist-body');
+            distBody.innerHTML = "";
+            Object.keys(distances).forEach(node => {
+                let val = distances[node] === Infinity ? "∞" : distances[node];
+                let via = previous[node] ? previous[node] : "-";
+                distBody.innerHTML += `<tr><td><strong>${node}</strong></td><td>${val}</td><td>${via}</td></tr>`;
+            });
+        }
+
+        function updateStatus(msg, success = false) {
+            const statusDiv = document.getElementById('status-msg');
+            statusDiv.innerText = msg;
+            if (success) statusDiv.classList.add('status-success');
+            else statusDiv.classList.remove('status-success');
+        }
+
+        // --- Algorithm Logic ---
+        function initAlgorithm() {
+            const start = startSelect.value;
+
+            // Reset State
+            pq = [];
+            distances = {};
+            previous = {};
+            visited = new Set();
+            evaluatingNode = null;
+            isDone = false;
+
+            const btnNext = document.getElementById('btnNext');
+            btnNext.disabled = false;
+            btnNext.innerText = "Next Step";
+
+            Object.keys(nodes).forEach(n => {
+                distances[n] = Infinity;
+                previous[n] = null;
+            });
+
+            distances[start] = 0;
+            pq.push({ node: start, dist: 0 });
+
+            updateStatus(`Algorithm Initialized. Single Source: ${start}. Click "Next Step".`);
+            drawGraph();
+            updateTables();
+        }
+
+        function nextStep() {
+            if (isDone) return;
+
+            if (pq.length === 0) {
+                isDone = true;
+                evaluatingNode = null;
+                document.getElementById('btnNext').disabled = true;
+                updateStatus(`Algorithm Complete! Priority Queue is empty. Shortest Path Tree mapped.`, true);
+                drawGraph();
+                updateTables();
+                return;
+            }
+
+            // Sort using our new deterministic function
+            sortQueue();
+
+            // Dequeue the node with smallest distance
+            const current = pq.shift();
+            evaluatingNode = current.node;
+
+            if (!visited.has(evaluatingNode)) {
+                visited.add(evaluatingNode);
+
+                let neighborUpdates = [];
+
+                // Check neighbors
+                adjList[evaluatingNode].forEach(neighbor => {
+                    if (!visited.has(neighbor.node)) {
+                        let newDist = distances[evaluatingNode] + neighbor.weight;
+                        if (newDist < distances[neighbor.node]) {
+                            distances[neighbor.node] = newDist;
+                            previous[neighbor.node] = evaluatingNode;
+
+                            // Remove old entry if exists, then push new
+                            pq = pq.filter(item => item.node !== neighbor.node);
+                            pq.push({ node: neighbor.node, dist: newDist });
+                            neighborUpdates.push(`${neighbor.node} (${newDist})`);
+                        }
+                    }
+                });
+
+                // Re-sort using our new deterministic function after adding neighbors
+                sortQueue();
+
+                let msg = `Evaluating Node ${evaluatingNode}. `;
+                if (neighborUpdates.length > 0) msg += `Updated paths to: ${neighborUpdates.join(', ')}.`;
+                else msg += "No shorter paths found to neighbors.";
+                updateStatus(msg);
+            } else {
+                 updateStatus(`Node ${evaluatingNode} was already evaluated. Skipping.`);
+            }
+
+            drawGraph();
+            updateTables();
+
+            if (pq.length === 0) {
+                document.getElementById('btnNext').innerText = "Finish";
+            }
+        }
+
+        // Initial render on load
+        drawGraph();
+        updateTables();
+    </script>
+</body>
+</html>

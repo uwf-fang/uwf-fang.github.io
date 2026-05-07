@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 Storage Architecture Comparison</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!--
+PLAN AND CONFIRMATION SUMMARY:
+- Palette: "Vibrant Enterprise" (Primary: #1E293B, Accents: #3B82F6, #F59E0B, #10B981, #EC4899, #8B5CF6)
+- Narrative Plan:
+  1. Header with high-level architecture overview.
+  2. Main Comparison Matrix using a styled HTML grid for readability.
+  3. Scalability Analysis using a Chart.js Bar Chart.
+  4. Consistency vs. Structure relationship map using a Chart.js Bubble Chart.
+  5. Evolution highlights section.
+- Visualization Choices:
+  1. Comparison Table -> Styled Tailwind Grid -> No SVG. Goal: Organize.
+  2. Bar Chart (Scale) -> Chart.js Canvas -> No SVG. Goal: Compare.
+  3. Bubble Chart (Consistency vs Structure) -> Chart.js Canvas -> No SVG. Goal: Relationships.
+- CONFIRMATION: NEITHER Mermaid JS NOR SVG were used anywhere in the output.
+-->
+<style>
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 350px;
+    max-height: 400px;
+}
+.matrix-row:nth-child(even) { background-color: #f8fafc; }
+.matrix-header { background-color: #1e293b; color: white; }
+</style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+
+<header class="bg-[#1E293B] text-white py-12 px-6 text-center shadow-lg">
+    <h1 class="text-3xl md:text-5xl font-extrabold mb-4">Storage Comparison 2026</h1>
+    <p class="text-slate-400 max-w-2xl mx-auto">A comprehensive comparison of the fractured landscape of modern data storage engines, from local files to infinite cloud lakehouses.</p>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 py-10 space-y-12">
+
+    <!-- Section 1: The Matrix -->
+    <section class="bg-white rounded-xl shadow-xl overflow-hidden border border-slate-200">
+        <div class="p-6 border-b border-slate-100">
+            <h2 class="text-2xl font-bold text-[#1E293B]">I. The Comparison Matrix</h2>
+            <p class="text-slate-600">A structured breakdown of architecture, scalability, and 2026 evolutionary shifts.</p>
+        </div>
+        <div class="overflow-x-auto">
+            <div class="min-w-[1000px]">
+                <div class="grid grid-cols-6 matrix-header font-bold text-sm uppercase tracking-wider p-4">
+                    <div>Method</div>
+                    <div>Architecture</div>
+                    <div>Scalability</div>
+                    <div>Structure</div>
+                    <div>Consistency</div>
+                    <div>2026 Evolution</div>
+                </div>
+
+                <!-- Row 1 -->
+                <div class="grid grid-cols-6 p-4 border-b border-slate-100 items-center text-sm matrix-row">
+                    <div class="font-bold text-[#3B82F6]">Local File System</div>
+                    <div class="text-slate-600">Direct OS access; unmanaged</div>
+                    <div class="bg-slate-200 text-slate-700 px-2 py-1 rounded text-xs w-fit">GB</div>
+                    <div class="italic">Unstructured</div>
+                    <div>Atomic (OS)</div>
+                    <div class="text-xs">Cold media & local config storage focus</div>
+                </div>
+
+                <!-- Row 2 -->
+                <div class="grid grid-cols-6 p-4 border-b border-slate-100 items-center text-sm matrix-row">
+                    <div class="font-bold text-[#8B5CF6]">Embedded DB</div>
+                    <div class="text-slate-600">In-process; no server</div>
+                    <div class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs w-fit">GB to TB</div>
+                    <div>Structured</div>
+                    <div class="text-green-600 font-medium">Strong ACID</div>
+                    <div class="text-xs">Shift to high-perf local analytics (OLAP)</div>
+                </div>
+
+                <!-- Row 3 -->
+                <div class="grid grid-cols-6 p-4 border-b border-slate-100 items-center text-sm matrix-row">
+                    <div class="font-bold text-[#0EA5E9]">Traditional RDBMS</div>
+                    <div class="text-slate-600">Centralized Client-Server</div>
+                    <div class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs w-fit">GB to TB</div>
+                    <div>Relational</div>
+                    <div class="text-green-600 font-medium">Strong ACID</div>
+                    <div class="text-xs">Increasingly native JSON/Cloud-managed</div>
+                </div>
+
+                <!-- Row 4 -->
+                <div class="grid grid-cols-6 p-4 border-b border-slate-100 items-center text-sm matrix-row">
+                    <div class="font-bold text-[#F59E0B]">NewSQL</div>
+                    <div class="text-slate-600">Distributed Relational</div>
+                    <div class="bg-orange-100 text-orange-700 px-2 py-1 rounded text-xs w-fit">TB to PB</div>
+                    <div>Relational</div>
+                    <div class="text-green-700 font-bold uppercase text-[10px]">Global ACID</div>
+                    <div class="text-xs">HTAP adoption for global transactions</div>
+                </div>
+
+                <!-- Row 5 -->
+                <div class="grid grid-cols-6 p-4 border-b border-slate-100 items-center text-sm matrix-row">
+                    <div class="font-bold text-[#EC4899]">NoSQL</div>
+                    <div class="text-slate-600">Distributed Non-Relational</div>
+                    <div class="bg-pink-100 text-pink-700 px-2 py-1 rounded text-xs w-fit">PB+</div>
+                    <div>Flexible (Doc, KV)</div>
+                    <div class="text-slate-500 italic">Eventual/Strong</div>
+                    <div class="text-xs">Multi-model evolution with ACID</div>
+                </div>
+
+                <!-- Row 6 -->
+                <div class="grid grid-cols-6 p-4 items-center text-sm matrix-row">
+                    <div class="font-bold text-[#10B981]">Cloud Lakehouse</div>
+                    <div class="text-slate-600">Object Storage + Metadata</div>
+                    <div class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-xs w-fit">Exabyte+</div>
+                    <div>Multi-modal</div>
+                    <div class="text-green-600 font-medium italic">ACID via Metadata</div>
+                    <div class="text-xs">The "Grand Convergence" for BI and AI</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Scale and Relationships -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+        <!-- Scalability Comparison -->
+        <section class="bg-white rounded-xl shadow-md p-6 flex flex-col">
+            <h3 class="text-xl font-bold mb-2">II. Scale Ceiling Analysis</h3>
+            <p class="text-slate-600 text-sm mb-6">Visualizing the data capacity limits of each storage tier.</p>
+            <div class="chart-container flex-grow">
+                <canvas id="scaleChart"></canvas>
+            </div>
+            <div class="mt-4 p-3 bg-blue-50 rounded text-xs text-blue-800">
+                <strong>Insight:</strong> Distributed architectures like NewSQL and NoSQL bridge the gap between single-node systems and the "Infinite" scale of the Cloud Lakehouse.
+            </div>
+        </section>
+
+        <!-- Complexity Mapping -->
+        <section class="bg-white rounded-xl shadow-md p-6 flex flex-col">
+            <h3 class="text-xl font-bold mb-2">III. Structure vs. Consistency</h3>
+            <p class="text-slate-600 text-sm mb-6">Mapping how rigidity correlates with consistency guarantees.</p>
+            <div class="chart-container flex-grow">
+                <canvas id="structureChart"></canvas>
+            </div>
+            <div class="mt-4 p-3 bg-purple-50 rounded text-xs text-purple-800">
+                <strong>Insight:</strong> NewSQL uniquely occupies the top-right quadrant, offering both strict structure and global consistency.
+            </div>
+        </section>
+    </div>
+
+    <!-- Section 3: Tech Ecosystem -->
+    <section class="bg-[#1E293B] rounded-xl shadow-md p-8 text-white">
+        <h3 class="text-2xl font-bold mb-8 text-center">Modern Technology Ecosystem</h3>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div class="p-4 rounded-lg bg-slate-800 border border-slate-700 text-center">
+                <div class="text-[#3B82F6] font-bold text-xs mb-1">LOCAL</div>
+                <div class="text-sm">NTFS / ext4</div>
+            </div>
+            <div class="p-4 rounded-lg bg-slate-800 border border-slate-700 text-center">
+                <div class="text-[#8B5CF6] font-bold text-xs mb-1">EMBEDDED</div>
+                <div class="text-sm">SQLite / DuckDB</div>
+            </div>
+            <div class="p-4 rounded-lg bg-slate-800 border border-slate-700 text-center">
+                <div class="text-[#0EA5E9] font-bold text-xs mb-1">RDBMS</div>
+                <div class="text-sm">Postgres / MySQL</div>
+            </div>
+            <div class="p-4 rounded-lg bg-slate-800 border border-slate-700 text-center">
+                <div class="text-[#F59E0B] font-bold text-xs mb-1">NEWSQL</div>
+                <div class="text-sm">CockroachDB</div>
+            </div>
+            <div class="p-4 rounded-lg bg-slate-800 border border-slate-700 text-center">
+                <div class="text-[#EC4899] font-bold text-xs mb-1">NOSQL</div>
+                <div class="text-sm">MongoDB</div>
+            </div>
+            <div class="p-4 rounded-lg bg-slate-800 border border-slate-700 text-center">
+                <div class="text-[#10B981] font-bold text-xs mb-1">LAKEHOUSE</div>
+                <div class="text-sm">Apache Iceberg</div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="py-10 text-center text-slate-400 text-sm">
+    &copy; 2026 Taxonomy of Data Storage Infographic. All data visualizations rendered on Canvas.
+</footer>
+
+<script>
+// Label Wrapping Logic
+const wrap = (label) => {
+    if (label.length <= 16) return label;
+    const words = label.split(' ');
+    const lines = [];
+    let current = '';
+    words.forEach(w => {
+        if ((current + w).length > 16) {
+            lines.push(current.trim());
+            current = w + ' ';
+        } else {
+            current += w + ' ';
+        }
+    });
+    lines.push(current.trim());
+    return lines;
+};
+
+// Tooltip Config Helper
+const sharedTooltip = {
+    callbacks: {
+        title: function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels ? item.chart.data.labels[item.dataIndex] : null;
+            if (!label && item.dataset.label) label = item.dataset.label;
+            return Array.isArray(label) ? label.join(' ') : label;
+        }
+    }
+};
+
+// I. Scale Chart
+const scaleLabels = ['Local File', 'Embedded DB', 'RDBMS', 'NewSQL', 'NoSQL', 'Lakehouse'].map(wrap);
+new Chart(document.getElementById('scaleChart'), {
+    type: 'bar',
+    data: {
+        labels: scaleLabels,
+        datasets: [{
+            label: 'Relative Scale (Logarithmic)',
+            data: [1, 2, 3, 6, 9, 12], // Conceptual log representation
+            backgroundColor: ['#3B82F6', '#8B5CF6', '#0EA5E9', '#F59E0B', '#EC4899', '#10B981'],
+            borderRadius: 8
+        }]
+    },
+    options: {
+        indexAxis: 'y',
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: sharedTooltip
+        },
+        scales: {
+            x: {
+                title: { display: true, text: 'Order of Magnitude (GB -> EB)' },
+                grid: { display: false }
+            }
+        }
+    }
+});
+
+// II. Structure vs Consistency Chart
+new Chart(document.getElementById('structureChart'), {
+    type: 'bubble',
+    data: {
+        datasets: [
+            { label: 'Local File', data: [{x: 20, y: 30, r: 10}], backgroundColor: '#3B82F6' },
+            { label: 'Embedded DB', data: [{x: 80, y: 90, r: 12}], backgroundColor: '#8B5CF6' },
+            { label: 'RDBMS', data: [{x: 90, y: 95, r: 15}], backgroundColor: '#0EA5E9' },
+            { label: 'NewSQL', data: [{x: 85, y: 100, r: 15}], backgroundColor: '#F59E0B' },
+            { label: 'NoSQL', data: [{x: 30, y: 50, r: 20}], backgroundColor: '#EC4899' },
+            { label: 'Lakehouse', data: [{x: 60, y: 80, r: 25}], backgroundColor: '#10B981' }
+        ]
+    },
+    options: {
+        maintainAspectRatio: false,
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    title: (items) => items[0].dataset.label,
+                    label: (item) => `Rigidity: ${item.raw.x}, Consistency: ${item.raw.y}`
+                }
+            }
+        },
+        scales: {
+            x: { title: { display: true, text: 'Schema Rigidity' }, min: 0, max: 120 },
+            y: { title: { display: true, text: 'Consistency Strength' }, min: 0, max: 120 }
+        }
+    }
+});
+</script>
+
+</body>
+</html>
