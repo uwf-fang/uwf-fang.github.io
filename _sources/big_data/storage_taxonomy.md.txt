@@ -80,3 +80,14 @@ Historically, companies had a "Data Lake" (cheap/messy) and a "Data Warehouse" (
 1. **RDBMS vs. NewSQL:** Use **Postgres** for single-region simplicity. Move to **CockroachDB** only when global availability is mandatory.
 2. **Object Store vs. Lakehouse:** The Object Store is the library shelf; the Lakehouse is the librarian. You need both for an efficient system.
 3. **Complexity vs. Capability:** Choose only as much complexity as your scale requires. Do not adopt Exabyte solutions for Gigabyte problems.
+
+## **VII. Appendix: Table for comparison**
+
+|Storage Method   |Architecture                          |Scalability         |Data Structure                          |Consistency Model       |2026 Evolution / Modern Shift                                                   |Example Technologies                 |
+|-----------------|--------------------------------------|--------------------|----------------------------------------|------------------------|--------------------------------------------------------------------------------|-------------------------------------|
+|Local File System|Direct OS-level access; unmanaged.    |Small (GB)          |Unstructured (Raw files)                |N/A (Atomic at OS level)|Now used primarily for local configuration or "cold" media storage.             |NTFS, APFS, ext4                     |
+|Embedded DB      |In-process engine; no separate server.|Small to Medium (GB)|Structured / Semi-structured            |Strong ACID             |Shifted from simple storage to high-performance local analytics (OLAP).         |SQLite, DuckDB, RocksDB              |
+|Traditional RDBMS|Centralized Client-Server.            |Medium (GB to TB)   |Strictly Structured (Relational)        |Strong ACID             |Now frequently used as "RDS" managed cloud services; increasingly supports JSON.|PostgreSQL, MySQL, MariaDB           |
+|NewSQL           |Distributed Relational (Horizontal).  |Large (TB to PB)    |Strictly Structured                     |Global ACID             |Adoption of HTAP (Hybrid Transactional/Analytical Processing).                  |Google Spanner, CockroachDB, TiDB    |
+|NoSQL            |Distributed Non-Relational.           |Massive (PB+)       |Flexible (Document, Graph, KV)          |Eventual to Strong      |Evolved into Multi-model systems with multi-document ACID support.              |MongoDB, DynamoDB, Cassandra         |
+|Cloud Lakehouse  |Object Storage + Metadata Layer.      |Infinite (Exabyte+) |Multi-modal (Structured to Unstructured)|ACID via Metadata       |The "Grand Convergence"; serves as a single source for both BI and AI.          |Delta Lake, Apache Iceberg, Snowflake|
