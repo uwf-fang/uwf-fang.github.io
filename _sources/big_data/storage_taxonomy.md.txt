@@ -57,17 +57,39 @@ A 2026 taxonomy would be incomplete without addressing **Vector Databases**. Wit
 
 ## Cloud-Native Analytical Architectures
 
+In cloud systems, storage should still be treated as a separate architectural
+concern, but it is no longer accurate to think of cloud storage as only a
+passive disk replacement. Modern cloud storage layers are tightly integrated
+with catalogs, eventing, governance controls, and analytics engines. That is
+why a separate cloud computing discussion is still useful: storage explains
+how data is persisted, while cloud computing explains how platform services
+act on that data.
+
 ### 4.1 Data Warehouse (OLAP) and Decoupled Compute
 
 Modern warehouses like **Snowflake** have perfected the "decoupled" architecture. Storage and compute are billed separately, allowing petabyte-scale storage on cheap cloud tiers with high-power compute triggered only during query execution.
 
 ### 4.2 Object Storage: The "Infinite" Hard Drive
 
-**AWS S3** and its peers have become the modern baseline. It uses a flat hierarchy where every file is an "object" with a unique URL, serving as the physical layer for almost all other cloud services.
+**AWS S3** and its peers have become the modern baseline. They use a flat
+namespace of objects identified by keys inside buckets or containers, and they
+serve as the physical storage layer for many other cloud services. In modern
+platforms, object storage also exposes compute-adjacent capabilities such as
+event notifications, lifecycle automation, fine-grained access control,
+metadata integration, and compatibility with higher-level table formats. That
+means object storage is still fundamentally storage, but it often behaves like
+the entry point to a larger data platform rather than just an online hard
+drive.
 
 ### 4.3 The Data Lakehouse: The Grand Convergence
 
 Historically, companies had a "Data Lake" (cheap/messy) and a "Data Warehouse" (expensive/clean). The **Lakehouse** merges these. By applying a layer like **Apache Iceberg** on top of S3, organizations get ACID transactions and "time-travel" on their raw data files.
+
+This is also where the boundary between storage and compute becomes blurry.
+The object store still keeps the bytes, but the surrounding metadata layer,
+catalog, and query engines determine how that data is interpreted, optimized,
+secured, and queried. In practice, a lakehouse is not just a storage choice;
+it is a storage-plus-compute architecture.
 
 ## Technical Selection Matrix
 
@@ -81,7 +103,7 @@ Historically, companies had a "Data Lake" (cheap/messy) and a "Data Warehouse" (
 ## Summary: Navigating the Trade-offs
 
 1. **RDBMS vs. NewSQL:** Use **Postgres** for single-region simplicity. Move to **CockroachDB** only when global availability is mandatory.
-2. **Object Store vs. Lakehouse:** The Object Store is the library shelf; the Lakehouse is the librarian. You need both for an efficient system.
+2. **Object Store vs. Lakehouse:** The Object Store is the library shelf; the Lakehouse is the librarian plus part of the reading room. You need the storage layer and the compute/metadata layer together for an efficient system.
 3. **Complexity vs. Capability:** Choose only as much complexity as your scale requires. Do not adopt Exabyte solutions for Gigabyte problems.
 
 ## Appendix: Table for comparison
@@ -93,4 +115,70 @@ Historically, companies had a "Data Lake" (cheap/messy) and a "Data Warehouse" (
 |Traditional RDBMS|Centralized Client-Server.            |Medium (GB to TB)   |Strictly Structured (Relational)        |Strong ACID             |Now frequently used as "RDS" managed cloud services; increasingly supports JSON.|PostgreSQL, MySQL, MariaDB           |
 |NewSQL           |Distributed Relational (Horizontal).  |Large (TB to PB)    |Strictly Structured                     |Global ACID             |Adoption of HTAP (Hybrid Transactional/Analytical Processing).                  |Google Spanner, CockroachDB, TiDB    |
 |NoSQL            |Distributed Non-Relational.           |Massive (PB+)       |Flexible (Document, Graph, KV)          |Eventual to Strong      |Evolved into Multi-model systems with multi-document ACID support.              |MongoDB, DynamoDB, Cassandra         |
-|Cloud Lakehouse  |Object Storage + Metadata Layer.      |Infinite (Exabyte+) |Multi-modal (Structured to Unstructured)|ACID via Metadata       |The "Grand Convergence"; serves as a single source for both BI and AI.          |Delta Lake, Apache Iceberg, Snowflake|
+|Cloud Lakehouse  |Object Storage + Metadata + Compute Layer.|Infinite (Exabyte+) |Multi-modal (Structured to Unstructured)|ACID via Metadata       |The "Grand Convergence"; serves as a single source for both BI and AI.          |Delta Lake, Apache Iceberg, Snowflake|
+
+## Glossary
+
+This glossary collects abbreviations and core ideas that beginners are likely to encounter in this document.
+
+### Abbreviations
+
+| Term | Full name | Explanation |
+| :---- | :---- | :---- |
+| **ACID** | Atomicity, Consistency, Isolation, Durability | A set of properties that help transactions remain correct and reliable, even if systems fail or multiple users access data at once. |
+| **AI** | Artificial Intelligence | Computer systems designed to perform tasks that usually require human-like reasoning or pattern recognition. |
+| **APFS** | Apple File System | The file system commonly used by modern macOS devices. |
+| **AWS** | Amazon Web Services | Amazon's cloud computing platform, which includes services such as S3 and managed databases. |
+| **BI** | Business Intelligence | Reporting and analysis tools used to help organizations understand data and make decisions. |
+| **CPU** | Central Processing Unit | The main processor that executes instructions in a computer. |
+| **DB** | Database | A system for storing, organizing, and retrieving data. |
+| **EB** | Exabyte | A very large unit of storage. One EB is about one billion gigabytes. |
+| **ext4** | Fourth Extended Filesystem | A widely used file system on Linux machines. |
+| **GB** | Gigabyte | A common unit of storage capacity. |
+| **HDFS** | Hadoop Distributed File System | A distributed file system designed for storing very large files across many machines. |
+| **HTAP** | Hybrid Transactional/Analytical Processing | A system design that supports both day-to-day transactions and large analytical queries. |
+| **JSON** | JavaScript Object Notation | A text-based data format widely used for data exchange and document storage. |
+| **KV** | Key-Value | A data model that stores values by unique keys, similar to a dictionary or hash map. |
+| **LLM** | Large Language Model | A machine learning model trained on very large amounts of text to understand and generate language. |
+| **MB** | Megabyte | A smaller unit of storage than a gigabyte. |
+| **ms** | Millisecond | One-thousandth of a second, often used to describe latency. |
+| **N/A** | Not Applicable | Indicates that a field or property does not apply in a given situation. |
+| **NTFS** | New Technology File System | A common file system used by Windows. |
+| **NVMe** | Non-Volatile Memory Express | A high-speed storage interface used by modern solid-state drives. |
+| **OLAP** | Online Analytical Processing | A style of data processing optimized for large analytical queries rather than frequent small updates. |
+| **OS** | Operating System | The core software that manages hardware and provides services for applications. |
+| **PB** | Petabyte | A storage unit larger than a terabyte and commonly used for very large datasets. |
+| **PDF** | Portable Document Format | A file format used to share documents while preserving layout. |
+| **RAM** | Random Access Memory | Fast temporary memory used by active programs while a computer is running. |
+| **RDBMS** | Relational Database Management System | A database system based on tables, rows, columns, and SQL. |
+| **RDS** | Relational Database Service | A cloud-managed relational database service, often meaning AWS RDS in practice. |
+| **S3** | Simple Storage Service | Amazon's cloud object storage service. |
+| **SQL** | Structured Query Language | The standard language used to query and manage relational databases. |
+| **TB** | Terabyte | A large storage unit commonly used for disks and datasets. |
+| **URL** | Uniform Resource Locator | A network address used to locate a resource, such as a file or web page. |
+
+### Essential concepts for beginners
+
+| Concept | Explanation |
+| :---- | :---- |
+| **Latency** | The time it takes for one operation, such as a read or query, to complete. Lower latency usually means a faster user experience. |
+| **Consistency** | The degree to which all users or machines see the same data after updates. |
+| **Strong consistency** | A model in which readers see the latest successful write immediately. |
+| **Eventual consistency** | A model in which copies of data may temporarily differ, but they converge over time. |
+| **Transaction** | A group of operations treated as one unit so they either all succeed or all fail together. |
+| **Concurrency control** | Techniques for keeping data correct when many users or processes access it at the same time. |
+| **Index** | A helper data structure that speeds up searching, much like an index in a book. |
+| **Replication** | Keeping multiple copies of data on different machines to improve availability and durability. |
+| **Vertical scaling** | Making one machine more powerful by adding more CPU, RAM, or faster storage. |
+| **Horizontal scaling** | Expanding capacity by adding more machines and distributing work across them. |
+| **Sharding** | Splitting data across multiple machines so that no single machine stores everything. |
+| **Columnar storage** | A storage layout that keeps values from the same column together, which is efficient for analytics. |
+| **Row-oriented storage** | A storage layout that keeps each full record together, which is efficient for frequent inserts and updates. |
+| **Object storage** | A storage model in which data is stored as objects identified by keys rather than arranged in folders and blocks like a traditional file system. |
+| **Storage-compute convergence** | A trend in cloud systems where storage layers are closely integrated with catalogs, eventing, policy engines, and analytics services, so stored data can immediately participate in downstream computation. |
+| **Data lake** | A large repository that stores raw data in many formats for later processing. |
+| **Data warehouse** | A structured analytical system optimized for reporting and large-scale queries. |
+| **Lakehouse** | An architecture that combines low-cost data lake storage with some of the management and query benefits of a warehouse. |
+| **Embedding** | A numeric representation of data, often text or images, that captures meaning in vector form. |
+| **Semantic search** | Searching by meaning or similarity instead of exact keyword matches. |
+| **Consensus algorithm** | A method that distributed systems use to agree on a shared state, even when many machines are involved. |

@@ -221,12 +221,18 @@ big data tools such as Apache Hadoop and Apache Spark.</p></li>
 framework that is designed to process data in real-time with
 high-throughput and low-latency. It offers robust support for event-time
 processing, state management, and fault-tolerance.</p></li>
-<li><p>Apache Spark Streaming (legacy): Apache Spark Streaming is an extension of
-the Apache Spark framework that allows for the processing of real-time data
-streams using the DStream API. It offers high throughput and low latency
-processing of data and supports multiple data sources. <strong>Note:</strong> Apache
-officially designates Spark Streaming as a legacy project with no further
-updates. New applications should use <strong>Spark Structured Streaming</strong> instead.</p></li>
+<li><p>Apache Spark Structured Streaming: Structured Streaming is Spark’s current
+streaming engine and the recommended choice for new Spark-based streaming
+applications. It is built on the Spark SQL and DataFrame APIs and treats a
+stream as an unbounded table, which gives developers one programming model
+for both batch and streaming workloads. It supports event-time processing,
+windows, watermarks, stateful aggregations, and integration with sources
+such as Kafka and files.</p></li>
+<li><p>Apache Spark Streaming (retired/legacy): The older Spark Streaming module
+uses the DStream API and a micro-batch programming style. It was widely used
+in earlier Spark systems, but Apache now treats it as a legacy component.
+Existing applications may still run, but new development should target
+<strong>Spark Structured Streaming</strong> rather than DStreams.</p></li>
 <li><p>Amazon Kinesis: Amazon Kinesis is a fully managed real-time streaming data
 service offered by Amazon Web Services. It allows users to capture,
 process, and analyze data streams in real-time at scale. Kinesis supports
@@ -244,6 +250,53 @@ enables real-time processing and analysis of data streams. It offers a
 powerful programming model and can handle large volumes of data in
 real-time.</p></li>
 </ul>
+</section>
+<section id="spark-structured-streaming">
+<h2>Spark Structured Streaming<a class="headerlink" href="#spark-structured-streaming" title="Link to this heading">¶</a></h2>
+<p>Spark Structured Streaming reflects an important evolution in streaming
+systems: developers no longer work primarily with low-level record-by-record
+stream abstractions. Instead, they work with higher-level tables, schemas,
+and SQL/DataFrame transformations. This makes streaming applications easier to
+build, test, and maintain because much of the same logic used for batch data
+processing can be reused for continuous processing.</p>
+<p>Key ideas in Structured Streaming include:</p>
+<ul class="simple">
+<li><p>Unified batch and streaming model: the same DataFrame and SQL operations can
+often be used for both historical data and live data.</p></li>
+<li><p>Event-time processing: results can be based on when events actually happened
+instead of only when they arrived.</p></li>
+<li><p>Watermarks: the system can tolerate some late data while still deciding when
+a window or aggregation can be finalized.</p></li>
+<li><p>Stateful processing: counts, joins, sessions, and other running summaries
+can be maintained over time.</p></li>
+</ul>
+<p>In practice, Structured Streaming is usually paired with message brokers such
+as Kafka, cloud object storage, or change-data-capture pipelines. It is
+particularly useful when teams already use Spark for batch analytics and want
+to extend the same platform to near-real-time pipelines.</p>
+</section>
+<section id="schema-aware-streaming">
+<h2>Schema-Aware Streaming<a class="headerlink" href="#schema-aware-streaming" title="Link to this heading">¶</a></h2>
+<p>One of the important trends in modern data engineering is the move from
+schema-optional pipelines toward schema-aware streaming systems. Structured
+Streaming is part of that trend because it operates on DataFrames with named
+columns and data types instead of untyped message streams alone.</p>
+<p>Schema-aware streaming matters for several reasons:</p>
+<ul class="simple">
+<li><p>Better data quality: malformed records, missing fields, and type mismatches
+can be detected earlier.</p></li>
+<li><p>Easier governance: teams can document fields, apply validation rules, and
+reason more clearly about downstream dependencies.</p></li>
+<li><p>Safer evolution: schemas can change over time in controlled ways, which is
+important when many producers and consumers share the same data products.</p></li>
+<li><p>More powerful optimization: query engines can optimize execution more
+effectively when structure and data types are known.</p></li>
+</ul>
+<p>This does not eliminate schema evolution problems. In streaming systems,
+fields may be added, renamed, or deprecated while data is still flowing.
+Because of that, production streaming pipelines increasingly rely on explicit
+contracts, versioning, and compatibility checks in addition to the streaming
+framework itself.</p>
 </section>
 </section>
 
@@ -264,6 +317,8 @@ real-time.</p></li>
 <li><a class="reference internal" href="#advantages-of-streaming">Advantages of Streaming</a></li>
 <li><a class="reference internal" href="#drawbacks-of-streaming">Drawbacks of Streaming</a></li>
 <li><a class="reference internal" href="#frameworks-and-services">Frameworks and Services</a></li>
+<li><a class="reference internal" href="#spark-structured-streaming">Spark Structured Streaming</a></li>
+<li><a class="reference internal" href="#schema-aware-streaming">Schema-Aware Streaming</a></li>
 </ul>
 </li>
 </ul>

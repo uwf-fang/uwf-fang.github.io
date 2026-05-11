@@ -100,17 +100,37 @@ Scope: reflects tools and practices commonly used in 2026.</p>
 </section>
 <section id="cloud-native-analytical-architectures">
 <h2>Cloud-Native Analytical Architectures<a class="headerlink" href="#cloud-native-analytical-architectures" title="Link to this heading">¶</a></h2>
+<p>In cloud systems, storage should still be treated as a separate architectural
+concern, but it is no longer accurate to think of cloud storage as only a
+passive disk replacement. Modern cloud storage layers are tightly integrated
+with catalogs, eventing, governance controls, and analytics engines. That is
+why a separate cloud computing discussion is still useful: storage explains
+how data is persisted, while cloud computing explains how platform services
+act on that data.</p>
 <section id="data-warehouse-olap-and-decoupled-compute">
 <h3>4.1 Data Warehouse (OLAP) and Decoupled Compute<a class="headerlink" href="#data-warehouse-olap-and-decoupled-compute" title="Link to this heading">¶</a></h3>
 <p>Modern warehouses like <strong>Snowflake</strong> have perfected the “decoupled” architecture. Storage and compute are billed separately, allowing petabyte-scale storage on cheap cloud tiers with high-power compute triggered only during query execution.</p>
 </section>
 <section id="object-storage-the-infinite-hard-drive">
 <h3>4.2 Object Storage: The “Infinite” Hard Drive<a class="headerlink" href="#object-storage-the-infinite-hard-drive" title="Link to this heading">¶</a></h3>
-<p><strong>AWS S3</strong> and its peers have become the modern baseline. It uses a flat hierarchy where every file is an “object” with a unique URL, serving as the physical layer for almost all other cloud services.</p>
+<p><strong>AWS S3</strong> and its peers have become the modern baseline. They use a flat
+namespace of objects identified by keys inside buckets or containers, and they
+serve as the physical storage layer for many other cloud services. In modern
+platforms, object storage also exposes compute-adjacent capabilities such as
+event notifications, lifecycle automation, fine-grained access control,
+metadata integration, and compatibility with higher-level table formats. That
+means object storage is still fundamentally storage, but it often behaves like
+the entry point to a larger data platform rather than just an online hard
+drive.</p>
 </section>
 <section id="the-data-lakehouse-the-grand-convergence">
 <h3>4.3 The Data Lakehouse: The Grand Convergence<a class="headerlink" href="#the-data-lakehouse-the-grand-convergence" title="Link to this heading">¶</a></h3>
 <p>Historically, companies had a “Data Lake” (cheap/messy) and a “Data Warehouse” (expensive/clean). The <strong>Lakehouse</strong> merges these. By applying a layer like <strong>Apache Iceberg</strong> on top of S3, organizations get ACID transactions and “time-travel” on their raw data files.</p>
+<p>This is also where the boundary between storage and compute becomes blurry.
+The object store still keeps the bytes, but the surrounding metadata layer,
+catalog, and query engines determine how that data is interpreted, optimized,
+secured, and queried. In practice, a lakehouse is not just a storage choice;
+it is a storage-plus-compute architecture.</p>
 </section>
 </section>
 <section id="technical-selection-matrix">
@@ -156,7 +176,7 @@ Scope: reflects tools and practices commonly used in 2026.</p>
 <h2>Summary: Navigating the Trade-offs<a class="headerlink" href="#summary-navigating-the-trade-offs" title="Link to this heading">¶</a></h2>
 <ol class="arabic simple">
 <li><p><strong>RDBMS vs. NewSQL:</strong> Use <strong>Postgres</strong> for single-region simplicity. Move to <strong>CockroachDB</strong> only when global availability is mandatory.</p></li>
-<li><p><strong>Object Store vs. Lakehouse:</strong> The Object Store is the library shelf; the Lakehouse is the librarian. You need both for an efficient system.</p></li>
+<li><p><strong>Object Store vs. Lakehouse:</strong> The Object Store is the library shelf; the Lakehouse is the librarian plus part of the reading room. You need the storage layer and the compute/metadata layer together for an efficient system.</p></li>
 <li><p><strong>Complexity vs. Capability:</strong> Choose only as much complexity as your scale requires. Do not adopt Exabyte solutions for Gigabyte problems.</p></li>
 </ol>
 </section>
@@ -215,7 +235,7 @@ Scope: reflects tools and practices commonly used in 2026.</p>
 <td><p>MongoDB, DynamoDB, Cassandra</p></td>
 </tr>
 <tr class="row-odd"><td><p>Cloud Lakehouse</p></td>
-<td><p>Object Storage + Metadata Layer.</p></td>
+<td><p>Object Storage + Metadata + Compute Layer.</p></td>
 <td><p>Infinite (Exabyte+)</p></td>
 <td><p>Multi-modal (Structured to Unstructured)</p></td>
 <td><p>ACID via Metadata</p></td>
@@ -224,6 +244,222 @@ Scope: reflects tools and practices commonly used in 2026.</p>
 </tr>
 </tbody>
 </table>
+</section>
+<section id="glossary">
+<h2>Glossary<a class="headerlink" href="#glossary" title="Link to this heading">¶</a></h2>
+<p>This glossary collects abbreviations and core ideas that beginners are likely to encounter in this document.</p>
+<section id="abbreviations">
+<h3>Abbreviations<a class="headerlink" href="#abbreviations" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Term</p></th>
+<th class="head text-left"><p>Full name</p></th>
+<th class="head text-left"><p>Explanation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>ACID</strong></p></td>
+<td class="text-left"><p>Atomicity, Consistency, Isolation, Durability</p></td>
+<td class="text-left"><p>A set of properties that help transactions remain correct and reliable, even if systems fail or multiple users access data at once.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>AI</strong></p></td>
+<td class="text-left"><p>Artificial Intelligence</p></td>
+<td class="text-left"><p>Computer systems designed to perform tasks that usually require human-like reasoning or pattern recognition.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>APFS</strong></p></td>
+<td class="text-left"><p>Apple File System</p></td>
+<td class="text-left"><p>The file system commonly used by modern macOS devices.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>AWS</strong></p></td>
+<td class="text-left"><p>Amazon Web Services</p></td>
+<td class="text-left"><p>Amazon’s cloud computing platform, which includes services such as S3 and managed databases.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>BI</strong></p></td>
+<td class="text-left"><p>Business Intelligence</p></td>
+<td class="text-left"><p>Reporting and analysis tools used to help organizations understand data and make decisions.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>CPU</strong></p></td>
+<td class="text-left"><p>Central Processing Unit</p></td>
+<td class="text-left"><p>The main processor that executes instructions in a computer.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>DB</strong></p></td>
+<td class="text-left"><p>Database</p></td>
+<td class="text-left"><p>A system for storing, organizing, and retrieving data.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>EB</strong></p></td>
+<td class="text-left"><p>Exabyte</p></td>
+<td class="text-left"><p>A very large unit of storage. One EB is about one billion gigabytes.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>ext4</strong></p></td>
+<td class="text-left"><p>Fourth Extended Filesystem</p></td>
+<td class="text-left"><p>A widely used file system on Linux machines.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>GB</strong></p></td>
+<td class="text-left"><p>Gigabyte</p></td>
+<td class="text-left"><p>A common unit of storage capacity.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>HDFS</strong></p></td>
+<td class="text-left"><p>Hadoop Distributed File System</p></td>
+<td class="text-left"><p>A distributed file system designed for storing very large files across many machines.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>HTAP</strong></p></td>
+<td class="text-left"><p>Hybrid Transactional/Analytical Processing</p></td>
+<td class="text-left"><p>A system design that supports both day-to-day transactions and large analytical queries.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>JSON</strong></p></td>
+<td class="text-left"><p>JavaScript Object Notation</p></td>
+<td class="text-left"><p>A text-based data format widely used for data exchange and document storage.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>KV</strong></p></td>
+<td class="text-left"><p>Key-Value</p></td>
+<td class="text-left"><p>A data model that stores values by unique keys, similar to a dictionary or hash map.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>LLM</strong></p></td>
+<td class="text-left"><p>Large Language Model</p></td>
+<td class="text-left"><p>A machine learning model trained on very large amounts of text to understand and generate language.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>MB</strong></p></td>
+<td class="text-left"><p>Megabyte</p></td>
+<td class="text-left"><p>A smaller unit of storage than a gigabyte.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>ms</strong></p></td>
+<td class="text-left"><p>Millisecond</p></td>
+<td class="text-left"><p>One-thousandth of a second, often used to describe latency.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>N/A</strong></p></td>
+<td class="text-left"><p>Not Applicable</p></td>
+<td class="text-left"><p>Indicates that a field or property does not apply in a given situation.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>NTFS</strong></p></td>
+<td class="text-left"><p>New Technology File System</p></td>
+<td class="text-left"><p>A common file system used by Windows.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>NVMe</strong></p></td>
+<td class="text-left"><p>Non-Volatile Memory Express</p></td>
+<td class="text-left"><p>A high-speed storage interface used by modern solid-state drives.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>OLAP</strong></p></td>
+<td class="text-left"><p>Online Analytical Processing</p></td>
+<td class="text-left"><p>A style of data processing optimized for large analytical queries rather than frequent small updates.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>OS</strong></p></td>
+<td class="text-left"><p>Operating System</p></td>
+<td class="text-left"><p>The core software that manages hardware and provides services for applications.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>PB</strong></p></td>
+<td class="text-left"><p>Petabyte</p></td>
+<td class="text-left"><p>A storage unit larger than a terabyte and commonly used for very large datasets.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>PDF</strong></p></td>
+<td class="text-left"><p>Portable Document Format</p></td>
+<td class="text-left"><p>A file format used to share documents while preserving layout.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>RAM</strong></p></td>
+<td class="text-left"><p>Random Access Memory</p></td>
+<td class="text-left"><p>Fast temporary memory used by active programs while a computer is running.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>RDBMS</strong></p></td>
+<td class="text-left"><p>Relational Database Management System</p></td>
+<td class="text-left"><p>A database system based on tables, rows, columns, and SQL.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>RDS</strong></p></td>
+<td class="text-left"><p>Relational Database Service</p></td>
+<td class="text-left"><p>A cloud-managed relational database service, often meaning AWS RDS in practice.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>S3</strong></p></td>
+<td class="text-left"><p>Simple Storage Service</p></td>
+<td class="text-left"><p>Amazon’s cloud object storage service.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>SQL</strong></p></td>
+<td class="text-left"><p>Structured Query Language</p></td>
+<td class="text-left"><p>The standard language used to query and manage relational databases.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>TB</strong></p></td>
+<td class="text-left"><p>Terabyte</p></td>
+<td class="text-left"><p>A large storage unit commonly used for disks and datasets.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>URL</strong></p></td>
+<td class="text-left"><p>Uniform Resource Locator</p></td>
+<td class="text-left"><p>A network address used to locate a resource, such as a file or web page.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="essential-concepts-for-beginners">
+<h3>Essential concepts for beginners<a class="headerlink" href="#essential-concepts-for-beginners" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Concept</p></th>
+<th class="head text-left"><p>Explanation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Latency</strong></p></td>
+<td class="text-left"><p>The time it takes for one operation, such as a read or query, to complete. Lower latency usually means a faster user experience.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Consistency</strong></p></td>
+<td class="text-left"><p>The degree to which all users or machines see the same data after updates.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Strong consistency</strong></p></td>
+<td class="text-left"><p>A model in which readers see the latest successful write immediately.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Eventual consistency</strong></p></td>
+<td class="text-left"><p>A model in which copies of data may temporarily differ, but they converge over time.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Transaction</strong></p></td>
+<td class="text-left"><p>A group of operations treated as one unit so they either all succeed or all fail together.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Concurrency control</strong></p></td>
+<td class="text-left"><p>Techniques for keeping data correct when many users or processes access it at the same time.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Index</strong></p></td>
+<td class="text-left"><p>A helper data structure that speeds up searching, much like an index in a book.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Replication</strong></p></td>
+<td class="text-left"><p>Keeping multiple copies of data on different machines to improve availability and durability.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Vertical scaling</strong></p></td>
+<td class="text-left"><p>Making one machine more powerful by adding more CPU, RAM, or faster storage.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Horizontal scaling</strong></p></td>
+<td class="text-left"><p>Expanding capacity by adding more machines and distributing work across them.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Sharding</strong></p></td>
+<td class="text-left"><p>Splitting data across multiple machines so that no single machine stores everything.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Columnar storage</strong></p></td>
+<td class="text-left"><p>A storage layout that keeps values from the same column together, which is efficient for analytics.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Row-oriented storage</strong></p></td>
+<td class="text-left"><p>A storage layout that keeps each full record together, which is efficient for frequent inserts and updates.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Object storage</strong></p></td>
+<td class="text-left"><p>A storage model in which data is stored as objects identified by keys rather than arranged in folders and blocks like a traditional file system.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Storage-compute convergence</strong></p></td>
+<td class="text-left"><p>A trend in cloud systems where storage layers are closely integrated with catalogs, eventing, policy engines, and analytics services, so stored data can immediately participate in downstream computation.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Data lake</strong></p></td>
+<td class="text-left"><p>A large repository that stores raw data in many formats for later processing.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Data warehouse</strong></p></td>
+<td class="text-left"><p>A structured analytical system optimized for reporting and large-scale queries.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Lakehouse</strong></p></td>
+<td class="text-left"><p>An architecture that combines low-cost data lake storage with some of the management and query benefits of a warehouse.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Embedding</strong></p></td>
+<td class="text-left"><p>A numeric representation of data, often text or images, that captures meaning in vector form.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Semantic search</strong></p></td>
+<td class="text-left"><p>Searching by meaning or similarity instead of exact keyword matches.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Consensus algorithm</strong></p></td>
+<td class="text-left"><p>A method that distributed systems use to agree on a shared state, even when many machines are involved.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 </section>
 </section>
 
@@ -261,6 +497,11 @@ Scope: reflects tools and practices commonly used in 2026.</p>
 <li><a class="reference internal" href="#technical-selection-matrix">Technical Selection Matrix</a></li>
 <li><a class="reference internal" href="#summary-navigating-the-trade-offs">Summary: Navigating the Trade-offs</a></li>
 <li><a class="reference internal" href="#appendix-table-for-comparison">Appendix: Table for comparison</a></li>
+<li><a class="reference internal" href="#glossary">Glossary</a><ul>
+<li><a class="reference internal" href="#abbreviations">Abbreviations</a></li>
+<li><a class="reference internal" href="#essential-concepts-for-beginners">Essential concepts for beginners</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
