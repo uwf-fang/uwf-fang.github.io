@@ -80,8 +80,14 @@ Scope: reflects tools and practices commonly used in 2026.</p>
 <h3>2.1 The Decline of Legacy Distributed File Systems<a class="headerlink" href="#the-decline-of-legacy-distributed-file-systems" title="Link to this heading">¶</a></h3>
 <p>The “Big Data” revolution of the early 2010s was built on the <strong>Hadoop Distributed File System (HDFS)</strong>. HDFS allowed a single massive file to be chopped into blocks and mirrored across hundreds of commodity servers. While revolutionary at the time, HDFS is viewed in 2026 as a legacy pillar. Its complexity and the requirement to manage physical server clusters have led most organizations to migrate toward cloud-native object stores (like S3) or “Lakehouse” architectures.</p>
 </section>
+<section id="cloud-object-store">
+<h3>2.2 Cloud Object Store<a class="headerlink" href="#cloud-object-store" title="Link to this heading">¶</a></h3>
+<p>Cloud object storage is the simplest modern way to store very large amounts of unstructured data, such as logs, images, videos, documents, backups, and raw event files. Instead of managing disks and folders directly, users store each file-like unit as an object in a bucket, identified by a key. Services like <strong>Amazon S3</strong>, <strong>Azure Blob Storage</strong>, and <strong>Google Cloud Storage</strong> provide virtually unlimited capacity, high durability, and low operational overhead.</p>
+<p>In practice, object stores have replaced many self-managed distributed file systems (DFS), including large on-prem HDFS deployments, because teams no longer need to operate storage clusters, handle node failures, or plan complex capacity expansion manually. Object storage is now the default persistence layer for modern analytics.</p>
+<p>It also became the foundation of both data warehouses and lakehouses. Warehouses use object storage as their durable data layer behind managed SQL engines, while lakehouses build open table formats (such as Iceberg or Delta) on top of object storage to add transactions, schema evolution, and time travel. In short, object storage is the base layer that enables scalable cloud analytics.</p>
+</section>
 <section id="nosql-and-the-multi-model-evolution">
-<h3>2.2 NoSQL and the Multi-Model Evolution<a class="headerlink" href="#nosql-and-the-multi-model-evolution" title="Link to this heading">¶</a></h3>
+<h3>2.3 NoSQL and the Multi-Model Evolution<a class="headerlink" href="#nosql-and-the-multi-model-evolution" title="Link to this heading">¶</a></h3>
 <p>NoSQL was born from the necessity of scaling web applications to millions of concurrent users.</p>
 <ul class="simple">
 <li><p><strong>Document Stores (MongoDB):</strong> Store data as JSON, ideal for evolving catalogs.</p></li>
@@ -90,7 +96,7 @@ Scope: reflects tools and practices commonly used in 2026.</p>
 </ul>
 </section>
 <section id="newsql-the-distributed-relational-breakthrough">
-<h3>2.3 NewSQL: The Distributed Relational Breakthrough<a class="headerlink" href="#newsql-the-distributed-relational-breakthrough" title="Link to this heading">¶</a></h3>
+<h3>2.4 NewSQL: The Distributed Relational Breakthrough<a class="headerlink" href="#newsql-the-distributed-relational-breakthrough" title="Link to this heading">¶</a></h3>
 <p><strong>NewSQL</strong> broke the dichotomy between ACID and Scale. Technologies like <strong>Google Spanner</strong> and <strong>CockroachDB</strong> use atomic clocks and consensus algorithms (like Raft) to provide a consistent SQL interface that spans the globe.</p>
 </section>
 </section>
@@ -209,6 +215,22 @@ it is a storage-plus-compute architecture.</p>
 <td><p>Strong ACID</p></td>
 <td><p>Shifted from simple storage to high-performance local analytics (OLAP).</p></td>
 <td><p>SQLite, DuckDB, RocksDB</p></td>
+</tr>
+<tr class="row-even"><td><p>Legacy Distributed File System</p></td>
+<td><p>Cluster-managed distributed file blocks.</p></td>
+<td><p>Large (TB to PB)</p></td>
+<td><p>Unstructured files</p></td>
+<td><p>Typically strong within cluster</p></td>
+<td><p>Now considered legacy in many environments as teams migrate to cloud object storage and lakehouse patterns.</p></td>
+<td><p>HDFS, GlusterFS</p></td>
+</tr>
+<tr class="row-odd"><td><p>Object Store</p></td>
+<td><p>Cloud object storage with bucket/key namespace.</p></td>
+<td><p>Massive (PB to EB)</p></td>
+<td><p>Unstructured and semi-structured objects</p></td>
+<td><p>Strong durability; service-dependent consistency</p></td>
+<td><p>Default persistence layer for cloud analytics; foundation for warehouses and lakehouses.</p></td>
+<td><p>Amazon S3, Azure Blob Storage, Google Cloud Storage</p></td>
 </tr>
 <tr class="row-even"><td><p>Traditional RDBMS</p></td>
 <td><p>Centralized Client-Server.</p></td>
@@ -483,8 +505,9 @@ it is a storage-plus-compute architecture.</p>
 </li>
 <li><a class="reference internal" href="#distributed-high-scale-storage-the-big-data-era">Distributed &amp; High-Scale Storage: The Big Data Era</a><ul>
 <li><a class="reference internal" href="#the-decline-of-legacy-distributed-file-systems">2.1 The Decline of Legacy Distributed File Systems</a></li>
-<li><a class="reference internal" href="#nosql-and-the-multi-model-evolution">2.2 NoSQL and the Multi-Model Evolution</a></li>
-<li><a class="reference internal" href="#newsql-the-distributed-relational-breakthrough">2.3 NewSQL: The Distributed Relational Breakthrough</a></li>
+<li><a class="reference internal" href="#cloud-object-store">2.2 Cloud Object Store</a></li>
+<li><a class="reference internal" href="#nosql-and-the-multi-model-evolution">2.3 NoSQL and the Multi-Model Evolution</a></li>
+<li><a class="reference internal" href="#newsql-the-distributed-relational-breakthrough">2.4 NewSQL: The Distributed Relational Breakthrough</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#the-ai-frontier-vector-databases">The AI Frontier: Vector Databases</a></li>

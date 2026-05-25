@@ -39,7 +39,14 @@ When data grows beyond the physical limits of a single machine, or when the cost
 
 The "Big Data" revolution of the early 2010s was built on the **Hadoop Distributed File System (HDFS)**. HDFS allowed a single massive file to be chopped into blocks and mirrored across hundreds of commodity servers. While revolutionary at the time, HDFS is viewed in 2026 as a legacy pillar. Its complexity and the requirement to manage physical server clusters have led most organizations to migrate toward cloud-native object stores (like S3) or "Lakehouse" architectures.
 
-### 2.2 NoSQL and the Multi-Model Evolution
+### 2.2 Cloud Object Store
+Cloud object storage is the simplest modern way to store very large amounts of unstructured data, such as logs, images, videos, documents, backups, and raw event files. Instead of managing disks and folders directly, users store each file-like unit as an object in a bucket, identified by a key. Services like **Amazon S3**, **Azure Blob Storage**, and **Google Cloud Storage** provide virtually unlimited capacity, high durability, and low operational overhead.
+
+In practice, object stores have replaced many self-managed distributed file systems (DFS), including large on-prem HDFS deployments, because teams no longer need to operate storage clusters, handle node failures, or plan complex capacity expansion manually. Object storage is now the default persistence layer for modern analytics.
+
+It also became the foundation of both data warehouses and lakehouses. Warehouses use object storage as their durable data layer behind managed SQL engines, while lakehouses build open table formats (such as Iceberg or Delta) on top of object storage to add transactions, schema evolution, and time travel. In short, object storage is the base layer that enables scalable cloud analytics.
+
+### 2.3 NoSQL and the Multi-Model Evolution
 
 NoSQL was born from the necessity of scaling web applications to millions of concurrent users.
 
@@ -47,7 +54,7 @@ NoSQL was born from the necessity of scaling web applications to millions of con
 * **Wide-Column Stores (Cassandra):** Built for massive global write volumes with zero single points of failure.
 * **Graph Databases (Neo4j):** Optimized for traversing complex relationships (social networks, supply chains) rather than tables.
 
-### 2.3 NewSQL: The Distributed Relational Breakthrough
+### 2.4 NewSQL: The Distributed Relational Breakthrough
 
 **NewSQL** broke the dichotomy between ACID and Scale. Technologies like **Google Spanner** and **CockroachDB** use atomic clocks and consensus algorithms (like Raft) to provide a consistent SQL interface that spans the globe.
 
@@ -112,6 +119,8 @@ it is a storage-plus-compute architecture.
 |-----------------|--------------------------------------|--------------------|----------------------------------------|------------------------|--------------------------------------------------------------------------------|-------------------------------------|
 |Local File System|Direct OS-level access; unmanaged.    |Small (GB)          |Unstructured (Raw files)                |N/A (Atomic at OS level)|Now used primarily for local configuration or "cold" media storage.             |NTFS, APFS, ext4                     |
 |Embedded DB      |In-process engine; no separate server.|Small to Medium (GB)|Structured / Semi-structured            |Strong ACID             |Shifted from simple storage to high-performance local analytics (OLAP).         |SQLite, DuckDB, RocksDB              |
+|Legacy Distributed File System|Cluster-managed distributed file blocks.|Large (TB to PB)    |Unstructured files                      |Typically strong within cluster|Now considered legacy in many environments as teams migrate to cloud object storage and lakehouse patterns.|HDFS, GlusterFS                      |
+|Object Store     |Cloud object storage with bucket/key namespace.|Massive (PB to EB) |Unstructured and semi-structured objects|Strong durability; service-dependent consistency|Default persistence layer for cloud analytics; foundation for warehouses and lakehouses.|Amazon S3, Azure Blob Storage, Google Cloud Storage|
 |Traditional RDBMS|Centralized Client-Server.            |Medium (GB to TB)   |Strictly Structured (Relational)        |Strong ACID             |Now frequently used as "RDS" managed cloud services; increasingly supports JSON.|PostgreSQL, MySQL, MariaDB           |
 |NewSQL           |Distributed Relational (Horizontal).  |Large (TB to PB)    |Strictly Structured                     |Global ACID             |Adoption of HTAP (Hybrid Transactional/Analytical Processing).                  |Google Spanner, CockroachDB, TiDB    |
 |NoSQL            |Distributed Non-Relational.           |Massive (PB+)       |Flexible (Document, Graph, KV)          |Eventual to Strong      |Evolved into Multi-model systems with multi-document ACID support.              |MongoDB, DynamoDB, Cassandra         |
