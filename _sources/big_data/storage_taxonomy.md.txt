@@ -47,8 +47,7 @@ In practice, object stores have replaced many self-managed distributed file syst
 It also became the foundation of both data warehouses and lakehouses. Warehouses use object storage as their durable data layer behind managed SQL engines, while lakehouses build open table formats (such as Iceberg or Delta) on top of object storage to add transactions, schema evolution, and time travel. In short, object storage is the base layer that enables scalable cloud analytics.
 
 ### 2.3 NoSQL and the Multi-Model Evolution
-
-NoSQL was born from the necessity of scaling web applications to millions of concurrent users.
+NoSQL was born from the necessity of scaling web applications to millions of concurrent users. However, NoSQL databases are not well-suited for unstructured data; they require schemas or at least semi-structured formats to function effectively. For truly unstructured data like raw logs or media files, object storage remains the better choice.
 
 * **Document Stores (MongoDB):** Store data as JSON, ideal for evolving catalogs.
 * **Wide-Column Stores (Cassandra):** Built for massive global write volumes with zero single points of failure.
@@ -123,7 +122,7 @@ it is a storage-plus-compute architecture.
 |Object Store     |Cloud object storage with bucket/key namespace.|Massive (PB to EB) |Unstructured and semi-structured objects|Strong durability; service-dependent consistency|Default persistence layer for cloud analytics; foundation for warehouses and lakehouses.|Amazon S3, Azure Blob Storage, Google Cloud Storage|
 |Traditional RDBMS|Centralized Client-Server.            |Medium (GB to TB)   |Strictly Structured (Relational)        |Strong ACID             |Now frequently used as "RDS" managed cloud services; increasingly supports JSON.|PostgreSQL, MySQL, MariaDB           |
 |NewSQL           |Distributed Relational (Horizontal).  |Large (TB to PB)    |Strictly Structured                     |Global ACID             |Adoption of HTAP (Hybrid Transactional/Analytical Processing).                  |Google Spanner, CockroachDB, TiDB    |
-|NoSQL            |Distributed Non-Relational.           |Massive (PB+)       |Flexible (Document, Graph, KV)          |Eventual to Strong      |Evolved into Multi-model systems with multi-document ACID support.              |MongoDB, DynamoDB, Cassandra         |
+|NoSQL            |Distributed Non-Relational.           |Massive (PB+)       |Flexible for Structured and Semi-structured|Eventual to Strong      |Evolved into Multi-model systems with multi-document ACID support.              |MongoDB, DynamoDB, Cassandra         |
 |Cloud Lakehouse  |Object Storage + Metadata + Compute Layer.|Infinite (Exabyte+) |Multi-modal (Structured to Unstructured)|ACID via Metadata       |The "Grand Convergence"; serves as a single source for both BI and AI.          |Delta Lake, Apache Iceberg, Snowflake|
 
 ## Glossary
