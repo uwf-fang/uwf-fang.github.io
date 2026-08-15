@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Quick sort &#8212; IanFang Teaching Material Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css?v=279e0f84" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=fa3f9a06" />
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/programming/algorithm/quicksort.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Mergesort" href="mergesort.html" />
+    <link rel="prev" title="Sorting Algorithms" href="sorting.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="mergesort.html" title="Mergesort"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="sorting.html" title="Sorting Algorithms"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Teaching Material Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3530/ch09.html" accesskey="U">Chapter 9 Sorting</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Quick sort</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="quick-sort">
+<h1>Quick sort<a class="headerlink" href="#quick-sort" title="Link to this heading">¶</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
+<p>Quick sort, often simply referred to as “quick”, was developed by Sir Tony
+Hoare in 1959. It has since become one of the most widely used and studied
+algorithms due to its efficiency and simplicity.</p>
+<p>At its core, quick sort is a comparison-based sorting algorithm that operates
+on the divide-and-conquer principle. It involves selecting a ‘pivot’ element
+from the list and partitioning the other elements into two sublists according
+to whether they are less than or greater than the pivot. The same process is
+then repeated recursively on each sublist until it is empty or contains only
+one element.</p>
+<section id="characteristics">
+<h3>Characteristics<a class="headerlink" href="#characteristics" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Divide and conquer algorithm</p></li>
+<li><p>Comparison based (general purpose)</p></li>
+<li><p>Recursive</p></li>
+<li><p>In-place</p></li>
+<li><p>Efficient</p></li>
+<li><p>Unstable - relative order of equal elements is not preserved</p></li>
+</ul>
+</section>
+</section>
+<section id="algorithm-details">
+<h2>Algorithm Details<a class="headerlink" href="#algorithm-details" title="Link to this heading">¶</a></h2>
+<ul>
+<li><p>We employs the zyBook’s version. There are many other implementations!</p></li>
+<li><p>Quick partition algorithm</p>
+<ul>
+<li><p>The core of quick sort</p></li>
+<li><p>Steps</p>
+<ol class="arabic simple">
+<li><p>Pick an element, called a pivot, from the list.</p></li>
+<li><p>Use the pivot to partition the list into two sublists.</p></li>
+<li><p>Reorder the list in the process so that all elements less than the pivot
+come before the pivot, and all elements greater than the pivot come
+after it.</p></li>
+<li><p>Return the location of the partition.</p></li>
+</ol>
+</li>
+<li><p>Partition the list</p>
+<ul class="simple">
+<li><p>Lomuto’s partition scheme (FYI)</p></li>
+<li><p>Hoare’s partition scheme</p>
+<ol class="arabic simple">
+<li><p>Let two cursor indices to point to the first - 1 and last + 1
+positions of the list respectively.</p></li>
+<li><p>Keep moving the left cursor to the right until it points to an element
+greater and equal than the pivot.</p></li>
+<li><p>Keep moving the right cursor to the left until it points to an element
+less and equal than the pivot.</p></li>
+<li><p>If the left cursor meets or passes the right cursor, the partition is
+complete. Return the right cursor.</p></li>
+<li><p>Swap the elements pointed by the two cursors.</p></li>
+<li><p>Move both cursors one more step</p></li>
+<li><p>Repeat steps 2-6 until the partition is complete (step 4 returns).</p></li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>Example algorithm</p>
+<ul class="simple">
+<li><p>Hoare’s partition scheme</p></li>
+<li><p>Middle element as pivot</p></li>
+</ul>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">quickPartition</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">arr</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">low</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">high</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">mid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">high</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">low</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w">  </span><span class="c1">// int mid = low + (high - low) / 2;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">pivot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="n">mid</span><span class="p">];</span>
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="nb">true</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">low</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">pivot</span><span class="p">)</span><span class="w"> </span><span class="o">++</span><span class="n">low</span><span class="p">;</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">high</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">pivot</span><span class="p">)</span><span class="w"> </span><span class="o">--</span><span class="n">high</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">low</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">high</span><span class="p">)</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="n">swap</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">low</span><span class="p">],</span><span class="w"> </span><span class="n">arr</span><span class="p">[</span><span class="n">high</span><span class="p">]);</span>
+<span class="w">    </span><span class="o">++</span><span class="n">low</span><span class="p">;</span>
+<span class="w">    </span><span class="o">--</span><span class="n">high</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">high</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p>Quick sort algorithm (recursive, in-place)</p>
+<ol class="arabic simple">
+<li><p>If the list contains only one element or is empty, return.</p></li>
+<li><p>Call quick partition algorithm to partition the list into two sublists.</p></li>
+<li><p>Recursively call quick sort on both sublists.</p></li>
+</ol>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">quicksort</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">arr</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">quicksortHelper</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">quicksortHelper</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">arr</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">low</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">high</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">low</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">high</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">part</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">quickPartition</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span><span class="w"> </span><span class="n">low</span><span class="p">,</span><span class="w"> </span><span class="n">high</span><span class="p">);</span>
+<span class="w">  </span><span class="n">quicksortHelper</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span><span class="w"> </span><span class="n">low</span><span class="p">,</span><span class="w"> </span><span class="n">part</span><span class="p">);</span>
+<span class="w">  </span><span class="n">quicksortHelper</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span><span class="w"> </span><span class="n">part</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">high</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Variations of quick sort</p>
+<ul class="simple">
+<li><p>Select a pivot</p>
+<ul>
+<li><p>First element as pivot</p></li>
+<li><p>Last element as pivot</p></li>
+<li><p>Median of first, middle, and last element as pivot (State of art)</p></li>
+<li><p>Median of several random elements as pivot</p></li>
+<li><p>Random element as pivot</p></li>
+</ul>
+</li>
+<li><p>Moving the cursor</p>
+<ul>
+<li><p>Lomuto’s partition scheme - i and j move in the same direction</p></li>
+<li><p>Hoare’s partition scheme - i and j move in opposite directions</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h2>
+<p>This example demonstrates the quick sort algorithm using the zybook’s variation
+of Hoare’s partition scheme. You may try to use this format in the quiz or exam.</p>
+<ul class="simple">
+<li><p>Given an int array <code class="docutils literal notranslate"><span class="pre">{42,</span> <span class="pre">7,</span> <span class="pre">85,</span> <span class="pre">23,</span> <span class="pre">64,</span> <span class="pre">91,</span> <span class="pre">9,</span> <span class="pre">73,</span> <span class="pre">18,</span> <span class="pre">56}</span></code></p></li>
+<li><p>First round of partitioning</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>// low is 0, high is 9 initially
+middle = (low + high) / 2 = 4
+pivot = arr[middle] = 64
+
+{42, 7, 85, 23, 64, 91, 9, 73, 18, 56} find position
+        l                          h
+{42, 7, 56, 23, 64, 91, 9, 73, 18, 85} swap 85, 56, and move by 1
+            l                  h
+{42, 7, 56, 23, 64, 91, 9, 73, 18, 85} find position (hit pivot)
+                l              h
+{42, 7, 56, 23, 18, 91, 9, 73, 64, 85} swap 64, 18, and move by 1
+                    l      h
+{42, 7, 56, 23, 18, 91, 9, 73, 64, 85} find position
+                    l   h
+{42, 7, 56, 23, 18, 9, 91, 91, 64, 85} swap 91, 9, and move by 1
+                    h  l
+h &lt;= l, return h
+left section: index low to h
+right section: index h + 1 to high
+</pre></div>
+</div>
+</section>
+<section id="complexity">
+<h2>Complexity<a class="headerlink" href="#complexity" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Time</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\Theta(n \log n)\)</span> average case</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Theta(n^2)\)</span> worst case</p></li>
+</ul>
+</li>
+<li><p>Space</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\Theta(\log n)\)</span> average case</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Theta(n)\)</span> worst case</p></li>
+</ul>
+</li>
+<li><p>Improvement attempts</p>
+<ul>
+<li><p>Pivot selection</p>
+<ul>
+<li><p>Randomized quick sort</p></li>
+<li><p>Median of three</p></li>
+</ul>
+</li>
+<li><p>Shuffling the list before sorting</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="visualization-website">
+<h2>Visualization Website<a class="headerlink" href="#visualization-website" title="Link to this heading">¶</a></h2>
+<p>Unfortunately, the visualization websites are all using different
+configurations and are not compatible with our demonstration.</p>
+<ul class="simple">
+<li><p>Some of them uses Lomuto’s scheme (shorter code, FYI)</p>
+<ul>
+<li><p><a class="reference external" href="http://me.dt.in.th/page/Quicksort/">http://me.dt.in.th/page/Quicksort/</a></p></li>
+<li><p><a class="reference external" href="http://www.sorting-algorithms.com/quick-sort">http://www.sorting-algorithms.com/quick-sort</a></p></li>
+<li><p><a class="reference external" href="https://visualgo.net/en/sorting">https://visualgo.net/en/sorting</a></p></li>
+</ul>
+</li>
+<li><p>Some of them uses Hoare’s scheme but select a different pivot</p>
+<ul>
+<li><p><a class="reference external" href="http://www.cs.usfca.edu/~galles/visualization/ComparisonSort.html">http://www.cs.usfca.edu/~galles/visualization/ComparisonSort.html</a></p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Quick sort</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a><ul>
+<li><a class="reference internal" href="#characteristics">Characteristics</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#algorithm-details">Algorithm Details</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+<li><a class="reference internal" href="#complexity">Complexity</a></li>
+<li><a class="reference internal" href="#visualization-website">Visualization Website</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="sorting.html"
+                          title="previous chapter">Sorting Algorithms</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="mergesort.html"
+                          title="next chapter">Mergesort</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/programming/algorithm/quicksort.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="mergesort.html" title="Mergesort"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="sorting.html" title="Sorting Algorithms"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Teaching Material Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3530/ch09.html" >Chapter 9 Sorting</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Quick sort</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright Copyright © Xingang (Ian) Fang 2022-25.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>

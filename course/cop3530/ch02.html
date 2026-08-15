@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Chapter 2 Modular Design, GNU Make and Testing &#8212; IanFang Teaching Material Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css?v=279e0f84" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=fa3f9a06" />
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/course/cop3530/ch02.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Modular Development" href="../../cpp/building/modular.html" />
+    <link rel="prev" title="Algorithm" href="../../programming/algorithm.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../cpp/building/modular.html" title="Modular Development"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../../programming/algorithm.html" title="Algorithm"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Teaching Material Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Chapter 2 Modular Design, GNU Make and Testing</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="chapter-2-modular-design-gnu-make-and-testing">
+<h1>Chapter 2 Modular Design, GNU Make and Testing<a class="headerlink" href="#chapter-2-modular-design-gnu-make-and-testing" title="Link to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cpp/building/modular.html">Modular Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cpp/building/modular.html#tl-dr">TL;DR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cpp/building/modular.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cpp/building/modular.html#advantages">Advantages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cpp/building/modular.html#c-building-process">C++ Building Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cpp/building/modular.html#multi-file-organization-in-c">Multi-file Organization in C++</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cpp/building/modular.html#best-practices-in-modular-development">Best Practices in Modular Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cpp/building/modular.html#pitfalls-in-modular-development">Pitfalls in Modular Development</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cpp/building/gpp.html">Compilation Using g++</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cpp/building/gpp.html#mainstream-compilation-systems">Mainstream Compilation Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cpp/building/gpp.html#building-process-of-c-c-projects">Building process of C/C++ projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cpp/building/gpp.html#the-g-command">The g++ command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cpp/building/gpp.html#preprocessor-directives">Preprocessor directives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cpp/building/gpp.html#styles-of-building">Styles of building</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-tools/make.html">GNU Make</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../developer-tools/make.html#make-command">make command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer-tools/make.html#makefile">makefile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer-tools/make.html#modular-compilation">Modular Compilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer-tools/make.html#pitfalls">Pitfalls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer-tools/make.html#common-error-messages-from-make">Common Error Messages From make</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../developer-tools/make.html#debug-makefile">Debug makefile</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cpp/testing/testing.html">Testing in C++</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cpp/testing/testing.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cpp/testing/testing.html#simple-test-run">Simple Test Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cpp/testing/testing.html#assertions">Assertions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cpp/testing/testing.html#testing-frameworks">Testing Frameworks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cpp/testing/testing.html#testability">Testability</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../../programming/algorithm.html"
+                          title="previous chapter">Algorithm</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../../cpp/building/modular.html"
+                          title="next chapter">Modular Development</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/course/cop3530/ch02.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../cpp/building/modular.html" title="Modular Development"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../../programming/algorithm.html" title="Algorithm"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Teaching Material Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Chapter 2 Modular Design, GNU Make and Testing</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright Copyright © Xingang (Ian) Fang 2022-25.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>

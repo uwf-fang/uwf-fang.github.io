@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>GNU Make &#8212; IanFang Teaching Material Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css?v=279e0f84" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=fa3f9a06" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/developer-tools/make.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Testing in C++" href="../cpp/testing/testing.html" />
+    <link rel="prev" title="Compilation Using g++" href="../cpp/building/gpp.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../cpp/testing/testing.html" title="Testing in C++"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../cpp/building/gpp.html" title="Compilation Using g++"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang Teaching Material Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../course/cop3530/ch02.html" >Chapter 2 Modular Design, GNU Make and Testing</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="../cpp/building/modular.html" accesskey="U">Modular Development</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">GNU Make</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="gnu-make">
+<h1>GNU Make<a class="headerlink" href="#gnu-make" title="Link to this heading">¶</a></h1>
+<p>The GNU Make project provides a command-line tool and a configuration system to
+facilitate the building of complex projects and generate executables. It is
+also employed to automate command-line tasks. Read the the <a class="reference external" href="https://www.gnu.org/software/make/manual/html_node/index.html">official
+documentation</a> for a more detailed view.</p>
+<section id="make-command">
+<h2>make command<a class="headerlink" href="#make-command" title="Link to this heading">¶</a></h2>
+<p>The command-line tool <code class="docutils literal notranslate"><span class="pre">make</span></code> is how you run all tasks.</p>
+</section>
+<section id="makefile">
+<h2>makefile<a class="headerlink" href="#makefile" title="Link to this heading">¶</a></h2>
+<p>A makefile is the configuration file for the make command. It contains all the
+logics to guide the make to build the executables.</p>
+<p>A makefile is usually named <code class="docutils literal notranslate"><span class="pre">makefile</span></code> or <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> and locate in
+top-level directory in a project. When you run the <code class="docutils literal notranslate"><span class="pre">make</span></code> command, it will
+search for <code class="docutils literal notranslate"><span class="pre">makefile</span></code> or <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> in the current directory. You can use a
+command-line argument <code class="docutils literal notranslate"><span class="pre">-f</span> <span class="pre">&lt;filename&gt;</span></code> with the <code class="docutils literal notranslate"><span class="pre">make</span></code> command to specify
+the makefile of another name or in another directory.</p>
+<p>The core component called rule in a makefile looked like this</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>target: prerequisites
+    recipe
+</pre></div>
+</div>
+<dl class="simple glossary">
+<dt id="term-Target">Target<a class="headerlink" href="#term-Target" title="Link to this term">¶</a></dt><dd><p>It is usually the file you want to generate. However, virtual targets
+such as <code class="docutils literal notranslate"><span class="pre">main</span></code>, <code class="docutils literal notranslate"><span class="pre">clean</span></code> are extensively used in many makefiles. They
+do not bind to a real file but can be used in the make command-line like
+<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">main</span></code> or <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code></p>
+</dd>
+<dt id="term-Prerequisites">Prerequisites<a class="headerlink" href="#term-Prerequisites" title="Link to this term">¶</a></dt><dd><p>It is a list of dependent files/targets needed to build the target. When
+any of the files or targets are updated, the target will be re-built.</p>
+</dd>
+<dt id="term-Recipe">Recipe<a class="headerlink" href="#term-Recipe" title="Link to this term">¶</a></dt><dd><p>An indented block including command-line commands in each line in order
+to generate the target.</p>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The indentation for commands <strong>must be a single &lt;tab&gt; character</strong> for older
+versions of GNU make. The newer versions can take spaces for indentation.</p>
+<p>If you do not know g++ command well, refer to the
+<a class="reference internal" href="../cpp/building/gpp.html"><span class="doc">g++ document</span></a>. One important thing to remember is
+<strong>never list header files in the g++ command-line!</strong> Provide cpp files only!</p>
+</div>
+</section>
+<section id="modular-compilation">
+<h2>Modular Compilation<a class="headerlink" href="#modular-compilation" title="Link to this heading">¶</a></h2>
+<p>Let’s assume that we are writing a makefile for a project with multiple files.
+The relationship among files are demonstrated in the diagram. Arrows means
+include relationship: <code class="docutils literal notranslate"><span class="pre">main.cpp</span> <span class="pre">-&gt;</span> <span class="pre">student.hpp</span></code> means the <code class="docutils literal notranslate"><span class="pre">student.hpp</span></code>
+file is included by the <code class="docutils literal notranslate"><span class="pre">main.cpp</span></code> so the <code class="docutils literal notranslate"><span class="pre">main.cpp</span></code> is depending on the
+<code class="docutils literal notranslate"><span class="pre">student.hpp</span></code> file.</p>
+<div class="graphviz"><img src="../_images/graphviz-82e998cff86e7ba667cedacb8906bd025ff751d2.png" alt="digraph dep {
+    &quot;main.cpp&quot; -&gt; {&quot;grade-book.hpp&quot;, &quot;student.hpp&quot;};
+    &quot;student.cpp&quot; -&gt; &quot;student.hpp&quot;;
+    &quot;grade-book.cpp&quot; -&gt; {&quot;grade-book.hpp&quot;, &quot;student.hpp&quot;, &quot;grades.hpp&quot;};
+    &quot;grades.cpp&quot; -&gt; &quot;grades.hpp&quot;;
+}" class="graphviz" /></div>
+<p>For projects with multiple files, modular compilation is usually preferred. In
+this approach, .cpp source code files are compiled to .o object files first and
+then all object files are linked to provide the executable(s). It has many
+benefits over direct compilation to output executables from source code files:</p>
+<ul>
+<li><p>Specify different g++ flags</p></li>
+<li><p>Easier to debug</p></li>
+<li><p>No need to recompile everything after a partial modification</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Examples in this pages has all indentations as spaces. It is due to the
+limitation of the website generating system. You should change them to real
+<code class="docutils literal notranslate"><span class="pre">tab</span></code> characters to ensure the backward compatibility.</p>
+</div>
+</li>
+</ul>
+<section id="hard-coded-rules">
+<h3>Hard-coded rules<a class="headerlink" href="#hard-coded-rules" title="Link to this heading">¶</a></h3>
+<p>A simple makefile with hard coded g++ commands:</p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="c"># declare virtual targets</span>
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">clean</span>
+
+<span class="c"># Linking to provide the executable</span>
+<span class="nf">main</span><span class="o">:</span><span class="w"> </span><span class="n">main</span>.<span class="n">o</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">o</span> <span class="n">student</span>.<span class="n">o</span> <span class="n">grades</span>.<span class="n">o</span>
+<span class="w">    </span>g++<span class="w"> </span>-o<span class="w"> </span>main<span class="w"> </span>main.o<span class="w"> </span>grade-book.o<span class="w"> </span>student.o<span class="w"> </span>grades.o
+
+<span class="c"># Compile. One cpp file a time.</span>
+<span class="nf">main.o</span><span class="o">:</span><span class="w"> </span><span class="n">main</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span>
+<span class="w">    </span>g++<span class="w"> </span>-std<span class="o">=</span>c++14<span class="w"> </span>-Wall<span class="w"> </span>-g<span class="w"> </span>-c<span class="w"> </span>main.cpp
+
+<span class="nf">student.o</span><span class="o">:</span><span class="w"> </span><span class="n">student</span>.<span class="n">cpp</span> <span class="n">student</span>.<span class="n">hpp</span>
+<span class="w">    </span>g++<span class="w"> </span>-std<span class="o">=</span>c++14<span class="w"> </span>-Wall<span class="w"> </span>-g<span class="w"> </span>-c<span class="w"> </span>student.cpp
+
+<span class="nf">grades.o</span><span class="o">:</span><span class="w"> </span><span class="n">grades</span>.<span class="n">cpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
+<span class="w">    </span>g++<span class="w"> </span>-std<span class="o">=</span>c++14<span class="w"> </span>-Wall<span class="w"> </span>-g<span class="w"> </span>-c<span class="w"> </span>grades.cpp
+
+<span class="nf">grade-book.o</span><span class="o">:</span><span class="w"> </span><span class="n">grade</span>-<span class="n">book</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
+<span class="w">    </span>g++<span class="w"> </span>-std<span class="o">=</span>c++14<span class="w"> </span>-Wall<span class="w"> </span>-g<span class="w"> </span>-c<span class="w"> </span>grade-book.cpp
+
+<span class="c"># the &#39;clean&#39; virtual target to remove temporary files</span>
+<span class="nf">clean</span><span class="o">:</span>
+<span class="w">    </span>rm<span class="w"> </span>-rf<span class="w"> </span>*.o<span class="w"> </span>main<span class="w"> </span>*.gc*<span class="w"> </span>*.dSYM
+</pre></div>
+</div>
+<p>The first rule is to produce the <code class="docutils literal notranslate"><span class="pre">main</span></code> executable. It calls g++ to link a
+list of object files to build the final program. The targets of .o files are
+compilations rules to generate every object file. The clean target is used to
+remove generated temporary files and the executable.</p>
+<p>You may now build your executable <code class="docutils literal notranslate"><span class="pre">main</span></code> by the command <code class="docutils literal notranslate"><span class="pre">make</span></code> or <code class="docutils literal notranslate"><span class="pre">make</span>
+<span class="pre">main</span></code>. The <code class="docutils literal notranslate"><span class="pre">make</span></code> command without parameters will take the first target in
+the makefile as the target to make.</p>
+</section>
+<section id="introducing-variables">
+<h3>Introducing variables<a class="headerlink" href="#introducing-variables" title="Link to this heading">¶</a></h3>
+<p>You may noticed a lot of redundant texts such as the g++ flags (<code class="docutils literal notranslate"><span class="pre">-std=c++14</span>
+<span class="pre">-Wall</span> <span class="pre">-g</span></code>), list of file names, etc. Many of the redundancy can be remove by
+introducing variables. With variables, you can also extract configurations out
+of the commands for efficient management of configurations.</p>
+<p>A makefile using variables:</p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">CXX</span><span class="o">=</span>g++
+<span class="nv">CXXFLAGS</span><span class="o">=</span>-std<span class="o">=</span>c++14<span class="w"> </span>-Wall<span class="w"> </span>-g
+<span class="nv">RM</span><span class="o">=</span>rm<span class="w"> </span>-rf
+
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">clean</span>
+
+<span class="nf">main</span><span class="o">:</span><span class="w"> </span><span class="n">main</span>.<span class="n">o</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">o</span> <span class="n">student</span>.<span class="n">o</span> <span class="n">grades</span>.<span class="n">o</span>
+<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span>-o<span class="w"> </span>main<span class="w"> </span>main.o<span class="w"> </span>grade-book.o<span class="w"> </span>student.o<span class="w"> </span>grades.o
+
+<span class="nf">main.o</span><span class="o">:</span><span class="w"> </span><span class="n">main</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span>
+<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CXXFLAGS<span class="k">)</span><span class="w"> </span>-c<span class="w"> </span>main.cpp
+
+<span class="nf">student.o</span><span class="o">:</span><span class="w"> </span><span class="n">student</span>.<span class="n">cpp</span> <span class="n">student</span>.<span class="n">hpp</span>
+<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CXXFLAGS<span class="k">)</span><span class="w"> </span>-c<span class="w"> </span>student.cpp
+
+<span class="nf">grades.o</span><span class="o">:</span><span class="w"> </span><span class="n">grades</span>.<span class="n">cpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
+<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CXXFLAGS<span class="k">)</span><span class="w"> </span>-c<span class="w"> </span>grades.cpp
+
+<span class="nf">grade-book.o</span><span class="o">:</span><span class="w"> </span><span class="n">grade</span>-<span class="n">book</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
+<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CXXFLAGS<span class="k">)</span><span class="w"> </span>-c<span class="w"> </span>grade-book.cpp
+
+<span class="nf">clean</span><span class="o">:</span>
+<span class="w">    </span><span class="k">$(</span>RM<span class="k">)</span><span class="w"> </span>*.o<span class="w"> </span>main<span class="w"> </span>*.gc*<span class="w"> </span>*.dSYM
+</pre></div>
+</div>
+<p>With variables, we can easily make modifications to the compiler command and
+compilation flags by modifying variables.</p>
+</section>
+<section id="introducing-automatic-variables">
+<h3>Introducing automatic variables<a class="headerlink" href="#introducing-automatic-variables" title="Link to this heading">¶</a></h3>
+<p>You may notice that we still have redundancy. The file names listed as part of
+the target or dependencies are hard-coded in the g++ commands. It can be
+improved using the <strong>automatic variables</strong> like $&#64;, $^, $&lt;.</p>
+<dl class="simple glossary">
+<dt id="term-0">$&#64;<a class="headerlink" href="#term-0" title="Link to this term">¶</a></dt><dd><p>the target</p>
+</dd>
+<dt id="term-1">$^<a class="headerlink" href="#term-1" title="Link to this term">¶</a></dt><dd><p>all prerequisites</p>
+</dd>
+<dt id="term-2">$&lt;<a class="headerlink" href="#term-2" title="Link to this term">¶</a></dt><dd><p>the first prerequisite</p>
+</dd>
+</dl>
+<p>The further simplified makefile:</p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">CXX</span><span class="o">=</span>g++
+<span class="nv">CXXFLAGS</span><span class="o">=</span>-std<span class="o">=</span>c++14<span class="w"> </span>-Wall<span class="w"> </span>-g
+<span class="nv">RM</span><span class="o">=</span>rm<span class="w"> </span>-rf
+
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">clean</span>
+
+<span class="nf">main</span><span class="o">:</span><span class="w"> </span><span class="n">main</span>.<span class="n">o</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">o</span> <span class="n">student</span>.<span class="n">o</span> <span class="n">grades</span>.<span class="n">o</span>
+<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">$@</span><span class="w"> </span>$^
+
+<span class="nf">main.o</span><span class="o">:</span><span class="w"> </span><span class="n">main</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span>
+<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CXXFLAGS<span class="k">)</span><span class="w"> </span>-c<span class="w"> </span>$&lt;
+
+<span class="nf">student.o</span><span class="o">:</span><span class="w"> </span><span class="n">student</span>.<span class="n">cpp</span> <span class="n">student</span>.<span class="n">hpp</span>
+<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CXXFLAGS<span class="k">)</span><span class="w"> </span>-c<span class="w"> </span>$&lt;
+
+<span class="nf">grades.o</span><span class="o">:</span><span class="w"> </span><span class="n">grades</span>.<span class="n">cpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
+<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CXXFLAGS<span class="k">)</span><span class="w"> </span>-c<span class="w"> </span>$&lt;
+
+<span class="nf">grade-book.o</span><span class="o">:</span><span class="w"> </span><span class="n">grade</span>-<span class="n">book</span>.<span class="n">cpp</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">hpp</span> <span class="n">student</span>.<span class="n">hpp</span> <span class="n">grades</span>.<span class="n">hpp</span>
+<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CXXFLAGS<span class="k">)</span><span class="w"> </span>-c<span class="w"> </span>$&lt;
+
+<span class="nf">clean</span><span class="o">:</span>
+<span class="w">    </span><span class="k">$(</span>RM<span class="k">)</span><span class="w"> </span>*.o<span class="w"> </span>main<span class="w"> </span>*.gc*<span class="w"> </span>*.dSYM
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The commands in the .o file rules used $&lt; to avoid including header files in
+the g++ command-line. Make sure to put the .cpp file as the first dependency
+in the list!</p>
+</div>
+</section>
+<section id="use-pattern-match">
+<h3>Use Pattern Match<a class="headerlink" href="#use-pattern-match" title="Link to this heading">¶</a></h3>
+<p>It is still verbose. By sacrificing the header prerequisites in the object file
+rules, we can merge these rules into one:</p>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="nv">CXX</span><span class="o">=</span>g++
+<span class="nv">CXXFLAGS</span><span class="o">=</span>-std<span class="o">=</span>c++14<span class="w"> </span>-Wall<span class="w"> </span>-g
+<span class="nv">RM</span><span class="o">=</span>rm<span class="w"> </span>-rf
+
+<span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">clean</span>
+
+<span class="nf">main</span><span class="o">:</span><span class="w"> </span><span class="n">main</span>.<span class="n">o</span> <span class="n">grade</span>-<span class="n">book</span>.<span class="n">o</span> <span class="n">student</span>.<span class="n">o</span> <span class="n">grades</span>.<span class="n">o</span>
+<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">$@</span><span class="w"> </span>$^
+
+<span class="nf">%.o</span><span class="o">:</span><span class="w"> </span>%.<span class="n">cpp</span>
+<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CXXFLAGS<span class="k">)</span><span class="w"> </span>-c<span class="w"> </span>$&lt;
+
+<span class="nf">clean</span><span class="o">:</span>
+<span class="w">    </span><span class="k">$(</span>RM<span class="k">)</span><span class="w"> </span>-rf<span class="w"> </span>*.o<span class="w"> </span>main<span class="w"> </span>*.gc*<span class="w"> </span>*.dSYM
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The drawback is that the .o file will not depend on certain header files and
+the modification of the header files will not trigger the recompilation of
+the .o file. A workaround is to force recompilation by running <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span>
+<span class="pre">main</span></code>. This will be slow if your project is huge. No easy solution without
+heavy coding. It is a limitation of make any.</p>
+</div>
+</section>
+<section id="further-improvement">
+<h3>Further Improvement<a class="headerlink" href="#further-improvement" title="Link to this heading">¶</a></h3>
+<p>Now we have a very concise makefile.</p>
+<p>You can learn potential improvement from the :</p>
+<ul class="simple">
+<li><p>Store generated files in a subdirectory</p></li>
+<li><p>Use wildcard to catch file names automatically</p></li>
+</ul>
+</section>
+</section>
+<section id="pitfalls">
+<h2>Pitfalls<a class="headerlink" href="#pitfalls" title="Link to this heading">¶</a></h2>
+<div class="highlight-makefile notranslate"><div class="highlight"><pre><span></span><span class="c"># use the wrong variable</span>
+<span class="c"># the use of $^ with -c will include the hpp file in the g++ command</span>
+<span class="c"># use $&lt; to only include the first prerequisite, which should be the cpp file</span>
+<span class="nf">lib1.o</span><span class="o">:</span><span class="w"> </span><span class="n">lib</span>1.<span class="n">cpp</span> <span class="n">lib</span>1.<span class="n">hpp</span>
+<span class="w">    </span>g++<span class="w"> </span>-o<span class="w"> </span><span class="nv">$@</span><span class="w"> </span>$^
+
+<span class="c"># the order of prerequisites are wrong</span>
+<span class="c"># it will cause the g++ to run with hpp file as its argument</span>
+<span class="c"># the cpp file should go first so $&lt; will refer to it</span>
+<span class="nf">lib1.o</span><span class="o">:</span><span class="w"> </span><span class="n">lib</span>1.<span class="n">hpp</span> <span class="n">lib</span>1.<span class="n">cpp</span>
+<span class="w">    </span>g++<span class="w"> </span>-o<span class="w"> </span><span class="nv">$@</span><span class="w"> </span>$&lt;
+
+<span class="c"># Typo in variables</span>
+<span class="nf">main.o</span><span class="o">:</span><span class="w"> </span><span class="n">main</span>.<span class="n">cpp</span>
+<span class="w">    </span><span class="k">$(</span>CXX<span class="k">)</span><span class="w"> </span><span class="k">$(</span>CXXFLAG<span class="k">)</span><span class="w"> </span>-c<span class="w"> </span><span class="nv">$@</span><span class="w"> </span>$&lt;
+</pre></div>
+</div>
+</section>
+<section id="common-error-messages-from-make">
+<span id="make-diag"></span><h2>Common Error Messages From make<a class="headerlink" href="#common-error-messages-from-make" title="Link to this heading">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The terms ‘xxx’, ‘yyy’, etc. are placeholders of names. The term ‘#’ is a
+placeholder for numbers.</p>
+</div>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">No</span> <span class="pre">rule</span> <span class="pre">to</span> <span class="pre">make</span> <span class="pre">target</span> <span class="pre">'xxx'.</span></code></p>
+<p>Wrong target name. For example, you try to run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">foo</span></code> but
+<code class="docutils literal notranslate"><span class="pre">foo</span></code> is not defined as a target name in the <code class="docutils literal notranslate"><span class="pre">makefile</span></code></p>
+</li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">No</span> <span class="pre">rule</span> <span class="pre">to</span> <span class="pre">make</span> <span class="pre">target</span> <span class="pre">'xxx.o',</span> <span class="pre">needed</span> <span class="pre">by</span> <span class="pre">'yyy'.</span></code></p>
+<p>This is a common error when make require a <code class="docutils literal notranslate"><span class="pre">xxx.cpp</span></code> file to compile
+<code class="docutils literal notranslate"><span class="pre">xxx.o</span></code> but the file does not exist. Check for missing file or bad file
+name! Names like <code class="docutils literal notranslate"><span class="pre">Xxx.cpp</span></code> is wrong because Linux is case sensitive with
+file names!</p>
+</li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">missing</span> <span class="pre">separator.</span> <span class="pre">Stop.</span></code></p>
+<p>It is likely that you have used the space characters for indentation. It is
+not supported in some old version of make. <strong>Use tab for indentation for best
+compatibility!</strong></p>
+</li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">make:</span> <span class="pre">***</span> <span class="pre">[makefile:#:</span> <span class="pre">xxx]</span> <span class="pre">Error</span> <span class="pre">1</span></code></p>
+<p>This is caused by a bad command runs by make.</p>
+<ul class="simple">
+<li><p>Scroll up to see the last command that went wrong (mostly g++)</p></li>
+<li><p>Also refer to the #th line in the makefile to see which command caused the
+problem. There are sometimes useful hints in the comments in the makefile.</p></li>
+</ul>
+</li>
+<li><p><strong>warning: overriding recipe for target `xxx’</strong></p>
+<p>It means that you have multiple rules for a same target. It can be dangerous
+if you do not know which one is finally employed to build your target.</p>
+</li>
+</ul>
+</section>
+<section id="debug-makefile">
+<h2>Debug makefile<a class="headerlink" href="#debug-makefile" title="Link to this heading">¶</a></h2>
+<p>You may use the make command with option <cite>-d</cite> to show debugging information.
+E.g. <cite>make -d main</cite> to show the details about target and rule matching process.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">GNU Make</a><ul>
+<li><a class="reference internal" href="#make-command">make command</a></li>
+<li><a class="reference internal" href="#makefile">makefile</a></li>
+<li><a class="reference internal" href="#modular-compilation">Modular Compilation</a><ul>
+<li><a class="reference internal" href="#hard-coded-rules">Hard-coded rules</a></li>
+<li><a class="reference internal" href="#introducing-variables">Introducing variables</a></li>
+<li><a class="reference internal" href="#introducing-automatic-variables">Introducing automatic variables</a></li>
+<li><a class="reference internal" href="#use-pattern-match">Use Pattern Match</a></li>
+<li><a class="reference internal" href="#further-improvement">Further Improvement</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pitfalls">Pitfalls</a></li>
+<li><a class="reference internal" href="#common-error-messages-from-make">Common Error Messages From make</a></li>
+<li><a class="reference internal" href="#debug-makefile">Debug makefile</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../cpp/building/gpp.html"
+                          title="previous chapter">Compilation Using g++</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../cpp/testing/testing.html"
+                          title="next chapter">Testing in C++</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/developer-tools/make.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../cpp/testing/testing.html" title="Testing in C++"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../cpp/building/gpp.html" title="Compilation Using g++"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">IanFang Teaching Material Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../course/cop3530/ch02.html" >Chapter 2 Modular Design, GNU Make and Testing</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="../cpp/building/modular.html" >Modular Development</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">GNU Make</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright Copyright © Xingang (Ian) Fang 2022-25.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>

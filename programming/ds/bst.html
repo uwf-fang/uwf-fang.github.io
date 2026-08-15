@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Binary search tree &#8212; IanFang Teaching Material Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css?v=279e0f84" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=fa3f9a06" />
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/programming/ds/bst.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Chapter 12 Heap and Priority Queue" href="../../course/cop3530/ch12.html" />
+    <link rel="prev" title="Tree Data Structure" href="tree.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../course/cop3530/ch12.html" title="Chapter 12 Heap and Priority Queue"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="tree.html" title="Tree Data Structure"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Teaching Material Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3530/ch11.html" accesskey="U">Chapter 11 Tree</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Binary search tree</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="binary-search-tree">
+<h1>Binary search tree<a class="headerlink" href="#binary-search-tree" title="Link to this heading">¶</a></h1>
+<section id="motivation">
+<h2>Motivation<a class="headerlink" href="#motivation" title="Link to this heading">¶</a></h2>
+<p>The motivation behind using a Binary Search Tree (BST) as a data structure lies
+in its ability to efficiently support key-based operations, such as searching,
+insertion, and deletion, while maintaining a sorted order of elements.</p>
+</section>
+<section id="definition">
+<h2>Definition<a class="headerlink" href="#definition" title="Link to this heading">¶</a></h2>
+<p>A binary search tree (BST) is a binary tree, in which for every node, its left
+subtree has values less than the node’s value, and every node’s right subtree
+has values greater than the node’s value.</p>
+</section>
+<section id="applications">
+<h2>Applications<a class="headerlink" href="#applications" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Map ADT</p>
+<ul>
+<li><p>Stores key-value pairs</p></li>
+</ul>
+</li>
+<li><p>Set ADT</p>
+<ul>
+<li><p>Stores a set of elements (keys)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="behaviors">
+<h2>Behaviors<a class="headerlink" href="#behaviors" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Search</p></li>
+<li><p>Insert</p></li>
+<li><p>Remove</p></li>
+<li><p>Traversal: Visit all nodes in a tree in a certain order</p>
+<ul>
+<li><p>in-order: for each node: left-subtree, self, right-subtree</p>
+<ul>
+<li><p>provides an ascending-ordered sequence of values</p></li>
+</ul>
+</li>
+<li><p>pre-order: for each node: self, left-subtree, right-subtree</p></li>
+<li><p>post-order: for each node: left-subtree, right-subtree, self</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="implementation-details">
+<h2>Implementation Details<a class="headerlink" href="#implementation-details" title="Link to this heading">¶</a></h2>
+<ul>
+<li><p>Algorithms that happens from top to bottom</p>
+<p>Easy to implement either iteratively or recursively</p>
+<ul class="simple">
+<li><p>search</p></li>
+<li><p>insert</p></li>
+</ul>
+</li>
+<li><p>Algorithms that happens from bottom to top</p>
+<p>Easy to implement recursively; Hard to implement iteratively (must use stack)</p>
+<ul class="simple">
+<li><p>subtree removal (may be used in the destruction of a tree)</p></li>
+<li><p>find min node or find max node (part of remove)</p></li>
+<li><p>in-order traversal</p></li>
+<li><p>pre-order traversal</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="drawbacks-and-solutions">
+<h2>Drawbacks and Solutions<a class="headerlink" href="#drawbacks-and-solutions" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Algorithm efficiency depends on the average height of the BST</p></li>
+<li><p>BST may degrade a very unbalanced form or even to a linked list</p></li>
+<li><p>Solutions</p>
+<ul>
+<li><p>Randomize the order of insertion</p></li>
+<li><p>Add a balancing mechanism</p>
+<ul>
+<li><p>self-balancing tree</p></li>
+<li><p>external balancing (FYI)</p></li>
+</ul>
+</li>
+<li><p>Move the most recently accessed node toward the root</p>
+<ul>
+<li><p>Only optimize the search performance for a specific access pattern</p></li>
+<li><p>No guarantee for the worst case</p></li>
+<li><p>Splay tree</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="applications-of-bst">
+<h2>Applications of BST<a class="headerlink" href="#applications-of-bst" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Indexing: store a set of references in a BST and use the key as the search
+key</p></li>
+<li><p>Tree Sort: sort a sequence of numbers by building a BST and then traversing
+it in-order</p></li>
+<li><p>Tree Map: store a set of (key, value) pairs in a BST and use the key as the
+search key</p></li>
+<li><p>Tree Set: store a set of elements in a BST and use the element as the search
+key</p></li>
+</ul>
+<section id="important-binary-search-tree-variations">
+<h3>Important Binary Search Tree Variations<a class="headerlink" href="#important-binary-search-tree-variations" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Self-balancing BSTs</p>
+<ul>
+<li><p>AVL tree</p></li>
+<li><p>Red-black tree</p></li>
+</ul>
+</li>
+<li><p>Self-adjusting BSTs (other than self-balancing)</p>
+<ul>
+<li><p>Splay tree</p></li>
+<li><p>Treap</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="../../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Binary search tree</a><ul>
+<li><a class="reference internal" href="#motivation">Motivation</a></li>
+<li><a class="reference internal" href="#definition">Definition</a></li>
+<li><a class="reference internal" href="#applications">Applications</a></li>
+<li><a class="reference internal" href="#behaviors">Behaviors</a></li>
+<li><a class="reference internal" href="#implementation-details">Implementation Details</a></li>
+<li><a class="reference internal" href="#drawbacks-and-solutions">Drawbacks and Solutions</a></li>
+<li><a class="reference internal" href="#applications-of-bst">Applications of BST</a><ul>
+<li><a class="reference internal" href="#important-binary-search-tree-variations">Important Binary Search Tree Variations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="tree.html"
+                          title="previous chapter">Tree Data Structure</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../../course/cop3530/ch12.html"
+                          title="next chapter">Chapter 12 Heap and Priority Queue</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/programming/ds/bst.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../course/cop3530/ch12.html" title="Chapter 12 Heap and Priority Queue"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="tree.html" title="Tree Data Structure"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Teaching Material Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../course/cop3530/index.html" >COP 3530 Data Structure and Algorithm Design</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../course/cop3530/ch11.html" >Chapter 11 Tree</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Binary search tree</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright Copyright © Xingang (Ian) Fang 2022-25.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>

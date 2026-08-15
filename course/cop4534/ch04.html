@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Chapter 4 B-Trees; Intro to Algorithmic Paradigms &#8212; IanFang Teaching Material Hosting  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css?v=279e0f84" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=fa3f9a06" />
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="canonical" href="https://uwf-fang.github.io/course/cop4534/ch04.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="B-Tree" href="../../programming/ds/b-tree.html" />
+    <link rel="prev" title="AVL Tree" href="../../programming/ds/avl-tree.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../programming/ds/b-tree.html" title="B-Tree"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../../programming/ds/avl-tree.html" title="AVL Tree"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Teaching Material Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Chapter 4 B-Trees; Intro to Algorithmic Paradigms</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="chapter-4-b-trees-intro-to-algorithmic-paradigms">
+<h1>Chapter 4 B-Trees; Intro to Algorithmic Paradigms<a class="headerlink" href="#chapter-4-b-trees-intro-to-algorithmic-paradigms" title="Link to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../programming/ds/b-tree.html">B-Tree</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../programming/ds/b-tree.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../programming/ds/b-tree.html#definition">Definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../programming/ds/b-tree.html#characteristics">Characteristics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../programming/ds/b-tree.html#terminology">Terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../programming/ds/b-tree.html#id1">Characteristics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../programming/ds/b-tree.html#behavior">Behavior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../programming/ds/b-tree.html#variations">Variations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../programming/problem-classification.html">Problem Classification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../programming/problem-classification.html#by-the-goal">By The Goal</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../programming/alg-classification.html">Algorithm Classification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../programming/alg-classification.html#by-design-paradigm">By Design Paradigm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../programming/alg-classification.html#by-implementation-method">By Implementation Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../programming/alg-classification.html#by-data-structure">By Data Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../programming/alg-classification.html#by-application-domain">By Application Domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../programming/alg-classification.html#by-complexity-class">By Complexity Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../programming/alg-classification.html#by-specific-techniques-employed-in-the-algorithm">By Specific Techniques Employed in the Algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../programming/alg-classification.html#by-other-characteristics">By Other Characteristics</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../../programming/ds/avl-tree.html"
+                          title="previous chapter">AVL Tree</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../../programming/ds/b-tree.html"
+                          title="next chapter">B-Tree</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/course/cop4534/ch04.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../programming/ds/b-tree.html" title="B-Tree"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../../programming/ds/avl-tree.html" title="AVL Tree"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">IanFang Teaching Material Hosting  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >COP 4534 Data Structure and Algorithm Design II</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Chapter 4 B-Trees; Intro to Algorithmic Paradigms</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright Copyright © Xingang (Ian) Fang 2022-25.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>

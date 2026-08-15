@@ -1,6 +1,6 @@
-**********************************
-Instruction For Teaching Assistant
-**********************************
+************************************
+Instructions for Teaching Assistants
+************************************
 
 .. contents::
   :depth: 2
@@ -10,98 +10,119 @@ Responsibility
 ==============
 #. Assignment grading
 
-   + Labs - in one week
-   + Projects - in two weeks
+   * Labs - within one week
+   * Projects - within two weeks
 
-#. Student question answering
+#. Student question answering through Discord, email, or Canvas.
 
-   + Discord
-   + Email
-   + Canvas message (rare)
+Classroom 50 access
+===================
 
-Project Grading
-===============
-Overview
---------
-Programming projects are given on the GitHub Classroom platform. It require
-students to an implement application following the instruction. The grading is
-mostly functionality based, which means the 80-90% of points based on how the
-application compile and run. The GitHub classroom will automatically grade the
-assignments according to the results of automatic test runs. The rest of the
-grades require some brief code reviews on the neatness and style.
+Classroom 50 replaces the older GitHub Classroom workflow for this course.
 
-Pre-requisites
---------------
-+ Access to contents
+* Accept the GitHub organization invitation sent by the instructor.
+* Confirm membership in the ``classroom50-<classroom>-ta`` team when instructed.
+* Sign in to the course Classroom 50 web interface with your GitHub account.
+* Use the assignment accept link supplied by the instructor when you need to
+  test an assignment.
 
-  * Provide your GitHub username to be invited to the GitHub Classroom. You can
-    use existing account or make a new one for teaching purpose.
-  * You will be invited to Canvas shell as a TA.
-  * You will be invited to the Discord server as a TA.
+TAs should not change the classroom configuration or roster unless the
+instructor explicitly asks them to do so.
 
-+ You will be mostly copying the grading results from the GitHub Classroom to
-  the Canvas grade book. In rare cases, you may need to adjust the grades
-  according to code reading.
-+ A working development environment. Check the :doc:`/cpp/ccpp-env` document for
-  more details. Linux, Mac OS or Windows WSL should all work well.
-+ Knowledge on C++, CLI environment, :doc:`make </tools/make>`, :doc:`git
-  </tools/git>` and :doc:`GitHub Classroom </course/github-classroom>`
+Testing an assignment
+=====================
+
+#. Obtain the assignment accept link or slug from the instructor.
+#. Accept the assignment as a test account or TA account.
+#. Clone the generated repository and complete representative tasks.
+#. Push changes and verify that the configured Classroom 50 grading trigger
+   runs successfully.
+#. Inspect the resulting GitHub Release and ``result.json`` score details.
+
+Student grading workflow
+========================
+
+Classroom 50 creates a repository for each accepted assignment and runs the
+configured tests either on every push or in submit-only mode.
+
+#. Open the Classroom 50 **Submissions** view or the student's repository.
+#. Inspect the latest Release and ``result.json`` output.
+#. Check the code briefly for required methods, neatness, and style when the
+   rubric calls for manual review.
+#. If feedback pull requests are enabled, leave line comments and suggestions
+   in the student's feedback pull request.
+#. Record the final grade in Canvas using the course rubric.
+
+For a manual correction, contact the instructor. Classroom 50 stores score
+overrides in the classroom configuration repository, and those changes should
+not be made independently by a TA.
+
+Classroom 50 repository rules
+=============================
+
+Starter repositories must not retain legacy GitHub Classroom workflows or
+autograding files under ``.github/``. Do not modify the provided ``Makefile``
+or test configuration while grading. Classroom 50 may restore the Makefile
+before running tests.
+
+Technical prerequisites
+=======================
+
+* A working development environment; see :doc:`/cpp/ccpp-env`.
+* C++, the CLI, :doc:`make </developer-tools/make>`, and
+  :doc:`git </developer-tools/git>`.
+* Familiarity with :doc:`Classroom 50 </course/classroom-50>`.
 
 Communication
--------------
-+ Do not hesitate to ask questions to the instructor
-+ Do not hesitate to forward student questions/requests to the instructor if you
-  are not sure about the answer
-+ The teaching-chat channel on Discord is the primary communication channel. It
-  is preferred over email for better record keeping
+=============
+
+* Ask the instructor when you are unsure about a grading decision.
+* Forward unclear student questions to the instructor.
+* Use the teaching-chat channel on Discord as the primary staff channel.
 
 Grading Workflow
 ----------------
-#. Collect the autograding results from the GitHub Classroom
+#. Collect the automated grading results from Classroom 50.
 
-   + You can see most of the grades in the summary list
-   + If no grade is shown, click the repository link for details
-   + For repositories that are marked as "late", open the repository and check
-     the latest grade as well as the commit time.
+   + Start with the Classroom 50 **Submissions** view.
+   + If a score is missing, open the student's repository and inspect the
+     latest GitHub Release and ``result.json`` output.
+   + For late submissions, check the submission status and the timestamp of
+     the commit or submission tag used for grading.
 
 #. Manual grading
 
-   + Briefly check the code for neatness and style. Generally only needed for
-     the first few assignments.
-   + Check the code to see if students employed the required method rather than
-     cheated by hardcoding the results or using system library.
+   + Briefly check the code for required methods, neatness, and style when the
+     rubric calls for manual review.
+   + Check that students implemented the required method rather than hardcoding
+     results or replacing the required work with an unrelated library call.
+   + If feedback pull requests are enabled, leave line comments and
+     suggestions there.
 
 #. Update grades on Canvas
 
-   + Use the SpeedGrader and Rubric to grade
-   + Apply late penalty as needed (-10% < 1 day; -30% < 2 days)
-   + Grades will remain hidden by default. Contact your instructor to review
-     and release the grades.
+   + Use SpeedGrader and the course rubric.
+   + Apply late penalties according to the course policy.
+   + Keep grades hidden until the instructor reviews and releases them.
 
 .. note::
 
-  More instructions about GitHub classroom in :doc:`GitHub Classroom
-  </course/gh-classroom-ta>`.
+  More instructions are available in the :doc:`Classroom 50 guide
+  </course/classroom-50>` and the :doc:`DSA project workflow
+  </course/dsa-project>`.
 
 Policies
---------
-+ Late assignment (Project only)
+========
 
-  Apply the penalty following this scheme: -10% < 1 day; -30% < 2 days
-
-+ Resubmission
-
-  Re-submissions are allowed only when the student has a good reason.
-
-+ Appeal
-
-  The TA can explain the grading details to the student. If it is hard to
-  handle, forward it to the instructor.
+* Late submissions follow the course policy. Apply penalties through Canvas as
+  directed by the instructor.
+* Re-submissions are allowed only when the student has a good reason.
+* If a grading appeal is difficult to resolve, forward it to the instructor.
 
 Hints
------
-+ During grading, only fix problem for students if it can be done in very short
-  time and minimal effort. This is just for courtesy. Your responsibility is
-  only to check the correctness of the code by running them or the tests.
-+ Only read source code files for neatness, and style rather than correctness.
-  Leave the correctness to the tests.
+=====
+
+* Fix a student's code only when the correction is very small and clearly
+  within the course policy.
+* Use tests for correctness. Read source code for neatness and style, not to
+  replace the automated correctness checks.

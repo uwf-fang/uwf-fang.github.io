@@ -1,0 +1,132 @@
+*********************************
+GitHub CLI (``gh``) for Students
+*********************************
+
+This guide introduces the GitHub Command Line Interface, abbreviated ``gh``,
+and the optional Classroom 50 student extension. It applies to assignment
+repositories used in COP3530 and COP4534.
+
+Recommended Classroom 50 method
+================================
+
+Use the Classroom 50 web interface to sign in, select your roster name, accept
+assignments, and check submission status and grades. This is the recommended
+method for students and the easiest method to troubleshoot.
+
+The CLI method below is only for experienced users who already understand Git,
+GitHub repositories, and terminal commands. ``gh`` does not replace Classroom
+50, and it does not change the assignment submission rules.
+
+What ``gh`` does
+================
+
+``gh`` is GitHub's official command-line tool. It complements standard
+``git`` commands:
+
+* ``git`` manages the local repository, including files, commits, branches,
+  and push/pull operations.
+* ``gh`` communicates with GitHub, including repository information and Actions
+  workflow results.
+
+You can use both tools in the same assignment directory. The normal
+development and submission loop still uses Git:
+
+.. code-block:: console
+
+   git add .
+   git commit -m "Complete assignment"
+   git push origin main
+
+Install and authenticate ``gh``
+===============================
+
+Install ``gh`` using the `official installation instructions
+<https://github.com/cli/cli#installation>`_. Verify the installation:
+
+.. code-block:: console
+
+   gh --version
+
+Authenticate the standard GitHub CLI before using any Classroom 50 extension
+commands:
+
+.. code-block:: console
+
+   gh auth login
+   gh auth status
+
+Choose GitHub.com and complete the browser authentication flow. Use the GitHub
+account associated with your course account. Do not put access tokens in a
+command, script, or repository.
+
+Clone and inspect a repository
+==============================
+
+After accepting an assignment through the Classroom 50 web interface, an
+experienced user may clone the repository with ``gh``:
+
+.. code-block:: console
+
+   gh repo clone ORGANIZATION/REPOSITORY
+   cd REPOSITORY
+
+The standard ``git clone REPOSITORY-URL`` command is equally valid. From inside
+the repository, these commands can help inspect GitHub and its automated checks:
+
+.. code-block:: console
+
+   gh repo view --web
+   gh run list
+   gh run view
+   gh run watch
+
+The repository page and **Actions** tab in the web interface are recommended
+if these commands are unfamiliar.
+
+Classroom 50 student extension
+===============================
+
+The ``gh student`` commands belong to an optional Classroom 50 extension; they
+are not standard Git commands and are not part of the core ``gh`` tool. Use the
+web interface instead unless you are comfortable installing and troubleshooting
+CLI extensions.
+
+If your instructor directs you to use the extension, install it and sign in:
+
+.. code-block:: console
+
+   gh extension install foundation50/gh-student
+   gh student login
+
+After ``gh auth login`` and ``gh student login`` succeed, an experienced user
+may accept an assignment from the terminal:
+
+.. code-block:: console
+
+   gh student accept ORGANIZATION CLASSROOM ASSIGNMENT
+
+The extension may accept pending organization invitations, create the
+repository, and print a clone command. Confirm that the organization,
+classroom, assignment, and GitHub account are correct before continuing.
+
+Submit-only assignments
+=======================
+
+Some assignments grade every push; others require an explicit submission. Use
+the method specified by your instructor. Experienced CLI users may use the
+student extension:
+
+.. code-block:: console
+
+   gh student submit
+
+The standard Git tag method is also available when instructed:
+
+.. code-block:: console
+
+   git tag submit/final
+   git push origin submit/final
+
+When in doubt, return to the Classroom 50 web interface and the repository's
+Actions page, or contact the instructor with the repository URL and error
+output.

@@ -1,0 +1,121 @@
+************************************
+Classroom 50
+************************************
+
+We use Classroom 50 to distribute, collect, and grade programming assignments
+in the DSA courses. Classroom 50 uses GitHub repositories and Actions, but it
+replaces the older GitHub Classroom workflow.
+
+Use the UWF-hosted Classroom 50 service at
+`uwf-dsa-teaching.github.io <https://uwf-dsa-teaching.github.io>`_. Use the
+course-provided assignment links from that service rather than looking for
+assignments at ``classroom.github.com`` or ``classroom50.org``.
+
+Recommended method
+==================
+
+Use the Classroom 50 web interface for the assignment workflow. This is the
+recommended method for students in COP3530 and COP4534 and the easiest method
+to troubleshoot. Use the web interface to sign in, select your roster name,
+accept an assignment, and check submission status and grades.
+
+The optional :doc:`GitHub CLI guide <gh-cli>` introduces ``gh`` and the
+Classroom 50 student extension. Use the CLI method only if you are already
+comfortable with GitHub, Git, and terminal commands. The CLI does not replace
+Classroom 50 or change the submission rules.
+
+GitHub account
+==============
+
+Before accepting an assignment, you need an active GitHub account.
+
+* Use an existing account or create a new account at GitHub.com.
+* Add and verify your UWF email address under **GitHub Settings > Emails**.
+* Accept the GitHub organization invitation sent by your instructor.
+
+Accept an assignment
+====================
+
+Your instructor will provide a Classroom 50 assignment link through Canvas or
+the course website.
+
+#. Open the assignment link and sign in with GitHub if prompted.
+#. Select your exact name from the roster.
+
+   **Do not select another student's name.** If your name is missing or you
+   selected the wrong name, stop and contact the instructor immediately.
+
+#. Confirm the assignment. Classroom 50 creates your private GitHub repository
+   and displays its link.
+#. Open the new repository and copy its clone URL.
+
+Experienced users may use the Classroom 50 student CLI after reading the
+:doc:`GitHub CLI guide <gh-cli>`. Do not use the student extension without
+first understanding the standard ``gh`` tool and the normal web workflow.
+
+Clone and submit your work
+==========================
+
+Clone the repository, edit the provided files, and commit and push your work:
+
+.. code-block:: console
+
+   git clone <repository-url>
+   cd <repository-directory>
+
+Following the instruction in the README.md file in the repository, make the
+necessary editions to the provided files, then commit and push your changes:
+
+.. code-block:: console
+
+   git add .
+   git commit -m "Complete assignment"
+   git push origin main
+
+Depending on the assignment settings, grading runs on every push or only when
+you submit. For submit-only assignments, use the submission method specified by
+your instructor. Experienced CLI users can find the optional command in the
+:doc:`GitHub CLI guide <gh-cli>`; the web interface remains recommended.
+
+The standard Git submission-tag method is:
+
+.. code-block:: console
+
+   git tag submit/final
+   git push origin submit/final
+
+The instructor may also configure milestone tags such as ``phase1``.
+
+Provided files and Makefiles
+============================
+
+The provided ``Makefile`` and test configuration are part of the assignment
+contract. Do not modify or remove them. Classroom 50 may restore the provided
+Makefile before grading, so make sure your code works with the original file.
+
+Run the provided ``make`` targets locally before pushing. Do not add generated
+executables, editor files, or unrelated directories to your submission.
+
+Group assignments
+=================
+
+For a group assignment, the first teammate accepts the assignment and creates
+the shared repository. That teammate then adds the other members through the
+assignment page or with the Classroom 50 student CLI. Invited teammates should
+accept the repository invitation before cloning and contributing.
+
+Grades and feedback
+===================
+
+* Open the assignment in the Classroom 50 web interface to view submission
+  status and grades.
+* The latest GitHub Release in your repository contains the score summary and
+  detailed ``result.json`` output when enabled.
+* If course staff use feedback pull requests, open the repository's **Pull
+  Requests** tab to read line comments and suggestions.
+
+Late work
+=========
+
+If you submit late, notify the instructor according to the course policy. The
+instructor may need to review or adjust the recorded grade manually.
