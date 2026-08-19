@@ -22,12 +22,20 @@ Classroom 50 replaces the older GitHub Classroom workflow for this course.
 
 * Accept the GitHub organization invitation sent by the instructor.
 * Confirm membership in the ``classroom50-<classroom>-ta`` team when instructed.
-* Sign in to the course Classroom 50 web interface with your GitHub account.
+* Sign in through the UWF `Classroom 50 portal
+  <https://uwf-dsa-teaching.github.io>`_ using a GitHub Classic Personal
+  Access Token (PAT). Do **not** use the standard OAuth sign-in; follow the
+  PAT steps in :doc:`the Classroom 50 guide </course/classroom-50>`.
+  Use this `pre-configured TA token generation link
+  <https://github.com/settings/tokens/new?description=Classroom+50+TA+Sign-In&scopes=repo,workflow,admin:org,read:org,read:user,delete_repo>`_
+  to create the token with the required scopes. Modify its expiration date to
+  the end of the semester before generating it.
 * Use the assignment accept link supplied by the instructor when you need to
   test an assignment.
 
-TAs should not change the classroom configuration or roster unless the
-instructor explicitly asks them to do so.
+Do not change classroom configuration or roster data unless the instructor
+explicitly asks you to do so. When authorized, use the procedures below and
+record the change for the instructor.
 
 Testing an assignment
 =====================
@@ -46,16 +54,62 @@ Classroom 50 creates a repository for each accepted assignment and runs the
 configured tests either on every push or in submit-only mode.
 
 #. Open the Classroom 50 **Submissions** view or the student's repository.
-#. Inspect the latest Release and ``result.json`` output.
+#. Filter by assignment, section, or status, then inspect the latest Release and
+   ``result.json`` output. Open the repository link from the student row when
+   you need the exact code or Actions log.
 #. Check the code briefly for required methods, neatness, and style when the
    rubric calls for manual review.
 #. If feedback pull requests are enabled, leave line comments and suggestions
    in the student's feedback pull request.
 #. Record the final grade in Canvas using the course rubric.
 
-For a manual correction, contact the instructor. Classroom 50 stores score
-overrides in the classroom configuration repository, and those changes should
-not be made independently by a TA.
+Roster binding correction
+-------------------------
+
+If a student selected the wrong roster name, open
+``<org>/classroom50/<classroom-slug>/roster.csv`` and remove only that
+student's ``username`` and ``github_id`` values. Keep the name and email,
+commit the correction to ``main``, and ask the student to open the assignment
+accept link again. They can then select the correct name.
+
+Assignment template ownership
+-----------------------------
+
+When an instructor imports the shared ``assignments.json`` into a classroom,
+the ``template.owner`` value must be changed to the section's teaching GitHub
+organization. Do not leave the placeholder or use the shared organization as
+the owner of student-facing repositories:
+
+.. code-block:: json
+
+   {
+     "template": {
+       "owner": "YOUR_TEACHING_ORGANIZATION",
+       "repo": "dsa1-assignment-name",
+       "branch": "main"
+     }
+   }
+
+Verify the owner for every assignment before committing the file to
+``<org>/classroom50/<classroom-slug>/assignments.json``.
+
+Manual score override
+---------------------
+
+When the instructor authorizes a correction, edit
+``<org>/classroom50/<classroom-slug>/scores.json`` and set ``override`` to
+``true``. For example:
+
+.. code-block:: json
+
+   {
+     "username": "student-handle",
+     "score": 85,
+     "override": true,
+     "feedback": "Awarded partial credit for algorithm approach."
+   }
+
+Commit the change to ``main`` and notify the instructor.
 
 Classroom 50 repository rules
 =============================
@@ -72,6 +126,17 @@ Technical prerequisites
 * C++, the CLI, :doc:`make </developer-tools/make>`, and
   :doc:`git </developer-tools/git>`.
 * Familiarity with :doc:`Classroom 50 </course/classroom-50>`.
+
+Common student support issues
+=============================
+
+* If a macOS student sees ``valgrind: command not found``, direct them to
+  `GitHub Codespaces <https://github.com/features/codespaces>`_ and have them
+  choose **Code -> Codespaces -> Create codespace on main**, then run
+  ``make test-mem`` in the browser terminal.
+* If a student sees ``Permission denied`` or HTTP 403, check whether the
+  student is still shown as **Pending invite** in the web portal. They must
+  accept the GitHub organization invitation sent to their university email.
 
 Communication
 =============

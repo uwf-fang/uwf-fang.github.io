@@ -7,6 +7,7 @@ Quick Reference
 + :ref:`Project FAQ <proj-faq>`
 + :doc:`/developer-tools/git`
 + :doc:`classroom-50`
++ `Classroom 50 web frontend <https://classroom50.org>`_
 + :ref:`make-diag`
 + :ref:`gpp-diag`
 + :ref:`mod-pitfall`
@@ -39,7 +40,18 @@ Local workflow
 + Open the assignment link supplied by your instructor, accept the assignment,
   and open the GitHub repository. Classroom 50 is mainly a brief entry point;
   your normal workflow is in the repository.
-+ Clone the repository to your local machine
++ `Create or verify your GitHub account
+  <https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github>`_,
+  and add your UWF email under `GitHub Settings > Emails
+  <https://github.com/settings/emails>`_.
++ Accept the GitHub organization invitation, then select your exact roster name
+  when accepting the assignment. Never select another student's name.
++ Clone the repository to your local machine:
+
+  .. code-block:: console
+
+     git clone <repository-url>
+     cd <repository-directory>
 + Iterative Development
 
   - Write code
@@ -50,13 +62,22 @@ Local workflow
     * You have passed some tests
     * You need to put your work on hold
 
-+ Push your work to submit it, then find grading results in the latest GitHub
-  Release in your repository. Detailed results may appear as ``result.json``.
++ Push your work to submit it, then inspect the repository's `Actions
+  <https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows/monitoring-workflows>`_
+  tab and latest GitHub Release. Detailed results may appear as
+  ``result.json``.
 
 CodeSpaces
 ----------
 Everything is the same as the local workflow except that you are working in the
-browser. No need to clone the repository or configure github user information.
+browser. No need to clone the repository or configure GitHub user information.
+Open the repository on GitHub, choose **Code -> Codespaces -> Create codespace
+on main**, and use the browser terminal. Codespaces is especially important
+for macOS users because ``valgrind`` is not supported natively there:
+
+.. code-block:: console
+
+   make test-mem
 
 Build, run and debug
 ====================
@@ -69,6 +90,17 @@ Make commands
 Make commands are employed to build, run and test your project. Please read the
 instruction carefully to learn how to use them to run tests or build your
 project.
+
+Typical targets include:
+
+.. code-block:: console
+
+   make clean
+   make build
+   make test
+   make test-1
+   make test-2
+   make test-mem
 
 Provided Tests
 --------------

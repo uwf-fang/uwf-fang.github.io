@@ -50,6 +50,7 @@
 <li><p><a class="reference internal" href="faq.html#proj-faq"><span class="std std-ref">Project FAQ</span></a></p></li>
 <li><p><a class="reference internal" href="../developer-tools/git.html"><span class="doc">Version Control System and Git</span></a></p></li>
 <li><p><a class="reference internal" href="classroom-50.html"><span class="doc">Classroom 50</span></a></p></li>
+<li><p><a class="reference external" href="https://classroom50.org">Classroom 50 web frontend</a></p></li>
 <li><p><a class="reference internal" href="../developer-tools/make.html#make-diag"><span class="std std-ref">Common Error Messages From make</span></a></p></li>
 <li><p><a class="reference internal" href="../cpp/building/gpp.html#gpp-diag"><span class="std std-ref">Common Error Messages From g++</span></a></p></li>
 <li><p><a class="reference internal" href="../cpp/building/modular.html#mod-pitfall"><span class="std std-ref">Pitfalls in Modular Development</span></a></p></li>
@@ -82,13 +83,22 @@ debug and understand your unfinished source code.</p></li>
 <h2>Project Workflow<a class="headerlink" href="#project-workflow" title="Link to this heading">¶</a></h2>
 <section id="local-workflow">
 <h3>Local workflow<a class="headerlink" href="#local-workflow" title="Link to this heading">¶</a></h3>
-<ul class="simple">
+<ul>
 <li><p>Open the assignment link supplied by your instructor, accept the assignment,
 and open the GitHub repository. Classroom 50 is mainly a brief entry point;
 your normal workflow is in the repository.</p></li>
-<li><p>Clone the repository to your local machine</p></li>
+<li><p><a class="reference external" href="https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github">Create or verify your GitHub account</a>,
+and add your UWF email under <a class="reference external" href="https://github.com/settings/emails">GitHub Settings &gt; Emails</a>.</p></li>
+<li><p>Accept the GitHub organization invitation, then select your exact roster name
+when accepting the assignment. Never select another student’s name.</p></li>
+<li><p>Clone the repository to your local machine:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone &lt;repository-url&gt;</span>
+<span class="go">cd &lt;repository-directory&gt;</span>
+</pre></div>
+</div>
+</li>
 <li><p>Iterative Development</p>
-<ul>
+<ul class="simple">
 <li><p>Write code</p></li>
 <li><p>Run tests or your main to verify the progress</p></li>
 <li><p>Add and commit the changes</p></li>
@@ -100,14 +110,21 @@ your normal workflow is in the repository.</p></li>
 </li>
 </ul>
 </li>
-<li><p>Push your work to submit it, then find grading results in the latest GitHub
-Release in your repository. Detailed results may appear as <code class="docutils literal notranslate"><span class="pre">result.json</span></code>.</p></li>
+<li><p>Push your work to submit it, then inspect the repository’s <a class="reference external" href="https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows/monitoring-workflows">Actions</a>
+tab and latest GitHub Release. Detailed results may appear as
+<code class="docutils literal notranslate"><span class="pre">result.json</span></code>.</p></li>
 </ul>
 </section>
 <section id="codespaces">
 <h3>CodeSpaces<a class="headerlink" href="#codespaces" title="Link to this heading">¶</a></h3>
 <p>Everything is the same as the local workflow except that you are working in the
-browser. No need to clone the repository or configure github user information.</p>
+browser. No need to clone the repository or configure GitHub user information.
+Open the repository on GitHub, choose <strong>Code -&gt; Codespaces -&gt; Create codespace
+on main</strong>, and use the browser terminal. Codespaces is especially important
+for macOS users because <code class="docutils literal notranslate"><span class="pre">valgrind</span></code> is not supported natively there:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">make test-mem</span>
+</pre></div>
+</div>
 </section>
 </section>
 <section id="build-run-and-debug">
@@ -120,6 +137,15 @@ automate the process. We employ <code class="docutils literal notranslate"><span
 <p>Make commands are employed to build, run and test your project. Please read the
 instruction carefully to learn how to use them to run tests or build your
 project.</p>
+<p>Typical targets include:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">make clean</span>
+<span class="go">make build</span>
+<span class="go">make test</span>
+<span class="go">make test-1</span>
+<span class="go">make test-2</span>
+<span class="go">make test-mem</span>
+</pre></div>
+</div>
 </section>
 <section id="provided-tests">
 <h3>Provided Tests<a class="headerlink" href="#provided-tests" title="Link to this heading">¶</a></h3>

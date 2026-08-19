@@ -2,14 +2,32 @@
 Classroom 50
 ************************************
 
-Classroom 50 connects course assignment links to GitHub repositories. The web
-frontend is primarily used by TAs and instructors; students generally use it
-only briefly to accept an assignment and open its repository.
+Classroom 50 connects course assignment links to GitHub repositories. Students
+use the course web frontend briefly to sign in, accept an assignment, and open
+their repository.
 
-Use the UWF-hosted Classroom 50 service at
-`uwf-dsa-teaching.github.io <https://uwf-dsa-teaching.github.io>`_. Use the
-course-provided assignment links from that service rather than looking for
-assignments at ``classroom.github.com`` or ``classroom50.org``.
+Use the UWF self-hosted Classroom 50 frontend at
+`uwf-dsa-teaching.github.io <https://uwf-dsa-teaching.github.io>`_. The course
+website and Classroom 50 CLI tools are pinned to version ``1.28.1`` for
+stability.
+
+Use the course-provided assignment links rather than searching for assignments
+manually.
+
+Sign in with a Personal Access Token
+====================================
+
+Students must sign in to the self-hosted portal with a GitHub Classic Personal
+Access Token (PAT). Do **not** use the standard **Sign in with GitHub** OAuth
+option; OAuth may fail because of the self-hosted proxy and CORS configuration.
+
+Generate a token using GitHub's
+`pre-configured token link
+<https://github.com/settings/tokens/new?description=Classroom+50+Student+Sign-In&scopes=repo,workflow,admin:org,read:org,read:user,delete_repo>`_.
+On GitHub, modify the token's expiration date to the end of the semester.
+After GitHub creates the token, copy it immediately, return to the Classroom 50
+portal, choose **Other sign-in methods -> Use a personal access token**, and
+paste the token. GitHub displays the token only once; never commit or share it.
 
 Student workflow
 ================
@@ -25,7 +43,8 @@ GitHub account
 Before accepting an assignment, you need an active GitHub account.
 
 * Use an existing account or create a new account at GitHub.com.
-* Add and verify your UWF email address under **GitHub Settings > Emails**.
+* Add and verify your UWF email address under `GitHub Settings > Emails
+  <https://github.com/settings/emails>`_.
 * Accept the GitHub organization invitation sent by your instructor.
 
 Accept an assignment
@@ -34,7 +53,8 @@ Accept an assignment
 Your instructor will provide a Classroom 50 assignment link through Canvas or
 the course website.
 
-#. Open the assignment link and sign in with GitHub if prompted.
+#. Open the assignment link from your course site or instructor and sign in to
+   the UWF Classroom 50 portal with your PAT.
 #. Select your exact name from the roster and accept the assignment.
 
    **Do not select another student's name.** If your name is missing or you
@@ -42,6 +62,9 @@ the course website.
 
 #. Classroom 50 creates your private GitHub repository and displays its link.
 #. Open the new repository and copy its clone URL.
+
+If your name is missing or you selected the wrong name, stop and contact the
+instructor or TA immediately. Do not try to repair the roster binding yourself.
 
 Clone and submit your work
 ==========================
@@ -85,6 +108,16 @@ Makefile before grading, so make sure your code works with the original file.
 
 Run the provided ``make`` targets locally before pushing. Do not add generated
 executables, editor files, or unrelated directories to your submission.
+
+Common commands are:
+
+.. code-block:: console
+
+   make clean
+   make build
+   make test
+   make test-1
+   make test-2
 
 Group assignments
 =================

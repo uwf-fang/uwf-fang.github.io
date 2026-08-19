@@ -49,16 +49,23 @@
 <li><p><a class="reference internal" href="#responsibility" id="id1">Responsibility</a></p></li>
 <li><p><a class="reference internal" href="#classroom-50-access" id="id2">Classroom 50 access</a></p></li>
 <li><p><a class="reference internal" href="#testing-an-assignment" id="id3">Testing an assignment</a></p></li>
-<li><p><a class="reference internal" href="#student-grading-workflow" id="id4">Student grading workflow</a></p></li>
-<li><p><a class="reference internal" href="#classroom-50-repository-rules" id="id5">Classroom 50 repository rules</a></p></li>
-<li><p><a class="reference internal" href="#technical-prerequisites" id="id6">Technical prerequisites</a></p></li>
-<li><p><a class="reference internal" href="#communication" id="id7">Communication</a></p>
+<li><p><a class="reference internal" href="#student-grading-workflow" id="id4">Student grading workflow</a></p>
 <ul>
-<li><p><a class="reference internal" href="#grading-workflow" id="id8">Grading Workflow</a></p></li>
+<li><p><a class="reference internal" href="#roster-binding-correction" id="id5">Roster binding correction</a></p></li>
+<li><p><a class="reference internal" href="#assignment-template-ownership" id="id6">Assignment template ownership</a></p></li>
+<li><p><a class="reference internal" href="#manual-score-override" id="id7">Manual score override</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#policies" id="id9">Policies</a></p></li>
-<li><p><a class="reference internal" href="#hints" id="id10">Hints</a></p></li>
+<li><p><a class="reference internal" href="#classroom-50-repository-rules" id="id8">Classroom 50 repository rules</a></p></li>
+<li><p><a class="reference internal" href="#technical-prerequisites" id="id9">Technical prerequisites</a></p></li>
+<li><p><a class="reference internal" href="#common-student-support-issues" id="id10">Common student support issues</a></p></li>
+<li><p><a class="reference internal" href="#communication" id="id11">Communication</a></p>
+<ul>
+<li><p><a class="reference internal" href="#grading-workflow" id="id12">Grading Workflow</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#policies" id="id13">Policies</a></p></li>
+<li><p><a class="reference internal" href="#hints" id="id14">Hints</a></p></li>
 </ul>
 </nav>
 <section id="responsibility">
@@ -79,12 +86,18 @@
 <ul class="simple">
 <li><p>Accept the GitHub organization invitation sent by the instructor.</p></li>
 <li><p>Confirm membership in the <code class="docutils literal notranslate"><span class="pre">classroom50-&lt;classroom&gt;-ta</span></code> team when instructed.</p></li>
-<li><p>Sign in to the course Classroom 50 web interface with your GitHub account.</p></li>
+<li><p>Sign in through the UWF <a class="reference external" href="https://uwf-dsa-teaching.github.io">Classroom 50 portal</a> using a GitHub Classic Personal
+Access Token (PAT). Do <strong>not</strong> use the standard OAuth sign-in; follow the
+PAT steps in <a class="reference internal" href="../classroom-50.html"><span class="doc">the Classroom 50 guide</span></a>.
+Use this <a class="reference external" href="https://github.com/settings/tokens/new?description=Classroom+50+TA+Sign-In&amp;scopes=repo,workflow,admin:org,read:org,read:user,delete_repo">pre-configured TA token generation link</a>
+to create the token with the required scopes. Modify its expiration date to
+the end of the semester before generating it.</p></li>
 <li><p>Use the assignment accept link supplied by the instructor when you need to
 test an assignment.</p></li>
 </ul>
-<p>TAs should not change the classroom configuration or roster unless the
-instructor explicitly asks them to do so.</p>
+<p>Do not change classroom configuration or roster data unless the instructor
+explicitly asks you to do so. When authorized, use the procedures below and
+record the change for the instructor.</p>
 </section>
 <section id="testing-an-assignment">
 <h2><a class="toc-backref" href="#id3" role="doc-backlink">Testing an assignment</a><a class="headerlink" href="#testing-an-assignment" title="Link to this heading">¶</a></h2>
@@ -103,26 +116,66 @@ runs successfully.</p></li>
 configured tests either on every push or in submit-only mode.</p>
 <ol class="arabic simple">
 <li><p>Open the Classroom 50 <strong>Submissions</strong> view or the student’s repository.</p></li>
-<li><p>Inspect the latest Release and <code class="docutils literal notranslate"><span class="pre">result.json</span></code> output.</p></li>
+<li><p>Filter by assignment, section, or status, then inspect the latest Release and
+<code class="docutils literal notranslate"><span class="pre">result.json</span></code> output. Open the repository link from the student row when
+you need the exact code or Actions log.</p></li>
 <li><p>Check the code briefly for required methods, neatness, and style when the
 rubric calls for manual review.</p></li>
 <li><p>If feedback pull requests are enabled, leave line comments and suggestions
 in the student’s feedback pull request.</p></li>
 <li><p>Record the final grade in Canvas using the course rubric.</p></li>
 </ol>
-<p>For a manual correction, contact the instructor. Classroom 50 stores score
-overrides in the classroom configuration repository, and those changes should
-not be made independently by a TA.</p>
+<section id="roster-binding-correction">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Roster binding correction</a><a class="headerlink" href="#roster-binding-correction" title="Link to this heading">¶</a></h3>
+<p>If a student selected the wrong roster name, open
+<code class="docutils literal notranslate"><span class="pre">&lt;org&gt;/classroom50/&lt;classroom-slug&gt;/roster.csv</span></code> and remove only that
+student’s <code class="docutils literal notranslate"><span class="pre">username</span></code> and <code class="docutils literal notranslate"><span class="pre">github_id</span></code> values. Keep the name and email,
+commit the correction to <code class="docutils literal notranslate"><span class="pre">main</span></code>, and ask the student to open the assignment
+accept link again. They can then select the correct name.</p>
+</section>
+<section id="assignment-template-ownership">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Assignment template ownership</a><a class="headerlink" href="#assignment-template-ownership" title="Link to this heading">¶</a></h3>
+<p>When an instructor imports the shared <code class="docutils literal notranslate"><span class="pre">assignments.json</span></code> into a classroom,
+the <code class="docutils literal notranslate"><span class="pre">template.owner</span></code> value must be changed to the section’s teaching GitHub
+organization. Do not leave the placeholder or use the shared organization as
+the owner of student-facing repositories:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;template&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;owner&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;YOUR_TEACHING_ORGANIZATION&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;repo&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dsa1-assignment-name&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;branch&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;main&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Verify the owner for every assignment before committing the file to
+<code class="docutils literal notranslate"><span class="pre">&lt;org&gt;/classroom50/&lt;classroom-slug&gt;/assignments.json</span></code>.</p>
+</section>
+<section id="manual-score-override">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">Manual score override</a><a class="headerlink" href="#manual-score-override" title="Link to this heading">¶</a></h3>
+<p>When the instructor authorizes a correction, edit
+<code class="docutils literal notranslate"><span class="pre">&lt;org&gt;/classroom50/&lt;classroom-slug&gt;/scores.json</span></code> and set <code class="docutils literal notranslate"><span class="pre">override</span></code> to
+<code class="docutils literal notranslate"><span class="pre">true</span></code>. For example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;student-handle&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">85</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;override&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;feedback&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Awarded partial credit for algorithm approach.&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Commit the change to <code class="docutils literal notranslate"><span class="pre">main</span></code> and notify the instructor.</p>
+</section>
 </section>
 <section id="classroom-50-repository-rules">
-<h2><a class="toc-backref" href="#id5" role="doc-backlink">Classroom 50 repository rules</a><a class="headerlink" href="#classroom-50-repository-rules" title="Link to this heading">¶</a></h2>
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Classroom 50 repository rules</a><a class="headerlink" href="#classroom-50-repository-rules" title="Link to this heading">¶</a></h2>
 <p>Starter repositories must not retain legacy GitHub Classroom workflows or
 autograding files under <code class="docutils literal notranslate"><span class="pre">.github/</span></code>. Do not modify the provided <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>
 or test configuration while grading. Classroom 50 may restore the Makefile
 before running tests.</p>
 </section>
 <section id="technical-prerequisites">
-<h2><a class="toc-backref" href="#id6" role="doc-backlink">Technical prerequisites</a><a class="headerlink" href="#technical-prerequisites" title="Link to this heading">¶</a></h2>
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Technical prerequisites</a><a class="headerlink" href="#technical-prerequisites" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>A working development environment; see <a class="reference internal" href="../../cpp/ccpp-env.html"><span class="doc">C/C++ Development Environment</span></a>.</p></li>
 <li><p>C++, the CLI, <a class="reference internal" href="../../developer-tools/make.html"><span class="doc">make</span></a>, and
@@ -130,15 +183,27 @@ before running tests.</p>
 <li><p>Familiarity with <a class="reference internal" href="../classroom-50.html"><span class="doc">Classroom 50</span></a>.</p></li>
 </ul>
 </section>
+<section id="common-student-support-issues">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Common student support issues</a><a class="headerlink" href="#common-student-support-issues" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>If a macOS student sees <code class="docutils literal notranslate"><span class="pre">valgrind:</span> <span class="pre">command</span> <span class="pre">not</span> <span class="pre">found</span></code>, direct them to
+<a class="reference external" href="https://github.com/features/codespaces">GitHub Codespaces</a> and have them
+choose <strong>Code -&gt; Codespaces -&gt; Create codespace on main</strong>, then run
+<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test-mem</span></code> in the browser terminal.</p></li>
+<li><p>If a student sees <code class="docutils literal notranslate"><span class="pre">Permission</span> <span class="pre">denied</span></code> or HTTP 403, check whether the
+student is still shown as <strong>Pending invite</strong> in the web portal. They must
+accept the GitHub organization invitation sent to their university email.</p></li>
+</ul>
+</section>
 <section id="communication">
-<h2><a class="toc-backref" href="#id7" role="doc-backlink">Communication</a><a class="headerlink" href="#communication" title="Link to this heading">¶</a></h2>
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Communication</a><a class="headerlink" href="#communication" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Ask the instructor when you are unsure about a grading decision.</p></li>
 <li><p>Forward unclear student questions to the instructor.</p></li>
 <li><p>Use the teaching-chat channel on Discord as the primary staff channel.</p></li>
 </ul>
 <section id="grading-workflow">
-<h3><a class="toc-backref" href="#id8" role="doc-backlink">Grading Workflow</a><a class="headerlink" href="#grading-workflow" title="Link to this heading">¶</a></h3>
+<h3><a class="toc-backref" href="#id12" role="doc-backlink">Grading Workflow</a><a class="headerlink" href="#grading-workflow" title="Link to this heading">¶</a></h3>
 <ol class="arabic simple">
 <li><p>Collect the automated grading results from Classroom 50.</p>
 <ul class="simple">
@@ -174,7 +239,7 @@ suggestions there.</p></li>
 </section>
 </section>
 <section id="policies">
-<h2><a class="toc-backref" href="#id9" role="doc-backlink">Policies</a><a class="headerlink" href="#policies" title="Link to this heading">¶</a></h2>
+<h2><a class="toc-backref" href="#id13" role="doc-backlink">Policies</a><a class="headerlink" href="#policies" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Late submissions follow the course policy. Apply penalties through Canvas as
 directed by the instructor.</p></li>
@@ -183,7 +248,7 @@ directed by the instructor.</p></li>
 </ul>
 </section>
 <section id="hints">
-<h2><a class="toc-backref" href="#id10" role="doc-backlink">Hints</a><a class="headerlink" href="#hints" title="Link to this heading">¶</a></h2>
+<h2><a class="toc-backref" href="#id14" role="doc-backlink">Hints</a><a class="headerlink" href="#hints" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Fix a student’s code only when the correction is very small and clearly
 within the course policy.</p></li>
@@ -207,9 +272,15 @@ replace the automated correctness checks.</p></li>
 <li><a class="reference internal" href="#responsibility">Responsibility</a></li>
 <li><a class="reference internal" href="#classroom-50-access">Classroom 50 access</a></li>
 <li><a class="reference internal" href="#testing-an-assignment">Testing an assignment</a></li>
-<li><a class="reference internal" href="#student-grading-workflow">Student grading workflow</a></li>
+<li><a class="reference internal" href="#student-grading-workflow">Student grading workflow</a><ul>
+<li><a class="reference internal" href="#roster-binding-correction">Roster binding correction</a></li>
+<li><a class="reference internal" href="#assignment-template-ownership">Assignment template ownership</a></li>
+<li><a class="reference internal" href="#manual-score-override">Manual score override</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#classroom-50-repository-rules">Classroom 50 repository rules</a></li>
 <li><a class="reference internal" href="#technical-prerequisites">Technical prerequisites</a></li>
+<li><a class="reference internal" href="#common-student-support-issues">Common student support issues</a></li>
 <li><a class="reference internal" href="#communication">Communication</a><ul>
 <li><a class="reference internal" href="#grading-workflow">Grading Workflow</a></li>
 </ul>
