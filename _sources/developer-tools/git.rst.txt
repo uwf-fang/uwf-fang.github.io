@@ -202,6 +202,41 @@ Synchronize to the remote server
   locally. Or run ``git rebase origin/main`` if you have new commits locally.
   You may need to solve the conflicts if there are any.
 
+.. _git-push-rejected:
+
+Push rejected because the remote was updated
+--------------------------------------------
++ **The scenario:** You committed your local work, but your instructor pushed
+  new commits to the assignment repository. When you try to push, GitHub
+  rejects the push because the remote ``main`` branch has commits that are not
+  in your local repository.
++ **Before pulling:** Make sure your working directory is clean. In other
+  words, commit all of your local changes before rebasing:
+
+  .. code-block:: console
+
+     git status
+     git add -A
+     git commit -m "Save my work"
+     git status
+
+  The final ``git status`` should show that there is nothing to commit. Do not
+  commit passwords, API keys, generated files, or other files that do not
+  belong in the assignment.
++ **Solution:** Pull the remote commits and replay your local commits on top of
+  them, then push again:
+
+  .. code-block:: console
+
+     git pull --rebase origin main
+     git push origin main
+
+  If Git reports a conflict during the rebase, edit the conflicted files to
+  resolve the conflicts, run ``git add <resolved-file>`` for each file, and
+  continue with ``git rebase --continue``. After the rebase finishes, run
+  ``git push origin main`` again. If you need to stop the rebase, run
+  ``git rebase --abort``.
+
 Synchronization among multiple computers
 ----------------------------------------
 + The scenario: One user work on one branch from multiple computers.

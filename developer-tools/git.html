@@ -226,6 +226,39 @@ locally. Or run <code class="docutils literal notranslate"><span class="pre">git
 You may need to solve the conflicts if there are any.</p></li>
 </ul>
 </section>
+<section id="push-rejected-because-the-remote-was-updated">
+<span id="git-push-rejected"></span><h3>Push rejected because the remote was updated<a class="headerlink" href="#push-rejected-because-the-remote-was-updated" title="Link to this heading">¶</a></h3>
+<ul>
+<li><p><strong>The scenario:</strong> You committed your local work, but your instructor pushed
+new commits to the assignment repository. When you try to push, GitHub
+rejects the push because the remote <code class="docutils literal notranslate"><span class="pre">main</span></code> branch has commits that are not
+in your local repository.</p></li>
+<li><p><strong>Before pulling:</strong> Make sure your working directory is clean. In other
+words, commit all of your local changes before rebasing:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git status</span>
+<span class="go">git add -A</span>
+<span class="go">git commit -m &quot;Save my work&quot;</span>
+<span class="go">git status</span>
+</pre></div>
+</div>
+<p>The final <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">status</span></code> should show that there is nothing to commit. Do not
+commit passwords, API keys, generated files, or other files that do not
+belong in the assignment.</p>
+</li>
+<li><p><strong>Solution:</strong> Pull the remote commits and replay your local commits on top of
+them, then push again:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git pull --rebase origin main</span>
+<span class="go">git push origin main</span>
+</pre></div>
+</div>
+<p>If Git reports a conflict during the rebase, edit the conflicted files to
+resolve the conflicts, run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">add</span> <span class="pre">&lt;resolved-file&gt;</span></code> for each file, and
+continue with <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">rebase</span> <span class="pre">--continue</span></code>. After the rebase finishes, run
+<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">main</span></code> again. If you need to stop the rebase, run
+<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">rebase</span> <span class="pre">--abort</span></code>.</p>
+</li>
+</ul>
+</section>
 <section id="synchronization-among-multiple-computers">
 <h3>Synchronization among multiple computers<a class="headerlink" href="#synchronization-among-multiple-computers" title="Link to this heading">¶</a></h3>
 <ul class="simple">
@@ -299,6 +332,7 @@ restore it to the last commit.</p></li>
 <li><a class="reference internal" href="#other-workflows-fyi">Other Workflows (FYI)</a></li>
 <li><a class="reference internal" href="#advanced-topics">Advanced topics</a><ul>
 <li><a class="reference internal" href="#synchronize-to-the-remote-server">Synchronize to the remote server</a></li>
+<li><a class="reference internal" href="#push-rejected-because-the-remote-was-updated">Push rejected because the remote was updated</a></li>
 <li><a class="reference internal" href="#synchronization-among-multiple-computers">Synchronization among multiple computers</a></li>
 <li><a class="reference internal" href="#filename-case-problem">Filename case problem</a></li>
 <li><a class="reference internal" href="#restore-files">Restore files</a></li>
