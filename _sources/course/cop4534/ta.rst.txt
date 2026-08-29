@@ -6,8 +6,8 @@ Instructions for Teaching Assistants
   :depth: 2
   :local:
 
-Responsibility
-==============
+Responsibilities
+================
 #. Assignment grading
 
    * Labs - within one week
@@ -17,119 +17,45 @@ Responsibility
 
 Classroom 50 access
 ===================
+Classroom 50 is the course's assignment and grading portal.
 
-Classroom 50 replaces the older GitHub Classroom workflow for this course.
+#. Accept the GitHub organization and teaching-team invitations sent by the
+   instructor through email.
+#. Sign in to the UWF `Classroom 50 portal
+   <https://uwf-dsa-teaching.github.io>`_ with a GitHub Classic Personal Access
+   Token (PAT). Do **not** use the standard OAuth sign-in. Follow the PAT
+   instructions in :doc:`the Classroom 50 guide </course/classroom-50>`.
+   Use this `pre-configured TA token link
+   <https://github.com/settings/tokens/new?description=Classroom+50+TA+Sign-In&scopes=repo,workflow,admin:org,read:org,read:user,delete_repo>`_
+   to create the token with the required scopes, and **set its expiration to the
+   end of the semester.**
 
-* Accept the GitHub organization invitation sent by the instructor.
-* Confirm membership in the ``classroom50-<classroom>-ta`` team when instructed.
-* Sign in through the UWF `Classroom 50 portal
-  <https://uwf-dsa-teaching.github.io>`_ using a GitHub Classic Personal
-  Access Token (PAT). Do **not** use the standard OAuth sign-in; follow the
-  PAT steps in :doc:`the Classroom 50 guide </course/classroom-50>`.
-  Use this `pre-configured TA token generation link
-  <https://github.com/settings/tokens/new?description=Classroom+50+TA+Sign-In&scopes=repo,workflow,admin:org,read:org,read:user,delete_repo>`_
-  to create the token with the required scopes. Modify its expiration date to
-  the end of the semester before generating it.
-* Use the assignment accept link supplied by the instructor when you need to
-  test an assignment.
+Grading workflow
+================
 
-TAs should not change the classroom configuration or roster unless the
-instructor explicitly asks them to do so.
+#. Open the Classroom 50 **Submissions** view and filter by assignment,
+   section, or status as needed.
+#. Open the student's repository when needed and inspect the latest GitHub
+   Release and ``result.json`` score details.
+#. Use the course rubric to review the automated score and any required manual
+   criteria, such as required methods, neatness, and style. Check the
+   submission status and timestamp when a late penalty may apply.
 
-Testing an assignment
-=====================
+Manual score override
+---------------------
 
-#. Obtain the assignment accept link or slug from the instructor.
-#. Accept the assignment as a test account or TA account.
-#. Clone the generated repository and complete representative tasks.
-#. Push changes and verify that the configured Classroom 50 grading trigger
-   runs successfully.
-#. Inspect the resulting GitHub Release and ``result.json`` score details.
+If the final score differs from the automated score (should be rare), you can contact the instructor to request a manual override.
 
-Student grading workflow
-========================
+Copy grades to Canvas
+---------------------
 
-Classroom 50 creates a repository for each accepted assignment and runs the
-configured tests either on every push or in submit-only mode.
+Copy the final score and feedback to Canvas using SpeedGrader and the course
+rubric. Apply late penalties according to the course policy, and keep grades
+hidden until the instructor reviews and releases them.
 
-#. Open the Classroom 50 **Submissions** view or the student's repository.
-#. Inspect the latest Release and ``result.json`` output.
-#. Check the code briefly for required methods, neatness, and style when the
-   rubric calls for manual review.
-#. If feedback pull requests are enabled, leave line comments and suggestions
-   in the student's feedback pull request.
-#. Record the final grade in Canvas using the course rubric.
-
-For a manual correction, contact the instructor. Classroom 50 stores score
-overrides in the classroom configuration repository, and those changes should
-not be made independently by a TA.
-
-Classroom 50 repository rules
-=============================
-
-Starter repositories must not retain legacy GitHub Classroom workflows or
-autograding files under ``.github/``. Do not modify the provided ``Makefile``
-or test configuration while grading. Classroom 50 may restore the Makefile
-before running tests.
-
-Technical prerequisites
-=======================
-
-* A working development environment; see :doc:`/cpp/ccpp-env`.
-* C++, the CLI, :doc:`make </developer-tools/make>`, and
-  :doc:`git </developer-tools/git>`.
-* Familiarity with :doc:`Classroom 50 </course/classroom-50>`.
-
-Communication
+Grading notes
 =============
 
-* Ask the instructor when you are unsure about a grading decision.
-* Forward unclear student questions to the instructor.
-* Use the teaching-chat channel on Discord as the primary staff channel.
-
-Grading Workflow
-----------------
-#. Collect the automated grading results from Classroom 50.
-
-   + Start with the Classroom 50 **Submissions** view.
-   + If a score is missing, open the student's repository and inspect the
-     latest GitHub Release and ``result.json`` output.
-   + For late submissions, check the submission status and the timestamp of
-     the commit or submission tag used for grading.
-
-#. Manual grading
-
-   + Briefly check the code for required methods, neatness, and style when the
-     rubric calls for manual review.
-   + Check that students implemented the required method rather than hardcoding
-     results or replacing the required work with an unrelated library call.
-   + If feedback pull requests are enabled, leave line comments and
-     suggestions there.
-
-#. Update grades on Canvas
-
-   + Use SpeedGrader and the course rubric.
-   + Apply late penalties according to the course policy.
-   + Keep grades hidden until the instructor reviews and releases them.
-
-.. note::
-
-  More instructions are available in the :doc:`Classroom 50 guide
-  </course/classroom-50>` and the :doc:`DSA project workflow
-  </course/dsa-project>`.
-
-Policies
-========
-
-* Late submissions follow the course policy. Apply penalties through Canvas as
-  directed by the instructor.
-* Re-submissions are allowed only when the student has a good reason.
-* If a grading appeal is difficult to resolve, forward it to the instructor.
-
-Hints
-=====
-
-* Fix a student's code only when the correction is very small and clearly
-  within the course policy.
-* Use tests for correctness. Read source code for neatness and style, not to
-  replace the automated correctness checks.
+* Use automated results for correctness and read source code for the manual
+  criteria required by the rubric (if applicable).
+* Ask the instructor when a grading decision or student appeal is unclear.

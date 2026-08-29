@@ -46,23 +46,19 @@
 <h1>Instructions for Teaching Assistants<a class="headerlink" href="#instructions-for-teaching-assistants" title="Link to this heading">¶</a></h1>
 <nav class="contents local" id="contents">
 <ul class="simple">
-<li><p><a class="reference internal" href="#responsibility" id="id1">Responsibility</a></p></li>
+<li><p><a class="reference internal" href="#responsibilities" id="id1">Responsibilities</a></p></li>
 <li><p><a class="reference internal" href="#classroom-50-access" id="id2">Classroom 50 access</a></p></li>
-<li><p><a class="reference internal" href="#testing-an-assignment" id="id3">Testing an assignment</a></p></li>
-<li><p><a class="reference internal" href="#student-grading-workflow" id="id4">Student grading workflow</a></p></li>
-<li><p><a class="reference internal" href="#classroom-50-repository-rules" id="id5">Classroom 50 repository rules</a></p></li>
-<li><p><a class="reference internal" href="#technical-prerequisites" id="id6">Technical prerequisites</a></p></li>
-<li><p><a class="reference internal" href="#communication" id="id7">Communication</a></p>
+<li><p><a class="reference internal" href="#grading-workflow" id="id3">Grading workflow</a></p>
 <ul>
-<li><p><a class="reference internal" href="#grading-workflow" id="id8">Grading Workflow</a></p></li>
+<li><p><a class="reference internal" href="#manual-score-override" id="id4">Manual score override</a></p></li>
+<li><p><a class="reference internal" href="#copy-grades-to-canvas" id="id5">Copy grades to Canvas</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#policies" id="id9">Policies</a></p></li>
-<li><p><a class="reference internal" href="#hints" id="id10">Hints</a></p></li>
+<li><p><a class="reference internal" href="#grading-notes" id="id6">Grading notes</a></p></li>
 </ul>
 </nav>
-<section id="responsibility">
-<h2><a class="toc-backref" href="#id1" role="doc-backlink">Responsibility</a><a class="headerlink" href="#responsibility" title="Link to this heading">¶</a></h2>
+<section id="responsibilities">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Responsibilities</a><a class="headerlink" href="#responsibilities" title="Link to this heading">¶</a></h2>
 <ol class="arabic simple">
 <li><p>Assignment grading</p>
 <ul class="simple">
@@ -75,125 +71,46 @@
 </section>
 <section id="classroom-50-access">
 <h2><a class="toc-backref" href="#id2" role="doc-backlink">Classroom 50 access</a><a class="headerlink" href="#classroom-50-access" title="Link to this heading">¶</a></h2>
-<p>Classroom 50 replaces the older GitHub Classroom workflow for this course.</p>
-<ul class="simple">
-<li><p>Accept the GitHub organization invitation sent by the instructor.</p></li>
-<li><p>Confirm membership in the <code class="docutils literal notranslate"><span class="pre">classroom50-&lt;classroom&gt;-ta</span></code> team when instructed.</p></li>
-<li><p>Sign in through the UWF <a class="reference external" href="https://uwf-dsa-teaching.github.io">Classroom 50 portal</a> using a GitHub Classic Personal
-Access Token (PAT). Do <strong>not</strong> use the standard OAuth sign-in; follow the
-PAT steps in <a class="reference internal" href="../classroom-50.html"><span class="doc">the Classroom 50 guide</span></a>.
-Use this <a class="reference external" href="https://github.com/settings/tokens/new?description=Classroom+50+TA+Sign-In&amp;scopes=repo,workflow,admin:org,read:org,read:user,delete_repo">pre-configured TA token generation link</a>
-to create the token with the required scopes. Modify its expiration date to
-the end of the semester before generating it.</p></li>
-<li><p>Use the assignment accept link supplied by the instructor when you need to
-test an assignment.</p></li>
-</ul>
-<p>TAs should not change the classroom configuration or roster unless the
-instructor explicitly asks them to do so.</p>
-</section>
-<section id="testing-an-assignment">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink">Testing an assignment</a><a class="headerlink" href="#testing-an-assignment" title="Link to this heading">¶</a></h2>
+<p>Classroom 50 is the course’s assignment and grading portal.</p>
 <ol class="arabic simple">
-<li><p>Obtain the assignment accept link or slug from the instructor.</p></li>
-<li><p>Accept the assignment as a test account or TA account.</p></li>
-<li><p>Clone the generated repository and complete representative tasks.</p></li>
-<li><p>Push changes and verify that the configured Classroom 50 grading trigger
-runs successfully.</p></li>
-<li><p>Inspect the resulting GitHub Release and <code class="docutils literal notranslate"><span class="pre">result.json</span></code> score details.</p></li>
+<li><p>Accept the GitHub organization and teaching-team invitations sent by the
+instructor through email.</p></li>
+<li><p>Sign in to the UWF <a class="reference external" href="https://uwf-dsa-teaching.github.io">Classroom 50 portal</a> with a GitHub Classic Personal Access
+Token (PAT). Do <strong>not</strong> use the standard OAuth sign-in. Follow the PAT
+instructions in <a class="reference internal" href="../classroom-50.html"><span class="doc">the Classroom 50 guide</span></a>.
+Use this <a class="reference external" href="https://github.com/settings/tokens/new?description=Classroom+50+TA+Sign-In&amp;scopes=repo,workflow,admin:org,read:org,read:user,delete_repo">pre-configured TA token link</a>
+to create the token with the required scopes, and <strong>set its expiration to the
+end of the semester.</strong></p></li>
 </ol>
 </section>
-<section id="student-grading-workflow">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink">Student grading workflow</a><a class="headerlink" href="#student-grading-workflow" title="Link to this heading">¶</a></h2>
-<p>Classroom 50 creates a repository for each accepted assignment and runs the
-configured tests either on every push or in submit-only mode.</p>
-<ol class="arabic simple">
-<li><p>Open the Classroom 50 <strong>Submissions</strong> view or the student’s repository.</p></li>
-<li><p>Inspect the latest Release and <code class="docutils literal notranslate"><span class="pre">result.json</span></code> output.</p></li>
-<li><p>Check the code briefly for required methods, neatness, and style when the
-rubric calls for manual review.</p></li>
-<li><p>If feedback pull requests are enabled, leave line comments and suggestions
-in the student’s feedback pull request.</p></li>
-<li><p>Record the final grade in Canvas using the course rubric.</p></li>
-</ol>
-<p>For a manual correction, contact the instructor. Classroom 50 stores score
-overrides in the classroom configuration repository, and those changes should
-not be made independently by a TA.</p>
-</section>
-<section id="classroom-50-repository-rules">
-<h2><a class="toc-backref" href="#id5" role="doc-backlink">Classroom 50 repository rules</a><a class="headerlink" href="#classroom-50-repository-rules" title="Link to this heading">¶</a></h2>
-<p>Starter repositories must not retain legacy GitHub Classroom workflows or
-autograding files under <code class="docutils literal notranslate"><span class="pre">.github/</span></code>. Do not modify the provided <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>
-or test configuration while grading. Classroom 50 may restore the Makefile
-before running tests.</p>
-</section>
-<section id="technical-prerequisites">
-<h2><a class="toc-backref" href="#id6" role="doc-backlink">Technical prerequisites</a><a class="headerlink" href="#technical-prerequisites" title="Link to this heading">¶</a></h2>
-<ul class="simple">
-<li><p>A working development environment; see <a class="reference internal" href="../../cpp/ccpp-env.html"><span class="doc">C/C++ Development Environment</span></a>.</p></li>
-<li><p>C++, the CLI, <a class="reference internal" href="../../developer-tools/make.html"><span class="doc">make</span></a>, and
-<a class="reference internal" href="../../developer-tools/git.html"><span class="doc">git</span></a>.</p></li>
-<li><p>Familiarity with <a class="reference internal" href="../classroom-50.html"><span class="doc">Classroom 50</span></a>.</p></li>
-</ul>
-</section>
-<section id="communication">
-<h2><a class="toc-backref" href="#id7" role="doc-backlink">Communication</a><a class="headerlink" href="#communication" title="Link to this heading">¶</a></h2>
-<ul class="simple">
-<li><p>Ask the instructor when you are unsure about a grading decision.</p></li>
-<li><p>Forward unclear student questions to the instructor.</p></li>
-<li><p>Use the teaching-chat channel on Discord as the primary staff channel.</p></li>
-</ul>
 <section id="grading-workflow">
-<h3><a class="toc-backref" href="#id8" role="doc-backlink">Grading Workflow</a><a class="headerlink" href="#grading-workflow" title="Link to this heading">¶</a></h3>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink">Grading workflow</a><a class="headerlink" href="#grading-workflow" title="Link to this heading">¶</a></h2>
 <ol class="arabic simple">
-<li><p>Collect the automated grading results from Classroom 50.</p>
-<ul class="simple">
-<li><p>Start with the Classroom 50 <strong>Submissions</strong> view.</p></li>
-<li><p>If a score is missing, open the student’s repository and inspect the
-latest GitHub Release and <code class="docutils literal notranslate"><span class="pre">result.json</span></code> output.</p></li>
-<li><p>For late submissions, check the submission status and the timestamp of
-the commit or submission tag used for grading.</p></li>
-</ul>
-</li>
-<li><p>Manual grading</p>
-<ul class="simple">
-<li><p>Briefly check the code for required methods, neatness, and style when the
-rubric calls for manual review.</p></li>
-<li><p>Check that students implemented the required method rather than hardcoding
-results or replacing the required work with an unrelated library call.</p></li>
-<li><p>If feedback pull requests are enabled, leave line comments and
-suggestions there.</p></li>
-</ul>
-</li>
-<li><p>Update grades on Canvas</p>
-<ul class="simple">
-<li><p>Use SpeedGrader and the course rubric.</p></li>
-<li><p>Apply late penalties according to the course policy.</p></li>
-<li><p>Keep grades hidden until the instructor reviews and releases them.</p></li>
-</ul>
-</li>
+<li><p>Open the Classroom 50 <strong>Submissions</strong> view and filter by assignment,
+section, or status as needed.</p></li>
+<li><p>Open the student’s repository when needed and inspect the latest GitHub
+Release and <code class="docutils literal notranslate"><span class="pre">result.json</span></code> score details.</p></li>
+<li><p>Use the course rubric to review the automated score and any required manual
+criteria, such as required methods, neatness, and style. Check the
+submission status and timestamp when a late penalty may apply.</p></li>
 </ol>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>More instructions are available in the <a class="reference internal" href="../classroom-50.html"><span class="doc">Classroom 50 guide</span></a> and the <a class="reference internal" href="../dsa-project.html"><span class="doc">DSA project workflow</span></a>.</p>
-</div>
+<section id="manual-score-override">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Manual score override</a><a class="headerlink" href="#manual-score-override" title="Link to this heading">¶</a></h3>
+<p>If the final score differs from the automated score (should be rare), you can contact the instructor to request a manual override.</p>
+</section>
+<section id="copy-grades-to-canvas">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Copy grades to Canvas</a><a class="headerlink" href="#copy-grades-to-canvas" title="Link to this heading">¶</a></h3>
+<p>Copy the final score and feedback to Canvas using SpeedGrader and the course
+rubric. Apply late penalties according to the course policy, and keep grades
+hidden until the instructor reviews and releases them.</p>
 </section>
 </section>
-<section id="policies">
-<h2><a class="toc-backref" href="#id9" role="doc-backlink">Policies</a><a class="headerlink" href="#policies" title="Link to this heading">¶</a></h2>
+<section id="grading-notes">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Grading notes</a><a class="headerlink" href="#grading-notes" title="Link to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>Late submissions follow the course policy. Apply penalties through Canvas as
-directed by the instructor.</p></li>
-<li><p>Re-submissions are allowed only when the student has a good reason.</p></li>
-<li><p>If a grading appeal is difficult to resolve, forward it to the instructor.</p></li>
-</ul>
-</section>
-<section id="hints">
-<h2><a class="toc-backref" href="#id10" role="doc-backlink">Hints</a><a class="headerlink" href="#hints" title="Link to this heading">¶</a></h2>
-<ul class="simple">
-<li><p>Fix a student’s code only when the correction is very small and clearly
-within the course policy.</p></li>
-<li><p>Use tests for correctness. Read source code for neatness and style, not to
-replace the automated correctness checks.</p></li>
+<li><p>Use automated results for correctness and read source code for the manual
+criteria required by the rubric (if applicable).</p></li>
+<li><p>Ask the instructor when a grading decision or student appeal is unclear.</p></li>
 </ul>
 </section>
 </section>
@@ -209,18 +126,14 @@ replace the automated correctness checks.</p></li>
     <h3><a href="../../index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">Instructions for Teaching Assistants</a><ul>
-<li><a class="reference internal" href="#responsibility">Responsibility</a></li>
+<li><a class="reference internal" href="#responsibilities">Responsibilities</a></li>
 <li><a class="reference internal" href="#classroom-50-access">Classroom 50 access</a></li>
-<li><a class="reference internal" href="#testing-an-assignment">Testing an assignment</a></li>
-<li><a class="reference internal" href="#student-grading-workflow">Student grading workflow</a></li>
-<li><a class="reference internal" href="#classroom-50-repository-rules">Classroom 50 repository rules</a></li>
-<li><a class="reference internal" href="#technical-prerequisites">Technical prerequisites</a></li>
-<li><a class="reference internal" href="#communication">Communication</a><ul>
-<li><a class="reference internal" href="#grading-workflow">Grading Workflow</a></li>
+<li><a class="reference internal" href="#grading-workflow">Grading workflow</a><ul>
+<li><a class="reference internal" href="#manual-score-override">Manual score override</a></li>
+<li><a class="reference internal" href="#copy-grades-to-canvas">Copy grades to Canvas</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#policies">Policies</a></li>
-<li><a class="reference internal" href="#hints">Hints</a></li>
+<li><a class="reference internal" href="#grading-notes">Grading notes</a></li>
 </ul>
 </li>
 </ul>
