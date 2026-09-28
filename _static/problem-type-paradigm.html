@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connecting Problem Types to Algorithm Paradigms</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Montserrat:wght@600;700;800&family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-white: #FFFFFF;
+      --title-charcoal: #1E2022;
+      --body-offblack: #2B2D42;
+      --primary-accent: #003366;
+      --secondary-green: #1E5631;
+      --secondary-red: #8B0000;
+      --border-line: #1E2022;
+      --border-subtle: #D8DEE4;
+      --highlight-bg: #F0F4F8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-white);
+      color: var(--body-offblack);
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.55;
+      padding: 3rem 1.5rem;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    header {
+      border-bottom: 2px solid var(--border-line);
+      padding-bottom: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .topic-tag {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary-accent);
+      border: 1px solid var(--primary-accent);
+      padding: 0.2rem 0.6rem;
+      display: inline-block;
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: var(--title-charcoal);
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    p.lead-text {
+      font-size: 1.05rem;
+      color: var(--body-offblack);
+      max-width: 820px;
+    }
+
+    section {
+      margin-bottom: 3.5rem;
+    }
+
+    h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--title-charcoal);
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--border-line);
+      padding-bottom: 0.4rem;
+    }
+
+    /* Diagram Styles */
+    .pipeline-diagram {
+      border: 1px solid var(--border-line);
+      padding: 1.75rem;
+      background: var(--bg-white);
+      margin-bottom: 1.5rem;
+    }
+
+    .pipeline-step-box {
+      border: 1px solid var(--border-line);
+      padding: 1.25rem;
+      background: var(--bg-white);
+    }
+
+    .pipeline-step-box.hub {
+      border: 2px solid var(--primary-accent);
+      background: var(--highlight-bg);
+    }
+
+    .step-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--primary-accent);
+      margin-bottom: 0.25rem;
+    }
+
+    .step-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--title-charcoal);
+      margin-bottom: 0.35rem;
+    }
+
+    .arrow-down {
+      text-align: center;
+      font-size: 1.25rem;
+      color: var(--title-charcoal);
+      margin: 0.6rem 0;
+      font-weight: bold;
+    }
+
+    .questions-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .question-card {
+      border: 1px solid var(--border-line);
+      padding: 1rem;
+      background: var(--bg-white);
+    }
+
+    .question-card h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--title-charcoal);
+      margin-bottom: 0.25rem;
+    }
+
+    .question-card .action-tag {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.75rem;
+      color: var(--primary-accent);
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    /* Sandbox Styles */
+    .sandbox-container {
+      border: 1px solid var(--border-line);
+      padding: 1.75rem;
+      background: var(--bg-white);
+    }
+
+    .problem-scenario {
+      background: var(--highlight-bg);
+      border-left: 4px solid var(--primary-accent);
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    .tab-strip {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+
+    .tab-btn {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0.6rem 1rem;
+      border: 1px solid var(--border-line);
+      background: var(--bg-white);
+      color: var(--title-charcoal);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      background: var(--highlight-bg);
+    }
+
+    .tab-btn.active {
+      background: var(--primary-accent);
+      color: var(--bg-white);
+      border-color: var(--primary-accent);
+    }
+
+    .interactive-display {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 1.5rem;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 1.5rem;
+    }
+
+    .display-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .panel-subtitle {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--primary-accent);
+    }
+
+    .result-badge {
+      border: 1px solid var(--border-line);
+      padding: 1.25rem;
+      background: var(--bg-white);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .result-badge .main-answer {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--title-charcoal);
+    }
+
+    .status-true {
+      color: var(--secondary-green);
+    }
+
+    .explanation-box {
+      font-size: 0.9rem;
+      color: var(--body-offblack);
+      line-height: 1.5;
+    }
+
+    .candidate-list {
+      list-style: none;
+      border: 1px solid var(--border-line);
+      max-height: 380px;
+      overflow-y: auto;
+    }
+
+    .candidate-item {
+      padding: 0.65rem 0.85rem;
+      border-bottom: 1px solid var(--border-subtle);
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background-color 0.15s ease;
+    }
+
+    .candidate-item:last-child {
+      border-bottom: none;
+    }
+
+    .candidate-item.highlighted {
+      background-color: var(--highlight-bg);
+      border-left: 4px solid var(--primary-accent);
+      font-weight: 700;
+    }
+
+    .candidate-item.highlighted-optimal {
+      background-color: #EBF3ED;
+      border-left: 4px solid var(--secondary-green);
+      font-weight: 700;
+    }
+
+    .tag-badge {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 0.15rem 0.4rem;
+      text-transform: uppercase;
+      margin-left: 0.5rem;
+      border: 1px solid var(--border-line);
+      background: #FFFFFF;
+    }
+
+    .tag-optimal {
+      border-color: var(--secondary-green);
+      color: var(--secondary-green);
+    }
+
+    .tag-witness {
+      border-color: var(--primary-accent);
+      color: var(--primary-accent);
+    }
+
+    /* Explanation & Comparison Table Styles */
+    .analogy-box {
+      border: 1px solid var(--border-line);
+      padding: 1.25rem;
+      background: var(--bg-white);
+      margin-bottom: 1.5rem;
+    }
+
+    .analogy-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--title-charcoal);
+      margin-bottom: 0.5rem;
+    }
+
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table.clean-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--border-line);
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      background: var(--bg-white);
+    }
+
+    table.clean-table th {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      background: var(--bg-white);
+      color: var(--title-charcoal);
+      border-bottom: 2px solid var(--border-line);
+      border-right: 1px solid var(--border-subtle);
+      padding: 0.75rem;
+      text-align: left;
+    }
+
+    table.clean-table td {
+      padding: 0.75rem;
+      border-bottom: 1px solid var(--border-subtle);
+      border-right: 1px solid var(--border-subtle);
+      vertical-align: middle;
+    }
+
+    table.clean-table tr:hover {
+      background-color: var(--highlight-bg);
+    }
+
+    /* Matrix Compact Badges */
+    .pill {
+      display: inline-block;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+    }
+
+    .pill-native {
+      color: var(--secondary-green);
+    }
+
+    .pill-feasible {
+      color: var(--primary-accent);
+    }
+
+    .pill-inefficient {
+      color: var(--secondary-red);
+    }
+
+    .pill-inapplicable {
+      color: #767676;
+    }
+
+    .pill-best {
+      color: var(--secondary-green);
+      font-weight: bold;
+    }
+
+    @media (max-width: 850px) {
+      .questions-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .interactive-display {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <div class="topic-tag">Algorithms & Problem Solving</div>
+    <h1>Connecting Problem Types to Algorithm Paradigms</h1>
+    <p class="lead-text">
+      How different computational problems relate to one another, why <strong>Enumeration</strong> is the foundation of all of them, and why we use smart algorithmic paradigms instead of checking every possibility by hand.
+    </p>
+  </header>
+
+  <!-- Section 1: The Pipeline Model -->
+  <section>
+    <h2>1. The Pipeline Model: One List, Five Questions</h2>
+    <p style="margin-bottom: 1.25rem;">
+      Think of any problem as a two-stage journey: first, you filter out all the impossible choices to create a list of valid possibilities (<strong>Enumeration</strong>). Once you have that list, the problem type simply depends on <strong>what question you ask about it</strong>.
+    </p>
+
+    <div class="pipeline-diagram">
+      
+      <div class="pipeline-step-box">
+        <div class="step-label">Stage 1: All Combinations</div>
+        <div class="step-title">Every Theoretical Choice (16 Possibilities)</div>
+        <p style="font-size: 0.9rem;">
+          Every theoretical combination of items. Many of these break the rules (e.g., exceeding the maximum bag weight).
+        </p>
+      </div>
+
+      <div class="arrow-down">&darr; Filter out choices that break the rules</div>
+
+      <div class="pipeline-step-box hub">
+        <div class="step-label">Stage 2: The Central Hub</div>
+        <div class="step-title">ENUMERATION ("Find All Valid Options")</div>
+        <p style="font-size: 0.9rem;">
+          The complete collection of choices that follow every rule. <strong>Every other problem type is just an operation done on this single list:</strong>
+        </p>
+      </div>
+
+      <div class="arrow-down">&darr; What do you want to do with this list?</div>
+
+      <div class="questions-grid">
+        
+        <div class="question-card">
+          <span class="action-tag">Take First Match</span>
+          <h3>SEARCH</h3>
+          <p style="font-size: 0.85rem; color: var(--body-offblack);">
+            <em>"Just hand me any valid solution."</em><br>
+            Stops immediately as soon as 1 satisfying item is found.
+          </p>
+        </div>
+
+        <div class="question-card">
+          <span class="action-tag">Is List Empty?</span>
+          <h3>DECISION</h3>
+          <p style="font-size: 0.85rem; color: var(--body-offblack);">
+            <em>"Is there at least one valid solution?"</em><br>
+            Answers strictly <strong>YES</strong> or <strong>NO</strong>.
+          </p>
+        </div>
+
+        <div class="question-card">
+          <span class="action-tag">Count Items</span>
+          <h3>COUNTING</h3>
+          <p style="font-size: 0.85rem; color: var(--body-offblack);">
+            <em>"How many valid choices are there?"</em><br>
+            Tallies the total without needing to store each item.
+          </p>
+        </div>
+
+        <div class="question-card">
+          <span class="action-tag">Pick The Best</span>
+          <h3>OPTIMIZATION</h3>
+          <p style="font-size: 0.85rem; color: var(--body-offblack);">
+            <em>"Which one of these has the highest score?"</em><br>
+            Compares all valid items and keeps the winner.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section 2: Interactive Sandbox -->
+  <section>
+    <h2>2. See It in Action: The Packing Problem</h2>
+    <p style="margin-bottom: 1.25rem;">
+      Suppose you are packing a bag. Your bag can hold a <strong>maximum weight of 5 kg</strong>. You have 4 items to choose from:
+    </p>
+
+    <div class="sandbox-container">
+      <div class="problem-scenario">
+        <strong>Items available:</strong> 
+        Water Bottle (3 kg, $10) &bull; 
+        Book (2 kg, $4) &bull; 
+        Snack (1 kg, $3) &bull; 
+        Camera (4 kg, $9)
+      </div>
+
+      <div class="tab-strip">
+        <button class="tab-btn active" data-tab="enumeration" onclick="setTab('enumeration')">1. Enumeration</button>
+        <button class="tab-btn" data-tab="decision" onclick="setTab('decision')">2. Decision (Yes/No)</button>
+        <button class="tab-btn" data-tab="search" onclick="setTab('search')">3. Search (Find One)</button>
+        <button class="tab-btn" data-tab="counting" onclick="setTab('counting')">4. Counting</button>
+        <button class="tab-btn" data-tab="optimization" onclick="setTab('optimization')">5. Optimization</button>
+      </div>
+
+      <div class="interactive-display">
+        
+        <!-- Left: List of Feasible Options -->
+        <div class="display-panel">
+          <span class="panel-subtitle">The Valid Options List (Weight &le; 5 kg)</span>
+          <ul class="candidate-list" id="candidateListEl">
+            <!-- Dynamically rendered -->
+          </ul>
+        </div>
+
+        <!-- Right: What the Problem Type Does -->
+        <div class="display-panel">
+          <span class="panel-subtitle">Problem Type Evaluation</span>
+          <div class="result-badge">
+            <div class="main-answer" id="resultAnswer">9 Valid Combinations</div>
+            <div class="explanation-box" id="resultExplanation">
+              Enumeration outputs every single combination of items that does not exceed 5 kg.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Why Do We Need Algorithm Paradigms? -->
+  <section>
+    <h2>3. The Catch: Why Not Always Use Enumeration?</h2>
+    <p style="margin-bottom: 1.25rem;">
+      If you can solve every problem by generating the full list and inspecting it, <strong>why do we need algorithm paradigms?</strong>
+    </p>
+
+    <div class="analogy-box">
+      <div class="analogy-title">The Bottleneck: Combinatorial Explosion</div>
+      <p style="font-size: 0.95rem;">
+        With 4 items, there are only 16 choices. But with <strong>50 items</strong>, there are over <strong>1,000,000,000,000,000</strong> candidate choices. Listing them all would take thousands of years.
+      </p>
+      <p style="font-size: 0.95rem; margin-top: 0.5rem;">
+        Algorithmic paradigms are <strong>shortcuts</strong> that answer Decision, Search, Counting, or Optimization questions <em>without ever generating the whole list</em>.
+      </p>
+    </div>
+
+    <!-- Paradigms Table -->
+    <table class="clean-table">
+      <thead>
+        <tr>
+          <th>Paradigm</th>
+          <th>How It Avoids the Full List</th>
+          <th>What It Solves Best</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Brute Force</strong></td>
+          <td>Does not avoid it. Exhaustively visits every single choice one by one.</td>
+          <td><span class="pill-inefficient">Small toy problems</span></td>
+        </tr>
+        <tr>
+          <td><strong>Backtracking</strong></td>
+          <td>
+            Builds solutions step-by-step. The moment a rule is broken (e.g., bag exceeds 5 kg), it stops and turns back immediately, ignoring that entire branch.
+          </td>
+          <td><span class="pill-best">Search &bull; Decision &bull; Enumeration</span></td>
+        </tr>
+        <tr>
+          <td><strong>Branch & Bound</strong></td>
+          <td>
+            Tracks the best score found so far. If an incomplete branch cannot mathematically beat the record, it abandons the branch immediately.
+          </td>
+          <td><span class="pill-best">Optimization</span></td>
+        </tr>
+        <tr>
+          <td><strong>Dynamic Programming</strong></td>
+          <td>
+            Notices when two different paths lead to the same situation (e.g., "3 kg remaining"). It solves that subproblem once, saves the result, and reuses it.
+          </td>
+          <td><span class="pill-best">Optimization &bull; Counting</span></td>
+        </tr>
+        <tr>
+          <td><strong>Greedy</strong></td>
+          <td>
+            Never branches or reconsiders. It makes the single most attractive immediate choice at each step and moves forward.
+          </td>
+          <td><span class="pill-best">Fast Approximate Optimization</span></td>
+        </tr>
+        <tr>
+          <td><strong>Divide & Conquer</strong></td>
+          <td>
+            Splits the problem into independent, disjoint sub-problems, solves each half, and combines the results.
+          </td>
+          <td><span class="pill-best">Counting &bull; Math Evaluation</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Section 4: Quick Reference Matrix -->
+  <section>
+    <h2>4. Quick Reference: Paradigm & Problem Compatibility</h2>
+    <p style="margin-bottom: 1.25rem;">
+      A high-level summary showing which algorithmic paradigm natively fits each problem type, which ones are feasible but slow, and which ones are not applicable.
+    </p>
+
+    <div class="table-responsive">
+      <table class="clean-table">
+        <thead>
+          <tr>
+            <th>Paradigm</th>
+            <th>Search</th>
+            <th>Enumeration</th>
+            <th>Optimization</th>
+            <th>Counting</th>
+            <th>Decision</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Brute-Force</strong></td>
+            <td><span class="pill pill-feasible">Feasible</span></td>
+            <td><span class="pill pill-native">Native Fit</span></td>
+            <td><span class="pill pill-inefficient">Inefficient</span></td>
+            <td><span class="pill pill-feasible">Feasible</span></td>
+            <td><span class="pill pill-feasible">Feasible</span></td>
+          </tr>
+          <tr>
+            <td><strong>Backtracking</strong></td>
+            <td><span class="pill pill-native">Native Fit</span></td>
+            <td><span class="pill pill-native">Native Fit</span></td>
+            <td><span class="pill pill-inefficient">Inefficient</span></td>
+            <td><span class="pill pill-native">Native Fit</span></td>
+            <td><span class="pill pill-native">Native Fit</span></td>
+          </tr>
+          <tr>
+            <td><strong>Greedy</strong></td>
+            <td><span class="pill pill-feasible">Feasible</span></td>
+            <td><span class="pill pill-inapplicable">Inapplicable</span></td>
+            <td><span class="pill pill-native">Native Fit</span></td>
+            <td><span class="pill pill-inapplicable">Inapplicable</span></td>
+            <td><span class="pill pill-feasible">Feasible</span></td>
+          </tr>
+          <tr>
+            <td><strong>Divide & Conquer</strong></td>
+            <td><span class="pill pill-native">Native Fit</span></td>
+            <td><span class="pill pill-inefficient">Inefficient</span></td>
+            <td><span class="pill pill-native">Native Fit</span></td>
+            <td><span class="pill pill-native">Native Fit</span></td>
+            <td><span class="pill pill-native">Native Fit</span></td>
+          </tr>
+          <tr>
+            <td><strong>Dynamic Programming</strong></td>
+            <td><span class="pill pill-feasible">Feasible</span></td>
+            <td><span class="pill pill-inefficient">Inefficient</span></td>
+            <td><span class="pill pill-native">Native Fit</span></td>
+            <td><span class="pill pill-native">Native Fit</span></td>
+            <td><span class="pill pill-native">Native Fit</span></td>
+          </tr>
+          <tr>
+            <td><strong>Branch & Bound</strong></td>
+            <td><span class="pill pill-inefficient">Inefficient</span></td>
+            <td><span class="pill pill-inapplicable">Inapplicable</span></td>
+            <td><span class="pill pill-native">Native Fit</span></td>
+            <td><span class="pill pill-inapplicable">Inapplicable</span></td>
+            <td><span class="pill pill-inefficient">Inefficient</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // Problem items definition
+  const ITEMS = [
+    { name: "Water Bottle", w: 3, v: 10 },
+    { name: "Book",         w: 2, v: 4  },
+    { name: "Snack",        w: 1, v: 3  },
+    { name: "Camera",       w: 4, v: 9  }
+  ];
+
+  const MAX_WEIGHT = 5;
+
+  // Generate all feasible subsets accurately
+  function getFeasibleSubsets() {
+    const results = [];
+    const n = ITEMS.length;
+    for (let mask = 0; mask < (1 << n); mask++) {
+      const chosen = [];
+      let totalW = 0;
+      let totalV = 0;
+      for (let i = 0; i < n; i++) {
+        if ((mask >> i) & 1) {
+          chosen.push(ITEMS[i].name);
+          totalW += ITEMS[i].w;
+          totalV += ITEMS[i].v;
+        }
+      }
+      if (totalW <= MAX_WEIGHT) {
+        results.push({
+          id: mask,
+          names: chosen.length > 0 ? chosen.join(" + ") : "[Empty Bag]",
+          weight: totalW,
+          val: totalV
+        });
+      }
+    }
+    // Sort consistently: ascending by weight, then descending by value
+    return results.sort((a, b) => a.weight - b.weight || b.val - a.val);
+  }
+
+  const feasible = getFeasibleSubsets();
+
+  // Find optimal combination dynamically
+  const optimalItem = feasible.reduce((max, item) => item.val > max.val ? item : max, feasible[0]);
+
+  // Tab configurations with dynamic predicate matching
+  const TAB_DATA = {
+    enumeration: {
+      answer: `${feasible.length} Valid Combinations`,
+      explanation: "Enumeration lists every single combination of items that does not exceed 5 kg. Notice that it outputs the full list, which takes the most time and memory.",
+      isMatch: (item) => true,
+      badgeLabel: ""
+    },
+    decision: {
+      answer: "<span class='status-true'>YES</span> (Can pack &ge; $12 value?)",
+      explanation: "Decision asks a 1-bit question: 'Is there ANY valid option with value &ge; $12?' Because valid combinations reaching &ge; $12 exist (highlighted on the left), the answer is YES.",
+      isMatch: (item) => item.val >= 12,
+      badgeLabel: "VALID WITNESS"
+    },
+    search: {
+      answer: "Found: Water Bottle ($10)",
+      explanation: "Search seeks ONE witness meeting criteria (e.g., 'Find any single option with value &ge; $10'). As soon as it encounters Water Bottle ($10), it returns it and terminates early.",
+      isMatch: (item, idx, list) => item === list.find(x => x.val >= 10),
+      badgeLabel: "FOUND WITNESS"
+    },
+    counting: {
+      answer: `${feasible.length} Total Combinations`,
+      explanation: "Counting tells you the total size of the valid set. It does not need to store the item names in memory; it simply maintains a counter: count = count + 1.",
+      isMatch: (item) => true,
+      badgeLabel: ""
+    },
+    optimization: {
+      answer: `Best: ${optimalItem.names} ($${optimalItem.val})`,
+      explanation: "Optimization compares all valid combinations against an objective function (maximum value) and keeps the single winner: Water Bottle + Book ($14).",
+      isMatch: (item) => item.id === optimalItem.id,
+      badgeLabel: "GLOBAL MAX"
+    }
+  };
+
+  function setTab(tabKey) {
+    // Update active tab buttons
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-tab') === tabKey);
+    });
+
+    const info = TAB_DATA[tabKey];
+    document.getElementById('resultAnswer').innerHTML = info.answer;
+    document.getElementById('resultExplanation').innerHTML = info.explanation;
+
+    // Render list items with dynamic highlight validation
+    const listEl = document.getElementById('candidateListEl');
+    listEl.innerHTML = '';
+
+    feasible.forEach((item, idx) => {
+      const li = document.createElement('li');
+      li.className = 'candidate-item';
+      
+      const matched = info.isMatch(item, idx, feasible);
+
+      if (matched) {
+        if (tabKey === 'optimization') {
+          li.classList.add('highlighted-optimal');
+        } else {
+          li.classList.add('highlighted');
+        }
+      }
+
+      const badgeHtml = (matched && info.badgeLabel)
+        ? `<span class="tag-badge ${tabKey === 'optimization' ? 'tag-optimal' : 'tag-witness'}">${info.badgeLabel}</span>`
+        : '';
+
+      li.innerHTML = `
+        <div>
+          <span>${item.names}</span>
+          ${badgeHtml}
+        </div>
+        <span>${item.weight} kg &bull; $${item.val}</span>
+      `;
+      listEl.appendChild(li);
+    });
+  }
+
+  // Initial load
+  document.addEventListener('DOMContentLoaded', () => {
+    setTab('enumeration');
+  });
+</script>
+
+</body>
+</html>

@@ -125,7 +125,9 @@ solution.
 + Optimization (find the best)
 
   * Find all and then select the best
-  * Not as efficient as branch and bound
+  * A basic feasibility backtracking algorithm does not automatically optimize;
+    it can track the best solution, while branch and bound can prune using
+    objective bounds
 
 .. backtracking-example:
 
@@ -147,10 +149,11 @@ Related Algorithms and Paradigms
   algorithms can cover a wide spectrum of problems as all possible solutions
   are explored. It can be used to find all solutions, any valid solution, or
   the best solution. Backtracking is a more specific algorithmic paradigm that
-  focus on to find any valid solution to a constraint satisfaction problem.
-  When backtracking is employed to find all solutions, it is still more
-  efficient than brute-force as it prunes the search space by discarding
-  invalid candidates as early as possible.
+  focuses on finding one or all valid solutions to a constraint satisfaction
+  problem.
+  When backtracking is employed to find all solutions, its feasibility checks
+  can reduce work by discarding invalid partial candidates early; the benefit
+  depends on how much of the search space can be pruned.
 
 + Depth-First Search
 
@@ -164,14 +167,12 @@ Related Algorithms and Paradigms
 
 + Branch and bound
 
-  Branch and bound is a general algorithmic paradigm that involves exploring
-  the solution space by branching out and bounding the search space. It's
-  similar to backtracking in that it involves exploring a decision space, but
-  it's more efficient as it prunes the search space by bounding the solution
-  space. The purposes of branch and bound are to find the optimal solution
-  while backtracking is to find any valid solution. Branch and bound is often
-  used for optimization problems, while backtracking is used for constraint
-  satisfaction problems.
+  Branch and bound is a general algorithmic paradigm that explores partial
+  candidates and uses objective bounds to prune branches that cannot improve
+  the best known solution. Backtracking usually prunes when a partial candidate
+  cannot lead to a feasible solution. Both can support different output goals;
+  branch and bound is commonly used for exact optimization, while backtracking
+  is commonly used for constraint satisfaction and enumeration.
 
 .. backtracking-exhaustive-comp:
 
