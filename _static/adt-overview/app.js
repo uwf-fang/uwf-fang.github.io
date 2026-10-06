@@ -20,7 +20,7 @@ document.getElementById('modes').addEventListener('click', (e) => {
 function draw() { ({ learn: drawLearn, compare: drawCompare, cheat: drawCheat, quiz: drawQuiz })[mode](); }
 
 const tabsHTML = () => `<div class="tabs" id="tabs">${ADTS.map((a) => `<button data-id="${a.id}" class="${a.id === current ? 'on' : ''}">${a.name}</button>`).join('')}</div>`;
-const SKIP = ['remove', 'get', 'pop', 'peek', 'dequeue', 'front', 'deQueueFront', 'deQueueBack', 'contains'];
+const SKIP = ['remove', 'get', 'pop', 'peek', 'dequeue', 'front', 'deQueueFront', 'deQueueBack', 'contains', 'isEmpty'];
 function sampleOps(adt) { return adt.workload.ops.filter((o) => !SKIP.includes(o[0])); }
 
 /* ---------- Mode 1: Learn (one implementation at a time) ---------- */
@@ -53,6 +53,7 @@ function drawLearn() {
           <table class="facts"><thead><tr><th>Operation</th><th>Cost</th><th>Why</th></tr></thead><tbody>${impl.facts.map((f) => `<tr><td>${f[0]}</td><td><b>${f[1]}</b></td><td>${f[2]}</td></tr>`).join('')}</tbody></table>
         </div>
         ${adt.intNote ? `<div class="box note"><h3>Integers only</h3><p class="how">${adt.intNote}</p></div>` : ''}
+        ${adt.insertNote ? `<div class="box note"><h3>Insertion Design</h3><p class="how">${adt.insertNote}</p></div>` : ''}
         ${impl.extra ? `<div class="box note"><h3>${impl.extra.title}</h3><p class="how">${impl.extra.html}</p></div>` : ''}
         <div class="box"><h3>What leaves or is found</h3><p class="how">${adt.rule}</p></div>
         <div class="box"><h3>Where it is used</h3><ul>${adt.use.map((u) => `<li>${u}</li>`).join('')}</ul></div>
@@ -163,7 +164,7 @@ const QUIZ = [
   { q: 'An algorithm checks a palindrome by comparing the first and last letters, then moving inward, removing from both ends.', opts: adtOpts, a: 'deque', why: 'It needs enQueueFront, enQueueBack, deQueueFront and deQueueBack style access at both ends.' },
   { q: 'You implement a Queue with a fixed-size array and want dequeue to never shift elements.', opts: [['array', 'Partially filled array'], ['circular', 'Circular partially filled array'], ['linked', 'Linked list']], a: 'circular', why: 'A circular array only moves the front index, using modulo arithmetic.' },
   { q: 'A Map must support listing its keys in sorted order.', opts: [['hash', 'Hash table'], ['bst', 'Binary search tree']], a: 'bst', why: 'An in-order traversal of a search tree visits keys in sorted order. A hash table scatters them.' },
-  { q: 'A Set needs the fastest average membership test and order does not matter.', opts: [['hash', 'Hash table'], ['bst', 'Binary search tree']], a: 'hash', why: 'A hash table averages O(1) for contains.' }
+  { q: 'A Set needs the fastest average membership test and order does not matter.', opts: [['hash', 'Hash table'], ['bst', 'Binary search tree']], a: 'hash', why: 'A hash table averages Θ(1) for contains.' }
 ];
 let qi = 0, score = 0, answered = false;
 const userAnswers = []; // records { chosen, ok }

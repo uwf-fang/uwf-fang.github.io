@@ -13,24 +13,24 @@ A *step* is one element read, written, shifted or compared, or one link followed
 ## Operation names (aligned to the course)
 | ADT | Operations |
 |---|---|
-| List | `append(v)`, `insertBefore(i, v)`, `remove(i)`, `get(i)` |
-| Stack | `push(v)`, `pop()`, `peek()` |
-| Queue | `enqueue(v)`, `dequeue()`, `peek()` |
-| Deque | `enQueueFront(v)`, `enQueueBack(v)`, `deQueueFront()`, `deQueueBack()` |
-| Map | `put(k, v)`, `get(k)`, `remove(k)` (keys and values are integers) |
-| Set | `add(v)`, `remove(v)`, `contains(v)` (elements are integers) |
-| Priority Queue | `enqueue(x, p)`, `dequeue()`, `peek()` (smallest priority number leaves first) |
+| List | `append(v)`, `insertBefore(i, v)`, `remove(i)`, `get(i)`, `isEmpty()` |
+| Stack | `push(v)`, `pop()`, `peek()`, `isEmpty()` |
+| Queue | `enqueue(v)`, `dequeue()`, `peek()`, `isEmpty()` |
+| Deque | `enQueueFront(v)`, `enQueueBack(v)`, `deQueueFront()`, `deQueueBack()`, `isEmpty()` |
+| Map | `put(k, v)`, `get(k)`, `remove(k)`, `isEmpty()` (keys and values are integers) |
+| Set | `add(v)`, `remove(v)`, `contains(v)`, `isEmpty()` (elements are integers) |
+| Priority Queue | `enqueue(x, p)`, `dequeue()`, `peek()`, `isEmpty()` (smallest priority number leaves first) |
 
 ## Implementations covered
 | ADT | Implementations | Notes |
 |---|---|---|
-| List | Partially filled array, linked list | Array: O(1) `get`, O(n) insert/remove by shifting. Linked: O(1) at the ends, O(n) walk to reach an index. |
-| Stack | Partially filled array, linked list | Both O(1): array works at the end, linked list at the head. |
-| Queue | Partially filled array, linked list, **circular** partially filled array | Plain array makes `dequeue` O(n); the circular array fixes this with modulo indices. |
-| Deque | Partially filled array, (doubly) linked list | Array: front operations O(n). Doubly linked: all four O(1). |
-| Map | Hash table, binary search tree | Hash: O(1) average, no order. BST: O(h), sorted keys, degenerates on sorted input. |
-| Set | Hash table, binary search tree | Same trade-off as Map, with values only. |
-| Priority Queue | Unsorted array, sorted array, binary heap | Dijkstra: unsorted array gives O(V²) (dense graphs), heap gives O((V+E) log V) (sparse graphs). |
+| List | Partially filled array, linked list | Array: Θ(1) `get`, Θ(n) insert/remove by shifting. Linked: Θ(1) at head/tail ends, Θ(n) walk to reach an index. Both Θ(1) `isEmpty()`. Note: In this demo, `insertBefore(size, v)` allows appending right after the last index; alternatively, ADT designs can achieve all insertions using `prepend(v)` with `insertAfter(i, v)`. |
+| Stack | Partially filled array, linked list | Both Θ(1) amortized: array works at the end, linked list at the head. Both Θ(1) `isEmpty()`. |
+| Queue | Partially filled array, linked list, **circular** partially filled array | Plain array makes `dequeue` Θ(n); the circular array fixes this with modulo indices (Θ(1)); linked list operates at head (dequeue/peek) and tail (enqueue) in Θ(1). All Θ(1) `isEmpty()`. |
+| Deque | Partially filled array, (doubly) linked list | Array: front operations Θ(n) (not a good fit; note: a **circular array** can achieve Θ(1) amortized at both ends). Doubly linked: all four end ops (head and tail) Θ(1). Both Θ(1) `isEmpty()`. |
+| Map | Hash table, binary search tree | Hash: Θ(1) average, no order. BST: Θ(h), sorted keys, degenerates on sorted input. Both Θ(1) `isEmpty()`. |
+| Set | Hash table, binary search tree | Same trade-off as Map, with values only. Both Θ(1) `isEmpty()`. |
+| Priority Queue | Unsorted array, sorted array, binary heap | Unsorted array: enqueue Θ(1), dequeue/peek Θ(n). Sorted array: enqueue Θ(n), dequeue/peek Θ(1). Heap: enqueue/dequeue Θ(log n), peek Θ(1). All Θ(1) `isEmpty()`. |
 
 Simplifications: the hash table has 7 fixed buckets with chaining and does not rehash; the BST is not self-balancing; the list-based Stack and Queue use a singly linked list with head and tail pointers, and the Deque uses a doubly linked list.
 

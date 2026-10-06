@@ -19,10 +19,14 @@ const idxOf = (b) => parseInt(b, 10);
 function seqLabels(kind, type, n) {
   const L = {};
   const add = (i, t) => { if (i >= 0 && i < n) L[i] = L[i] ? L[i] + ' / ' + t : t; };
-  if (kind === 'list' && type === 'linked') { add(0, 'head'); add(n - 1, 'tail'); }
-  if (kind === 'stack') add(type === 'array' ? n - 1 : 0, 'top');
-  if (kind === 'queue') { add(0, 'front'); add(n - 1, 'rear'); }
-  if (kind === 'deque') { add(0, 'front'); add(n - 1, 'back'); }
+  if (type === 'linked') {
+    add(0, 'head');
+    add(n - 1, 'tail');
+  } else {
+    if (kind === 'stack') add(n - 1, 'top');
+    if (kind === 'queue') { add(0, 'front'); add(n - 1, 'rear'); }
+    if (kind === 'deque') { add(0, 'front'); add(n - 1, 'back'); }
+  }
   return L;
 }
 function seqADT(kind, seq) {
@@ -32,9 +36,15 @@ function seqADT(kind, seq) {
   const look = (i, text) => { const r = seq.get(i); return R(`${text(r.v)} ${r.note}`, r.steps, i); };
   const empty = (what) => bad(`${what} is empty: this operation is an error.`);
   const ops = {};
+  ops.isEmpty = () => R(n() === 0 ? 'isEmpty() is <b>true</b> (size is 0).' : `isEmpty() is <b>false</b> (size is ${n()}).`, 1, null);
   if (kind === 'list') {
     ops.append = (a) => put(n(), a, `Appended <b>${a}</b> at index ${n()}.`);
-    ops.insertBefore = (a, b) => { const i = idxOf(b); if (isNaN(i) || i < 0 || i >= n()) return bad(n() ? `insertBefore needs an existing index (0 to ${n() - 1}). To add at the end use append(v).` : 'The list is empty, so there is no element to insert before. Use append(v).'); return put(i, a, `Inserted <b>${a}</b> before the element at index ${i}; <b>${a}</b> now has index ${i}.`); };
+    ops.insertBefore = (a, b) => {
+      const i = idxOf(b);
+      if (isNaN(i) || i < 0 || i > n()) return bad(`Index must be between 0 and ${n()} (0 to ${n() - 1} before an existing element, or ${n()} to append right after the last element).`);
+      if (i === n()) return put(i, a, `Index ${i} is right after the last index: appended <b>${a}</b> at the end.`);
+      return put(i, a, `Inserted <b>${a}</b> before index ${i}; <b>${a}</b> now sits at index ${i}.`);
+    };
     ops.remove = (a, b) => { const i = idxOf(b); if (isNaN(i) || i < 0 || i >= n()) return bad(`No element at that index (size ${n()}).`); return take(i, (v) => `Removed <b>${v}</b> from index ${i}.`); };
     ops.get = (a, b) => { const i = idxOf(b); if (isNaN(i) || i < 0 || i >= n()) return bad(`No element at that index (size ${n()}).`); return look(i, (v) => `get(${i}) returns <b>${v}</b>.`); };
   } else if (kind === 'stack') {
@@ -58,6 +68,7 @@ function seqADT(kind, seq) {
 function circularQueue() {
   const c = new CircSeq(6);
   const ops = {
+    isEmpty: () => R(c.size() === 0 ? 'isEmpty() is <b>true</b> (size is 0).' : `isEmpty() is <b>false</b> (size is ${c.size()}).`, 1, null),
     enqueue: (a) => { const r = c.enqueue(a); return R(`<b>${a}</b> joined the rear. ${r.note}`, r.steps, r.idx); },
     dequeue: () => { if (!c.size()) return bad('Queue is empty: this operation is an error.'); const r = c.dequeue(); return R(`dequeue() returned <b>${r.v}</b>. ${r.note}`, r.steps, null); },
     peek: () => { if (!c.size()) return bad('Queue is empty.'); const r = c.peekFront(); return R(`peek() returns <b>${r.v}</b> without removing it.`, r.steps, r.idx); }
@@ -70,6 +81,7 @@ const toInt = (x) => (/^-?\d+$/.test(String(x).trim()) ? String(parseInt(x, 10))
 const INT_MSG = 'This demo allows integers only (for example 42 or -7).';
 function mapADT(d) {
   const ops = {
+    isEmpty: () => R(d.size() === 0 ? 'isEmpty() is <b>true</b> (size is 0).' : `isEmpty() is <b>false</b> (size is ${d.size()}).`, 1, null),
     put: (a0, b0) => { const a = toInt(a0), v = toInt(b0); if (a === null) return bad(`Key must be an integer. ${INT_MSG}`); if (v === null) return bad(`Value must be an integer. ${INT_MSG}`); const r = d.put(a, v); return R(r.found ? `Key <b>${a}</b> already existed: value replaced by <b>${v}</b>. ${r.note}` : `New pair <b>${a} → ${v}</b> stored. ${r.note}`, r.steps, a); },
     get: (a0) => { const a = toInt(a0); if (a === null) return bad(`Key must be an integer. ${INT_MSG}`); const r = d.get(a); return r.found ? R(`get(${a}) returns <b>${r.v}</b>. ${r.note}`, r.steps, a) : { msg: `Key ${a} is not in the map: get returns null. ${r.note}`, steps: r.steps, hl: null, ok: false }; },
     remove: (a0) => { const a = toInt(a0); if (a === null) return bad(`Key must be an integer. ${INT_MSG}`); const r = d.remove(a); return r.found ? R(`Removed key <b>${a}</b> with its value ${r.v}. ${r.note}`, r.steps, null) : { msg: `Key ${a} is not in the map. ${r.note}`, steps: r.steps, hl: null, ok: false }; }
@@ -78,6 +90,7 @@ function mapADT(d) {
 }
 function setADT(d) {
   const ops = {
+    isEmpty: () => R(d.size() === 0 ? 'isEmpty() is <b>true</b> (size is 0).' : `isEmpty() is <b>false</b> (size is ${d.size()}).`, 1, null),
     add: (a0) => { const a = toInt(a0); if (a === null) return bad(`Value must be an integer. ${INT_MSG}`); const r = d.put(a, null); return r.found ? { msg: `<b>${a}</b> is already in the set: add changes nothing. ${r.note}`, steps: r.steps, hl: a, ok: false } : R(`<b>${a}</b> added. ${r.note}`, r.steps, a); },
     remove: (a0) => { const a = toInt(a0); if (a === null) return bad(`Value must be an integer. ${INT_MSG}`); const r = d.remove(a); return r.found ? R(`<b>${a}</b> removed. ${r.note}`, r.steps, null) : { msg: `<b>${a}</b> is not in the set. ${r.note}`, steps: r.steps, hl: null, ok: false }; },
     contains: (a0) => { const a = toInt(a0); if (a === null) return bad(`Value must be an integer. ${INT_MSG}`); const r = d.get(a); return r.found ? R(`contains(${a}) is <b>true</b>. ${r.note}`, r.steps, a) : { msg: `contains(${a}) is <b>false</b>. ${r.note}`, steps: r.steps, hl: null, ok: false }; }
@@ -91,6 +104,7 @@ function pqUnsorted() {
   const s = new ArraySeq(6);
   const minIdx = () => { let m = 0; s.data.forEach((e, i) => { if (e.p < s.data[m].p) m = i; }); return m; };
   const ops = {
+    isEmpty: () => R(s.size() === 0 ? 'isEmpty() is <b>true</b> (size is 0).' : `isEmpty() is <b>false</b> (size is ${s.size()}).`, 1, null),
     enqueue: (a, b) => { const p = parseP(b); if (p === null) return bad('Enter a numeric priority (smaller = more urgent).'); const r = s.insertAt(s.size(), { x: a, p }); return R(`Appended <b>${a}</b> (p=${p}) at the end. ${r.note}`, r.steps, s.size() - 1); },
     dequeue: () => { if (!s.size()) return bad('Priority queue is empty.'); const n = s.size(), m = minIdx(), e = s.data[m]; s.data[m] = s.data[n - 1]; s.data.pop(); return R(`dequeue() returned <b>${e.x}</b> (p=${e.p}). Scanned all ${n} element(s) to find the minimum, then moved the last element into its slot. `, n + 1, null); },
     peek: () => { if (!s.size()) return bad('Priority queue is empty.'); const n = s.size(), m = minIdx(); return R(`peek() returns <b>${s.data[m].x}</b> (p=${s.data[m].p}) after scanning ${n} element(s). `, n, m); }
@@ -101,6 +115,7 @@ function pqSorted() {
   const s = new ArraySeq(6); // descending by priority: the minimum sits at the end
   const labels = () => (s.size() ? { [s.size() - 1]: 'min (next out)' } : {});
   const ops = {
+    isEmpty: () => R(s.size() === 0 ? 'isEmpty() is <b>true</b> (size is 0).' : `isEmpty() is <b>false</b> (size is ${s.size()}).`, 1, null),
     enqueue: (a, b) => {
       const p = parseP(b); if (p === null) return bad('Enter a numeric priority (smaller = more urgent).');
       let pos = 0; while (pos < s.size() && s.data[pos].p > p) pos++;
@@ -115,6 +130,7 @@ function pqSorted() {
 function pqHeap() {
   const h = new Heap();
   const ops = {
+    isEmpty: () => R(h.size() === 0 ? 'isEmpty() is <b>true</b> (size is 0).' : `isEmpty() is <b>false</b> (size is ${h.size()}).`, 1, null),
     enqueue: (a, b) => { const p = parseP(b); if (p === null) return bad('Enter a numeric priority (smaller = more urgent).'); const r = h.enqueue(a, p); return R(`Inserted <b>${a}</b> (p=${p}) at the end, then restored heap order. ${r.note}`, r.steps, r.idx); },
     dequeue: () => { if (!h.size()) return bad('Priority queue is empty.'); const r = h.dequeue(); return R(`dequeue() returned <b>${r.v.x}</b> (p=${r.v.p}). ${r.note}`, r.steps, null); },
     peek: () => { if (!h.size()) return bad('Priority queue is empty.'); return R(`peek() returns <b>${h.a[0].x}</b> (p=${h.a[0].p}), the root. `, 1, 0); }
@@ -130,18 +146,19 @@ const ADTS = [
     tagline: 'An ordered sequence where every element has a position.',
     rule: 'You choose the position', analogy: 'A numbered playlist. You can add a song anywhere and jump straight to track number 3.',
     fields: { a: 'value', b: 'index' },
+    insertNote: '<b>Insertion alternatives:</b> In this demo we provide <code>append(v)</code> and <code>insertBefore(i, v)</code>. Notice that <code>insertBefore(size, v)</code> also allows adding right after the last element. Alternatively, an ADT design can achieve all insertions using <code>prepend(v)</code> (insert at the beginning) together with <code>insertAfter(i, v)</code>.',
     ops: [
       { id: 'append', label: 'append(v)', use: 'a' }, { id: 'insertBefore', label: 'insertBefore(i, v)', use: 'ab' },
-      { id: 'remove', label: 'remove(i)', use: 'b' }, { id: 'get', label: 'get(i)', use: 'b' }
+      { id: 'remove', label: 'remove(i)', use: 'b' }, { id: 'get', label: 'get(i)', use: 'b' }, { id: 'isEmpty', label: 'isEmpty()', use: '' }
     ],
     impls: [
       { id: 'array', name: 'Partially filled array', make: () => seqADT('list', new ArraySeq(6)), how: 'Elements sit side by side in an array that is only partly used. A size counter marks the end. When full, the array doubles.',
-        facts: [['get(i)', 'O(1)', 'direct indexing'], ['append(v)', 'O(1) amortized', 'write at the end; occasional doubling'], ['insertBefore(i, v) / remove(i)', 'O(n)', 'later elements shift']] },
+        facts: [['get(i)', 'Θ(1)', 'direct indexing'], ['append(v)', 'Θ(1) amortized', 'write at the end; occasional doubling'], ['insertBefore(i, v) / remove(i)', 'Θ(n)', 'later elements shift'], ['isEmpty()', 'Θ(1)', 'check if size == 0']] },
       { id: 'linked', name: 'Linked list', make: () => seqADT('list', new LinkedSeq(false)), how: 'Each node holds a value and a link to the next node. A head and a tail pointer mark the ends.',
-        facts: [['get(i)', 'O(n)', 'walk i links from the head'], ['append(v)', 'O(1)', 'tail pointer'], ['insertBefore(0, v) / remove(0)', 'O(1)', 'relink the head only'], ['insertBefore(i, v) / remove(i)', 'O(n)', 'walk to the position first (no shifting)']] }
+        facts: [['get(i)', 'Θ(n)', 'walk i links from the head'], ['append(v)', 'Θ(1)', 'tail pointer'], ['insertBefore(0, v) / remove(0)', 'Θ(1)', 'relink the head only'], ['insertBefore(i, v) / remove(i)', 'Θ(n)', 'walk to the position first (no shifting)'], ['isEmpty()', 'Θ(1)', 'check if head == null']] }
     ],
     use: ['Playlists and to-do lists you reorder', 'Any data accessed by position'],
-    tryIt: ['Fill the list, then insertBefore(1, 9) in both implementations and compare the steps.', 'get(4) is one step in the array but walks links in the linked list.'],
+    tryIt: ['Fill the list, then insertBefore(1, 9) in both implementations and compare the steps.', 'Try insertBefore with index equal to size: it inserts right after the last index.', 'get(4) is one step in the array but walks links in the linked list.', 'Click isEmpty() when the list is populated vs empty.'],
     workload: { text: 'append 1 to 6, insertBefore index 0 twice, remove(0), then get(3)', ops: [['append', '1'], ['append', '2'], ['append', '3'], ['append', '4'], ['append', '5'], ['append', '6'], ['insertBefore', '9', '0'], ['insertBefore', '8', '0'], ['remove', '', '0'], ['get', '', '3']] }
   },
   {
@@ -149,15 +166,15 @@ const ADTS = [
     tagline: 'Last in, first out (LIFO). Only the top is reachable.',
     rule: 'The newest element', analogy: 'A stack of plates. You only add or take the plate on top.',
     fields: { a: 'value' },
-    ops: [{ id: 'push', label: 'push(v)', use: 'a' }, { id: 'pop', label: 'pop()', use: '' }, { id: 'peek', label: 'peek()', use: '' }],
+    ops: [{ id: 'push', label: 'push(v)', use: 'a' }, { id: 'pop', label: 'pop()', use: '' }, { id: 'peek', label: 'peek()', use: '' }, { id: 'isEmpty', label: 'isEmpty()', use: '' }],
     impls: [
-      { id: 'array', name: 'Partially filled array', make: () => seqADT('stack', new ArraySeq(6)), how: 'The top is the last used slot. Push and pop only touch the end of the array.',
-        facts: [['push / pop / peek', 'O(1)', 'work at the end of the array'], ['push on a full array', 'O(n)', 'doubling copies everything, but is rare (amortized O(1))']] },
+      { id: 'array', name: 'Partially filled array', make: () => seqADT('stack', new ArraySeq(6)), how: 'The top is the last used slot. Push, pop, peek, and isEmpty only touch the end or inspect size.',
+        facts: [['push / pop / peek', 'Θ(1) amortized', 'work at the end of the array'], ['push on full array', 'Θ(n)', 'doubling copies all elements'], ['isEmpty()', 'Θ(1)', 'check if size == 0']] },
       { id: 'linked', name: 'Linked list', make: () => seqADT('stack', new LinkedSeq(false)), how: 'The top is the head of the list. Push and pop relink the head.',
-        facts: [['push / pop / peek', 'O(1)', 'work at the head'], ['capacity', 'none', 'grows one node at a time']] }
+        facts: [['push / pop / peek', 'Θ(1)', 'work at the head'], ['capacity', 'none', 'grows one node at a time'], ['isEmpty()', 'Θ(1)', 'check if head == null']] }
     ],
     use: ['Undo history', 'Function call stack and expression evaluation'],
-    tryIt: ['Push 1, 2, 3 and pop: which one returns?', 'Pop on an empty stack shows underflow.'],
+    tryIt: ['Push 1, 2, 3 and pop: which one returns?', 'Pop on an empty stack shows underflow.', 'Check isEmpty() before and after push.'],
     workload: { text: 'push 1 to 8, then pop four times and peek', ops: [['push', '1'], ['push', '2'], ['push', '3'], ['push', '4'], ['push', '5'], ['push', '6'], ['push', '7'], ['push', '8'], ['pop'], ['pop'], ['pop'], ['pop'], ['peek']] }
   },
   {
@@ -165,14 +182,14 @@ const ADTS = [
     tagline: 'First in, first out (FIFO). Join at the rear, leave from the front.',
     rule: 'The oldest element', analogy: 'A line at a ticket counter. Whoever arrived first is served first.',
     fields: { a: 'value' },
-    ops: [{ id: 'enqueue', label: 'enqueue(v)', use: 'a' }, { id: 'dequeue', label: 'dequeue()', use: '' }, { id: 'peek', label: 'peek()', use: '' }],
+    ops: [{ id: 'enqueue', label: 'enqueue(v)', use: 'a' }, { id: 'dequeue', label: 'dequeue()', use: '' }, { id: 'peek', label: 'peek()', use: '' }, { id: 'isEmpty', label: 'isEmpty()', use: '' }],
     impls: [
       { id: 'array', name: 'Partially filled array', make: () => seqADT('queue', new ArraySeq(6)), how: 'The front stays at index 0. Dequeue must shift every remaining element left.',
-        facts: [['enqueue', 'O(1)', 'write at the end'], ['dequeue', 'O(n)', 'shift all elements left'], ['peek', 'O(1)', 'inspects index 0']] },
+        facts: [['enqueue', 'Θ(1) amortized', 'write at the end'], ['dequeue', 'Θ(n)', 'shift all elements left'], ['peek / isEmpty', 'Θ(1)', 'inspect index 0 or size']] },
       { id: 'linked', name: 'Linked list', make: () => seqADT('queue', new LinkedSeq(false)), how: 'The front is the head and the rear is the tail. Both ends are reachable in one step.',
-        facts: [['enqueue', 'O(1)', 'tail pointer'], ['dequeue', 'O(1)', 'move the head'], ['peek', 'O(1)', 'inspects the head node']] },
+        facts: [['enqueue', 'Θ(1)', 'tail pointer'], ['dequeue', 'Θ(1)', 'move the head'], ['peek / isEmpty', 'Θ(1)', 'inspect head node or check null']] },
       { id: 'circular', name: 'Circular partially filled array', make: () => circularQueue(), how: 'Front and rear indices wrap around with modulo arithmetic, so dequeue never shifts anything.',
-        facts: [['enqueue', 'O(1)', '(front + size) mod capacity'], ['dequeue', 'O(1)', 'advance front mod capacity'], ['peek', 'O(1)', 'inspects slots[front]'], ['when full', 'O(n)', 'doubling copies elements in order (rare)']] }
+        facts: [['enqueue / dequeue', 'Θ(1) amortized', 'advance modulo capacity'], ['peek / isEmpty', 'Θ(1)', 'inspect slots[front] or check size == 0'], ['when full', 'Θ(n)', 'doubling copies elements in order (rare)']] }
     ],
     use: ['Print jobs and customer service lines', 'Breadth-first search'],
     tryIt: ['Enqueue 6 items and dequeue 3 in each implementation.', 'In the circular array, enqueue after dequeues and watch the rear wrap around.'],
@@ -185,16 +202,19 @@ const ADTS = [
     fields: { a: 'value' },
     ops: [
       { id: 'enQueueFront', label: 'enQueueFront(v)', use: 'a' }, { id: 'enQueueBack', label: 'enQueueBack(v)', use: 'a' },
-      { id: 'deQueueFront', label: 'deQueueFront()', use: '' }, { id: 'deQueueBack', label: 'deQueueBack()', use: '' }
+      { id: 'deQueueFront', label: 'deQueueFront()', use: '' }, { id: 'deQueueBack', label: 'deQueueBack()', use: '' },
+      { id: 'isEmpty', label: 'isEmpty()', use: '' }
     ],
     impls: [
-      { id: 'array', name: 'Partially filled array', make: () => seqADT('deque', new ArraySeq(6)), how: 'The front is index 0 and the back is the last used slot. Front operations shift elements.',
-        facts: [['enQueueBack / deQueueBack', 'O(1)', 'work at the end'], ['enQueueFront / deQueueFront', 'O(n)', 'shift all elements']] },
+      { id: 'array', name: 'Partially filled array', make: () => seqADT('deque', new ArraySeq(6)),
+        extra: { title: 'Design note: Circular array for Deque', html: 'A standard partially filled array is <b>not a good fit</b> for Deque because operations at the front require shifting all elements (Θ(n)). While a <b>doubly linked list</b> achieves Θ(1) for all four ends, an array-based alternative would be a <b>circular array</b> (with both front and back indices wrapping around via modulo arithmetic), achieving Θ(1) amortized time at both ends without shifting.' },
+        how: 'The front is index 0 and the back is the last used slot. Front operations must shift elements. (Note: A standard partially filled array is not a good fit for Deque; see note below.)',
+        facts: [['enQueueBack / deQueueBack', 'Θ(1) amortized', 'work at the end'], ['enQueueFront / deQueueFront', 'Θ(n)', 'shift all elements'], ['isEmpty()', 'Θ(1)', 'check if size == 0']] },
       { id: 'linked', name: 'Doubly linked list', make: () => seqADT('deque', new LinkedSeq(true)), how: 'Nodes link both forward and backward, with head and tail pointers. All four operations touch only an end.',
-        facts: [['all four operations', 'O(1)', 'head and tail with previous links'], ['singly linked alternative', 'O(n)', 'deQueueBack must walk to the node before the tail']] }
+        facts: [['all four operations', 'Θ(1)', 'head and tail with previous links'], ['singly linked alternative', 'Θ(n)', 'deQueueBack must walk to the node before the tail'], ['isEmpty()', 'Θ(1)', 'check if head == null']] }
     ],
     use: ['Sliding-window problems and palindrome checks', 'Can behave as a stack or as a queue'],
-    tryIt: ['Use enQueueBack and deQueueFront: that is a queue.', 'Use enQueueBack and deQueueBack: that is a stack.'],
+    tryIt: ['Use enQueueBack and deQueueFront: that is a queue.', 'Use enQueueBack and deQueueBack: that is a stack.', 'Compare steps between array and doubly linked list for enQueueFront.'],
     workload: { text: 'enQueueBack 1 to 4, enQueueFront 5 to 8, then deQueueFront and deQueueBack twice each', ops: [['enQueueBack', '1'], ['enQueueBack', '2'], ['enQueueBack', '3'], ['enQueueBack', '4'], ['enQueueFront', '5'], ['enQueueFront', '6'], ['enQueueFront', '7'], ['enQueueFront', '8'], ['deQueueFront'], ['deQueueFront'], ['deQueueBack'], ['deQueueBack']] }
   },
   {
@@ -203,12 +223,12 @@ const ADTS = [
     rule: 'You name the key', analogy: 'A dictionary. Look up a word (the key) to get its definition (the value).',
     fields: { a: 'key (integer)', b: 'value (integer)' },
     intNote: 'In this demo Map keys and values are <b>integers only</b> (no characters or strings). This keeps the hash function simple and concrete.',
-    ops: [{ id: 'put', label: 'put(k, v)', use: 'ab' }, { id: 'get', label: 'get(k)', use: 'a' }, { id: 'remove', label: 'remove(k)', use: 'a' }],
+    ops: [{ id: 'put', label: 'put(k, v)', use: 'ab' }, { id: 'get', label: 'get(k)', use: 'a' }, { id: 'remove', label: 'remove(k)', use: 'a' }, { id: 'isEmpty', label: 'isEmpty()', use: '' }],
     impls: [
       { id: 'hash', name: 'Hash table', make: () => mapADT(new HashTable(7)), extra: { title: 'The hash function', html: 'There are <b>m = 7</b> buckets, numbered 0 to 6. The hash function is <b>hash(key) = key mod 7</b>, the remainder after dividing by 7.<br><br>Example: hash(23) = 23 mod 7 = 2, so key 23 goes to bucket 2. Negative keys use the mathematical remainder, so hash(-3) = 4.<br><br>Keys with the same remainder <b>collide</b>: for instance 9 and 16 both go to bucket 2, and are chained in that bucket.' }, how: 'The hash function hash(key) = key mod 7 turns an integer key into a bucket index. Keys that collide are chained in the same bucket.',
-        facts: [['put / get / remove', 'O(1) average', 'hash straight to a bucket'], ['worst case', 'O(n)', 'every key collides in one bucket'], ['key order', 'none', 'scattered by the hash']] },
+        facts: [['put / get / remove', 'Θ(1) average', 'hash straight to a bucket'], ['worst case (all collide)', 'Θ(n)', 'every key collides in one bucket chain'], ['isEmpty()', 'Θ(1)', 'check if total size == 0'], ['key order', 'none', 'scattered by the hash']] },
       { id: 'bst', name: 'Binary search tree', make: () => mapADT(new BST()), how: 'Smaller keys go left, larger keys go right. Each operation follows one path from the root.',
-        facts: [['put / get / remove', 'O(h)', 'h is the tree height'], ['balanced tree', 'O(log n)', 'height about log n'], ['sorted input, unbalanced', 'O(n)', 'the tree degenerates into a chain'], ['key order', 'sorted', 'in-order traversal']] }
+        facts: [['put / get / remove', 'Θ(h)', 'h is the tree height'], ['balanced tree', 'Θ(log n)', 'height is logarithmic'], ['sorted input, unbalanced', 'Θ(n)', 'the tree degenerates into a linear chain'], ['isEmpty()', 'Θ(1)', 'check if root == null'], ['key order', 'sorted', 'in-order traversal']] }
     ],
     use: ['Student records by ID', 'Caches and word counts'],
     tryIt: ['Fill sample, then get(36): count the comparisons in the tree and the chain in the hash table.', 'put the same key twice: the value is replaced.', 'Challenge: on an empty map, put keys 10, 20, 30, 40, 50 in increasing order. The tree becomes a chain, its worst case.'],
@@ -220,12 +240,12 @@ const ADTS = [
     rule: 'You name the value', analogy: 'A guest list. A name is either on it or not, and never twice.',
     fields: { a: 'value (integer)' },
     intNote: 'In this demo Set elements are <b>integers only</b> (no characters or strings). This keeps the hash function simple and concrete.',
-    ops: [{ id: 'add', label: 'add(v)', use: 'a' }, { id: 'remove', label: 'remove(v)', use: 'a' }, { id: 'contains', label: 'contains(v)', use: 'a' }],
+    ops: [{ id: 'add', label: 'add(v)', use: 'a' }, { id: 'remove', label: 'remove(v)', use: 'a' }, { id: 'contains', label: 'contains(v)', use: 'a' }, { id: 'isEmpty', label: 'isEmpty()', use: '' }],
     impls: [
       { id: 'hash', name: 'Hash table', make: () => setADT(new HashTable(7)), extra: { title: 'The hash function', html: 'There are <b>m = 7</b> buckets, numbered 0 to 6. The hash function is <b>hash(key) = key mod 7</b>, the remainder after dividing by 7.<br><br>Example: hash(23) = 23 mod 7 = 2, so key 23 goes to bucket 2. Negative keys use the mathematical remainder, so hash(-3) = 4.<br><br>Keys with the same remainder <b>collide</b>: for instance 9 and 16 both go to bucket 2, and are chained in that bucket.' }, how: 'Each integer is hashed to a bucket with hash(v) = v mod 7. Duplicates are found by scanning one short chain.',
-        facts: [['add / remove / contains', 'O(1) average', 'hash straight to a bucket'], ['worst case', 'O(n)', 'many collisions'], ['order', 'none', 'scattered by the hash']] },
+        facts: [['add / remove / contains', 'Θ(1) average', 'hash straight to a bucket'], ['worst case (all collide)', 'Θ(n)', 'many collisions in one chain'], ['isEmpty()', 'Θ(1)', 'check if total size == 0'], ['order', 'none', 'scattered by the hash']] },
       { id: 'bst', name: 'Binary search tree', make: () => setADT(new BST()), how: 'Values are kept in a search tree. A value is a duplicate if the search path ends on an equal value.',
-        facts: [['add / remove / contains', 'O(h)', 'h is the tree height'], ['balanced tree', 'O(log n)', 'height about log n'], ['order', 'sorted', 'in-order traversal']] }
+        facts: [['add / remove / contains', 'Θ(h)', 'h is the tree height'], ['balanced tree', 'Θ(log n)', 'height is logarithmic'], ['isEmpty()', 'Θ(1)', 'check if root == null'], ['order', 'sorted', 'in-order traversal']] }
     ],
     use: ['Unique visitors', 'Removing duplicates and set algebra'],
     tryIt: ['add 5 twice: the second add changes nothing.', 'Add 7, 14 and 21: all have remainder 0, so they collide in bucket 0.'],
@@ -236,14 +256,14 @@ const ADTS = [
     tagline: 'Always serves the element with the best priority (smallest number here).',
     rule: 'The smallest priority number', analogy: 'An emergency room. The most urgent patient goes first, not the earliest arrival.',
     fields: { a: 'item', b: 'priority' },
-    ops: [{ id: 'enqueue', label: 'enqueue(x, p)', use: 'ab' }, { id: 'dequeue', label: 'dequeue()', use: '' }, { id: 'peek', label: 'peek()', use: '' }],
+    ops: [{ id: 'enqueue', label: 'enqueue(x, p)', use: 'ab' }, { id: 'dequeue', label: 'dequeue()', use: '' }, { id: 'peek', label: 'peek()', use: '' }, { id: 'isEmpty', label: 'isEmpty()', use: '' }],
     impls: [
       { id: 'unsorted', name: 'Unsorted array', make: () => pqUnsorted(), how: 'New items go at the end. Finding the minimum means scanning the whole array.',
-        facts: [['enqueue', 'O(1)', 'append'], ['dequeue / peek', 'O(n)', 'scan for the minimum'], ['Dijkstra with V vertices', 'O(V²)', 'good for dense graphs']] },
+        facts: [['enqueue', 'Θ(1) amortized', 'append at the end'], ['dequeue / peek', 'Θ(n)', 'scan for the minimum'], ['isEmpty()', 'Θ(1)', 'check if size == 0'], ['Dijkstra with V vertices', 'Θ(V²)', 'well-suited for dense graphs']] },
       { id: 'sorted', name: 'Sorted array', make: () => pqSorted(), how: 'The array stays sorted so the minimum is always at one end. Insertion must find the spot and shift.',
-        facts: [['enqueue', 'O(n)', 'find the spot and shift'], ['dequeue / peek', 'O(1)', 'minimum at the end']] },
+        facts: [['enqueue', 'Θ(n)', 'find spot and shift'], ['dequeue / peek', 'Θ(1)', 'minimum at the end'], ['isEmpty()', 'Θ(1)', 'check if size == 0']] },
       { id: 'heap', name: 'Binary heap', make: () => pqHeap(), how: 'A complete binary tree stored in an array where every parent is at most its children. The minimum is the root.',
-        facts: [['enqueue / dequeue', 'O(log n)', 'sift up or down one path'], ['peek', 'O(1)', 'root'], ['Dijkstra', 'O((V+E) log V)', 'good for sparse graphs']] }
+        facts: [['enqueue / dequeue', 'Θ(log n)', 'sift up or down one branch'], ['peek', 'Θ(1)', 'inspect the root'], ['isEmpty()', 'Θ(1)', 'check if size == 0'], ['Dijkstra', 'Θ((V+E) log V)', 'well-suited for sparse graphs']] }
     ],
     use: ['Hospital triage and task schedulers', 'Dijkstra shortest paths'],
     tryIt: ['Enqueue tasks with priorities 5, 3, 8, 1 then dequeue repeatedly.', 'Compare how the three implementations spend steps on enqueue versus dequeue.'],
