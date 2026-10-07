@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Structures & Algorithms — Interactive Demonstration Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Montserrat:wght@600;700;800&family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared-nav.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-white);
+      color: var(--body-offblack);
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    header {
+      border-bottom: 2px solid var(--border-line);
+      padding-bottom: 1.75rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .topic-tag {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary-accent);
+      border: 1.5px solid var(--primary-accent);
+      padding: 0.25rem 0.75rem;
+      display: inline-block;
+      margin-bottom: 0.85rem;
+    }
+
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2.25rem;
+      font-weight: 800;
+      color: var(--title-charcoal);
+      margin-bottom: 0.6rem;
+      letter-spacing: -0.02em;
+    }
+
+    p.lead-text {
+      font-size: 1.1rem;
+      color: var(--body-offblack);
+      max-width: 860px;
+    }
+
+    .info-banner {
+      background: var(--highlight-bg);
+      border-left: 4px solid var(--primary-accent);
+      border-top: 1px solid var(--border-subtle);
+      border-right: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 1rem 1.25rem;
+      margin-bottom: 2.5rem;
+      font-size: 0.95rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .info-banner strong {
+      color: var(--title-charcoal);
+    }
+
+    .section-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--title-charcoal);
+      margin: 2.5rem 0 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      border-bottom: 1px solid var(--border-line);
+      padding-bottom: 0.5rem;
+    }
+
+    .section-number {
+      font-family: 'Courier Prime', monospace;
+      color: var(--primary-accent);
+      font-size: 1.15rem;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 600px) {
+      .tools-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .tool-card {
+      border: 1.5px solid var(--border-line);
+      background: var(--bg-white);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+    }
+
+    .card-top {
+      margin-bottom: 1.25rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.6rem;
+      gap: 0.5rem;
+    }
+
+    .tool-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--title-charcoal);
+      text-decoration: none;
+    }
+
+    .tool-title:hover {
+      color: var(--primary-accent);
+    }
+
+    .badge {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.2rem 0.5rem;
+      border: 1px solid var(--border-line);
+      white-space: nowrap;
+    }
+
+    .badge-visualizer {
+      background: #EBF3ED;
+      color: var(--secondary-green);
+      border-color: var(--secondary-green);
+    }
+
+    .badge-workbench {
+      background: #EFF6FF;
+      color: var(--primary-accent);
+      border-color: var(--primary-accent);
+    }
+
+    .badge-explorer {
+      background: #F8FAFC;
+      color: var(--title-charcoal);
+      border-color: var(--border-line);
+    }
+
+    .tool-desc {
+      font-size: 0.95rem;
+      color: var(--body-offblack);
+      margin-bottom: 1rem;
+      line-height: 1.55;
+    }
+
+    .feature-list {
+      list-style: none;
+      margin: 0.75rem 0 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .feature-list li {
+      font-size: 0.88rem;
+      color: var(--body-offblack);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .feature-list li::before {
+      content: "▪";
+      color: var(--primary-accent);
+      font-weight: bold;
+    }
+
+    .tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .tag-chip {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.75rem;
+      background: var(--highlight-bg);
+      border: 1px solid var(--border-subtle);
+      padding: 0.15rem 0.45rem;
+      border-radius: 3px;
+      color: var(--title-charcoal);
+    }
+
+    .card-footer {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 1.1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .launch-btn {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.65rem 1.25rem;
+      border: 1.5px solid var(--primary-accent);
+      background: var(--primary-accent);
+      color: #FFFFFF;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+
+    .launch-btn:hover {
+      background: var(--primary-accent-hover);
+      border-color: var(--primary-accent-hover);
+    }
+
+    .mode-label {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.8rem;
+      color: var(--title-charcoal);
+    }
+
+    footer {
+      margin-top: 4rem;
+      border-top: 2px solid var(--border-line);
+      padding-top: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.85rem;
+      color: var(--title-charcoal);
+    }
+
+    footer a {
+      color: var(--primary-accent);
+      text-decoration: none;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <nav class="course-nav">
+    <a href="index.html" class="nav-brand">DSA Interactive Lab</a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Hub Home</a>
+      <a href="adt-overview/index.html">ADT Explorer</a>
+      <a href="problem-type-paradigm.html">Paradigms</a>
+      <a href="card-sort.html">Card Sort</a>
+      <a href="movable-cards.html">Sorting Workbench</a>
+      <a href="dijkstra.html">Dijkstra</a>
+    </div>
+  </nav>
+
+  <header>
+    <div class="topic-tag">Interactive Learning Laboratory</div>
+    <h1>Data Structures & Algorithms Course Hub</h1>
+    <p class="lead-text">
+      A collection of standalone, zero-dependency interactive learning tools designed for classroom instruction, conceptual exploration, and active practice.
+    </p>
+  </header>
+
+  <div class="info-banner">
+    <div>
+      <strong>Static Web Distribution:</strong> All modules are self-contained HTML5/CSS/JavaScript with relative linking, optimized for standalone browsing or integration into Sphinx documentation trees.
+    </div>
+    <div style="font-family: 'Courier Prime', monospace; font-size: 0.85rem;">
+      Style Specification: style.md compliant
+    </div>
+  </div>
+
+  <!-- Category 1: Foundations & Paradigms -->
+  <h2 class="section-title"><span class="section-number">01.</span> Computational Foundations & Problem Solving</h2>
+  <div class="tools-grid">
+
+    <div class="tool-card">
+      <div class="card-top">
+        <div class="card-header">
+          <a href="problem-type-paradigm.html" class="tool-title">Problem Types & Algorithmic Paradigms</a>
+          <span class="badge badge-explorer">Interactive Lesson</span>
+        </div>
+        <p class="tool-desc">
+          Explains the universal two-stage problem pipeline connecting <strong>Enumeration</strong> to Search, Decision, Counting, and Optimization. Features an interactive 0/1 Knapsack sandbox and combinatorial explosion analysis.
+        </p>
+        <ul class="feature-list">
+          <li><strong>Interactive Sandbox:</strong> 4-item Knapsack (Weight &le; 5 kg) evaluated across 5 problem types.</li>
+          <li><strong>Combinatorial Analysis:</strong> Why enumeration fails for large inputs ($2^{50} \approx 10^{15}$).</li>
+          <li><strong>Compatibility Matrix:</strong> How 6 major algorithmic paradigms fit each problem type.</li>
+        </ul>
+        <div class="tags-container">
+          <span class="tag-chip">Enumeration</span>
+          <span class="tag-chip">Backtracking</span>
+          <span class="tag-chip">Branch & Bound</span>
+          <span class="tag-chip">Dynamic Programming</span>
+          <span class="tag-chip">Greedy</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="mode-label">Static Demo</span>
+        <a href="problem-type-paradigm.html" class="launch-btn">Launch Tool &rarr;</a>
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <div class="card-top">
+        <div class="card-header">
+          <a href="adt-overview/index.html" class="tool-title">Abstract Data Types (ADT) Explorer</a>
+          <span class="badge badge-explorer">Comparative Lab</span>
+        </div>
+        <p class="tool-desc">
+          Comprehensive exploration of 7 core Abstract Data Types (List, Stack, Queue, Deque, Map, Set, Priority Queue) across candidate data structure implementations with step-by-step cost accounting.
+        </p>
+        <ul class="feature-list">
+          <li><strong>Learn Mode:</strong> Single-ADT visualization with operation step counts and visual analogies.</li>
+          <li><strong>Head-to-Head:</strong> Side-by-side implementation comparison for the same operation workload.</li>
+          <li><strong>Cheat Sheet & Quiz:</strong> Summary table of $\Theta$-bounds and 10 scenario-based questions.</li>
+        </ul>
+        <div class="tags-container">
+          <span class="tag-chip">Array vs Linked List</span>
+          <span class="tag-chip">Circular Array</span>
+          <span class="tag-chip">Hash Table vs BST</span>
+          <span class="tag-chip">Binary Heap</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="mode-label">Static Demo</span>
+        <a href="adt-overview/index.html" class="launch-btn">Launch Tool &rarr;</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Category 2: Sorting Algorithms -->
+  <h2 class="section-title"><span class="section-number">02.</span> Sorting Algorithms & Stability</h2>
+  <div class="tools-grid">
+
+    <div class="tool-card">
+      <div class="card-top">
+        <div class="card-header">
+          <a href="card-sort.html" class="tool-title">Card Sort Visualizer</a>
+          <span class="badge badge-visualizer">Automated Visualizer</span>
+        </div>
+        <p class="tool-desc">
+          Step-by-step and auto-play visualization of Selection, Insertion, Merge, and Quick Sort. Realistic playing cards with subscript tags prove relative order stability or demonstrate inversion.
+        </p>
+        <ul class="feature-list">
+          <li><strong>Stability Verification:</strong> Equal-rank cards tagged $A, B, C$ track relative order in real time.</li>
+          <li><strong>Visual Partitions:</strong> Shaded sorted-zone boundary and auxiliary merge buffer row.</li>
+          <li><strong>Presets & Speed:</strong> Random, Nearly Sorted, Reversed, and Many Duplicates.</li>
+        </ul>
+        <div class="tags-container">
+          <span class="tag-chip">Selection Sort</span>
+          <span class="tag-chip">Insertion Sort</span>
+          <span class="tag-chip">Merge Sort</span>
+          <span class="tag-chip">Quick Sort</span>
+          <span class="tag-chip">Stability Proof</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="mode-label">Visualizer</span>
+        <a href="card-sort.html" class="launch-btn">Launch Tool &rarr;</a>
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <div class="card-top">
+        <div class="card-header">
+          <a href="movable-cards.html" class="tool-title">Interactive Card Sorting Workbench</a>
+          <span class="badge badge-workbench">Practice Workbench</span>
+        </div>
+        <p class="tool-desc">
+          Hands-on sorting practice allowing students to manually reorder cards using drag-and-drop or discrete two-card swaps, testing their intuition before observing algorithmic execution.
+        </p>
+        <ul class="feature-list">
+          <li><strong>Tactile Manipulation:</strong> Drag-and-drop along the line or click two cards to execute a parabolic swap.</li>
+          <li><strong>Live State Validation:</strong> Instant feedback when array is fully sorted and checks stability.</li>
+          <li><strong>Full Undo Stack:</strong> Step backwards through up to 30 moves with move-counter tracking.</li>
+        </ul>
+        <div class="tags-container">
+          <span class="tag-chip">Manual Practice</span>
+          <span class="tag-chip">Drag & Drop</span>
+          <span class="tag-chip">Swap Sandbox</span>
+          <span class="tag-chip">Inversion Counting</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="mode-label">Workbench</span>
+        <a href="movable-cards.html" class="launch-btn">Launch Tool &rarr;</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Category 3: Graph Algorithms -->
+  <h2 class="section-title"><span class="section-number">03.</span> Graph Algorithms & Shortest Paths</h2>
+  <div class="tools-grid">
+
+    <div class="tool-card">
+      <div class="card-top">
+        <div class="card-header">
+          <a href="dijkstra.html" class="tool-title">Single-Source Dijkstra's Algorithm</a>
+          <span class="badge badge-visualizer">Canvas Graph Visualizer</span>
+        </div>
+        <p class="tool-desc">
+          Interactive shortest-path tree construction on a weighted graph. Features arbitrary source vertex selection, synchronized Priority Queue relaxation, step-by-step state tracking, and click-to-trace shortest path.
+        </p>
+        <ul class="feature-list">
+          <li><strong>Priority Queue Dynamics:</strong> Synchronized PQ table updates after each edge relaxation.</li>
+          <li><strong>Crisp Canvas Rendering:</strong> High-DPI line art with node status states (Unvisited, Evaluating, Visited).</li>
+          <li><strong>Shortest Path Tree:</strong> Edge highlighting and click-to-trace shortest route from the source.</li>
+        </ul>
+        <div class="tags-container">
+          <span class="tag-chip">Single-Source Shortest Path</span>
+          <span class="tag-chip">Priority Queue</span>
+          <span class="tag-chip">Edge Relaxation</span>
+          <span class="tag-chip">Greedy Paradigm</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="mode-label">Visualizer</span>
+        <a href="dijkstra.html" class="launch-btn">Launch Tool &rarr;</a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div>Data Structures & Algorithms Courseware &bull; Designed per <code>style.md</code></div>
+    <div><a href="README.md">Sphinx Integration Guide</a> &bull; <a href="../README.md">Course Repo</a></div>
+  </footer>
+
+</div>
+
+</body>
+</html>

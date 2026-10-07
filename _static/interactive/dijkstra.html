@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Single-Source Dijkstra's Algorithm Visualizer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Montserrat:wght@600;700;800&family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared-nav.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-white);
+      color: var(--body-offblack);
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      padding: 2.5rem 1.5rem 4rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 1100px;
+      width: 100%;
+    }
+
+    header {
+      border-bottom: 2px solid var(--border-line);
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .topic-tag {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary-accent);
+      border: 1.5px solid var(--primary-accent);
+      padding: 0.25rem 0.75rem;
+      display: inline-block;
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: var(--title-charcoal);
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    p.lead-text {
+      font-size: 1.05rem;
+      color: var(--body-offblack);
+      max-width: 860px;
+    }
+
+    /* Control Panel */
+    .control-panel {
+      background: var(--panel-bg);
+      border: 1.5px solid var(--border-line);
+      padding: 1.25rem 1.5rem;
+      border-radius: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--title-charcoal);
+    }
+
+    select, button, input[type="range"] {
+      padding: 0.5rem 0.85rem;
+      font-size: 0.95rem;
+      border: 1.5px solid var(--border-line);
+      border-radius: 4px;
+      background: #FFFFFF;
+      color: var(--title-charcoal);
+      cursor: pointer;
+      outline: none;
+      transition: all 0.15s ease;
+    }
+
+    select {
+      font-family: 'Courier Prime', monospace;
+      font-weight: 700;
+    }
+
+    button {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    button.primary {
+      background: var(--primary-accent);
+      border-color: var(--primary-accent);
+      color: #FFFFFF;
+    }
+
+    button.primary:hover {
+      background: var(--primary-accent-hover);
+      border-color: var(--primary-accent-hover);
+    }
+
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-end;
+    }
+
+    .speed-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .speed-hint {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--title-charcoal);
+    }
+
+    /* Stats Bar */
+    .stats-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-badge {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      background: var(--panel-bg);
+      padding: 0.5rem 0.9rem;
+      border: 1.5px solid var(--border-line);
+      border-radius: 6px;
+      color: var(--title-charcoal);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .stat-badge span {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.95rem;
+      color: var(--primary-accent);
+      font-weight: 700;
+    }
+
+    .stat-badge.complete span {
+      color: var(--secondary-green);
+    }
+
+    /* Main Workspace */
+    .stage-wrapper {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 1.5rem;
+      align-items: start;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .stage-wrapper {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .canvas-panel {
+      border: 1.5px solid var(--border-line);
+      border-radius: 8px;
+      background: #FFFFFF;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    canvas {
+      width: 100%;
+      max-width: 580px;
+      height: 420px;
+      background: #FFFFFF;
+      cursor: pointer;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border-subtle);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--title-charcoal);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border-line);
+      display: inline-block;
+    }
+
+    /* Data Tables Panels */
+    .data-panels {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .panel {
+      border: 1.5px solid var(--border-line);
+      border-radius: 8px;
+      background: #FFFFFF;
+      padding: 1.25rem;
+    }
+
+    .panel h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--title-charcoal);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border-line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .panel h3 small {
+      font-size: 0.75rem;
+      color: var(--primary-accent);
+      text-transform: none;
+      font-family: 'Courier Prime', monospace;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+
+    th, td {
+      padding: 0.55rem 0.65rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    th {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--title-charcoal);
+      background: var(--highlight-bg);
+      border-bottom: 1.5px solid var(--border-line);
+    }
+
+    td {
+      font-family: 'Courier Prime', monospace;
+      color: var(--body-offblack);
+    }
+
+    tr.active-row {
+      background-color: #FEF3C7;
+      font-weight: bold;
+    }
+
+    tr.visited-row {
+      background-color: #F0FDF4;
+    }
+
+    tr.clickable-row {
+      cursor: pointer;
+    }
+
+    tr.clickable-row:hover {
+      background-color: var(--highlight-bg);
+    }
+
+    /* Status Box */
+    .status-box {
+      border: 1.5px solid var(--border-line);
+      border-left: 5px solid var(--primary-accent);
+      background: var(--highlight-bg);
+      padding: 1rem 1.25rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      color: var(--body-offblack);
+      line-height: 1.5;
+      min-height: 3.5rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .status-success {
+      border-left-color: var(--secondary-green);
+      background-color: #F0FDF4;
+      color: var(--secondary-green);
+      font-weight: 700;
+    }
+
+    .path-callout {
+      margin-top: 1rem;
+      border: 1.5px dashed var(--secondary-green);
+      background: #F0FDF4;
+      padding: 0.85rem 1.25rem;
+      border-radius: 6px;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.9rem;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <nav class="course-nav">
+    <a href="index.html" class="nav-brand">DSA Interactive Lab</a>
+    <div class="nav-links">
+      <a href="index.html">Hub Home</a>
+      <a href="adt-overview/index.html">ADT Explorer</a>
+      <a href="problem-type-paradigm.html">Paradigms</a>
+      <a href="card-sort.html">Card Sort</a>
+      <a href="movable-cards.html">Sorting Workbench</a>
+      <a href="dijkstra.html" class="active">Dijkstra</a>
+    </div>
+  </nav>
+
+  <header>
+    <div class="topic-tag">Graph Algorithms & Shortest Paths</div>
+    <h1>Single-Source Dijkstra's Algorithm</h1>
+    <p class="lead-text">
+      Finds the shortest paths from a single source vertex to all other vertices in a non-negative weighted graph. Uses a <strong>Priority Queue</strong> to greedily settle the closest unvisited node. Ties are broken alphabetically.
+    </p>
+  </header>
+
+  <div class="control-panel">
+    <div class="control-group">
+      <label for="startNode">Source Vertex (s)</label>
+      <select id="startNode" onchange="initAlgorithm()"></select>
+    </div>
+
+    <div class="control-group">
+      <label for="speedSlider">Animation Speed</label>
+      <div class="speed-container">
+        <span class="speed-hint">Slow</span>
+        <input type="range" id="speedSlider" min="200" max="1600" value="900" step="100" oninput="updateSpeed()">
+        <span class="speed-hint">Fast</span>
+      </div>
+    </div>
+
+    <div class="btn-group">
+      <button id="btnStart" onclick="initAlgorithm()">Reset / Source</button>
+      <button id="btnStep" class="primary" onclick="stepAlgorithm()">Step</button>
+      <button id="btnAuto" onclick="toggleAutoPlay()">Auto Play</button>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-badge">Current Vertex: <span id="statEvaluating">-</span></div>
+    <div class="stat-badge">Priority Queue Size: <span id="statPqSize">0</span></div>
+    <div class="stat-badge">Settled Vertices: <span id="statVisited">0 / 6</span></div>
+    <div class="stat-badge" id="stateBadge">Algorithm State: <span id="statState">Ready</span></div>
+  </div>
+
+  <div class="stage-wrapper">
+    
+    <div class="canvas-panel">
+      <canvas id="graphCanvas"></canvas>
+      <div class="legend">
+        <div class="legend-item"><span class="dot" style="background:#FFFFFF; border-color:#003366;"></span> Unvisited</div>
+        <div class="legend-item"><span class="dot" style="background:#D97706; border-color:#D97706;"></span> Evaluating / Relaxing</div>
+        <div class="legend-item"><span class="dot" style="background:#1E2022; border-color:#1E2022;"></span> Settled (Visited)</div>
+        <div class="legend-item"><span class="dot" style="background:#1E5631; border-color:#1E5631;"></span> Shortest Path Tree</div>
+      </div>
+    </div>
+
+    <div class="data-panels">
+      
+      <div class="panel">
+        <h3>Priority Queue <small id="pqOrderTag">Min-Heap (Distance, Label)</small></h3>
+        <table>
+          <thead>
+            <tr><th>Vertex</th><th>Priority (Dist)</th><th>Status</th></tr>
+          </thead>
+          <tbody id="pq-body"></tbody>
+        </table>
+      </div>
+
+      <div class="panel">
+        <h3>Shortest Distances Table <small>Click any row to trace path</small></h3>
+        <table>
+          <thead>
+            <tr><th>Vertex</th><th>Distance</th><th>Path Via</th></tr>
+          </thead>
+          <tbody id="dist-body"></tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="status-box" id="status-msg">
+    Select a source vertex and click "Step" or "Auto Play" to begin single-source path relaxation.
+  </div>
+
+  <div class="path-callout" id="pathCallout"></div>
+
+</div>
+
+<script>
+  // Graph Model
+  const nodes = {
+    A: { x: 75,  y: 210 },
+    B: { x: 235, y: 95  },
+    C: { x: 235, y: 325 },
+    D: { x: 395, y: 95  },
+    E: { x: 395, y: 325 },
+    F: { x: 505, y: 210 }
+  };
+
+  const edges = [
+    { source: 'A', target: 'B', weight: 4 },
+    { source: 'A', target: 'C', weight: 2 },
+    { source: 'B', target: 'C', weight: 1 },
+    { source: 'B', target: 'D', weight: 5 },
+    { source: 'C', target: 'D', weight: 8 },
+    { source: 'C', target: 'E', weight: 10 },
+    { source: 'D', target: 'F', weight: 2 },
+    { source: 'E', target: 'F', weight: 3 },
+    { source: 'D', target: 'E', weight: 2 }
+  ];
+
+  // Adjacency List
+  const adjList = {};
+  Object.keys(nodes).forEach(n => adjList[n] = []);
+  edges.forEach(e => {
+    adjList[e.source].push({ node: e.target, weight: e.weight });
+    adjList[e.target].push({ node: e.source, weight: e.weight });
+  });
+
+  // UI Setup & Canvas Scaling
+  const startSelect = document.getElementById('startNode');
+  Object.keys(nodes).forEach(node => startSelect.add(new Option(`Node ${node}`, node)));
+
+  const canvas = document.getElementById('graphCanvas');
+  const ctx = canvas.getContext('2d');
+
+  function resizeCanvas() {
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    ctx.scale(dpr, dpr);
+    drawGraph();
+  }
+
+  // Algorithm State Variables
+  let pq = [];
+  let distances = {};
+  let previous = {};
+  let visited = new Set();
+  let evaluatingNode = null;
+  let activeRelaxEdge = null; // { from, to }
+  let highlightedPath = null; // array of node keys e.g. ['A', 'C', 'B']
+  let isDone = false;
+  let isRunning = false;
+  let stepSpeedMs = 700;
+  let timerId = null;
+
+  function updateSpeed() {
+    const val = parseInt(document.getElementById('speedSlider').value, 10);
+    stepSpeedMs = 1800 - val;
+  }
+
+  function sortQueue() {
+    pq.sort((a, b) => {
+      if (a.dist === b.dist) {
+        return a.node.localeCompare(b.node); // Alphabetical tie-breaking
+      }
+      return a.dist - b.dist; // Min-distance
+    });
+  }
+
+  // Canvas Drawing Logic
+  function drawGraph() {
+    const rect = canvas.getBoundingClientRect();
+    const w = rect.width;
+    const h = rect.height;
+    ctx.clearRect(0, 0, w, h);
+
+    // Coordinate scale factors from reference (580x420)
+    const scaleX = w / 580;
+    const scaleY = h / 420;
+
+    // Draw Edges
+    edges.forEach(edge => {
+      const u = edge.source;
+      const v = edge.target;
+      const p1 = { x: nodes[u].x * scaleX, y: nodes[u].y * scaleY };
+      const p2 = { x: nodes[v].x * scaleX, y: nodes[v].y * scaleY };
+
+      let isTreeEdge = false;
+      if (previous[v] === u || previous[u] === v) {
+        if ((visited.has(u) && visited.has(v)) ||
+            (visited.has(u) && evaluatingNode === v) ||
+            (visited.has(v) && evaluatingNode === u)) {
+          isTreeEdge = true;
+        }
+      }
+
+      let isRelaxing = (activeRelaxEdge &&
+        ((activeRelaxEdge.from === u && activeRelaxEdge.to === v) ||
+         (activeRelaxEdge.from === v && activeRelaxEdge.to === u)));
+
+      let isPathHighlight = false;
+      if (highlightedPath && highlightedPath.length > 1) {
+        for (let i = 0; i < highlightedPath.length - 1; i++) {
+          if ((highlightedPath[i] === u && highlightedPath[i+1] === v) ||
+              (highlightedPath[i] === v && highlightedPath[i+1] === u)) {
+            isPathHighlight = true;
+            break;
+          }
+        }
+      }
+
+      ctx.beginPath();
+      ctx.moveTo(p1.x, p1.y);
+      ctx.lineTo(p2.x, p2.y);
+
+      if (isPathHighlight) {
+        ctx.strokeStyle = '#1E5631';
+        ctx.lineWidth = 6;
+      } else if (isRelaxing) {
+        ctx.strokeStyle = '#D97706';
+        ctx.lineWidth = 4;
+      } else if (isTreeEdge) {
+        ctx.strokeStyle = '#1E5631';
+        ctx.lineWidth = 4;
+      } else {
+        ctx.strokeStyle = '#D8DEE4';
+        ctx.lineWidth = 2;
+      }
+      ctx.stroke();
+
+      // Edge Weight Badge
+      const midX = (p1.x + p2.x) / 2;
+      const midY = (p1.y + p2.y) / 2;
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.strokeStyle = isPathHighlight || isTreeEdge ? '#1E5631' : '#1E2022';
+      ctx.lineWidth = 1;
+      ctx.fillRect(midX - 12, midY - 12, 24, 24);
+      ctx.strokeRect(midX - 12, midY - 12, 24, 24);
+
+      ctx.fillStyle = '#1E2022';
+      ctx.font = '700 13px "Courier Prime", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(edge.weight, midX, midY + 1);
+    });
+
+    // Draw Vertices
+    Object.keys(nodes).forEach(nodeId => {
+      const pos = { x: nodes[nodeId].x * scaleX, y: nodes[nodeId].y * scaleY };
+      const radius = 22;
+
+      let fill = '#FFFFFF';
+      let stroke = '#003366';
+      let textColor = '#003366';
+
+      if (isDone && distances[nodeId] !== Infinity) {
+        fill = '#F0FDF4';
+        stroke = '#1E5631';
+        textColor = '#1E5631';
+      } else if (nodeId === evaluatingNode) {
+        fill = '#FEF3C7';
+        stroke = '#D97706';
+        textColor = '#D97706';
+      } else if (visited.has(nodeId)) {
+        fill = '#1E2022';
+        stroke = '#1E2022';
+        textColor = '#FFFFFF';
+      }
+
+      if (highlightedPath && highlightedPath.includes(nodeId)) {
+        fill = '#1E5631';
+        stroke = '#1E5631';
+        textColor = '#FFFFFF';
+      }
+
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, radius, 0, 2 * Math.PI);
+      ctx.fillStyle = fill;
+      ctx.fill();
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = stroke;
+      ctx.stroke();
+
+      ctx.fillStyle = textColor;
+      ctx.font = '800 16px "Montserrat", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(nodeId, pos.x, pos.y);
+    });
+  }
+
+  function updateTables() {
+    const pqBody = document.getElementById('pq-body');
+    pqBody.innerHTML = pq.length === 0 ? "<tr><td colspan='3' style='color:#64748B; font-style:italic;'>Queue Empty</td></tr>" : "";
+    pq.forEach(item => {
+      const isCur = (item.node === evaluatingNode);
+      pqBody.innerHTML += `
+        <tr class="${isCur ? 'active-row' : ''}">
+          <td><strong>Node ${item.node}</strong></td>
+          <td>${item.dist}</td>
+          <td>${isCur ? 'Evaluating' : 'Pending'}</td>
+        </tr>`;
+    });
+
+    const distBody = document.getElementById('dist-body');
+    distBody.innerHTML = "";
+    Object.keys(distances).forEach(node => {
+      let val = distances[node] === Infinity ? "&infin;" : distances[node];
+      let via = previous[node] ? `Node ${previous[node]}` : "-";
+      let isSettled = visited.has(node);
+      distBody.innerHTML += `
+        <tr class="clickable-row ${isSettled ? 'visited-row' : ''}" onclick="tracePathTo('${node}')">
+          <td><strong>Node ${node}</strong></td>
+          <td>${val}</td>
+          <td>${via}</td>
+        </tr>`;
+    });
+
+    document.getElementById('statEvaluating').textContent = evaluatingNode ? `Node ${evaluatingNode}` : '-';
+    document.getElementById('statPqSize').textContent = pq.length;
+    document.getElementById('statVisited').textContent = `${visited.size} / ${Object.keys(nodes).length}`;
+  }
+
+  function updateStatus(msg, success = false) {
+    const statusDiv = document.getElementById('status-msg');
+    statusDiv.innerHTML = msg;
+    if (success) {
+      statusDiv.className = 'status-box status-success';
+      document.getElementById('statState').textContent = 'Completed';
+      document.getElementById('stateBadge').className = 'stat-badge complete';
+    } else {
+      statusDiv.className = 'status-box';
+      document.getElementById('statState').textContent = isDone ? 'Finished' : (isRunning ? 'Auto Playing' : 'Step Mode');
+      document.getElementById('stateBadge').className = 'stat-badge';
+    }
+  }
+
+  function initAlgorithm() {
+    stopAutoPlay();
+    const start = startSelect.value;
+
+    pq = [];
+    distances = {};
+    previous = {};
+    visited = new Set();
+    evaluatingNode = null;
+    activeRelaxEdge = null;
+    highlightedPath = null;
+    isDone = false;
+
+    document.getElementById('btnStep').disabled = false;
+    document.getElementById('btnAuto').disabled = false;
+    document.getElementById('pathCallout').style.display = 'none';
+
+    Object.keys(nodes).forEach(n => {
+      distances[n] = Infinity;
+      previous[n] = null;
+    });
+
+    distances[start] = 0;
+    pq.push({ node: start, dist: 0 });
+
+    updateStatus(`Single-Source Shortest Path initialized from Source <strong>Node ${start}</strong> with dist = 0. Click "Step" or "Auto Play".`);
+    drawGraph();
+    updateTables();
+  }
+
+  function stepAlgorithm() {
+    if (isDone) return;
+
+    if (pq.length === 0) {
+      isDone = true;
+      evaluatingNode = null;
+      activeRelaxEdge = null;
+      stopAutoPlay();
+      document.getElementById('btnStep').disabled = true;
+      updateStatus(`Algorithm complete. All reachable vertices are settled. Shortest path tree fully constructed. Click any node to trace its shortest route!`, true);
+      drawGraph();
+      updateTables();
+      return;
+    }
+
+    sortQueue();
+    const current = pq.shift();
+    evaluatingNode = current.node;
+
+    if (!visited.has(evaluatingNode)) {
+      visited.add(evaluatingNode);
+
+      let neighborUpdates = [];
+      adjList[evaluatingNode].forEach(neighbor => {
+        if (!visited.has(neighbor.node)) {
+          let newDist = distances[evaluatingNode] + neighbor.weight;
+          if (newDist < distances[neighbor.node]) {
+            distances[neighbor.node] = newDist;
+            previous[neighbor.node] = evaluatingNode;
+            activeRelaxEdge = { from: evaluatingNode, to: neighbor.node };
+
+            pq = pq.filter(item => item.node !== neighbor.node);
+            pq.push({ node: neighbor.node, dist: newDist });
+            neighborUpdates.push(`Node ${neighbor.node} (cost: ${newDist})`);
+          }
+        }
+      });
+
+      sortQueue();
+
+      let msg = `Dequeued <strong>Node ${evaluatingNode}</strong> with priority ${distances[evaluatingNode]}. `;
+      if (neighborUpdates.length > 0) {
+        msg += `Relaxed outgoing edges to: <strong>${neighborUpdates.join(', ')}</strong>.`;
+      } else {
+        msg += `No shorter paths found to unvisited neighbors.`;
+      }
+      updateStatus(msg);
+    } else {
+      updateStatus(`Node ${evaluatingNode} was already settled. Skipping stale queue entry.`);
+    }
+
+    drawGraph();
+    updateTables();
+
+    if (pq.length === 0) {
+      document.getElementById('btnStep').innerText = "Finish";
+    }
+  }
+
+  function autoPlayLoop() {
+    if (!isRunning || isDone) {
+      stopAutoPlay();
+      return;
+    }
+    stepAlgorithm();
+    if (!isDone) {
+      timerId = setTimeout(autoPlayLoop, stepSpeedMs);
+    }
+  }
+
+  function toggleAutoPlay() {
+    if (isRunning) {
+      stopAutoPlay();
+    } else {
+      isRunning = true;
+      document.getElementById('btnAuto').textContent = 'Pause';
+      document.getElementById('btnStep').disabled = true;
+      autoPlayLoop();
+    }
+  }
+
+  function stopAutoPlay() {
+    isRunning = false;
+    clearTimeout(timerId);
+    document.getElementById('btnAuto').textContent = 'Auto Play';
+    if (!isDone) {
+      document.getElementById('btnStep').disabled = false;
+    }
+  }
+
+  // Interactive Path Tracing (Click node or row to trace)
+  function tracePathTo(targetNode) {
+    if (distances[targetNode] === Infinity) {
+      alert(`Node ${targetNode} is unreachable from Source Node ${startSelect.value}.`);
+      return;
+    }
+
+    const path = [];
+    let curr = targetNode;
+    while (curr !== null) {
+      path.unshift(curr);
+      curr = previous[curr];
+    }
+
+    highlightedPath = path;
+    drawGraph();
+
+    const callout = document.getElementById('pathCallout');
+    callout.style.display = 'block';
+    callout.innerHTML = `<strong>Shortest Route to Node ${targetNode}:</strong> ${path.join(' &rarr; ')} &bull; <strong>Total Distance:</strong> ${distances[targetNode]}`;
+  }
+
+  // Canvas Click Handler
+  canvas.addEventListener('click', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const clickY = e.clientY - rect.top;
+    const scaleX = rect.width / 580;
+    const scaleY = rect.height / 420;
+
+    Object.keys(nodes).forEach(nodeId => {
+      const nx = nodes[nodeId].x * scaleX;
+      const ny = nodes[nodeId].y * scaleY;
+      const dist = Math.hypot(clickX - nx, clickY - ny);
+      if (dist <= 25) {
+        tracePathTo(nodeId);
+      }
+    });
+  });
+
+  window.addEventListener('resize', resizeCanvas);
+
+  // Initial load
+  resizeCanvas();
+  initAlgorithm();
+</script>
+
+</body>
+</html>

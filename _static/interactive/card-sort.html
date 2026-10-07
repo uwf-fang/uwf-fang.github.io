@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Card Sort Visualizer: Selection, Insertion, Merge & Quick Sort</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Montserrat:wght@600;700;800&family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared-nav.css">
+  <style>
+    :root {
+      /* Palette */
+      --bg: #ffffff;
+      --panel-bg: #f8fafc;
+      --panel-border: #1e2022;
+      
+      --text-title: #1e2022;       /* Dark charcoal */
+      --text-body: #2b2d42;        /* Off-black */
+      --text-muted: #64748b;
+      
+      --primary-accent: #003366;   /* Dark Blue */
+      --primary-accent-hover: #002244;
+      
+      --secondary-green: #1e5631;  /* Dark Green */
+      --secondary-red: #8b0000;    /* Dark Red */
+      
+      --state-correct: #16a34a;    /* Green */
+      --state-wrong: #dc2626;      /* Red */
+      --state-active: #0284c7;     /* Sky blue (low scan) */
+      --state-target: #d97706;     /* Amber focus (high scan) */
+      --state-pivot: #7c3aed;      /* Violet (Pivot) */
+
+      --sorted-zone-bg: #f0fdf4;
+      --unsorted-zone-bg: #f8fafc;
+
+      --card-bg: #ffffff;
+      --card-border: #cbd5e1;
+      --anim-duration: 850ms;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background-color: var(--bg);
+      color: var(--text-body);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2.5rem 1.5rem 4rem;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1100px;
+      width: 100%;
+    }
+
+    header {
+      border-bottom: 2px solid var(--text-title);
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .topic-tag {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary-accent);
+      border: 1.5px solid var(--primary-accent);
+      padding: 0.25rem 0.75rem;
+      display: inline-block;
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      margin-bottom: 0.5rem;
+      font-size: 2.1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-title);
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    p.lead-text {
+      font-size: 1.05rem;
+      color: var(--text-body);
+      max-width: 860px;
+    }
+
+    .control-panel {
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      padding: 1.2rem 1.5rem;
+      border-radius: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+      max-width: 1000px;
+      width: 100%;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+
+    select, button, input[type="range"] {
+      padding: 0.5rem 0.85rem;
+      font-size: 0.95rem;
+      border: 1px solid var(--panel-border);
+      border-radius: 6px;
+      background: #ffffff;
+      color: var(--text-body);
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    select:focus, button:focus {
+      border-color: var(--primary-accent);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-end;
+    }
+
+    button.primary {
+      background: var(--primary-accent);
+      border-color: var(--primary-accent);
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    button.primary:hover {
+      background: var(--primary-accent-hover);
+      border-color: var(--primary-accent-hover);
+    }
+
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .speed-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .speed-hint {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .stats-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.25rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .stat-badge {
+      background: var(--panel-bg);
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--panel-border);
+      color: var(--text-title);
+    }
+
+    .stat-badge span {
+      color: var(--primary-accent);
+      font-weight: 800;
+    }
+
+    .stat-badge.stable span {
+      color: var(--state-correct);
+    }
+
+    .stat-badge.unstable span {
+      color: var(--state-wrong);
+    }
+
+    /* Main Stage */
+    .stage-wrapper {
+      position: relative;
+      margin: 2rem 0 1.5rem;
+      padding: 3.8rem 1.5rem 2rem;
+      border-radius: 14px;
+      border: 1px solid var(--panel-border);
+      background: var(--unsorted-zone-bg);
+      overflow-x: auto;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+      transition: min-height 0.3s ease;
+      min-height: 230px;
+    }
+
+    .region-backdrop {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 0%;
+      background-color: var(--sorted-zone-bg);
+      border-right: 3px dashed var(--secondary-green);
+      border-top-left-radius: 14px;
+      border-bottom-left-radius: 14px;
+      transition: width var(--anim-duration) ease;
+      pointer-events: none;
+    }
+
+    .region-labels {
+      position: absolute;
+      top: 12px;
+      left: 1.5rem;
+      right: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      pointer-events: none;
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      padding-bottom: 8px;
+      z-index: 3;
+    }
+
+    .sorted-tag {
+      color: var(--secondary-green);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .unsorted-tag {
+      color: var(--text-muted);
+      margin-left: auto;
+    }
+
+    .cards-container, .buffer-container {
+      display: flex;
+      gap: 1.25rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Auxiliary Buffer Row for Merge Sort */
+    .buffer-wrapper {
+      margin-top: 1.8rem;
+      padding-top: 1.2rem;
+      border-top: 1px dashed var(--panel-border);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .buffer-label {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--primary-accent);
+      margin-bottom: 0.8rem;
+    }
+
+    .card-slot {
+      width: 90px;
+      height: 135px;
+      position: relative;
+      margin-top: 15px;
+    }
+
+    .slot-index {
+      position: absolute;
+      top: -24px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .card {
+      width: 90px;
+      height: 135px;
+      background: var(--card-bg);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      position: absolute;
+      top: 0;
+      left: 0;
+      user-select: none;
+      border: 2px solid var(--card-border);
+      transition: transform var(--anim-duration) cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow var(--anim-duration) ease,
+                  border-color 0.2s ease,
+                  background-color 0.3s ease;
+      z-index: 1;
+    }
+
+    .card.red { color: var(--secondary-red); }
+    .card.black { color: var(--text-body); }
+
+    .card-corner {
+      font-size: 0.95rem;
+      font-weight: 800;
+      line-height: 1;
+      width: 100%;
+      text-align: left;
+    }
+
+    .card-corner sub {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-left: 1px;
+      vertical-align: sub;
+    }
+
+    .card-center {
+      font-size: 3.2rem;
+      line-height: 1;
+    }
+
+    .card-bottom {
+      transform: rotate(180deg);
+    }
+
+    /* Animation & Highlight States */
+    .card.scanning {
+      transform: translateY(-16px);
+      border-color: var(--state-active);
+      box-shadow: 0 8px 16px rgba(2, 132, 199, 0.25);
+      z-index: 5;
+    }
+
+    .card.target-min {
+      transform: translateY(-24px);
+      border-color: var(--state-target);
+      box-shadow: 0 10px 20px rgba(217, 119, 6, 0.25);
+      z-index: 6;
+    }
+
+    .card.pivot-highlight {
+      border-color: var(--state-pivot);
+      box-shadow: 0 0 16px rgba(124, 58, 237, 0.4);
+    }
+
+    .card.sub-range {
+      background: #faf5ff;
+    }
+
+    .card.swap-high {
+      z-index: 20;
+      border-color: var(--state-wrong);
+      box-shadow: 0 15px 25px rgba(220, 38, 38, 0.25);
+    }
+
+    .card.swap-low {
+      z-index: 15;
+      border-color: var(--state-wrong);
+      box-shadow: 0 -10px 20px rgba(220, 38, 38, 0.2);
+    }
+
+    .card.sorted {
+      border-color: var(--state-correct);
+      border-width: 2.5px;
+      background: #fcfdfd;
+    }
+
+    .card.subarray-left {
+      border-color: var(--primary-accent);
+      box-shadow: 0 0 12px rgba(30, 58, 138, 0.3);
+    }
+
+    .card.subarray-right {
+      border-color: var(--state-target);
+      box-shadow: 0 0 12px rgba(217, 119, 6, 0.3);
+    }
+
+    .status-box {
+      font-size: 1.05rem;
+      min-height: 2.8em;
+      text-align: center;
+      max-width: 750px;
+      line-height: 1.5;
+      color: var(--text-body);
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <nav class="course-nav">
+    <a href="index.html" class="nav-brand">DSA Interactive Lab</a>
+    <div class="nav-links">
+      <a href="index.html">Hub Home</a>
+      <a href="adt-overview/index.html">ADT Explorer</a>
+      <a href="problem-type-paradigm.html">Paradigms</a>
+      <a href="card-sort.html" class="active">Card Sort</a>
+      <a href="movable-cards.html">Sorting Workbench</a>
+      <a href="dijkstra.html">Dijkstra</a>
+    </div>
+  </nav>
+
+  <header>
+    <div class="topic-tag">Sorting Algorithms & Stability</div>
+    <h1>Card Sort Visualizer</h1>
+    <p class="lead-text">
+      Step-by-step and auto-play visualization of Selection, Insertion, Merge, and Quick Sort. Realistic playing cards with subscript identifiers demonstrate <strong>order stability</strong> (or lack thereof) in real time.
+    </p>
+  </header>
+
+  <div class="control-panel">
+    <div class="control-group">
+      <label for="algoSelect">Algorithm</label>
+      <select id="algoSelect" onchange="resetData()">
+        <option value="selection">Selection Sort (Unstable)</option>
+        <option value="insertion">Insertion Sort (Stable)</option>
+        <option value="merge">Merge Sort (Stable)</option>
+        <option value="quick" selected>Quick Sort (Textbook / Unstable)</option>
+      </select>
+    </div>
+
+    <div class="control-group">
+      <label for="arrayType">Array Preset</label>
+      <select id="arrayType" onchange="resetData()">
+        <option value="random" selected>Random</option>
+        <option value="nearlySorted">Nearly Sorted</option>
+        <option value="reversed">Reversed</option>
+        <option value="duplicates">Many Duplicates (Stability Demo)</option>
+      </select>
+    </div>
+
+    <div class="control-group">
+      <label for="speedSlider">Animation Speed</label>
+      <div class="speed-container">
+        <span class="speed-hint">Slow</span>
+        <input type="range" id="speedSlider" min="300" max="1700" value="1050" step="50" oninput="updateSpeed()">
+        <span class="speed-hint">Fast</span>
+      </div>
+    </div>
+
+    <div class="btn-group">
+      <button id="btnShuffle" onclick="resetData()">Reset / Shuffle</button>
+      <button id="btnStep" class="primary" onclick="stepSort()">Step</button>
+      <button id="btnAuto" onclick="toggleAutoPlay()">Auto Play</button>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-badge">Step / Round: <span id="roundCount">-</span></div>
+    <div class="stat-badge">Comparisons: <span id="compCount">0</span></div>
+    <div class="stat-badge">Swaps / Shifts: <span id="swapCount">0</span></div>
+    <div class="stat-badge" id="stabilityBadge">Order Stability: <span id="stabilityStatus">Preserved</span></div>
+  </div>
+
+  <div class="stage-wrapper" id="stageWrapper">
+    <div class="region-backdrop" id="regionBackdrop"></div>
+    <div class="region-labels" id="regionLabels">
+      <span class="sorted-tag" id="sortedLabel">● Sorted Region</span>
+      <span class="unsorted-tag" id="unsortedLabel">Unsorted Region ●</span>
+    </div>
+    
+    <!-- Main Array Slots -->
+    <div class="cards-container" id="cardsContainer"></div>
+
+    <!-- Merge Sort Buffer Array -->
+    <div class="buffer-wrapper" id="bufferWrapper">
+      <div class="buffer-label">Merged Auxiliary Buffer</div>
+      <div class="buffer-container" id="bufferContainer"></div>
+    </div>
+  </div>
+
+  <div class="status-box" id="statusText">Select an algorithm and click "Step" or "Auto Play".</div>
+
+</div>
+
+<script>
+    const SUITS = [
+      { sym: '♠', color: 'black', charCodeBase: 0x1F0A0 },
+      { sym: '♥', color: 'red',   charCodeBase: 0x1F0B0 },
+      { sym: '♦', color: 'red',   charCodeBase: 0x1F0C0 },
+      { sym: '♣', color: 'black', charCodeBase: 0x1F0D0 }
+    ];
+
+    const RANK_LABELS = {
+      1: 'A', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7',
+      8: '8', 9: '9', 10: '10', 11: 'J', 12: 'Q', 13: 'K'
+    };
+
+    let cards = [];
+    let bufferCards = [];
+    let comparisons = 0;
+    let swaps = 0;
+    let currentRound = '-';
+    let isRunning = false;
+    let isAnimating = false;
+    let autoPlayTimer = null;
+    let sortGenerator = null;
+    let cardUniqueIdCounter = 0;
+    let animDurationMs = 850;
+
+    function checkStability() {
+      const activeCards = cards.filter(c => c !== null);
+      for (let i = 0; i < activeCards.length - 1; i++) {
+        for (let j = i + 1; j < activeCards.length; j++) {
+          if (activeCards[i].rank === activeCards[j].rank && activeCards[i].initialOrder > activeCards[j].initialOrder) {
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+
+    function updateStabilityDisplay() {
+      const isStable = checkStability();
+      const badge = document.getElementById('stabilityBadge');
+      const text = document.getElementById('stabilityStatus');
+      badge.className = 'stat-badge ' + (isStable ? 'stable' : 'unstable');
+      text.textContent = isStable ? 'Preserved (Stable)' : 'Inverted (Unstable)';
+    }
+
+    function createCard(rank, suitIdx, initialTag = '') {
+      const suit = SUITS[suitIdx % 4];
+      let offset = rank;
+      if (rank >= 12) offset = rank + 1;
+      return {
+        id: ++cardUniqueIdCounter,
+        rank: rank,
+        tag: initialTag,
+        initialOrder: 0,
+        label: RANK_LABELS[rank],
+        suitSymbol: suit.sym,
+        color: suit.color,
+        char: String.fromCodePoint(suit.charCodeBase + offset)
+      };
+    }
+
+    function updateSpeed() {
+      const val = parseInt(document.getElementById('speedSlider').value, 10);
+      animDurationMs = 2000 - val;
+      document.documentElement.style.setProperty('--anim-duration', `${animDurationMs}ms`);
+    }
+
+    function generateData(type) {
+      let cardList = [];
+      if (type === 'random') {
+        const ranks = [9, 3, 13, 2, 7, 5, 11].sort(() => Math.random() - 0.5);
+        cardList = ranks.map((rank, i) => createCard(rank, i % 4));
+      } else if (type === 'nearlySorted') {
+        const ranks = [2, 4, 3, 7, 8, 12, 10];
+        cardList = ranks.map((rank, i) => createCard(rank, i % 4));
+      } else if (type === 'reversed') {
+        const ranks = [13, 11, 9, 7, 5, 3, 1];
+        cardList = ranks.map((rank, i) => createCard(rank, i % 4));
+      } else if (type === 'duplicates') {
+        cardList = [
+          createCard(4, 0, 'A'),
+          createCard(9, 1, 'A'),
+          createCard(4, 2, 'B'),
+          createCard(12, 3),
+          createCard(9, 0, 'B'),
+          createCard(2, 2),
+          createCard(4, 3, 'C')
+        ];
+      }
+
+      cardList.forEach((c, idx) => c.initialOrder = idx);
+      return cardList;
+    }
+
+    function updateRegionBoundary(sortedUpTo) {
+      const backdrop = document.getElementById('regionBackdrop');
+      const slots = document.querySelectorAll('#cardsContainer .card-slot');
+      if (sortedUpTo === undefined || sortedUpTo < 0 || slots.length === 0) {
+        backdrop.style.width = '0px';
+        backdrop.style.borderRightWidth = '0px';
+        return;
+      }
+      
+      const targetSlot = slots[Math.min(sortedUpTo, slots.length - 1)];
+      const stageRect = document.getElementById('stageWrapper').getBoundingClientRect();
+      const slotRect = targetSlot.getBoundingClientRect();
+      const boundaryWidth = (slotRect.right - stageRect.left) + 10;
+      
+      backdrop.style.borderRightWidth = '3px';
+      backdrop.style.width = `${boundaryWidth}px`;
+    }
+
+    function render(highlight = {}) {
+      const container = document.getElementById('cardsContainer');
+      container.innerHTML = '';
+
+      cards.forEach((card, idx) => {
+        const slot = document.createElement('div');
+        slot.className = 'card-slot';
+
+        const indexLabel = document.createElement('div');
+        indexLabel.className = 'slot-index';
+        indexLabel.textContent = `[${idx}]`;
+        slot.appendChild(indexLabel);
+
+        if (card) {
+          const el = document.createElement('div');
+          el.className = `card ${card.color}`;
+          el.id = `card-${card.id}`;
+
+          if (highlight.scanning === idx) el.classList.add('scanning');
+          if (highlight.target === idx) el.classList.add('target-min');
+          if ((highlight.pivotCardId && card.id === highlight.pivotCardId) || (!highlight.pivotCardId && highlight.pivotIdx === idx)) el.classList.add('pivot-highlight');
+          if (highlight.subRange && idx >= highlight.subRange[0] && idx <= highlight.subRange[1]) el.classList.add('sub-range');
+          if (highlight.sortedUpTo !== undefined && idx <= highlight.sortedUpTo) el.classList.add('sorted');
+          if (highlight.leftRange && idx >= highlight.leftRange[0] && idx <= highlight.leftRange[1]) el.classList.add('subarray-left');
+          if (highlight.rightRange && idx >= highlight.rightRange[0] && idx <= highlight.rightRange[1]) el.classList.add('subarray-right');
+
+          const subTag = card.tag ? `<sub>${card.tag}</sub>` : '';
+          el.innerHTML = `
+            <div class="card-corner">${card.label}${subTag}${card.suitSymbol}</div>
+            <div class="card-center">${card.char}</div>
+            <div class="card-corner card-bottom">${card.label}${subTag}${card.suitSymbol}</div>
+          `;
+          slot.appendChild(el);
+        }
+        container.appendChild(slot);
+      });
+
+      // Render Buffer Row (for Merge Sort)
+      const bufferContainer = document.getElementById('bufferContainer');
+      bufferContainer.innerHTML = '';
+      bufferCards.forEach((card, idx) => {
+        const slot = document.createElement('div');
+        slot.className = 'card-slot';
+
+        const indexLabel = document.createElement('div');
+        indexLabel.className = 'slot-index';
+        indexLabel.textContent = `B[${idx}]`;
+        slot.appendChild(indexLabel);
+
+        if (card) {
+          const el = document.createElement('div');
+          el.className = `card ${card.color} sorted`;
+          const subTag = card.tag ? `<sub>${card.tag}</sub>` : '';
+          el.innerHTML = `
+            <div class="card-corner">${card.label}${subTag}${card.suitSymbol}</div>
+            <div class="card-center">${card.char}</div>
+            <div class="card-corner card-bottom">${card.label}${subTag}${card.suitSymbol}</div>
+          `;
+          slot.appendChild(el);
+        }
+        bufferContainer.appendChild(slot);
+      });
+
+      document.getElementById('compCount').textContent = comparisons;
+      document.getElementById('swapCount').textContent = swaps;
+      document.getElementById('roundCount').textContent = currentRound;
+
+      updateStabilityDisplay();
+      const currentAlgo = document.getElementById('algoSelect').value;
+      if (currentAlgo === 'selection' || currentAlgo === 'insertion') {
+        updateRegionBoundary(highlight.sortedUpTo);
+      } else {
+        document.getElementById('regionBackdrop').style.width = '0px';
+      }
+    }
+
+    const sleep = (ms) => new Promise(res => setTimeout(res, ms));
+
+    async function animateSwap(idx1, idx2) {
+      const slots = document.querySelectorAll('#cardsContainer .card-slot');
+      if (!slots[idx1] || !slots[idx2]) return;
+
+      const card1 = slots[idx1].querySelector('.card');
+      const card2 = slots[idx2].querySelector('.card');
+
+      const rect1 = slots[idx1].getBoundingClientRect();
+      const rect2 = slots[idx2].getBoundingClientRect();
+      const deltaX = rect2.left - rect1.left;
+
+      card1.classList.add('swap-high');
+      card2.classList.add('swap-low');
+
+      card1.style.transform = `translate(${deltaX}px, -45px) scale(1.08) rotate(4deg)`;
+      card2.style.transform = `translate(${-deltaX}px, 45px) scale(1.08) rotate(-4deg)`;
+
+      await sleep(animDurationMs);
+
+      const temp = cards[idx1];
+      cards[idx1] = cards[idx2];
+      cards[idx2] = temp;
+
+      render();
+      await sleep(80);
+    }
+
+    // --- Selection Sort Generator ---
+    async function* selectionSortGen() {
+      const n = cards.length;
+      for (let i = 0; i < n - 1; i++) {
+        currentRound = `Pass ${i + 1} / ${n - 1}`;
+        let minIdx = i;
+        const startLabel = `${cards[i].label}${cards[i].tag ? '(' + cards[i].tag + ')' : ''}${cards[i].suitSymbol}`;
+        document.getElementById('statusText').textContent = `Round i=${i}: Scanning unsorted cards to find smallest item for slot [${i}].`;
+        render({ target: minIdx, sortedUpTo: i - 1 });
+        yield;
+
+        for (let j = i + 1; j < n; j++) {
+          comparisons++;
+          const curLabel = `${cards[j].label}${cards[j].tag ? '(' + cards[j].tag + ')' : ''}${cards[j].suitSymbol}`;
+          const minLabel = `${cards[minIdx].label}${cards[minIdx].tag ? '(' + cards[minIdx].tag + ')' : ''}${cards[minIdx].suitSymbol}`;
+          document.getElementById('statusText').textContent = `Comparing card [${j}] (${curLabel}) with current minimum [${minIdx}] (${minLabel}).`;
+          render({ scanning: j, target: minIdx, sortedUpTo: i - 1 });
+          yield;
+
+          if (cards[j].rank < cards[minIdx].rank) {
+            minIdx = j;
+            const newMinLabel = `${cards[minIdx].label}${cards[minIdx].tag ? '(' + cards[minIdx].tag + ')' : ''}${cards[minIdx].suitSymbol}`;
+            document.getElementById('statusText').textContent = `New minimum found: ${newMinLabel} at index [${minIdx}].`;
+            render({ target: minIdx, sortedUpTo: i - 1 });
+            yield;
+          }
+        }
+
+        if (minIdx !== i) {
+          swaps++;
+          const swapMinLabel = `${cards[minIdx].label}${cards[minIdx].tag ? '(' + cards[minIdx].tag + ')' : ''}${cards[minIdx].suitSymbol}`;
+          document.getElementById('statusText').textContent = `Swapping smallest card (${swapMinLabel}) into position [${i}].`;
+          isAnimating = true;
+          await animateSwap(i, minIdx);
+          isAnimating = false;
+        } else {
+          document.getElementById('statusText').textContent = `Card ${startLabel} is already in correct place. No swap necessary.`;
+          yield;
+        }
+
+        render({ sortedUpTo: i });
+        yield;
+      }
+      currentRound = 'Done';
+      render({ sortedUpTo: n - 1 });
+      const isStable = checkStability();
+      document.getElementById('statusText').textContent = isStable 
+        ? 'Selection Sort finished (Stability happened to be preserved).'
+        : 'Selection Sort finished! Unstable: long-distance swaps inverted duplicate card order.';
+    }
+
+    // --- Insertion Sort Generator ---
+    async function* insertionSortGen() {
+      const n = cards.length;
+      render({ sortedUpTo: 0 });
+
+      for (let i = 1; i < n; i++) {
+        currentRound = `Pass ${i} / ${n - 1}`;
+        let j = i;
+        const curCardLabel = `${cards[i].label}${cards[i].tag ? '(' + cards[i].tag + ')' : ''}${cards[i].suitSymbol}`;
+        document.getElementById('statusText').textContent = `Round i=${i}: Picking card ${curCardLabel} at [${i}] to insert into sorted zone.`;
+        render({ target: i, sortedUpTo: i - 1 });
+        yield;
+
+        while (j > 0) {
+          comparisons++;
+          const curLabel = `${cards[j].label}${cards[j].tag ? '(' + cards[j].tag + ')' : ''}${cards[j].suitSymbol}`;
+          const leftLabel = `${cards[j - 1].label}${cards[j - 1].tag ? '(' + cards[j - 1].tag + ')' : ''}${cards[j - 1].suitSymbol}`;
+          document.getElementById('statusText').textContent = `Comparing [${j}] (${curLabel}) with left neighbor [${j - 1}] (${leftLabel}).`;
+          render({ scanning: j, target: j - 1, sortedUpTo: i - 1 });
+          yield;
+
+          if (cards[j].rank < cards[j - 1].rank) {
+            document.getElementById('statusText').textContent = `${curLabel} < ${leftLabel}. Shifting leftward.`;
+            swaps++;
+            isAnimating = true;
+            await animateSwap(j - 1, j);
+            isAnimating = false;
+            j--;
+            render({ target: j, sortedUpTo: i - 1 });
+            yield;
+          } else {
+            document.getElementById('statusText').textContent = `${curLabel} ≥ ${leftLabel}. Preserves order, insertion complete.`;
+            yield;
+            break;
+          }
+        }
+        render({ sortedUpTo: i });
+        yield;
+      }
+
+      currentRound = 'Done';
+      render({ sortedUpTo: n - 1 });
+      document.getElementById('statusText').textContent = 'Finished! Insertion Sort is STABLE: duplicate cards maintained their exact original order (A → B → C).';
+    }
+
+    // --- Merge Sort Generator ---
+    async function* mergeSortGen() {
+      const n = cards.length;
+      document.getElementById('bufferWrapper').style.display = 'flex';
+
+      const mergeQueue = [];
+      function planMerges(l, r) {
+        if (l >= r) return;
+        const m = Math.floor((l + r) / 2);
+        planMerges(l, m);
+        planMerges(m + 1, r);
+        mergeQueue.push({ left: l, mid: m, right: r });
+      }
+      planMerges(0, n - 1);
+
+      let stepNum = 1;
+      for (const seg of mergeQueue) {
+        const { left, mid, right } = seg;
+        const leftSub = cards.slice(left, mid + 1);
+        const rightSub = cards.slice(mid + 1, right + 1);
+        bufferCards = new Array(n).fill(null);
+
+        currentRound = `Merge ${stepNum++}/${mergeQueue.length}: [${left}..${mid}] & [${mid + 1}..${right}]`;
+        document.getElementById('statusText').textContent = `Merging sorted subarray [${left}..${mid}] (blue) and [${mid + 1}..${right}] (amber).`;
+        render({ leftRange: [left, mid], rightRange: [mid + 1, right] });
+        yield;
+
+        let i = 0, j = 0, k = left;
+
+        while (i < leftSub.length && j < rightSub.length) {
+          comparisons++;
+          const leftCard = leftSub[i];
+          const rightCard = rightSub[j];
+          const leftCardLabel = `${leftCard.label}${leftCard.tag ? '(' + leftCard.tag + ')' : ''}${leftCard.suitSymbol}`;
+          const rightCardLabel = `${rightCard.label}${rightCard.tag ? '(' + rightCard.tag + ')' : ''}${rightCard.suitSymbol}`;
+
+          document.getElementById('statusText').textContent = `Comparing left candidate ${leftCardLabel} with right candidate ${rightCardLabel}.`;
+          render({ scanning: left + i, target: mid + 1 + j, leftRange: [left, mid], rightRange: [mid + 1, right] });
+          yield;
+
+          if (leftCard.rank <= rightCard.rank) {
+            document.getElementById('statusText').textContent = `${leftCardLabel} ≤ ${rightCardLabel}. Placing ${leftCardLabel} into auxiliary buffer.`;
+            bufferCards[k] = leftCard;
+            cards[left + i] = null;
+            swaps++;
+            i++;
+          } else {
+            document.getElementById('statusText').textContent = `${rightCardLabel} < ${leftCardLabel}. Placing ${rightCardLabel} into auxiliary buffer.`;
+            bufferCards[k] = rightCard;
+            cards[mid + 1 + j] = null;
+            swaps++;
+            j++;
+          }
+          k++;
+          render({ leftRange: [left, mid], rightRange: [mid + 1, right] });
+          yield;
+        }
+
+        while (i < leftSub.length) {
+          const leftCard = leftSub[i];
+          const leftCardLabel = `${leftCard.label}${leftCard.tag ? '(' + leftCard.tag + ')' : ''}${leftCard.suitSymbol}`;
+          document.getElementById('statusText').textContent = `Copying remaining left card ${leftCardLabel} into buffer.`;
+          bufferCards[k] = leftCard;
+          cards[left + i] = null;
+          swaps++;
+          i++;
+          k++;
+          render({ leftRange: [left, mid], rightRange: [mid + 1, right] });
+          yield;
+        }
+
+        while (j < rightSub.length) {
+          const rightCard = rightSub[j];
+          const rightCardLabel = `${rightCard.label}${rightCard.tag ? '(' + rightCard.tag + ')' : ''}${rightCard.suitSymbol}`;
+          document.getElementById('statusText').textContent = `Copying remaining right card ${rightCardLabel} into buffer.`;
+          bufferCards[k] = rightCard;
+          cards[mid + 1 + j] = null;
+          swaps++;
+          j++;
+          k++;
+          render({ leftRange: [left, mid], rightRange: [mid + 1, right] });
+          yield;
+        }
+
+        document.getElementById('statusText').textContent = `Copying merged range [${left}..${right}] back into primary array.`;
+        for (let idx = left; idx <= right; idx++) {
+          cards[idx] = bufferCards[idx];
+          bufferCards[idx] = null;
+        }
+        render();
+        yield;
+      }
+
+      currentRound = 'Done';
+      document.getElementById('bufferWrapper').style.display = 'none';
+      render({ sortedUpTo: n - 1 });
+      document.getElementById('statusText').textContent = 'Finished! Merge Sort is STABLE: equal cards maintain left-to-right order throughout merges (A → B → C).';
+    }
+
+    // --- Textbook Quick Sort Generator ---
+    async function* quickSortGen() {
+      const n = cards.length;
+      const stack = [{ low: 0, high: n - 1 }];
+      let passCount = 1;
+
+      while (stack.length > 0) {
+        const { low, high } = stack.pop();
+        if (low >= high) continue;
+
+        let l = low;
+        let r = high;
+        const mid = Math.floor((high + low) / 2);
+        const pivotCard = cards[mid];
+        const pivotVal = pivotCard.rank;
+        const pivotCardId = pivotCard.id;
+        const pivotLabel = `${pivotCard.label}${pivotCard.tag ? '(' + pivotCard.tag + ')' : ''}${pivotCard.suitSymbol}`;
+
+        currentRound = `Partition ${passCount++}: [${low}..${high}]`;
+        document.getElementById('statusText').textContent = `Partitioning sub-array [${low}..${high}] with Pivot = ${pivotLabel}.`;
+        render({ subRange: [low, high], pivotCardId: pivotCardId });
+        yield;
+
+        while (true) {
+          // while (arr[low] < pivot) ++low;
+          while (cards[l].rank < pivotVal) {
+            comparisons++;
+            document.getElementById('statusText').textContent = `Scanning rightward: [${l}] (${cards[l].label}) < Pivot (${pivotLabel}). Moving low pointer forward.`;
+            render({ scanning: l, target: r, subRange: [low, high], pivotCardId: pivotCardId });
+            yield;
+            l++;
+          }
+          comparisons++; // for the terminating comparison
+
+          // while (arr[high] > pivot) --high;
+          while (cards[r].rank > pivotVal) {
+            comparisons++;
+            document.getElementById('statusText').textContent = `Scanning leftward: [${r}] (${cards[r].label}) > Pivot (${pivotLabel}). Moving high pointer backward.`;
+            render({ scanning: l, target: r, subRange: [low, high], pivotCardId: pivotCardId });
+            yield;
+            r--;
+          }
+          comparisons++; // for the terminating comparison
+
+          // if (low >= high) break;
+          if (l >= r) {
+            document.getElementById('statusText').textContent = `Pointers met/crossed (low=${l} ≥ high=${r}). Partition complete. Returning split point ${r}.`;
+            render({ scanning: l, target: r, subRange: [low, high], pivotCardId: pivotCardId });
+            yield;
+            break;
+          }
+
+          // swap(arr[low], arr[high]); ++low; --high;
+          const leftName = `${cards[l].label}${cards[l].tag ? '(' + cards[l].tag + ')' : ''}`;
+          const rightName = `${cards[r].label}${cards[r].tag ? '(' + cards[r].tag + ')' : ''}`;
+          document.getElementById('statusText').textContent = `Swapping [${l}] (${leftName}) and [${r}] (${rightName}), then advancing both pointers inward.`;
+          swaps++;
+          isAnimating = true;
+          await animateSwap(l, r);
+          isAnimating = false;
+
+          l++;
+          r--;
+          render({ scanning: l, target: r, subRange: [low, high], pivotCardId: pivotCardId });
+          yield;
+        }
+
+        const part = r;
+        // Push sub-ranges onto stack (right first, then left to simulate recursion)
+        stack.push({ low: part + 1, high: high });
+        stack.push({ low: low, high: part });
+      }
+
+      currentRound = 'Done';
+      render({ sortedUpTo: n - 1 });
+      const isStable = checkStability();
+      document.getElementById('statusText').textContent = isStable
+        ? 'Finished! Quick Sort complete (Order happened to be preserved).'
+        : 'Finished! Quick Sort is UNSTABLE: swaps across the pivot inverted duplicate card order.';
+    }
+
+    function initSort() {
+      const algo = document.getElementById('algoSelect').value;
+      if (algo === 'selection') sortGenerator = selectionSortGen();
+      else if (algo === 'insertion') sortGenerator = insertionSortGen();
+      else if (algo === 'merge') sortGenerator = mergeSortGen();
+      else if (algo === 'quick') sortGenerator = quickSortGen();
+    }
+
+    async function stepSort() {
+      if (isAnimating) return;
+      if (!sortGenerator) initSort();
+      const res = await sortGenerator.next();
+      if (res.done) {
+        stopAutoPlay();
+        document.getElementById('btnStep').disabled = true;
+      }
+    }
+
+    async function autoPlayLoop() {
+      while (isRunning) {
+        if (!sortGenerator) initSort();
+        const res = await sortGenerator.next();
+        if (res.done) {
+          stopAutoPlay();
+          document.getElementById('btnStep').disabled = true;
+          break;
+        }
+        await sleep(animDurationMs * 0.7);
+      }
+    }
+
+    function toggleAutoPlay() {
+      if (isRunning) {
+        stopAutoPlay();
+      } else {
+        isRunning = true;
+        document.getElementById('btnAuto').textContent = 'Pause';
+        document.getElementById('btnStep').disabled = true;
+        autoPlayLoop();
+      }
+    }
+
+    function stopAutoPlay() {
+      isRunning = false;
+      document.getElementById('btnAuto').textContent = 'Auto Play';
+      document.getElementById('btnStep').disabled = false;
+    }
+
+    function resetData() {
+      stopAutoPlay();
+      comparisons = 0;
+      swaps = 0;
+      currentRound = '-';
+      sortGenerator = null;
+      isAnimating = false;
+      document.getElementById('btnStep').disabled = false;
+      document.getElementById('bufferWrapper').style.display = 'none';
+      const type = document.getElementById('arrayType').value;
+      cards = generateData(type);
+      bufferCards = new Array(cards.length).fill(null);
+      updateSpeed();
+      render();
+      document.getElementById('statusText').textContent = 'Deck ready. Click "Step" or "Auto Play" to begin.';
+    }
+
+    // Initial setup
+    updateSpeed();
+    resetData();
+  </script>
+</body>
+</html>
