@@ -648,6 +648,7 @@
           if (highlight.sortedUpTo !== undefined && idx <= highlight.sortedUpTo) el.classList.add('sorted');
           if (highlight.leftRange && idx >= highlight.leftRange[0] && idx <= highlight.leftRange[1]) el.classList.add('subarray-left');
           if (highlight.rightRange && idx >= highlight.rightRange[0] && idx <= highlight.rightRange[1]) el.classList.add('subarray-right');
+          if (highlight.sortedRanges && highlight.sortedRanges.some(([l, r]) => idx >= l && idx <= r)) el.classList.add('sorted');
 
           const subTag = card.tag ? `<sub>${card.tag}</sub>` : '';
           el.innerHTML = `
@@ -824,30 +825,43 @@
       document.getElementById('statusText').textContent = 'Finished! Insertion Sort is STABLE: duplicate cards maintained their exact original order (A → B → C).';
     }
 
-    // --- Merge Sort Generator ---
+    // --- Top-Down Recursive Merge Sort Generator ---
     async function* mergeSortGen() {
       const n = cards.length;
       document.getElementById('bufferWrapper').style.display = 'flex';
+      let mergeStepNum = 1;
+      const totalMerges = n > 1 ? n - 1 : 0;
 
-      const mergeQueue = [];
-      function planMerges(l, r) {
-        if (l >= r) return;
-        const m = Math.floor((l + r) / 2);
-        planMerges(l, m);
-        planMerges(m + 1, r);
-        mergeQueue.push({ left: l, mid: m, right: r });
-      }
-      planMerges(0, n - 1);
+      async function* topDownMergeSort(left, right, depth) {
+        if (left >= right) {
+          currentRound = `Depth ${depth}: Base [${left}]`;
+          const baseCard = cards[left];
+          const baseLabel = `${baseCard.label}${baseCard.tag ? '(' + baseCard.tag + ')' : ''}${baseCard.suitSymbol}`;
+          document.getElementById('statusText').textContent = `Base case at [${left}] (${baseLabel}): 1-card subarray is trivially sorted. Returning up.`;
+          render({ sortedRanges: [[left, right]] });
+          yield;
+          return;
+        }
 
-      let stepNum = 1;
-      for (const seg of mergeQueue) {
-        const { left, mid, right } = seg;
+        const mid = Math.floor((left + right) / 2);
+        currentRound = `Depth ${depth}: Split [${left}..${right}]`;
+        document.getElementById('statusText').textContent = `Top-Down Divide: Splitting [${left}..${right}] at mid=${mid} into left half [${left}..${mid}] (blue) and right half [${mid + 1}..${right}] (amber).`;
+        render({ leftRange: [left, mid], rightRange: [mid + 1, right] });
+        yield;
+
+        // Recursively sort left half
+        yield* topDownMergeSort(left, mid, depth + 1);
+
+        // Recursively sort right half
+        yield* topDownMergeSort(mid + 1, right, depth + 1);
+
+        // Conquer: Merge the two sorted halves
         const leftSub = cards.slice(left, mid + 1);
         const rightSub = cards.slice(mid + 1, right + 1);
         bufferCards = new Array(n).fill(null);
 
-        currentRound = `Merge ${stepNum++}/${mergeQueue.length}: [${left}..${mid}] & [${mid + 1}..${right}]`;
-        document.getElementById('statusText').textContent = `Merging sorted subarray [${left}..${mid}] (blue) and [${mid + 1}..${right}] (amber).`;
+        currentRound = `Merge ${mergeStepNum++}/${totalMerges} (Depth ${depth}): [${left}..${mid}] & [${mid + 1}..${right}]`;
+        document.getElementById('statusText').textContent = `Conquer (Merge): Both halves [${left}..${mid}] (blue) and [${mid + 1}..${right}] (amber) are sorted. Merging them into [${left}..${right}].`;
         render({ leftRange: [left, mid], rightRange: [mid + 1, right] });
         yield;
 
@@ -860,18 +874,18 @@
           const leftCardLabel = `${leftCard.label}${leftCard.tag ? '(' + leftCard.tag + ')' : ''}${leftCard.suitSymbol}`;
           const rightCardLabel = `${rightCard.label}${rightCard.tag ? '(' + rightCard.tag + ')' : ''}${rightCard.suitSymbol}`;
 
-          document.getElementById('statusText').textContent = `Comparing left candidate ${leftCardLabel} with right candidate ${rightCardLabel}.`;
+          document.getElementById('statusText').textContent = `Comparing left head ${leftCardLabel} with right head ${rightCardLabel}.`;
           render({ scanning: left + i, target: mid + 1 + j, leftRange: [left, mid], rightRange: [mid + 1, right] });
           yield;
 
           if (leftCard.rank <= rightCard.rank) {
-            document.getElementById('statusText').textContent = `${leftCardLabel} ≤ ${rightCardLabel}. Placing ${leftCardLabel} into auxiliary buffer.`;
+            document.getElementById('statusText').textContent = `${leftCardLabel} ≤ ${rightCardLabel}. Placing ${leftCardLabel} into auxiliary buffer B[${k}].`;
             bufferCards[k] = leftCard;
             cards[left + i] = null;
             swaps++;
             i++;
           } else {
-            document.getElementById('statusText').textContent = `${rightCardLabel} < ${leftCardLabel}. Placing ${rightCardLabel} into auxiliary buffer.`;
+            document.getElementById('statusText').textContent = `${rightCardLabel} < ${leftCardLabel}. Placing ${rightCardLabel} into auxiliary buffer B[${k}].`;
             bufferCards[k] = rightCard;
             cards[mid + 1 + j] = null;
             swaps++;
@@ -885,7 +899,7 @@
         while (i < leftSub.length) {
           const leftCard = leftSub[i];
           const leftCardLabel = `${leftCard.label}${leftCard.tag ? '(' + leftCard.tag + ')' : ''}${leftCard.suitSymbol}`;
-          document.getElementById('statusText').textContent = `Copying remaining left card ${leftCardLabel} into buffer.`;
+          document.getElementById('statusText').textContent = `Copying remaining left card ${leftCardLabel} into buffer B[${k}].`;
           bufferCards[k] = leftCard;
           cards[left + i] = null;
           swaps++;
@@ -898,7 +912,7 @@
         while (j < rightSub.length) {
           const rightCard = rightSub[j];
           const rightCardLabel = `${rightCard.label}${rightCard.tag ? '(' + rightCard.tag + ')' : ''}${rightCard.suitSymbol}`;
-          document.getElementById('statusText').textContent = `Copying remaining right card ${rightCardLabel} into buffer.`;
+          document.getElementById('statusText').textContent = `Copying remaining right card ${rightCardLabel} into buffer B[${k}].`;
           bufferCards[k] = rightCard;
           cards[mid + 1 + j] = null;
           swaps++;
@@ -908,19 +922,21 @@
           yield;
         }
 
-        document.getElementById('statusText').textContent = `Copying merged range [${left}..${right}] back into primary array.`;
+        document.getElementById('statusText').textContent = `Copying merged range [${left}..${right}] from auxiliary buffer back into primary array.`;
         for (let idx = left; idx <= right; idx++) {
           cards[idx] = bufferCards[idx];
           bufferCards[idx] = null;
         }
-        render();
+        render({ sortedRanges: [[left, right]] });
         yield;
       }
+
+      yield* topDownMergeSort(0, n - 1, 0);
 
       currentRound = 'Done';
       document.getElementById('bufferWrapper').style.display = 'none';
       render({ sortedUpTo: n - 1 });
-      document.getElementById('statusText').textContent = 'Finished! Merge Sort is STABLE: equal cards maintain left-to-right order throughout merges (A → B → C).';
+      document.getElementById('statusText').textContent = 'Finished! Top-Down Merge Sort is STABLE: equal cards maintain left-to-right order throughout merges (A → B → C).';
     }
 
     // --- Textbook Quick Sort Generator ---
