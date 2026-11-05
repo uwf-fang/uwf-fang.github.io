@@ -1,0 +1,181 @@
+# How to Use the ICPC Division 2 TRD
+
+Keep the Team Reference Document (TRD) open beside this guide. Find the topic in the PDF, work through the example here, then adapt the PDF's listing to a small problem. During timed practice, try finding the same listing from the PDF index alone. {download}`Download the 25-page TRD <icpc-d2-trd.pdf>` · [ICPC Division 2 preparation guide](icpc)
+
+## Page 1 · Read the index and notation
+
+The page numbers below match the PDF's printed numbers. A listing often shows just the function or loop you need. Put it into the page 3 starter, declare and read the inputs it expects, and decide what to print. For example, a function that returns an index may need you to print that index plus one if the problem numbers positions from one.
+
+| Name | What it means in the listings |
+| --- | --- |
+| `n`, `k` | Number of items and a problem-specific quantity such as a window size. |
+| `a[i]`, `g[r][c]` | Item at index `i` and grid cell at row `r`, column `c`. The first index is zero. |
+| `[l, r)` | Starts at `l` and stops before `r`. The number of elements is `r - l`. |
+| `ll` | Alias for C++ `long long`. Use it when a sum or product can exceed the range of `int`. |
+| `V`, `E`, `adj`, `dist` | Number of vertices, number of edges, adjacency lists, and distances. |
+| `O(n)`, `O(n²)` | Work grows roughly with the number of items or its square, respectively. |
+
+## Page 2 · Choose an approach from the constraints
+
+Estimate how many operations the direct solution needs. Checking every unordered pair among 2,000 items takes 1,999,000 checks. At 200,000 items it takes 19,999,900,000. If the task asks whether any two numbers add to a target, sorting and scanning with two pointers is a better fit at the larger size. Count the work across test cases and check memory. An adjacency list stores the edges you have, while a full matrix reserves space for every possible pair.
+
+## Page 3 · C++17 competition starter
+
+`main()` configures stream I/O and calls `solve()`. The example reads a count and that many values, then prints their sum. For input `4` followed by `2 5 -1 7`, it prints `13`. `accumulate` uses the type of its initial value, so `0LL` makes the running total a `long long`.
+
+Read the input contract before adapting the driver. Call `solve()` once for a single case. If the first token counts test cases, read it in `main()` and call `solve()` once per case. If cases continue until end of file, make the first read of each case the loop condition, such as `while (cin >> n)`. Keep each case's vectors and counters local so they start fresh.
+
+## Page 4 · Build, run, and compare samples
+
+Save the starter once as `cpb.cpp`. To start a problem, copy the boilerplate to a file named for that problem.
+
+~~~bash
+cp -i cpb.cpp a.cpp
+~~~
+
+The `-i` flag asks before overwriting an existing file. Edit `solve()` in `a.cpp` and keep `cpb.cpp` ready for the next problem. For problem B, copy it to `b.cpp`. Submit the problem's source file.
+
+For this drill, leave the sum example in `a.cpp`. These commands create a sample, compile, and compare the result.
+
+~~~bash
+printf '4\n2 5 -1 7\n' > a.in
+printf '13\n' > a.ans
+g++ -std=c++17 -O2 -Wall -Wextra a.cpp -o a &&
+    ./a < a.in > a.out &&
+    diff -u a.ans a.out
+~~~
+
+`-std=c++17` selects the language standard, `-O2` enables optimization, and `-Wall -Wextra` enables common warnings. `-o a` names the executable. `<` feeds input from a file and `>` replaces the output file. The TRD also shows a heredoc for pasting a multiline sample directly into the shell.
+
+`diff` prints nothing when the files match. If you change `a.ans` to contain `12`, the difference shows `-12` from the expected file and `+13` from your output. Restore `13` before continuing. The `&&` chain stops at a failed command, so a compile error cannot trigger a run of yesterday's executable. When a problem accepts several valid outputs, check the answer against its stated rules as well.
+
+## Page 5 · Bash shortcuts and short filenames
+
+Enter the two alias definitions in interactive Bash, then run the last line. Use a consistent stem for each problem so you can switch to `b.cpp`, `b.in`, `b.ans`, and `b.out` without guessing which files belong together.
+
+~~~bash
+alias cc17='g++ -std=c++17 -O2 -Wall -Wextra'
+alias df='diff -u'
+
+cc17 a.cpp -o a && ./a < a.in > a.out && df a.ans a.out
+~~~
+
+Press Up to recall the command after an edit, Tab to complete a filename, and Ctrl-R to find an earlier build command. Ctrl-A and Ctrl-E jump to the start and end of the command. Ctrl-C interrupts a stuck program. Aliases entered at the prompt belong to that session. On your own machine, put them in `~/.bashrc` if you want them available in interactive Bash sessions that read that file. The file you submit is `a.cpp`.
+
+## Page 6 · C++ headers and compiler compatibility
+
+When you copy a fragment, check the header for each library name. A program that sorts a vector needs `<algorithm>` and `<vector>`. Add `<iostream>` for `cin` and `cout`, `<string>` for string input, and `<numeric>` for `accumulate` or `gcd`. A min-heap with `greater<int>` uses `<queue>`, `<vector>`, and `<functional>`. The table in the TRD covers the other standard headers used by the listings.
+
+`#include <bits/stdc++.h>` is a GNU libstdc++ catch-all. Try it with the contest's actual C++ environment before relying on it. If the compiler cannot find it, use the standard includes from page 3. If it reports that `gcd` is undeclared, check `<numeric>`, the C++17 setting, and whether the call needs `std::gcd`.
+
+## Page 7 · Trace a small failing case
+
+For `[2, 5, -1, 7]`, write down the expected running totals `2, 7, 6, 13` before testing. If the program prints `5, 4, 11` in its trace, compare the first iteration and check whether it started at index 1. Add one line inside the loop, using your variable names.
+
+~~~cpp
+#ifdef LOCAL
+cerr << "i=" << i << " sum=" << sum << '\n';
+#endif
+~~~
+
+Run `cc17 -DLOCAL a.cpp -o a && ./a < a.in > a.out` using the page 5 alias. `-DLOCAL` enables the trace. `cerr` stays in the terminal while `cout` goes to `a.out`. Rebuild without `-DLOCAL` for the final comparison.
+
+## Page 8 · Arrays and scans
+
+Use `argmax` when the answer is a position. For `[-8, -2, -2]`, the first maximum is at index 1. The strict comparison keeps the first tie. Handle the listing's `-1` result before indexing if the vector may be empty.
+
+`vector<int> a(5)` creates five items. `a.reserve(10)` makes room for growth and leaves the size at five. Use `push_back` to append. `reverse` changes the order in place. Check `empty()` before calling `front()` or `back()`. For the longest run in `[4, 4, 1, 1, 1, 4]`, the current run lengths are `1, 2, 1, 2, 3, 1`, so the best length is 3.
+
+## Page 9 · Strings and parsing
+
+`cin >> word` reads one token. `getline(cin, line)` reads a whole line, including spaces. If you read a number on its own line and then need the next full line, discard the rest of the number's line first. The TRD uses `cin.ignore(numeric_limits<streamsize>::max(), '\n')` for that. A blank input line can be meaningful, so use `cin >> ws` only if skipping all leading whitespace is allowed.
+
+`istringstream` splits `red blue` into two whitespace-delimited tokens. On `id=7 key=red`, `find("key=")` returns 5 and `substr(5 + 4)` returns `red`. Check for `string::npos` before doing index arithmetic. For a palindrome check, compare the first and last characters, then move inward. In `radar`, both pairs match and the middle character needs no comparison.
+
+## Page 10 · Grid scans and simulation
+
+A `vector<string>` stores one row per string. For `Snakey String`, a board with rows `A.` and `.B` gives `AB` when scanned by column. One letter per column is the property that makes the scan sufficient. [Regional problem and worked solution](a)
+
+For movement, the arrays `dr` and `dc` store changes in row and column. On a board with rows `.#` and `..`, a move right from `(0, 0)` hits a wall. A move down succeeds and leaves you at `(1, 0)`. Check bounds before reading the target cell. If all cells update at once, read from the old board and write to a separate board.
+
+## Page 11 · Frequency arrays, maps, and sets
+
+For `[3, 1, 3]` with keys from 0 to 3, use a four-element frequency vector. Index 3 has count 2 and index 1 has count 1. For sparse keys such as `7` and `1000000000`, use a map so you store entries for keys that occur. Calling `counts[x]` on a missing key creates an entry. Use `find` if you only want to check for it.
+
+A set stores distinct values. If `seen.insert(3).second` is false, you have seen 3 before. Use an ordered `set` when order matters. In `{1, 3, 8}`, `upper_bound(3)` finds 8 and `upper_bound(8)` returns `end()`. Hash containers give average constant-time lookup. Ordered containers give logarithmic lookup and sorted iteration.
+
+## Page 12 · Sorting and grouping
+
+With records written as `(score, id)`, sort `(90, 3), (80, 1), (90, 2)` by descending score and then ascending ID. The result is `(90, 2), (90, 3), (80, 1)`. Use strict comparisons in the comparator. Carry the ID or original index if you need it after sorting.
+
+Sorting `[3, 1, 3, 2, 1]` gives `[1, 1, 2, 3, 3]`. Scan each group to obtain counts 2, 1, and 2. If you only need the distinct values, `unique` moves them to the front and returns the new logical end. `erase` removes the leftover tail.
+
+## Page 13 · Brute force and small search spaces
+
+Use `i < j` to visit each unordered pair once. For `[2, 2, 5]` and target 7, there are two matching pairs of indices. Duplicate values can still represent different choices.
+
+A subset bit mask marks which indices are chosen. For `[4, 7, 9]`, binary mask `101` selects indices 0 and 2 for a sum of 13. Mask 0 selects nothing. There are `2^n` masks, and the TRD's loop examines each item for each mask. For permutations, start sorted and call `next_permutation` after processing the current order. `[1, 1, 2]` gives `112`, `121`, and `211`.
+
+## Page 14 · Prefix sums
+
+For `[4, -2, 7]`, the prefix sums are `[0, 4, 2, 9]`. `pref[i]` stores the sum before index `i`. The half-open range `[1, 3)` has sum `pref[3] - pref[1] = 5`. A one-based inclusive query from 2 to 3 translates to that same range. To count positive items, build prefixes over `[1, 0, 1]` instead.
+
+In two dimensions, `P[r][c]` covers the first `r` rows and `c` columns. On a board with rows `[1, 2]` and `[3, 4]`, the sum of the right column is `10 - 4 = 6`. For a rectangle away from the top and left edges, subtract both unwanted strips and add their overlap back once.
+
+## Page 15 · Two pointers and fixed windows
+
+To find a pair adding to 9 in sorted `[1, 3, 4, 6, 8]`, the endpoints already give `1 + 8 = 9`. For target 10, the same first sum is too small. Since 8 is the largest remaining value, 1 has no possible partner and the left pointer moves. Then `3 + 8 = 11` is too large, so the right pointer moves. The comparisons eliminate whole groups of pairs.
+
+For the maximum sum of two consecutive items in `[4, -2, 7, 1]`, the first window sums to 2. Subtract 4 and add 7 to get 5, then subtract −2 and add 1 to get 8. Initialize the best sum from the first window so an all-negative input works. Check that the requested window length is valid.
+
+## Page 16 · Binary search
+
+In `[2, 4, 4, 9]`, `lower_bound(4)` points to index 1 and `upper_bound(4)` points to index 3. The difference between their positions is 2, the number of copies of 4. For a query of 10, both return `end()`. Check the iterator before dereferencing it.
+
+The `first_true` listing searches for the boundary in a sequence of false results followed by true results. Suppose `ok(i)` means “capacity `i` is enough to carry a 5 kg load.” Over capacities 0 through 9, the first true index is 5. If no capacity works, the function returns the domain size, 10. Explain why feasibility stays true as the capacity increases before applying the pattern.
+
+## Page 17 · Stacks and queues
+
+A stack removes the most recently pushed item. For `([])`, push `(` and `[`, then pop `[` for `]` and `(` for `)`. In `([)]` the first closing delimiter already mismatches the top. At the end, an empty stack means every opener matched. The listing assumes that the input contains only those two bracket types.
+
+A queue removes the oldest item first. Pushing IDs 7, 3, and 5 produces that same processing order. Copy `front()` or `top()` before calling `pop()`, and check `empty()` before reading from either container.
+
+## Page 18 · Integer arithmetic and GCD
+
+For 13 students and 4 seats per table, `ceil_div(13, 4)` returns 4. The listing assumes a nonnegative numerator and a positive denominator. C++ gives `-7 % 3 == -1`, so `nonnegative_mod(-7, 3)` adds 3 to return 2.
+
+GCD means greatest common divisor. For 18 and 12, Euclid's algorithm reduces the pair to `(12, 6)` and then `(6, 0)`, so the GCD is 6. The least common multiple (LCM) is `(18 / 6) * 12 = 36`. Divide before multiplying and check that the product fits. When multiplying two `int` values, write `1LL * a * b` if the product needs `long long`. Assigning the result of `a * b` to a wider variable comes too late to widen that multiplication.
+
+## Page 19 · Graph representation and BFS
+
+An adjacency list `adj[u]` contains the neighbors you can visit from `u`. For an undirected edge, insert both directions. For a directed edge, insert only the permitted direction. Convert input labels from one-based to zero-based once, as you read them.
+
+Breadth-first search (BFS) uses a queue and visits vertices in order of distance from the source. For edges `0–1` and `1–2` with vertex 3 isolated, BFS from 0 returns distances `[0, 1, 2, -1]`. Mark a vertex when it enters the queue. To recover a route to 2, record the parent when you discover each vertex, follow `2 → 1 → 0`, and reverse the result. These distances count edges and apply when each move has the same cost.
+
+## Page 20 · Iterative DFS and components
+
+Depth-first search (DFS) can use a stack to explore reachable vertices. To count connected components in an undirected graph, keep one visited array and start a traversal at each still-unseen vertex. With edges `0–1` and `2–3` and isolated vertex 4, the starts are 0, 2, and 4, so the answer is 3. Keep the marks between starts. The stack version in the TRD avoids one recursive call per vertex on a long chain.
+
+## Page 21 · Grid flood fill and shortest paths
+
+Each open cell is a vertex, and the grid supplies its neighbors. On a board with rows `..#` and `#..`, BFS from `(0, 0)` reaches `(1, 2)` in three moves. Use the distance grid to record both which cells you have seen and how far they are. Cells that cannot be reached keep distance `-1`. For a count of open regions, scan the grid and start a traversal at each unvisited open cell, sharing the visited marks across traversals.
+
+## Page 22 · Greedy interval scheduling
+
+To choose as many nonoverlapping jobs as possible, sort by finish time. With intervals `[0, 10)`, `[1, 3)`, and `[3, 5)`, the listing picks the last two. Finishing first leaves at least as much room for later jobs as finishing later. You can replace the first job of an optimal schedule with the earliest-finishing job and keep all later jobs. Check whether touching intervals are allowed and whether each job contributes equally to the goal.
+
+## Page 23 · Heaps and priority queues
+
+`priority_queue<int>` returns the largest value at `top()`. Add `greater<int>` as the comparator for a min-heap. To track the two largest values in `[7, 2, 9, 4]`, push each value into a min-heap and remove the smallest whenever the size exceeds two. The final retained values are 7 and 9, and `top()` is 7, the second largest. With pairs such as `(priority, id)` in a min-heap, ties in priority are broken by smaller ID.
+
+## Page 24 · Basic dynamic programming
+
+Dynamic programming (DP) stores answers to smaller subproblems. For stairs with steps of size 1 or 2, `ways[0] = 1` counts the empty sequence. The counts for steps 1, 2, and 3 are 1, 2, and 3. Every route to step 3 comes from step 2 or step 1, so add their counts.
+
+For right/down grid paths, each open cell receives paths from its top and left neighbors. A fully open two-by-two board has two paths. Block the top-right cell and only the down-then-right path remains. Keep blocked cells at zero and fill the table in row order. Before coding, say what a table cell means, which states it depends on, and where the answer will be stored.
+
+## Page 25 · Submission checklist and sources
+
+Before submitting, re-read the input format and output rules, test a boundary case, confirm your types can hold the largest result, and select the correct source file and language. If a sum problem allows a one-item case, try `[-7]` and expect `-7`. This can expose a skipped first item or an incorrect initial value.
+
+For a wrong answer, look for the first state that differs from your paper trace. For a time limit error, estimate the work again at maximum input and across cases. For a runtime error, check array bounds and empty containers. For a compile error, begin with the first diagnostic and check headers and the selected language. Page 25 also records the notebook's format sources and the command for rebuilding it from LaTeX.

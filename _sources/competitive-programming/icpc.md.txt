@@ -1,0 +1,148 @@
+# International Collegiate Programming Contest
+
+(introduction)=
+## Introduction
+
+The International Collegiate Programming Contest (ICPC) is a team programming competition. This guide helps UWF students prepare for **Division 2 (D2) of the Southeast USA Regional**. Start with problems you can solve using a scan, a frequency count, sorting, or a small search. Practice turning a correct idea into an accepted submission on a shared workstation.
+
+(levels-of-competition)=
+### Levels of competition
+
+Students can start with local practice contests. The ICPC competition progresses through regionals and regional championships to the World Finals. This guide focuses on the Southeast Regional.
+
+(contest-format)=
+### Contest format
+
+Practice as a team of three sharing one computer. Use a five-hour session for a full rehearsal, or start with a 60–90 minute session. The regional event instructions govern timing, available languages, permitted materials, and the contest environment. [ICPC regional rules](https://icpc.global/regionals/rules)
+
+(icpc-at-uwf)=
+## ICPC at UWF
+
+The UWF Computer Science department hosts ICPC activities with help from the ACM student chapter. In 2025, two UWF teams competed in Division 2 and each solved five problems. [UWF 2025 contest recap](seusa2025)
+
+(important-dates)=
+### Important dates
+
+The 2026 Southeast Regional is scheduled for **November 7, 2026**. The published registration window was September 7 through October 31. Check local announcements for site instructions.
+
+(team-reference-document)=
+## Team reference document
+
+{download}`Download the UWF Division 2 Team Reference Document (PDF, 25 pages) <icpc-d2-trd.pdf>`
+
+[How to use the TRD](trd) explains each page with worked examples and shows how to adapt the C++ listings.
+
+The reference contains a C++17 starter, commands for running and debugging programs, and short algorithm listings with assumptions and runtime notes. The first page is an index. Pages 3–7 cover the starter, compiler flags, shortcuts, headers, and a small debug trace. Pages 8–24 cover the problem-solving patterns below.
+
+Use it during practice so you know where to find a template and what its inputs mean. The PDF uses US Letter and a generic team name. Ask your coach for a copy with the registered team name, and check what your site allows before printing or bringing it. [NAC reference format](https://nac.icpc.global/wp-content/uploads/2024/05/Team-Reference-Document.pdf)
+
+(what-to-study-first)=
+## What to study first
+
+| Priority | Topics | What you should be able to do |
+| --- | --- | --- |
+| Start here | Arrays, strings, grids, simulation, frequency arrays, maps, sets, sorting, small brute-force searches | Read the exact input format, count or group values, simulate a rule, and decide from the constraints whether testing all pairs fits. |
+| Add next | Prefix sums, two pointers, fixed-size sliding windows, binary search, stacks, queues, integer arithmetic and GCD | Answer range sums, scan two sorted sequences, track a running window, find a boundary, and match nested delimiters. |
+| After the basics | BFS, DFS, flood fill, simple greedy algorithms, heaps, and basic dynamic programming | Find an unweighted shortest path, count connected groups, justify an interval choice, keep the top values, or fill a small DP table. |
+
+For each topic, solve a problem and explain the cost using its input limits. For example, all unordered pairs at 2,000 items is about two million checks. At 200,000 items it is about 20 billion. That difference can help you choose between a pair loop and sorting followed by a scan.
+
+(terminal-and-workstation)=
+## Terminal and workstation practice
+
+Every teammate should be able to complete this drill from a fresh terminal. Practice in a Linux shell when available. At the event, use the compiler, editor, submission workflow, and other tools available at your site.
+
+1. **Find your files.** Run `pwd` and `ls`. Use `cd` to enter your practice folder and Tab to complete paths. Open and save `a.cpp` in the editor you plan to use.
+2. **Check the environment.** Run `g++ --version`. During an official practice session, check the language menu, editor shortcuts, keyboard layout, and how to submit a source file and find its verdict. Rehearse with a known solution.
+3. **Build and compare.** Save the starter from TRD page 3 once as `cpb.cpp`. Run `cp -i cpb.cpp a.cpp` to make a working copy, then run the commands below from that directory.
+4. **Diagnose a difference.** Change the expected answer to `12`, rerun `diff`, and identify the expected and actual lines. Restore `13`. Then introduce a compile error and verify the command chain stops before running the old executable.
+
+~~~bash
+printf '4\n2 5 -1 7\n' > sample.in
+printf '13\n' > sample.ans
+g++ --version
+g++ -std=c++17 -O2 -Wall -Wextra a.cpp -o a &&
+    ./a < sample.in > actual.out &&
+    diff -u sample.ans actual.out
+~~~
+
+`diff` is silent when the files match. The `&&` chain runs the next command only after success. Use Up or Ctrl-R to recall commands, Tab to complete filenames, and Ctrl-C to interrupt a stuck program.
+
+### C++ headers and compiler flags
+
+Use the standard headers from the TRD starter. Common examples are `<algorithm>` for `sort` and `lower_bound`, `<numeric>` for `accumulate` and `gcd`, and `<queue>` for `queue` and `priority_queue`. Include `<functional>` when you use `greater` to make a min-heap.
+
+If the contest compiler provides GNU libstdc++, `#include <bits/stdc++.h>` can save typing. It is a nonstandard header. Verify it with a practice submission in the judge's C++ environment. A typical Apple Clang installation uses libc++ and may require the standard headers from the starter.
+
+Use `-std=c++17` for the starter and select the corresponding language when submitting. Build with `-O2` and turn on warnings with `-Wall -Wextra`. Start with the first diagnostic that points into your code.
+
+### Bash shortcuts for repeated builds
+
+Enter these aliases once in an interactive Bash session. On your own machine, you can add the definitions to `~/.bashrc` for sessions that read it. At the contest, follow the local workstation rules.
+
+~~~bash
+alias cc17='g++ -std=c++17 -O2 -Wall -Wextra'
+alias df='diff -u'
+
+cc17 a.cpp -o a && ./a < a.in > a.out && df a.ans a.out
+~~~
+
+Use the problem letter as the filename stem. For problem A, keep the source in `a.cpp`, sample input in `a.in`, expected answer in `a.ans`, and program output in `a.out`. For the sample above, rename or copy `sample.in` and `sample.ans` before using the shortcut. To work on B, recall the command and change the file stem.
+
+### Print a short trace when output differs
+
+Compute the expected answer for a small case, compare with `diff -u`, and trace the first step where the values diverge. To inspect a running total, place this inside the loop and use your own variable names for `i` and `sum`.
+
+~~~cpp
+#ifdef LOCAL
+cerr << "i=" << i << " sum=" << sum << '\n';
+#endif
+~~~
+
+Compile with `cc17 -DLOCAL a.cpp -o a` to turn on the trace. Running `./a < a.in > a.out` keeps `cerr` visible while saving the answer from `cout`. Rebuild without `-DLOCAL` for your final check.
+
+(paper-check)=
+## Work it out on paper
+
+Before taking the keyboard, write a short solution card that another teammate can implement.
+
+1. **Input and output.** Write down whether there is one case, a test count, or input until EOF. Mark which indices are one-based and whether range endpoints are inclusive.
+2. **Approach and cost.** Write the main loop or recurrence in a few lines. State what stays true after each iteration. Estimate the worst-case work and memory using the stated limits.
+3. **Manual trace.** Make a small table with the current index, the state you update, and any output. Trace an official sample and one legal edge case.
+4. **Expected answer.** Compute it by hand before running the program. Include cases that could break your approach, such as a tie, a duplicate, a boundary cell, or an all-negative array when the statement allows those inputs.
+
+For **Snakey String**, the problem guarantees one letter per column. Write “after processing column c, the answer contains the letters from columns 0 through c in order.” Trace the two rows **A.** and **.B** by columns. The expected answer is **AB**. The scan visits at most the number of cells in the grid. [Problem A statement and solution](a)
+
+(icpc-preparation-resources)=
+## Practice sequence
+
+| Session | Work to do | Check before moving on |
+| --- | --- | --- |
+| 1. Build and submit | Complete the terminal drill, then solve **Snakey String**. Read only the statement and samples on your first attempt. | Everyone can compile, compare output, and submit a known solution. |
+| 2. Core patterns | In Open Kattis, try **Quick Brown Fox** for string scanning and character membership, then **CD** for scanning two sorted lists. Write a small custom case for each. | Explain why your scan covers every relevant item and handles the input boundaries. |
+| 3. Timed D2 practice | Pick an archived Southeast D2 set. Spend 60–90 minutes sharing one computer. Begin with a scan of the statements and choose a problem with a clear approach. | Record which problems you attempted, where time went, and one missed problem to solve afterward. |
+
+Practice links [Snakey String](a) · [Quick Brown Fox](https://open.kattis.com/problems/quickbrownfox) · [CD](https://open.kattis.com/problems/cd) · [Southeast D2 archives](https://academy.cis.fiu.edu/icpc-past-competitions/)
+
+For a short follow-up drill, implement a prefix sum and test the first element, last element, and full range. Then write a BFS for a small maze and test an unreachable destination. Use the TRD examples to check your implementation after your own attempt.
+
+(icpc-strategy)=
+## Team workflow
+
+- **Split the first read.** Each teammate skims a different part of the set and reports the input size, a possible approach, and any uncertainty. Start with a problem for which someone can explain both the solution and its cost.
+- **Keep a queue for the computer.** While one person types, another prepares tests and the third works on the next problem. Rotate roles during practice so everyone can take over at the keyboard.
+- **Use a handoff.** Give the next coder the input contract, pseudocode, expected runtime, and a small test with its expected answer. Before submitting, have another teammate check the language, problem, and file.
+- **When stuck, find the smallest failing case.** For a wrong answer, trace the first point where the code disagrees with the paper solution. For a timeout, revisit the maximum input and repeated work. For a crash, check indices, empty containers, and division by zero.
+- **Review after practice.** Revisit one missed problem. Record whether the bottleneck was interpreting the statement, choosing an approach, coding, testing, or sharing the workstation.
+
+(icpc-resources)=
+## ICPC resources
+
+- For contest information and rules, see the [ICPC official site](https://icpc.global/).
+- [Open Kattis](https://open.kattis.com/) for individual practice and judge feedback.
+- [FIU Southeast Regional archive](https://academy.cis.fiu.edu/icpc-past-competitions/) for past problem sets and scoreboards, with separate Division 2 entries.
+
+(past-contests)=
+## Past contests
+
+- [2025 Southeast Regional at UWF](seusa2025) with selected problem statements and worked solutions.
