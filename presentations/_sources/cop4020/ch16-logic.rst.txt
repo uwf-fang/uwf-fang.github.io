@@ -1,0 +1,221 @@
+Logic Programming Languages
+===========================
+* Logic programming is based on symbolic logic
+* Programs consist of facts and rules - **declarative**, not
+  procedural/imperative
+* Solution characteristics are specified rather than computation steps
+* Most widely used logic language: **Prolog** (PROgramming in LOGic)
+* Developed primarily by Alain Colmerauer and Phillippe Roussel (1970s)
+
+Predicate Calculus
+------------------
+* Foundation for logic programming languages
+* **Proposition**: Statement that is either true or false
+* Types
+
+  * **Atomic proposition**: compound terms
+  * **Compound proposition**: combination of atomic propositions
+
+* **Compound term**: One element of a mathematical relation
+
+  * Functor (function symbol naming the relation)
+  * Ordered list of parameters
+  * E.g. `man(jake)` `like(bob, steak)`
+
+Horn Clauses
+------------
+* Special form of propositions used in logic programming
+* Two forms:
+
+  * Headed Horn clause: Single atomic proposition on left side
+  * Headless Horn clause: Empty left side
+
+* Examples:
+
+  * Headed `likes(bob, trout) ⊂ likes(bob, fish) ∩ fish(trout)`
+  * Headless `father(bob, jake)`
+
+Resolution
+----------
+* Inference rule for deriving new propositions from existing ones
+* Key to automatic theorem proving and logic programming
+* When variables exist, **unification** finds values to enable matching
+* **Instantiation**: Process of replacing variables with values
+* Example:
+
+  * From `older(joanne, jake) ⊂ mother(joanne, jake)` and
+  * `wiser(joanne, jake) ⊂ older(joanne, jake)`
+  * Can derive: `wiser(joanne, jake) ⊂ mother(joanne, jake)`
+
+Prolog Basics
+-------------
+* **Prolog** (PROgramming in LOGic) is most widely used logic programming
+  language
+* Developed in 1972 by Alain Colmerauer and Phillippe Roussel
+* Declarative
+* Three types of terms:
+
+  * Constants (values, can be atoms or integers)
+  * Variables (names to be instantiated to values, start with uppercase letter
+    or underscore)
+  * Structures (compound terms with functor and parameters)
+
+* Statement types:
+
+  * Facts - simple assertions
+  * Rules - implications between facts
+  * Goals/Queries - propositions to be proven
+
+Prolog Facts
+------------
+* Unconditional assertions assumed to be true
+* Represented as structures terminated by period
+* Examples:
+
+.. code-block:: prolog
+
+  female(shelley).
+  male(bill).
+  father(bill, jake).
+  mother(mary, shelley).
+
+Prolog Rules
+------------
+* Implications between facts
+* Format: `consequence :- antecedent_expression.`
+* Read as: "consequence can be concluded if antecedent expression is true"
+* One consequence, multiple antecedents
+* Multiple antecedents separated by comma means logical AND
+* Multiple rules for same consequence means logical OR
+* Example:
+
+.. code-block:: prolog
+
+  % X, Y, Z are variables
+  parent(X, Y) :- mother(X, Y).
+  parent(X, Y) :- father(X, Y).
+  grandparent(X, Z) :- parent(X, Y), parent(Y, Z).
+
+Prolog Goals/Queries
+--------------------
+* Propositions to be proven true/false based on facts and rules
+* Same syntax as facts
+* Checks
+
+  * yes or no
+  * If yes, instantiate variables
+
+* Examples:
+
+.. code-block:: prolog
+
+  member(a, [b, c, d]).     % Asks if 'a' is in the list [b,c,d]
+  father(X, mike).          % Asks who is mike's father
+
+Prolog Inferencing Process
+--------------------------
+* Backward-chaining resolution (starts with goal, works backward)
+* Depth-first search approach rather than breadth-first
+* Backtracking when a subgoal fails
+* Database search proceeds from first to last
+
+Arithmetic in Prolog
+--------------------
+* Integer variables and arithmetic operations supported
+* `is` operator assigns arithmetic results
+
+  * Right operand = expression
+  * Left operand = uninstantiated variable
+
+* Example:
+
+.. code-block:: prolog
+
+  A is B / 17 + C.
+  distance(X, Y) :- speed(X, Speed), time(X, Time), Y is Speed * Time.
+
+Tracing in Prolog
+-----------------
+.. container:: flex-container
+
+  .. container:: half
+
+    * `trace` command enables tracing
+    * Shows resolution process
+    * Tracing model and four types of events
+
+      * `Call` - goal to be proven
+      * `Exit` - goal proven true
+      * `Fail` - goal proven false
+      * `Redo` - backtracking
+
+  .. container:: half
+
+    .. code-block:: prolog
+
+      trace.
+      distance(chevy, Chevy_Distance).
+      (1) 1 Call: distance(chevy, _0)?
+      (2) 2 Call: speed(chevy, _5)?
+      (2) 2 Exit: speed(chevy, 105)
+      (3) 2 Call: time(chevy, _6)?
+      (3) 2 Exit: time(chevy, 21)
+      (4) 2 Call: _0 is 105*21?
+      (4) 2 Exit: 2205 is 105*21
+      (1) 1 Exit: distance(chevy, 2205)
+      Chevy_Distance = 2205
+
+Lists in Prolog
+---------------
+* Key data structure - sequence of elements
+* Square brackets and comma-separated: `[apple, prune, grape]`
+* Empty list: `[]`
+* Head-tail notation: `[X | Y]`
+* Example operations:
+
+.. code-block:: prolog
+
+  append([], List, List).
+  append([Head | List_1], List_2, [Head | List_3]) :-
+      append(List_1, List_2, List_3).
+
+Deficiencies of Prolog
+----------------------
+* Resolution order control requirements
+* Closed-world assumption (if can't prove true, assume false)
+* Difficulty with negation (not a true logical NOT)
+* Intrinsic limitations (must specify 'how' for efficiency)
+
+The Cut Operator
+----------------
+* Controls backtracking with `!` symbol
+* The cut (!) is a special goal that always succeeds immediately and commits
+  Prolog to all choices made since the rule containing the cut was selected. It
+  prevents backtracking to:
+
+  - Find alternative solutions for goals listed before the ! in the current
+    rule.
+  - Try any alternative rules (clauses) for the predicate.
+
+* Example:
+
+.. code-block:: prolog
+
+  member(Element, [Element | _]) :- !.
+  member(Element, [_ | List]) :- member(Element, List).
+
+Applications of Logic Programming
+---------------------------------
+* Relational Database Management Systems
+* Expert Systems
+* Natural-Language Processing
+* Theorem proving
+* Artificial Intelligence applications
+
+Key Advantages
+--------------
+* Declarative semantics (simpler than imperative languages)
+* Programs specify what, not how
+* Flexible pattern matching
+* Built-in backtracking and unification
+* Natural fit for relational and symbolic problems

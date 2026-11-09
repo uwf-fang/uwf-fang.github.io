@@ -1,0 +1,153 @@
+Modern Concurrency in Programming Languages
+===========================================
+* Traditional concurrency models (threads, locks, semaphores)
+* Evolution toward safer, more abstract concurrency primitives
+* Focus on language-level support for concurrent programming
+
+Rust's Ownership Model
+----------------------
+* Prevents data races at compile time
+* Thread safety without garbage collection
+* Channels for message passing
+* Reference: `Rust Programming Language <https://doc.rust-lang.org/book/ch16-00-concurrency.html>`_
+
+Go's Concurrency Model
+----------------------
+* Lightweight goroutines
+* Channels for communication
+* Based on Communicating Sequential Processes (CSP)
+* "Don't communicate by sharing memory; share memory by communicating"
+* Reference: "Go Programming Language" by Donovan and Kernighan
+
+Modern C++ Concurrency
+----------------------
+* Evolution of C++ concurrency features:
+
+  - C++ 11/14: threading
+  - C++ 17: parallel algorithms
+  - C++ 20: coroutines
+
+* std::async and std::future
+* Atomic operations
+* Memory model for multi-threaded applications
+* Reference: "Effective Modern C++" by Scott Meyers
+
+C++ Example
+-----------
+
+.. code-block:: cpp
+
+    #include <iostream>
+    #include <thread>
+    #include <future>
+
+    void asyncTask() {
+        std::cout << "Async task running in thread: " << std::this_thread::get_id() << std::endl;
+    }
+
+    int main() {
+        std::future<void> result = std::async(std::launch::async, asyncTask);
+        result.get(); // Wait for the async task to finish
+        return 0;
+    }
+
+Async/Await Pattern
+-------------------
+* JavaScript/TypeScript
+* C#
+* Python
+* Kotlin
+* Rust
+* Simplifies asynchronous code with sequential syntax
+
+Async/Await Example
+-------------------
+
+.. code-block:: python
+
+    import asyncio
+
+    async def async_task():
+        print("Async task running")
+        await asyncio.sleep(1)
+        print("Async task finished")
+
+    async def main():
+        await async_task()
+
+    asyncio.run(main())
+
+Actor Model
+-----------
+* Isolated units of computation
+* Communication via messages
+* No shared state
+* Examples:
+
+  * Akka (Java/Scala)
+  * Elixir/Erlang processes
+  * Pony language
+
+Kotlin Coroutines
+-----------------
+* Lightweight concurrency with structured approach
+* Sequential code for asynchronous operations
+* Scoped cancellation
+* Safely shared state with context
+* Reference: "Kotlin in Action" by Jemerov and Isakova
+
+Software Transactional Memory (STM)
+-----------------------------------
+* Transactions for memory operations
+* Atomic, Consistent, Isolated
+* Examples:
+
+  * Haskell's STM
+  * Clojure's STM
+
+* Reference: `Haskell STM <https://hackage.haskell.org/package/stm>`_
+
+Reactive Programming
+--------------------
+* Data flow programming paradigm
+* Asynchronous stream processing
+* Non-blocking back pressure
+* Examples:
+
+  * ReactiveX (RxJava, RxJS, etc.)
+  * Project Reactor (Spring)
+
+* Reference: `ReactiveX <http://reactivex.io/>`_
+
+Java's Evolution
+----------------
+* Classic thread model
+* Executor framework
+* CompletableFuture
+* Java 19+ virtual threads (Project Loom)
+* Reference: "Java Concurrency in Practice" by Brian Goetz
+
+Non-blocking I/O
+----------------
+* Event-driven programming
+* Single-threaded event loop handling multiple connections
+* Examples:
+
+  * Node.js
+  * Python asyncio
+  * Netty (Java)
+
+Comparison of Approaches
+------------------------
+* Thread-based vs Event-driven
+* Shared-state vs Message-passing
+* Explicit vs Implicit concurrency
+* Reference: "Seven Concurrency Models in Seven Weeks" by Paul Butcher
+
+Future Trends
+-------------
+* Language-level support for parallelism
+* Distributed computing primitives
+* Hardware acceleration integration
+* Quantum computing models
+

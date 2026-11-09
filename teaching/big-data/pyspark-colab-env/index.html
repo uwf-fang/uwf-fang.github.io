@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PySpark Environment For Learning · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/big-data/big-data-intro/">Introduction To Big Data</a></li><li><a href="/teaching/big-data/big-data-lifecycle/">Big Data Life Cycle</a></li><li><a href="/teaching/big-data/big-data-processing/">Big Data Processing</a></li><li><a href="/teaching/big-data/data-analysis/">Data Analysis for Big Data: Overview</a></li><li><a href="/teaching/big-data/ml-dl/">Machine Learning And Deep Learning For Data Analysis</a></li><li><a href="/teaching/big-data/pyspark/">PySpark Programming for Big Data</a></li><li><a href="/teaching/big-data/streaming/">Streaming for Big Data</a></li><li><a href="/teaching/big-data/cloud-computing/">Cloud Computing For Big Data</a></li><li><a href="/teaching/big-data/misc/">Security, Privacy, and Compliance for Big Data</a></li><li><a href="/teaching/big-data/glossary/">Big Data Glossary</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/big-data/">Big Data</a> / PySpark Environment For Learning</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>PySpark Environment For Learning</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#pyspark-environment">PySpark Environment</a></li>
+    <li><a href="#google-colab">Google Colab</a>
+      <ul>
+        <li><a href="#install-pyspark-on-colab">Install PySpark on Colab</a></li>
+        <li><a href="#access-pyspark-functionalities">Access PySpark functionalities</a></li>
+        <li><a href="#file-operations">File Operations</a></li>
+        <li><a href="#export-the-notebook">Export the notebook</a></li>
+        <li><a href="#save-data">Save Data</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="pyspark-environment-for-learning"></span>
+<h2 id="pyspark-environment">PySpark Environment</h2>
+<p>Spark can be configured in <strong>local</strong> or <strong>cluster</strong> mode. It also supports <strong>standalone</strong>, <strong>YARN</strong>, and <strong>Kubernetes</strong> as resource managers. Installation of Spark in cluster mode requires a lot of experience and effort. It is not necessary in this course.</p>
+<p>For these teaching examples, run PySpark in <strong>local mode</strong> inside a Google Colab notebook. The notebook environment hosts the Spark process on one machine. Spark’s <strong>Standalone</strong> cluster manager is a separate deployment option; the local notebook setup does not create a Standalone cluster.</p>
+<h2 id="google-colab">Google Colab</h2>
+<p>Google Colaboratory (also known as Google Colab or simply Colab) is a cloud-based platform that allows users to write, run, and share Python code using Jupyter notebooks. It is a free service provided by Google that allows users to access powerful computing resources, including GPUs and TPUs, without the need for expensive hardware.</p>
+<p>With Colab, you can easily create and share documents that contain live code, equations, visualizations, and text. You can also collaborate with others in real-time, making it an ideal tool for data science teams, researchers, educators, and students.</p>
+<p><a href="https://colab.research.google.com/">Google Colab website</a></p>
+<p>Tutorials for Google Colab:</p>
+<ul>
+<li><a href="https://pub.towardsai.net/google-colab-tutorial-for-beginners-834595494d44">Google Colab Tutorial for Beginners (towardai.net)</a></li>
+<li><a href="https://www.tutorialspoint.com/google_colab/index.htm">Google Colab Tutorial (tutorialspoint.com)</a></li>
+</ul>
+<h3 id="install-pyspark-on-colab">Install PySpark on Colab</h3>
+<p>Input <code>%pip install pyspark</code> in a code cell and run.</p>
+<h3 id="access-pyspark-functionalities">Access PySpark functionalities</h3>
+<ul>
+<li>Import PySpark components in a code cell</li>
+<li>Create a <code>SparkSession</code> object (usually named <code>spark</code>) and use it as the primary entry point to PySpark functionalities</li>
+<li>Access <code>SparkContext</code> through <code>spark.sparkContext</code> when you need lower-level RDD operations</li>
+</ul>
+<h3 id="file-operations">File Operations</h3>
+<ul>
+<li>Each notebook runs in a separate virtual machine with its own file system.</li>
+<li>This file system is temporary and will be deleted when the virtual machine is recycled.</li>
+<li>To load data (three options)
+<ol>
+<li>write code to download data from a URL</li>
+<li>upload data from your local machine</li>
+<li>mount Google Drive to the virtual machine</li>
+</ol>
+</li>
+<li>To persist data (two options)
+<ol>
+<li>save data to Google Drive</li>
+<li>download data to your local machine using the file explorer sidebar</li>
+</ol>
+</li>
+</ul>
+<h3 id="export-the-notebook">Export the notebook</h3>
+<p>Use the menu “File -&gt; print” to generate a PDF file or print it to a printer.</p>
+<h3 id="save-data">Save Data</h3>
+<p>You can upload and download in the file explorer sidebar or mount your Google Drive to the Colab virtual machine.</p>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

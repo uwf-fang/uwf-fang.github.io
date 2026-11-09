@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Binary search tree · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/programming/">Algorithms and Data Structures</a> / Binary search tree</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Binary search tree</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#motivation">Motivation</a></li>
+    <li><a href="#definition">Definition</a></li>
+    <li><a href="#applications">Applications</a></li>
+    <li><a href="#behaviors">Behaviors</a></li>
+    <li><a href="#implementation-details">Implementation Details</a></li>
+    <li><a href="#drawbacks-and-solutions">Drawbacks and Solutions</a></li>
+    <li><a href="#applications-of-bst">Applications of BST</a>
+      <ul>
+        <li><a href="#important-binary-search-tree-variations">Important Binary Search Tree Variations</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="binary-search-tree"></span>
+<h2 id="motivation">Motivation</h2>
+<p>The motivation behind using a Binary Search Tree (BST) as a data structure lies in its ability to efficiently support key-based operations, such as searching, insertion, and deletion, while maintaining a sorted order of elements.</p>
+<h2 id="definition">Definition</h2>
+<p>A binary search tree (BST) is a binary tree, in which for every node, its left subtree has values less than the node’s value, and every node’s right subtree has values greater than the node’s value.</p>
+<h2 id="applications">Applications</h2>
+<ul>
+<li>Map ADT
+<ul>
+<li>Stores key-value pairs</li>
+</ul>
+</li>
+<li>Set ADT
+<ul>
+<li>Stores a set of elements (keys)</li>
+</ul>
+</li>
+</ul>
+<h2 id="behaviors">Behaviors</h2>
+<ul>
+<li>Search</li>
+<li>Insert</li>
+<li>Remove</li>
+<li>Traversal: Visit all nodes in a tree in a certain order
+<ul>
+<li>in-order: for each node: left-subtree, self, right-subtree
+<ul>
+<li>provides an ascending-ordered sequence of values</li>
+</ul>
+</li>
+<li>pre-order: for each node: self, left-subtree, right-subtree</li>
+<li>post-order: for each node: left-subtree, right-subtree, self</li>
+</ul>
+</li>
+</ul>
+<h2 id="implementation-details">Implementation Details</h2>
+<ul>
+<li>
+<p>Algorithms that happens from top to bottom</p>
+<p>Easy to implement either iteratively or recursively</p>
+<ul>
+<li>search</li>
+<li>insert</li>
+</ul>
+</li>
+<li>
+<p>Algorithms that happens from bottom to top</p>
+<p>Easy to implement recursively; Hard to implement iteratively (must use stack)</p>
+<ul>
+<li>subtree removal (may be used in the destruction of a tree)</li>
+<li>find min node or find max node (part of remove)</li>
+<li>in-order traversal</li>
+<li>pre-order traversal</li>
+</ul>
+</li>
+</ul>
+<h2 id="drawbacks-and-solutions">Drawbacks and Solutions</h2>
+<ul>
+<li>Algorithm efficiency depends on the average height of the BST</li>
+<li>BST may degrade a very unbalanced form or even to a linked list</li>
+<li>Solutions
+<ul>
+<li>Randomize the order of insertion</li>
+<li>Add a balancing mechanism
+<ul>
+<li>self-balancing tree</li>
+<li>external balancing (FYI)</li>
+</ul>
+</li>
+<li>Move the most recently accessed node toward the root
+<ul>
+<li>Only optimize the search performance for a specific access pattern</li>
+<li>No guarantee for the worst case</li>
+<li>Splay tree</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="applications-of-bst">Applications of BST</h2>
+<ul>
+<li>Indexing: store a set of references in a BST and use the key as the search key</li>
+<li>Tree Sort: sort a sequence of numbers by building a BST and then traversing it in-order</li>
+<li>Tree Map: store a set of (key, value) pairs in a BST and use the key as the search key</li>
+<li>Tree Set: store a set of elements in a BST and use the element as the search key</li>
+</ul>
+<h3 id="important-binary-search-tree-variations">Important Binary Search Tree Variations</h3>
+<ul>
+<li>Self-balancing BSTs
+<ul>
+<li>AVL tree</li>
+<li>Red-black tree</li>
+</ul>
+</li>
+<li>Self-adjusting BSTs (other than self-balancing)
+<ul>
+<li>Splay tree</li>
+<li>Treap</li>
+</ul>
+</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

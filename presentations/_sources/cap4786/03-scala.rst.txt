@@ -1,0 +1,593 @@
+**********************************
+Introduction to Big Data Analytics
+**********************************
+
+.. revealjs-section::
+  :data-background-color: white
+  :data-background-image: ../_static/logo.png
+  :data-background-size: 50%
+  :data-background-position: top center
+  :data-background-repeat: no-repeat
+
+.. container:: subtitle
+
+  **Chapter 2: Programming in Scala**
+
+  |author|
+
+TL;DR
+=====
++ Stick to Scala 2.xx for Spark programming, ignore Scala 3.xx
++ Learn just enough Scala
++ Stick to one style you like (As explicit as possible IMO)
++ Focus on the functional programming aspects
++ PySpark is more recommended in the future
+
+Scala Programming Language
+==========================
++ General purpose
++ Statically typed
++ Hybrid paradigm: Object Oriented and Functional
++ A Java Virtual Machine (JVM) language
+
+  * Interpreted with read-evaluate-print loop (REPL) shell
+  * Compiled using scalac compiler
+  * Distributed as a jar file
+
++ Spark is written in Scala
++ Scala 2.xx is different from Scala 3.xx
+
+  * spark-shell uses Scala 2.12
+
+Scala in this course
+====================
++ My opinion on Scala
+
+  * Support to two paradigms makes it powerful but challenging to learn
+  * Convenient alternative syntax to do the same thing leads to confusion
+  * Not the best language of choice to learn
+
+    - Complex, hard to master
+    - Not widely used
+
++ Scope in this course
+
+  * Tread Scala as a tool to learn Spark
+  * Learn enough Scala to understand and write Spark code
+
+    - data manipulation using Scala collections
+    - write functions efficiently
+    - conversion between Spark Data APIs to Scala collections
+    - call Spark and related APIs
+
+  * Safe to learn most of the advanced features later when needed
+
+Topics
+======
++ Scala shell
++ **Functional programming**
++ Syntax basics
++ Values, variables, and types
++ **Functions**
++ Classes and objects
++ Misc Scala features
++ Advanced data types
+
+.. container:: footnote
+
+  **Bold** topics are essential for Spark programming, while others are
+  something you can refer to reference material as needed.
+
+Scala Shell
+===========
++ Scala shell is an interactive shell to run Scala code line by line
++ REPL: Read-Evaluate-Print Loop
++ Spark shell is an extension of standard Scala shell
+
+  * Run ``spark-shell`` to start Spark shell
+
+.. image:: /_static/spark-shell.png
+  :width: 100%
+
+Functional Programming
+======================
++ Functional programming is a programming paradigm
++ Characteristics
+
+  * Functions are first-class citizens
+
+    - like an object
+    - can be passed as arguments
+    - can be returned from other functions
+    - can be assigned to variables
+
+  * Functions are composable
+  * Functions are pure
+
+    - Does not depend on anything outside the scope (except parameters):
+      predicable, reproducible
+    - Does not change anything out of the scope: **No side effects**
+
+  * Immutable data: always create a new object rather than modifying the
+    existing one
+
+Syntax Basics
+=============
++ Case sensitive
++ Statement terminator: semicolon
++ Comments syntax same as java: ``//`` and ``/* */``
++ Blocks are enclosed in curly braces
++ Many syntax has more convenient alternatives
+
+  * Huge source of confusion for beginners!!! Even worse than old version of
+    JavaScript in my opinion.
+  * ``return``, semicolons, parentheses, dot, etc. can be omitted in many cases
+  * types can be inferred
+  * ``_`` can be used as a placeholder or wildcard
+  * Stick to one style you like! Do not waste time to master everything!
+
+Values, Variables, and Types
+============================
+.. container:: flex-container
+
+  .. container:: half
+
+    + Everything in Scala is an object, no primitive types
+    + Values
+
+      * Immutable
+      * Declared using ``val`` keyword with mandatory initialization
+      * Analog to ``final`` variable in Java and ``const`` variable in C++
+
+    + Variables
+
+      * Mutable
+      * Declared using ``var`` keyword
+
+    + Types
+
+      * Scala is statically typed
+      * Basic types
+      * advanced types (like tuples, option type, case class, collections, etc)
+      * Type inference: Scala compiler can infer the type of a variable
+
+  .. container:: half
+
+    .. csv-table:: Basic Types in Scala
+      :header-rows: 1
+
+      Type, Description
+      Byte, 8-bit signed integer
+      Short, 16-bit signed integer
+      Int, 32-bit signed integer
+      Long, 64-bit signed integer
+      Float, 32-bit floating point number
+      Double, 64-bit floating point number
+      Char, 16-bit Unicode character
+      String, A sequence of characters
+      Boolean, true or false
+
+Value, Variable, and Type Examples
+----------------------------------
++ Every value/variable has a type
++ Value must be initialized and can never be re-assigned
++ Type is specified after a colon
++ Type can be omitted/inferred
+
+.. code-block:: scala
+
+  val x: Int = 10
+  var y: String = "Hello, World!"
+
+  val z = 20 // Type inference
+  var w = "Hello, Scala!" // Type inference
+
+  val a: Int = 10
+  a = 20 // Error: reassignment to val
+
+Functions in Scala
+==================
++ Functional programming support
++ Functions are first-class citizens
+
+  * Functions can be used as objects: as parameter, as return value, as
+    assigned value
+  * Function has a type e.g. ``Int => Int`` means a function that takes an
+    integer and returns an integer
+  * Higher-order function: A function that takes another function as an
+    argument or returns a function
+
++ Flexible syntax to define functions (a drawback in my opinion)
+
+  * ``def`` keyword - formal way
+  * anonymous function (function literal)
+
+    - assigned to a variable to make a named function
+    - used as an actual parameter in a function call
+
+  * return keyword is optional, last expression is returned
+  * parentheses are optional for no/single parameter function call
+
+Local Function Definition Using def
+-----------------------------------
++ ``def`` keyword
++ Return type can be inferred
++ Returning ``Unit`` means that we do not care the return value (like void in
+  Java)
++ Return keyword is optional
++ Curly braces are optional for single line function
++ When calling, parentheses are optional for zero parameter function
+
+.. code-block:: scala
+
+  def print5(): Unit = { println(5) }
+
+  print5()
+  // print5
+
+  def square(x: Int): Int = {
+    return x * x
+  }
+
+  def square1(x: Int): Int = { x * x }  // return keyword is omitted
+
+  def square2(x: Int): Int = x * x  // curly braces are omitted
+
+  println(square(10))  // 100
+
+Anonymous Functions (Function Literals)
+---------------------------------------
++ Anonymous function is a function without a name
++ Syntax: ``(parameters) => expression``
++ It can be assigned to a variable to make a named function
++ It can be passed as an argument to another function
++ It can be returned from another function
++ Underscores can be used as placeholders
+
+.. code:: scala
+
+  val square = (x: Int) => x * x  // return type is inferred
+
+  // square is a variable storing a function of Int => Int type
+  val square : Int => Int = x => x * x
+
+  // When _ is used, the second => can be omitted
+  // Next line does not work because _ * _ suggests that the function should take two arguments
+  // val square : Int => Int = _ * _
+
+  val add : (Int, Int) => Int = _ * _
+
+Higher-order Functions
+----------------------
++ Higher-order function: A function that takes another function as an argument
+  or returns a function
+
+.. code-block:: scala
+
+  def compute(f: Int => Int, x: Int): Int = f(x)
+
+  println(compute(square, 10))  // 100, use existing function
+  println(compute(x => x * x, 10))  // 100, use anonymous function
+
+  // Alternative syntax to define the function
+  val compute = (f: Int => Int, x: Int) => f(x)
+
+  // A function that returns a function
+  // Refer to the makeAdder example in the Closure slide
+
+Closure
+-------
++ Closure: A function that captures the value/variable from the environment in
+  which it is defined
+
+.. code:: scala
+
+  val x = 5
+  val adder = (y: Int) => x + y  // x is captured from the environment
+  println(adder(3)) // output is 5 + 3 = 8
+
+  // This function returns a function
+  def makeAdder(x: Int): Int => Int = {
+    // returning a function (closure) that captures the variable 'x'
+    y => x + y
+  }
+  val adder = makeAdder(5) // Create a closure that adds 5 to its argument
+  println(adder(3)) // Output is 5 + 3 = 8
+
+Scala Classes
+=========================
++ Scala is an object-oriented language
++ Classes are the blueprint for objects
++ Syntax to define a class is like a function (constructor) definition with a
+  class keyword
++ Use ``new`` keyword to create an instance of a class (an object)
++ Methods are defined as inner/nested functions in a class
++ ``new`` keyword to create an instance
++ dot, parentheses can be omitted when calling a method
+
+.. code-block:: scala
+
+  // This class come with a constructor and a print method
+  class Person(name: String, age: Int) {
+    def print(): Unit = {
+      println(s"Name: $name, Age: $age")
+    }
+  }
+
+  // p is an instance of the Person class
+  // p is an object
+  val p = new Person("Alice", 25)
+  p.print()  // Name: Alice, Age: 25
+  // p print()
+  // p print
+
+Scala Objects
+-------------
++ Objects are instances of classes or singletons (unique in scala)
++ We focus on singleton here
++ Singleton can be considered a class with only one instance or a standalone
+  object
++ Syntax to define a singleton is like a class definition with an object
+  keyword
++ A special singleton object is used with a main method to serve as an entry
+  point for the application
+
+.. code-block:: scala
+
+  object Hello {
+    def print(): Unit = {
+      println("Hello, World!")
+    }
+  }
+
+  // Use object name to call the method
+  Hello.print()  // Hello, World!
+  // Hello print()
+  // Hello print
+
+  // Application entry point
+  object Main {
+    def main(args: Array[String]): Unit = {
+      println("Hello, World!")
+    }
+  }
+
+Scala Traits
+------------
++ Traits are template classes that can be mixed into classes to define
+  interfaces
++ Traits are somewhat like interfaces in Java but allows concrete methods and
+  fields
++ It is actually closer to Python Mixin classes
++ A class can extend multiple traits
+
+.. code-block:: scala
+
+  trait Person {
+    def greet(): Unit
+  }
+
+  class British(name : String) extends Person {
+    def greet(): Unit = {
+      println(s"Hello $name")
+    }
+  }
+
+  val p = new British("Alice")
+  p greet  // Hello Alice
+
+Operators in Scala
+------------------
++ Operators are methods in Scala
++ You can alway override operators in Scala
+
+.. code-block:: scala
+
+  val a = 10
+  val b = 5
+  val c = a + b  // same as a.+(b)
+
+Misc. Scala Features
+====================
+.. container:: flex-container
+
+  .. container:: half
+
+    **Package and import**
+
+    * Similar to Java
+    * package: A way to organize classes
+    * import: A way to use classes from other packages
+    * Can import java classes
+
+    .. code-block:: scala
+
+      // declare package
+      package com.example
+
+      // import packages
+      import scala.collection.mutable.ListBuffer
+      import java.util.Date
+      import scala.io._  // _ means import everything
+
+  .. container:: half
+
+    **Pattern Matching**
+
+    * A powerful feature to match a value against a pattern
+    * Return values according to the matched pattern
+    * Similar to switch-case in Java
+
+    .. code-block:: scala
+
+      val x = 10
+      // Match and perform action accordingly
+      x match {
+        case 1 => println("One")
+        case 2 => println("Two")
+        case _ => println("Other")
+      }
+
+      val color = "red"
+      // Match and return values accordingly
+      val code = color match {
+        case "red" => "#FF0000"
+        case "green" => "#00FF00"
+        case "blue" => "#0000FF"
+        case _ => "Unknown"
+      }
+
+Misc. Scala Features cont.d
+---------------------------
++ Building Stand-alone Applications
+
+  * .scala file to hold source code (no one class per file rule)
+  * Each application/executable require a singleton object with a main method
+  * Optional package declaration to manage complex project
+  * Application can be delivered as a JAR file
+
++ Simple build tool (SBT)
+
+  * A build tool for Scala and Java projects
+  * Similar to system like Make, Maven or Gradle
+  * Build definition in a file named ``build.sbt``
+  * Allows reproducible and efficient building of complicated projects
+
++ Work with Spark
+
+  * Submit either .scala or .jar file to Spark cluster to run
+  * When working with notebook interfaces, each cell is sent to Spark cluster
+    for execution
+
+Advanced Data Types
+===================
++ Tuple
++ Case class
++ Option type
++ Collections
+
+  * Sequence: List, Array, Vector
+  * Set
+  * Map
+  * Higher-order methods of collections
+
+Tuple
+-----
++ A tuple is a collection of elements of different types
++ Tuple is immutable (means its elements cannot be changed)
++ Tuple variable can be reassigned
++ Access elements using 1-based index
+
+.. code-block:: scala
+
+  val t = (1, "Hello", 3.14)
+  println(t._1) // 1
+  println(t._2) // Hello
+  println(t._3) // 3.14
+  // t = (2, "World", 6.28) // Error: t is declared as val
+  // t._1 = 2 // Error: Tuple is immutable
+  // println(t._4) // Error: Tuple index out of range
+
+  var t1 = (1, "Hello", 3.14)
+  t1 = (2, "World", 6.28)  // allowed
+
+  t = (10, "World", 6.28)  // does not work because t is declared as val
+  t._1 = 10  // Error: tuples are immutable
+
+  // batch assignment with tuple expansion
+  val (x, y, z) = t1
+  println(x) // 10
+  println(y) // World
+  println(z) // 6.28
+
+Option Type
+-----------
++ Option type is used to represent optional values
++ It can be either ``Some`` or ``None``
++ Useful to avoid null pointer exception
+
+.. code-block:: scala
+
+  val x: Option[Int] = Some(10)
+  val y: Option[Int] = None
+
+  println(x.get) // 10
+  println(y.get) // Error: NoSuchElementException
+
+  // Use match to handle None
+  val z = y match {
+    case Some(value) => value
+    case None => 0
+  }
+  println(z) // 0
+
+Case Class
+----------
++ A special class with immutable properties and some additional features
++ No ``new`` keyword required to create an instance
++ Works like a tuple with all fields named
++ Works well with pattern matching
+
+.. code-block:: scala
+
+  case class Person(name: String, age: Int)
+  val p = Person("Alice", 25)  // Create an instance without "new" keyword
+  println(p.name) // Alice
+  println(p.age) // 25
+
+  val greeting = p match {
+      case Person("John", _) => "Hello John"
+      case Person("Alice", _) => "Hello Alice"
+      case Person(name, _) => "I do not know you"
+    } // Hello Alice
+
+  def getGreeting(p: Person): String = p match {
+      case Person("John", _) => "Hello John"
+      case Person("Alice", _) => "Hello Alice"
+      case Person(name, _) => "I do not know you"
+    }
+
+  println(getGreeting(p)) // Hello Alice
+  println(getGreeting(Person("John", 21))) // Hello John
+  println(getGreeting(Person("Bob", 24))) // I do not know you
+
+Collections
+===========
++ Collections in Scala provide high-level of operations on data
++ **Collections are immutable by default and works well with functional
+  programming**
++ Collections provide rich set of operations and only part of them are covered
+  here. Please refer to Scala documentation for more details as needed.
++ Sequence (Seq trait)
+
+  A collection of ordered elements of the same type. Ordered means that each
+  element has an index or has predecessor and successor (except the first and
+  last element).
+
+  * List: A linked list implementation
+  * Array: A fixed-size array implementation
+  * Vector: A resizable array implementation
+
++ Set: A collection of unique elements, no duplicates, order does not matter
++ Map: A collection of key-value pairs, key is unique
+
+Organization of Collections
+---------------------------
++ Collections are organized in a hierarchy of traits and classes
+
+.. image:: /_static/scala-types.png
+
+Collection Operations
+---------------------
++ Collections provide a rich set of operations
++ Some high-level operations are similar to Spark operations
+
+  * map: Apply a function to each element
+  * flatMap: Apply a function to each element and flatten the result
+  * reduce: Combine elements to a single value
+  * filter: Filter elements based on a condition
+  * foreach: Apply a function to each element
+
++ They usually serve as local version of data storage to be readily converted to
+  Spark RDD for further parallel processing
+

@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compilation Using g&#43;&#43; · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/cpp/">C&#43;&#43; Reference</a> / Compilation Using g&#43;&#43;</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Compilation Using g&#43;&#43;</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#mainstream-compilation-systems">Mainstream Compilation Systems</a></li>
+    <li><a href="#building-process-of-c-c-projects">Building process of C/C++ projects</a></li>
+    <li><a href="#the-g-command">The g++ command</a>
+      <ul>
+        <li><a href="#g-command-line">g++ command-line</a></li>
+        <li><a href="#common-g-options">Common g++ options</a></li>
+      </ul>
+    </li>
+    <li><a href="#preprocessor-directives">Preprocessor directives</a></li>
+    <li><a href="#styles-of-building">Styles of building</a>
+      <ul>
+        <li><a href="#one-step-building">One step building</a></li>
+        <li><a href="#modular-building">Modular building</a></li>
+        <li><a href="#pitfalls">Pitfalls</a></li>
+        <li><a href="#common-error-messages-from-g">Common Error Messages From g++</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="compilation-using-g"></span>
+<p>Compilation is a process to translate source codes into executables or libraries. A compiled programming language requires source codes to be compiled before they can be executed. C++ is typical compiled programming language.</p>
+<h2 id="mainstream-compilation-systems">Mainstream Compilation Systems</h2>
+<p>There are many mainstream C/C++ compilers available to various operating systems:</p>
+<ul>
+<li>Cross-platform (Linux native, macOS, Windows, etc.)
+<ul>
+<li>gcc/g++ from GNU GCC</li>
+</ul>
+</li>
+<li>macOS native
+<ul>
+<li>The LLVM C/C++ compilers clang/clang++ from the Xcode command-line tools</li>
+</ul>
+</li>
+<li>Windows native
+<ul>
+<li>Visual C++</li>
+</ul>
+</li>
+<li>Windows non-native
+<ul>
+<li>MinGW (MSys2, Git Bash)</li>
+<li>Cygwin</li>
+</ul>
+</li>
+</ul>
+<p>They are not compatible to each other so you need to stick to one for consistency. In our course, <strong>the GNU g++ (part of GCC) is chosen as the only compiler and you must stick to it.</strong> Although it is not binary compatible to g++, code that is compilable using LLVM compilers clang++ can be compiled with g++ in most of the case.</p>
+<aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p><strong>It is not recommended to use any variation of MinGW, such as MSys2, Git Bash to compile your code in this course!</strong> It is known to cause a lot of compatibility issues and you must perform a final test on a Linux system (e.g. the SSH server) to make sure that it will work during grading.</p>
+</div></aside>
+<h2 id="building-process-of-c-c-projects">Building process of C/C++ projects</h2>
+<p>General compilation process of C/C++ projects contains three main stages: preprocessing, compilation, and linking.</p>
+<span id="term-Preprocessing-step"></span>
+<dl>
+<dt>Preprocessing step</dt>
+<dd>Process preprocessing directives like #include, #define, etc. Performs textual manipulations mostly.</dd>
+</dl>
+<span id="term-Compilation-step"></span>
+<dl>
+<dt>Compilation step</dt>
+<dd>Translate the source code (.cpp) files to object (.o) files.</dd>
+</dl>
+<span id="term-Linking-step"></span>
+<dl>
+<dt>Linking step</dt>
+<dd>Link object (.o) files to produce an executables (or a library)</dd>
+</dl>
+<p>The three steps of preprocessing, compilation, and linking can be performed either all at once or separately using the g++ compiler. Typically, the preprocessing and compilation steps are performed together. Therefore, the typical step-wise compilation process involves two steps: preprocessing and compilation, followed by linking.</p>
+<h2 id="the-g-command">The g++ command</h2>
+<p>g++ is the GNU C++ compiler invocation command. It builds C++ source codes to produce libraries or executables. It serves as pre-processor, compiler, and linker for C++ projects.</p>
+<h3 id="g-command-line">g++ command-line</h3>
+<p>A typical g++ compilation command-line looks like:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>g++ &lt;options&gt; &lt;arguments&gt;
+</span></span></code></pre></div><span id="term-g-options"></span>
+<dl>
+<dt>g++ options</dt>
+<dd>Something started with a hyphen character. They are provided to control the behavior of the compilation. Some options come with their own arguments.</dd>
+</dl>
+<span id="term-g-arguments"></span>
+<dl>
+<dt>g++ arguments</dt>
+<dd>Everything in the command-line that are not options. They usually specify the source of the compilation. They can be either .cpp file or .o file names.</dd>
+</dl>
+<p>Example: in <code>g++ -Wall -std=c++14 -o main main.cpp</code> command, <code>-Wall</code>, <code>-std=c++14</code> and <code>-o main</code> are options and <code>main.cpp</code> is an argument.</p>
+<h3 id="common-g-options">Common g++ options</h3>
+<span id="term-o"></span>
+<dl>
+<dt>-o</dt>
+<dd>This option specify the name of the output file. It must be followed by a name. For example, <code>-o main</code> to generate a file called <code>main</code>.</dd>
+</dl>
+<span id="term-c"></span>
+<dl>
+<dt>-c</dt>
+<dd>This option tell g++ to compile only without linking. It will generate an object (.o) file.</dd>
+</dl>
+<span id="term-std-c-14"></span>
+<dl>
+<dt>-std=c++14</dt>
+<dd>Use the C++ standard 14 to compile. There are other C++ standards available such as C++ 11, C++ 17, C++20, etc.</dd>
+</dl>
+<span id="term-Wall"></span>
+<dl>
+<dt>-Wall</dt>
+<dd>Show common warning messages. Many warning messages are helpful to give you hints on potential problem in your code.</dd>
+</dl>
+<span id="term-g"></span>
+<dl>
+<dt>-g</dt>
+<dd>Store debugging information during compilation to allow future use of debuggers like <code>gdb</code> or <code>valgrind</code>.</dd>
+</dl>
+<span id="term-O0-O1-O2-O3"></span>
+<dl>
+<dt>-O0, -O1, -O2, -O3</dt>
+<dd>Optimize the generated code. The higher the number, the more optimization will be performed. The default is -O2.</dd>
+</dl>
+<h2 id="preprocessor-directives">Preprocessor directives</h2>
+<p>Preprocessor directives are instructions that are mixed in with C++ statements in your source code. They direct the preprocessor to manipulate the text of the source code files before they are compiled. These directives are identified by the hash symbol ‘#’ at the start of the instruction.</p>
+<aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p>Preprocessor directives are not statements and no semicolons are needed as the termination of directives. They are line based instead.</p>
+</div></aside>
+<ul>
+<li>
+<p><code>#include</code></p>
+<p>It is used to copy texts from another file and paste to the location of the directive. You can use either angular brackets <code>&lt;&gt;</code> or double quotation marks <code>&quot;&quot;</code> to include system headers or user headers:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// user header
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">#include</span> <span style="color:#57606a">&#34;mylib.hpp&#34;</span><span style="color:#57606a">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// system header
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">#include</span> <span style="color:#57606a">&lt;iostream&gt;</span><span style="color:#57606a">
+</span></span></span></code></pre></div><aside class="callout callout-note" aria-label="note">
+<strong>Note</strong><div><p>The order of inclusion matters and it is recommended to to start from local headers to system headers. Refer to the best practices documents for more details.</p>
+</div></aside>
+</li>
+<li>
+<p><code>#define</code></p>
+<p>It is used to define macros. Un-parameterized macros without values are preprocessor only flags. Un-parameterized macros with values can be used like a text replacement token or a constant. Parameterized macros work like functions. It is not preferred in the courses! Use functions instead!</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// preprocessor only flags
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">#define HEADER_HPP
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// constant like macro
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">#define PI 3.14159
+</span></span></span></code></pre></div></li>
+<li>
+<p>conditional compilation <code>#if</code>, <code>#elif</code>, <code>#else</code>, <code>#ifdef</code>, <code>#ifndef</code>, <code>#endif</code></p>
+<p>They can be used to direct the preprocessor to include code blocks conditionally. These directives may greatly improve efficiency of the compilation process in large projects in trade of the readability and thus maintainability. In our course, we only use them in header guards.</p>
+</li>
+<li>
+<p>Header guards</p>
+<p><strong>Header guards</strong> are the preferred way to prevent header contents from being included more than once. It is preferred over the alternative way using <code>#progma once</code>, which is a non-standard C++ directive.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">#ifndef MYHEADER_HPP
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">#define MYHEADER_HPP
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// header contents
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">#endif </span><span style="color:#57606a">// MYHEADER_HPP
+</span></span></span></code></pre></div><aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p>You must add header guards to all user headers!</p>
+</div></aside>
+</li>
+</ul>
+<h2 id="styles-of-building">Styles of building</h2>
+<h3 id="one-step-building">One step building</h3>
+<p>You may use a single g++ command to produce the executable from the source code files. In this method, all three stages are invoked by one g++ command.</p>
+<p>You can list all cpp files in the command line as arguments and specify the output file name as main:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>g++ -std<span style="color:#0550ae">=</span>c++14 -o main main.cpp lib1.cpp lib2.cpp
+</span></span></code></pre></div><p>You may also use wildcard to match all cpp files if only one cpp file contains a main function:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>g++ -std<span style="color:#0550ae">=</span>c++14 -o main *.cpp
+</span></span></code></pre></div><aside class="callout callout-note" aria-label="note">
+<strong>Note</strong><div><p>It will fail if you have multiple main functions in your cpp files.</p>
+</div></aside>
+<h3 id="modular-building">Modular building</h3>
+<p>In the modular building approach, the preprocessing + compilation and linking steps are performed separately to provide fine control over arguments and fine grained error handling.</p>
+<p>Use the same example with a <code>main.cpp</code>, a <code>lib1.cpp</code>, and a <code>lib2.cpp</code> with paired headers. You can build your <code>main</code> executable in steps:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>g++ -std<span style="color:#0550ae">=</span>c++14 -Wall -c main.cpp
+</span></span><span style="display:flex;"><span>g++ -std<span style="color:#0550ae">=</span>c++14 -Wall -c lib1.cpp
+</span></span><span style="display:flex;"><span>g++ -std<span style="color:#0550ae">=</span>c++14 -Wall -c lib2.cpp
+</span></span><span style="display:flex;"><span>g++ -o main main.o lib1.o lib2.o
+</span></span></code></pre></div><p>The first three lines compiles all source code files to the corresponding object files respectively. The last line links all object files into an executable named <code>main</code>.</p>
+<aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p><strong>Modular compilation is always preferred as every step may trigger errors and they are much easier to fix separately</strong> It is complicated but can be automated using building tools such as GNU make, etc.</p>
+</div></aside>
+<h3 id="pitfalls">Pitfalls</h3>
+<ul>
+<li>List header files in the g++ command</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>g++ -o main main.cpp lib1.hpp lib1.cpp
+</span></span></code></pre></div><span id="gpp-diag"></span>
+<h3 id="common-error-messages-from-g">Common Error Messages From g++</h3>
+<aside class="callout callout-note" aria-label="note">
+<strong>Note</strong><div><p>Some error messages are misleading. Thus, do not stick to it if you cannot figure it out. Try other method such as code review to solve the problem instead.</p>
+</div></aside>
+<ul>
+<li>
+<p>Alway solve only one error message and re-compile to see the result</p>
+</li>
+<li>
+<p>Compilation errors</p>
+<p>Error happens during compilation of .cpp files to .o files.</p>
+<ul>
+<li><code>undeclared identifier ...</code>
+<ul>
+<li>Means that the compiler cannot find a matching declaration for an identifier usage</li>
+<li>Misspelled identifier (variable name, type name, class name, etc) when you declare or use an identifier</li>
+<li>Forget to include the header that declared the identifier</li>
+</ul>
+</li>
+<li><code>No matching function ...</code>
+<ul>
+<li>Means that the compiler cannot find a matching declaration for a function call</li>
+<li>Misspelled function name when you declare or call a function</li>
+<li>Forget to include the header that declared the function</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Linker errors</p>
+<p>Error happens during the linking of .o files to an executable. They usually end with <code>ld returned 1 exit status</code> in the last line.</p>
+<ul>
+<li><code>undefined reference to ...</code>
+<ul>
+<li>Means that the linker cannot find a function definition for a given declaration</li>
+<li>misspelled function name when you declare or define a function</li>
+<li>Forget to include the .o file where the function definition is</li>
+</ul>
+</li>
+<li><code>multiple definition of ... first defined here</code>
+<ul>
+<li>Means that you have multiple function definitions with a same name and parameter list</li>
+<li>You have included a wrong .o file in the g++ command. For example, two .o file each has a main function.</li>
+<li>A failed function overloading</li>
+<li>A misspelled function name in the definition so it conflict with another function</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

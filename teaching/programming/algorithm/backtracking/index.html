@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Backtracking · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/programming/">Algorithms and Data Structures</a> / Backtracking</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Backtracking</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#definition">Definition</a></li>
+    <li><a href="#core-concepts">Core Concepts</a></li>
+    <li><a href="#implementation">Implementation</a></li>
+    <li><a href="#application-domain">Application Domain</a>
+      <ul>
+        <li><a href="#example-problems">Example problems</a></li>
+      </ul>
+    </li>
+    <li><a href="#related-algorithms-and-paradigms">Related Algorithms and Paradigms</a></li>
+    <li><a href="#comparison">Comparison</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="backtracking"></span>
+<h2 id="definition">Definition</h2>
+<p>Backtracking is a general algorithmic technique that involves exploring all possible solutions to a problem by building solution candidates incrementally and abandoning a candidate (“backtracking”) as soon as it is determined that the candidate cannot be extended to a valid solution. It’s essentially a trial and error approach, where potential solutions are built piece by piece and abandoned when they fail to meet the necessary criteria.</p>
+<p>Backtracking is a fundamental concept in computer science, especially in the domain of algorithms and problem-solving. It’s particularly useful for solving constraint satisfaction problems, optimization problems, and combinatorial problems. Some classic examples include the N-Queens puzzle, the traveling salesman problem, and various game-solving algorithms like Sudoku. Its importance lies in its ability to find solutions to problems where the solution space is vast and cannot be traversed in a straightforward manner. By systematically trying out different solutions and backtracking when necessary, efficient solutions can be found for many complex problems.</p>
+<h2 id="core-concepts">Core Concepts</h2>
+<ul>
+<li>
+<p>Backtracking operation:</p>
+<p>The backtracking operation is the core of the backtracking algorithm. The backtrack operation is used to undo a decision and try another decision at a decision point.</p>
+</li>
+<li>
+<p>Decision Space:</p>
+<p>The decision space refers to all the possible options or choices available at any given point in the problem-solving process. In backtracking, not all decisions in this space lead to a valid solution. The algorithm explores these decisions systematically, often visualized as a tree or graph, where each node represents a decision.</p>
+</li>
+<li>
+<p>Feasibility Checks:</p>
+<p>Before or after making a decision, it’s essential to check if the current path being taken is feasible. This involves ensuring that the current solution candidate adheres to the problem’s constraints. If a decision fails the feasibility check, the algorithm will backtrack to a previous decision point.</p>
+</li>
+<li>
+<p>Solution Space:</p>
+<p>The solution space encompasses all potential solutions to the problem. It’s the set of all paths or decision sequences that lead to a valid solution. Backtracking navigates this space by exploring and discarding paths, aiming to find one or more paths that lead to a valid solution.</p>
+</li>
+</ul>
+<h2 id="implementation">Implementation</h2>
+<p>Implementation may vary depending on the problem, but the general approach is either recursive or iterative. The recursive approach is more intuitive. The iterative approach requires the use of a stack data structure to keep track of the current state and the current path being explored.</p>
+<ul>
+<li>Recursive approach</li>
+</ul>
+<pre tabindex="0"><code class="language-default" data-lang="default">function BACKTRACKING-SOLUTION(problem):
+    if problem is a base case:
+        return solution to the base case
+    for each option in problem:
+        if option is valid:
+            make the option
+            result = BACKTRACKING-SOLUTION(sub-problem created by the option)
+            if result is a valid solution:
+                return result
+            undo the option (backtrack)
+    return no solution found
+</code></pre><ul>
+<li>Iterative approach
+<ul>
+<li>Stack data structure</li>
+</ul>
+</li>
+</ul>
+<pre tabindex="0"><code class="language-default" data-lang="default">function ITERATIVE-BACKTRACKING-SOLUTION(initialProblem):
+    create an empty stack S
+    push initialProblem onto S
+
+    while S is not empty:
+        currentProblem = top of S
+
+        if currentProblem is a solution:
+            return currentProblem
+
+        if currentProblem has unexplored options:
+            nextOption = get next unexplored option for currentProblem
+
+            if nextOption is valid:
+                push nextOption onto S
+            else:
+                mark nextOption as explored for currentProblem
+
+        else:
+            // All options for currentProblem have been explored, backtrack
+            pop S
+
+    return no solution found
+</code></pre><ul>
+<li>Variations according to the goal
+<ul>
+<li>find one solution</li>
+<li>find all solutions</li>
+</ul>
+</li>
+</ul>
+<h2 id="application-domain">Application Domain</h2>
+<p>Backtracking algorithms are often used for optimization problems and combinatorial problems, where you need to search through a large solution space. They can be very efficient when implemented correctly, as they prune the search space by discarding branches that are guaranteed not to lead to a solution.</p>
+<ul>
+<li>Enumeration (find all)</li>
+<li>Decision (find one)</li>
+<li>Optimization (find the best)
+<ul>
+<li>Find all and then select the best</li>
+<li>A basic feasibility backtracking algorithm does not automatically optimize; it can track the best solution, while branch and bound can prune using objective bounds</li>
+</ul>
+</li>
+</ul>
+<h3 id="example-problems">Example problems</h3>
+<ul>
+<li>Sudoku</li>
+<li>Eight queens</li>
+<li>Cross-word</li>
+</ul>
+<h2 id="related-algorithms-and-paradigms">Related Algorithms and Paradigms</h2>
+<ul>
+<li>
+<p>Brute-Force</p>
+<p>Brute-force is a general algorithmic paradigm that involves exploring all possible solutions to a problem by generating all possible candidates and validating them. It’s similar to backtracking in that it involves exploring a decision space, but it’s less efficient as it doesn’t prune the search space and it doesn’t use backtracking to discard invalid candidates. Brute-force algorithms can cover a wide spectrum of problems as all possible solutions are explored. It can be used to find all solutions, any valid solution, or the best solution. Backtracking is a more specific algorithmic paradigm that focuses on finding one or all valid solutions to a constraint satisfaction problem. When backtracking is employed to find all solutions, its feasibility checks can reduce work by discarding invalid partial candidates early; the benefit depends on how much of the search space can be pruned.</p>
+</li>
+<li>
+<p>Depth-First Search</p>
+<p>Both backtracking and depth-first search involve exploring a decision space or tree/graph space in a systematic manner. They both try to explore as deep as possible. The difference is that backtracking is used to find solutions to constraint satisfaction problems, while depth-first search is used to find paths/nodes in a graph or tree. Backtracking is a general algorithmic paradigm, while depth-first search is a specific algorithm that uses backtracking, which backtracks when it reaches a dead end.</p>
+</li>
+<li>
+<p>Branch and bound</p>
+<p>Branch and bound is a general algorithmic paradigm that explores partial candidates and uses objective bounds to prune branches that cannot improve the best known solution. Backtracking usually prunes when a partial candidate cannot lead to a feasible solution. Both can support different output goals; branch and bound is commonly used for exact optimization, while backtracking is commonly used for constraint satisfaction and enumeration.</p>
+</li>
+</ul>
+<h2 id="comparison">Comparison</h2>
+<span id="id1"></span>
+<p><strong>Backtracking vs Brute-force</strong></p>
+<table>
+	<thead>
+			<tr>
+					<th></th>
+					<th>Backtracking</th>
+					<th>Brute-force</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Search space</td>
+					<td>Generate part of the intermediate and final states</td>
+					<td>Generate all intermediate and final states</td>
+			</tr>
+			<tr>
+					<td>Constraint application</td>
+					<td>Reject partial solutions</td>
+					<td>Validate final states</td>
+			</tr>
+			<tr>
+					<td>Run-time</td>
+					<td>fast</td>
+					<td>slow</td>
+			</tr>
+			<tr>
+					<td>Implementation</td>
+					<td>Stack/Recursion</td>
+					<td>Nested Loops/Recursion</td>
+			</tr>
+			<tr>
+					<td>Problem type</td>
+					<td>find one/find all</td>
+					<td>usually find all</td>
+			</tr>
+	</tbody>
+</table>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

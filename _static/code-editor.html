@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Code Porter | Student Edition</title>
+    
+    <!-- CodeMirror 5 CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+    
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; margin: 2rem; background: #f0f2f5; color: #1c1e21; display: flex; flex-direction: column; min-height: 90vh; }
+        
+        /* Changed from 900px to 1000px to match the 'old version' layout */
+        .container { 
+            max-width: 1000px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 2rem; 
+            border-radius: 12px; 
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08); 
+            flex-grow: 1; 
+            width: 95%; 
+        }
+        
+        .header { margin-bottom: 1.5rem; border-bottom: 2px solid #eee; padding-bottom: 1rem; }
+        
+        .toolbar { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 20px; 
+            margin-bottom: 1.5rem; 
+            background: #f8f9fa; 
+            padding: 1rem; 
+            border-radius: 8px;
+            align-items: center;
+        }
+
+        .setting-group { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 600; }
+        
+        /* Adjusted editor height to give more room for code */
+        .CodeMirror { border: 1px solid #ccd0d5; height: 500px; font-size: 15px; border-radius: 4px; }
+
+        .actions { margin-top: 1.5rem; display: flex; gap: 12px; align-items: center; }
+        button { padding: 10px 20px; cursor: pointer; border: none; border-radius: 6px; font-weight: 600; transition: all 0.2s; }
+        
+        .btn-primary { background: #007bff; color: white; flex-grow: 1; max-width: 250px; }
+        .btn-primary:hover { background: #0056b3; }
+        
+        .btn-clear { background: #ebedf0; color: #dc3545; margin-left: auto; }
+        .btn-clear:hover { background: #dadde1; }
+
+        #status { color: #28a745; font-weight: bold; font-size: 0.9rem; margin-left: 15px; }
+
+        footer { margin-top: 2rem; text-align: center; font-size: 0.85rem; color: #65676b; line-height: 1.6; }
+        footer a { color: #007bff; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h2 style="margin:0;">Student Code Editor</h2>
+    </div>
+    
+    <div class="toolbar">
+        <div class="setting-group">
+            <label for="languageSelect">Language:</label>
+            <select id="languageSelect">
+                <option value="text/x-c++src">C++</option>
+                <option value="text/x-java">Java</option>
+            </select>
+        </div>
+
+        <div class="setting-group">
+            <label for="indentSelect">Indentation:</label>
+            <select id="indentSelect">
+                <option value="2" selected>2 Spaces</option>
+                <option value="4">4 Spaces</option>
+            </select>
+        </div>
+
+        <div class="setting-group">
+            <input type="checkbox" id="closeBracketsCheck" checked>
+            <label for="closeBracketsCheck">Auto-close brackets</label>
+        </div>
+    </div>
+
+    <textarea id="code-editor"></textarea>
+
+    <div class="actions">
+        <button class="btn-primary" onclick="copyPlaintext()">Copy Plaintext</button>
+        <div id="status"></div>
+        <button class="btn-clear" onclick="clearEditor()">Clear</button>
+    </div>
+</div>
+
+<footer>
+    Created by <strong>Ian Fang (UWF)</strong><br>
+    Powered by <a href="https://codemirror.net/5/" target="_blank">CodeMirror 5</a> 
+    (clike, closebrackets, and matchbrackets addons)
+</footer>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/clike/clike.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/matchbrackets.min.js"></script>
+
+<script>
+    let currentIndent = 2;
+
+    const editor = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
+        lineNumbers: true,
+        mode: "text/x-c++src",
+        theme: "default",
+        tabSize: 2,
+        indentUnit: 2,
+        autoCloseBrackets: true,
+        matchBrackets: true,
+        extraKeys: {
+            "Tab": function(cm) {
+                const spaces = Array(currentIndent + 1).join(" ");
+                cm.replaceSelection(spaces);
+            }
+        }
+    });
+
+    document.getElementById('languageSelect').addEventListener('change', (e) => {
+        editor.setOption("mode", e.target.value);
+    });
+
+    document.getElementById('indentSelect').addEventListener('change', (e) => {
+        currentIndent = parseInt(e.target.value);
+        editor.setOption("tabSize", currentIndent);
+        editor.setOption("indentUnit", currentIndent);
+    });
+
+    document.getElementById('closeBracketsCheck').addEventListener('change', (e) => {
+        editor.setOption("autoCloseBrackets", e.target.checked);
+    });
+
+    function copyPlaintext() {
+        const text = editor.getValue();
+        navigator.clipboard.writeText(text).then(() => {
+            const status = document.getElementById('status');
+            status.innerText = "✓ Code Copied!";
+            setTimeout(() => { status.innerText = ""; }, 2000);
+        });
+    }
+
+    function clearEditor() {
+        if(confirm("Are you sure you want to clear the editor?")) {
+            editor.setValue("");
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+*********************************
+GitHub CLI (``gh``) for Students
+*********************************
+
+This guide introduces the GitHub Command Line Interface, abbreviated ``gh``.
+It is an optional alternative for experienced command-line users who want to
+manage a GitHub assignment repository from a terminal in COP3530 or COP4534.
+
+Recommended Classroom 50 method
+================================
+Use the Classroom 50 web interface for the course workflow. In particular,
+use the web interface to sign in, bind your account to the course roster,
+accept an assignment, and check the assignment or submission status. This is
+the recommended method for students and the easiest method to troubleshoot.
+
+The ``gh`` commands below are intended only for students who already know Git,
+GitHub repositories, and terminal commands. ``gh`` does not replace Classroom
+50, and it does not change the submission rule: pushing a commit to the
+assignment repository submits that commit.
+
+What ``gh`` does
+================
+``gh`` is GitHub's official command-line tool. It complements the standard
+``git`` commands:
+
+* ``git`` manages the local repository, including files, commits, branches,
+  and push/pull operations.
+* ``gh`` communicates with GitHub, including repository information, issues,
+  pull requests, and Actions workflow results.
+
+You can use both tools in the same assignment directory.
+
+Install and sign in
+===================
+Install ``gh`` by following the `official installation instructions
+<https://github.com/cli/cli#installation>`_. Verify the installation:
+
+.. code-block:: console
+
+   gh --version
+
+Sign in from a terminal with:
+
+.. code-block:: console
+
+   gh auth login
+
+Choose GitHub.com, select your preferred protocol, and complete the browser
+authentication flow. Verify the active account with:
+
+.. code-block:: console
+
+   gh auth status
+
+Classroom 50 extension versions
+===============================
+
+The public `classroom50.org <https://classroom50.org>`_ frontend changes
+frequently, so keep its CLI extensions updated. For a self-hosted frontend at
+https://uwf-dsa-teaching.github.io, pin both the website and CLI to the same
+course version, currently ``1.28.1``:
+
+.. code-block:: console
+
+   gh extension install foundation50/gh-student --pin v1.28.1 --force
+   gh extension install foundation50/gh-teacher --pin v1.28.1 --force
+
+Use the GitHub account associated with your course account. Do not paste a
+personal access token into a command, script, or repository. If Classroom 50
+asks for a token during its web sign-in flow, follow the separate instructions
+in the :doc:`DSA Project Workflow <dsa-project>`.
+
+Useful repository commands
+==========================
+After accepting the assignment in Classroom 50, copy the repository name or
+URL from GitHub. An experienced user can clone it with ``gh``:
+
+.. code-block:: console
+
+   gh repo clone ORGANIZATION/REPOSITORY
+   cd REPOSITORY
+
+Replace ``ORGANIZATION/REPOSITORY`` with the repository shown in GitHub. The
+standard ``git clone REPOSITORY-URL`` command is equally valid.
+
+From inside the local repository, these commands can be useful:
+
+.. code-block:: console
+
+   gh repo view --web
+   gh run list
+   gh run view
+   gh run watch
+
+``gh repo view --web`` opens the repository page in a browser. The ``gh run``
+commands show GitHub Actions checks and can watch a currently running check.
+You can still use the repository's **Actions** tab in the web interface, which
+is the recommended option if these commands are unfamiliar.
+
+Submission reminder
+===================
+``gh`` is not a separate submission system. Make and test changes locally,
+then use the normal Git workflow to submit:
+
+.. code-block:: console
+
+   git add .
+   git commit -m "Describe the completed assignment work"
+   git push
+
+Before the deadline, confirm on GitHub that the expected commit arrived and
+that the automated checks completed. When in doubt, return to the Classroom 50
+web interface and the assignment repository page, or contact the instructor
+with the repository URL and error output.

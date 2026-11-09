@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 4: Priority Queue and Heap Sort · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/course/cop5417/project/">Programming Project Instruction</a></li><li><a href="/teaching/course/cop5417/java-env/">Development Environment for Java</a></li><li><a href="/teaching/course/cop5417/java-modular/">Code Organization for Modular Java Programs</a></li></ul><ul><li><a href="/teaching/course/cop5417/ch01/">Chapter 1: Get Ready With Java</a></li><li><a href="/teaching/course/cop5417/ch02/">Chapter 2: Stack, Queue and linked-list; Algorithm Analysis</a></li><li><a href="/teaching/course/cop5417/ch03/">Chapter 3: Sorting (Elemental, Merge, Quick)</a></li><li><a href="/teaching/course/cop5417/ch04/" aria-current="page">Chapter 4: Priority Queue and Heap Sort</a></li><li><a href="/teaching/course/cop5417/ch05/">Chapter 5: Symbol Table, Binary Search tree</a></li><li><a href="/teaching/course/cop5417/ch06/">Chapter 6: Self-balancing BST; Hash table</a></li><li><a href="/teaching/course/cop5417/ch07/">Chapter 7: Graph</a></li></ul><ul><li><a href="/teaching/course/cop5417/final-review/">Final Review</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/course/cop5417/">COP 5417 Data Structures and Algorithms Essentials</a> / Chapter 4: Priority Queue and Heap Sort</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Chapter 4: Priority Queue and Heap Sort</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#priority-queue">Priority Queue</a></li>
+    <li><a href="#heap">Heap</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="chapter-4-priority-queue-and-heap-sort"></span>
+<h2 id="priority-queue">Priority Queue</h2>
+<ul>
+<li>Not a queue, but a set of elements each with a priority</li>
+<li>Add in any order and remove in order of priority
+<ul>
+<li>Max first</li>
+<li>Min first</li>
+</ul>
+</li>
+<li>Behaviors
+<ul>
+<li>enqueue</li>
+<li>dequeue</li>
+<li>isEmpty</li>
+</ul>
+</li>
+<li>Implementations
+<ul>
+<li>Unsorted array</li>
+<li>Sorted array</li>
+<li>Unsorted linked-list</li>
+<li>Sorted linked-list</li>
+<li>Heap</li>
+</ul>
+</li>
+<li>Applications
+<ul>
+<li>Sorting</li>
+<li>Find the n largest elements</li>
+<li>Event-driven simulation</li>
+<li>Huffman coding</li>
+<li>Dijkstra’s algorithm</li>
+<li>A* search</li>
+</ul>
+</li>
+</ul>
+<h2 id="heap">Heap</h2>
+<ul>
+<li>
+<p>Behaviors</p>
+<ul>
+<li>add (put, insert)</li>
+<li>remove (get, delete)</li>
+<li>percolate up (swim, bubble)</li>
+<li>percolate down (sink)</li>
+<li>heapify (build heap)</li>
+</ul>
+</li>
+<li>
+<p>Complexity</p>
+<p>Mostly determined by the depth of the tree which is $\Theta(\log n)$</p>
+<ul>
+<li>enqueue: $\Theta(\log n)$, add to the end and percolate up</li>
+<li>dequeue: $\Theta(\log n)$, replace the root with the last element and percolate down</li>
+<li>percolate up: $\Theta(\log n)$</li>
+<li>percolate down: $\Theta(\log n)$</li>
+<li>heapify:
+<ul>
+<li>$\Theta(n)$ - repeated percolate down on all internal nodes</li>
+<li>$\Theta(n \log n)$ - repeated add</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Heap sort</p>
+<ul>
+<li>Build a heap from the array</li>
+<li>Repeatedly swap the root with the last element of the unsorted section and percolate down</li>
+<li>$\Theta(n \log n)$</li>
+</ul>
+</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

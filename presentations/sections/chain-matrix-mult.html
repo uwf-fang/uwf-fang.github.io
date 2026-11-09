@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Chain Matrix Multiplication Problem</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Chain Matrix Multiplication Problem</h1>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<ul class="simple">
+<li><p>Given a sequence of matrices, find the most efficient way to multiply these
+matrices together.</p></li>
+<li><p>The costs are different depending on how you associate the matrices in the
+multiplication.</p></li>
+<li><p>Problem type: Optimization</p></li>
+<li><p>Need exact solution</p></li>
+<li><p>Satisfies</p>
+<ul>
+<li><p>Optimal substructure</p></li>
+<li><p>Overlapping subproblems</p></li>
+</ul>
+</li>
+<li><p>Solutions</p>
+<ul>
+<li><p>Brute force</p></li>
+<li><p>Dynamic programming</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Example</h2>
+<ul class="simple">
+<li><p>Consider the multiplication of four matrices A, B, C, and D with dimensions
+<span class="math notranslate nohighlight">\(10 \times 30\)</span>, <span class="math notranslate nohighlight">\(30 \times 5\)</span>, <span class="math notranslate nohighlight">\(5 \times 60\)</span>, and <span class="math notranslate nohighlight">\(60
+\times 10\)</span>, respectively. We can fully parenthesize the product in five
+distinct ways:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(((AB)C)D\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\((A(BC))D\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\((AB)(CD)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(A((BC)D)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(A(B(CD))\)</span></p></li>
+</ol>
+</li>
+<li><p>The cost of 3 is the best:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\((10 \times 30 \times 5) + (10 \times 5 \times 60) + (10 \times 60
+\times 10) = 1500 + 3000 + 6000 = 10500\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\((30 \times 5 \times 60) + (10 \times 30 \times 60) + (10 \times 60
+\times 10) = 9000 + 18000 + 6000 = 33000\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\((10 \times 30 \times 5) + (5 \times 60 \times 10) + (10 \times 5
+\times 10) = 1500 + 3000 + 500 = 5000\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\((30 \times 5 \times 60) + (30 \times 60 \times 10) + (10 \times 30
+\times 10) = 9000 + 18000 + 3000 = 30000\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\((5 \times 60 \times 10) + (30 \times 5 \times 10) + (10 \times 30
+\times 10) = 3000 + 1500 + 3000 = 7500\)</span></p></li>
+</ol>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Brute Force Solution</h2>
+<ul class="simple">
+<li><p>The combinatorics: The way to parenthesize a product of <span class="math notranslate nohighlight">\(n\)</span> matrices is
+<span class="math notranslate nohighlight">\(\Theta(\frac{4^n}{n^{3/2}\sqrt{\pi}})\)</span>. A.k.a. the Catalan number.</p></li>
+<li><p>The complexity is close to exponent complexity.</p></li>
+<li><p>The algorithm is not practical.</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Dynamic Programming Solution</h2>
+<ul class="simple">
+<li><p>Bottom-up approach</p>
+<ul>
+<li><p>Let the length of chain <span class="math notranslate nohighlight">\(L\)</span> range from 2 to <span class="math notranslate nohighlight">\(n\)</span>.</p></li>
+<li><p>Enumerate all subchains of length <span class="math notranslate nohighlight">\(L\)</span> in the sequence.</p></li>
+<li><p>Enumerate all possible ways of parenthesizing each subchain by splitting
+the subchain into two subchains.</p></li>
+<li><p>Time complexity: <span class="math notranslate nohighlight">\(\Theta(n^3)\)</span></p></li>
+</ul>
+</li>
+<li><p>Memorization using two tables</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(m[i, j]\)</span>: The minimum number of scalar multiplications needed to
+compute the matrix <span class="math notranslate nohighlight">\(A_i \cdots A_j\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(s[i, j]\)</span>: The index <span class="math notranslate nohighlight">\(k\)</span> at which we split the product
+<span class="math notranslate nohighlight">\(A_i \cdots A_j\)</span> in an optimal parenthesization <span class="math notranslate nohighlight">\(A_i \cdots
+A_k A_{k+1} \cdots A_j\)</span>.</p></li>
+<li><p>Both <span class="math notranslate nohighlight">\(\Theta(n^2)\)</span> space.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Dynamic Programming Algorithm (cont.)</h2>
+<ul class="simple">
+<li><p>C++ example that only computes the cost</p></li>
+</ul>
+<pre data-id="dynamic-programming-algorithm-cont"><code data-trim data-noescape class="cpp">int matrixChainOrder(int p[], int n) {
+  int m[n][n];
+
+  for (int i = 1; i &lt; n; i++)
+    m[i][i] = 0;
+
+  // L is the chain length
+  for (int L = 2; L &lt; n; L++) {
+    for (int i = 1; i &lt; n - L + 1; i++) {
+      int j = i + L - 1;
+      m[i][j] = INT_MAX;
+      // Try all possible split points
+      for (int k = i; k &lt;= j - 1; k++) {
+        int q = m[i][k] + m[k + 1][j] + p[i - 1] * p[k] * p[j];
+        if (q &lt; m[i][j])
+          m[i][j] = q;
+      }
+    }
+  }
+  // Return the minimum number of scalar multiplications needed
+  // to multiply the original chain
+  return m[1][n - 1];
+}</code></pre>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

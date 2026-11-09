@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Linear ADTs · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/programming/">Algorithms and Data Structures</a> / Linear ADTs</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Linear ADTs</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#common-linear-adts">Common Linear ADTs</a>
+      <ul>
+        <li><a href="#list">List</a></li>
+        <li><a href="#stack">Stack</a></li>
+        <li><a href="#queue">Queue</a></li>
+        <li><a href="#deque">Deque</a></li>
+      </ul>
+    </li>
+    <li><a href="#data-structures-to-implement-linear-adts">Data Structures to Implement Linear ADTs</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="linear-adts"></span>
+<p>Linear ADTs model an ordered (not sorted) homogenous list of data. There are several common types of linear ADTs that differ in Behaviors.</p>
+<h2 id="common-linear-adts">Common Linear ADTs</h2>
+<h3 id="list">List</h3>
+<ul>
+<li>Characteristics
+<ul>
+<li>Sequential - the elements are ordered in a sequence</li>
+<li>Finite - known number of elements</li>
+<li>Indexable - each element has a unique positional index to allow random access</li>
+<li>Dynamic - the size of the list can change</li>
+</ul>
+</li>
+<li>Behaviors
+<ul>
+<li>add/remove/access by index</li>
+<li>search (find index or pointer by value)</li>
+<li>find size</li>
+<li>check empty</li>
+</ul>
+</li>
+<li>Implementation
+<ul>
+<li>C array (fast access/read by index)</li>
+<li>linked-list (fast add/remove in the middle)</li>
+</ul>
+</li>
+</ul>
+<h3 id="stack">Stack</h3>
+<ul>
+<li>Characteristics
+<ul>
+<li>Finite</li>
+<li>Last-in-first-out (LIFO)</li>
+<li>Dynamic</li>
+</ul>
+</li>
+<li>Behaviors
+<ul>
+<li>push</li>
+<li>pop</li>
+<li>peek/top</li>
+<li>check empty</li>
+</ul>
+</li>
+<li>Implementation
+<ul>
+<li>C array (add/remove at the tail, limited max length)</li>
+<li>linked-list (add/remove at either end, unlimited max length)</li>
+</ul>
+</li>
+<li>Application
+<ul>
+<li>Backtracking algorithm</li>
+<li>Depth-first traversal</li>
+</ul>
+</li>
+</ul>
+<h3 id="queue">Queue</h3>
+<ul>
+<li>Characteristics
+<ul>
+<li>Finite</li>
+<li>First-in-first-out (FIFO)</li>
+<li>Dynamic</li>
+</ul>
+</li>
+<li>Behaviors
+<ul>
+<li>enqueue</li>
+<li>dequeue</li>
+<li>check empty</li>
+</ul>
+</li>
+<li>Implementation
+<ul>
+<li>circular C array (limited max length)</li>
+<li>linked-list (unlimited max length)</li>
+</ul>
+</li>
+<li>Application
+<ul>
+<li>Breadth-first traversal</li>
+</ul>
+</li>
+</ul>
+<h3 id="deque">Deque</h3>
+<ul>
+<li>Characteristics
+<ul>
+<li>Finite</li>
+<li>First-in-first-out (FIFO) and Last-in-first-out (LIFO)</li>
+<li>Dynamic</li>
+</ul>
+</li>
+<li>Behaviors
+<ul>
+<li>enqueue_front, enqueue_back</li>
+<li>dequeue_front, dequeue_back</li>
+<li>check empty</li>
+</ul>
+</li>
+<li>Implementation
+<ul>
+<li>circular C array (limited max length)</li>
+<li>linked-list (unlimited max length)</li>
+<li>vector of vectors (std::deque in C++ STL)</li>
+</ul>
+</li>
+</ul>
+<h2 id="data-structures-to-implement-linear-adts">Data Structures to Implement Linear ADTs</h2>
+<p>There are many data structures suitable in the implementation of the above ADTs. They should be selected according to the requirements.</p>
+<ul>
+<li>C style Array
+<ul>
+<li>Fast indexing</li>
+<li>Slow insertion, or pre-pending</li>
+<li>Fast appending</li>
+<li>Slow to change capacity (with re-allocation and data movement)</li>
+<li>Circular variation (suitable for queue and deque)</li>
+</ul>
+</li>
+<li>Linked-list
+<ul>
+<li>Fast insertion, appending, pre-pending</li>
+<li>Slow indexing</li>
+<li>Complex logics</li>
+<li>More space overhead</li>
+</ul>
+</li>
+<li>Related STL containers and their implementations
+<ul>
+<li>std::array
+<ul>
+<li>fixed size</li>
+<li>static C array</li>
+</ul>
+</li>
+<li>std::vector
+<ul>
+<li>resizable (slow)</li>
+<li>dynamic C array</li>
+</ul>
+</li>
+<li>std::list
+<ul>
+<li>doubly-linked-list</li>
+</ul>
+</li>
+<li>std::forward_list
+<ul>
+<li>singly-linked-list</li>
+</ul>
+</li>
+<li>std::deque
+<ul>
+<li>vector of vectors</li>
+</ul>
+</li>
+<li>std::stack
+<ul>
+<li>wrapper of other STL containers</li>
+</ul>
+</li>
+<li>std::queue
+<ul>
+<li>wrapper of other STL containers</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

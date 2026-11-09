@@ -1,0 +1,228 @@
+*************************
+Memory Management for C++
+*************************
+
+.. container:: subtitle
+
+  |author|
+
+Outline
+=======
++ Overview
++ Memory Regions
++ Stack
++ Heap
++ Tools
+
+Overview
+--------
++ Definition: Memory management in C++ refers to the process of allocating
+  and deallocating memory for objects and data structures during the
+  execution of a C++ program.
+
++ Motivation
+
+  + Optimizing memory usage
+  + Avoiding memory leaks
+  + Avoiding dangling pointers
+  + Avoiding stack overflow
+
+Memory Regions
+==============
+.. container:: flex-container
+
+  .. container:: half
+
+    **Four regions**
+
+    + Code: compiled program code.
+    + Static: global and static variables
+    + Stack: local variables and function parameters
+    + Heap: dynamically allocated memory
+
+    **Memory layout**
+
+    + Code and static regions are fixed size and stored in the lower memory
+      addresses.
+    + Stack and heap regions are variable size and stored in the higher memory
+      addresses.
+    + Stack and heap regions grow towards each other to share free space.
+
+  .. container:: half
+
+    .. image:: /_static/mem-regions.png
+      :alt: Memory Regions
+
+    .. container:: footnote
+
+       Credit: https://study.com/academy/lesson/program-memory-in-c-programming.html
+
+Stack Memory Management
+=======================
++ Stack is a LIFO (Last In First Out) data structure/ADT.
++ The run-time maintains a stack data structure to store local variables and
+  function parameters for function calls.
++ Automatically managed. A.k.a. automatic memory.
++ Stack overflow: when the stack is full and cannot grow further.
+
+  * Caused by infinite recursion or allocating too much memory on the stack.
+  * Further discussed in the recursion lecture.
+
+Heap Memory Management
+======================
++ Heap is a dynamic data structure/ADT.
++ Managed by the programmer manually.
+
+  * Allocate: ``new`` operator
+  * Deallocate: ``delete`` operator
+
++ A.k.a. dynamic memory.
++ Variables allocated on the heap are called **dynamic data**.
++ A pointer variable is the only way to access dynamic data. **The pointer is
+  a simple variable that stores the memory address of the dynamic data.**
+
+More on Dynamic Data
+--------------------
++ Always remember that the pointer is a separate variable from the dynamic
+  data.
++ The ``delete`` operator can take null pointers as arguments. It does nothing
+  but will not cause any problems.
+
+  * It is a waste of time to add if like ``if (ptr != nullptr) delete ptr;``
+
++ Dynamic variables
+
+  * ``MyClass *p = new MyClass();``
+  * ``delete p;``
+
++ Dynamic arrays
+
+  * Include ``[]`` around the operators.
+  * ``int *arr = new int[10];``
+  * ``delete[] arr;``
+
+Complicated Dynamic Data (FYI)
+------------------------------
+.. container:: flex-container
+
+  .. container:: half
+
+    * 2D Dynamic array
+
+      .. code-block:: cpp
+
+        int **arr = new int*[10];
+        for (int i = 0; i < 10; ++i)
+            arr[i] = new int[10];
+        // Use the array
+        for (int i = 0; i < 10; ++i)
+            delete[] arr[i];
+        delete[] arr;
+
+    * Local array of dynamic arrays as a 2D array
+
+      .. code-block:: cpp
+
+        int *arr[10];
+        for (int i = 0; i < 10; ++i)
+            arr[i] = new int[10];
+        // Use the array
+        for (int i = 0; i < 10; ++i)
+            delete[] arr[i];
+
+  .. container:: half
+
+    * Local array of object pointers
+
+      .. code-block:: cpp
+
+        MyClass *myArr[10];
+        for (int i = 0; i < 10; ++i)
+          myArr[i] = nullptr;
+
+        int index = 0;
+        while (true) {
+          int value;
+          cout << "Enter a value (negative value to exit): ";
+          cin >> value;
+          ++index;
+          if (value < 0 || index >= 10)
+            break;
+          myArr[index] = new MyClass(value);
+        }
+
+        for (int i = 0; i < 10; ++i)
+          delete myArr[i];
+
+    * Dynamic array of object pointers
+
+      .. code-block:: cpp
+
+        MyClass **myArr = new MyClass*[10];
+        for (int i = 0; i < 10; ++i)
+          myArr[i] = nullptr;
+
+        int index= 0;
+        while (true) {
+          int value;
+          cout << "Enter a value (negative value to exit): ";
+          cin >> value;
+          if (value < 0 || index >= 10)
+            break;
+          myArr[index] = new MyClass(value);
+        }
+
+        for (int i = 0; i < 10; ++i)
+          delete myArr[i];
+        delete[] myArr;
+
+Pitfalls
+========
+.. container:: flex-container
+
+  .. container:: half
+
+    + Memory leak: Forgetting to deallocate memory
+
+    + Dangling pointer
+
+      * Deallocating memory but still using the pointer
+
+    + Double free
+
+      * Deallocating memory twice
+
+  .. container:: half
+
+    + Memory access violation: when the program tries to access memory that it
+      does not own. A.k.a. **segmentation fault**.
+
+      * Invalid pointer
+
+        - Null pointer
+        - Uninitialized pointer
+        - Assignment of a wrong type (e.g. int) to a pointer
+        - Dangling pointer
+
+      * Out-of-bound array access
+
+        - Accessing an array element with an out-of-bound index
+        - Accessing an array element with a negative index
+
+
+
+Memory Management Tools
+=======================
++ ``valgrind`` is a memory management tool for Linux.
++ ``valgrind`` can detect most memory management problems.
++ Unfortunately not natively available on Mac OS.
++ Examples:
+
+  * ``valgrind --tool=memcheck --leak-check=yes ./main``
+  * ``valgrind --tool=memcheck --leak-check=yes --show-leak-kinds=all ./main``
+  * ``valgrind --tool=memcheck --leak-check=yes --show-leak-kinds=all
+    --track-origins=yes ./main``
+
++ Read the `valgrind memory check <valgrind_>`_ manual for more information.
+
+.. _valgrind: https://valgrind.org/docs/manual/mc-manual.html

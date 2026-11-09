@@ -1,0 +1,198 @@
+Lexical and Syntax Analysis
+===========================
+- Lexical and syntax analysis are key parts of language implementation
+- Based on formal syntax descriptions (e.g. BNF/EBNF)
+- Two main phases:
+
+  - Lexical analysis
+
+    * Based on a language that describes lexemes
+    * small-scale language constructs: lexemes and token codes
+
+  - Syntax analysis
+
+    * Based on a language that describes syntax
+    * large-scale language constructs: grammar and parse trees
+
+- Separate lexical analysis out for simplicity, efficiency and portability
+
+Lexical Analysis
+================
+- Acts as pattern matcher to identify lexemes (find strings in a language of a
+  certain grammar)
+- Front-end to syntax analyzer
+- Lexical analyzer: a.k.a. Lexer, Scanner, Tokenizer
+- Tasks
+
+  - Breaks input char stream into lexemes
+  - Assigns token codes to lexemes
+
+- Three implementation approaches:
+
+  1. Describe patterns using formal descriptive language and use tools to
+     generate a lexical analyzer. E.g. `Lex`_, Flex
+  2. **Write code to implement state diagrams**
+  3. Hand-construct table-driven implementation
+
+.. _Lex: https://en.wikipedia.org/wiki/Lex_(software)
+
+Lexical Analysis Example
+------------------------
+Input: **result = old_sum - value / 100;**
+
+.. csv-table::
+   :header: "Lexeme", "Token Code"
+
+   "result", "IDENT"
+   "=", "ASSIGN_OP"
+   "old_sum", "IDENT"
+   "\-", "SUB_OP"
+   "value", "IDENT"
+   "/", "DIV_OP"
+   "100", "Int_LIT"
+   ";", "SEMICOLON"
+
+State Diagrams for Lexical Analysis
+-----------------------------------
+- State Diagram: directed graphs representing finite automata
+
+  - Some naming rule cannot be described by a finite automata
+
+- Nodes: states
+- Arcs: transitions on input characters
+- Use character classes (e.g., LETTER, DIGIT) to simplify
+
+.. image:: /_static/state-diagram.png
+   :width: 50%
+   :align: center
+
+.. container:: footnote
+
+   Credit: Concepts of Programming Languages, R. Sebesta
+
+Convert State Diagrams to Code
+------------------------------
++ Approach 2: use control flow statements
++ A typical method
+
+  - a lex function to get next lexeme and assign token code
+  - an addChar function to add the current char to end of the current lexeme
+  - a getChar function to get next character and set token code
+  - a lookup function to check if the current lexeme is an operator
+  - a switch statement or if-else chain to manage transitions
+
++ TextBook example of a Lexer
+
+  - `Lexer`_ written in C
+  - abuse of global variables
+  - will be easier to work with in object-oriented languages
+  - outputs token codes rather than token name
+  - no whitespace handling
+  - no error handling
+  - no line number tracking
+  - think about how to improve!
+
+.. _lexer: https://github.com/uwf-fang/cop4020-examples/blob/main/ch04/lexer/lexer.c
+
+Quick Check for Lexical Analysis
+--------------------------------
++ Where to handle errors, like bad identifier names?
++ Give one example of bad input?
++ Where to handle reserved like if, for, etc?
++ How about if I want to allow underscore in identifier names?
+
+Quick Check Answers for Lexical Analysis
+----------------------------------------
++ Where to handle errors? Nowhere. Errors are passed to the syntax analysis.
++ Give one example of bad input? 23abc as a bad identifier.
++ Where to handle reserved like if, for, etc? End of identifier case in the lex
+  function.
++ How about if I want to allow underscore in identifier names? In the
+  identifier case in the lex function.
+
+Syntax Analysis (Parsing)
+=========================
++ Two tasks:
+
+  1. Check input program for syntax correctness
+  2. Build parse tree for valid programs
+
++ Two main approaches:
+
+  1. Top-down parsing (LL: left-to-right scan, left-most derivation)
+  2. Bottom-up parsing (LR: left-to-right scan, right-most derivation)
+
++ **These methods only work with context-free grammars!**
+
+  * In practice, require further processing to handle context-sensitive
+    constructs
+  * Declare before use, type checking, function overloading, scoping, etc. are
+    sign of a context-sensitive grammar
+
+Recursive-descent Parsing
+-------------------------
+- Intuitive conversion from EBNF or BNF
+- Each terminal means the lexer/scanner returns a lexeme
+- Each nonterminal has a corresponding function/method
+- | means branching
+- {}* means repetition (EBNF only)
+- Unexpected token or end of input: error
+- The process:
+
+  1. Get the next lexeme
+  2. Call the top-most non-terminal function to start parsing
+  3. It will recursively call other functions until it reaches a terminal and
+     find a match
+
+- Example `Link <rdp_>`_
+
+.. _rdp: https://github.com/uwf-fang/cop4020-examples/blob/main/ch04/top-down-parser/parser.c
+
+Limitation of recursive-descent parsing
+---------------------------------------
++ Problems with LL grammars:
+
+  - Left recursion :code:`A -> Aa | b` causes infinite recursion
+  - Ambiguity of which rule to expand when :code:`A -> aB | aC` when the next
+    terminal symbol is a
+
++ Solutions:
+
+  - Choose other parsing methods
+  - Reconstruct rules
+
+Bottom-Up Parsing
+-----------------
+- Builds parse tree from leaves upward
+- Most common: LR parsing
+- Uses shift-reduce algorithm:
+
+  - Shift: Push next input token onto stack
+  - Reduce: Replace handle with nonterminal
+
+- More powerful than LL but more complex
+- Usually table-driven implementation
+
+LR Parsing
+----------
++ Key components:
+
+  - Parse stack with grammar and state symbols
+  - ACTION table: Controls shift/reduce decisions
+  - GOTO table: Determines next state after reduction
+  - Input buffer with tokens
+
++ Advantages:
+
+  - Works for larger class of grammars
+  - Detects errors quickly
+  - Suitable for all programming languages
+
+Summary
+=======
+- Lexical analysis identifies basic language elements
+- Syntax analysis verifies structure and builds parse trees
+- Top-down parsing is simpler but more restricted
+- Bottom-up parsing is more powerful but complex
+- Both approaches used in real compilers
+- Modern parsers use generated parse tables

@@ -1,0 +1,203 @@
+**********************************
+Introduction to Big Data Analytics
+**********************************
+
+.. revealjs-section::
+  :data-background-color: white
+  :data-background-image: ../_static/logo.png
+  :data-background-size: 50%
+  :data-background-position: top center
+  :data-background-repeat: no-repeat
+
+.. container:: subtitle
+
+  **Chapter 5: Writing a Spark Application**
+
+  |author|
+
+Overview
+========
++ Introduction to Spark Application
++ Create Spark Application
++ Run Spark Application with spark-submit
++ Compared to Spark Shell/Notebook
+
+Introduction to Spark Application
+=================================
++ Disclaimer: This chapter extended the textbook content with more detailed
+  information and updated examples. Pay attention to the differences.
++ Motivation
+
+  - Deploy end-to-end pipeline as an application
+  - Packaged application for complicated dependencies
+  - Full control over the execution environment for each run
+  - Full automation
+
++ Create a Spark Application
+
+  * As a standalone application
+
+    - jar file for packages developed with JVM languages
+    - python file or python package (require PySpark)
+    - R file (require SparkR)
+
+  * As a notebook
+
++ Run Spark Application
+
+  * spark-submit for standalone applications
+  * Run notebook in notebook interfaces
+  * Some environments support Web UI for job creation
+
+Create Spark Application written in Scala
+=========================================
++ Steps
+
+  1. Create a project
+  2. Write the code
+  3. Build the project
+
++ Simple building tool: sbt
+
+  - Install separately (not part of Spark or Scala)
+  - Create a .sbt file in the project directory to configure the project
+  - Build the project: :code:`sbt package`
+  - The jar file is created in the :code:`target` directory
+
++ **WARNING**
+
+  - You can build the project in any place and copy the jar file to the Spark
+    cluster to run it
+  - **The version of Scala and Spark must be the same as the cluster**
+  - The .sbt file specifies the version of Scala and Spark
+  - If you hate sbt, you can use Maven or Gradle.
+
+Word Count Example
+------------------
++ Project structure
+
+  * `word_count` directory as the root (name doesn't matter in the building
+    process)
+
+    - `WordCount.scala` file, name must be the same as the object name
+    - `wordcount.sbt` file, base name doesn't matter
+    - `simple.txt` file, input file for testing
+
+  * No package is defined to simplify the example
+
+
+WordCount.scala
+---------------
+.. container:: flex-container
+
+  .. container:: half
+
+    .. code-block:: scala
+
+      object WordCount {
+        def main(args: Array[String]): Unit = {
+          val inputPath = args(0)
+          val outputPath = args(1)
+          val sc = new SparkContext()
+          val lines = sc.textFile(inputPath)
+          val wordCounts = lines.flatMap {line => line.split(" ")}
+                                .filter(word => word.length > 0)
+                                .map(word => word.toLowerCase())
+                                .map(word => (word, 1))
+                                .reduceByKey(_ + _)
+          wordCounts.saveAsTextFile(outputPath)
+      }
+      }
+
+  .. container:: half
+
+    + flatMap: split each line into words and flatten the result, inherited the
+      curly braces from the textbook
+    + filter: remove empty words
+    + map: convert words to lowercase
+    + map: convert words to (word, 1) tuple
+    + reduceByKey: count the number of each word
+    + saveAsTextFile: save the result to the output path. Will create multiple
+      files in the output directory as each partition is saved as a separate
+      file by default for Spark distributed data types like RDD, DataFrame, and
+      Dataset.
+
+wordcount.sbt
+-------------
+.. container:: flex-container
+
+  .. container:: half
+
+    .. code-block:: scala
+
+      name := "word_count"
+      version := "1.0.0"
+      scalaVersion := "2.12.18"
+      libraryDependencies += "org.apache.spark" %% "spark-core" % "3.3.2" % "provided"
+
+  .. container:: half
+
+    + `name`: project name
+    + `version`: project version
+    + `scalaVersion`: Scala version
+    + `libraryDependencies`: Spark dependency, `provided` means the dependency
+      is provided by the environment, not included in the jar file
+    + Both versions of Scala and Spark must be the same as the cluster (at least
+      the major version)
+    + Execute :code:`sbt package` to build the project
+    + The jar file is created in the :code:`target` directory under
+      :code:`scala-2.xx` sub-directory
+
+Run Spark Application as Jar file with spark-submit
+---------------------------------------------------
++ Note: Spark environments are mostly not shipped with sbt. You need to build
+  the project in a separate environment and copy the jar file to the Spark
+  cluster to run it.
++ Run the application
+
+  - `spark-submit` command
+  - `--class` option to specify the main class
+  - `--master` option to specify the cluster manager
+  - `--help` option to print the help message
+  - Check other options in the official documentation
+
++ Run the jar file in the Spark:latest docker image
+
+  * direct run :code:`docker run -it -v $(pwd):/opt/spark/work-dir --name spark
+    --rm spark:latest /opt/spark/bin/spark-submit --class "WordCount" --master
+    local[*] target/scala-2.12/word-count_2.12-1.0.0.jar ./the-verdict.txt
+    ./output`
+  * Or run :code:`docker run -it -v $(pwd):/opt/spark/work-dir --name spark
+    --rm spark:latest /bin/bash` to enter the container and run the command
+    :code:`/opt/spark/bin/spark-submit --class "WordCount" --master local[*]
+    target/scala-2.12/word-count_2.12-1.0.0.jar ./the-verdict.txt ./output`
+    then.
+
+Run Spark Application On Databricks
+-----------------------------------
++ Run spark-submit in DCE web terminal
+
+  * Not necessary for simple applications
+  * Untested but should work
+  * Make sure that the versions of Scala and Spark both match the cluster
+  * Upload the jar file to the DCE web terminal in the `dbfs:/FileStore/`
+    directory
+  * Use a cell to copy the jar file from :code:`dbfs:/FileStore/` to the local
+    file system with :code:`dbutils.fs.cp` command
+  * Run the application with the :code:`/databricks/spark/bin/spark-submit`
+    command
+
+Compared to Spark Shell/Notebook
+================================
++ Advantages
+
+  - Full control over the execution environment
+  - Full automation
+  - Packaged application for complicated dependencies
+  - Deploy end-to-end pipeline as an application
+
++ Disadvantages
+
+  * More complicated than the shell or notebook
+  * Overkill for simple tasks
+  * Require a separate environment to build the project

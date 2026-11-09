@@ -1,0 +1,242 @@
+*****************
+Greedy Algorithms
+*****************
+
+.. container:: subtitle
+
+  |author|
+
+Outline
+=======
++ Overview
++ Related Algorithmic Paradigms
++ Applications
++ Bin Packing Problem (BPP)
++ Huffman Coding
+
+Overview
+========
++ An algorithm that makes the locally optimal choice at each stage with the
+  hopes of finding the global optimum
++ Characteristics
+
+  * Heuristic
+  * Local optimum
+  * Intuitive
+  * No long term planning
+  * Exact only when the greedy-choice property is justified; otherwise it may
+    be approximate and may not find the best solution
+  * Often efficient, but runtime depends on the problem and implementation
+
+Related Algorithmic Paradigms
+=============================
+Greedy algorithms are related to backtracking because they both make decisions
+at each step.
+
+.. list-table::
+  :header-rows: 1
+
+  * - Greedy
+    - Backtracking
+  * - Exact when justified; otherwise may be approximate
+    - Exact for the specified feasibility search when pruning is sound
+  * - Make a decision
+    - Make a decision
+  * - Never look back
+    - Look back
+  * - No long term planning
+    - Long term planning
+  * - Often efficient; no universal runtime ranking
+    - May explore many candidates; pruning can reduce the search
+  * - May fail to find the best solution
+    - Can find one or all feasible solutions; it finds the best only when
+      configured to retain and compare candidates
+
+Applications
+============
++ Suitable for optimization problems that are too complex to solve with exact
+  algorithms.
++ Graph problems
+
+  * Shortest path: Dijkstra's algorithm
+  * Minimum spanning tree: Prim's algorithm, Kruskal's algorithm
+  * Graph coloring
+
++ Bin packing problem
++ Huffman coding
++ Activity selection problem
++ Fractional knapsack problem
+
+Bin Packing Problem (BPP)
+=========================
++ Given a set of items with different weights and bins with fixed capacity,
+  find the minimum number of bins required to pack all items.
++ Formal definition
+
+  * Items have size between 0 and 1
+  * Bins have capacity 1
+  * Each item must be packed into a bin
+  * Minimize the number of bins used to pack all items
+
++ Classic combinatorial optimization problem
++ NP-hard problem
++ Applications in logistics, scheduling, resource allocation, etc.
++ Two variations of the problem
+
+  * Online: Items arrive one at a time and must be immediately packed
+  * Offline: All items are known in advance
+
+Algorithms to Solve Bin Packing Problem
+---------------------------------------
++ Exact algorithms
+
+  * Brute force
+  * Dynamic programming
+  * Branch and bound
+  * Integer linear programming
+
++ Approximation algorithms
+
+  * Greedy algorithms
+
++ Why is not backtracking a good idea for solving BPP?
+
+Baseline Solution
+-----------------
++ Brute force solution serves as the baseline solution
+
+  * Create all possible permutations of items
+  * Pack every permutation into bins in a deterministic order (e.g. online next
+    fit)
+  * Find the permutation that uses the fewest bins
+
++ Exercise
+
+  * Which step is the determining factor for the time complexity of the
+    algorithm?
+  * What are the time complexities of each step?
+
+Greedy Solution
+---------------
+Process items one by one, in each step, decide which bin to put the item in.
+Create a new bin if necessary.
+
++ Heuristics for online bin packing
+
+  * Next Fit: only check the last bin
+  * First Fit: check all previous bins for first fit
+  * Best Fit: check all previous bins for best (tightest) fit
+
+* A simple greedy solution for offline bin packing:
+
+  * Sort items in decreasing order of size
+  * Pack items into bins using online method (first fit or best fit)
+
+Huffman Coding
+==============
+.. container:: flex-container
+
+  .. container:: half
+
+    + A lossless data compression algorithm
+    + Variable length encoding
+    + Based on the frequency of characters
+    + Motivation
+
+      * ASCII uses 8 bits to encode each character
+      * Some characters are used more frequently than others
+      * Less bits for more frequent characters to save space
+
+    + Applications
+
+      * Building-block for other algorithms
+      * JPEG, MP3, etc.
+
+  .. container:: half
+
+    .. image:: /_static/data-compression.png
+      :alt: Data Compression
+      :width: 400
+
+    .. container:: footnote
+
+       Credit: https://developer.apple.com/documentation/compression
+
+Optimal Prefix Code
+-------------------
++ Huffman coding is an optimal prefix code
++ Prefix code (a.k.a. prefix-free code)
+
+  * no code is a prefix of another code
+  * no ambiguity when decoding
+
++ Optimal
+
+  * Minimizes the expected length of the encoded message
+  * The most frequent characters are encoded with the fewest bits
+
++ Employ a binary tree to represent the Huffman coding scheme
+
+  * Full binary tree
+  * Leaf nodes represent characters - guarantee prefix code
+  * Each internal node means a bit in the codeword
+
+Encoding Tree Examples
+-----------------------
+.. container:: flex-container
+
+  .. container:: half
+
+    + Left: Fixed length encoding
+
+      Total space: 3 * (45 + 13 + 12 + 16 + 9 + 5) = 300 bits
+
+    + Right: Huffman coding
+
+      Total space: 1 * 45 + 3 * (13 + 12 + 16) + 4 * (9 + 5) = 224 bits
+
+    + Contents in nodes:
+
+      * Leaf node: <character>: <frequency>
+      * Internal node: <frequency of subtree>
+
+  .. container:: half
+
+    .. image:: /_static/prefix-coding-trees.png
+      :alt: Prefix Coding Trees
+
+    .. container:: footnote
+
+       Credit: Introduction to Algorithms, 4th Ed., T. Cormen et al.
+
+Algorithm to build a Huffman coding tree
+----------------------------------------
+This is a greedy algorithm that builds the tree bottom-up from the least
+frequent characters to the most frequent characters.
+
+Pseudo-code adopted from `Wikipedia
+<https://en.wikipedia.org/wiki/Huffman_coding>`_
+
++ Create a leaf node for each symbol and add it to the min priority priority
+  queue.
++ While there is more than one node in the min priority queue:
+
+  * Dequeue two nodes with the lowest frequencies from the min priority queue
+  * Create a new internal node with these two nodes as its children and with
+    frequency equal to the sum of the two nodes' frequency
+  * Add the new node to the min priority queue
+
++ The remaining node is the root node and the tree is complete
+
+Steps to build the example tree
+-------------------------------
+.. image:: /_static/huffman-steps.png
+  :alt: Steps to Build the Example Tree
+
+.. container:: footnote
+
+   Credit: Introduction to Algorithms, 4th Ed., T. Cormen et al.
+
+Visualizing Huffman Coding
+--------------------------
+`Encoding process visualization <https://demo.tinyray.com/huffman>`_

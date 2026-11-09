@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Course Content Summary · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/course/idc6145/ch01/">Chapter 1: Introduction To Big Data</a></li><li><a href="/teaching/course/idc6145/ch02/">Chapter 2: Big Data Lifecycle</a></li><li><a href="/teaching/course/idc6145/ch03/">Chapter 3: Data Storage For Big Data</a></li><li><a href="/teaching/course/idc6145/ch04/">Chapter 4: Data Processing For Big Data</a></li><li><a href="/teaching/course/idc6145/ch05/">Chapter 5: PySpark Programming</a></li><li><a href="/teaching/course/idc6145/ch06/">Chapter 6: Data Analysis for Big Data</a></li><li><a href="/teaching/course/idc6145/ch07/">Chapter 7: Other Topics in Big Data</a></li></ul><ul><li><a href="/teaching/course/idc6145/summary/" aria-current="page">Course Content Summary</a></li><li><a href="/teaching/big-data/glossary/">Big Data Glossary</a></li></ul><ul><li><a href="/teaching/course/idc6145/final/">Final Exam</a></li></ul><ul><li><a href="/teaching/course/idc6145/project/">Project</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/course/idc6145/">IDC 6145 Big Data for Data Science</a> / Course Content Summary</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Course Content Summary</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#misunderstanding-on-characteristics">Misunderstanding on Characteristics</a></li>
+    <li><a href="#misunderstanding-on-data-volume">Misunderstanding on Data Volume</a></li>
+    <li><a href="#dataset-types-determines-choice-of-tools">Dataset Types Determines Choice of Tools</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="course-content-summary"></span>
+<h2 id="misunderstanding-on-characteristics">Misunderstanding on Characteristics</h2>
+<ul>
+<li>Do not forget <strong>value</strong>!</li>
+<li>Velocity is about processing
+<ul>
+<li>not the speed of generation, but the speed of processing</li>
+<li>determined by the demand</li>
+</ul>
+</li>
+<li>Veracity only requires attention to low-quality data
+<ul>
+<li>Focus on low-quality data</li>
+<li>Do not waste time on high-quality data</li>
+</ul>
+</li>
+</ul>
+<h2 id="misunderstanding-on-data-volume">Misunderstanding on Data Volume</h2>
+<ul>
+<li>Consider <strong>effective data volume</strong>
+<ul>
+<li>not all data needs to be processed
+<ul>
+<li>irrelevant data can be skipped</li>
+<li>job can be done with only a subset of data</li>
+</ul>
+</li>
+<li>not all data needs to be processed together
+<ul>
+<li>results do not require a global view of the data</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Data volume changes after each stage
+<ul>
+<li>big raw -&gt; big processed -&gt; big model (deep learning)
+<ul>
+<li>every stage needs a big data tool</li>
+</ul>
+</li>
+<li>big raw -&gt; small processed -&gt; small model (traditional ML, statistical models, visualization)
+<ul>
+<li>only the first stage needs a big data tool</li>
+</ul>
+</li>
+<li>Small raw -&gt; small processed -&gt; small model (when the result is needed in a short time)
+<ul>
+<li>no big data tool needed</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Data size pitfalls
+<ul>
+<li>Many companies have huge amount of historical data. Most of their applications only need to access a small portion of the data. They are not big data applications.</li>
+<li>Using a model pre-trained on a huge dataset does not mean you are dealing with big data. You may only be using the model to process a small dataset in your application, which only need a single computer or even a cell phone.</li>
+<li>A car company may have a huge amount of data generated by sensors in the many of their cars. Most of the sensor data is only processed locally on the car itself to make some decisions. It is not big data. However, if you application must aggregate all the sensor data from all the cars to make a global decision, then it is big data.</li>
+</ul>
+</li>
+</ul>
+<h2 id="dataset-types-determines-choice-of-tools">Dataset Types Determines Choice of Tools</h2>
+<ul>
+<li>Structured, semi-structured, unstructured types at large scale
+<ul>
+<li>Structured data -&gt; NewSQL, NoSQL, Data Warehouse</li>
+<li>Semi-structured data -&gt; NoSQL, Data Lakehouse</li>
+<li>Unstructured data -&gt; Data Lake/Object Store</li>
+</ul>
+</li>
+<li>Structured, semi-structured, unstructured types at small scale
+<ul>
+<li>Structured data -&gt; Relational database, spreadsheet</li>
+<li>Semi-structured data -&gt; Managed file system (EmbedDB, LlamaIndex, etc.)</li>
+<li>Unstructured data -&gt; Unmanaged file system</li>
+</ul>
+</li>
+<li>Binary files are usually unstructured
+<ul>
+<li>Multimedia: Image, video, audio</li>
+<li>Deep learning model, Machine learning model</li>
+<li>Exception
+<ul>
+<li>some binary files that has an intrinsic structure</li>
+<li>some binary files are used as a blob field in a structured dataset</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Decide which tool to use
+<ul>
+<li>Match data volume <strong>in each stage!</strong></li>
+<li>Match data types</li>
+<li>Match special demands
+<ul>
+<li>Real-time</li>
+<li>Data quality control</li>
+</ul>
+</li>
+<li><strong>Match budget</strong>
+<ul>
+<li>Nothing is free! Always consider cost.</li>
+<li>No demand means waste of money.</li>
+<li>Never imagine demands.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

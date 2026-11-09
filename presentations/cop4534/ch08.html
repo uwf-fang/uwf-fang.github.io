@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Data Structure and Algorithm Design II</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Data Structure and Algorithm Design II</h1>
+<div class="subtitle docutils container">
+<p><strong>Chapter 8</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Sections</h2>
+<ul class="simple">
+<li><p>Combinatorics</p></li>
+<li><p>Combinatorics in C++</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h1>Combinatorics And Counting</h1>
+<div class="subtitle docutils container">
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<p>Combinatorics is a branch of mathematics that deals with counting, arrangement,
+and combination of objects. It is about finding ‘how many’ possible structures
+of a certain kind exist. Combinatorics provides tools to answer questions like:</p>
+<ul class="simple">
+<li><p>How many ways can a set of objects be arranged?</p></li>
+<li><p>How many combinations or selections can be made from a group?</p></li>
+</ul>
+</section>
+<section >
+<h3>Significance</h3>
+<p>Applications in CS.</p>
+<ul class="simple">
+<li><p>Analyze the complexity of algorithms</p></li>
+<li><p>Design efficient algorithms</p></li>
+<li><p>Develop data structures that can efficiently store and retrieve data</p></li>
+<li><p>Solve problems in cryptography, machine learning, and other areas of computer
+science</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Counting Principles</h2>
+<ul class="simple">
+<li><p>The Sum Rule:</p>
+<ul>
+<li><p>Mutually exclusive events.</p></li>
+<li><p>Example: If you are allowed to choose one from 3 shirts and 4 pants, then
+you have a total of <span class="math notranslate nohighlight">\(3+4=7\)</span> different pieces of clothing to choose
+from.</p></li>
+</ul>
+</li>
+<li><p>The Product Rule:</p>
+<ul>
+<li><p>Independent events happening together.</p></li>
+<li><p>Example: Using the same clothing example, if you want to decide on an
+outfit combination of one shirt and one pants out of the 3 shirts and 4
+pants, then you have <span class="math notranslate nohighlight">\(3×4=12\)</span> possible combinations to choose from.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Counting Principles (cont.)</h3>
+<ul class="simple">
+<li><p>The Division Rule:</p>
+<ul>
+<li><p>Correct constant overcounting.</p></li>
+<li><p>Example: If you count n edges of a polygon by starting vertex and ending
+vertex, then each edge is counted twice. So, the number of edges is n/2.</p></li>
+</ul>
+</li>
+<li><p>Include-exclude principle</p>
+<ul>
+<li><p>Correct the overcounting that occurs when summing up sets with overlapping.</p></li>
+<li><p>Two sets <span class="math notranslate nohighlight">\(|A \cup B| = |A| + |B| - |A \cap B|\)</span></p></li>
+<li><p>Three sets <span class="math notranslate nohighlight">\(|A \cup B \cup C| = |A| + |B| + |C| - |A \cap B| - |B
+\cap C| - |A \cap C| + |A \cap B \cap C|\)</span></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Counting Principles (cont.)</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul>
+<li><p>Pigeonhole principle</p>
+<p>If n items are put into m containers, with <span class="math notranslate nohighlight">\(n&gt;m\)</span>, then at least one
+container must contain more than one item.</p>
+</li>
+<li><p>Recurrence relations</p>
+<p>Count sub-problems and combine the results to get the final answer.</p>
+</li>
+</ul>
+</div>
+<div class="half docutils container">
+<img alt="Pigeon Hole Principle" src="../_images/pigeon-hole.jpg" />
+<div class="footnote docutils container">
+<p>Credit: <a class="reference external" href="https://en.wikipedia.org/wiki/Pigeonholing">https://en.wikipedia.org/wiki/Pigeonholing</a></p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Category of problems</h2>
+<ul class="simple">
+<li><p>Arrangement</p>
+<ul>
+<li><p>Ordering and organizing objects</p></li>
+<li><p>Permutation (order matters)</p>
+<ul>
+<li><p>standard</p>
+<ul>
+<li><p>all objects: <span class="math notranslate nohighlight">\(P^n = n!\)</span></p></li>
+<li><p>r objects: <span class="math notranslate nohighlight">\(P^n_r = \frac{n!}{(n-r)!}\)</span></p></li>
+</ul>
+</li>
+<li><p>circular</p>
+<ul>
+<li><p>all objects: <span class="math notranslate nohighlight">\((n-1)!\)</span></p></li>
+<li><p>r objects: <span class="math notranslate nohighlight">\(C^n_r \times (r-1)!\)</span></p></li>
+</ul>
+</li>
+<li><p>allow repetition</p>
+<ul>
+<li><p>r objects: <span class="math notranslate nohighlight">\(n^r\)</span></p></li>
+</ul>
+</li>
+<li><p>multi-set</p>
+<ul>
+<li><p>all objects with multiple duplicate sets</p></li>
+<li><p><span class="math notranslate nohighlight">\(\frac{n!}{n_1!n_2!...n_k!}\)</span></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Category of problems (cont.)</h3>
+<ul class="simple">
+<li><p>Selection (order does not matter)</p>
+<ul>
+<li><p>Selecting objects from a set</p></li>
+<li><p>Order does not matter</p></li>
+<li><p>Combination</p>
+<ul>
+<li><p>Find permutation first, then divide by r! to correct overcounting</p></li>
+<li><p>standard <span class="math notranslate nohighlight">\(C^n_r = \frac{n!}{r!(n-r)!}\)</span></p></li>
+<li><p>allow repetition <span class="math notranslate nohighlight">\(\frac{(n+r-1)!}{r!(n-1)!}\)</span></p></li>
+</ul>
+</li>
+<li><p>Subset</p>
+<ul>
+<li><p>Number of all subsets <span class="math notranslate nohighlight">\(2^n\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\sum_{k=0}^n C^n_k = 2^n\)</span></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Category of problems (cont.)</h3>
+<ul class="simple">
+<li><p>Distribution (Partition)</p>
+<ul>
+<li><p>Distributing objects into groups</p></li>
+<li><p>Distributing n identical objects into r distinct groups</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(C^{n+r-1}_n\)</span></p></li>
+</ul>
+</li>
+<li><p>Distributing n distinct objects into r distinct groups</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(r^n\)</span></p></li>
+</ul>
+</li>
+<li><p>Integer partition - represent integer n as sum of positive integers (value
+up to k)</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(p(n,k) = p(n,k-1) + p(n-k,k)\)</span></p></li>
+<li><p>recursive algorithm</p></li>
+<li><p>hard to find closed form solution in math</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Geometric counting</p></li>
+</ul>
+</section>
+<section >
+<h3>Correct Overcounting In Selection</h3>
+<ul class="simple">
+<li><p>Example. Select 3 letters from A, B, C, D. Order does not matter.</p></li>
+<li><p>To solve the problem a good strategy is to first find the number of
+permutations and then divide by the number of ways to arrange the 3 letters.</p></li>
+</ul>
+<img alt="Overcounting" src="../_images/overcounting.png" />
+<ul class="simple">
+<li><p>Each row represent all permutations of a unique combination. As each row have
+<span class="math notranslate nohighlight">\(3!\)</span> permutations, using the division rule, we can correct the
+overcounting.</p></li>
+<li><p>The final result is <span class="math notranslate nohighlight">\(C^4_3 = P^4_3/P^3_3 = 4\)</span>.</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Some Strategies</h2>
+<ul class="simple">
+<li><p>Direct counting</p></li>
+<li><p>Break down into cases</p>
+<ul>
+<li><p>sum - exclusive events</p></li>
+<li><p>product - independent events</p></li>
+</ul>
+</li>
+<li><p>Counting by complement</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(Count = Total - \overline{Count}\)</span></p></li>
+</ul>
+</li>
+<li><p>Counting by recursion</p>
+<ul>
+<li><p>May resort to an algorithm</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Solve Combinatorics Problems</h2>
+<ol class="arabic simple">
+<li><p>Identify the type of problem</p>
+<ul class="simple">
+<li><p>Arrangement</p></li>
+<li><p>Selection</p></li>
+<li><p>Distribution/Partition</p></li>
+</ul>
+</li>
+<li><p>Identify the constraints</p>
+<ul class="simple">
+<li><p>Repetition</p></li>
+<li><p>Order</p></li>
+<li><p>Grouping</p></li>
+</ul>
+</li>
+<li><p>Identify the counting principle</p></li>
+</ol>
+</section>
+<section >
+<h3>Ron’s Greasy Spoon</h3>
+<ul class="simple">
+<li><p>Build your own breakfast from the menu:</p>
+<ul>
+<li><p>1 egg dish 4 choices: Scrambled, Fried, Poached, Omelette</p></li>
+<li><p>2 sides 5 choices:  Bacon, Sausage, Hash Browns, Toast, Pancakes</p></li>
+<li><p>1 drink 4 choices: Coffee, Tea, Milk, Orange Juice</p></li>
+</ul>
+</li>
+<li><p>How many different breakfasts can you order?</p>
+<ul>
+<li><p>Product rule: choose 1 egg dish, 2 sides, 1 drink, independent events</p></li>
+<li><p>Choose 1 egg dish: 4 ways</p></li>
+<li><p>Choose 2 sides: <span class="math notranslate nohighlight">\(C^5_2 = 10\)</span> ways</p></li>
+<li><p>Choose 1 drink: 4 ways</p></li>
+<li><p>Total number of breakfasts: <span class="math notranslate nohighlight">\(4 \times 10 \times 4 = 160\)</span></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>More problems 1</h3>
+<ul class="simple">
+<li><p>How many 8 bit strings start with either 110 or 101?</p>
+<ul>
+<li><p>Sum rule: select two 5 bit strings, exclusive to each other</p></li>
+<li><p>For each: size 5 permutation with repetition <span class="math notranslate nohighlight">\(2^5\)</span></p></li>
+<li><p>Total: <span class="math notranslate nohighlight">\(2^5 + 2^5 = 64\)</span></p></li>
+</ul>
+</li>
+<li><p>Six person committee { a, b, c, d, e, f}. Select President, Vice President,
+and Treasurer and either a or b must be President. Each person can have only
+one role.</p>
+<ul>
+<li><p>Product rule: Select 3 roles, independent events</p></li>
+<li><p>Order matter? Yes, President, Vice President, Treasurer are different roles</p></li>
+<li><p>President: 2 choices</p></li>
+<li><p>Vice President: 4 choices (anyone but President)</p></li>
+<li><p>Treasurer: 3 choices (anyone but President and Vice President)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Anagram</h3>
+<ul class="simple">
+<li><p>An anagram of a string is another string that contains the same characters,
+possibly in a different order. For example, “listen” can be rearranged to
+form “silent” or “enlist”, making them anagrams.</p></li>
+<li><p>Question: How many anagrams of the word “mississippi” are there?</p>
+<ul>
+<li><p>Order matters: permutation</p></li>
+<li><p>Repetition: 4 i’s, 4 s’s, 2 p’s</p></li>
+<li><p>Division rule to correct overcounting</p>
+<ul>
+<li><p>E.g. The order of the 4 i’s does not matter, so divide by 4!</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Total number of anagrams: <span class="math notranslate nohighlight">\(\frac{11!}{4!4!2!} = 34650\)</span></p></li>
+</ul>
+</section>
+<section >
+<h3>How many ways to give 5 gifts of the same type to 3 children?</h3>
+<ul class="simple">
+<li><p>This is a partition problem to distribute 5 identical items to 3 distinct
+bins.</p></li>
+<li><p>The well-known method called “star and bar”:</p>
+<ul>
+<li><p>The idea is to put 5 items (*) together with 2 separators (|) in a line
+like: * * * | * *|.</p></li>
+<li><p>Out of the total 7 positions, pick 5 positions to put the stars.</p></li>
+</ul>
+</li>
+<li><p>A less efficient method is to use the sum rule and break down into cases.
+Calculate the number of ways for various partitions of 5 items into 3 bins.
+Like 5-0-0, 4-1-0, 3-2-0, 3-1-1, etc. Then add them up.</p></li>
+</ul>
+</section>
+<section >
+<h3>Poker Problems♠️</h3>
+<ul class="simple">
+<li><p>To find number of possible hands when you draw 5 random cards.</p></li>
+<li><p>Total number of possible hands:</p>
+<ul>
+<li><p>5 cards from 52 cards</p></li>
+<li><p><span class="math notranslate nohighlight">\(C^{52}_5 = 2598960\)</span></p></li>
+</ul>
+</li>
+<li><p>Royal flush: 1 each suit, 4 total</p></li>
+<li><p>Straight flush: 36 ways</p>
+<ul>
+<li><p>5 consecutive cards, same suit</p></li>
+<li><p>Select starting card from <cite>Ace, 2, … to 10</cite> 10 ways per suit:
+<span class="math notranslate nohighlight">\(C^{10}_{1}\)</span></p></li>
+<li><p>Select suit: <span class="math notranslate nohighlight">\(C^{4}_{1}\)</span></p></li>
+<li><p>Remove over counting: royal flush</p></li>
+</ul>
+</li>
+<li><p>Four of a kind: 624 ways</p>
+<ul>
+<li><p>Select 2 ranks (order matters): <span class="math notranslate nohighlight">\(P^{13}_{2}\)</span></p></li>
+<li><p>Select a suite for 1 rank: <span class="math notranslate nohighlight">\(C^{4}_{1}\)</span></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Poker Problems (cont.)</h3>
+<ul class="simple">
+<li><p>Full house: 3744 ways</p>
+<ul>
+<li><p>Select 2 ranks from 13 ranks (order matters) <span class="math notranslate nohighlight">\(P^{13}_{2}\)</span></p></li>
+<li><p>Select 3 suits for the 3 cards: <span class="math notranslate nohighlight">\(C^{4}_{3}\)</span></p></li>
+<li><p>Select 2 suits for the 2 cards: <span class="math notranslate nohighlight">\(C^{4}_{2}\)</span></p></li>
+</ul>
+</li>
+<li><p>Flush: 5108 ways</p>
+<ul>
+<li><p>Select 5 ranks from 13 ranks: <span class="math notranslate nohighlight">\(C^{13}_5\)</span></p></li>
+<li><p>Select a suit: <span class="math notranslate nohighlight">\(C^{4}_{1}\)</span></p></li>
+<li><p>Remove overcounting: straight flush, royal flush</p></li>
+</ul>
+</li>
+<li><p>Straight 10200 ways</p>
+<ul>
+<li><p>Product rule</p></li>
+<li><p>Select the starting card: <span class="math notranslate nohighlight">\(C^{10}_{1}\)</span></p></li>
+<li><p>Select the suits for each card (repetition allowed) : <span class="math notranslate nohighlight">\(4^5\)</span></p></li>
+<li><p>Remove overcounting: straight flush, royal flush</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Poker Problems (cont.)</h3>
+<ul class="simple">
+<li><p>Three of a kind: 54912 ways</p>
+<ul>
+<li><p>Product rule</p></li>
+<li><p>Select a rank for 3 cards: <span class="math notranslate nohighlight">\(C^{13}_{1}\)</span></p></li>
+<li><p>Select the suits for 3 cards: <span class="math notranslate nohighlight">\(C^{4}_{3}\)</span></p></li>
+<li><p>Select 2 ranks for the other 2 cards: <span class="math notranslate nohighlight">\(C^{12}_{2}\)</span></p></li>
+<li><p>Select the suits for the other 2 cards: <span class="math notranslate nohighlight">\(4^2\)</span></p></li>
+</ul>
+</li>
+<li><p>Two pairs: 123552 ways</p>
+<ul>
+<li><p>Product rule</p></li>
+<li><p>Select 2 ranks for the pairs: <span class="math notranslate nohighlight">\(C^{13}_{2}\)</span> ways</p></li>
+<li><p>Select 1 rank for the other card: <span class="math notranslate nohighlight">\(C^{11}_{1}\)</span> ways</p></li>
+<li><p>Select 2 suits for the first pair: <span class="math notranslate nohighlight">\(C^{4}_{2}\)</span> ways</p></li>
+<li><p>Select 2 suits for the second pair: <span class="math notranslate nohighlight">\(C^{4}_{2}\)</span> ways</p></li>
+<li><p>Select 1 suit for the other card: <span class="math notranslate nohighlight">\(C^{4}_{1}\)</span> ways</p></li>
+</ul>
+</li>
+<li><p>One pair 1,098,240 ways (exercise)</p></li>
+<li><p>High card</p>
+<ul>
+<li><p>Hard to count directly because of the many cases of overcounting</p></li>
+<li><p>Use complement: Total - all other hands</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Poker Problems (cont.)</h3>
+<ul class="simple">
+<li><p>It is more common to calculate with partial hands.</p></li>
+<li><p>The rule:</p>
+<ul>
+<li><p>Anything you do not know is assumed to be equally likely to be any of the
+remaining cards.</p></li>
+</ul>
+</li>
+<li><p>With two spades in hand? How many ways to get a flush?</p>
+<ul>
+<li><p>3 spades in the remaining 11 spades</p></li>
+<li><p><span class="math notranslate nohighlight">\(C^{11}_{3} = 165\)</span></p></li>
+</ul>
+</li>
+<li><p>Two Aces in hand? How many ways to get a full house?</p>
+<ul>
+<li><p>Case 1: 1 Ace and a pair</p>
+<ul>
+<li><p>Select 1 Ace (2 left): <span class="math notranslate nohighlight">\(C^{2}_{1}\)</span></p></li>
+<li><p>Select 1 rank for the pair: <span class="math notranslate nohighlight">\(C^{12}_{1}\)</span></p></li>
+<li><p>Select 2 suits for the pair: <span class="math notranslate nohighlight">\(C^{4}_{2}\)</span></p></li>
+</ul>
+</li>
+<li><p>Case 2: 3 of a kind</p>
+<ul>
+<li><p>Select 1 rank for the 3 of a kind: <span class="math notranslate nohighlight">\(C^{12}_{1}\)</span></p></li>
+<li><p>Select 3 suits for the 3 of a kind: <span class="math notranslate nohighlight">\(C^{4}_{3}\)</span></p></li>
+</ul>
+</li>
+<li><p>Add the two cases because they are exclusive</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h1>Combinatorics Problems That Needs Algorithms</h1>
+<div class="subtitle docutils container">
+<p>Demonstrated in C++</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Why Writing Algorithms?</h2>
+<ul class="simple">
+<li><p>Prove correctness of your solution using math</p></li>
+<li><p>Too hard to solve using math</p></li>
+<li><p>When we want to see the solution in addition to the count</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Typical Approaches</h2>
+<ul class="simple">
+<li><p>Strategy: Other algorithmic paradigms</p></li>
+<li><p>Enumeration problems</p>
+<ul>
+<li><p>Simple enumeration: brute force, backtracking</p></li>
+<li><p>With overlapping sub-problems: dynamic programming</p></li>
+</ul>
+</li>
+<li><p>Optimization problems (Combinatorial optimization)</p>
+<ul>
+<li><p>Dynamic programming may apply when the problem has overlapping
+subproblems and the required substructure.</p></li>
+<li><p>A greedy algorithm may apply when a greedy-choice argument establishes
+that local choices produce the requested optimum.</p></li>
+<li><p>Neither overlap nor its absence alone determines that greedy is suitable.</p></li>
+<li><p>Heuristic algorithms: simulated annealing, genetic algorithm, etc.</p></li>
+<li><p>Linear programming</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Related C++ Features</h2>
+<ul class="simple">
+<li><p>Recursion</p>
+<ul>
+<li><p>art of memorization (manipulate parameter and return value)</p></li>
+</ul>
+</li>
+<li><p>STL algorithms (<code class="docutils literal notranslate"><span class="pre">&lt;algorithm&gt;</span></code> header)</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">next_permutation</span></code> function</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_permutation</span></code> function</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sort</span></code> function</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_sorted</span></code> function</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reverse</span></code> function</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rotate</span></code> function</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">shuffle</span></code> function</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Related C++ Features (cont.)</h3>
+<ul class="simple">
+<li><p>Useful data structures</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::vector&lt;bool&gt;</span></code> (bitset)</p>
+<ul>
+<li><p>to memorize visited/processed/seen states</p></li>
+<li><p>small number of total states</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Theta(1)\)</span> time complexity for <code class="docutils literal notranslate"><span class="pre">set</span></code> and <code class="docutils literal notranslate"><span class="pre">test</span></code> operations</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::set</span></code> to memorize visited/processed/seen states</p>
+<ul>
+<li><p>large number of total states</p></li>
+<li><p>Self-balancing binary search tree</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Theta(\log n)\)</span> time complexity for <code class="docutils literal notranslate"><span class="pre">insert</span></code> and <code class="docutils literal notranslate"><span class="pre">find</span></code>
+operations</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Theta(n)\)</span> time complexity for <code class="docutils literal notranslate"><span class="pre">erase</span></code> operation</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::unordered_set</span></code> to memorize visited/processed/seen states</p>
+<ul>
+<li><p>large number of total states</p></li>
+<li><p>Hash table</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Theta(1)\)</span> time complexity for <code class="docutils literal notranslate"><span class="pre">insert</span></code>, <code class="docutils literal notranslate"><span class="pre">find</span></code>, and <code class="docutils literal notranslate"><span class="pre">erase</span></code>
+operations</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Enumerate All US Phone Numbers</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p>Order matters? Yes</p></li>
+<li><p>Repetition allowed? Yes</p></li>
+<li><p>Size of problem? 10</p></li>
+<li><p>Type of problem? Permutation with repetition</p></li>
+<li><p>Counting principle? Product rule</p></li>
+<li><p>Formula? <span class="math notranslate nohighlight">\(10^{10}\)</span></p></li>
+<li><p>Goal? Enumerate</p></li>
+<li><p>Write code? Yes</p></li>
+<li><p>Algorithmic paradigm? Brute force</p></li>
+</ul>
+</div>
+<div class="half docutils container">
+<pre><code data-trim data-noescape class="cpp">void enumeratePhoneNumbers(int n, string prefix) {
+  if (n == 0) {
+    cout &lt;&lt; prefix &lt;&lt; endl;
+    return;
+  }
+  for (int i = 0; i &lt; 10; i++) {
+    enumeratePhoneNumbers(n - 1, prefix + to_string(i));
+  }
+}</code></pre>
+</div>
+</div>
+</section>
+<section >
+<h3>Integer Partition Problem</h3>
+<ul class="simple">
+<li><p>Find the number of ways to partition a positive integer <span class="math notranslate nohighlight">\(n\)</span> using
+positive integers <span class="math notranslate nohighlight">\(\leq k\)</span>.</p></li>
+<li><p>Recurrence relation <span class="math notranslate nohighlight">\(p(n, k) = p(n - k, k) + p(n, k - 1)\)</span>.</p></li>
+<li><p>Not easy to solve using math.</p></li>
+</ul>
+<pre data-id="integer-partition-problem"><code data-trim data-noescape class="cpp">int partition(int n, int k) {
+  // Base cases
+  if (n == 0) return 1;  // One way to partition 0 using no numbers
+  if (n &lt; 0 || k &lt;= 0)
+    return 1;  // No way to partition with negative number or no numbers left
+
+  // Recursive cases
+  // Include k in the partition and recursively partition n-k with k
+  int include_k = partition(n - k, k);
+
+  // Exclude k from the partition and recursively partition n with k-1
+  int exclude_k = partition(n, k - 1);
+
+  return include_k + exclude_k;
+}</code></pre>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

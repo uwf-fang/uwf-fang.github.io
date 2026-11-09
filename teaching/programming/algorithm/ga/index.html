@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Genetic Algorithm · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/programming/">Algorithms and Data Structures</a> / Genetic Algorithm</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Genetic Algorithm</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#definition">Definition</a></li>
+    <li><a href="#characteristics">Characteristics</a></li>
+    <li><a href="#historical-context">Historical Context</a></li>
+    <li><a href="#metaheuristic-algorithm">Metaheuristic Algorithm</a></li>
+    <li><a href="#basics-of-genetics-and-evolution">Basics of Genetics and Evolution</a></li>
+    <li><a href="#core-components">Core Components</a></li>
+    <li><a href="#pseudocode-of-a-basic-genetic-algorithm">Pseudocode of a Basic Genetic Algorithm</a></li>
+    <li><a href="#parameters">Parameters</a></li>
+    <li><a href="#representative-algorithms-strategies">Representative Algorithms/Strategies</a></li>
+    <li><a href="#applications-of-genetic-algorithms">Applications of Genetic Algorithms</a></li>
+    <li><a href="#advantages-and-limitations">Advantages and Limitations</a>
+      <ul>
+        <li><a href="#advantages">Advantages</a></li>
+        <li><a href="#limitations">Limitations</a></li>
+      </ul>
+    </li>
+    <li><a href="#references">References</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="genetic-algorithm"></span>
+<h2 id="definition">Definition</h2>
+<p><strong>Genetic Algorithm (GA)</strong>: A computational approach inspired by the process of natural evolution, genetic algorithms are used to find approximate solutions to optimization and search problems. They represent a fascinating intersection between biology and computer science, offering a unique way to solve complex problems.</p>
+<h2 id="characteristics">Characteristics</h2>
+<ul>
+<li>Approximation algorithm: Optimal solution not guaranteed</li>
+<li>Find a “good-enough” or near-optimal solution in a reasonable time</li>
+<li>Non-deterministic</li>
+<li>Many parameters to tune</li>
+<li>Randomized algorithm</li>
+<li>Evolutionary algorithm</li>
+<li>Metaheuristic algorithm</li>
+</ul>
+<h2 id="historical-context">Historical Context</h2>
+<p>The concept of genetic algorithms finds its roots in the early works of scientists like John Holland who, in the 1960s, introduced the schema theorem which describes the functioning of GAs. But the real inspiration comes from a much older source – Charles Darwin’s theory of natural selection. Darwin proposed that species evolve over generations by the survival of the fittest individuals. This biological concept provided a framework for developing a new class of computational algorithms.</p>
+<h2 id="metaheuristic-algorithm">Metaheuristic Algorithm</h2>
+<p>Genetic algorithm is one type of evolutionary algorithm which belong to a broader category known as metaheuristics. The term metaheuristic is derived from the Greek words “meta” (beyond) and “heuriskein” (to search or find). They represent higher-level procedures or strategies designed to find, generate, or select a heuristic that might provide a sufficiently good solution to an optimization problem, especially with incomplete or imperfect information or limited computation capacity.</p>
+<p>Metaheuristics encompass a range of algorithms, including but not limited to:</p>
+<ul>
+<li>Simulated Annealing</li>
+<li>Tabu Search</li>
+<li>Ant Colony Optimization</li>
+<li>Particle Swarm Optimization</li>
+</ul>
+<p>Like other metaheuristics, GAs aim to provide practical solutions to complex problems where traditional methods are ineffective or too slow. They harness inspiration from natural phenomena (in GA’s case, natural evolution) to guide the search process.</p>
+<h2 id="basics-of-genetics-and-evolution">Basics of Genetics and Evolution</h2>
+<ul>
+<li><strong>DNA, Genes, and Chromosomes</strong>:</li>
+</ul>
+<p>In biological systems, DNA (Deoxyribonucleic acid) is the molecule that carries genetic instructions for the development, functioning, growth, and reproduction of all known living organisms. DNA is organized into structures called chromosomes, which are collections of genes. Each gene is a segment of DNA that has a specific function or contains a particular piece of genetic information.</p>
+<ul>
+<li><strong>Principles of Natural Selection</strong>:
+<ul>
+<li><strong>Survival of the Fittest</strong>: Not all individuals in a population have the same chances of survival and reproduction. Those with characteristics better suited to their environment tend to survive longer and reproduce more, passing on their genes to the next generation.</li>
+<li><strong>Reproduction</strong>: The process through which new individuals or offspring are produced. In the context of GAs, this refers to the generation of new potential solutions from the existing ones, based on their “fitness” or suitability to the problem.</li>
+<li><strong>Mutation</strong>: In biological terms, a mutation is a change in the DNA sequence. Mutations introduce genetic diversity, which can be beneficial, neutral, or harmful. For GAs, mutation means introducing small random changes in potential solutions to maintain diversity in the population and avoid getting stuck at local optima.</li>
+<li><strong>Crossover</strong>: Also known as recombination, this is a process where two parent genes exchange portions of their genetic information to create new offspring. In GAs, crossover combines elements of two potential solutions to produce a new one, hopefully combining the best features of both parents.</li>
+</ul>
+</li>
+</ul>
+<h2 id="core-components">Core Components</h2>
+<ul>
+<li>
+<p><strong>Individual and encoding</strong></p>
+<p>An individual is a potential solution to the problem. It is typically represented as a string of bits, where each bit is called a gene. The term “bit” is used loosely here, and the encoding can be binary, integer, or real-valued. The string is known as the chromosome. The genes can be independent of each other. The string can also be interpreted as a permutation, where each gene represents a position in the permutation.</p>
+<ul>
+<li>Binary Encoding: Each gene is represented as a binary digit (0 or 1).</li>
+<li>Integer Encoding: Each gene is represented as an integer value. (Characters can also be represented as integers using their ASCII values.)</li>
+<li>Real-Valued Encoding: Each gene is represented as a real number.</li>
+<li>Permutation Encoding: Each gene represents a position in a permutation. It is usually stored as an array of indices. No duplicate indices are allowed. E.g. <code>[8, 4, 7, 3, 6, 2, 5, 1, 9, 0]</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Population</strong></p>
+<p>At the heart of every GA is a population, which is essentially a collection of individual potential solutions to the problem. Each individual represents a possible solution, often encoded in some form, like a binary string. The initial population is typically generated randomly, ensuring a diverse range of potential solutions.</p>
+</li>
+<li>
+<p><strong>Fitness Function</strong></p>
+<p>To determine which solutions are ‘better’ than others, GAs employ a fitness function. This function quantitatively measures how good each solution in the population is with respect to the given problem. For instance, if the problem is to find the shortest path between cities, the fitness might be the path length.</p>
+</li>
+<li>
+<p><strong>Selection</strong></p>
+<p>Based on the principle of “survival of the fittest,” the selection process chooses which solutions, or parents, will be used to create the next generation. There are various selection methods such as roulette wheel selection (where the probability of an individual being selected is proportional to its fitness) and tournament selection (where a subset of individuals are chosen, and the fittest among them is selected).</p>
+</li>
+<li>
+<p><strong>Crossover (Recombination)</strong></p>
+<p>Once parents are selected, the crossover operation is used to combine their genetic information and produce offspring. There are many crossover techniques, such as one-point crossover (where one crossover point is selected and genes from one parent are combined with genes from another parent based on this point) and uniform crossover (where genes from both parents are mixed uniformly).</p>
+</li>
+<li>
+<p><strong>Mutation</strong></p>
+<p>After crossover, mutation introduces small random changes in the offspring. The main purpose of mutation is to maintain genetic diversity within the population, ensuring that the GA does not converge prematurely to a sub-optimal solution. For instance, in a binary encoded GA, mutation might flip a 0 to a 1 or vice versa. In a permutation encoded GA, mutation might swap two elements in the permutation.</p>
+</li>
+<li>
+<p><strong>Replacement</strong></p>
+<p>This step involves determining how individuals from the new generation replace those in the current generation. There are various strategies, such as generational replacement (where the entire old generation is replaced) and steady-state replacement (where only a portion of the old generation is replaced).</p>
+</li>
+</ul>
+<h2 id="pseudocode-of-a-basic-genetic-algorithm">Pseudocode of a Basic Genetic Algorithm</h2>
+<p>To better visualize the process of a genetic algorithm, here’s a simplistic pseudocode representation:</p>
+<pre tabindex="0"><code class="language-default" data-lang="default">1. Generate initial population of size N.
+2. Evaluate the fitness of each individual in the population.
+
+3. WHILE (stopping condition not met):
+
+   a. Select two parents based on their fitness.
+   b. Perform crossover on the selected parents to produce offsprings.
+   c. Apply mutation on offsprings with a certain probability.
+   d. Evaluate the fitness of the new offsprings.
+   e. Replace individuals in the current population with the new offspring
+      based on a replacement strategy.
+
+4. Return the best solution found.
+</code></pre><p>By iterating through this process, the GA “evolves” the population of potential solutions, gradually improving the fitness of the individuals, and getting closer to an optimal or near-optimal solution.</p>
+<h2 id="parameters">Parameters</h2>
+<p>The efficiency and effectiveness of a genetic algorithm (GA) are deeply influenced by the choice of its parameters. Proper tuning of these parameters can significantly boost the performance, while poor choices can hinder or stall the algorithm. Let’s delve into some of the fundamental parameters:</p>
+<ul>
+<li>
+<p><strong>Population Size</strong></p>
+<p>Refers to the number of individuals (potential solutions) in each generation. A larger population might offer greater diversity and potentially explore a wider solution space. However, it might also increase computational demands. A smaller population may run faster but risks premature convergence to suboptimal solutions.</p>
+</li>
+<li>
+<p><strong>Crossover Rate</strong></p>
+<p>Determines how often crossover will occur between pairs of parents. A high crossover rate can enhance exploration of the solution space, while a low rate emphasizes exploitation of the current best solutions.</p>
+</li>
+<li>
+<p><strong>Mutation Rate</strong></p>
+<p>Specifies the frequency with which bits in an individual’s encoding will be flipped or altered. A higher mutation rate increases genetic diversity but can disrupt well-performing solutions. A very low mutation rate might make the algorithm stagnant and fall into local optima.</p>
+</li>
+<li>
+<p><strong>Selection Pressure</strong></p>
+<p>Indicates the emphasis on selecting the fittest individuals as parents. High selection pressure might lead to faster convergence but risks losing diversity. Low pressure maintains diversity but can slow the convergence rate. This parameter is related to the selection method and replacement strategy.</p>
+</li>
+<li>
+<p><strong>Number of Generations</strong></p>
+<p>The number of generations or iterations the GA will run for. It is only relevant when it is employed as the termination condition. A higher number of generations might lead to better solutions but can also increase computational demands.</p>
+</li>
+<li>
+<p><strong>Importance of Balanced Parameter Setting</strong>:</p>
+<p>Balance in setting GA parameters is crucial. Overemphasizing exploration (through high mutation and crossover rates) can cause the GA to behave almost random, while stressing too much on exploitation (low mutation and selecting only the very best individuals) might lead to premature convergence on suboptimal solutions.</p>
+<p>Often, the best approach is to conduct multiple experiments with different parameter settings to understand how each influences the GA’s performance for a specific problem.</p>
+</li>
+</ul>
+<h2 id="representative-algorithms-strategies">Representative Algorithms/Strategies</h2>
+<ul>
+<li>
+<p>Selection Methods:</p>
+<ul>
+<li>Roulette Wheel Selection: Individuals are selected with a probability proportional to their fitness.</li>
+<li>Tournament Selection: A random subset of individuals is selected, and the fittest among them is chosen.</li>
+<li>Rank Selection: Individuals are ranked based on their fitness, and the probability of selection is proportional to their rank.</li>
+</ul>
+</li>
+<li>
+<p>Replacement Strategies:</p>
+<ul>
+<li>Elitism: The best individuals from the old generation are carried over to the new generation.</li>
+<li>Generational Replacement: The entire old generation is replaced by the new generation.</li>
+<li>Steady-State Replacement: Only a portion of the old generation is replaced by the new generation. The rest of the individuals are carried over.</li>
+</ul>
+</li>
+<li>
+<p>Crossover Techniques for String-like Encoding (include binary, integer, real-valued):</p>
+<p>These methods are suitable for string-like representations where genes are independent, such as binary or integer encoding.</p>
+<ul>
+<li>
+<p><strong>One-Point Crossover</strong>: A single crossover point is randomly selected in the parent chromosomes. All data beyond that point is swapped between the two parents.</p>
+<p>For example, consider two parents with binary encoding: Parent 1: <code>11011 | 00100</code> Parent 2: <code>10001 | 11011</code> Crossover Point: 5</p>
+<p>Offspring 1: <code>11011 | 11011</code> Offspring 2: <code>10001 | 00100</code></p>
+</li>
+<li>
+<p><strong>Two-Point Crossover</strong>: Two crossover points are randomly selected. The genes between the two points are swapped between the parents.</p>
+<p>For example: Parent 1: <code>110 | 11001 | 00</code> Parent 2: <code>100 | 01110 | 11</code> Crossover Points: 3 and 8</p>
+<p>Offspring 1: <code>110 | 01110 | 00</code> Offspring 2: <code>100 | 11001 | 11</code></p>
+</li>
+<li>
+<p><strong>Uniform Crossover</strong>: Each gene is treated separately. For each gene, a random choice is made to decide which parent it will be inherited from. This is often implemented by using a crossover mask, a binary string of the same length as the chromosomes.</p>
+<p>For example: Parent 1: <code>1 1 0 1 1 0 0 1 0 0</code> Parent 2: <code>1 0 0 0 1 1 1 0 1 1</code> Mask:     <code>0 1 1 0 1 0 0 1 1 0</code> (0 for Parent 1, 1 for Parent 2)</p>
+<p>Offspring 1: <code>1 0 0 1 1 0 0 0 1 0</code> (Genes from Parent 1 at indices where mask is 0, and from Parent 2 where mask is 1)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Crossover for Permutation Encoding:</p>
+<p>For problems where the solution is represented as a permutation of elements (e.g., Traveling Salesman Problem), standard crossover methods like one-point or two-point crossover can produce invalid offspring. Therefore, specialized crossover operators are needed.</p>
+<ul>
+<li>
+<p><strong>Ordered Crossover (OX)</strong>: This operator preserves the relative order of genes. A random subsequence is selected from one parent and copied to the offspring. The remaining genes are filled in the order they appear in the other parent.</p>
+<p>For example, consider two parents: Parent 1: <code>[8, 4, 7, 3, 6, 2, 5, 1, 9, 0]</code> Parent 2: <code>[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</code></p>
+<ol>
+<li>Select a random substring from Parent 1, e.g., from index 3 to 6: <code>[3, 6, 2, 5]</code>.</li>
+<li>Copy this substring to the offspring in the same position: <code>[_, _, _, 3, 6, 2, 5, _, _, _]</code>.</li>
+<li>Fill the remaining positions from Parent 2, skipping elements already in the offspring. The order of elements from parent 2 is <code>[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</code>.
+<ul>
+<li>0 is not in the offspring, add it. Offspring: <code>[0, _, _, 3, 6, 2, 5, _, _, _]</code></li>
+<li>1 is not in the offspring, add it. Offspring: <code>[0, 1, _, 3, 6, 2, 5, _, _, _]</code></li>
+<li>2, 3 are in the offspring, skip.</li>
+<li>4 is not in the offspring, add it. Offspring: <code>[0, 1, 4, 3, 6, 2, 5, _, _, _]</code></li>
+<li>5, 6 are in the offspring, skip.</li>
+<li>7 is not in the offspring, add it. Offspring: <code>[0, 1, 4, 3, 6, 2, 5, 7, _, _]</code></li>
+<li>8 is not in the offspring, add it. Offspring: <code>[0, 1, 4, 3, 6, 2, 5, 7, 8, _]</code></li>
+<li>9 is not in the offspring, add it. Offspring: <code>[0, 1, 4, 3, 6, 2, 5, 7, 8, 9]</code></li>
+</ul>
+</li>
+</ol>
+<p>The final offspring is <code>[0, 1, 4, 3, 6, 2, 5, 7, 8, 9]</code>.</p>
+</li>
+<li>
+<p><strong>Partially Mapped Crossover (PMX)</strong></p>
+</li>
+<li>
+<p><strong>Cycle Crossover (CX)</strong></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Mutation Methods:</p>
+<ul>
+<li>Bit Flip Mutation: A random bit in the individual’s encoding is flipped.</li>
+<li>Swap Mutation: Two random genes in the individual’s encoding are swapped.</li>
+<li>Inversion Mutation: A random subset of genes in the individual’s encoding is reversed.</li>
+</ul>
+</li>
+</ul>
+<h2 id="applications-of-genetic-algorithms">Applications of Genetic Algorithms</h2>
+<p>Genetic algorithms have found diverse applications across multiple domains, proving their adaptability and versatility. Here are some of the notable applications:</p>
+<ul>
+<li><strong>Optimization Problems</strong>:
+<ul>
+<li>Traveling Salesman Problem: Finding the shortest possible route that visits a set of cities and returns to the origin city.</li>
+<li>Job Scheduling: Allocating jobs to resources in a manner that optimizes specific objectives, such as minimizing completion time.</li>
+</ul>
+</li>
+<li><strong>Machine Learning</strong>:
+<ul>
+<li>Feature Selection: Identifying the most relevant features in a dataset to improve model performance.</li>
+<li>Neural Network Training: Optimizing the weights of neural networks to achieve better accuracy.</li>
+</ul>
+</li>
+<li><strong>Game Development</strong></li>
+<li><strong>Art and Design</strong></li>
+</ul>
+<h2 id="advantages-and-limitations">Advantages and Limitations</h2>
+<h3 id="advantages">Advantages</h3>
+<ol>
+<li><strong>Efficiency</strong>: GAs can be very efficient at finding good solutions to complex problems, especially when traditional methods are ineffective or too slow.</li>
+<li><strong>Versatility and Generality</strong>: GAs can be applied to a wide variety of problems, from optimization tasks to design challenges, without requiring a deep understanding of the problem domain.</li>
+<li><strong>Global Search Capability</strong>: Thanks to their population-based approach, GAs can search multiple points in the solution space simultaneously, making them less prone to getting stuck in local optima compared to some other methods.</li>
+<li><strong>Inherent Parallelism</strong>: The nature of GAs, especially the evaluation of multiple individuals, lends itself to parallel computing, potentially speeding up the search process.</li>
+<li><strong>Adaptability</strong>: GAs can adapt to changing environments, making them suitable for dynamic problems where the fitness landscape might shift over time.</li>
+</ol>
+<h3 id="limitations">Limitations</h3>
+<ol>
+<li><strong>No Guarantee of Optimal Solution</strong>: While GAs are good at finding “good-enough” or near-optimal solutions, they don’t guarantee an optimal solution.</li>
+<li><strong>Parameter Sensitivity</strong>: The performance of a GA can be significantly influenced by its parameter settings (e.g., population size, mutation rate). It may require trial-and-error or domain knowledge to tune these parameters effectively.</li>
+<li><strong>Computational Overhead</strong>: Depending on the problem size and GA parameters, the algorithm might require a considerable number of generations and evaluations to converge, which could be computationally expensive.</li>
+<li><strong>Premature Convergence</strong>: GAs might sometimes converge too early to a suboptimal solution, especially if there’s not enough genetic diversity in the population.</li>
+</ol>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Genetic_algorithm">Wikipedia</a></li>
+<li><a href="https://machinelearningmastery.com/simple-genetic-algorithm-from-scratch-in-python/">Machine Learning Mastery</a></li>
+<li><a href="/teaching/cpp/rng/">Using Random Number Generators in C++</a></li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

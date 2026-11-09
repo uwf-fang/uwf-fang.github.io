@@ -1,0 +1,123 @@
+***************
+Spark In Docker
+***************
+
+.. revealjs-section::
+  :data-background-color: white
+  :data-background-image: ../_static/logo.png
+  :data-background-size: 50%
+  :data-background-position: top center
+  :data-background-repeat: no-repeat
+
+.. container:: subtitle
+
+  |author|
+
+Docker
+======
++ Docker is a platform for developers and sysadmins to develop, deploy, and run
+  applications with containers.
++ It is a lightweight, standalone, executable package of a piece of software
+  that includes everything needed to run it: code, runtime, system tools, system
+  libraries, settings.
++ Advantages
+
+  * Consistent environment
+  * Isolation
+  * Reduced installation time
+  * Portability
+  * Resource management
+
+Motivation
+==========
++ Spark installation is time consuming and error prone.
+
+  * Install Java, Scala, and Spark one by one.
+  * Configure after each step.
+  * Different versions of Java, Scala, and Spark may have compatibility issues.
+  * Different operating systems have different installation steps.
+
++ Learning Docker worth the time for the future
+
+Docker
+======
+.. container:: flex-container
+
+  .. container:: half
+
+    **Installation**
+
+    + Download and install ``Docker Desktop`` on Windows and Mac OS.
+    + Install ``Docker Engine`` on Linux.
+
+    **Docker images**
+
+    + Images are templates for containers.
+    + Build image from ``Dockerfile``.
+    + Pull pre-built image from ``Docker Hub``.
+
+  .. container:: half
+
+    **Docker Commands**
+
+    + ``docker pull``: Pull an image or a repository from a registry.
+    + ``docker run``: Run a command in a new container.
+    + ``docker ps``: List containers.
+    + ``docker rm``: Remove one or more containers.
+    + ``docker images``: List images.
+    + ``docker rmi``: Remove one or more images.
+    + ``docker build``: Build an image from a Dockerfile.
+
+Use Spark in Docker
+===================
++ Make a directory for the project on your computer and change to the director
++ Make sure that your docker daemon is running (Docker desktop is running on
+  Windows and Mac OS)
++ Pull the image: ``spark/latest`` for Spark
+
+  .. code-block:: bash
+
+    docker pull spark:latest
+
++ Run the container and start the Spark shell
+
+  .. code-block:: bash
+
+    docker run -it -v $(pwd):/opt/spark/work-dir --name spark spark:latest /opt/spark/bin/spark-shell
+
+  + ``-it``: enter interactive mode
+  + ``-v $(pwd):/opt/spark/work-dir``: mount the current directory to the
+    container as /opt/spark/work-dir so you can access file in the current
+    directory from the container. The ``$(pwd)`` is the current directory and
+    may be different in Windows shells.
+  + You can always change ``$(pwd)`` to the full path of the directory like
+    ``/home/user/project``.
+  + ``--name spark``: name the container as ``spark``
+  + ``spark:latest``: the image to run
+  + ``/opt/spark/bin/spark-shell``: the command to run in the container
+
+Hints on Using Docker
+=====================
++ Do not use ``ctrl-c``, it will exit the whole container run.
++ When you exit the program you run in the container, the container will stop.
++ You can switch out of the container without stopping it by pressing
+  ``ctrl-p`` and then ``ctrl-q``. To reattach to the container, use ``docker
+  attach <container_name>``. Thus, you can resume what you have left.
+
+Spark Shell
+===========
++ Type ``:help`` to see the available commands.
++ Type ``:quit`` to exit the shell.
++ Type ``:load`` to load a script file (.scala).
++ You may refer to the Spark `quick start documentation <spark_quick_>`_ for
+  more information.
+
+.. _spark_quick: https://spark.apache.org/docs/latest/quick-start.html
+
+Managing Containers
+===================
++ Each run will create a container.
++ List all containers using ``docker ps -a``.
++ Each container comes with a unique name and a unique ID.
++ Remove a container using ``docker rm <container_name/id>``.
++ To use the id, you can use the first few characters of the id.

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Describing Syntax and Semantics</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Describing Syntax and Semantics</h1>
+<ul class="simple">
+<li><p>Introduction and Challenges</p></li>
+<li><p>Formal Methods of Describing Syntax</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h1>Introduction to Syntax and Semantics</h1>
+<ul class="simple">
+<li><p>Syntax: form or structure of the expressions, statements, and program units</p></li>
+<li><p>Semantics: meaning of the expressions, statements, and program units</p></li>
+<li><p>Concepts:</p>
+<ul>
+<li><p>Lexemes: lowest-level syntactic units in a language</p></li>
+<li><p>Tokens: a category of lexemes</p></li>
+</ul>
+</li>
+<li><p>Components:</p>
+<ul>
+<li><p>Language recognizer: syntax analyzer/parser</p></li>
+<li><p>Language generator</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h1>Formal Methods of Describing Syntax</h1>
+<ul class="simple">
+<li><p>Backus- Naur Form (BNF)</p>
+<ul>
+<li><p>a metalanguage used to formally describe the syntax of a language</p></li>
+<li><p>for context-free grammars</p></li>
+</ul>
+</li>
+<li><p>Extended BNF (EBNF)</p></li>
+<li><p>Grammar</p>
+<ul>
+<li><p>a generative device for defining languages</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Example Grammar in BNF</h2>
+<pre data-id="example-grammar-in-bnf"><code data-trim data-noescape class="default">&lt;program&gt; → begin &lt;statement list&gt; end
+&lt;statement list&gt; → &lt;statement&gt;
+                | &lt;statement&gt;; &lt;statement list&gt;
+&lt;statement&gt; → &lt;var&gt; = &lt;expression&gt;
+&lt;var&gt; → A | B | C
+&lt;expression&gt; → &lt;var&gt; + &lt;var&gt;
+            | &lt;var&gt; - &lt;var&gt;
+            | &lt;var&gt;</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Derivation Example</h2>
+<p>Prove that “begin A = B + C; B = C end” is a program in the grammar.</p>
+<pre data-id="derivation-example"><code data-trim data-noescape class="default">&lt;program&gt; → begin &lt;statement list&gt; end
+          → begin &lt;statement&gt;; &lt;statement list&gt; end
+          → begin &lt;var&gt; = &lt;expression&gt;; &lt;statement list&gt; end
+          → begin A = &lt;expression&gt;; &lt;statement list&gt; end
+          → begin A = &lt;var&gt; + &lt;var&gt;; &lt;statement list&gt; end
+          → begin A = B + &lt;var&gt;; &lt;statement list&gt; end
+          → begin A = B + C; &lt;statement list&gt; end
+          → begin A = B +; &lt;statement&gt; end
+          → begin A = B + C; &lt;var&gt; = &lt;expression&gt; end
+          → begin A = B + C; B = &lt;expression&gt; end
+          → begin A = B + C; B = &lt;var&gt; end
+          → begin A = B + C; B = C end</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Parsing Tree</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Example parsing tree for A = B * A + C</strong></p>
+<div class="graphviz"><img src="../_images/graphviz-255ea1485bff341133ae1b46183575a5819e5253.png" alt="digraph ParseTree {
+  node [shape=circle];
+  A1 [label=&quot;A&quot;];
+  assign [label=&quot;=&quot;];
+  B [label=&quot;B&quot;];
+  mult [label=&quot;*&quot;];
+  add [label=&quot;+&quot;];
+  A2 [label=&quot;A&quot;];
+  C [label=&quot;C&quot;];
+
+  assign -&gt; A1;
+  assign -&gt; add;
+  add -&gt; mult;
+  add -&gt; C;
+  mult -&gt; B;
+  mult -&gt; A2;
+}" class="graphviz" /></div>
+</div>
+<div class="half docutils container">
+<ul class="simple">
+<li><p><strong>Example parsing tree for A = B * (A + C)</strong></p></li>
+<li><p><strong>May be an ambiguous to the last example if the grammar is not defined
+properly</strong></p></li>
+</ul>
+<div class="graphviz"><img src="../_images/graphviz-511b763b4dd0e4848bd07ce16d978cc4d09064a3.png" alt="digraph ParseTree {
+  node [shape=circle];
+  A1 [label=&quot;A&quot;];
+  assign [label=&quot;=&quot;];
+  B [label=&quot;B&quot;];
+  mult [label=&quot;*&quot;];
+  add [label=&quot;+&quot;];
+  A2 [label=&quot;A&quot;];
+  C [label=&quot;C&quot;];
+
+  assign -&gt; A1;
+  assign -&gt; mult;
+  mult -&gt; B;
+  mult -&gt; add;
+  add -&gt; A2;
+  add -&gt; C;
+}" class="graphviz" /></div>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h1>Attribute Grammars</h1>
+<ul class="simple">
+<li><p>Support certain context-sensitive semantics by associating attributes with
+grammar symbols</p></li>
+<li><p>Parser extension</p>
+<ul>
+<li><p>Add attributes to tokens and nonterminals</p></li>
+<li><p>Add semantic rules to the grammar</p></li>
+</ul>
+</li>
+<li><p>Type of attributes</p>
+<ul>
+<li><p>Synthesized attributes - bottom-up attributes that are computed from the
+attributes of the children</p></li>
+<li><p>Inherited attributes - top-down attributes that are passed from the parent
+to the children</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h1>Meaning of Programs</h1>
+<ul class="simple">
+<li><p>Static semantics: meanings that can be determined at compile time</p></li>
+<li><p>Dynamic semantics: meanings that can be determined at run time, referred as
+<strong>semantics</strong> in the rest of this course!</p></li>
+<li><p>Operational semantics: meanings of programs are defined by interpreting their
+execution on a machine</p>
+<ul>
+<li><p>natural operational semantics</p></li>
+<li><p>structural operational semantics</p></li>
+</ul>
+</li>
+<li><p>Denotational semantics: meanings of programs are defined by mathematical
+objects that represent the effect of executing the programs</p>
+<ul>
+<li><p>syntactic domain</p></li>
+<li><p>semantic domain</p></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

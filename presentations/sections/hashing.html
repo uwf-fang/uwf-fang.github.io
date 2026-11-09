@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Hashing</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Hashing</h1>
+<div class="subtitle docutils container">
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Overview</p></li>
+<li><p>Hash functions</p></li>
+<li><p>Applications</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<ul class="simple">
+<li><p>Broad definition: Hashing is a process of mapping keys of a certain type to
+data of another type.</p></li>
+<li><p>Other definition: Hashing is a process of mapping data of arbitrary size to
+data of fixed size. (not always true)</p></li>
+<li><p>Hash function</p>
+<ul>
+<li><p>The core of hashing</p></li>
+</ul>
+</li>
+<li><p>Representation: <code class="docutils literal notranslate"><span class="pre">&lt;start</span> <span class="pre">type&gt;</span> <span class="pre">-&gt;</span> <span class="pre">&lt;destination</span> <span class="pre">type&gt;</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;start</span> <span class="pre">type&gt;</span></code>: The type of data to be hashed, sometimes called key type</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;destination</span> <span class="pre">type&gt;</span></code>: The type of data after hashing, sometimes called
+hash value type or hash code type</p></li>
+<li><p>E.g. <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">-&gt;</span> <span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">-&gt;</span> <span class="pre">string</span></code>, <code class="docutils literal notranslate"><span class="pre">string</span> <span class="pre">-&gt;</span> <span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">string</span> <span class="pre">-&gt;</span>
+<span class="pre">string</span></code></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Hashing Glossary</h3>
+<dl class="simple glossary">
+<dt id="term-Hash-Function">Hash Function</dt><dd><p>A function that maps a variable sized value to a fixed sized value.</p>
+</dd>
+<dt id="term-Key-hashing">Key (hashing)</dt><dd><p>The input value to the hash function.</p>
+</dd>
+<dt id="term-Value-hashing">Value (hashing)</dt><dd><p>A.k.a hash value, hash code or simply hash. The output of the hash
+function.</p>
+</dd>
+<dt id="term-Key-space-Domain-hashing">Key space / Domain (hashing)</dt><dd><p>The set of all possible keys.</p>
+</dd>
+<dt id="term-Value-space-Range-hashing">Value space / Range (hashing)</dt><dd><p>The set of all possible values.</p>
+</dd>
+<dt id="term-Collision-hashing">Collision (hashing)</dt><dd><p>Multiple distinct keys maps to a same output value.</p>
+</dd>
+</dl>
+</section>
+</section>
+<section >
+<section >
+<h2>Hash Function</h2>
+<ul class="simple">
+<li><p>The function that performs the mapping</p></li>
+<li><p>Required properties</p>
+<ul>
+<li><p>deterministic</p></li>
+<li><p>uniform distribution</p>
+<ul>
+<li><p>hash function that maps all possible input values (keys) with roughly
+equal probability to each possible output value (hash code)</p></li>
+<li><p>ensures minimal collision</p></li>
+<li><p>hard to guarantee and prove</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Other properties (application specific)</p>
+<ul>
+<li><p>variable length key to fixed length hash value</p></li>
+<li><p>constant time computation <span class="math notranslate nohighlight">\(\Theta(1)\)</span></p></li>
+<li><p>squeeze a large domain to a smaller range</p></li>
+<li><p>chance of collision</p></li>
+<li><p>asymmetric</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Design of Hash Functions</h3>
+<ul class="simple">
+<li><p>Integer keys</p></li>
+<li><p>String keys</p>
+<ul>
+<li><p>Handle variable length</p></li>
+<li><p>All characters are involved</p></li>
+<li><p>Uniform distribution</p></li>
+</ul>
+</li>
+<li><p>Asymmetric hash functions</p>
+<ul>
+<li><p>Hard to reverse</p></li>
+<li><p>Cryptographic hash functions</p></li>
+<li><p>E.g. MD5, SHA-1, SHA-2, SHA-3</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Applications</h2>
+<ul class="simple">
+<li><p>Hash table data structure</p>
+<ul>
+<li><p>Hash Map (Map ADT, dictionary, key-value store)</p></li>
+<li><p>Hash Set (Set ADT)</p></li>
+</ul>
+</li>
+<li><p>Fingerprinting</p>
+<ul>
+<li><p>Short summary of a large data set</p></li>
+<li><p>Checksum</p></li>
+<li><p>Password management</p></li>
+</ul>
+</li>
+<li><p>Cryptography</p></li>
+<li><p>Advanced data structures</p>
+<ul>
+<li><p>Bloom filter</p></li>
+<li><p>Cuckoo filter</p></li>
+<li><p>Merkle tree (e.g. BitCoin)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

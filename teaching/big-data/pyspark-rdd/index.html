@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PySpark Programming: RDD · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/big-data/big-data-intro/">Introduction To Big Data</a></li><li><a href="/teaching/big-data/big-data-lifecycle/">Big Data Life Cycle</a></li><li><a href="/teaching/big-data/big-data-processing/">Big Data Processing</a></li><li><a href="/teaching/big-data/data-analysis/">Data Analysis for Big Data: Overview</a></li><li><a href="/teaching/big-data/ml-dl/">Machine Learning And Deep Learning For Data Analysis</a></li><li><a href="/teaching/big-data/pyspark/">PySpark Programming for Big Data</a></li><li><a href="/teaching/big-data/streaming/">Streaming for Big Data</a></li><li><a href="/teaching/big-data/cloud-computing/">Cloud Computing For Big Data</a></li><li><a href="/teaching/big-data/misc/">Security, Privacy, and Compliance for Big Data</a></li><li><a href="/teaching/big-data/glossary/">Big Data Glossary</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/big-data/">Big Data</a> / PySpark Programming: RDD</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>PySpark Programming: RDD</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#rdd-resilient-distributed-dataset">RDD (Resilient Distributed Dataset)</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="pyspark-programming-rdd"></span>
+<h2 id="rdd-resilient-distributed-dataset">RDD (Resilient Distributed Dataset)</h2>
+<ul>
+<li>
+<p>External readings</p>
+<ul>
+<li><a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html">RDD Programming Guide</a></li>
+<li><a href="https://www.analyticsvidhya.com/blog/2021/10/a-comprehensive-guide-to-pyspark-rdd-operations/">A Comprehensive Guide to PySpark RDD Operations</a></li>
+</ul>
+</li>
+<li>
+<p>The low-level abstraction in PySpark</p>
+</li>
+<li>
+<p>Can do anything with RDDs but the DataFrame API is more user-friendly and efficient for structured data</p>
+</li>
+<li>
+<p>RDDs are more flexible and can be used for unstructured and semi-structured data</p>
+</li>
+<li>
+<p>Characteristics</p>
+<ul>
+<li>Distributed (data is distributed across multiple machines)</li>
+<li>Immutable (once created, it cannot be changed)</li>
+<li>Lazy evaluation: transformations record work to perform; an action triggers the computation needed for its result. A shuffle is a possible data redistribution step, not the trigger for execution.</li>
+</ul>
+</li>
+<li>
+<p>Two types of operations</p>
+<ul>
+<li>As extensions to traditional map/reduce paradigm</li>
+<li>Transformations
+<ul>
+<li>Takes an RDD and return another RDD</li>
+<li>Distributed RDD to distributed RDD</li>
+<li>Can be chained</li>
+<li>Include but more than just mapping</li>
+<li>Transformations are lazy</li>
+<li>Some transformations require a shuffle when their results are computed</li>
+</ul>
+</li>
+<li>Actions
+<ul>
+<li>Trigger computation on an RDD</li>
+<li>Some return results to the driver; others write output or perform side effects</li>
+<li>Include but more than just reducing</li>
+<li>All actions will trigger the execution of the DAG</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Useful transformations</p>
+<ul>
+<li><code>map(func)</code>, apply a function to every element in an iterable, func should transform one item to another</li>
+<li><code>flatMap(func)</code>, apply a function to every element in an iterable and flatten the resulting list, func should take one item and generate a list</li>
+<li><code>filter(func)</code>, filter elements according to the returned value of a boolean function applied to every element, func should return True or False according to the input</li>
+</ul>
+</li>
+<li>
+<p>Useful actions</p>
+<ul>
+<li><code>collect()</code>, collect all data and return a local list, <strong>Never use with large dataset</strong></li>
+<li><code>count()</code></li>
+<li><code>first()</code></li>
+<li><code>take(num)</code>, take the first num of values and return a local list</li>
+<li><code>reduce(func)</code>, func should take two parameters and give one result</li>
+<li><code>sum()</code></li>
+<li><code>max()</code></li>
+<li><code>min()</code></li>
+<li><code>mean()</code></li>
+<li><code>countByValue()</code>
+<ul>
+<li>Python dict like type as output <code>{value1: count1, value2: count2, ...}</code></li>
+<li>models key-value pair</li>
+<li>key must be unique</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Pair RDD</p>
+<p>A pair RDD is an RDD whose elements are key-value pairs. PySpark provides key-based operations that use the first element of each pair as its key.</p>
+<ul>
+<li>example <code>[(key1, value1), (key2, value2), ...]</code></li>
+<li>Useful transformations for pair RDDs
+<ul>
+<li><code>sortByKey(ascending=True)</code></li>
+<li><code>sortBy(func, ascending=True)</code>
+<ul>
+<li>func should take an item and return the value used to perform sorting</li>
+<li>e.g. <code>pairs.sortBy(lambda p: p[1])</code> use the value (second item in the pair) to sort the pairs</li>
+</ul>
+</li>
+<li><code>groupByKey()</code>
+<ul>
+<li>create a new RDD with each item being pairs with a same key</li>
+</ul>
+</li>
+<li><code>reduceByKey(func)</code>
+<ul>
+<li>Combine values with the same key and return a new pair RDD. This is a transformation.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Useful actions for pair RDDs
+<ul>
+<li><code>countByKey()</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>For the transformation/action distinction and shuffle behavior, see the <a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#rdd-operations">Spark RDD programming guide</a>.</p>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>C++ Pointers and Arrays - Fundamentals</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>C++ Pointers and Arrays - Fundamentals</h1>
+<ul class="simple">
+<li><p>Introduction to Pointers</p>
+<ul>
+<li><p>Pointer Related Operations</p></li>
+<li><p>Pointer Arithmetic</p></li>
+<li><p>Common Pointer Pitfalls</p></li>
+<li><p>Function Pass-by-pointer Example</p></li>
+</ul>
+</li>
+<li><p>Introduction to Arrays</p>
+<ul>
+<li><p>Array-Pointer Relationship</p></li>
+<li><p>Function Parameters</p></li>
+<li><p>Dynamic Arrays</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h1>Introduction to Pointers</h1>
+<ul class="simple">
+<li><p>Definition: A derived data type that stores memory addresses of the
+memory location of another variable.</p></li>
+<li><p>Memory addresses in C++: 8 bytes (64-bit systems)</p></li>
+<li><p>Declaration syntax</p></li>
+</ul>
+<pre data-id="introduction-to-pointers"><code data-trim data-noescape class="cpp">int* ptr;     // Pointer to integer
+double* dptr; // Pointer to double
+char* cptr;   // Pointer to character</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Pointer Related Operations</h2>
+<ul class="simple">
+<li><p>Address-of (referencing) operator (&amp;)</p>
+<ul>
+<li><p>&amp;num returns the memory address of num variable (l-value)</p></li>
+<li><p>&amp;arr[0] kind of syntax is also valid</p></li>
+</ul>
+</li>
+<li><p>Dereferencing operator (*)</p>
+<ul>
+<li><p>*ptr is an alias of the variable it points to</p></li>
+</ul>
+</li>
+<li><p>Example</p></li>
+</ul>
+<pre data-id="pointer-related-operations"><code data-trim data-noescape class="cpp">int num = 42;
+int* ptr = &amp;num;    // ptr stores address of num
+cout &lt;&lt; *ptr;       // prints 42 (value at address)
+cout &lt;&lt; ptr;        // prints memory address
+*ptr = 100;         // modifies num through pointer</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Pointer Arithmetic</h2>
+<ul class="simple">
+<li><p>Adding/subtracting integers</p></li>
+<li><p>Relationship with data type size</p></li>
+<li><p>Example</p></li>
+</ul>
+<pre data-id="pointer-arithmetic"><code data-trim data-noescape class="cpp">int arr[5] = {1, 2, 3, 4, 5};
+int size = 5;
+int* ptr = arr;  // points to first element
+
+ptr++;      // moves to next integer (4 bytes)
+cout &lt;&lt; *ptr;   // 2
+
+ptr += 2;   // moves forward 2 integers
+cout &lt;&lt; *ptr;   // 4</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Common Pointer Pitfalls</h2>
+<ul class="simple">
+<li><p>Uninitialized pointers</p></li>
+<li><p>Dangling pointers</p></li>
+<li><p>Empty pointers (nullptr)</p></li>
+<li><p>Example</p></li>
+</ul>
+<pre data-id="common-pointer-pitfalls"><code data-trim data-noescape class="cpp">int *ptr;           // Uninitialized (dangerous!)
+int *safe = nullptr;// Safe initialization
+
+int *danger;
+{
+  int temp = 42;
+  danger = &amp;temp;
+}  // danger now dangling!</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Function Pass-by-pointer Example</h2>
+<ul class="simple">
+<li><p>Passing pointers to functions</p></li>
+<li><p>Modifying variables through pointers</p></li>
+<li><p>Example</p></li>
+</ul>
+<pre data-id="function-pass-by-pointer-example"><code data-trim data-noescape class="cpp">void swap(int* a, int* b) {
+  int temp = *a;
+  *a = *b;
+  *b = temp;
+}
+
+int x = 10, y = 20;
+swap(&amp;x, &amp;y);
+
+cout &lt;&lt; x &lt;&lt; &quot; &quot; &lt;&lt; y;  // 20 10</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h1>Introduction to Arrays</h1>
+<ul class="simple">
+<li><p>Array declaration and initialization</p></li>
+<li><p>Example</p></li>
+</ul>
+<pre data-id="introduction-to-arrays"><code data-trim data-noescape class="cpp">int array[10];  // Uninitialized array
+
+int numbers[] = {1, 2, 3, 4, 5};
+// int numbers[5] = {1, 2, 3, 4, 5};
+
+// 2D array
+int matrix[2][3] = {
+  {1, 2, 3},
+  {4, 5, 6}
+};</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Array-Pointer Relationship</h2>
+<ul class="simple">
+<li><p>Arrays decay to pointers</p></li>
+<li><p>Array indexing vs pointer arithmetic</p></li>
+<li><p>Example</p></li>
+</ul>
+<pre data-id="array-pointer-relationship"><code data-trim data-noescape class="cpp">int arr[] = {10, 20, 30, 40, 50};
+// 5 integers * 4 bytes = 20 bytes are allocated
+// arr is a pointer pointing to the first element
+
+int *ptr = arr;  // points to first element
+// int *prt = &amp;arr[0];
+
+// These are equivalent:
+cout &lt;&lt; arr[2];  // array indexing
+cout &lt;&lt; *(ptr+2);// pointer arithmetic
+cout &lt;&lt; *(arr+2);// arrays work with pointer arithmetic
+cout &lt;&lt; ptr[2];  // pointers work with array indexing</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Function Parameters</h2>
+<ul class="simple">
+<li><p>Arrays as parameters</p>
+<ul>
+<li><p>Empty [] or * syntax</p></li>
+<li><p>Decay to pointers</p></li>
+<li><p>Accompanied by size</p></li>
+</ul>
+</li>
+<li><p>Example</p></li>
+</ul>
+<pre data-id="function-parameters"><code data-trim data-noescape class="cpp">void processArray(int arr[], int size) {
+  for(int i = 0; i &lt; size; i++)
+    arr[i] *= 2;
+}
+
+void processPointer(int *arr, int size) {
+  for(int i = 0; i &lt; size; i++)
+    arr[i] *= 2;
+}</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Dynamic Arrays</h2>
+<ul class="simple">
+<li><p>Dynamic memory allocation</p></li>
+<li><p>new and delete operators</p></li>
+<li><p>Example</p></li>
+</ul>
+<pre data-id="dynamic-arrays"><code data-trim data-noescape class="cpp">// Single dynamic array
+int size = 5;
+int* dynArr = new int[size];
+
+// Initialize array
+for(int i = 0; i &lt; size; i++)
+  dynArr[i] = i * 10;
+
+// Don't forget to deallocate!
+delete [] dynArr;</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Practice Problems</h2>
+<ol class="arabic simple">
+<li><p>Write a function that reverses an array</p></li>
+<li><p>Implement a function to find the second largest element in an array</p></li>
+</ol>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

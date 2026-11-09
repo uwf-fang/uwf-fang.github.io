@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PySpark Programming for Big Data · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/big-data/big-data-intro/">Introduction To Big Data</a></li><li><a href="/teaching/big-data/big-data-lifecycle/">Big Data Life Cycle</a></li><li><a href="/teaching/big-data/big-data-processing/">Big Data Processing</a></li><li><a href="/teaching/big-data/data-analysis/">Data Analysis for Big Data: Overview</a></li><li><a href="/teaching/big-data/ml-dl/">Machine Learning And Deep Learning For Data Analysis</a></li><li><a href="/teaching/big-data/pyspark/" aria-current="page">PySpark Programming for Big Data</a></li><li><a href="/teaching/big-data/streaming/">Streaming for Big Data</a></li><li><a href="/teaching/big-data/cloud-computing/">Cloud Computing For Big Data</a></li><li><a href="/teaching/big-data/misc/">Security, Privacy, and Compliance for Big Data</a></li><li><a href="/teaching/big-data/glossary/">Big Data Glossary</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/big-data/">Big Data</a> / PySpark Programming for Big Data</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>PySpark Programming for Big Data</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#why-pyspark">Why PySpark</a></li>
+    <li><a href="#pyspark-basics">PySpark Basics</a></li>
+    <li><a href="#related-python-concepts">Related Python Concepts</a>
+      <ul>
+        <li><a href="#suggested-learning-resources">Suggested learning resources</a></li>
+        <li><a href="#python-basics">Python Basics</a></li>
+        <li><a href="#lambda-functions">Lambda Functions</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="pyspark-programming-for-big-data"></span>
+<p>Spark supports multiple programming languages including Java, Scala, Python, and R. In this course, we will use Python as the programming language to work with Spark. The PySpark components are built on top of Spark Core and provide Python APIs to interact with Spark.</p>
+<p>We will only briefly introduce how to program in PySpark to manipulate datasets and achieve certain big data processing tasks.</p>
+<h2 id="why-pyspark">Why PySpark</h2>
+<ul>
+<li>Other languages
+<ul>
+<li>Scala
+<ul>
+<li>native language for Spark</li>
+<li>best performance</li>
+<li>concise and powerful language</li>
+<li>the language itself is not worth learning as a new language compared to Python</li>
+<li>complicated syntax</li>
+</ul>
+</li>
+<li>Java: too verbose</li>
+<li>R: not a general-purpose language</li>
+</ul>
+</li>
+<li>Advantages
+<ul>
+<li>Easier to install using pip than Scala</li>
+<li>You may have learned Python already</li>
+<li>Python worth the time to learn</li>
+</ul>
+</li>
+</ul>
+<h2 id="pyspark-basics">PySpark Basics</h2>
+<ul>
+<li>
+<p>Concepts</p>
+<span id="term-SparkContext"></span>
+<dl>
+<dt>SparkContext</dt>
+<dd>Low-level context for RDD operations. In modern PySpark code, you usually access it from <code>spark.sparkContext</code>.</dd>
+</dl>
+<span id="term-SparkSession"></span>
+<dl>
+<dt>SparkSession</dt>
+<dd>Primary entry point to PySpark, including DataFrame and Spark SQL APIs.</dd>
+</dl>
+<span id="term-RDD-Resilient-Distributed-Dataset"></span>
+<dl>
+<dt>RDD (Resilient Distributed Dataset)</dt>
+<dd>A fundamental building block of PySpark which is fault-tolerant, immutable distributed collection of objects</dd>
+</dl>
+<span id="term-DataFrame"></span>
+<dl>
+<dt>DataFrame</dt>
+<dd>A distributed collection of data organized into named columns.</dd>
+</dl>
+<span id="term-Dataset-API"></span>
+<dl>
+<dt>Dataset API</dt>
+<dd>A strongly-typed API available in Scala/Java. In PySpark, DataFrame is the main structured API.</dd>
+</dl>
+</li>
+<li>
+<p>RDD</p>
+<ul>
+<li>from Spark Core module</li>
+<li>lower-level API</li>
+<li>for unstructured data and semi-structured data</li>
+</ul>
+</li>
+<li>
+<p>DataFrame (and Dataset API in Scala/Java)</p>
+<ul>
+<li>from Spark SQL module</li>
+<li>higher-level API</li>
+<li>for structured data</li>
+</ul>
+</li>
+</ul>
+<h2 id="related-python-concepts">Related Python Concepts</h2>
+<p>As the programming language used in PySpark is Python, we will need to know some Python concepts to work with PySpark. Please refer to the Python programming resources online if you are not familiar with Python.</p>
+<p>We will learn some useful python concepts to be used in data manipulation using PySpark APIs. For details refer to any Python programming resources online.</p>
+<h3 id="suggested-learning-resources">Suggested learning resources</h3>
+<ul>
+<li><a href="https://www.geeksforgeeks.org/python-programming-language-tutorial/">G4G Python Tutorial</a></li>
+<li><a href="https://docs.python.org/3/reference/">Official Python Reference</a></li>
+<li>Ask Chatbot on specific questions: ChatGPT, Google Gemini, Claude AI, etc.</li>
+</ul>
+<h3 id="python-basics">Python Basics</h3>
+<ul>
+<li>Python is a high-level, interpreted, interactive, and object-oriented scripting language.</li>
+<li>Data types
+<ul>
+<li>int</li>
+<li>float</li>
+<li>str</li>
+<li>tuple - immutable list of objects of any type</li>
+<li>list - mutable list of objects of any type</li>
+<li>dict - key-value pair of objects of any type</li>
+</ul>
+</li>
+<li>Control structures
+<ul>
+<li>if-elif-else</li>
+<li>for loop</li>
+<li>while loop</li>
+</ul>
+</li>
+<li>Functions
+<ul>
+<li>def keyword</li>
+<li>return keyword</li>
+<li>positional arguments</li>
+<li>keyword arguments</li>
+<li>default arguments</li>
+<li>lambda functions</li>
+</ul>
+</li>
+</ul>
+<h3 id="lambda-functions">Lambda Functions</h3>
+<ul>
+<li>A simple and disposable way to write a python function.</li>
+<li>Many RDD transformations require a function as its parameter</li>
+<li>Syntax
+<ul>
+<li><code>lambda &lt;input list&gt;: &lt;return value&gt;</code></li>
+<li>start with <code>lambda</code> keyword</li>
+<li>followed by a list of parameters</li>
+<li>after the colon, provide the return value calculated based on the parameters</li>
+</ul>
+</li>
+<li>Examples
+<ul>
+<li><code>lambda x: x*x</code>, square the input</li>
+<li><code>lambda line: line.split()</code>, split a text to a list of text using spaces as delimiters</li>
+<li><code>lambda paragraph: paragraph.split('\n')</code>, split a text to a list of lines using new line character as delimiters</li>
+<li><code>lambda word: (word, 1)</code>, convert a work to a key-value pair of word and 1</li>
+<li><code>lambda word: len(word)</code>, convert a string to its length</li>
+<li><code>lambda pair: pair[0]</code>, return the first element of the pair</li>
+<li><code>lambda pair: pair[1]</code>, return the second element of the pair</li>
+<li><code>lambda x, y: x+y</code>, sum up two value</li>
+<li><code>lambda p1, p2: p1[1] + p2[1]</code>, sum up the second values in two pairs</li>
+</ul>
+</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

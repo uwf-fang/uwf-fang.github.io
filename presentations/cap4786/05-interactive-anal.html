@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Introduction to Big Data Analytics</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Introduction to Big Data Analytics</h1>
+<div class="subtitle docutils container">
+<p><strong>Chapter 4: Interactive Data Analysis with Spark</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<ul class="simple">
+<li><p>Note: the text book only covers the basics of Spark shell and I will cover
+more examples and details about data analysis</p></li>
+<li><p>Motivation</p></li>
+<li><p>Introduction to interactive data processing and analysis</p></li>
+<li><p>Interactive shell and notebook interfaces</p></li>
+<li><p>Detailed steps of interactive data processing and analysis</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Motivation</h2>
+<ul class="simple">
+<li><p>Definition: Interactive data processing and analysis is the process of
+interactively querying, analyzing, and visualizing data.</p></li>
+<li><p>Why interactive?</p>
+<ul>
+<li><p>Checking feedback before proceeding to the next step</p></li>
+<li><p>Interactive debugging and testing according to the feedback</p></li>
+<li><p>One-shot data data processing and analysis</p></li>
+<li><p>The counterpart of batch processing which runs sophisticated algorithms
+end-to-end repeatedly</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Data Processing Overview</h2>
+<ul class="simple">
+<li><p>Two types of data processing</p>
+<ul>
+<li><p>Batch processing and analysis: repeated end to end process with
+sophisticated procedures</p></li>
+<li><p>Interactive processing and analysis: interactively process with unknown
+procedures; employed in one-time analysis or exploratory data analysis for
+potential batch processing pipeline development</p></li>
+</ul>
+</li>
+<li><p>Typical steps of <strong>batch</strong> data processing and analysis</p>
+<ul>
+<li><p>Load data</p></li>
+<li><p>Process data</p></li>
+<li><p>Analyze data</p></li>
+<li><p>Visualize data</p></li>
+<li><p>Save/Export report and visualizations</p></li>
+<li><p>Save/Export data</p></li>
+</ul>
+</li>
+<li><p>Common workflow in data science</p>
+<ul>
+<li><p>Collect new data</p></li>
+<li><p>Perform interactive data processing and analysis as an exploratory data
+analysis (EDA)</p></li>
+<li><p>Develop a batch processing pipeline based on the EDA</p></li>
+<li><p>Deploy the pipeline to production</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Interactive Data Processing and Analysis</h2>
+<ul class="simple">
+<li><p>In interactive data processing and analysis, the steps are the same but the
+process is more iterative. You will go back and forth between the steps to
+refine the data processing and analysis.</p></li>
+<li><p>Try and refine upstream steps and then proceed to the downstream steps</p></li>
+<li><p>When downstream steps are not satisfactory as a problem related to upstream
+steps, go back to the upstream steps and try again</p></li>
+<li><p>The process is iterative and interactive</p></li>
+<li><p>Two types of interface for interactive data processing and analysis</p>
+<ul>
+<li><p>Interactive shell</p></li>
+<li><p>Notebook interface</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Interfaces</h2>
+<ul class="simple">
+<li><p>Spark shell: traditional command-line interface</p>
+<ul>
+<li><p>REPL (Read-Eval-Print Loop) interface</p></li>
+<li><p>You need to save and manage your code and outcome separately (e.g. copy and
+paste an editor)</p></li>
+<li><p>Awkward to reuse code snippets</p></li>
+</ul>
+</li>
+<li><p>Notebook interface: a modern web-based interface</p>
+<ul>
+<li><p>Mostly based on Jupyter Notebook</p></li>
+<li><p>Require backend (local or remote) to run the code snippets</p></li>
+<li><p>Cells to keep both documentation and code snippets</p></li>
+<li><p>Run code snippets in cells and see the outcome immediately</p></li>
+<li><p>Easy import/export of code snippets to code files or html files</p></li>
+<li><p>Convenient to give and collect assignments in teaching</p></li>
+<li><p><strong>Note: Databricks Community Edition provides a notebook interface with on
+cloud backend free of charge</strong></p></li>
+<li><p><strong>Note: Databricks Community Edition is the only service that supports
+Scala in the notebook interface</strong></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Introduction to Spark Shell</h3>
+<ul class="simple">
+<li><p>Spark shell is a command-line interface to interact with Spark using Scala</p></li>
+<li><p>REPL (Read-Eval-Print Loop) interface</p></li>
+<li><p>Start Spark shell to enter the REPL interface</p></li>
+<li><p>Enter a Scala code snippet to interact with Spark backend</p></li>
+<li><p>Commands started with <code class="code docutils literal notranslate"><span class="pre">:</span></code> are special commands</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">help</span></code>: list all special commands</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">quit</span></code>: exit the shell</p></li>
+</ul>
+</li>
+<li><p>Reuse history commands: Ctrl-R to search history commands</p></li>
+<li><p>Multi-line code snippets</p>
+<ul>
+<li><p>Single command in multiple lines</p>
+<ul>
+<li><p>The shell will wait if the command seems incomplete</p></li>
+<li><p>the trick is to use open parenthesis or open brackets to make the command
+incomplete</p></li>
+</ul>
+</li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">:paste</span></code> to enter multiple lines of code with any number of
+statements</p>
+<ul>
+<li><p>Ctrl-D to exit the paste mode</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Straight forward to use and easy access to local file system</p></li>
+<li><p>Very limited edition capability and awkward to reuse code snippets</p></li>
+<li><p>Refer to <a class="reference internal" href="docker.html"><span class="doc">Spark In Docker</span></a> slides for the setup of the Spark shell in Docker</p></li>
+</ul>
+</section>
+<section >
+<h3>Introduction to DataBricks Notebook</h3>
+<ul class="simple">
+<li><p>Jupyter notebook like interface</p>
+<ul>
+<li><p>Commonly used in data science with support to Python, R, Julia, etc.</p></li>
+</ul>
+</li>
+<li><p>Databricks Community Edition</p>
+<ul>
+<li><p>Only known service that supports Scala</p></li>
+<li><p>Direct access to Spark backend and Databricks File System (DBFS)</p>
+<ul>
+<li><p>the SparkContext is already created and named as <code class="code docutils literal notranslate"><span class="pre">sc</span></code></p></li>
+<li><p>access DBFS with <code class="code docutils literal notranslate"><span class="pre">dbfs:</span></code> prefix when using file paths</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">dbutils</span></code> library to access Databricks utilities</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Refer to <a class="reference internal" href="dce.html"><span class="doc">Databricks Community Edition</span></a> slides for the setup of DCE</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Steps of interactive processing and analysis</h2>
+<ul class="simple">
+<li><p>Details are shown for all steps</p></li>
+<li><p>Both Spark shell and Databricks notebook are used for the demonstration</p></li>
+<li><p>Spark in docker container handles files in the local file system directly</p></li>
+</ul>
+</section>
+<section >
+<h3>Load Data</h3>
+<ul class="simple">
+<li><p>Artificial data, e.g. <code class="code docutils literal notranslate"><span class="pre">val</span> <span class="pre">data</span> <span class="pre">=</span> <span class="pre">(1</span> <span class="pre">to</span> <span class="pre">1000).toList</span></code></p></li>
+<li><p>Load data from a file</p>
+<ul>
+<li><p>File sources</p>
+<ul>
+<li><p>local file system</p></li>
+<li><p>distributed file system (e.g. HDFS, DBFS)</p></li>
+<li><p>file hosted online (access via URL)</p>
+<ul>
+<li><p>Direct read from URL (if you only read once)</p></li>
+<li><p>Download to file system and read</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">SparkContext</span></code> provides methods to load files</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">textFile</span></code> to read simple text files and return an RDD</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">read</span></code> to read structured text files (e.g. csv, json, parquet) and
+return a DataFrame</p></li>
+</ul>
+</li>
+<li><p>Avoid the Scala native file I/O methods! They does not support distributed
+file system!</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Loading/saving Files in Databricks Community Edition</h3>
+<ul class="simple">
+<li><p>Your code runs in a disposable container (compute). Thus, data stored in the
+local file system will be lost after the container is recycled</p></li>
+<li><p>Refer to the file operations with DCE recording on Canvas in module 3</p></li>
+<li><p>Databricks provides a distributed file system called Databricks File System
+(DBFS)</p>
+<ul>
+<li><p>Not accessible in Web Terminal!!! Use the notebook interface instead</p></li>
+<li><p>All computes have access to the same DBFS</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">dbfs:</span></code> prefix to access the files in DBFS formally but this prefix
+can be omitted. In spark, you can access the files in DBFS as if they are
+in the local file system, although you cannot find the files in the local
+file system using the terminal. <strong>Note: single slash used after dbfs:</strong></p>
+<ul>
+<li><p>E.g. <code class="code docutils literal notranslate"><span class="pre">val</span> <span class="pre">data</span> <span class="pre">=</span> <span class="pre">sc.textFile(&quot;dbfs:/FileStore/tables/data.txt&quot;)</span></code></p></li>
+<li><p>E.g. <code class="code docutils literal notranslate"><span class="pre">val</span> <span class="pre">data</span> <span class="pre">=</span> <span class="pre">sc.textFile(&quot;/FileStore/tables/data.txt&quot;)</span></code></p></li>
+</ul>
+</li>
+<li><p>Files stored in <code class="code docutils literal notranslate"><span class="pre">dbfs:/FileStore</span></code> are accessible in the notebook
+interface.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">SparkContext</span></code> provides methods to read files in DBFS</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">dbutils.fs</span></code> library to handle the files in DBFS</p></li>
+</ul>
+</li>
+<li><p>There are other protocols such as <code class="code docutils literal notranslate"><span class="pre">hdfs:</span></code> for Hadoop distributed file
+system, <code class="code docutils literal notranslate"><span class="pre">s3:</span></code> for Amazon S3, <code class="code docutils literal notranslate"><span class="pre">wasb:</span></code> for Azure Blob Storage, etc.</p>
+<ul>
+<li><p><strong>Note: these protocols should be followed by double slashes, e.g.
+:code:`s3://my-bucket/my-file`</strong></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Loading/Saving Files in Spark Shell in Docker</h3>
+<ul>
+<li><p>The Spark shell in Docker container has access to the local file system</p></li>
+<li><p>Store the data file in your local file system and bind the directory to the
+container</p>
+<ul>
+<li><p>Make a working directory in your computer</p></li>
+<li><p>Store the files there</p></li>
+<li><p>Run the Spark docker container with the <code class="code docutils literal notranslate"><span class="pre">-v</span></code> option</p>
+<pre><code data-trim data-noescape class="bash">docker run -it -v $(pwd):/opt/spark/work-dir --name spark spark:latest /opt/spark/bin/spark-shell</code></pre>
+</li>
+<li><p>Read and write the files in the Spark shell under the director:
+<code class="code docutils literal notranslate"><span class="pre">/opt/spark/work-dir</span></code></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Process Data</h3>
+<ul class="simple">
+<li><p>Data processing is the process of transforming data into a more useful format
+in the future analysis</p></li>
+<li><p>Spark data APIs</p>
+<ul>
+<li><p>RDD (Resilient Distributed Dataset): low-level API</p></li>
+<li><p>DataFrame: high-level API for structured data</p></li>
+<li><p>DataSet: high-level API for structured data with type safety</p></li>
+</ul>
+</li>
+<li><p>Unstructured data (e.g. text files) can be loaded as RDD</p></li>
+<li><p>Structured data (e.g. csv, json, parquet) can be loaded as DataFrame</p></li>
+<li><p>Data processing</p>
+<ul>
+<li><p>Data merging</p></li>
+<li><p>Data cleaning (e.g. missing value imputation, outlier detection)</p></li>
+<li><p>Unstructured to structured (e.g. parsing, tokenizing, etc.)</p></li>
+<li><p>Data transformation (structured to structured, e.g. pivot table, feature
+extraction, normalization, etc.)</p></li>
+</ul>
+</li>
+<li><p>FYI: many deep learning models can take unstructured data without much
+processing</p></li>
+</ul>
+</section>
+<section >
+<h3>Analyze Data</h3>
+<ul class="simple">
+<li><p>Big data applications usually start with big data size</p></li>
+<li><p>After data processing, the data can be either big or small in size</p></li>
+<li><p>For small data, use single machine tools</p>
+<ul>
+<li><p>Statistics, visualizations: R, Python Pandas, Python Matplotlib, etc.</p></li>
+<li><p>Machine learning: Python Scikit-learn, etc.</p></li>
+<li><p>Deep learning: TensorFlow, PyTorch, etc.</p></li>
+</ul>
+</li>
+<li><p>For big data, use distributed tools</p>
+<ul>
+<li><p>Distributed tools</p>
+<ul>
+<li><p>Spark MLlib: machine learning library</p></li>
+<li><p>Spark SQL: SQL-like query language can be used to perform simple
+statistical analysis</p></li>
+</ul>
+</li>
+<li><p>Deep learning frameworks with support to distributed workloads: TensorFlow,
+PyTorch, etc.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

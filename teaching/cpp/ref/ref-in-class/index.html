@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reference-typed Instance Variable in Class · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/cpp/">C&#43;&#43; Reference</a> / Reference-typed Instance Variable in Class</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Reference-typed Instance Variable in Class</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#tr-dr">TR;DR</a></li>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#example">Example</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="reference-typed-instance-variable-in-class"></span>
+<span id="ref-in-class"></span>
+<h2 id="tr-dr">TR;DR</h2>
+<ul>
+<li>Reference-typed instance variable must be initialized in the constructor using initializer list syntax!</li>
+<li>Will never be reassigned</li>
+<li>Later access/modification will only affect the variable bound to it rather than the reference itself</li>
+</ul>
+<h2 id="overview">Overview</h2>
+<ul>
+<li>To be able to refer to an external object without copying it</li>
+<li>It must be passed to the constructor of the class</li>
+<li>Reference-typed instance variable must be initialized in the constructor using initializer list syntax</li>
+</ul>
+<span id="ref-in-class-example"></span>
+<h2 id="example">Example</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// ==== Reference type in class ====
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// Sharable configuration class
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">Config</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> value<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">public</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  Config<span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> value<span style="color:#1f2328">)</span> <span style="color:#0550ae">:</span> config<span style="color:#1f2328">(</span>value<span style="color:#1f2328">)</span> <span style="color:#1f2328">{}</span>  <span style="color:#57606a">// constructor
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> <span style="color:#6639ba">getValue</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span> <span style="color:#cf222e">return</span> value<span style="color:#1f2328">;</span> <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- correct ----
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// Class that need to keep a reference to the configuration
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">MyClass</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  Config <span style="color:#0550ae">&amp;</span>conf<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">public</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">explicit</span> MyClass<span style="color:#1f2328">(</span>Config <span style="color:#0550ae">&amp;</span>conf<span style="color:#1f2328">)</span> <span style="color:#0550ae">:</span> conf<span style="color:#1f2328">(</span>conf<span style="color:#1f2328">)</span> <span style="color:#1f2328">{}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// other methods can now use &#34;conf&#34; as if it&#39;s a Config object
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- Usage ----
+</span></span></span><span style="display:flex;"><span>Config <span style="color:#6639ba">config</span><span style="color:#1f2328">(</span><span style="color:#0550ae">10</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>MyClass <span style="color:#6639ba">myClass</span><span style="color:#1f2328">(</span>config<span style="color:#1f2328">);</span>  <span style="color:#57606a">// so myClass.conf is bound to config
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- wrong ----
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">MyClass</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  Config <span style="color:#0550ae">&amp;</span>conf<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">public</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">explicit</span> MyClass<span style="color:#1f2328">(</span>Config <span style="color:#0550ae">&amp;</span>conf<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">this</span><span style="color:#0550ae">-&gt;</span>conf <span style="color:#0550ae">=</span> conf<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span></code></pre></div></div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

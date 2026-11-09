@@ -1,0 +1,174 @@
+Vector
+======
++ A vector is mostly a data structure, usually language-specific
++ Can be treated as an ADT by focusing on abstract behaviors only
++ A sequential ADT, similar to list ADT
++ Behaviors:
+
+  * access by index
+  * insert/remove by index
+  * add/remove at end
+  * check size
+  * check empty
+  * iterate through elements
+
+C++ std::vector (Part 1)
+========================
++ A C++ implementation of the Vector ADT
++ An STL container
++ ``#include <vector>``
++ ``vector<int>`` is a class type (instance of template)
++ Internally based on a dynamic array
+
+  * fast index access
+  * slow erase/insert anywhere but end
+
+C++ std::vector (Part 2)
+------------------------
++ May re-allocate memory when full
+
+  * create larger array
+  * move elements
+  * delete old array
+
++ Variable length supported
++ Out-of-bound check with ``.at(n)``
++ The [] operator is not checking range as ``.at(n)``
++ Auto memory re-allocation
+
+C++ std::vector Methods (Part 1)
+--------------------------------
++ Constructors:
+
+  * default: empty vector
+  * ``(n)``: size n, default values
+  * ``(n, v)``: size n, filled with v
+  * copy constructor: same type
+  * initializer list: ``{item1, item2, ...}``
+
++ Operator =:
+
+  * ``v1 = {1, 2, 3}``: initializer_list, you cannot do this to array!
+  * ``v1 = v2``: copy assignment
+
+C++ std::vector Methods (Part 2)
+--------------------------------
++ ``at()``
+
+  * assign: ``v.at(0) = 10;`` this is an lvalue
+  * boundary check, throws exception
+
++ ``clear()``
++ ``empty()`` Checks empty only!
++ ``size()``
++ ``push_back()``: adds to end, no return
++ ``pop_back()``: removes last, no return
+
+C++ std::vector Methods (Part 3)
+--------------------------------
++ ``back()``: returns last value
++ ``resize()``
+
+  * may re-allocate
+
++ ``find()``: returns iterator
++ ``insert()``, ``erase()``: use iterators to locate
+
+Initialization
+--------------
++ Braces initialize with values
++ Parentheses call constructors
+
++ Examples:
+
+  * ``vector<int> v{1, 2, 3, 4, 5}`` — size 5 with values
+  * ``vector<int> v = {1, 2, 3, 4, 5}`` — preferred for sequence init
+  * ``vector<int> v(5)`` — size 5, default (0)
+  * ``vector<int> v(5, 1)`` — size 5, filled with 1
+  * ``vector<int> v1(v)`` — copy v
+
+C++ Iterator Type (FYI)
+=======================
++ Iterators enable container traversal
++ Hides implementation details
++ Supports:
+
+  * element access
+  * movement between elements
+  * modification
+
++ Useful for generic programming
+
+C++ Iterator Type (Usage)
+-------------------------
++ STL container derived type
+
+  * e.g. ``vector<int>::iterator``
+  * ``auto it = v.begin();`` for simplicity
+
++ Vector methods:
+
+  * ``begin()``, ``end()``
+  * ``erase(iterator)``: remove and return next iterator
+  * ``insert(iterator, value)``: insert before and return inserted iterator
+
+C++ Iterator Type (Example)
+---------------------------
++ ``find(begin, end, value)``: returns iterator or end
++ Example::
+
+    vector<int> v = {1, 2, 3, 4, 5};
+    vector<int>::iterator it = find(v.begin(), v.end(), 3);
+    it = v.erase(it);
+
+Passing Vector Around
+=====================
++ As parameter:
+
+  * by-value: ``void func(vector<int> vec);`` slow and inefficient
+  * read-only ref: ``void func(const vector<int> &vec);``
+  * by-ref: ``void func(vector<int> &vec);`` allows modification
+
++ As return value
++ Example::
+
+    loadData(vector<Patient> &patients, string filename);
+
+    int main() {
+      vector<Patient> patients;
+      loadData(patients, "patients.csv");
+      TextMenuApp app(patients);
+      app.run();
+      return EXIT_SUCCESS;
+    }
+
+
+Algorithms With Vectors
+=======================
++ Works like arrays
+
+  * use ``vec.at(i)`` instead of ``arr[i]``
+  * no need for a separate size variable
+
++ Great for variable-length outputs
+
+  * filter example::
+
+      vector<int> positiveOnly(const vector<int> &v) {
+        vector<int> result;
+        for (int i = 0; i < v.size(); ++i)
+          if (v.at(i) > 0)
+            result.push_back(v.at(i));
+        return result;
+      }
+
+Pitfalls Working With Vectors
+=============================
++ ``[]`` doesn't check bounds, prefer ``at()``
++ ``int a = v.pop_back();`` is invalid
+
+  * Correct: ``int a = v.back(); v.pop_back();``
+
++ ``v.length()`` is invalid — use ``v.size()``
++ Prefer ``v.empty()`` over ``v.size() == 0``
+

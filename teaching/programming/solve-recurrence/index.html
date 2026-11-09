@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solving Recurrence · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/programming/programming/">General Programming Information</a></li><li><a href="/teaching/programming/algorithm/">Algorithm</a></li><li><a href="/teaching/programming/data-structure/">Data Structure</a></li><li><a href="/teaching/programming/complexity/">Complexity Analysis</a></li><li><a href="/teaching/programming/alg-anal/">Algorithm Analysis</a></li><li><a href="/teaching/programming/adt-intro/">Abstract Data Type</a></li><li><a href="/teaching/programming/adt/linear-adts/">Linear ADTs</a></li><li><a href="/teaching/programming/ds/tree/">Tree Data Structure</a></li><li><a href="/teaching/programming/ds/graph/">Graph</a></li><li><a href="/teaching/programming/problems/lcs/">Longest Common Subsequence Problem</a></li><li><a href="/teaching/programming/problems/max-sum-subarray/">Max Sum Subarray Problem</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/programming/">Algorithms and Data Structures</a> / Solving Recurrence</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Solving Recurrence</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#recursive-relation">Recursive relation</a>
+      <ul>
+        <li><a href="#definition">Definition</a></li>
+        <li><a href="#general-forms">General forms</a></li>
+      </ul>
+    </li>
+    <li><a href="#solution-to-a-recurrence-relation">Solution to a recurrence relation</a>
+      <ul>
+        <li><a href="#common-approaches">Common Approaches</a></li>
+      </ul>
+    </li>
+    <li><a href="#substitution-method">Substitution method</a>
+      <ul>
+        <li><a href="#substitution-method-examples">Substitution method examples</a></li>
+      </ul>
+    </li>
+    <li><a href="#recurrence-tree-method">Recurrence tree method</a>
+      <ul>
+        <li><a href="#recursion-tree-examples">Recursion Tree Examples</a></li>
+      </ul>
+    </li>
+    <li><a href="#master-method">Master method</a>
+      <ul>
+        <li><a href="#three-cases">Three cases</a></li>
+        <li><a href="#intuitions-for-the-three-cases">Intuitions for the three cases</a></li>
+        <li><a href="#master-method-examples">Master method examples</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="solving-recurrence"></span>
+<p>The term “solving recurrence” refers to the process of finding the time function $T(n)$ for an algorithm, when the algorithm is implemented recursively. As the time function is usually expressed as a recurrence relation, the process of solving recurrence is also known as solving recurrence relation.</p>
+<h2 id="recursive-relation">Recursive relation</h2>
+<p>Many algorithms are either recursive in nature or can be efficiently implemented as an recursive algorithm. Among these are the divide-and-conquer algorithms, dynamic programming algorithms, the backtracking algorithms, and so on. In the analysis of these recursive implementations of algorithms, the time function $T(n)$ can be described by a recurrence relation.</p>
+<h3 id="definition">Definition</h3>
+<p>A recurrence relation is an equation that recursively defines a sequence, where each term is a function of one or more of the preceding terms.</p>
+<p>E.g. The recursive relation for a merge sort is: $T(n) = 2T(n/2) + \Theta(n)$</p>
+<h3 id="general-forms">General forms</h3>
+<p>There are many forms of recurrence relations. The following are the most common forms found in the analysis of algorithms.</p>
+<ol>
+<li>
+<p>Divide-and-conquer recurrence
+$$
+T(n) = aT(n/b) + f(n)</p>
+<p>$$</p>
+<p>where $a \geq 1$ and $b > 1$ are constants and $f(n)$ is a given function.</p>
+<ul>
+<li>Merge sort</li>
+<li>Binary search</li>
+<li>Maximum subarray</li>
+<li>Strassen’s matrix multiplication</li>
+</ul>
+</li>
+<li>
+<p>Linear recurrence (first order)
+$$
+T(n) = aT(n-1) + f(n)</p>
+<p>$$</p>
+<p>where $a \geq 1$ is a constant and $f(n)$ is a given function.</p>
+<ul>
+<li>Linear search (recursive version)</li>
+<li>Insertion sort/Selection sort (recursive version)</li>
+<li>Euclidean’s GCD algorithm</li>
+</ul>
+</li>
+<li>
+<p>Linear recurrence (second order)
+$$
+T(n) = aT(n-1) + bT(n-2) + f(n)</p>
+<p>$$</p>
+<p>where $a \geq 1$ and $b \geq 1$ are constants and $f(n)$ is a given function.</p>
+<ul>
+<li>Fibonacci numbers (naive recursive version)</li>
+</ul>
+</li>
+</ol>
+<p>There are many other forms of recurrence relations. Some of them can be very complicated and difficult to solve. Fortunately, they are not commonly found in the analysis of algorithms.</p>
+<h2 id="solution-to-a-recurrence-relation">Solution to a recurrence relation</h2>
+<p>A closed-form expression, also known as an explicit formula, is a mathematical expression that directly provides the value of a function or a sequence for any given input or term, without the need for further computation or recursion. In essence, it represents a formulaic solution that expresses the relationship between the input or term and the output in a straightforward, algebraic manner.</p>
+<p>E.g. $n^2 + 2n + 1$</p>
+<p>The solution of a recurrence relation is a closed-form expression for the function $T(n)$ in terms of $n$.</p>
+<p>E.g. The close form solution of $T(n) = 2T(n/2) + n$ is $\Theta(n \log n)$</p>
+<h3 id="common-approaches">Common Approaches</h3>
+<ul>
+<li>Substitution method</li>
+<li>Recursion-tree method</li>
+<li>Master method</li>
+</ul>
+<h2 id="substitution-method">Substitution method</h2>
+<p>The key idea behind the substitution method is to guess a solution for the recurrence relation and then use mathematical induction to prove that the guessed solution is correct.</p>
+<ol>
+<li>Guess the form of the solution.</li>
+<li>Use mathematical induction to find the constants and show that the solution works.</li>
+</ol>
+<h3 id="substitution-method-examples">Substitution method examples</h3>
+<p>Assume that we have the recurrence relation:</p>
+$$
+\begin{align*}
+f(n) &= 3f(n-1) + 3n \\
+f(1) &= 1
+\end{align*}
+$$<ol>
+<li>We guess the solution is $f(n) = An^2 + Bn + C$ where :math`A`, :math`B`, :math`C` are constants.</li>
+</ol>
+<blockquote>
+<p>Use substitution to find :math`A`, :math`B`, :math`C`.</p>
+</blockquote>
+<blockquote>
+$$
+> \begin{align*}
+> f(n) &= f(n-1) + 3n \\
+> An^2 + Bn + C &= A(n-1)^2 + B(n-1) + C + 3n \\
+> An^2 + Bn + C &= An^2 - 2An + A + Bn - B + C + 3n \\
+> \end{align*}
+> $$</blockquote>
+<blockquote>
+<p>So, we have</p>
+</blockquote>
+<blockquote>
+$$
+> \begin{align*}
+> A &= A \\
+> B &= -2A + B + 3 \\
+> C &= A - B + C \\
+> f(1) &= A + B + C = 1 \\
+> \end{align*}
+> $$</blockquote>
+<blockquote>
+<p>Solve them to get</p>
+</blockquote>
+<blockquote>
+$$
+> \begin{align*}
+> A = 1.5 \\
+> B = 1.5 \\
+> C = -2 \\
+> \end{align*}
+> $$</blockquote>
+<blockquote>
+<p>The final formula is :math`f(n) = 1.5n^2 + 1.5n - 2`.</p>
+</blockquote>
+<ol>
+<li>Mathematical induction to prove the formula is correct.</li>
+</ol>
+<blockquote>
+<p>To prove the formula $f(n) = 1.5n^2 + 1.5n - 2$ is correct for all $n$.</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>Base case: $f(1) = 1.5 + 1.5 - 2 = 1$. Correct!</li>
+<li>If the formula is correct for $n-1$, which means $f(n-1) = 1.5(n-1)^2 + 1.5n - 2$ then
+
+$$
+>   \begin{align*}
+>   f(n) &= f(n-1) + 3n \\
+>   &= (1.5(n-1)^2 + 1.5(n-1) - 2) + 3n \\
+>   &= 1.5n^2 - 3n + 1.5 + 1.5n - 1.5 - 2 + 3n \\
+>   &= 1.5n^2 + 1.5n - 2 \\
+>   \end{align*}
+>   $$</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>So, the formula is correct for :math`n`.</p>
+<ul>
+<li>Done!</li>
+</ul>
+</blockquote>
+<h2 id="recurrence-tree-method">Recurrence tree method</h2>
+<p>The recursive tree method is a graphical approach used to solve recurrence relations, especially in the context of analyzing the time complexity of recursive algorithms in computer science. It can also be used to generate an educated guess as to the closed-form solution of a recurrence relation, which can then be verified by the substitution method.</p>
+<ol>
+<li>
+<p>Draw a recursion tree.</p>
+<ol>
+<li>Start by representing the initial recurrence as the root of the tree.</li>
+<li>For each recursive call made by the algorithm, draw a child node. The number of child nodes corresponds to the number of recursive calls.</li>
+<li>Label each node with the cost of the non-recursive work done at that level.</li>
+<li>Continue this process until you reach the base case of the recurrence.</li>
+</ol>
+</li>
+<li>
+<p>Compute the cost of each level</p>
+<p>For each level of the tree, sum up the costs of all the nodes at that level.</p>
+</li>
+<li>
+<p>Compute the total cost</p>
+</li>
+</ol>
+<h3 id="recursion-tree-examples">Recursion Tree Examples</h3>
+<p>For the $T(n) = 3T(n/4) + \Theta(n^2)$ recurrence relation. Step 1 - 3:</p>
+<ol>
+<li>Draw the root node.</li>
+<li>Draw the level 1 nodes.</li>
+<li>Draw the level 2 nodes.</li>
+</ol>
+<figure class="migration-image align-"><img src="/teaching/_migration/8047f21ccc5a6b90.png" alt="image" style="width:800;max-width:100%;height:auto" loading="lazy"></figure>
+<ol>
+<li>Draw all levels</li>
+</ol>
+<p>Step 4:</p>
+<figure class="migration-image align-"><img src="/teaching/_migration/321cbfcf74398272.png" alt="image" style="width:800;max-width:100%;height:auto" loading="lazy"></figure>
+<p>Credit: Introduction to Algorithms, 4th Ed., T. Cormen et al.</p>
+<h2 id="master-method">Master method</h2>
+<p>The Master Method is a popular technique in computer science to determine the time complexity of <strong>divide-and-conquer</strong> algorithms. It provides a simple and general way to analyze the time complexity of recursive algorithms without having to solve the recurrence relation explicitly.</p>
+<p>The Master Method deals with recurrences of the following form:</p>
+<p>$$
+T(n) = aT(n/b) + f(n)</p>
+<p>$$</p>
+<p>where:</p>
+<ul>
+<li>$n$: the size of the problem</li>
+<li>$a$: the number of subproblems in the recursion</li>
+<li>$b$: The factor by which the problem size is divided in each recursive call.</li>
+<li>$f(n)$: The cost of the work done outside the recursive calls, which typically includes the cost of dividing the problem and cost of merging the solutions.</li>
+</ul>
+<h3 id="three-cases">Three cases</h3>
+<p>The Master Method provides three cases to determine the time complexity:</p>
+<ul>
+<li>
+<p>Case 1:</p>
+<p>If $f(n) = O(n^c)$ where $c < \log_b a$, then: $T(n) = \Theta(n^{\log_b a})$</p>
+</li>
+<li>
+<p>Case 2:</p>
+<p>If $f(n) = \Theta(n^{\log_b a} \cdot \log^k n)$ for a $k \geq 0$, then: $T(n) = \Theta(n^{\log_b a} \cdot \log^{k+1} n)$</p>
+</li>
+<li>
+<p>Case 3:</p>
+<p>If $f(n) = \Omega(n^c)$ where $c > \log_b a$, and if $a f\left(\frac{n}{b}\right) \leq k f(n)$ for some $k < 1$ and sufficiently large $n$, then: $T(n) = \Theta(f(n))$</p>
+</li>
+</ul>
+<h3 id="intuitions-for-the-three-cases">Intuitions for the three cases</h3>
+<ul>
+<li>
+<p>Case 1:</p>
+<p>If the cost of the work done outside the recursive calls is small enough, then the overall running time is still dominated by the cost of the recursive calls.</p>
+</li>
+<li>
+<p>Case 2:</p>
+<p>If the cost of the work done outside the recursive calls is nearly the same across all levels of the recursion.</p>
+</li>
+<li>
+<p>Case 3:</p>
+<p>If the cost of the work done outside the recursive calls is large enough, then the overall running time is dominated by the cost of the work done outside the recursive calls.</p>
+</li>
+</ul>
+<h3 id="master-method-examples">Master method examples</h3>
+<p>For the recurrence relation of the Merge Sort algorithm:</p>
+<p>$T(n) = 2T\left(\frac{n}{2}\right) + n$</p>
+<p>We have:</p>
+<ul>
+<li>$a = 2$</li>
+<li>$b = 2$</li>
+<li>$f(n) = n$</li>
+</ul>
+<p>Using the Master Method:</p>
+<ul>
+<li>$\log_b a = \log_2 2 = 1$</li>
+<li>$f(n) = n = \Theta(n^1)$</li>
+</ul>
+<p>This falls under Case 2 with $k = 0$. Thus, the solution is: $T(n) = \Theta(n \log n)$</p>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

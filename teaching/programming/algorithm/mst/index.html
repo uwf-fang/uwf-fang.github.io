@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Minimal Spanning Tree · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/programming/">Algorithms and Data Structures</a> / Minimal Spanning Tree</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Minimal Spanning Tree</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#spanning-tree">Spanning Tree</a></li>
+    <li><a href="#id1">Minimal Spanning Tree</a></li>
+    <li><a href="#prim-s-algorithm">Prim’s Algorithm</a>
+      <ul>
+        <li><a href="#algorithm-steps">Algorithm Steps</a></li>
+        <li><a href="#pseudo-code-for-prim-s-algorithm">Pseudo-code for Prim’s Algorithm</a></li>
+      </ul>
+    </li>
+    <li><a href="#kruskal-s-algorithm">Kruskal’s Algorithm</a>
+      <ul>
+        <li><a href="#id2">Algorithm Steps</a></li>
+        <li><a href="#pseudo-code-for-kruskal-s-algorithm">Pseudo-code for Kruskal’s Algorithm</a></li>
+      </ul>
+    </li>
+    <li><a href="#comparison-of-prim-s-and-kruskal-s-algorithms">Comparison of Prim’s and Kruskal’s Algorithms</a>
+      <ul>
+        <li><a href="#overall-considerations">Overall Considerations</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="minimal-spanning-tree"></span>
+<h2 id="spanning-tree">Spanning Tree</h2>
+<p>A spanning tree of a graph is a subgraph that contains all vertices of the graph and is a tree. A tree is a connected graph with no cycles.</p>
+<ul>
+<li>A graph can have multiple spanning trees.</li>
+<li>Both DFS and BFS can be used to find a spanning tree of a graph.</li>
+</ul>
+<h2 id="id1">Minimal Spanning Tree</h2>
+<p>A Minimum Spanning Tree (MST) is a subgraph of a weighted, connected graph that spans all vertices with the minimum possible total edge weight. MSTs have various practical applications in network design, clustering, and more.</p>
+<ul>
+<li>Prim’s Algorithm</li>
+<li>Kruskal’s Algorithm</li>
+<li>Other
+<ul>
+<li>Boruvka’s Algorithm</li>
+<li>Reverse-Delete Algorithm</li>
+</ul>
+</li>
+<li>Visualization
+<ul>
+<li><a href="https://visualgo.net/en/mst">https://visualgo.net/en/mst</a></li>
+<li><a href="https://www.cs.usfca.edu/~galles/visualization/Prim.html">https://www.cs.usfca.edu/~galles/visualization/Prim.html</a></li>
+<li><a href="https://www.cs.usfca.edu/~galles/visualization/Kruskal.html">https://www.cs.usfca.edu/~galles/visualization/Kruskal.html</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="prim-s-algorithm">Prim’s Algorithm</h2>
+<p>Prim’s algorithm is a greedy algorithm used to find the Minimum Spanning Tree of a graph. It starts with an arbitrary vertex and repeatedly adds the shortest edge that connects a vertex in the MST to a vertex outside the MST.</p>
+<ul>
+<li>invented by Czech mathematician Vojtěch Jarník in 1930</li>
+<li>rediscovered and republished by computer scientists Robert C. Prim in 1957 and Edsger W. Dijkstra in 1959</li>
+<li>use a priority queue to keep track of the vertices and their weights</li>
+<li>store the MST in a separate data structure</li>
+</ul>
+<h3 id="algorithm-steps">Algorithm Steps</h3>
+<ol>
+<li>Create an empty MST.</li>
+<li>Initialize a priority queue with all vertices and their respective weights.</li>
+<li>Start with an arbitrary vertex as the current vertex.</li>
+<li>Mark the current vertex as visited.</li>
+<li>While the priority queue is not empty:
+<ol>
+<li>Dequeue the vertex with the smallest weight from the priority queue.</li>
+<li>If the dequeued vertex is not in the MST, add it to the MST and update its neighbors’ weights in the priority queue.</li>
+</ol>
+</li>
+<li>Repeat steps 4-5 until all vertices are in the MST.</li>
+</ol>
+<h3 id="pseudo-code-for-prim-s-algorithm">Pseudo-code for Prim’s Algorithm</h3>
+<span id="id3"></span>
+<p><em>Prim’s Algorithm</em></p>
+<pre tabindex="0"><code class="language-default" data-lang="default">function prim(graph):
+  create an empty MST
+  create a priority queue with vertices and their weights
+  start with an arbitrary vertex as the current vertex
+  mark the current vertex as visited
+
+  while the priority queue is not empty:
+    dequeue the vertex with the smallest weight from the priority queue
+    if the dequeued vertex is not in the MST:
+      add it to the MST
+      update the weights of its neighbors in the priority queue
+</code></pre><h2 id="kruskal-s-algorithm">Kruskal’s Algorithm</h2>
+<p>Kruskal’s algorithm is another greedy algorithm used to find the Minimum Spanning Tree of a graph. It starts with an empty set of edges and repeatedly adds the shortest edge that does not form a cycle with the edges already selected.</p>
+<ul>
+<li>invented by Joseph Kruskal in 1956</li>
+<li>use a disjoint-set data structure to keep track of connected components to avoid cycles</li>
+</ul>
+<h3 id="id2">Algorithm Steps</h3>
+<ol>
+<li>Create an empty MST.</li>
+<li>Sort all edges in the graph in ascending order of their weights.</li>
+<li>Initialize a disjoint-set data structure to keep track of connected components.</li>
+<li>For each edge in sorted order:
+<ol>
+<li>If adding the edge to the MST does not create a cycle, add it to the MST.</li>
+</ol>
+</li>
+<li>Repeat step 4 until the MST has (n-1) edges, where n is the number of vertices in the graph.</li>
+</ol>
+<h3 id="pseudo-code-for-kruskal-s-algorithm">Pseudo-code for Kruskal’s Algorithm</h3>
+<span id="id4"></span>
+<p><em>Kruskal’s Algorithm</em></p>
+<pre tabindex="0"><code class="language-default" data-lang="default">function kruskal(graph):
+  create an empty MST
+  sort all edges in the graph in ascending order of their weights
+  initialize a disjoint-set data structure
+
+  for each edge in sorted order:
+    if adding the edge to the MST does not create a cycle:
+      add it to the MST
+      update the disjoint-set data structure
+</code></pre><span id="minimum-spanning-tree-algorithm-comparison"></span>
+<h2 id="comparison-of-prim-s-and-kruskal-s-algorithms">Comparison of Prim’s and Kruskal’s Algorithms</h2>
+<span id="id5"></span>
+<p><strong>Comparison of two MST algorithms</strong></p>
+<table>
+	<thead>
+			<tr>
+					<th>Comparison Criteria</th>
+					<th>Prim’s Algorithm</th>
+					<th>Kruskal’s Algorithm</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Type</td>
+					<td>Greedy</td>
+					<td>Greedy</td>
+			</tr>
+			<tr>
+					<td>Graph elements</td>
+					<td>Vertices</td>
+					<td>Edges</td>
+			</tr>
+			<tr>
+					<td>Efficient for</td>
+					<td>Dense graphs</td>
+					<td>Sparse graphs</td>
+			</tr>
+			<tr>
+					<td>Data structure/ADT</td>
+					<td>Priority queue</td>
+					<td>Disjoint-set</td>
+			</tr>
+			<tr>
+					<td>Parallelization</td>
+					<td>Not suitable</td>
+					<td>Suitable</td>
+			</tr>
+			<tr>
+					<td>Connected results</td>
+					<td>Yes</td>
+					<td>Yes (extra step)</td>
+			</tr>
+	</tbody>
+</table>
+<h3 id="overall-considerations">Overall Considerations</h3>
+<ul>
+<li>Prim’s Algorithm:
+<ul>
+<li>Well-suited for dense graphs and highly connected graphs.</li>
+<li>More efficient when a priority queue can be efficiently implemented.</li>
+</ul>
+</li>
+<li>Kruskal’s Algorithm:
+<ul>
+<li>Well-suited for sparse graphs and graphs with multiple disconnected components.</li>
+<li>Suitable for parallel and distributed computing environments.</li>
+</ul>
+</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

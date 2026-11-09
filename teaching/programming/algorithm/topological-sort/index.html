@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Topological Sort · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/programming/">Algorithms and Data Structures</a> / Topological Sort</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Topological Sort</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#overview">Overview</a>
+      <ul>
+        <li><a href="#properties-of-topological-sort">Properties of Topological Sort</a></li>
+        <li><a href="#use-cases">Use Cases</a></li>
+      </ul>
+    </li>
+    <li><a href="#algorithm-for-topological-sort">Algorithm for Topological Sort</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="topological-sort"></span>
+<h2 id="overview">Overview</h2>
+<p>Topological sorting is a crucial algorithm in graph theory. It is used to linearly order the nodes of a directed graph in such a way that for every directed edge (u, v), node ‘u’ comes before node ‘v’ in the ordering. This linear order is essential in various applications like task scheduling, dependency resolution, and compiler optimization.</p>
+<ul>
+<li>The graph must be a Directed Acyclic Graph (DAG).</li>
+<li>The order of neighbors for each node is known.</li>
+</ul>
+<h3 id="properties-of-topological-sort">Properties of Topological Sort</h3>
+<p>Topological sorting is specifically applicable to Directed Acyclic Graphs (DAGs). Some key properties include:</p>
+<ul>
+<li>Unique Ordering: There is only one valid topological order for a given DAG.</li>
+<li>Linear Order: The result of topological sort is a linear order that respects the directed edges in the graph.</li>
+</ul>
+<h3 id="use-cases">Use Cases</h3>
+<p>Topological sorting finds applications in various fields:</p>
+<ul>
+<li><strong>Task Scheduling:</strong> Organizing tasks based on dependencies to ensure they execute in the correct order.</li>
+<li><strong>Dependency Resolution:</strong> Resolving software or data dependencies in a systematic manner.</li>
+<li><strong>Compiler Optimization:</strong> Optimizing the compilation process by determining a suitable order for code generation.</li>
+</ul>
+<h2 id="algorithm-for-topological-sort">Algorithm for Topological Sort</h2>
+<p>The topological sort algorithm primarily relies on Depth-First Search (DFS) to order the nodes in a directed acyclic graph (DAG). Here’s the pseudocode for the topological sort algorithm:</p>
+<ul>
+<li>visualization <a href="https://www.cs.usfca.edu/~galles/visualization/TopoSortDFS.html">https://www.cs.usfca.edu/~galles/visualization/TopoSortDFS.html</a></li>
+</ul>
+<pre tabindex="0"><code class="language-default" data-lang="default">function topologicalSort(graph):
+  initialize an empty list &#39;result&#39; to store the topological order
+  initialize a set &#39;visited&#39; to keep track of visited nodes
+
+  for each node &#39;v&#39; in graph:
+    if &#39;v&#39; is not in &#39;visited&#39;:
+      performDFS(v, visited, result)
+
+return &#39;result&#39; in reverse order
+
+function performDFS(node, visited, result):
+  mark &#39;node&#39; as visited
+  for each neighbor &#39;n&#39; of &#39;node&#39;:
+    if &#39;n&#39; is not in &#39;visited&#39;:
+      performDFS(n, visited, result)
+  append &#39;node&#39; to &#39;result&#39;
+</code></pre></div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

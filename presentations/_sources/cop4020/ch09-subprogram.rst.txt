@@ -1,0 +1,277 @@
+Subprograms
+===========
++ Introduction
++ Parameter-passing methods
++ Dynamic invocation of subprograms
++ Generic subprograms
++ Closures and coroutines
+
+Introduction
+============
+* Core concept in programming languages for process abstraction
+
+  - Counter part to data abstraction
+
+* Building blocks for modular program design
+* Key topics:
+
+  * Parameter passing methods
+  * Local referencing environments
+  * Overloaded and generic subprograms
+  * Closures and coroutines
+
+Fundamentals of Subprograms
+---------------------------
+* Basic Characteristics (with exceptions)
+
+  * Single entry point
+  * Caller suspended during execution
+  * Control returns to caller on completion
+
+* Components:
+
+  * Subprogram definition - interface and actions
+
+    * Subprogram header - name, parameters, return type
+    * Subprogram body - implementation
+
+  * Subprogram call - explicit invocation
+
+* Types:
+
+  * Procedures - define new statements
+  * Functions - return values and define new operations
+
+Parameters
+----------
+* Ways to pass data to/from subprograms
+* Parameter Categories:
+
+  * Formal parameters - in subprogram definition
+  * Actual parameters - in subprogram call
+
+* Parameter Association:
+
+  * Positional parameters
+  * Keyword parameters (Python)
+  * Default parameters (C++, Python)
+
+* Variable Parameters:
+
+  * C# params modifier
+  * Python \*args and \*kwargs
+  * Ruby splat operator (*)
+  * Lua ellipsis (...)
+
+More Design Issues
+------------------
+1. Parameter-passing methods
+2. Support to nested subprograms
+
+   * Closure - nested subprogram + referencing environment
+
+3. Overloaded and generic subprograms
+
+   * Overloaded Subprograms - Same name, different parameter profile
+   * Generic Subprograms - Type-independent subprograms
+
+4. Side effects
+
+   Definition: Modification of state outside subprogram. Will discuss more in
+   functional programming chapter.
+
+   * Functional side effects
+   * Referential transparency
+
+5. Return values
+
+   * type
+   * number
+
+Local Referencing Environments
+------------------------------
+* Scope - visibility of identifiers
+* Lifetime - duration of identifiers
+* Referencing environment - collection of all active bindings
+
+  * Local variables
+  * Formal parameters
+  * Nested subprograms
+
+Parameter-Passing Methods
+=========================
+.. container:: flex-container
+
+  .. container:: half
+
+    * Three Semantics Models:
+
+      * In mode - data to subprogram
+      * Out mode - data from subprogram
+      * Inout mode - bidirectional
+
+    * Implementation Methods:
+
+      * Pass-by-value (In mode)
+      * Pass-by-result (Out mode)
+      * Pass-by-reference (Inout mode)
+      * Pass-by-value-result (Inout mode)
+      * Pass-by-name (Inout mode, FYI)
+
+  .. container:: half
+
+    **C# Example of pass-by-result**
+
+    .. code-block:: c#
+
+      void Fixer(out int x, out int y) {
+          x = 17;
+          y = 35;
+      }
+
+      f.Fixer(out a, out b);
+
+
+Implementation Considerations
+-----------------------------
+* Pass-by-value/result/value-result:
+
+  * Copies data
+
+    * at call (by-value)
+    * at return (by-result)
+
+  * Safe but expensive for large data
+
+* Pass-by-reference:
+
+  * Copies address at call
+  * Efficient and simple to implement
+  * Security concerns: aliasing allows modification
+  * May use use constant/read-only modifiers to improve safety
+
+* Implementation via the run-time stack
+
+Dynamic Invocation Of Subprograms
+=================================
+* Dynamic invocation - subprogram called at runtime
+* Examples:
+
+  * Function pointers in C/C++
+
+    - :code:`void (*f)(int)`
+
+  * Lambda expression in C++
+
+    - :code:`auto f = [](int x) { return x + 1; }`
+
+  * Reflection in Java/C#
+  * Interface and lambda expressions in Java
+  * Method references in Java
+  * Delegates in C#
+  * Functions as objects in Python/Ruby/JavaScript
+
+Passing Subprograms as Parameters
+---------------------------------
++ One way of dynamic invocation of subprograms
++ Challenges
+
+  * Type checking
+  * Referencing environment of nested subprograms
+
+    * Shallow binding
+    * Deep binding - most common, closures
+    * Ad hoc binding
+
+Generic Subprograms
+===================
+* Type of polymorphism
+
+  * Ad hoc polymorphism - overloading
+  * Subtype polymorphism - object-oriented
+  * Parametric polymorphism - generic programming
+
+* Purpose:
+
+  * Code reuse across different types
+  * Type-safe polymorphism
+
+* Implementations of generic subprograms:
+
+  * C++ templates
+  * Java 5.0 generics
+  * C# 2005 generics
+  * F# automatic generalization
+
+* Constraints:
+
+  * Type restrictions
+  * Compile-time vs runtime binding
+
+Closures
+--------
+.. container:: flex-container
+
+  .. container:: half
+
+    In static-scope languages, when nested subprograms are passed as parameters, they carry their referencing environment with them.
+
+    * Subprogram + referencing environment
+    * Used in functional programming
+    * Support in modern languages
+
+  .. container:: half
+
+    **Python Example of Closures**
+
+    .. code-block:: python
+
+      def outer(x):
+          def inner(y):
+              return x + y
+          return inner
+
+      f = outer(5)
+      print(f(3))  # 8
+
+    Do you think there is a better way to implement this?
+
+Coroutines
+----------
+.. container:: flex-container
+
+  .. container:: half
+
+    * Very untypical subprograms
+    * Multiple entry points
+    * Symmetric control transfer
+    * Quasi-concurrent execution
+    * Examples:
+
+      * Python generators and async/await
+      * Go goroutines
+      * C++20 coroutines
+      * Ruby fibers
+      * C# async/await
+      * JavaScript async/await
+
+  .. container:: half
+
+    .. code-block:: python
+
+      def counter():
+          i = 0
+          while True:
+              yield i
+              i += 1
+
+      c = counter()
+      print(next(c))  # 0
+      print(next(c))  # 1
+
+Practice Questions
+------------------
+1. Compare pass-by-value and pass-by-reference
+2. When would you use generic subprograms?
+3. What are the tradeoffs in parameter passing methods?
+4. How do closures differ from regular subprograms?

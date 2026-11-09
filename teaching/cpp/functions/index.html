@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>User-defined Functions · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/cpp/ccpp-env/">C/C&#43;&#43; Development Environment</a></li><li><a href="/teaching/cpp/cpp-lang/">C&#43;&#43; programming language</a></li><li><a href="/teaching/cpp/functions/" aria-current="page">User-defined Functions</a></li><li><a href="/teaching/cpp/io/">Input/Output (I/O)</a></li><li><a href="/teaching/cpp/string/">String (C&#43;&#43; class)</a></li><li><a href="/teaching/cpp/class/class/">Objects and Classes in C&#43;&#43;</a></li><li><a href="/teaching/cpp/variable-type/variable-type/">Type, Variable, Assignment, and Expression</a></li><li><a href="/teaching/cpp/array/array/">Array Data Type</a></li><li><a href="/teaching/cpp/building/gpp/">Compilation Using g&#43;&#43;</a></li><li><a href="/teaching/cpp/building/modular/">Modular Development</a></li><li><a href="/teaching/cpp/testing/testing/">Testing in C&#43;&#43;</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/cpp/">C&#43;&#43; Reference</a> / User-defined Functions</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>User-defined Functions</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#purpose">Purpose</a></li>
+    <li><a href="#declaration">Declaration</a></li>
+    <li><a href="#definition-implementation">Definition (implementation)</a></li>
+    <li><a href="#default-value">Default value</a></li>
+    <li><a href="#function-call">Function call</a></li>
+    <li><a href="#function-pitfalls">Function Pitfalls</a></li>
+    <li><a href="#parameter-passing">Parameter Passing</a></li>
+    <li><a href="#scope">Scope</a></li>
+    <li><a href="#overloading">Overloading</a></li>
+    <li><a href="#function-call-matching">Function call matching</a></li>
+    <li><a href="#example">Example</a></li>
+    <li><a href="#function-glossary">Function Glossary</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="user-defined-functions"></span>
+<p>User-defined functions are the fundamental unit to organize code in C++ programming language.</p>
+<h2 id="purpose">Purpose</h2>
+<ul>
+<li>Readability, maintainability
+<ul>
+<li>Shorter function body</li>
+<li>Unique name for a code block</li>
+</ul>
+</li>
+<li>Code reuse, write once, use many times</li>
+<li>Affect the outside world
+<ul>
+<li>Return a value</li>
+<li>Modify reference or pointer-typed parameters</li>
+<li>Input/output</li>
+<li>Modify global variables (<strong>AVOID!</strong>)</li>
+</ul>
+</li>
+</ul>
+<h2 id="declaration">Declaration</h2>
+<ul>
+<li><strong>Optional but strongly recommended</strong></li>
+<li>Declarations in header file enables function reuse in another cpp file</li>
+<li>May omit parameter names</li>
+<li>May provide default value for parameters</li>
+<li>Public function declarations
+<ul>
+<li>Functions to be used by other cpp files</li>
+<li>In the header files</li>
+<li>Add documentation</li>
+</ul>
+</li>
+<li>Private function declarations
+<ul>
+<li>Functions to be used only in the current cpp file only</li>
+<li>In the cpp files</li>
+</ul>
+</li>
+<li>Return type
+<ul>
+<li>a concrete type: expecting a value of the specified type</li>
+<li>void: not expecting anything</li>
+</ul>
+</li>
+</ul>
+<h2 id="definition-implementation">Definition (implementation)</h2>
+<ul>
+<li>In the cpp files</li>
+<li>Formal parameters
+<ul>
+<li>Parameters listed in the parenthesis</li>
+<li>Must have types and names specified</li>
+<li>May provide default value for parameters</li>
+<li>Stored the same way as local variables</li>
+</ul>
+</li>
+<li>Must align to declarations</li>
+<li>Return statement
+<ul>
+<li>may have multiple in a same function definition</li>
+<li>returns a value <strong>as a copy (by-value)</strong> to the caller (except in void functions)</li>
+</ul>
+</li>
+</ul>
+<h2 id="default-value">Default value</h2>
+<ul>
+<li>Provide starting from last to the first parameter</li>
+<li>Must only appear once, either in declaration or definition</li>
+<li>Default value in declarations is recommended</li>
+</ul>
+<h2 id="function-call">Function call</h2>
+<ul>
+<li>Functions must be either declared or defined before being called</li>
+<li>Actual parameters
+<ul>
+<li>Values provided in function calls</li>
+<li>Rvalues in the parenthesis</li>
+<li><strong>Never add types</strong></li>
+</ul>
+</li>
+<li>Usages
+<ul>
+<li>as a statement <code>strcpy(str1, str2);</code></li>
+<li>as part of an expression (non-void functions) <code>cout &lt;&lt; sqrt(4) &lt;&lt; endl;</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="function-pitfalls">Function Pitfalls</h2>
+<ul>
+<li>Declaration/definition after call</li>
+<li>Default values both in declaration and definition of a same function</li>
+<li>No parameter name in definition</li>
+<li>Type of parameter provided in function call</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// ==== functions ====
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- bad default values ----
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// v1 cannot have default value if v2 do not have
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">func1</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> v1 <span style="color:#0550ae">=</span> <span style="color:#0550ae">10</span><span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> v2<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// both have default value
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">func1</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> v1 <span style="color:#0550ae">=</span> <span style="color:#0550ae">10</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">funct</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> v1 <span style="color:#0550ae">=</span> <span style="color:#0550ae">10</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">...</span> <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- wrong definitions ----
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">func1</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span> <span style="color:#1f2328">...</span> <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- wrong function calls ----
+</span></span></span><span style="display:flex;"><span>func1<span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> a<span style="color:#1f2328">);</span>
+</span></span></code></pre></div><h2 id="parameter-passing">Parameter Passing</h2>
+<ul>
+<li>parameter passing is the same as initialization (not assignment!)
+<ul>
+<li>type conversion will happen as needed</li>
+</ul>
+</li>
+<li>Pass by value
+<ul>
+<li>The default method to pass parameters</li>
+<li>The value of the actual parameter is used to initialize the formal parameter</li>
+<li>A copy is created like in a normal initialization</li>
+</ul>
+</li>
+<li>Pass by pointer
+<ul>
+<li>A memory address is passed by value</li>
+</ul>
+</li>
+<li><a href="/teaching/cpp/array/array-passing/#pass-by-array">Passing arrays</a></li>
+<li><a href="/teaching/cpp/ref/ref-in-functions/#pass-by-ref">Pass by reference</a></li>
+</ul>
+<h2 id="scope">Scope</h2>
+<ul>
+<li>
+<p>Definition: The life span of an entity (variable, function, type, etc.)</p>
+</li>
+<li>
+<p>local scope to a function: local variables and formal parameters</p>
+<ul>
+<li><strong>NEVER return a local variable by reference or pointer!</strong></li>
+<li><strong>NEVER return a local array (only pointer will be passed out, the array content will not)! Return a dynamic array instead.</strong></li>
+</ul>
+</li>
+<li>
+<p>Code block based scope</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// example 1, out-of-scope access
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// for loop is a block even without {}
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> i <span style="color:#0550ae">&lt;</span> size<span style="color:#1f2328">;</span> <span style="color:#0550ae">++</span>i<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>  cout <span style="color:#0550ae">&lt;&lt;</span> i <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>cout <span style="color:#0550ae">&lt;&lt;</span> i <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>  <span style="color:#57606a">// will fail because i is not declared here
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// example 2, shadowed name
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">100</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">10</span><span style="color:#1f2328">;</span>  <span style="color:#57606a">// treated as another variable, valid in this block only
+</span></span></span><span style="display:flex;"><span>  cout <span style="color:#0550ae">&lt;&lt;</span> i <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>  <span style="color:#57606a">// get 10, outside i is shadowed
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>cout <span style="color:#0550ae">&lt;&lt;</span> i <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>  <span style="color:#57606a">// get 100
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// returning an dynamic array
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// should be deleted after use
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#0550ae">*</span><span style="color:#6639ba">makeArray</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> size<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#cf222e">new</span> <span style="color:#cf222e">int</span><span style="color:#1f2328">[</span>size<span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- Wrong ----
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// returning local array
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#0550ae">*</span><span style="color:#6639ba">makeArray</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> size<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> array<span style="color:#1f2328">[</span>size<span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> array<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- Wrong ----
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// returning local variable by reference/pointer
+</span></span></span><span style="display:flex;"><span>string <span style="color:#0550ae">*</span><span style="color:#6639ba">func</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  string str <span style="color:#0550ae">=</span> <span style="color:#0a3069">&#34;abc&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#0550ae">&amp;</span>str<span style="color:#1f2328">;</span>  <span style="color:#57606a">// memory address is passed out, str will be destroyed
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div></li>
+</ul>
+<h2 id="overloading">Overloading</h2>
+<p>Same name but different parameters (type, order, number) so the function call can match the correct function. Because the return type and formal parameter names does not affect the function call, differences in return type and formal parameter names will not be valid overloading.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// ==== Function Overloading ====
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// given this function
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">func1</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> name<span style="color:#1f2328">);</span>  <span style="color:#57606a">// func1(3);
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- Correct ----
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">func1</span><span style="color:#1f2328">(</span><span style="color:#cf222e">double</span><span style="color:#1f2328">);</span>  <span style="color:#57606a">// func1(3.0);
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">func1</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span><span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span><span style="color:#1f2328">);</span>  <span style="color:#57606a">// func1(3, 3);
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">func1</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span><span style="color:#1f2328">,</span> <span style="color:#cf222e">double</span><span style="color:#1f2328">);</span>  <span style="color:#57606a">// func1(3, 3,0);
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">func1</span><span style="color:#1f2328">(</span><span style="color:#cf222e">double</span><span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span><span style="color:#1f2328">);</span>  <span style="color:#57606a">// func1(3.0, 3);
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">func1</span><span style="color:#1f2328">(</span><span style="color:#cf222e">double</span><span style="color:#1f2328">,</span> <span style="color:#cf222e">double</span><span style="color:#1f2328">);</span>  <span style="color:#57606a">// func1(3.0, 3.0);
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- Wrong ----
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">double</span> <span style="color:#6639ba">func1</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span><span style="color:#1f2328">);</span>  <span style="color:#57606a">// return type differs, also matches func1(3); call
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">func1</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> name1<span style="color:#1f2328">);</span>  <span style="color:#57606a">// parameter names differ, also matches func1(3); call
+</span></span></span></code></pre></div><h2 id="function-call-matching">Function call matching</h2>
+<p>Function name overloading, default value, and implicit type conversion will all affect function call matching process. Any ambiguous function call will cause an syntax error.</p>
+<ul>
+<li>call matching mechanism
+<ul>
+<li>return type does not matter</li>
+<li>default value should be considered</li>
+<li>Exact match: no implicit type conversion</li>
+<li>Compatible match: need implicit type conversion</li>
+<li>order of matching
+<ol>
+<li>Exact matching</li>
+<li>Compatible matching</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>ambiguous matching
+<ul>
+<li>multiple exact matches</li>
+<li>multiple compatible matches</li>
+<li>an exact match will not conflict with compatible matches</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// Wrong
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// both exact matches
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// func1(1); call is ambiguous with
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">func1</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">func1</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span><span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> <span style="color:#0550ae">=</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// Wrong
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// both compatible matches
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// func2(2, 3); call is ambiguous with
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">func2</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span><span style="color:#1f2328">,</span> <span style="color:#cf222e">double</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">func2</span><span style="color:#1f2328">(</span><span style="color:#cf222e">double</span><span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// Correct
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// first is an exact match
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// second is a compatible match
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// func2(2, 3.0); call is fine with
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">func2</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span><span style="color:#1f2328">,</span> <span style="color:#cf222e">double</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">func2</span><span style="color:#1f2328">(</span><span style="color:#cf222e">double</span><span style="color:#1f2328">,</span> <span style="color:#cf222e">double</span><span style="color:#1f2328">);</span>
+</span></span></code></pre></div><span id="func-full-example"></span>
+<h2 id="example">Example</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">#include</span> <span style="color:#57606a">&lt;iostream&gt;</span><span style="color:#57606a">
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">using</span> <span style="color:#cf222e">namespace</span> std<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">  * function to double a value
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">  * myParam: the input value to be doubled
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">  * return: a double value
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">  * documentations should be above the declaration
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">  */</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// int doubleValue(int = 10);  // default value, no name
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">doubleValue</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> myParam <span style="color:#0550ae">=</span> <span style="color:#0550ae">10</span><span style="color:#1f2328">);</span>  <span style="color:#57606a">// default value, with name
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">doubleValue</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> param1<span style="color:#1f2328">){</span> <span style="color:#57606a">// parameter name can even be different
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> param1 <span style="color:#0550ae">*</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">localFunc</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;This is local&#34;</span> <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">main</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// function calls
+</span></span></span><span style="display:flex;"><span>  cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;double_value() gives &#34;</span> <span style="color:#0550ae">&lt;&lt;</span> doubleValue<span style="color:#1f2328">()</span> <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>  <span style="color:#57606a">// get 20
+</span></span></span><span style="display:flex;"><span>  cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;double_value(5) gives &#34;</span> <span style="color:#0550ae">&lt;&lt;</span> doubleValue<span style="color:#1f2328">(</span><span style="color:#0550ae">5</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span> <span style="color:#57606a">// get 10
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> EXIT_SUCCESS<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><h2 id="function-glossary">Function Glossary</h2>
+<span id="term-Function-name"></span>
+<dl>
+<dt>Function name</dt>
+<dd>The name to a function given by the user. Same naming convention as variables. You cannot use a same name for a function and a variable either.</dd>
+</dl>
+<span id="term-Function-Parentheses"></span>
+<dl>
+<dt>Function Parentheses</dt>
+<dd>A pair of parentheses must be present to differentiate a function name from a variable name.</dd>
+</dl>
+<span id="term-Function-declaration"></span>
+<dl>
+<dt>Function declaration</dt>
+<dd>A specification of the return type, function name and parameter types. How a function can be called and what you can expect from the call.</dd>
+</dl>
+<span id="term-Function-definition"></span>
+<dl>
+<dt>Function definition</dt>
+<dd>The implementation of the function. How is the work done in a function.</dd>
+</dl>
+<span id="term-Function-call"></span>
+<dl>
+<dt>Function call</dt>
+<dd>The syntaxes to invoke the function by providing actual parameters and optionally receive the returned value</dd>
+</dl>
+<span id="term-Formal-parameters"></span>
+<dl>
+<dt>Formal parameters</dt>
+<dd>Sometimes referred as parameters. They are the names listed in the parentheses in the <strong>function definition</strong>. Each name should have a type specified. Formal parameters are stored in the same place as the local variables in the stack frame of the function call.</dd>
+</dl>
+<span id="term-Actual-parameters"></span>
+<dl>
+<dt>Actual parameters</dt>
+<dd>The rvalues provided in the parenthesis in a <strong>function call</strong>.</dd>
+</dl>
+<span id="term-Parameter-Passing"></span>
+<dl>
+<dt>Parameter Passing</dt>
+<dd>A mechanism to initialize the value of formal parameters using the values of actual parameters provided in the function call.</dd>
+</dl>
+<span id="term-Return-statement"></span>
+<dl>
+<dt>Return statement</dt>
+<dd>A statement employed in a function to exit the function and return a value (except in a void function).</dd>
+</dl>
+<span id="term-Function-overloading"></span>
+<dl>
+<dt>Function overloading</dt>
+<dd>The mechanism that allows multiple declarations using a same function name but different parameter list. Also applies to methods.</dd>
+</dl>
+<span id="term-Function-Call-Matching"></span>
+<dl>
+<dt>Function Call Matching</dt>
+<dd>A mechanism to identify the right function definition to execute given a function call.</dd>
+</dl>
+<span id="term-Scope"></span>
+<dl>
+<dt>Scope</dt>
+<dd>The lifespan of names of entities in C++(variables, functions, types, etc.) The C++ language has a block-based scope.</dd>
+</dl>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

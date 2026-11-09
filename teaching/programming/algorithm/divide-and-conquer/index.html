@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Divide and Conquer Algorithms · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/programming/">Algorithms and Data Structures</a> / Divide and Conquer Algorithms</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Divide and Conquer Algorithms</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#three-stages">Three Stages</a></li>
+    <li><a href="#benefits">Benefits</a></li>
+    <li><a href="#drawbacks">Drawbacks</a></li>
+    <li><a href="#algorithms-using-divide-and-conquer">Algorithms Using Divide and Conquer</a></li>
+    <li><a href="#complexity-analysis">Complexity Analysis</a>
+      <ul>
+        <li><a href="#time-complexity">Time Complexity</a></li>
+      </ul>
+    </li>
+    <li><a href="#relationships-to-other-paradigms">Relationships to Other Paradigms</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="divide-and-conquer-algorithms"></span>
+<h2 id="overview">Overview</h2>
+<p><strong>Divide and Conquer</strong> is a fundamental algorithmic paradigm deeply rooted in computer science and mathematics. At its core, this paradigm revolves around tackling a complex problem by breaking it down into smaller, more manageable subproblems. These subproblems, which are similar in nature but simpler than the original problem, are then solved individually. Finally, the solutions to these subproblems are combined to form the solution to the original problem.</p>
+<p>To provide a basic analogy, imagine trying to solve a jigsaw puzzle. Rather than attempting to fit all the pieces together at once, you might first separate out the edge pieces and assemble the border. Next, you could divide the remaining pieces based on colors or recognizable patterns, assemble each section, and finally, fit these sections together to complete the entire puzzle. This approach mirrors the essence of the Divide and Conquer paradigm.</p>
+<figure class="migration-image align-"><img src="/teaching/_migration/1a95a24abdce6fd5.jpg" alt="Jigsaw Puzzle" style="width:300px;max-width:100%;height:auto" loading="lazy"></figure>
+<p>Credit: Photo by Bianca Ackermann on Unsplash</p>
+<h2 id="three-stages">Three Stages</h2>
+<ol>
+<li><strong>Divide</strong>: The primary step is to split or decompose the original problem into smaller instances of the same problem. These instances, known as subproblems, are typically easier to handle and comprehend than the original challenge. The division continues until the subproblems reach a size where they can be solved directly.</li>
+<li><strong>Conquer:</strong> In this phase, each of the subproblems is tackled individually, often using recursive approaches. If a subproblem is still too large, it may again be divided, and the process repeats. Otherwise, it’s solved directly.</li>
+<li><strong>Combine:</strong> Once the subproblems are solved, their solutions are merged or synthesized to produce the solution to the main problem. The method of combination can vary widely based on the problem at hand. Sometimes it’s straightforward, while other times it may involve additional computations or considerations.</li>
+</ol>
+<p>Sometimes, the three stages of Divide and Conquer may not be distinct. For example, in Quick Sort, the division and combination steps are combined into a single partitioning step.</p>
+<h2 id="benefits">Benefits</h2>
+<ul>
+<li><strong>Simplification of Complex Problems:</strong> The primary advantage of the Divide and Conquer paradigm is its ability to break down intricate problems into simpler ones. This iterative decomposition often results in subproblems that are much easier to understand and solve than the overarching issue.</li>
+<li><strong>Efficiency Improvements:</strong> Divide and Conquer algorithms can lead to substantial reductions in computation time, especially when the method of division exploits certain characteristics of the problem. For instance, algorithms like Merge Sort and Quick Sort often outperform basic sorting algorithms, especially for larger datasets.</li>
+<li><strong>Parallel Processing Potential:</strong> The nature of breaking problems down means that subproblems can sometimes be processed simultaneously, leading to potential parallelization. Modern multi-core processors or distributed computing systems can take advantage of this to solve multiple subproblems in parallel, further improving efficiency.</li>
+<li><strong>Flexibility and Versatility:</strong> The paradigm is broad and adaptable, making it applicable to a wide range of problems across various domains. Whether it’s searching, sorting, matrix operations, or geometrical problems, Divide and Conquer offers a viable strategy.</li>
+</ul>
+<h2 id="drawbacks">Drawbacks</h2>
+<ul>
+<li><strong>Recursive Overhead:</strong> The recursive nature of many Divide and Conquer algorithms can introduce overhead. Each recursive call might add to the stack, consuming more memory and sometimes making the algorithm slower for smaller inputs compared to iterative methods.</li>
+<li><strong>Risk of Stack Overflow:</strong> Deep recursions, especially on problems with large input sizes, can lead to stack overflow errors, as the system stack might run out of space due to the accumulation of recursive frames.</li>
+<li><strong>Not Always Optimal for Small Inputs:</strong> For certain problems and especially smaller input sizes, a Divide and Conquer approach might be overkill. Simpler, iterative methods might prove faster and more straightforward in these cases.</li>
+<li><strong>Complexity in Design:</strong> While the paradigm itself is conceptually simple, designing an efficient Divide and Conquer algorithm for a particular problem can be challenging. They requires a clear understanding of how to best divide the problem, conquer the subproblems, and then combine the results optimally.</li>
+</ul>
+<h2 id="algorithms-using-divide-and-conquer">Algorithms Using Divide and Conquer</h2>
+<ul>
+<li>Quick Sort - find one (permutation)</li>
+<li>Merge Sort - find one (permutation)</li>
+<li>Binary Search - find one</li>
+<li>Max Subarray Sum - find best</li>
+<li>Closest Pair of Points - find best</li>
+<li>Strassen’s Matrix Multiplication</li>
+<li>Fast Fourier Transform (FFT)</li>
+</ul>
+<h2 id="complexity-analysis">Complexity Analysis</h2>
+<h3 id="time-complexity">Time Complexity</h3>
+<ul>
+<li>Steps
+<ul>
+<li>Find recurrence relation</li>
+<li>Solve recurrence relation using Master Theorem</li>
+</ul>
+</li>
+<li>Quick Sort $T(n) = T(k) + T(n-k-1) + \Theta (n)$, where $k$ is the number of elements which are smaller than pivot</li>
+<li>Merge Sort $T(n) = 2T(2/n) + \Theta (n)$</li>
+<li>Binary Search $T(n) = T(n/2) + \Theta (1)$</li>
+<li>Max Subarray Sum $T(n) = 2T(n/2) + \Theta (n)$</li>
+<li>Closest Pair of Points $T(n) = 2T(n/2) + \Theta (n \log n)$</li>
+<li>Strassen’s Matrix Multiplication $T(n) = 7T(n/2) + \Theta (n^2)$</li>
+<li>Fast Fourier Transform (FFT) $T(n) = 2T(2/n) + \Theta (n)$</li>
+</ul>
+<p><strong>Exercise:</strong> Solve the recurrence relation for each of the above algorithms</p>
+<h2 id="relationships-to-other-paradigms">Relationships to Other Paradigms</h2>
+<ul>
+<li>
+<p>Dynamic Programming</p>
+<table>
+	<thead>
+			<tr>
+					<th>Properties</th>
+					<th>Divide and Conquer</th>
+					<th>Dynamic Programming</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Subproblems</td>
+					<td>Distinct</td>
+					<td>Overlapping</td>
+			</tr>
+			<tr>
+					<td>Direction</td>
+					<td>Top-down</td>
+					<td>Bottom-up</td>
+			</tr>
+			<tr>
+					<td>Parallelism</td>
+					<td>Friendly</td>
+					<td>Friendly</td>
+			</tr>
+	</tbody>
+</table>
+<p>Dynamic Programming is considered an extension of Divide and Conquer in many cases. However, we employed a narrower definition of Divide and Conquer in this lecture so they are treated as separate paradigms.</p>
+</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

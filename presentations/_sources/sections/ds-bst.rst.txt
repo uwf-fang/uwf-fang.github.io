@@ -1,0 +1,124 @@
+******************
+Binary Search Tree
+******************
+
+.. container:: subtitle
+
+  |author|
+
+Outline
+=======
++ Definition
++ Behaviors
++ Implementation
++ Drawbacks
++ Applications
+
+Definition and Behaviors
+========================
+.. container:: flex-container
+
+  .. container:: half
+
+    **Definition** A binary search tree (BST) is a binary tree, in which for
+    every node, its left child has a smaller or equal key than itself while its
+    right child has a greater or equal key than itself.
+
+    .. image:: /_static/bst.png
+      :alt: BST
+
+  .. container:: half
+
+    **Behaviors**
+
+    + Insertion
+    + Deletion
+    + Search
+    + Traversal
+
+      * In-order traversal: left subtree, root, right subtree
+
+        - Ascending ordered output
+
+Implementation
+==============
++ Algorithms that happens from top to bottom
+
+  Easy to implement either iteratively or recursively
+
+  * search
+  * insert
+
++ Algorithms that happens from bottom to top
+
+  Easy to implement recursively; Hard to implement iteratively (must use stack)
+
+  * subtree removal (may be used in the destruction of a tree)
+  * find min node or find max node (part of remove)
+  * in-order traversal
+  * pre-order traversal
+
+Implementation (cont'd)
+-----------------------
++ Search
+
+  * if equal, found
+  * if smaller, search left subtree
+  * if greater, search right subtree
+
++ Insertion
+
+  * if equal, do nothing
+  * if smaller, insert to left subtree
+
+    - if left is empty, insert
+
+  * if greater, insert to right subtree
+
+    - if right is empty, insert
+
++ Removal
+
+  * remove leaf node: simply remove it
+  * remove node with one child: replace the node with its child
+  * remove node with two children
+
+    - find the min node in the right subtree (successor)
+    - replace the node to be removed with the min node
+    - remove the min node (min node has at most one child)
+
+Drawbacks of naive BST
+======================
+.. container:: flex-container
+
+  .. container:: half
+
+    + Algorithm efficiency depends on the average height of the BST
+    + BST may degrade a very unbalanced form or even to a linked list
+    + Solution 1: randomize the order of insertion
+    + Solution 2: add balancing mechanism
+
+      * Self-balancing
+      * External balancing
+
+    - Solution 3: move the most recently accessed node toward the root
+
+      * Only optimize the search performance for a specific access pattern
+      * No guarantee for the worst case
+      * Splay tree
+
+  .. container:: half
+
+    .. image:: /_static/degraded-bst.png
+      :alt: Degraded BST
+
+Applications
+============
++ Indexing: store a set of references to records in a BST and use the key as
+  the search key.
++ Tree Sort: sort a sequence of elements by building a BST and then traversing
+  it in-order.
++ Tree Map: store a set of (key, value) pairs in a BST and use the key as the
+  search key.
++ Tree Set: store a set of elements in a BST and use the element as the search
+  key.

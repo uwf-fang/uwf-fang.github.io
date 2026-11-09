@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Minimum Spanning Tree</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Minimum Spanning Tree</h1>
+<ul class="simple">
+<li><p>Overview</p></li>
+<li><p>Prim’s Algorithm</p></li>
+<li><p>Kruskal’s Algorithm</p></li>
+<li><p>Comparison</p></li>
+<li><p>Visualization</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<ul class="simple">
+<li><p>A spanning tree of a graph is a subgraph that contains all the vertices of
+the graph and is a tree.</p></li>
+<li><p>A minimum spanning tree (MST) of a weighted graph is a spanning tree whose
+total weight is minimum.</p></li>
+<li><p>Prim’s Algorithm</p></li>
+<li><p>Kruskal’s Algorithm</p></li>
+<li><p>Other</p>
+<ul>
+<li><p>Boruvka’s Algorithm</p></li>
+<li><p>Reverse-Delete Algorithm</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Prim’s Algorithm</h2>
+<ul class="simple">
+<li><p>Greedy</p></li>
+<li><p>Vertex based</p></li>
+<li><p>Use a priority queue</p></li>
+<li><p>Steps</p>
+<ol class="arabic simple">
+<li><p>Create an empty MST.</p></li>
+<li><p>Initialize a priority queue with all vertices and their respective
+weights.</p></li>
+<li><p>Start with an arbitrary vertex as the current vertex.</p></li>
+<li><p>Mark the current vertex as visited.</p></li>
+<li><p>While the priority queue is not empty:</p>
+<ol class="loweralpha simple">
+<li><p>Dequeue the vertex with the smallest weight from the priority queue.</p></li>
+<li><p>If the dequeued vertex is not in the MST, add it to the MST and update
+its neighbors’ weights in the priority queue.</p></li>
+</ol>
+</li>
+<li><p>Repeat steps 4-5 until all vertices are in the MST.</p></li>
+</ol>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Kruskal’s Algorithm</h2>
+<ul class="simple">
+<li><p>Greedy</p></li>
+<li><p>Edge based</p></li>
+<li><p>Use a disjoint set and a sorted edge list</p></li>
+<li><p>Steps</p>
+<ol class="arabic simple">
+<li><p>Create an empty MST.</p></li>
+<li><p>Sort all edges in the graph in ascending order of their weights.</p></li>
+<li><p>Initialize a disjoint-set data structure to keep track of connected
+components.</p></li>
+<li><p>For each edge in sorted order:</p>
+<ol class="loweralpha simple">
+<li><p>If adding the edge to the MST does not create a cycle, add it to the
+MST.</p></li>
+</ol>
+</li>
+<li><p>Repeat step 4 until the MST has (n-1) edges, where n is the number of
+vertices in the graph.</p></li>
+</ol>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Comparison</h2>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Comparison of two MST algorithms</span></caption>
+<tbody>
+<tr class="row-odd"><td><p>Comparison Criteria</p></td>
+<td><p>Prim’s Algorithm</p></td>
+<td><p>Kruskal’s Algorithm</p></td>
+</tr>
+<tr class="row-even"><td><p>Type</p></td>
+<td><p>Greedy</p></td>
+<td><p>Greedy</p></td>
+</tr>
+<tr class="row-odd"><td><p>Graph elements</p></td>
+<td><p>Vertices</p></td>
+<td><p>Edges</p></td>
+</tr>
+<tr class="row-even"><td><p>Efficient for</p></td>
+<td><p>Dense graphs</p></td>
+<td><p>Sparse graphs</p></td>
+</tr>
+<tr class="row-odd"><td><p>Data structure/ADT</p></td>
+<td><p>Priority queue</p></td>
+<td><p>Disjoint-set</p></td>
+</tr>
+<tr class="row-even"><td><p>Parallelization</p></td>
+<td><p>Not suitable</p></td>
+<td><p>Suitable</p></td>
+</tr>
+<tr class="row-odd"><td><p>Connected results</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes (extra step)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section >
+<section >
+<h2>Visualization</h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://visualgo.net/en/mst">https://visualgo.net/en/mst</a></p></li>
+<li><p><a class="reference external" href="https://www.cs.usfca.edu/~galles/visualization/Prim.html">https://www.cs.usfca.edu/~galles/visualization/Prim.html</a></p></li>
+<li><p><a class="reference external" href="https://www.cs.usfca.edu/~galles/visualization/Kruskal.html">https://www.cs.usfca.edu/~galles/visualization/Kruskal.html</a></p></li>
+</ul>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

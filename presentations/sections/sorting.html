@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Sorting Algorithms</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Sorting Algorithms</h1>
+<div class="subtitle docutils container">
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Sections</h2>
+<ul class="simple">
+<li><p>Overview</p></li>
+<li><p>Categories</p></li>
+<li><p>Sorting Array and Linked List</p></li>
+<li><p>Time Complexity and Space Complexity</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<ul class="simple">
+<li><p>Sorting algorithms are used to arrange a sequence in a particular order. The
+base type must be comparable.</p></li>
+<li><p>Visualizations</p>
+<ul>
+<li><p><a class="reference external" href="https://visualgo.net/en/sorting">visualgo.net</a></p></li>
+<li><p><a class="reference external" href="https://www.cs.usfca.edu/~galles/visualization/Algorithms.html">Data Structure Visualization</a></p></li>
+<li><p><a class="reference external" href="https://www.toptal.com/developers/sorting-algorithms/">Sorting algorithms</a></p></li>
+</ul>
+</li>
+<li><p>Application</p>
+<ul>
+<li><p>Part of many other algorithms</p></li>
+<li><p>Database system</p></li>
+<li><p>File system</p></li>
+<li><p>Operating system</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Categories</h2>
+<ul class="simple">
+<li><p>Comparison-based sorting algorithms (general-purpose sorting algorithms)</p>
+<ul>
+<li><p>Bubble sort</p></li>
+<li><p>Selection sort</p></li>
+<li><p>Insertion sort</p></li>
+<li><p>Merge sort</p></li>
+<li><p>Quick sort</p></li>
+<li><p>Heap sort</p></li>
+</ul>
+</li>
+<li><p>Non-comparison-based sorting algorithms</p>
+<ul>
+<li><p>Counting sort</p></li>
+<li><p>Radix sort</p></li>
+<li><p>Bucket sort</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Other Method To Categorize</h3>
+<ul class="simple">
+<li><p>Stable sorting algorithms (preserve the relative order of equal elements)</p>
+<ul>
+<li><p>Bubble sort</p></li>
+<li><p>Insertion sort</p></li>
+<li><p>Merge sort</p></li>
+</ul>
+</li>
+<li><p>Divide and conquer sorting algorithms</p>
+<ul>
+<li><p>Merge sort</p></li>
+<li><p>Quick sort</p></li>
+</ul>
+</li>
+<li><p>Simple/Naive sorting algorithms</p>
+<ul>
+<li><p>Bubble sort</p></li>
+<li><p>Selection sort</p></li>
+<li><p>Insertion sort</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Array vs Linked List</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>For array</strong></p>
+<ul class="simple">
+<li><p>Array property</p>
+<ul>
+<li><p>fast access by index</p></li>
+<li><p>slow insertion and deletion of elements except at the end</p></li>
+</ul>
+</li>
+<li><p>Preferred general purpose sorting algorithms</p>
+<ul>
+<li><p>Quick sort</p></li>
+<li><p>Merge sort</p></li>
+<li><p>Heap sort</p></li>
+<li><p>Tim sort (a hybrid method, FYI)</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="half docutils container">
+<p><strong>For linked list</strong></p>
+<ul class="simple">
+<li><p>Linked-list property</p>
+<ul>
+<li><p>slow access by index</p></li>
+<li><p>fast reconstruction of new list</p></li>
+<li><p>fast access to neighboring nodes</p></li>
+</ul>
+</li>
+<li><p>With the same time complexity, consider data movement overhead</p></li>
+<li><p>Preferred general purpose sorting algorithms</p>
+<ul>
+<li><p>Merge sort</p></li>
+<li><p>Insertion sort</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Real-World Choices (FYI)</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Summary of real-world state-of-art for array</strong></p>
+<ul class="simple">
+<li><p>For small arrays</p>
+<ul>
+<li><p>Insertion sort</p></li>
+</ul>
+</li>
+<li><p>For large arrays</p>
+<ul>
+<li><p>Quick sort &gt; Merge sort &gt; Heap sort</p></li>
+<li><p>In parallel environment</p>
+<ul>
+<li><p>Merge sort</p></li>
+<li><p>Quick sort</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Overall winner for array: hybrid method</p>
+<ul>
+<li><p>Quick sort + Insertion sort</p></li>
+<li><p>Merge sort + Insertion sort</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="half docutils container">
+<p><strong>Summary of real-world state-of-art for linked list</strong></p>
+<ul class="simple">
+<li><p>For linked list</p>
+<ul>
+<li><p>Direct sort</p>
+<ul>
+<li><p>Merge sort for large linked list (can be parallelized)</p></li>
+<li><p>Insertion sort for small linked list</p></li>
+</ul>
+</li>
+<li><p>Sort as array of pointers</p>
+<ul>
+<li><p>Make an array of pointers</p></li>
+<li><p>Let each element point to the corresponding node in the linked list</p></li>
+<li><p>Sort the array of pointers</p></li>
+<li><p>Generate the new linked list according to the sorted array</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Time Complexity</h2>
+<ul class="simple">
+<li><p>Comparison-based sorting algorithms (Array)</p>
+<ul>
+<li><p>Bubble sort <span class="math notranslate nohighlight">\(\Theta(n^2)\)</span></p></li>
+<li><p>Selection sort <span class="math notranslate nohighlight">\(\Theta(n^2)\)</span></p></li>
+<li><p>Insertion sort <span class="math notranslate nohighlight">\(\Theta(n^2)\)</span></p></li>
+<li><p>Merge sort <span class="math notranslate nohighlight">\(\Theta(n \log n)\)</span></p></li>
+<li><p>Quick sort <span class="math notranslate nohighlight">\(\Theta(n \log n)\)</span> (average), <span class="math notranslate nohighlight">\(\Theta(n^2)\)</span> (worst)</p></li>
+<li><p>Heap sort <span class="math notranslate nohighlight">\(\Theta(n \log n)\)</span></p></li>
+</ul>
+</li>
+<li><p>Non-comparison-based sorting algorithms (Array)</p>
+<ul>
+<li><p>k is a constant value depending on algorithms</p></li>
+<li><p>Radix sort <span class="math notranslate nohighlight">\(\Theta(nk)\)</span></p></li>
+<li><p>Counting sort <span class="math notranslate nohighlight">\(\Theta(n+k)\)</span></p></li>
+<li><p>Bucket sort <span class="math notranslate nohighlight">\(\Theta(n+k)\)</span></p></li>
+</ul>
+</li>
+<li><p>Linked list</p>
+<ul>
+<li><p>Merge sort <span class="math notranslate nohighlight">\(\Theta(n \log n)\)</span></p></li>
+<li><p>Insertion sort <span class="math notranslate nohighlight">\(\Theta(n^2)\)</span></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Space Complexity</h3>
+<p><strong>The following discussion is on array only.</strong></p>
+<ul class="simple">
+<li><p>In-place sorting algorithms (swap based) <span class="math notranslate nohighlight">\(\Theta(1)\)</span></p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\Theta(1)\)</span> for swapping</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Theta(\log n)\)</span> to <span class="math notranslate nohighlight">\(\Theta(n)\)</span> for recursion stack</p></li>
+<li><p>Iterative: swapping only</p></li>
+<li><p>Recursive: swapping + recursion stack</p></li>
+</ul>
+</li>
+<li><p>Out-of-place sorting algorithms <span class="math notranslate nohighlight">\(\Theta(n)\)</span></p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\Theta(n)\)</span> for a new array</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Theta(\log n)\)</span> to <span class="math notranslate nohighlight">\(\Theta(n)\)</span> for recursion stack</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

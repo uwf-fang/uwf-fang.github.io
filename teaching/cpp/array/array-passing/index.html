@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Passing Arrays To/From Functions · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/cpp/">C&#43;&#43; Reference</a> / Passing Arrays To/From Functions</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Passing Arrays To/From Functions</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#array-parameters">Array Parameters</a></li>
+    <li><a href="#return-an-array">Return an Array</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="passing-arrays-to-from-functions"></span>
+<span id="array-passing"></span>
+<span id="pass-by-array"></span>
+<h2 id="array-parameters">Array Parameters</h2>
+<aside class="callout callout-note" aria-label="note">
+<strong>Note</strong><div><p>Only discussing one dimensional array in this document. Read the <a href="/teaching/cpp/array/multidim-array/#pass-2d-array">passing 2d array document</a> as needed.</p>
+</div></aside>
+<ul>
+<li>
+<p>pass an array is the same as passing a pointer</p>
+</li>
+<li>
+<p>only the first part (pointer part) is passed, data part stays</p>
+</li>
+<li>
+<p>use [] syntax or * syntax</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// ==== Array parameter ====
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- Correct ----
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ignore the size
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">double</span> <span style="color:#6639ba">average</span><span style="color:#1f2328">(</span><span style="color:#cf222e">double</span> arr<span style="color:#1f2328">[],</span> <span style="color:#cf222e">int</span> size<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">double</span> <span style="color:#6639ba">average</span><span style="color:#1f2328">(</span><span style="color:#cf222e">double</span> <span style="color:#0550ae">*</span>arr<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> size<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- Wrong ----
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">double</span> <span style="color:#6639ba">average</span><span style="color:#1f2328">(</span><span style="color:#cf222e">double</span> arr<span style="color:#1f2328">[</span>size<span style="color:#1f2328">],</span> <span style="color:#cf222e">int</span> size<span style="color:#1f2328">);</span>  <span style="color:#57606a">// not compile
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">double</span> <span style="color:#6639ba">average</span><span style="color:#1f2328">(</span><span style="color:#cf222e">double</span> arr<span style="color:#1f2328">[</span><span style="color:#0550ae">3</span><span style="color:#1f2328">],</span> <span style="color:#cf222e">int</span> size<span style="color:#1f2328">);</span>  <span style="color:#57606a">// compile but 3 is ignored
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- to call ----
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">double</span> arr1<span style="color:#1f2328">[</span><span style="color:#0550ae">3</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">{</span><span style="color:#0550ae">1.0</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">2.0</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">3.0</span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span>cout <span style="color:#0550ae">&lt;&lt;</span> average<span style="color:#1f2328">(</span>arr1<span style="color:#1f2328">,</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// cout &lt;&lt; average(arr1[], 3) &lt;&lt; endl;  // wrong!
+</span></span></span></code></pre></div></li>
+</ul>
+<span id="return-array"></span>
+<h2 id="return-an-array">Return an Array</h2>
+<ul>
+<li>
+<p>Returning an array is the same as returning a pointer</p>
+</li>
+<li>
+<p>Only the first part (pointer part) is passed to outside, data part stays</p>
+</li>
+<li>
+<p>The return type should use pointer syntax</p>
+</li>
+<li>
+<p><strong>Never return a local array from a function</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// ==== Array as returned value ====
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- Correct ----
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// return a dynamic array
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#0550ae">*</span><span style="color:#6639ba">makeSequence</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> size<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> <span style="color:#0550ae">*</span>sequence<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  sequence <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> <span style="color:#cf222e">int</span><span style="color:#1f2328">[</span>size<span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> i <span style="color:#0550ae">&lt;</span> size<span style="color:#1f2328">;</span> <span style="color:#0550ae">++</span>i<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    sequence<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> i <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> sequence<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- Wrong ----
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#0550ae">*</span><span style="color:#6639ba">makeSequence</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> size<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> sequence<span style="color:#1f2328">[</span>size<span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> i <span style="color:#0550ae">&lt;</span> size<span style="color:#1f2328">;</span> <span style="color:#0550ae">++</span>i<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    sequence<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> i <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> sequence<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- to call ----
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#0550ae">*</span>seq <span style="color:#0550ae">=</span> makeSequence<span style="color:#1f2328">(</span><span style="color:#0550ae">10</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">delete</span> <span style="color:#1f2328">[]</span> seq<span style="color:#1f2328">;</span>
+</span></span></code></pre></div></li>
+<li>
+<p>Read the <a href="/teaching/cpp/array/multidim-array/#return-md-array">returning multidimensional arrays document</a> as needed</p>
+</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

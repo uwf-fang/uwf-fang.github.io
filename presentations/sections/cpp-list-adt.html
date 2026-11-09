@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>C++ Implementation of a List ADT</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>C++ Implementation of a List ADT</h1>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ol class="arabic">
+<li><p><strong>Existing C++ STL containers</strong></p></li>
+<li><p><strong>Make from scratch as templates</strong></p>
+<ul class="simple">
+<li><p>Partially filled array</p></li>
+<li><p>Linked list</p></li>
+</ul>
+<p>** Node struct**</p>
+<pre><code data-trim data-noescape class="cpp">template &lt;typename T&gt;
+struct Node {
+  T data;
+  Node&lt;T&gt; *prev;
+  Node&lt;T&gt; *next;
+};</code></pre>
+</li>
+</ol>
+</div>
+<div class="half docutils container">
+<p><strong>Linked List Example</strong></p>
+<pre><code data-trim data-noescape class="cpp">template &lt;typename T&gt;
+class List {  // Doubly-linked list
+  Node&lt;T&gt; *head;
+  Node&lt;T&gt; *tail;
+  int size;
+public:
+  List();
+  ~List();
+  void clear();
+  void append(const T &amp;data);
+  void insertBefore(const T &amp;data, Node&lt;T&gt; *next);
+  void remove(Node&lt;T&gt; *node);
+  Node&lt;T&gt; *search(const T &amp;data);
+  int getSize() const;
+};</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Choice of Data Structures</h2>
+<ul class="simple">
+<li><p>No data structure is perfect</p></li>
+<li><p>Linked List</p>
+<ul>
+<li><p>fast insertion and removal</p></li>
+<li><p>slow indexing</p></li>
+</ul>
+</li>
+<li><p>Array</p>
+<ul>
+<li><p>fast indexing</p></li>
+<li><p>fixed size</p></li>
+<li><p>slow insertion and removal</p></li>
+</ul>
+</li>
+<li><p>Advanced data structures (FYI)</p>
+<ul>
+<li><p>In the cost of complex logics or extra spaces</p></li>
+<li><p>hybrid: linked list with array indices</p></li>
+<li><p>skip list</p></li>
+<li><p>hash table</p></li>
+<li><p>search tree</p></li>
+</ul>
+</li>
+</ul>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

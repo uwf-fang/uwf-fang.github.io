@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Modular Development in C++</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Modular Development in C++</h1>
+<div class="subtitle docutils container">
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Overview</p>
+<ul>
+<li><p>Definition</p></li>
+<li><p>Motivation and benefits</p></li>
+<li><p>Source code organization</p></li>
+<li><p>C++ building model</p></li>
+</ul>
+</li>
+<li><p>Building using GNU g++</p>
+<ul>
+<li><p>Preprocessing directives</p></li>
+<li><p>One step compilation</p></li>
+<li><p>Step-wise modular compilation</p></li>
+</ul>
+</li>
+<li><p>Automate the building process using GNU make</p>
+<ul>
+<li><p>Makefile</p></li>
+<li><p>Modular compilation using make</p></li>
+</ul>
+</li>
+<li><p>Pitfalls and common errors</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>TL;DR</h2>
+<ul class="simple">
+<li><p>Must go modular in this course!</p></li>
+<li><p>No longer have single-cpp-file projects.</p></li>
+<li><p>Organize source code as header and source files.</p></li>
+<li><p>Logically organized as drivers and modules.</p></li>
+<li><p>Use g++ step-wise compilation</p></li>
+<li><p>Learn <strong>basic</strong> makefile syntax</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Modular Development Overview</h2>
+<ul>
+<li><p>Definition</p>
+<p>Modular development in C++ refers to the practice of designing and
+structuring a software application as a collection of independent and
+reusable modules or components. Each module encapsulates a specific set of
+functionality, and these modules can be developed, tested, and maintained
+separately from each other.</p>
+</li>
+<li><p>Motivation and benefits</p>
+<ul class="simple">
+<li><p>Code reusability</p></li>
+<li><p>Simplicity</p></li>
+<li><p>Encapsulation</p></li>
+<li><p>Parallel development</p></li>
+<li><p>Flexibility</p></li>
+<li><p>Testability</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Source Code Organization</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p>Two types of files (physical units)</p>
+<ul>
+<li><p>Header files</p>
+<ul>
+<li><p>contain <strong>declarations</strong> of <strong>public</strong> classes, functions, global
+variables, etc.</p></li>
+<li><p>have extension <cite>.hpp</cite></p></li>
+</ul>
+</li>
+<li><p>Source files</p>
+<ul>
+<li><p>contain <strong>definitions</strong> of <strong>public</strong> classes, functions, etc.</p></li>
+<li><p>contain <strong>private declarations and definitions</strong></p></li>
+<li><p>preferred extension <cite>.cpp</cite></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="half docutils container">
+<ul class="simple">
+<li><p>Logical units</p>
+<ul>
+<li><p>Drivers</p>
+<ul>
+<li><p><strong>contains a ``main`` function</strong></p></li>
+<li><p>generally have no paired header file</p></li>
+<li><p>one per executable</p></li>
+<li><p>E.g. <code class="docutils literal notranslate"><span class="pre">main.cpp</span></code>, <code class="docutils literal notranslate"><span class="pre">test.cpp</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.cpp</span></code>, etc.</p></li>
+</ul>
+</li>
+<li><p>Modules (or libraries)</p>
+<ul>
+<li><p><strong>no ``main`` function</strong></p></li>
+<li><p>contain classes, functions, global variables, etc. to be used by the
+driver or other modules</p></li>
+<li><p><strong>paired hpp and cpp files</strong> or <strong>header only</strong></p></li>
+<li><p>E.g. <code class="docutils literal notranslate"><span class="pre">table.hpp</span> <span class="pre">+</span> <span class="pre">table.cpp</span></code>, <code class="docutils literal notranslate"><span class="pre">list.hpp</span> <span class="pre">+</span> <span class="pre">list.cpp</span></code>, etc.</p></li>
+<li><p>this term is used interchangeably with “library” in this course; it
+may be defined differently in other contexts</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</section>
+<section >
+<h3>Quick Quiz</h3>
+<p>In a project with files: <code class="docutils literal notranslate"><span class="pre">main.cpp</span></code>, <code class="docutils literal notranslate"><span class="pre">table.hpp</span></code>, <code class="docutils literal notranslate"><span class="pre">table.cpp</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">list.hpp</span></code>, find which files belongs to the following categories:</p>
+<ol class="arabic simple">
+<li><p>Driver</p></li>
+<li><p>Module (paired files)</p></li>
+<li><p>Module (header only)</p></li>
+</ol>
+<p>Try it in ExcalidDraw: <a class="reference external" href="https://excalidraw.com/#json=dCqPvMfGFINUsva4FAEAD,cIEnWcZTtHCA7JKWGCo5IQ">link</a></p>
+</section>
+<section >
+<h3>C++ Building Model</h3>
+<ul class="simple">
+<li><p>The process of translating source codes into executables or libraries is
+called <strong>building</strong>.</p></li>
+<li><p>Inherited from C, C++ building process is complicated and tedious.</p></li>
+<li><p>The building process consists of three stages:</p>
+<ul>
+<li><p>Preprocessing</p>
+<ul>
+<li><p>process all preprocessor directives</p></li>
+<li><p>the <code class="docutils literal notranslate"><span class="pre">#include</span></code> directive injects hpp file contents into cpp files</p></li>
+</ul>
+</li>
+<li><p>Compiling</p>
+<ul>
+<li><p>compile cpp files into object files</p></li>
+<li><p>one object file for each cpp file</p></li>
+</ul>
+</li>
+<li><p>Linking</p>
+<ul>
+<li><p>link object files into an executable</p></li>
+<li><p>link object files with libraries (FYI)</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<a class="reference internal image-reference" href="../_images/cpp-build-process.png"><img alt="C++ Building Process of an Executable" src="../_images/cpp-build-process.png" style="width: 100%;" />
+</a>
+</section>
+</section>
+<section >
+<section >
+<h2>Building using GNU g++</h2>
+<ul>
+<li><p>Overview</p>
+<p>g++ is the GNU C++ compiler invocation command. It builds C++ source codes to
+produce libraries or executables. It serves as pre-processor, compiler, and
+linker for C++ projects.</p>
+</li>
+<li><p>g++ command syntax</p>
+<pre><code data-trim data-noescape class="bash">g++ [options] [files]</code></pre>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">files</span></code>: source files, object files</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">options</span></code>: a list of options to control the building process</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Preprocessing directives</h3>
+<ul>
+<li><p>Commands to the preprocessor.</p></li>
+<li><p>They start with <code class="docutils literal notranslate"><span class="pre">#</span></code> and end with no semicolon.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&lt;header&gt;</span></code>: inject the content of header file into the current
+file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">#define</span></code>: define a macro (text replacement rule).</p></li>
+<li><p>Header guards: prevent header files from being included multiple times.</p>
+<pre><code data-trim data-noescape class="default">#ifndef HEADER_GUARD
+#define HEADER_GUARD
+
+// header file content
+
+#endif</code></pre>
+</li>
+</ul>
+</section>
+<section >
+<h3>Two building approaches: One step</h3>
+<ul class="simple">
+<li><p><strong>Not recommended</strong> for modular projects.</p></li>
+<li><p>Should be limited to simple projects.</p></li>
+<li><p>Preprocessing + Compilation + Linking all at once</p></li>
+<li><p>Generate one executable from <strong>a single driver</strong> and other
+source files for modules</p></li>
+</ul>
+<pre data-id="two-building-approaches-one-step"><code data-trim data-noescape class="bash">g++ -std=c++14 -I&lt;path/to/headers&gt; -o &lt;executable&gt; &lt;list of .cpp files&gt;</code></pre>
+</section>
+<section >
+<h3>Two building approaches: Step-wise</h3>
+<ul>
+<li><p><strong>Recommended</strong> for modular projects.</p></li>
+<li><p>Allows fine control over the building process of complicated modular
+projects.</p></li>
+<li><p>Preprocessing + Compilation</p>
+<ul class="simple">
+<li><p>g++ flag: <code class="docutils literal notranslate"><span class="pre">-c</span></code></p></li>
+<li><p>generate one object file for each cpp file</p></li>
+</ul>
+<pre><code data-trim data-noescape class="bash">g++ -c -Wall -std=c++14 -I&lt;path/to/headers&gt; &lt;file&gt;.cpp</code></pre>
+</li>
+<li><p>Linking</p>
+<ul class="simple">
+<li><p>generate one executable from object file of <strong>a driver</strong> and other object
+files of modules</p></li>
+</ul>
+<pre><code data-trim data-noescape class="bash">g++ -o &lt;executable&gt; &lt;list of .o files&gt;</code></pre>
+</li>
+<li><p>Common errors: <a class="reference external" href="https://uwf-fang.github.io/cpp/building/gpp.html#common-error-messages-from-g">link</a></p></li>
+</ul>
+</section>
+<section >
+<h3>Never Do This!</h3>
+<ul class="simple">
+<li><p>Include cpp files using #include directive</p></li>
+<li><p>File name mismatch between #include directive and actual file name; Commonly
+caused by the use of capital letters in file names</p></li>
+<li><p>Include header file names in the g++ command line</p></li>
+<li><p>Linking object files of multiple drivers into one executable</p></li>
+<li><p>Forget to include header guards in header files</p></li>
+<li><p>Forget <code class="docutils literal notranslate"><span class="pre">-c</span></code> flag in the compilation command</p></li>
+</ul>
+</section>
+<section >
+<h3>Quick Quiz</h3>
+<p>What is wrong with the following commands? What type of building approach is?</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">g++</span> <span class="pre">-o</span> <span class="pre">main</span> <span class="pre">main.cpp</span> <span class="pre">grade-book.cpp</span> <span class="pre">grades.hpp</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">g++</span> <span class="pre">-o</span> <span class="pre">main.o</span> <span class="pre">main.cpp</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">g++</span> <span class="pre">-c</span> <span class="pre">-o</span> <span class="pre">main.o</span> <span class="pre">main.cpp</span> <span class="pre">grade-book.cpp</span></code></p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Automate the building process using GNU make</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul>
+<li><p>Overview</p>
+<ul class="simple">
+<li><p>Step-wise modular building is tedious and error-prone.</p></li>
+<li><p>GNU make is a tool to automate building process.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span></code> is the command-line command to trigger GNU make.</p></li>
+</ul>
+</li>
+<li><p>Makefile</p>
+<p>The configuration file that contains rules to guide the <code class="docutils literal notranslate"><span class="pre">make</span></code> command
+to build targets in a project.</p>
+</li>
+<li><p>Modular building using GNU make</p>
+<ul class="simple">
+<li><p>Define rules to compile and link</p></li>
+<li><p>Have complicated syntax for makefile but easy to start with</p></li>
+</ul>
+</li>
+<li><p>Common make errors: <a class="reference external" href="https://uwf-fang.github.io/tools/make.html#common-error-messages-from-make">link</a></p></li>
+</ul>
+</div>
+<div class="half docutils container">
+<ul class="simple">
+<li><p>See the <a class="reference external" href="https://mermaid.live/edit#pako:eNp1U01zgjAU_CvMOyOjRQE59FLbaw_21NJxAkRjCwlDkhmt439vwjcYuJD3dvftJoEbJCzFEMKpRAWxPnYRtdTDZVw3Xi84kQLFGa4B_eToTOsK0zSiE8V7_IMTYb2dM8zHmgP70i-Hffd9pUnxIWbsV6FVsdDFiMOFTDEVitCsHifwVs07zJRtz2SZYGO2pCjqdGphzqcZg4RjXptRk9qUhkm8n8LnncjYiRidyMCJmJxI79Tjg1PRu7UWi-fmbibN4cVMoO4-TBKu2z1wYL2F2u8DMN71AzzYbHeZrfuI0M02wwN9m3IYuVObwKm2OZRp_PGMGRKZJY2Szo-p4oANOS7VMaXqx71pegSC4BxHEKplio9IZiKCiN4VFUnB9leaQChKiW0omTwRCI8o46qSRYoE3p2RGp933QLRT8byVnIqtVUjV58QLl-YpALClf9UkSG8wQXCYOts3dV2Hbiuu166fmDDVXV9Z7P0PE91PW_lru82_FXDl07gb-7_Elh4IQ">Diagram</a> of the modular dependencies</p></li>
+</ul>
+<pre><code data-trim data-noescape class="makefile"># declare virtual targets
+.PHONY: clean
+
+# Linking to provide the executable
+main: main.o grade-book.o student.o grades.o
+    g++ -o main main.o grade-book.o student.o grades.o
+
+# Compile. One cpp file a time.
+main.o: main.cpp grade-book.hpp student.hpp
+    g++ -std=c++14 -Wall -g -c main.cpp
+
+student.o: student.cpp student.hpp
+    g++ -std=c++14 -Wall -g -c student.cpp
+
+grades.o: grades.cpp grades.hpp
+    g++ -std=c++14 -Wall -g -c grades.cpp
+
+grade-book.o: grade-book.cpp grade-book.hpp student.hpp grades.hpp
+    g++ -std=c++14 -Wall -g -c grade-book.cpp
+
+# the 'clean' virtual target to remove temporary files
+clean:
+    rm -rf *.o main *.gc* *.dSYM</code></pre>
+</div>
+</div>
+</section>
+<section >
+<h3>Use GNU make to build</h3>
+<ul class="simple">
+<li><p>Create a makefile in the project directory.</p></li>
+<li><p>Define rules for compiling and linking.</p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">make</span></code> commands:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span></code>: build the first target in the makefile, you can press tab to
+auto-complete the target name</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">&lt;target&gt;</span></code>: build the specified target</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code>: remove temporary files</p></li>
+</ul>
+</li>
+<li><p>Common make targets in projects</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test-all</span></code>: run all tests</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test-#-name</span></code>: run test number #</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test-run</span></code>: compile and run the program</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

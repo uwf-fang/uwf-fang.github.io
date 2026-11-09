@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 2: Parallel Hardware and Software · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><strong>Contents:</strong><ul><li><a href="/teaching/course/cop5522/intel-intrinsics/">Intel SIMD Intrinsics</a></li><li><a href="/teaching/course/cop5522/profiling/">Profiling</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/course/cop5522/">COP 5522 Parallel and Distributed Programming</a> / Chapter 2: Parallel Hardware and Software</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Chapter 2: Parallel Hardware and Software</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#serial-system">Serial System</a>
+      <ul>
+        <li><a href="#the-traditional-von-neumann-architecture">The traditional von Neumann architecture</a></li>
+        <li><a href="#operating-system">Operating system</a></li>
+        <li><a href="#cache">Cache</a></li>
+        <li><a href="#virtual-memory">Virtual memory</a></li>
+        <li><a href="#instruction-level-parallelism-ilp">Instruction level parallelism (ILP)</a></li>
+        <li><a href="#thread-level-parallelism-tlp">Thread level parallelism (TLP)</a></li>
+      </ul>
+    </li>
+    <li><a href="#parallel-hardware">Parallel Hardware</a>
+      <ul>
+        <li><a href="#flynn-s-taxonomy">Flynn’s taxonomy</a></li>
+        <li><a href="#shared-memory-simd">Shared-memory SIMD</a></li>
+        <li><a href="#distributed-memory-simd">Distributed-memory SIMD</a></li>
+        <li><a href="#cache-coherence-in-shared-memory-system">Cache coherence in shared-memory system</a></li>
+      </ul>
+    </li>
+    <li><a href="#parallel-software">Parallel Software</a>
+      <ul>
+        <li><a href="#shared-memory-system">Shared-memory system</a></li>
+        <li><a href="#distributed-memory-system">Distributed-memory system</a></li>
+      </ul>
+    </li>
+    <li><a href="#performance-model">Performance Model</a>
+      <ul>
+        <li><a href="#variables">Variables</a></li>
+        <li><a href="#metrics">Metrics</a></li>
+        <li><a href="#relationships">Relationships</a></li>
+      </ul>
+    </li>
+    <li><a href="#parallel-program-design">Parallel Program Design</a></li>
+    <li><a href="#addition-content">Addition Content</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="chapter-2-parallel-hardware-and-software"></span>
+<h2 id="serial-system">Serial System</h2>
+<h3 id="the-traditional-von-neumann-architecture">The traditional von Neumann architecture</h3>
+<ul>
+<li>CPU
+<ul>
+<li>Control unit</li>
+<li>Arithmetic logic unit (ALU)</li>
+</ul>
+</li>
+<li>Memory</li>
+<li>Input/Output (I/O)</li>
+</ul>
+<h3 id="operating-system">Operating system</h3>
+<ul>
+<li>Process
+<ul>
+<li>Multitasking</li>
+</ul>
+</li>
+<li>Thread</li>
+</ul>
+<h3 id="cache">Cache</h3>
+<ul>
+<li>Definition: A cache is a smaller, faster type of volatile computer memory that provides high-speed data access to the processor and stores frequently used computer programs, applications, and data.</li>
+<li>Locality
+<ul>
+<li>Temporal locality
+<ul>
+<li>A memory location that is referenced once is likely to be referenced again soon.</li>
+</ul>
+</li>
+<li>Spatial locality
+<ul>
+<li>A memory location near the location  that is referenced once is likely to be referenced again soon.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Leveled
+<ul>
+<li>L1, L2, L3, … from faster/smaller to slower/larger</li>
+</ul>
+</li>
+<li>Cache line</li>
+<li>Cache address mapping</li>
+<li>Cache hit/miss</li>
+<li>Cache mapping
+<ul>
+<li>Direct mapping (temporal locality)
+<ul>
+<li>Select one cache line to store in the cache</li>
+<li>A line of data can be stored in any cache line</li>
+</ul>
+</li>
+<li>Full associative mapping (spatial locality)
+<ul>
+<li>Select a block around the line of data and store the whole block in the cache</li>
+<li>The whole cache is occupied by the block</li>
+<li>A line of data can only be stored in one cache line</li>
+</ul>
+</li>
+<li>Set-associative mapping (both)
+<ul>
+<li>Split the cache into several sets</li>
+<li>Select a block around the line of data and store the whole block in the cache</li>
+<li>A set is occupied by the block</li>
+<li>A line of data can only be stored in one cache line per set. Thus, there are the number of sets possible way to store the line of data.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Cache eviction policy</li>
+</ul>
+<h3 id="virtual-memory">Virtual memory</h3>
+<ul>
+<li>Use secondary storage as an extension of main memory</li>
+<li>Page - Fixed length block</li>
+<li>Swapping - unused page moved to secondary storage</li>
+<li>Virtual address</li>
+<li>Page table - mapping from virtual address to physical address
+<ul>
+<li>Translation lookaside buffer (TLB) - cache for page table</li>
+</ul>
+</li>
+<li>Page fault - page not in memory</li>
+</ul>
+<h3 id="instruction-level-parallelism-ilp">Instruction level parallelism (ILP)</h3>
+<p>Internal feature of a CPU to allow parallelism. Hardware dependant.</p>
+<ul>
+<li>pipeline - unique subunit</li>
+<li>multiple issue - replicated subunits</li>
+</ul>
+<h3 id="thread-level-parallelism-tlp">Thread level parallelism (TLP)</h3>
+<h2 id="parallel-hardware">Parallel Hardware</h2>
+<ul>
+<li>Type of parallelism
+<ul>
+<li>data parallelism</li>
+<li>task parallelism</li>
+</ul>
+</li>
+</ul>
+<h3 id="flynn-s-taxonomy">Flynn’s taxonomy</h3>
+<ul>
+<li>Single instruction single data stream (SISD)
+<ul>
+<li>classic von Neumann</li>
+</ul>
+</li>
+<li>Single instruction multiple data (SIMD)
+<ul>
+<li>Vector processor
+<ul>
+<li>Dedicated vector processor</li>
+<li>General CPUs with vector instructions
+<ul>
+<li>Intel SIMD intrinsics: MMX, SSE, AVX</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>GPUs single core (Graphical Processing Unit)</li>
+</ul>
+</li>
+<li>Multiple instruction multiple data stream (MIMD)
+<ul>
+<li>Types
+<ul>
+<li>shared-memory</li>
+<li>distributed memory</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="shared-memory-simd">Shared-memory SIMD</h3>
+<ul>
+<li>Memory access
+<ul>
+<li>UMA (Uniform Memory Access)</li>
+<li>NUMA (Non-Uniform Memory Access)</li>
+</ul>
+</li>
+<li>interconnections
+<ul>
+<li>bus</li>
+<li>switch
+<ul>
+<li>crossbar</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="distributed-memory-simd">Distributed-memory SIMD</h3>
+<ul>
+<li>interconnections
+<ul>
+<li>direct (nodes are connected by a single switch)
+<ul>
+<li>fully connected</li>
+<li>hypercube</li>
+</ul>
+</li>
+<li>indirect (nodes are connected by multiple switches)
+<ul>
+<li>crossbar</li>
+<li>omega network</li>
+</ul>
+</li>
+<li>Time to send a message
+<ul>
+<li>latency - preparation time</li>
+<li>bandwidth - transfer time</li>
+<li>$time = latency + size/bandwidth$</li>
+</ul>
+</li>
+<li>bisect width/bandwidth</li>
+</ul>
+</li>
+</ul>
+<h3 id="cache-coherence-in-shared-memory-system">Cache coherence in shared-memory system</h3>
+<ul>
+<li>Solutions
+<ul>
+<li>snooping</li>
+<li>directory</li>
+</ul>
+</li>
+<li>false sharing - different part of a cache line is shared</li>
+</ul>
+<h2 id="parallel-software">Parallel Software</h2>
+<ul>
+<li>Focus on Single program multiple data (SPMD) programs
+<ul>
+<li>A single program is executed by multiple processes/threads/nodes</li>
+<li>Each process/thread/node executes the same program</li>
+<li>Each process/thread/node has its own data</li>
+</ul>
+</li>
+</ul>
+<h3 id="shared-memory-system">Shared-memory system</h3>
+<ul>
+<li>Threads
+<ul>
+<li>Dynamic threads
+<ul>
+<li>fork-join model</li>
+</ul>
+</li>
+<li>Static threads</li>
+</ul>
+</li>
+<li>Communicating by I/O to the shared memory
+<ul>
+<li>nondeterminism
+<ul>
+<li>racing condition</li>
+<li>critical section</li>
+<li>mutual exclusion lock (MUTEX)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Input/Output
+<ul>
+<li>Always have one thread for stdin</li>
+<li>Usually have one thread for stdout, stderr</li>
+</ul>
+</li>
+<li>Thread-safety</li>
+<li>Libraries
+<ul>
+<li>POSIX thread (fork-join model)</li>
+<li>OpenMP</li>
+</ul>
+</li>
+</ul>
+<h3 id="distributed-memory-system">Distributed-memory system</h3>
+<ul>
+<li>Communicating by message passing</li>
+<li>The Message-Passing Interface (MPI) standard
+<ul>
+<li>MPICH</li>
+<li>OpenMPI</li>
+</ul>
+</li>
+</ul>
+<h2 id="performance-model">Performance Model</h2>
+<h3 id="variables">Variables</h3>
+<ul>
+<li>Serial run-time $T_{serial}$</li>
+<li>Parallel run-time $T_{parallel}$</li>
+<li>Number of processes/threads/nodes $p$</li>
+<li>Problem size $N$</li>
+</ul>
+<h3 id="metrics">Metrics</h3>
+<ul>
+<li>Speedup $S = T_{serial}/T_{parallel}$</li>
+<li>Efficiency $E = \frac{S}{p} = \frac{T_{serial}}{p \cdot T_{parallel}}$</li>
+</ul>
+<h3 id="relationships">Relationships</h3>
+<ul>
+<li>Ideal
+<ul>
+<li>$S = T_{serial}/T_{parallel} = p$</li>
+</ul>
+</li>
+<li>With overhead
+<ul>
+<li>$T_{parallel} = T_{serial}/p + T_{overhead}$</li>
+<li>$S = T_{serial}/T_{parallel} < p$</li>
+</ul>
+</li>
+<li>Amdahl’s law
+<ul>
+<li>
+<p>Let $f$ be the fraction of the program that can be parallelized</p>
+</li>
+<li>
+<p>Then the speedup</p>
+<p>$S = \frac{1}{(1-f) + \frac{f}{p}}$</p>
+</li>
+<li>
+<p>Diminishing return</p>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="migration-image align-"><img src="/teaching/_migration/3b12bad30e2038b4.png" alt="Amdahl&#39;s law" style="width:400px;max-width:100%;height:auto" loading="lazy"></figure>
+<p>credit: <a href="https://en.wikipedia.org/wiki/Amdahl%27s_law">https://en.wikipedia.org/wiki/Amdahl%27s_law</a></p>
+<ul>
+<li>Scalability
+<ul>
+<li>strong scaling
+<ul>
+<li>Constant $E$ with increasing $p$ for a fixed $N$</li>
+<li>plot:
+<ul>
+<li>$E$ vs $P$</li>
+<li>fixed $N$</li>
+<li>Expect nearly flat line</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>weak
+<ul>
+<li>Constant $E$ with increasing $p$ for a fixed $N/p$ ratio</li>
+<li>plot:
+<ul>
+<li>$E$ vs $P$</li>
+<li>fixed $N/p$</li>
+<li>Expect nearly flat line</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Timing</li>
+</ul>
+<h2 id="parallel-program-design">Parallel Program Design</h2>
+<ul>
+<li>Foster’s methodology
+<ol>
+<li>Partition</li>
+<li>Communication</li>
+<li>Agglomeration</li>
+<li>Mapping</li>
+</ol>
+</li>
+<li>Histogram example
+<ul>
+<li>code example available</li>
+</ul>
+</li>
+</ul>
+<h2 id="addition-content">Addition Content</h2>
+<p><strong>Contents:</strong></p>
+<ul>
+<li><a href="/teaching/course/cop5522/intel-intrinsics/">Intel SIMD Intrinsics</a>
+<ul>
+<li><a href="/teaching/course/cop5522/intel-intrinsics/#simd-intrinsics">SIMD Intrinsics</a></li>
+<li><a href="/teaching/course/cop5522/intel-intrinsics/#intel-intrinsics">Intel Intrinsics</a></li>
+<li><a href="/teaching/course/cop5522/intel-intrinsics/#sse4-example">SSE4 Example</a></li>
+</ul>
+</li>
+<li><a href="/teaching/course/cop5522/profiling/">Profiling</a>
+<ul>
+<li><a href="/teaching/course/cop5522/profiling/#types">Types</a></li>
+<li><a href="/teaching/course/cop5522/profiling/#time-measurement">Time Measurement</a></li>
+<li><a href="/teaching/course/cop5522/profiling/#profiling-tools">Profiling Tools</a></li>
+</ul>
+</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

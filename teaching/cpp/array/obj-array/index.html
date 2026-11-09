@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Object Array · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/cpp/">C&#43;&#43; Reference</a> / Object Array</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Object Array</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#motivation">Motivation</a></li>
+    <li><a href="#d-array-of-objects">1D Array of Objects</a>
+      <ul>
+        <li><a href="#multiple-arrays">Multiple arrays</a></li>
+        <li><a href="#array-of-objects">Array of objects</a></li>
+      </ul>
+    </li>
+    <li><a href="#array-of-pointers-to-objects">Array of pointers to objects</a></li>
+    <li><a href="#pitfalls">Pitfalls</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="object-array"></span>
+<h2 id="motivation">Motivation</h2>
+<p>Array of objects is an efficient method to model a list of records. Compared to other alternative methods to model multiple records, object array excels in many aspects.</p>
+<h2 id="d-array-of-objects">1D Array of Objects</h2>
+<p>When modeling a list of <code>N</code> records with <code>M</code> fields (a <code>N * M</code> 2D table), there are several data structures to choose from:</p>
+<h3 id="multiple-arrays">Multiple arrays</h3>
+<ul>
+<li>
+<p>store data in <code>M</code> arrays, each with size <code>N</code>, same index means same record</p>
+<p>E.g. grades[i] and names[i] refers to the grade and name of a same student</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#cf222e">int</span> NUM_STUDENT <span style="color:#0550ae">=</span> <span style="color:#0550ae">100</span><span style="color:#1f2328">;</span> <span style="color:#57606a">// max number of students
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">double</span> grades<span style="color:#1f2328">[</span>NUM_STUDENT<span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span>string names<span style="color:#1f2328">[</span>NUM_STUDENT<span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>names<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#0a3069">&#34;John Smith&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>grades<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#0550ae">100</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;The 5th student in the list &#34;</span> <span style="color:#0550ae">&lt;&lt;</span> names<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span>cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34; has a grade of &#34;</span> <span style="color:#0550ae">&lt;&lt;</span> grades<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">];</span>
+</span></span></code></pre></div></li>
+<li>
+<p>old-fashion approach inherited from the C language</p>
+</li>
+</ul>
+<h3 id="array-of-objects">Array of objects</h3>
+<ul>
+<li>
+<p>Pre-allocate <code>N</code> empty objects using the default constructor</p>
+</li>
+<li>
+<p>Each object has <code>M</code> fields</p>
+</li>
+<li>
+<p>Local array example:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// struct example
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">struct</span> <span style="color:#1f2328">StudentStruct</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">double</span> grade<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  string name<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>StudentStruct students<span style="color:#1f2328">[</span>NUM_STUDENT<span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span>students<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">].</span>name <span style="color:#0550ae">=</span> <span style="color:#0a3069">&#34;John Smith&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>students<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">].</span>grade <span style="color:#0550ae">=</span> <span style="color:#0550ae">100</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;The 5th student in the list &#34;</span> <span style="color:#0550ae">&lt;&lt;</span> students<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">].</span>name<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34; has a grade of &#34;</span> <span style="color:#0550ae">&lt;&lt;</span> students<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">].</span>grade<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// class example
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">StudentClass</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">double</span> grade<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  string name<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">public</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  StudentClass<span style="color:#1f2328">()</span><span style="color:#0550ae">:</span> name<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;&#34;</span><span style="color:#1f2328">),</span> grade<span style="color:#1f2328">(</span><span style="color:#0550ae">0</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{}</span>
+</span></span><span style="display:flex;"><span>  StudentClass<span style="color:#1f2328">(</span>string name<span style="color:#1f2328">,</span> <span style="color:#cf222e">double</span> grade<span style="color:#1f2328">)</span><span style="color:#0550ae">:</span> name<span style="color:#1f2328">(</span>name<span style="color:#1f2328">),</span> grade<span style="color:#1f2328">(</span>grade<span style="color:#1f2328">)</span> <span style="color:#1f2328">{}</span>
+</span></span><span style="display:flex;"><span>  string <span style="color:#6639ba">getName</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span> <span style="color:#cf222e">return</span> name<span style="color:#1f2328">;}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">double</span> <span style="color:#6639ba">getGrade</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span> <span style="color:#cf222e">return</span> grade<span style="color:#1f2328">;}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>StudentClass students1<span style="color:#1f2328">[</span>NUM_STUDENT<span style="color:#1f2328">];</span>  <span style="color:#57606a">// default constructor called 100 times
+</span></span></span><span style="display:flex;"><span>students1<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> StudentClass<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;John Smith&#34;</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">100</span><span style="color:#1f2328">);</span>  <span style="color:#57606a">// disposable object assignment
+</span></span></span><span style="display:flex;"><span>cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;The 5th student in the list &#34;</span> <span style="color:#0550ae">&lt;&lt;</span> students1<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">].</span>getName<span style="color:#1f2328">()</span> <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34; has a grade of &#34;</span> <span style="color:#0550ae">&lt;&lt;</span> students1<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">].</span>getGrade<span style="color:#1f2328">();</span>
+</span></span></code></pre></div></li>
+<li>
+<p>To update the fields of the object after the initial allocation of empty objects, you can either</p>
+<ol>
+<li>
+<p>use assignment or setters:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// if name and grade fields are public
+</span></span></span><span style="display:flex;"><span>students<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">].</span>name <span style="color:#0550ae">=</span> <span style="color:#0a3069">&#34;John Smith&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>students<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">].</span>grade <span style="color:#0550ae">=</span> <span style="color:#0550ae">100</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// if name and grade fields are accessible only through setters
+</span></span></span><span style="display:flex;"><span>students1<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">].</span>setName<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;John Smith&#34;</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>students1<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">].</span>setGrade<span style="color:#1f2328">(</span><span style="color:#0550ae">100</span><span style="color:#1f2328">);</span>
+</span></span></code></pre></div></li>
+</ol>
+<blockquote>
+<ul>
+<li>fast, modifying existing objects</li>
+<li>can be very verbose given large number of fields</li>
+</ul>
+</blockquote>
+<ol>
+<li>
+<p>assign temporary object:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>students1<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> Student<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;John Smith&#34;</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">100</span><span style="color:#1f2328">);</span>
+</span></span></code></pre></div></li>
+</ol>
+<blockquote>
+<ul>
+<li>overhead of creating and duplicating temporary objects</li>
+<li>cleaner syntax</li>
+</ul>
+</blockquote>
+</li>
+<li>
+<p>Dynamic array example:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>StudentClass <span style="color:#0550ae">*</span>students2<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>students2 <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> StudentClass<span style="color:#1f2328">[</span>NUM_STUDENT<span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span>students1<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> StudentClass<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;John Smith&#34;</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">100</span><span style="color:#1f2328">);</span>  <span style="color:#57606a">// temporary object assignment
+</span></span></span><span style="display:flex;"><span>cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;The 5th student in the list &#34;</span> <span style="color:#0550ae">&lt;&lt;</span> students1<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">].</span>getName<span style="color:#1f2328">()</span> <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34; has a grade of &#34;</span> <span style="color:#0550ae">&lt;&lt;</span> students1<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">].</span>getGrade<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">delete</span> <span style="color:#1f2328">[]</span> students2<span style="color:#1f2328">;</span>
+</span></span></code></pre></div></li>
+</ul>
+<h2 id="array-of-pointers-to-objects">Array of pointers to objects</h2>
+<ul>
+<li>
+<p>Pre-allocate <code>N</code> pointers</p>
+</li>
+<li>
+<p>Initialized to <code>nullptr</code></p>
+</li>
+<li>
+<p>Use <code>new</code> operator to allocate objects as needed</p>
+</li>
+<li>
+<p>Each object has <code>M</code> fields</p>
+</li>
+<li>
+<p>Complex syntax than array of objects</p>
+</li>
+<li>
+<p>Local array example:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>StudentClass <span style="color:#0550ae">*</span>students3<span style="color:#1f2328">[</span>NUM_STUDENT<span style="color:#1f2328">];</span>  <span style="color:#57606a">// 100 pointers
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> i <span style="color:#0550ae">&lt;</span> NUM_STUDENT<span style="color:#1f2328">;</span> <span style="color:#0550ae">++</span>i<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>  students3<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">nullptr</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>students3<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> StudentClass<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;John Smith&#34;</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">100</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;The 5th student in the list &#34;</span> <span style="color:#0550ae">&lt;&lt;</span> students3<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">]</span><span style="color:#0550ae">-&gt;</span>getName<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34; has a grade of &#34;</span> <span style="color:#0550ae">&lt;&lt;</span> students3<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">]</span><span style="color:#0550ae">-&gt;</span>getGrade<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// release memory
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> i <span style="color:#0550ae">&lt;</span> NUM_STUDENT<span style="color:#1f2328">;</span> <span style="color:#0550ae">++</span>i<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">delete</span> students3<span style="color:#1f2328">[</span>i<span style="color:#1f2328">];</span>  <span style="color:#57606a">// delete objects, no []
+</span></span></span></code></pre></div></li>
+<li>
+<p>Dynamic array example:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>StudentClass <span style="color:#0550ae">**</span>students4<span style="color:#1f2328">;</span>  <span style="color:#57606a">// do not confuse with 2D array of objects
+</span></span></span><span style="display:flex;"><span>students4 <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> StudentClass <span style="color:#0550ae">*</span><span style="color:#1f2328">[</span>NUM_STUDENT<span style="color:#1f2328">];</span>  <span style="color:#57606a">// 100 pointers
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> i <span style="color:#0550ae">&lt;</span> NUM_STUDENT<span style="color:#1f2328">;</span> <span style="color:#0550ae">++</span>i<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>  students4<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">nullptr</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>students4<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> StudentClass<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;John Smith&#34;</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">100</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;The 5th student in the list &#34;</span> <span style="color:#0550ae">&lt;&lt;</span> students4<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">]</span><span style="color:#0550ae">-&gt;</span>getName<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34; has a grade of &#34;</span> <span style="color:#0550ae">&lt;&lt;</span> students4<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">]</span><span style="color:#0550ae">-&gt;</span>getGrade<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// release memory
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> i <span style="color:#0550ae">&lt;</span> NUM_STUDENT<span style="color:#1f2328">;</span> <span style="color:#0550ae">++</span>i<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">delete</span> students4<span style="color:#1f2328">[</span>i<span style="color:#1f2328">];</span>  <span style="color:#57606a">// delete objects, no []
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">delete</span> <span style="color:#1f2328">[]</span> students4<span style="color:#1f2328">;</span>
+</span></span></code></pre></div></li>
+</ul>
+<p><img src="/teaching/_migration/graph-052c1668d55788be.svg" alt="Graphviz diagram"></p>
+<h2 id="pitfalls">Pitfalls</h2>
+<ul>
+<li>
+<p>mismatched assignment:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>StudentClass students<span style="color:#1f2328">[</span><span style="color:#0550ae">10</span><span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span>students<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> StudentClass<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Mary Johnson&#34;</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">100</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// should have no &#39;new&#39; operator
+</span></span></span></code></pre></div></li>
+<li>
+<p>wrong member accessing operator:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>StudentClass <span style="color:#0550ae">*</span>students<span style="color:#1f2328">[</span><span style="color:#0550ae">10</span><span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span>students<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> StudentClass<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Mary Johnson&#34;</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">100</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>cout <span style="color:#0550ae">&lt;&lt;</span> students<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">].</span>getName<span style="color:#1f2328">()</span> <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// should use -&gt; given students[4] as a pointer
+</span></span></span></code></pre></div></li>
+<li>
+<p>confused <code>delete</code> and <code>delete []</code></p>
+</li>
+<li>
+<p>not checking nullptr before delete</p>
+</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

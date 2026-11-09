@@ -1,0 +1,171 @@
+*************************************************
+Data Structure and Algorithm Programming Projects
+*************************************************
+
+Overview
+========
++ Learning outcomes
+
+  + Practice DSA concepts
+  + Learn end-to-end project development
+  + Learn essential tools and workflows
+
++ Account setup
+
+  + GitHub account
+  + Join the course GitHub organization
+  + Login to Classroom 50 web frontend
+
++ Development workflow
+
+  + Accept the assignment to create a private repository
+  + Clone the assignment repository locally
+  + Implement incrementally
+  + Test locally
+  + Commit and push to GitHub
+
+GitHub Account and Organization
+===============================
+- GitHub Account Setup
+
+  - **Option A (New to GitHub)**:
+
+    1. Register a new account at `github.com/signup <https://github.com/signup>`_.
+    2. Use your official university email (`@uwf.edu`).
+
+  - **Option B (Existing GitHub Account)**:
+
+    1. Log into your existing GitHub account.
+    2. Go to `Settings → Emails <https://github.com/settings/emails>`_.
+    3. Add and verify your university email (`@uwf.edu`).
+
+- Join the course GitHub organization
+
+  1. Accept the invitation from email to join the course GitHub organization.
+  2. If you do not see an invitation, contact your instructor.
+
+Organization Membership Is Not Assignment Acceptance
+-----------------------------------------------------
++ Accepting the GitHub organization invitation only gives your account access
+  to the course organization. It does **not** accept an assignment or create
+  your assignment repository.
++ Do **not** search the organization for the template repository. Do not fork,
+  clone, or edit the template repository; work there is not your submission.
++ After accepting the organization invitation:
+
+  #. Return to the assignment link provided in Canvas or on the course website.
+  #. Sign in to the UWF Classroom 50 portal with your PAT.
+  #. Verify the course and assignment shown, then select your exact roster name.
+  #. Accept the assignment and wait for Classroom 50 to create your private
+     repository.
+  #. Open and clone the repository link displayed for you. Work only in that
+     repository.
+
+Classroom 50 Web Frontend
+-------------------------
++ **Required login method: GitHub Classic Personal Access Token (PAT)**
++ Open the UWF portal at https://uwf-dsa-teaching.github.io
+
+  - Do not use the public classroom50.org site.
+  - Do not select the standard **Sign in with GitHub** button. It will fail on
+    the self-hosted portal.
++ Select **Other sign-in methods -> Use a personal access token** and paste
+  your PAT.
+
++ Generate the PAT from your GitHub account:
+
+  - Use the `Pre-configured PAT
+    <https://github.com/settings/tokens/new?description=Classroom+50+Student+Sign-In&scopes=repo,workflow,admin:org,read:org,read:user,delete_repo>`_
+    URL to generate a token with the required scopes
+  - **Change the expiration to the end of the semester or later.**
+  - Copy the token immediately; GitHub displays it only once.
+  - Treat the PAT like a password. Never share or commit it.
+
++ You should be able to see your course organization listed there. Open it to
+  see your assignments.
+
+Development Workflow: Cloning
+=============================
+#. Clone the assignment repository once, then work in that local directory:
+
+   .. code-block:: console
+
+      git clone REPOSITORY-URL
+      cd ASSIGNMENT-DIRECTORY
+
+   Experienced GitHub CLI users may use ``gh repo clone`` instead. See the
+   :doc:`GitHub CLI guide <gh-cli>` for the commands and prerequisites.
+
+Development Workflow: Implementing
+----------------------------------
+**The normal development loop:**
+
+#. Read the assignment instructions and inspect the starter code.
+#. Implement one small change at a time.
+#. Build and test locally using make commands.
+#. Check ``git status`` and review your diff.
+#. Commit meaningful checkpoints.
+#. Optionally, push your commits to GitHub (avoid pushing every minor change
+   to save shared autograding quota).
+
+  .. code-block:: console
+
+    git add .
+    git commit -m "Implement the requested feature"
+    git push origin main
+
+Submission and Check Feedback
+-----------------------------
++ Every grading items has a corresponding automated check with make targets.
+  Run the checks locally to see the immediate feedback.
++ A push to the assignment repository is the submission event. Push before
+  the deadline and do not wait for the last few minutes.
++ Open the repository's **Actions** tab to inspect automated grading processes.
++ Find grading results in the repository's **Releases** display. The Classroom
+  50 web frontend is useful for staff monitoring, but students normally work
+  from the assignment repository after accepting it.
++ Fix the problem locally, commit again, and push again.
++ The instructor may use the repository, commit history, and automated test
+  results when grading.
+
+Good repository habits
+----------------------
++ Keep the repository organized and submit only the requested files.
++ Commit frequently with messages that describe the change so you always have
+  recent backup of your updates.
++ Never commit generated binaries, passwords, API keys, or other secrets.
++ Ask for help by sharing the repository URL and the relevant error output;
+  do not send a screenshot when copyable text is available.
++ Push to the server on milestones such as passed one or all tests.
+
+  - Do not push on every minor updates to avoid wasting shared autograding
+    quota
+
+Troubleshooting
+---------------
++ **The assignment repository was not created:** return to the assignment
+  link, verify that you are signed in to the correct GitHub account, and make
+  sure any organization invitation has been accepted.
++ **Permission denied when cloning or pushing:** verify the remote URL and
+  your GitHub authentication. SSH and HTTPS are both supported, but they
+  require different authentication setup.
++ **Checks are still running:** wait for the GitHub Actions workflow to
+  finish, then refresh the Actions or checks page.
++ **macOS memory checks fail:** ``valgrind`` is unavailable locally. Use
+  `GitHub Codespaces <https://github.com/features/codespaces>`_ (**Code ->
+  Codespaces -> Create codespace on main**) for ``make test-mem``.
++ **A check failed:** open the failed job, read the first relevant error, fix
+  it locally, and push a new commit.
++ **The site or repository is unavailable:** preserve your local commits and
+  contact the instructor with the assignment name, repository URL, and error
+  message.
+
+Grading Process
+===============
++ Automated checks provide fast feedback on correctness and basic project
+  requirements.
++ Passing all automated checks does not necessarily guarantee full credit, as
+  there are subjective grading items that require human evaluation.
++ The instructor may also evaluate design, readability, documentation,
+  memory management, and commit history.
++ Read the assignment rubric before submitting and test edge cases yourself.

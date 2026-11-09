@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Implementing Subprograms</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Implementing Subprograms</h1>
+<ul class="simple">
+<li><p>Semantics of Calls and Returns</p></li>
+<li><p>Simple Subprograms</p></li>
+<li><p>Subprograms with Stack-Dynamic Variables</p></li>
+<li><p>Nested subprograms</p></li>
+<li><p>Blocks</p></li>
+<li><p>Dynamic scoping</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Semantics of Calls and Returns</h2>
+<ul class="simple">
+<li><p>Subprogram linkage</p></li>
+<li><p>During call:</p>
+<ul>
+<li><p>Save execution status</p></li>
+<li><p>Compute and pass parameters</p></li>
+<li><p>Transfer control</p></li>
+</ul>
+</li>
+<li><p>During return:</p>
+<ul>
+<li><p>Handle out mode parameters</p></li>
+<li><p>Restore execution status</p></li>
+<li><p>Transfer control back</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h1>Simple Subprograms</h1>
+<ul class="simple">
+<li><p>“Simple” subprograms:</p>
+<ul>
+<li><p>Cannot be nested</p></li>
+<li><p>All local variables are static</p></li>
+<li><p>Example: Early versions of Fortran</p></li>
+</ul>
+</li>
+<li><p>Actions for call:</p>
+<ul>
+<li><p>Save execution status</p></li>
+<li><p>Compute and pass parameters</p></li>
+<li><p>Pass return address</p></li>
+<li><p>Transfer control</p></li>
+</ul>
+</li>
+<li><p>Actions for return:</p>
+<ul>
+<li><p>Handle out mode parameters</p></li>
+<li><p>Return function value if needed</p></li>
+<li><p>Restore execution status</p></li>
+<li><p>Transfer control back</p></li>
+</ul>
+</li>
+<li><p>Distribution of actions between caller and callee</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Activation Records</h2>
+<ul class="simple">
+<li><p>Purpose: Storage of information needed for subprogram execution</p></li>
+<li><p>Contains:</p>
+<ul>
+<li><p>Status information about caller</p></li>
+<li><p>Parameters</p></li>
+<li><p>Return address</p></li>
+<li><p>Return value (for functions)</p></li>
+<li><p>Temporaries</p></li>
+<li><p>Local variables</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h1>Subprograms with Stack-Dynamic Variables</h1>
+<ul class="simple">
+<li><p>More complex implementation needed for:</p>
+<ul>
+<li><p>Dynamic allocation/deallocation of locals</p></li>
+<li><p>Support for recursion</p></li>
+<li><p>Multiple simultaneous activations</p></li>
+</ul>
+</li>
+<li><p>Activation record instance contents:</p>
+<ul>
+<li><p>Return address</p></li>
+<li><p>Dynamic link</p></li>
+<li><p>Parameters</p></li>
+<li><p>Local variables</p></li>
+</ul>
+</li>
+<li><p>Run-time Stack: Manages activation record instances</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Demonstration: Stack and Subprogram Calls</h2>
+<img alt="Stack and Subprogram Calls" class="align-center" src="../_images/stack-subprog-calls.png" />
+<div class="footnote docutils container">
+<p>Credit: Textbook</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h1>Nested Subprograms</h1>
+<ul class="simple">
+<li><p>Nested subprograms:</p>
+<ul>
+<li><p>Can be nested</p></li>
+<li><p>Can access variables in outer scopes</p></li>
+</ul>
+</li>
+<li><p>Focus on static-scoped languages that support nested subprograms</p></li>
+<li><p>Static scope</p>
+<ul>
+<li><p>Variables accessed by name</p></li>
+<li><p>Scope determined at compile time</p></li>
+<li><p>Static links to access non-local variables</p></li>
+<li><p><strong>Static chain</strong> method</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Static Chain Implementation</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p>Adds static link to activation records</p></li>
+<li><p>Links point to static parent’s activation record</p></li>
+<li><p>Used for accessing nonlocal variables</p></li>
+<li><p>Components:</p>
+<ul>
+<li><p>Chain offset calculation</p></li>
+<li><p>Local offset determination</p></li>
+<li><p>Activation record traversal</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="half docutils container">
+<a class="reference internal image-reference" href="../_images/static-chain.png"><img alt="Stack Chain Stack View" src="../_images/static-chain.png" style="width: 50%;" />
+</a>
+<div class="footnote docutils container">
+<p>Credit: Textbook</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h1>Block Implementation</h1>
+<p>Two main approaches:</p>
+<ol class="arabic simple">
+<li><p>Static Chain Method:</p>
+<ul class="simple">
+<li><p>Treats blocks as parameterless subprograms</p></li>
+<li><p>Creates activation records</p></li>
+<li><p>Uses static links</p></li>
+</ul>
+</li>
+<li><p>Simple Method:</p>
+<ul class="simple">
+<li><p>Allocates block variables in activation record</p></li>
+<li><p>Computes static offsets</p></li>
+<li><p>More efficient for most cases</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section >
+<section >
+<h1>Practice Questions</h1>
+<ol class="arabic simple">
+<li><p>What are the key differences between simple and complex subprogram
+implementations?</p></li>
+<li><p>How does recursion affect activation record management?</p></li>
+<li><p>Compare static and dynamic scoping implementations.</p></li>
+<li><p>What are the tradeoffs between different block implementation approaches?</p></li>
+</ol>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

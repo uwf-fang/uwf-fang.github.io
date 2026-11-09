@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>GitHub CLI (gh) for Students</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>GitHub CLI (<code class="docutils literal notranslate"><span class="pre">gh</span></code>) for Students</h1>
+<p>This guide introduces the GitHub Command Line Interface, abbreviated <code class="docutils literal notranslate"><span class="pre">gh</span></code>.
+It is an optional alternative for experienced command-line users who want to
+manage a GitHub assignment repository from a terminal in COP3530 or COP4534.</p>
+</section>
+</section>
+<section >
+<section >
+<h2>Recommended Classroom 50 method</h2>
+<p>Use the Classroom 50 web interface for the course workflow. In particular,
+use the web interface to sign in, bind your account to the course roster,
+accept an assignment, and check the assignment or submission status. This is
+the recommended method for students and the easiest method to troubleshoot.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">gh</span></code> commands below are intended only for students who already know Git,
+GitHub repositories, and terminal commands. <code class="docutils literal notranslate"><span class="pre">gh</span></code> does not replace Classroom
+50, and it does not change the submission rule: pushing a commit to the
+assignment repository submits that commit.</p>
+</section>
+</section>
+<section >
+<section >
+<h2>What <code class="docutils literal notranslate"><span class="pre">gh</span></code> does</h2>
+<p><code class="docutils literal notranslate"><span class="pre">gh</span></code> is GitHub’s official command-line tool. It complements the standard
+<code class="docutils literal notranslate"><span class="pre">git</span></code> commands:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span></code> manages the local repository, including files, commits, branches,
+and push/pull operations.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gh</span></code> communicates with GitHub, including repository information, issues,
+pull requests, and Actions workflow results.</p></li>
+</ul>
+<p>You can use both tools in the same assignment directory.</p>
+</section>
+</section>
+<section >
+<section >
+<h2>Install and sign in</h2>
+<p>Install <code class="docutils literal notranslate"><span class="pre">gh</span></code> by following the <a class="reference external" href="https://github.com/cli/cli#installation">official installation instructions</a>. Verify the installation:</p>
+<pre data-id="install-and-sign-in"><code data-trim data-noescape class="console">gh --version</code></pre>
+<p>Sign in from a terminal with:</p>
+<pre data-id="install-and-sign-in"><code data-trim data-noescape class="console">gh auth login</code></pre>
+<p>Choose GitHub.com, select your preferred protocol, and complete the browser
+authentication flow. Verify the active account with:</p>
+<pre data-id="install-and-sign-in"><code data-trim data-noescape class="console">gh auth status</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Classroom 50 extension versions</h2>
+<p>The public <a class="reference external" href="https://classroom50.org">classroom50.org</a> frontend changes
+frequently, so keep its CLI extensions updated. For a self-hosted frontend at
+<a class="reference external" href="https://uwf-dsa-teaching.github.io">https://uwf-dsa-teaching.github.io</a>, pin both the website and CLI to the same
+course version, currently <code class="docutils literal notranslate"><span class="pre">1.28.1</span></code>:</p>
+<pre data-id="classroom-50-extension-versions"><code data-trim data-noescape class="console">gh extension install foundation50/gh-student --pin v1.28.1 --force
+gh extension install foundation50/gh-teacher --pin v1.28.1 --force</code></pre>
+<p>Use the GitHub account associated with your course account. Do not paste a
+personal access token into a command, script, or repository. If Classroom 50
+asks for a token during its web sign-in flow, follow the separate instructions
+in the <a class="reference internal" href="dsa-project.html"><span class="doc">DSA Project Workflow</span></a>.</p>
+</section>
+</section>
+<section >
+<section >
+<h2>Useful repository commands</h2>
+<p>After accepting the assignment in Classroom 50, copy the repository name or
+URL from GitHub. An experienced user can clone it with <code class="docutils literal notranslate"><span class="pre">gh</span></code>:</p>
+<pre data-id="useful-repository-commands"><code data-trim data-noescape class="console">gh repo clone ORGANIZATION/REPOSITORY
+cd REPOSITORY</code></pre>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">ORGANIZATION/REPOSITORY</span></code> with the repository shown in GitHub. The
+standard <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">REPOSITORY-URL</span></code> command is equally valid.</p>
+<p>From inside the local repository, these commands can be useful:</p>
+<pre data-id="useful-repository-commands"><code data-trim data-noescape class="console">gh repo view --web
+gh run list
+gh run view
+gh run watch</code></pre>
+<p><code class="docutils literal notranslate"><span class="pre">gh</span> <span class="pre">repo</span> <span class="pre">view</span> <span class="pre">--web</span></code> opens the repository page in a browser. The <code class="docutils literal notranslate"><span class="pre">gh</span> <span class="pre">run</span></code>
+commands show GitHub Actions checks and can watch a currently running check.
+You can still use the repository’s <strong>Actions</strong> tab in the web interface, which
+is the recommended option if these commands are unfamiliar.</p>
+</section>
+</section>
+<section >
+<section >
+<h2>Submission reminder</h2>
+<p><code class="docutils literal notranslate"><span class="pre">gh</span></code> is not a separate submission system. Make and test changes locally,
+then use the normal Git workflow to submit:</p>
+<pre data-id="submission-reminder"><code data-trim data-noescape class="console">git add .
+git commit -m &quot;Describe the completed assignment work&quot;
+git push</code></pre>
+<p>Before the deadline, confirm on GitHub that the expected commit arrived and
+that the automated checks completed. When in doubt, return to the Classroom 50
+web interface and the assignment repository page, or contact the instructor
+with the repository URL and error output.</p>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

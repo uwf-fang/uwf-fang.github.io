@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Graph · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/course/cop5417/project/">Programming Project Instruction</a></li><li><a href="/teaching/course/cop5417/java-env/">Development Environment for Java</a></li><li><a href="/teaching/course/cop5417/java-modular/">Code Organization for Modular Java Programs</a></li></ul><ul><li><a href="/teaching/course/cop5417/ch01/">Chapter 1: Get Ready With Java</a></li><li><a href="/teaching/course/cop5417/ch02/">Chapter 2: Stack, Queue and linked-list; Algorithm Analysis</a></li><li><a href="/teaching/course/cop5417/ch03/">Chapter 3: Sorting (Elemental, Merge, Quick)</a></li><li><a href="/teaching/course/cop5417/ch04/">Chapter 4: Priority Queue and Heap Sort</a></li><li><a href="/teaching/course/cop5417/ch05/">Chapter 5: Symbol Table, Binary Search tree</a></li><li><a href="/teaching/course/cop5417/ch06/">Chapter 6: Self-balancing BST; Hash table</a></li><li><a href="/teaching/course/cop5417/ch07/">Chapter 7: Graph</a></li></ul><ul><li><a href="/teaching/course/cop5417/final-review/">Final Review</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/course/cop5417/">COP 5417 Data Structures and Algorithms Essentials</a> / Graph</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Graph</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#concepts">Concepts</a></li>
+    <li><a href="#examples">Examples</a></li>
+    <li><a href="#representations">Representations</a></li>
+    <li><a href="#graph-traversal">Graph Traversal</a></li>
+    <li><a href="#algorithms">Algorithms</a>
+      <ul>
+        <li><a href="#minimum-spanning-tree">Minimum spanning tree</a></li>
+        <li><a href="#dijkstra-s-shortest-path">Dijkstra’s shortest path</a></li>
+      </ul>
+    </li>
+    <li><a href="#graph-glossary">Graph Glossary</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="graph"></span>
+<h2 id="concepts">Concepts</h2>
+<ul>
+<li>Vertex/Node
+<ul>
+<li>degree</li>
+</ul>
+</li>
+<li>Edge/Arc
+<ul>
+<li>directed</li>
+<li>undirected</li>
+<li>weighted</li>
+</ul>
+</li>
+<li>Connectivity
+<ul>
+<li>path between two vertices
+<ul>
+<li>length</li>
+</ul>
+</li>
+<li>distance between two vertices</li>
+<li>adjacent</li>
+<li>connected</li>
+<li>cyclic</li>
+<li>acyclic</li>
+</ul>
+</li>
+<li>Graph properties
+<ul>
+<li>directed/undirected</li>
+<li>weighted/unweighted</li>
+<li>cyclic/acyclic</li>
+<li>connected/unconnected</li>
+<li>dense/sparse</li>
+</ul>
+</li>
+</ul>
+<h2 id="examples">Examples</h2>
+<span id="id3"></span>
+<p><img src="/teaching/_migration/graph-0de225cea798e5d2.svg" alt="Graphviz diagram"></p>
+<p><em>Directed connected cyclic graph</em></p>
+<span id="id4"></span>
+<p><img src="/teaching/_migration/graph-cc98e7f11cdc0bf4.svg" alt="Graphviz diagram"></p>
+<p><em>Undirected connected cyclic weighted graph</em></p>
+<span id="id5"></span>
+<p><img src="/teaching/_migration/graph-997039545a31c084.svg" alt="Graphviz diagram"></p>
+<p><em>Undirected connected acyclic graph (Tree)</em></p>
+<span id="id6"></span>
+<p><img src="/teaching/_migration/graph-8289b2804674f6be.svg" alt="Graphviz diagram"></p>
+<p><em>Directed acyclic graph (DAG) task planning</em></p>
+<h2 id="representations">Representations</h2>
+<p>For the undirected graph:</p>
+<span id="id7"></span>
+<p><img src="/teaching/_migration/graph-4dc0d3b861255f95.svg" alt="Graphviz diagram"></p>
+<p><em>Undirected graph</em></p>
+<ul>
+<li>
+<p>List of edges</p>
+<p>A list of edges is a 1d array in which every element in the array represents an edge. It is the simplest way to represent a graph. It is also an easy way to store a graph in a relational database. It is not efficient for most graph algorithms though.</p>
+<table>
+	<thead>
+			<tr>
+					<th>1</th>
+					<th>2</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>1</td>
+					<td>3</td>
+			</tr>
+			<tr>
+					<td>1</td>
+					<td>4</td>
+			</tr>
+			<tr>
+					<td>3</td>
+					<td>4</td>
+			</tr>
+			<tr>
+					<td>3</td>
+					<td>5</td>
+			</tr>
+			<tr>
+					<td>4</td>
+					<td>5</td>
+			</tr>
+	</tbody>
+</table>
+</li>
+<li>
+<p>Adjacency list</p>
+<p>An adjacency list is a 1d array in which every element in the array represents a vertex and points to a list of its neighbors.</p>
+<span id="id8"></span>
+<p><img src="/teaching/_migration/graph-86b16c2690686726.svg" alt="Graphviz diagram"></p>
+<p><em>Adjacency list</em></p>
+</li>
+<li>
+<p>Adjacency matrix</p>
+<p>An adjacency matrix is a 2d array in which each row represents a source vertex and each column represents a destination vertex. The elements in the matrix represents the edge between the two vertices.</p>
+<span id="id9"></span>
+<p><strong>Adjacency Matrix</strong></p>
+<table>
+	<thead>
+			<tr>
+					<th>_</th>
+					<th>1</th>
+					<th>2</th>
+					<th>3</th>
+					<th>4</th>
+					<th>5</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>1</td>
+					<td>0</td>
+					<td>1</td>
+					<td>1</td>
+					<td>1</td>
+					<td>0</td>
+			</tr>
+			<tr>
+					<td>2</td>
+					<td>1</td>
+					<td>0</td>
+					<td>0</td>
+					<td>0</td>
+					<td>0</td>
+			</tr>
+			<tr>
+					<td>3</td>
+					<td>1</td>
+					<td>0</td>
+					<td>0</td>
+					<td>1</td>
+					<td>1</td>
+			</tr>
+			<tr>
+					<td>4</td>
+					<td>1</td>
+					<td>0</td>
+					<td>1</td>
+					<td>0</td>
+					<td>1</td>
+			</tr>
+			<tr>
+					<td>5</td>
+					<td>0</td>
+					<td>0</td>
+					<td>1</td>
+					<td>1</td>
+					<td>0</td>
+			</tr>
+	</tbody>
+</table>
+</li>
+</ul>
+<h2 id="graph-traversal">Graph Traversal</h2>
+<ul>
+<li>
+<p>Depth-first search (DFS)</p>
+<p>Starting from one vertex, visit all vertices along the path started from the starting vertex till then end of the path (no unvisited neighbors) and then backtrack.</p>
+<ul>
+<li>iterative using a stack</li>
+<li>recursive</li>
+</ul>
+</li>
+<li>
+<p>Breadth-first search (BFS)</p>
+<p>Starting from one vertex, visit all other vertices in the order of the distances to the starting vertex.</p>
+<ul>
+<li>iterative using a queue</li>
+</ul>
+</li>
+</ul>
+<h2 id="algorithms">Algorithms</h2>
+<h3 id="minimum-spanning-tree">Minimum spanning tree</h3>
+<p>This algorithm generates a tree that connects all connected vertices in a graph with the minimum total edge weight. See <a href="https://visualgo.net/en/mst">visualization</a></p>
+<ul>
+<li>Prim’s algorithm</li>
+<li>Kruskal’s algorithm</li>
+</ul>
+<h3 id="dijkstra-s-shortest-path">Dijkstra’s shortest path</h3>
+<p>Among the many variations of the shortest path algorithms, single-source shortest path algorithm is most commonly discussed. The objective is to find the shortest path of all other vertices to given a vertex (source). Shortest path problem with unweighted graph can be solved using BFS. Dijkstra’s approach works with weighted (non-negative weight) graph. See <a href="https://visualgo.net/en/sssp">visualization</a></p>
+<ul>
+<li>invented by Edsger Dijkstra</li>
+<li>employs a priority queue ADT</li>
+</ul>
+<h2 id="graph-glossary">Graph Glossary</h2>
+<span id="term-Vertex-Node-Graph"></span>
+<dl>
+<dt>Vertex/Node (Graph)</dt>
+<dd>Entities that are interconnected</dd>
+</dl>
+<span id="term-Edge-Arc-Graph"></span>
+<dl>
+<dt>Edge/Arc (Graph)</dt>
+<dd>The connection between two vertices</dd>
+</dl>
+<span id="term-Adjacency"></span>
+<dl>
+<dt>Adjacency</dt>
+<dd>Two vertices are adjacent if connected by an edge</dd>
+</dl>
+<span id="term-Neighbors-Graph"></span>
+<dl>
+<dt>Neighbors (Graph)</dt>
+<dd>All vertices that are adjacent</dd>
+</dl>
+<span id="term-Path-Graph"></span>
+<dl>
+<dt>Path (Graph)</dt>
+<dd>A sequence of edges from one vertex to another</dd>
+</dl>
+<span id="term-Length-of-path-Graph"></span>
+<dl>
+<dt>Length of path (Graph)</dt>
+<dd>The number of edges along a path</dd>
+</dl>
+<span id="term-Distance-Graph"></span>
+<dl>
+<dt>Distance (Graph)</dt>
+<dd>The length of the <strong>shortest</strong> path between two vertices</dd>
+</dl>
+<span id="term-Full-graph"></span>
+<dl>
+<dt>Full graph</dt>
+<dd>A graph in which all vertices are connected to other vertices</dd>
+</dl>
+<span id="term-Sparse-graph"></span>
+<dl>
+<dt>Sparse graph</dt>
+<dd>A graph in which the number of edge is way fewer than the number for a full graph with the same number of vertices</dd>
+</dl>
+<span id="term-Directed-graph"></span>
+<dl>
+<dt>Directed graph</dt>
+<dd>A graph in which every edge has a direction from one vertex to another</dd>
+</dl>
+<span id="term-Undirected-graph"></span>
+<dl>
+<dt>Undirected graph</dt>
+<dd>A graph in which every edge is symmetric</dd>
+</dl>
+<span id="term-Cyclic-Graph"></span>
+<dl>
+<dt>Cyclic Graph</dt>
+<dd>A graph in which you can always find at least a path that starts and ends on a same vertex</dd>
+</dl>
+<span id="term-Acyclic-Graph"></span>
+<dl>
+<dt>Acyclic Graph</dt>
+<dd>Can not find any path that starts and ends on a same vertex</dd>
+</dl>
+<span id="term-Weighted-graph"></span>
+<dl>
+<dt>Weighted graph</dt>
+<dd>A graph in which every edge has a weight</dd>
+</dl>
+<span id="term-Depth-first-search-DFS-Graph"></span>
+<dl>
+<dt>Depth-first search (DFS, Graph)</dt>
+<dd>Starting from one vertex, visit all vertices along the path started from the starting vertex till then end of the path (no unvisited neighbors) and then backtrack.</dd>
+</dl>
+<span id="term-Breadth-first-search-BFS"></span>
+<dl>
+<dt>Breadth-first search (BFS)</dt>
+<dd>Starting from one vertex, visit all other vertices in the order of the distances to the starting vertex.</dd>
+</dl>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

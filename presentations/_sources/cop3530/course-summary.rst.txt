@@ -1,0 +1,511 @@
+***********************************
+Data Structure and Algorithm Design
+***********************************
+
+.. revealjs-section::
+  :data-background-color: white
+  :data-background-image: ../_static/logo.png
+  :data-background-size: 50%
+  :data-background-position: top center
+  :data-background-repeat: no-repeat
+
+.. container:: subtitle
+
+  **Course content summary**
+
+  |author|
+
+Outline
+=======
++ Overview
++ Learning outcomes and assessments
++ Environment and building process
++ C++ features
++ ADTs: List, Stack, Queue, Deque, Priority Queue, Set, Map
++ Data structures: Partially filled array, linked list, heap, hash table, tree,
+  graph
++ Algorithms (stand-alone): sorting
++ Algorithmic paradigms: brute-force, backtracking
++ Relationships
+
+Overview
+========
++ This document is a summary of the topics covered in the course.
++ This is a systematic high-level overview. **Fragmented details are not
+  included!**
++ Other documents to prepare for the final exam
+
+  * Past exams
+  * Practice exams
+  * All three review documents
+  * zybook activities
+  * Supplement material website
+
+Type of questions
+-----------------
++ True/False questions TF
++ Multiple choice questions MC
++ Multiple answer questions MA
++ Fill in the blank questions FIB
++ Matching questions MAT
++ Short answer questions SA
+
+  * Use the right format to reduce ambiguity
+  * Be concise
+
++ Short/long coding questions
+
+  * Try to show the logic
+  * Make framework of the code for partial credit
+
+Learning outcomes and assessments
+=================================
++ Know the fundamentals of ADTs, data structures, and algorithms: TF, MC, MA,
+  FIB
+
+  * Definitions
+  * Complexity of typical operations
+  * Limitations
+  * General pros and cons
+
++ Which data structure, ADT or algorithm to choose? MC, MA
+
+  * Some are required
+  * Some are better than others
+  * Based on time/space complexity
+
++ How algorithm/data structure works on paper: MC, MA, FIB, SA
++ How to implement a data structure, ADT or algorithm: MC, MA, coding
++ How to use C++ features to implement a data structure, ADT or algorithm: MC,
+  MA, coding
+
+  * Templates
+  * Rule of three
+
+Environment and building process
+================================
++ Environment
+
+  * g++: compilation and linking (with or without -c)
+  * make
+
+    + makefile: three parts of a rule
+    + How to trigger a rule
+
++ Modular units
+
+  * driver
+  * normal module
+  * header only module (template)
+
+C++ features
+============
++ Templates
+
+  * Header only module
+  * Syntax
+  * Know how to convert an existing class/function to a template class/function
+
++ Rule of three
+
+  * Destructor, copy constructor, copy assignment operator overloading
+  * Not required but highly recommended as needed
+  * When are they needed? (when a class owns dynamic data)
+  * What needs to be done? (deep copy, release memory, etc.)
+
+Abstract Data Types (ADTs)
+==========================
++ Know the following for each ADT
+
+  * Definition
+  * Operations
+  * Data structures employed to implement the ADT
+
+    - Pro and cons at various scenarios
+
+  * Related data structures/algorithms/ADTs
+
+List ADT
+--------
++ A collection of sequential elements. The general model of a list of data.
+
+  * Finite
+  * Homogeneous
+  * Indexable
+
++ Operation
+
+  * Insert after/before index/value (require indexing or search)
+  * Delete by index/value (require indexing or search)
+  * Search by value
+  * Access by index (indexing)
+  * Update by index
+  * Get size
+
++ Implementation
+
+  * Partially filled array
+
+    - indexing :math:`\Theta(1)`
+    - search/insert/delete :math:`\Theta(n)`
+
+  * Linked list
+
+    - indexing/search :math:`\Theta(n)`
+    - insert/delete (given a pointer) :math:`\Theta(1)`
+
+Stack ADT
+---------
++ A collection of elements that can be added or removed in a last-in,
+  first-out (LIFO) manner. Usually implemented as a sequence of elements that can be added to one end and removed from the same end.
++ Operation
+
+  * Push
+  * Pop
+  * Top/Peek
+  * Is empty
+
++ Implementation
+
+  * Partially filled array
+
+    - push/pop at the end
+    - all operations :math:`\Theta(1)`
+    - re-allocation: :math:`\Theta(n)`
+
+  * Linked list
+
+    - push/pop at the beginning for singly-linked list
+    - all operations :math:`\Theta(1)`
+
+Queue ADT
+---------
++ A collection of elements that can be added or removed in a first-in,
+  first-out (FIFO) manner. Usually implemented as a sequence of elements that can be added to one end and removed from the other end.
++ Operation
+
+  * Enqueue
+  * Dequeue
+  * Peek
+  * Is empty
+
++ Implementation
+
+  * Circular Partially filled array (FYI)
+  * Linked list
+
+    - dequeue at the beginning, enqueue at the end for singly-linked list
+    - all operations :math:`\Theta(1)`
+
+Deque ADT
+---------
++ A sequence/list of elements that can be added to or removed from both ends.
++ Operation
+
+  * Enqueue front/back
+  * Dequeue front/back
+  * Peek front/back
+  * Is empty
+
++ Implementation
+
+  * Circular Partially filled array (FYI)
+  * Linked list
+
+    - Avoid singly-linked list, use double-linked list
+    - all operations :math:`\Theta(1)`
+
++ Relationship
+
+  * Can fully cover stack and queue, so stack and queue can be implemented
+    using deque
+
+Priority Queue ADT
+------------------
++ A collection of elements that can be added in an arbitrary order or removed
+  in a priority order.
++ Types: min/max priority queue
++ Operations
+
+  * Enqueue
+  * Dequeue
+  * Peek
+  * Is empty
+
++ Implementation
+
+  * Heap: enqueue/dequeue :math:`\Theta(\log n)`
+  * Unsorted array: enqueue :math:`\Theta(1)`, dequeue :math:`\Theta(n)`
+  * Sorted array: enqueue :math:`\Theta(n)`, dequeue :math:`\Theta(1)`
+
+Map ADT
+-------
++ A collection of key-value pairs. The key is unique.
++ Operations
+
+  * Set key-value pair (can both add new or update existing)
+  * Get value by key
+  * Delete key-value pair by key
+  * Check if a key exists
+  * Get size
+
++ Implementation
+
+  * Hash table
+
+    - set/get/delete :math:`\Theta(1)`
+    - rehashing: :math:`\Theta(n)`
+
+  * Balanced binary search tree
+
+    - set/get/delete :math:`\Theta(\log n)`
+
+Set ADT
+-------
++ A collection of unique elements (keys).
++ Operations
+
+  * Add element
+  * Remove element
+  * Check if an element exists
+  * Get size
+
++ Implementation same as MAP
+
+Data structures
+===============
++ Partially filled array
+
+  * Usually dynamic array to allow re-allocation
+  * Keep track of the size and capacity
+  * Re-allocation when the array is full
+  * Indexing, insert/delete at the end: :math:`\Theta(1)`
+  * Insert/delete: :math:`\Theta(n)`
+  * Search: :math:`\Theta(n)`
+  * Re-allocation: :math:`\Theta(n)`
+
++ Linked list
+
+  * Singly-linked vs double-linked
+  * Indexing: :math:`\Theta(n)`
+  * Insert/delete: :math:`\Theta(1)` when the location is given, to find the
+    location: perform indexing or search first
+  * Search: :math:`\Theta(n)`
+
+Data structures (cont'd) 1
+--------------------------
++ Hash table
+
+  * Buckets: an array
+  * Hash function: map key to an index
+  * Implements Map and Set ADTs
+  * Collision: multiple keys map to the same index
+  * Collision resolution:
+
+    - Separate chaining
+
+      + each bucket allows multiple elements
+      + linked list (or vector) as the bucket
+
+    - Open addressing
+
+      + Use other available buckets
+      + Probe sequence: linear, quadratic, double hashing
+      + Empty-since-start vs empty-after-delete
+
++ Heap
+
+  * Stored as an partially filled array
+  * Algorithms works as if it is a **complete binary tree**
+  * Percolate up/down: :math:`\Theta(\log n)`
+  * Insert: add to tail and percolate up
+  * Delete: overwrite root with tail, remove tail, percolate down the root
+  * Heapify: adjust a random array to a heap :math:`\Theta(n)`
+
+Data structures (cont'd) 2
+--------------------------
++ Tree
+
+  * Concepts: root, parent, child, leaf, level, height, depth, sibling,
+    ancestor, descendant, degree
+
++ Binary tree
+
+  * degree 2
+  * ordered: left, right child
+  * Full, complete, perfect binary trees
+
++ Binary search tree
+
+  * all keys in the left subtree are less than the root key and all keys in the
+    right subtree are greater than the root key
+  * Implements Map and Set ADTs
+  * Operations: add/insert, remove/delete, search, traversal
+  * Time complexity
+
+    - depends on the height of the tree
+    - ideally :math:`\Theta(\log n)`, worst case :math:`\Theta(n)`
+
+Data structures (cont'd) 3
+--------------------------
++ Graph
+
+  * A.k.a network
+  * Models relationships between objects
+  * Concepts: vertex, edge, directed/undirected, weighted/unweighted,
+    cyclic/acyclic, path, connected, sparse/dense
+  * Given the number of edges :math:`E`, and vertices :math:`V`
+  * :math:`V-1 \leq E \leq V(V-1)/2`
+  * Representation
+
+    - Adjacency matrix: better for dense graph
+    - Adjacency list: better for sparse graph
+
+
+Data structures (cont'd) 4
+--------------------------
++ Graph (cont'd)
+
+  * Graph traversal
+
+    - Depth-first search (DFS)
+
+      + Recursive
+      + Stack-based
+
+    - Breadth-first search (BFS)
+
+      + Queue-based
+
+  * Shortest path
+
+    - Dijkstra's algorithm
+
+      + Single-source shortest path
+      + Non-negative edge weight
+      + Requires priority queue
+
+Algorithms (stand-alone)
+========================
++ Sorting algorithms
+
+  * Naive/simple sorting algorithms :math:`\Theta(n^2)`
+  * Efficient sorting algorithms :math:`\Theta(n \log n)`
+  * Non-comparison based sorting algorithms
+
+    - Radix :math:`\Theta(n)`
+
+  * In-place vs out-of-place
+  * Stable vs unstable
+  * Sorting linked list efficiently
+
+    - insertion sort
+    - merge sort
+
+Sorting (cont'd) 1
+------------------
++ Quick sort
+
+  * Divide and conquer
+  * Partitioning (variation of Hoare's partitioning)
+
+    - Middle element as pivot
+    - Return the final position of the pivot
+    - Pivot is swapped several times
+
+  * Time complexity
+
+    - best/average: :math:`\Theta(n \log n)`
+    - worst: :math:`\Theta(n^2)`
+
+  * In-place, unstable
+
+Sorting (cont'd) 2
+------------------
++ Merge sort (top-down variation)
+
+  * Divide and conquer
+  * Recursively divide the array into two halves (:math:`\Theta(\log n)`
+    rounds)
+  * Merge two sorted halves :math:`\Theta(n)`
+  * Time complexity
+
+    - best/average/worst: :math:`\Theta(n \log n)`
+
+  * Out-of-place, stable
+
+Sorting (cont'd) 3
+------------------
++ Heap sort
+
+  * In-place
+  * Build a heap from the array (Heapify :math:`\Theta(n)`)
+  * Repeatedly remove the root and adjust the heap :math:`\Theta(n \log n)`
+  * Time complexity
+
+    - best/average/worst: :math:`\Theta(n \log n)`
+
+  * In-place, unstable
+
+Sorting (cont'd) 4
+------------------
++ Radix sort
+
+  * Non-comparison based
+  * Sort by digits (rounds decided by the max number of digits)
+  * Time complexity
+
+    - best/average/worst: :math:`\Theta(n)`
+
+  * Out-of-place, stable
+
+Algorithmic paradigms
+=====================
++ Brute-force
+
+  * Enumerate all possible solutions
+  * Only check at the final stage (no early rejection)
+
++ Backtracking
+
+  * Recursive or Stack-based iterative
+  * Check partial solution (backtracking, early rejection)
+  * Examples
+
+    - N-Queens
+    - Sudoku
+    - Maze
+
++ Divide and conquer
+
+  * Examples: merge sort, quick sort
+
+Misc. Relationships
+===================
++ ADTs that can cover other ADTs
+
+  * Deque can cover stack and queue
+  * Map can cover set (by ignoring the value)
+
++ ADTs implemented by data structures
+
+  * Partially filled array: List, Stack, Queue, Deque, Priority Queue
+  * Linked list: List, Stack, Queue, Deque
+  * Hash table: Map, Set
+  * Heap: Priority Queue
+  * Binary search tree: Map, Set
+
++ ADTs/Data structures employed by algorithms
+
+  * Stack: iterative DFS, backtracking
+  * Queue: BFS
+  * Heap: heap sort
+  * Priority Queue: Dijkstra's algorithm
+
++ Algorithms employed by other algorithms
+
+  * Sorted merge: merge sort
+  * Sorted insertion: insertion sort
+  * Quick partitioning: quick sort
+  * Heapify: heap sort
+  * Percolate up/down: heap insert/delete, heap sort

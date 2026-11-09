@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Spark In Docker</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Spark In Docker</h1>
+<div class="subtitle docutils container">
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Docker</h2>
+<ul class="simple">
+<li><p>Docker is a platform for developers and sysadmins to develop, deploy, and run
+applications with containers.</p></li>
+<li><p>It is a lightweight, standalone, executable package of a piece of software
+that includes everything needed to run it: code, runtime, system tools, system
+libraries, settings.</p></li>
+<li><p>Advantages</p>
+<ul>
+<li><p>Consistent environment</p></li>
+<li><p>Isolation</p></li>
+<li><p>Reduced installation time</p></li>
+<li><p>Portability</p></li>
+<li><p>Resource management</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Motivation</h2>
+<ul class="simple">
+<li><p>Spark installation is time consuming and error prone.</p>
+<ul>
+<li><p>Install Java, Scala, and Spark one by one.</p></li>
+<li><p>Configure after each step.</p></li>
+<li><p>Different versions of Java, Scala, and Spark may have compatibility issues.</p></li>
+<li><p>Different operating systems have different installation steps.</p></li>
+</ul>
+</li>
+<li><p>Learning Docker worth the time for the future</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Docker</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Installation</strong></p>
+<ul class="simple">
+<li><p>Download and install <code class="docutils literal notranslate"><span class="pre">Docker</span> <span class="pre">Desktop</span></code> on Windows and Mac OS.</p></li>
+<li><p>Install <code class="docutils literal notranslate"><span class="pre">Docker</span> <span class="pre">Engine</span></code> on Linux.</p></li>
+</ul>
+<p><strong>Docker images</strong></p>
+<ul class="simple">
+<li><p>Images are templates for containers.</p></li>
+<li><p>Build image from <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>.</p></li>
+<li><p>Pull pre-built image from <code class="docutils literal notranslate"><span class="pre">Docker</span> <span class="pre">Hub</span></code>.</p></li>
+</ul>
+</div>
+<div class="half docutils container">
+<p><strong>Docker Commands</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">pull</span></code>: Pull an image or a repository from a registry.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code>: Run a command in a new container.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span></code>: List containers.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">rm</span></code>: Remove one or more containers.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">images</span></code>: List images.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">rmi</span></code>: Remove one or more images.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">build</span></code>: Build an image from a Dockerfile.</p></li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Use Spark in Docker</h2>
+<ul>
+<li><p>Make a directory for the project on your computer and change to the director</p></li>
+<li><p>Make sure that your docker daemon is running (Docker desktop is running on
+Windows and Mac OS)</p></li>
+<li><p>Pull the image: <code class="docutils literal notranslate"><span class="pre">spark/latest</span></code> for Spark</p>
+<pre><code data-trim data-noescape class="bash">docker pull spark:latest</code></pre>
+</li>
+<li><p>Run the container and start the Spark shell</p>
+<pre><code data-trim data-noescape class="bash">docker run -it -v $(pwd):/opt/spark/work-dir --name spark spark:latest /opt/spark/bin/spark-shell</code></pre>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-it</span></code>: enter interactive mode</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-v</span> <span class="pre">$(pwd):/opt/spark/work-dir</span></code>: mount the current directory to the
+container as /opt/spark/work-dir so you can access file in the current
+directory from the container. The <code class="docutils literal notranslate"><span class="pre">$(pwd)</span></code> is the current directory and
+may be different in Windows shells.</p></li>
+<li><p>You can always change <code class="docutils literal notranslate"><span class="pre">$(pwd)</span></code> to the full path of the directory like
+<code class="docutils literal notranslate"><span class="pre">/home/user/project</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--name</span> <span class="pre">spark</span></code>: name the container as <code class="docutils literal notranslate"><span class="pre">spark</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">spark:latest</span></code>: the image to run</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/opt/spark/bin/spark-shell</span></code>: the command to run in the container</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Hints on Using Docker</h2>
+<ul class="simple">
+<li><p>Do not use <code class="docutils literal notranslate"><span class="pre">ctrl-c</span></code>, it will exit the whole container run.</p></li>
+<li><p>When you exit the program you run in the container, the container will stop.</p></li>
+<li><p>You can switch out of the container without stopping it by pressing
+<code class="docutils literal notranslate"><span class="pre">ctrl-p</span></code> and then <code class="docutils literal notranslate"><span class="pre">ctrl-q</span></code>. To reattach to the container, use <code class="docutils literal notranslate"><span class="pre">docker</span>
+<span class="pre">attach</span> <span class="pre">&lt;container_name&gt;</span></code>. Thus, you can resume what you have left.</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Spark Shell</h2>
+<ul class="simple">
+<li><p>Type <code class="docutils literal notranslate"><span class="pre">:help</span></code> to see the available commands.</p></li>
+<li><p>Type <code class="docutils literal notranslate"><span class="pre">:quit</span></code> to exit the shell.</p></li>
+<li><p>Type <code class="docutils literal notranslate"><span class="pre">:load</span></code> to load a script file (.scala).</p></li>
+<li><p>You may refer to the Spark <a class="reference external" href="https://spark.apache.org/docs/latest/quick-start.html">quick start documentation</a> for
+more information.</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Managing Containers</h2>
+<ul class="simple">
+<li><p>Each run will create a container.</p></li>
+<li><p>List all containers using <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span> <span class="pre">-a</span></code>.</p></li>
+<li><p>Each container comes with a unique name and a unique ID.</p></li>
+<li><p>Remove a container using <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">rm</span> <span class="pre">&lt;container_name/id&gt;</span></code>.</p></li>
+<li><p>To use the id, you can use the first few characters of the id.</p></li>
+</ul>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

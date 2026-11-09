@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Big Data For Data Science</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Big Data For Data Science</h1>
+<div class="subtitle docutils container">
+<p><strong>Module 5: PySpark Programming: DataFrame API</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Spark SQL Overview</p></li>
+<li><p>Applications</p></li>
+<li><p>DataFrame API</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Spark SQL Overview</h2>
+<ul class="simple">
+<li><p>A Spark module for structured data processing</p>
+<ul>
+<li><p>Integrated with other Spark components: Spark Core, Spark Streaming, MLlib,
+GraphX</p></li>
+</ul>
+</li>
+<li><p>Provides two complementary types of APIs to accomplish the similar goals</p>
+<ul>
+<li><p>Higher-level APIs: DataFrames and Datasets</p></li>
+<li><p>SQL-like querying context: e.g. SQL, HiveQL</p></li>
+</ul>
+</li>
+<li><p>Supports various data sources: Parquet, JSON, Hive, HBase, Cassandra, etc.</p></li>
+</ul>
+</section>
+<section >
+<h3>APIs vs SQL</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>API calls</strong></p>
+<ul class="simple">
+<li><p>More friendly to programmers</p></li>
+<li><p>More flexible and powerful</p></li>
+<li><p>DataFrame and Dataset APIs</p></li>
+</ul>
+<pre><code data-trim data-noescape class="Python">df1.join(df2, on=&quot;key&quot;) \
+    .filter(df1.age &gt; 21) \
+    .select('name', 'address') \
+    .show()</code></pre>
+</div>
+<div class="half docutils container">
+<p><strong>SQL queries</strong></p>
+<ul class="simple">
+<li><p>More friendly to data analysts who are familiar with SQL</p></li>
+<li><p>More sophisticated optimizations inherited from relational databases</p></li>
+</ul>
+<pre><code data-trim data-noescape class="Python"># spark is an instance of SparkSession
+spark.sql(&quot;&quot;&quot;
+  SELECT table1.name, table2.address
+  FROM table1
+  JOIN table2 ON table1.key = table2.key
+  WHERE table1.age &gt; 21
+&quot;&quot;&quot;).show()</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Performance optimizations</h2>
+<p>Some are general optimizations, while some are conditional optimizations based
+on the data source and the query.</p>
+<ul class="simple">
+<li><p>Reduced disk I/O</p></li>
+<li><p>Partitioning (helps when data is partitioned and some partitions can be
+skipped)</p></li>
+<li><p>Columnar storage (helps when a few columns are queried)</p></li>
+<li><p>In-memory columnar caching (helps columnar storage)</p></li>
+<li><p>Skip-rows (helps when many rows are skipped)</p></li>
+<li><p>Predicate pushdown (delegate certain operations to data source when data
+source supports it)</p></li>
+<li><p>Query optimization with Catalyst optimizer</p>
+<ul>
+<li><p>Analysis, logical optimization, physical planning, code generation stages</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Applications</h2>
+<p>It provides a unified data access layer for various data sources, and can even
+work directly on top of combined data from different sources.</p>
+<ul class="simple">
+<li><p>ETL (Extract, Transform, Load)</p></li>
+<li><p>Data visualization (skip data movement and processing)</p></li>
+<li><p>Distributed SQL query engine (skip data movement and processing)</p></li>
+<li><p>Data warehousing and data lake solutions (Manage multiple data sources)</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>DataFrame API</h2>
+<ul>
+<li><p>DataFrame API for structured data</p></li>
+<li><p>Entry point of all functionalities in Spark SQL</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">SparkSession</span></code> class</p></li>
+</ul>
+<pre><code data-trim data-noescape class="Python">from pyspark.sql import SparkSession
+
+spark = SparkSession.builder. \
+           master(&quot;local[*]&quot;). \
+           appName(&quot;Example&quot;). \
+           getOrCreate()</code></pre>
+</li>
+</ul>
+</section>
+<section >
+<h3>Convert RDD to DataFrame</h3>
+<ul>
+<li><p>Use the <code class="code docutils literal notranslate"><span class="pre">toDF</span></code> method</p>
+<pre><code data-trim data-noescape class="Python">data = [(1, &quot;John&quot;, 28), (2, &quot;Jane&quot;, 35), (3, &quot;Mike&quot;, 42)]
+rdd = sc.parallelize(data)
+df = rdd.toDF([&quot;id&quot;, &quot;name&quot;, &quot;age&quot;])</code></pre>
+</li>
+<li><p>Use the <code class="code docutils literal notranslate"><span class="pre">createDataFrame</span></code> method</p>
+<pre><code data-trim data-noescape class="Python">data = [(1, &quot;Alice&quot;, 25), (2, &quot;Bob&quot;, 20), (3, &quot;Charlie&quot;, 30)]
+df = spark.createDataFrame(data, [&quot;key&quot;, &quot;name&quot;, &quot;age&quot;])</code></pre>
+</li>
+</ul>
+</section>
+<section >
+<h3>Loading DataFrames from Data Sources</h3>
+<ul>
+<li><p>Use <code class="code docutils literal notranslate"><span class="pre">read</span></code> method of <code class="code docutils literal notranslate"><span class="pre">SparkSession</span></code> object to create a
+<code class="code docutils literal notranslate"><span class="pre">DataFrameReader</span></code> object to read data from a data source</p></li>
+<li><p>Read CSV, JSON, Parquet files</p></li>
+<li><p>Also supports ORC, Avro, Hive, JDBC, text, and other formats</p>
+<pre><code data-trim data-noescape class="Python">df = spark.read.csv(&quot;path/to/file.csv&quot;, header=True, inferSchema=True)
+df = spark.read.json(&quot;path/to/file.json&quot;)
+df = spark.read.parquet(&quot;path/to/file.parquet&quot;)</code></pre>
+</li>
+</ul>
+</section>
+<section >
+<h3>Saving DataFrames</h3>
+<ul class="simple">
+<li><p>Use <code class="code docutils literal notranslate"><span class="pre">write</span></code> method of <code class="code docutils literal notranslate"><span class="pre">DataFrame</span></code> object to create a
+<code class="code docutils literal notranslate"><span class="pre">DataFrameWriter</span></code> object to write data to a data source</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">format</span></code> method to specify the data source format</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">mode</span></code> method to specify the save mode</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">option</span></code> method to specify additional options</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">partitionBy</span></code> method to partition data by columns</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">save</span></code> method to save data to the data source</p></li>
+</ul>
+<pre data-id="saving-dataframes"><code data-trim data-noescape class="Python">df.write.format(&quot;csv&quot;).mode(&quot;overwrite&quot;). \
+    option(&quot;header&quot;, &quot;true&quot;).save(&quot;path/to/save&quot;)</code></pre>
+</section>
+<section >
+<h3>DataFrame Built-in Functions</h3>
+<ul class="simple">
+<li><p><strong>DataFrame does not take Python functions directly like RDD!</strong></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">spark.sql.functions</span></code> package provides many built-in
+functions</p></li>
+<li><p>Learn as needed. Not worth memorizing all of them at once.</p></li>
+<li><p>Common functions:</p>
+<ul>
+<li><p>Selecting columns: select()</p></li>
+<li><p>Filtering rows: filter(), where()</p></li>
+<li><p>Adding columns: withColumn()</p></li>
+<li><p>Renaming columns: withColumnRenamed()</p></li>
+<li><p>Dropping columns: drop()</p></li>
+<li><p>Sorting rows: orderBy(), sort()</p></li>
+<li><p>Grouping &amp; aggregating: groupBy(), agg()</p></li>
+<li><p>Joining DataFrames: join()</p></li>
+<li><p>Handling missing data: na.drop(), na.fill()</p></li>
+<li><p>Distinct values: distinct(), dropDuplicates()</p></li>
+<li><p>Union: union()</p></li>
+<li><p>Pivot: pivot()</p></li>
+<li><p>Explode: explode()</p></li>
+</ul>
+</li>
+<li><p>User-defined functions are created using a complicate mechanism (FYI)</p></li>
+</ul>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

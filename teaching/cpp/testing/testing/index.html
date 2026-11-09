@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Testing in C&#43;&#43; · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/cpp/">C&#43;&#43; Reference</a> / Testing in C&#43;&#43;</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Testing in C&#43;&#43;</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#motivation">Motivation</a></li>
+    <li><a href="#simple-test-run">Simple Test Run</a></li>
+    <li><a href="#assertions">Assertions</a></li>
+    <li><a href="#testing-frameworks">Testing Frameworks</a></li>
+    <li><a href="#testability">Testability</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="testing-in-c"></span>
+<h2 id="motivation">Motivation</h2>
+<p>Testing in software development is the process of evaluating and validating a software system to ensure its correctness, functionality, and performance. Automated testing is especially important for large projects.</p>
+<p>The modular development of large projects breaks codes into smaller modules and units such as functions, and classes. Within in this context, Unit Testing and Integration Testing are extremely effective. Both of them are designed to be automated with the help of testing frameworks.</p>
+<ul>
+<li>Large projects are hard to test manually.</li>
+<li>Automated testing is more efficient and reliable.</li>
+<li>Automated testing is more scalable.</li>
+<li>Tests can describe the functionality of the system (requirements).</li>
+<li>Tests can serve as documentation.</li>
+<li>Testable code is usually modular and well-organized.</li>
+</ul>
+<span id="term-Unit-test"></span>
+<dl>
+<dt>Unit test</dt>
+<dd>It is a type of testing strategy to test software units individually in isolation. To ensure <em>isolation</em>, techniques like mocking, stubbing, and faking are introduced.</dd>
+</dl>
+<span id="term-Integration-test"></span>
+<dl>
+<dt>Integration test</dt>
+<dd>It is a type of testing strategy to test how a group of units works together. Isolation can also be reinforced, similar to unit testing.</dd>
+</dl>
+<span id="term-System-test"></span>
+<dl>
+<dt>System test</dt>
+<dd>It is a type of testing strategy to test the whole software system as a whole.</dd>
+</dl>
+<span id="term-Acceptance-test"></span>
+<dl>
+<dt>Acceptance test</dt>
+<dd>It is a final system test that runs the whole software system all together in order to decide if the project can be accepted as a finished work.</dd>
+</dl>
+<span id="term-Testing-framework"></span>
+<dl>
+<dt>Testing framework</dt>
+<dd>A library/software to facilitate the testing process.</dd>
+</dl>
+<h2 id="simple-test-run">Simple Test Run</h2>
+<p>As a beginner taking entry-level courses, you should learn testing as soon as possible to build a correct workflow on project. You can start writing tests by simply add <code>cout</code> and <code>if</code> statements to check whether your function or class is doing its job as expected. These codes can be kept in separate cpp files with its own main function or as functions in your driver file, such as main.cpp.</p>
+<p>For example, assume that we have two classes <code>StoreItem</code> and <code>Store</code> to test. A test driver may look like this:</p>
+<span id="id2"></span>
+<p><em>test-driver.cpp</em></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#57606a">#include</span> <span style="color:#57606a">&lt;iostream&gt;</span><span style="color:#57606a">
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">#include</span> <span style="color:#57606a">&#34;store.hpp&#34;</span><span style="color:#57606a">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">#include</span> <span style="color:#57606a">&#34;store-item.hpp&#34;</span><span style="color:#57606a">
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">using</span> <span style="color:#cf222e">namespace</span> std<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">testStoreItem</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  StoreItem item1<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Apple&#34;</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  item1<span style="color:#1f2328">.</span>print<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>  StoreItem item2<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;apple&#34;</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  item2<span style="color:#1f2328">.</span>print<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span>item1<span style="color:#1f2328">.</span>equals<span style="color:#1f2328">(</span>item2<span style="color:#1f2328">))</span>
+</span></span><span style="display:flex;"><span>    cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;They are equal as expect!</span><span style="color:#0a3069">\n</span><span style="color:#0a3069">&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">else</span>
+</span></span><span style="display:flex;"><span>    cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;They are not equal, wrong!</span><span style="color:#0a3069">\n</span><span style="color:#0a3069">&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">testStore</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  Store myStore<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Test Store&#34;</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  myStore<span style="color:#1f2328">.</span>addItem<span style="color:#1f2328">(</span>StoreItem<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Apple&#34;</span><span style="color:#1f2328">));</span>
+</span></span><span style="display:flex;"><span>  myStore<span style="color:#1f2328">.</span>addItem<span style="color:#1f2328">(</span>StoreItem<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Banana&#34;</span><span style="color:#1f2328">));</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  myStore<span style="color:#1f2328">.</span>print<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span>myStore<span style="color:#1f2328">.</span>size<span style="color:#1f2328">()</span> <span style="color:#0550ae">==</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;The size is correct&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">else</span>
+</span></span><span style="display:flex;"><span>    cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;The size is wrong&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">main</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  testStoreItem<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// testStore();
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><h2 id="assertions">Assertions</h2>
+<p>The <code>assert</code> macro function (similar to a function when used) allows a more efficient way to run tests. This macro takes a bool parameter and abort your program when the bool expression evaluates to false. You can add as many as you like in your program during debugging and disable all of them by adding a line of <code>#define NDEBUG</code> before the <code>#include &lt;cassert&gt;</code> directive.</p>
+<span id="id3"></span>
+<p><em>test.cpp</em></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#57606a">#include</span> <span style="color:#57606a">&lt;iostream&gt;</span><span style="color:#57606a">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">#include</span> <span style="color:#57606a">&lt;cassert&gt;</span><span style="color:#57606a">
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">#include</span> <span style="color:#57606a">&#34;store.hpp&#34;</span><span style="color:#57606a">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">#include</span> <span style="color:#57606a">&#34;store-item.hpp&#34;</span><span style="color:#57606a">
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">using</span> <span style="color:#cf222e">namespace</span> std<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">testStoreItem</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  StoreItem item1<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Apple&#34;</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  StoreItem item2<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;apple&#34;</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  assert<span style="color:#1f2328">(</span>item1<span style="color:#1f2328">.</span>equals<span style="color:#1f2328">(</span>item2<span style="color:#1f2328">));</span>
+</span></span><span style="display:flex;"><span>  item1<span style="color:#1f2328">.</span>print<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>  item2<span style="color:#1f2328">.</span>print<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">testStore</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  Store myStore<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Test Store&#34;</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  myStore<span style="color:#1f2328">.</span>addItem<span style="color:#1f2328">(</span>StoreItem<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Apple&#34;</span><span style="color:#1f2328">));</span>
+</span></span><span style="display:flex;"><span>  myStore<span style="color:#1f2328">.</span>addItem<span style="color:#1f2328">(</span>StoreItem<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Banana&#34;</span><span style="color:#1f2328">));</span>
+</span></span><span style="display:flex;"><span>  assert<span style="color:#1f2328">(</span>myStore<span style="color:#1f2328">.</span>size<span style="color:#1f2328">()</span> <span style="color:#0550ae">==</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  myStore<span style="color:#1f2328">.</span>print<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">main</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  testStoreItem<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// testStore();
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><h2 id="testing-frameworks">Testing Frameworks</h2>
+<p>Choosing a good testing framework is more effective in terms of easier test writing and creation, better test organization, and better test result presentations. We choose the Catch2 framework to write tests in some projects. It is simple but feature-rich. The syntax to write tests are simple:</p>
+<span id="id4"></span>
+<p><em>test-catch.cpp</em></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#57606a">#include</span> <span style="color:#57606a">&lt;iostream&gt;</span><span style="color:#57606a">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">#include</span> <span style="color:#57606a">&lt;cassert&gt;</span><span style="color:#57606a">
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">#include</span> <span style="color:#57606a">&#34;catch.hpp&#34;</span><span style="color:#57606a">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">#include</span> <span style="color:#57606a">&#34;store.hpp&#34;</span><span style="color:#57606a">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">#include</span> <span style="color:#57606a">&#34;store-item.hpp&#34;</span><span style="color:#57606a">
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">using</span> <span style="color:#cf222e">namespace</span> std<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>TEST_CASE<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Test Store class&#34;</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  Store <span style="color:#6639ba">myStore</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Test Store&#34;</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  myStore<span style="color:#1f2328">.</span>addItem<span style="color:#1f2328">(</span>StoreItem<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Apple&#34;</span><span style="color:#1f2328">));</span>
+</span></span><span style="display:flex;"><span>  myStore<span style="color:#1f2328">.</span>addItem<span style="color:#1f2328">(</span>StoreItem<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Banana&#34;</span><span style="color:#1f2328">));</span>
+</span></span><span style="display:flex;"><span>  REQUIRE<span style="color:#1f2328">(</span>myStore<span style="color:#1f2328">.</span>size<span style="color:#1f2328">()</span> <span style="color:#0550ae">==</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// CHECK(myStore.size() == 2);
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>TEST_CASE<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Test StoreItem class&#34;</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  StoreItem <span style="color:#6639ba">item1</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;Apple&#34;</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  StoreItem <span style="color:#6639ba">item2</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;apple&#34;</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  REQUIRE<span style="color:#1f2328">(</span>item1<span style="color:#1f2328">.</span>equals<span style="color:#1f2328">(</span>item2<span style="color:#1f2328">));</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// CHECK(item1.equals(item2));
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><p>The <code>TEST_CASE</code> macro defines a test case with a description and a tag string. The <code>REQUIRE</code> macro will check the condition in the parenthesis. It will pass if the condition is true. The whole testing process will be aborted on false. Replace <code>REQUIRE</code> with <code>CHECK</code> if you want the testing process to continue on false. Thus, <code>REQUIRE</code> behaves like <code>assert</code> and is good for debugging so we can focus on the first error. On the contrast, <code>CHECK</code> is good for summarizing or grading when the overall passing rate is important. You will see <code>CHECK</code> in the testing cases in our projects rather than <code>REQUIRE</code>.</p>
+<p>A comprehensive <a href="https://github.com/catchorg/Catch2/blob/devel/docs/tutorial.md">official tutorial</a> is available online.</p>
+<h2 id="testability">Testability</h2>
+<p>Some codes are easier to test than others. In most of the cases, a more testable code base has better quality than something not very testable. Testable codes are usually well-designed.</p>
+<p>There are many principles in how to write testable codes. Here are some simple rules we can follow:</p>
+<ol>
+<li>keep the size of each unit small</li>
+<li>keep each unit coherent</li>
+<li>keep each unit focusing on one responsibility</li>
+<li>keep the units decoupled (each unit <em>knows</em> minimal numbers of other units)</li>
+<li>keep units deterministic (same inputs always give the same results)</li>
+<li>keep most units side effect free if possible</li>
+</ol>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

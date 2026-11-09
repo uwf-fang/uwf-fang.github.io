@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Longest Common Subsequence (LCS) Problem</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Longest Common Subsequence (LCS) Problem</h1>
+<ul class="simple">
+<li><p>Sequences and subsequences: foundational concepts in computational problems</p></li>
+<li><p>Critical for sequence comparison in bioinformatics and computer science</p>
+<ul>
+<li><p>DNA sequence alignment</p></li>
+<li><p>DNA sequence similarity</p></li>
+<li><p>Text comparison and plagiarism detection</p></li>
+<li><p>File comparison</p></li>
+<li><p>Version control systems</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>LCS Problem Overview</h2>
+<ul class="simple">
+<li><p>LCS: finding the longest subsequence common to two sequences</p>
+<ul>
+<li><p>More than one possible solution</p></li>
+<li><p>Subsequence: not necessarily contiguous</p></li>
+</ul>
+</li>
+<li><p>Used in genetics and version control systems</p></li>
+<li><p>Example: The Longest Common Subsequence for the DNA sequences “AGGTAB” and
+“GXTXAYB” is “GGTAB”</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>LCS Problem Properties</h2>
+<ul class="simple">
+<li><p>Optimal Substructure: (last character match version)</p>
+<ul>
+<li><p>For sequences <cite>X</cite> and <cite>Y</cite>, if <cite>X[m]</cite> equals <cite>Y[n]</cite>, the LCS includes <cite>X[m]</cite>
+and is one more than <cite>LCS(X[1..m-1], Y[1..n-1])</cite>.</p>
+<ul>
+<li><p>E.g. <cite>LCS(“ABCBDAB”, “BDCABB”) = 1 + LCS(“ABCBDA”, “BDCAB”)</cite></p></li>
+</ul>
+</li>
+<li><p>If <cite>X[m]</cite> does not equal <cite>Y[n]</cite>, the LCS is the longer of <cite>LCS(X[1..m],
+Y[1..n-1])</cite> or <cite>LCS(X[1..m-1], Y[1..n])</cite>.</p>
+<ul>
+<li><p>E.g. <cite>LCS(“ABCBDAB”, “BDCABD”) = max(LCS(“ABCBDAB”, “BDCAB”),
+LCS(“ABCBDA”, “BDCABD”))</cite></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Overlapping Subproblems:</p>
+<ul>
+<li><p>Calculating <cite>LCS(X[1..m], Y[1..n])</cite> will often require recalculating
+<cite>LCS(X[1..m-1], Y[1..n-1])</cite>, <cite>LCS(X[1..m], Y[1..n-1])</cite>, and <cite>LCS(X[1..m-1],
+Y[1..n])</cite> multiple times.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Brute Force Approach</h2>
+<ul class="simple">
+<li><p>Involves comparing all possible subsequences of both strings and compare</p></li>
+<li><p>Results in exponential time complexity <span class="math notranslate nohighlight">\(2^{m+n}\)</span></p></li>
+<li><p>Not feasible for long sequences due to inefficiency</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Divide and Conquer Approach</h2>
+<ul class="simple">
+<li><p>Employ the subproblem definition of LCS</p></li>
+<li><p>Recursively divide the problem into smaller subproblems</p></li>
+<li><p>Redundant computations on overlapping subproblems</p></li>
+</ul>
+<pre data-id="divide-and-conquer-approach"><code data-trim data-noescape class="default">function findLCSLength(s1, s2, m, n):
+    // Base case: If either of the strings is empty, LCS length is 0
+    if m == 0 or n == 0:
+        return 0
+
+    // If the last characters of both strings match
+    if s1[m-1] == s2[n-1]:
+        return 1 + findLCSLength(s1, s2, m-1, n-1)
+
+    // If the last characters of both strings don't match
+    return max(findLCSLength(s1, s2, m, n-1), findLCSLength(s1, s2, m-1, n))</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Dynamic Programming (DP) Solution</h2>
+<ul class="simple">
+<li><p>DP Table: set up with dimensions one greater than sequence lengths</p></li>
+<li><p>Matching characters: increment LCS length</p></li>
+<li><p>Non-matching characters: take the maximum value from adjacent cells</p></li>
+<li><p>LCS length located at <cite>dp[m][n]</cite></p></li>
+<li><p>Algorithm complexity: <span class="math notranslate nohighlight">\(\Theta(m*n)\)</span> for both time and space</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Traceback for LCS</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<a class="reference internal image-reference" href="../_images/lcs-traceback.png"><img alt="../_images/lcs-traceback.png" src="../_images/lcs-traceback.png" style="width: 70%;" />
+</a>
+<div class="footnote docutils container">
+<p>Credit: Introduction to Algorithms, 4th Ed., T. Cormen et al.</p>
+</div>
+</div>
+<div class="half docutils container">
+<ul class="simple">
+<li><p><strong>Can only find one LCS</strong></p></li>
+<li><p>Reconstruct LCS from the filled DP table</p></li>
+<li><p>Backtrack from <cite>dp[m][n]</cite>, storing characters</p></li>
+<li><p>Diagonal movement for matches; otherwise to cell with higher value; if
+same, go up</p></li>
+<li><p>Complexity: <span class="math notranslate nohighlight">\(\Theta(m+n)\)</span></p></li>
+<li><p><strong>Question</strong>: How about same values?</p></li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Pseudocode</h2>
+<pre data-id="pseudocode"><code data-trim data-noescape class="default">Function LCS(X, Y):
+    m = length of X
+    n = length of Y
+    dp = array of (m+1) rows and (n+1) columns
+
+    # Initialize the table with 0's, as the LCS of an empty sequence
+    # with any sequence is 0
+    For i from 0 to m:
+        dp[i][0] = 0
+    For j from 0 to n:
+        dp[0][j] = 0
+
+    # Fill the dp table
+    For i from 1 to m:
+        For j from 1 to n:
+            If X[i] == Y[j]:
+                dp[i][j] = dp[i-1][j-1] + 1
+            Else:
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+
+    # The length of LCS is in the cell dp[m][n]
+    length_LCS = dp[m][n]</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Pseudocode (cont.)</h2>
+<pre data-id="pseudocode-cont"><code data-trim data-noescape class="default"># To find the LCS string, traceback from dp[m][n]
+LCS = &quot;&quot;
+i = m, j = n
+While i &gt; 0 and j &gt; 0:
+    If X[i] == Y[j]:
+        LCS = X[i] + LCS  # Prepend the character to LCS
+        i = i - 1
+        j = j - 1
+    Else If dp[i-1][j] &gt;= dp[i][j-1]: # if same, go up
+        i = i - 1
+    Else:
+        j = j - 1
+
+Return LCS, length_LCS</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Variations</h2>
+<ul class="simple">
+<li><p><strong>All LCSs</strong>: The DP solution only finds one LCS. To find all LCSs, use
+backtracking to find all possible paths in the DP table that lead to the
+LCS length.</p></li>
+<li><p><strong>Longest Common Substring</strong>: A substring is a contiguous sequence of
+characters within a string. The Longest Common Substring (LCSu) problem is
+similar to the LCS problem, but requires that the common elements be
+contiguous.</p></li>
+<li><p><strong>Improve space complexity</strong>: The DP solution requires <span class="math notranslate nohighlight">\(\Theta(m*n)\)</span>
+space. This can be improved to <span class="math notranslate nohighlight">\(\Theta(min(m, n))\)</span> by only storing the
+current and previous rows of the DP table.</p></li>
+</ul>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

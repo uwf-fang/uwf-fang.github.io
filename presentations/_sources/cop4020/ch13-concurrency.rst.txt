@@ -1,0 +1,223 @@
+Concurrency
+===========
+* Introduction to concurrency concepts
+* Semaphores
+* Monitors
+* Message Passing
+* Language-specific implementations:
+
+  - Ada Support for Concurrency
+  - Java Threads
+  - C# Threads
+  - Concurrency in Functional Languages
+
+* Statement-Level Concurrency
+
+Introduction to Concurrency
+---------------------------
+* **Levels of Concurrency**:
+
+  - Instruction level
+  - Statement level
+  - Unit/subprogram level
+  - Program level
+
+* **Types of Concurrency**:
+
+  - Physical concurrency (multiple processors)
+  - Logical concurrency (interleaved on single processor)
+
+Multiprocessor Architectures
+----------------------------
+* Hardware level
+* **SIMD** (Single Instruction, Multiple Data)
+
+  - Multiple processors execute same instruction on different data
+  - Example: Vector processors
+
+* **MIMD** (Multiple Instruction, Multiple Data)
+
+  - Multiple processors operate independently
+  - Two configurations: distributed and shared memory
+
+Motivations for Concurrency
+---------------------------
+
+* Speed of execution on multiprocessor machines
+* Improved performance even on single processors for non-compute-bound tasks
+* Natural conceptualization for certain problem domains
+* Distributed applications across multiple machines
+
+Fundamental Concepts
+--------------------
+* **Task**: Unit of a program that can be in concurrent execution
+* **Synchronization**: Mechanism controlling task execution order
+
+  - Competition synchronization
+  - Cooperation synchronization
+
+    * **Producer-consumer**: One task produces data, another consumes it
+
+Task States and Scheduling
+--------------------------
+* **New**: Created but not begun execution
+* **Ready**: Ready to run but not currently running
+* **Running**: Currently executing
+* **Blocked**: Execution interrupted (e.g., I/O operation)
+* **Dead**: No longer active
+
+Semaphores
+----------
+* Data structure with:
+
+  - Integer counter
+  - Task descriptor queue
+
+* Two operations:
+
+  - wait (P): Decrement counter or block
+  - release (V): Increment counter or unblock waiting task
+
+* Used for both competition and cooperation synchronization
+
+Problems with Semaphores
+------------------------
+* Unsafe programming environment
+* No static checking for correctness
+* Easy to make errors:
+
+  - Missing wait() or release() calls
+  - Incorrect ordering of operations
+  - Deadlock situations
+
+Monitors
+--------
+* **Monitor**: Encapsulated shared data with controlled access
+* All operations on shared data gathered in a single program unit
+* Competition synchronization handled implicitly
+* Cooperation synchronization requires additional mechanisms
+
+Message Passing
+---------------
+* Tasks communicate by sending messages to each other
+* **Rendezvous**: The actual transmission of a message
+* Requires both sender and receiver to be ready
+* Can provide both cooperation and competition synchronization
+
+Ada Support for Concurrency
+---------------------------
+* Based on message passing model
+* **Tasks**: Heavyweight concurrent units
+* **Rendezvous**: Synchronous message passing
+* **Protected Objects** (Ada 95+): Efficient way to implement monitors
+
+Ada Tasks
+---------
+* Two parts: specification and body
+* **Entry points**: Where tasks accept messages
+* **accept clause**: Implementation of entry points
+* Tasks can be actors or servers
+
+Ada Task Example
+----------------
+.. code-block:: ada
+
+    task Buf_Task is
+      entry Deposit(Item : in Integer);
+      entry Fetch(Item : out Integer);
+    end Buf_Task;
+
+    task body Buf_Task is
+      -- Variable declarations
+    begin
+      loop
+        select
+          when Filled < Bufsize =>
+            accept Deposit(Item : in Integer) do
+              Buf(Next_In) := Item;
+            end Deposit;
+            -- Extended accept clause
+        or
+          when Filled > 0 =>
+            accept Fetch(Item : out Integer) do
+              Item := Buf(Next_Out);
+            end Fetch;
+            -- Extended accept clause
+        end select;
+      end loop;
+    end Buf_Task;
+
+Java Threads
+------------
+
+* Lightweight concurrent units
+* **Thread class**: Base for concurrent execution
+* **Runnable interface**: Alternative implementation approach
+* Thread methods: start(), sleep(), yield(), join(), interrupt()
+
+Java Thread Creation
+--------------------
+
+.. code-block:: java
+
+    // Method 1: Extending Thread
+    class MyThread extends Thread {
+      public void run() { ... }
+    }
+    Thread myTh = new MyThread();
+    myTh.start();
+
+    // Method 2: Implementing Runnable
+    class MyTask implements Runnable {
+      public void run() { ... }
+    }
+    Thread myTh = new Thread(new MyTask());
+    myTh.start();
+
+Java Synchronization
+--------------------
+
+* **Competition Synchronization**:
+
+  - synchronized methods
+  - synchronized blocks
+  - explicit locks (Lock interface)
+
+* **Cooperation Synchronization**:
+
+  - wait(), notify(), notifyAll()
+  - Condition interface
+
+C# Threads
+----------
+
+* Similar to Java threads but more flexible
+* Any method can run in a thread, controlled through delegates
+* Synchronization options:
+
+  * lock statement
+  * Monitor class
+  * Interlocked class
+
+* Generic concurrent collections (ConcurrentQueue<T>, etc.)
+
+Concurrency in Functional Languages
+-----------------------------------
+
+* Multi-LISP: extends Scheme with pcall and future constructs
+* Concurrent ML: adds threads and synchronous channels
+* F#: uses .NET threading model but with functional programming paradigms
+* Advantage: immutable data doesn't require synchronization
+
+Statement-Level Concurrency
+---------------------------
+
+* High-Performance Fortran (HPF):
+
+  * PROCESSORS: specifies number of processors
+  * DISTRIBUTE: specifies data distribution across processors
+  * ALIGN: aligns data elements for efficient access
+  * FORALL: specifies statements that can execute concurrently
+
+* Similar features in modern languages: C#'s Parallel.For and Parallel.ForEach
+

@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Complexity Analysis · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/programming/programming/">General Programming Information</a></li><li><a href="/teaching/programming/algorithm/">Algorithm</a></li><li><a href="/teaching/programming/data-structure/">Data Structure</a></li><li><a href="/teaching/programming/complexity/" aria-current="page">Complexity Analysis</a></li><li><a href="/teaching/programming/alg-anal/">Algorithm Analysis</a></li><li><a href="/teaching/programming/adt-intro/">Abstract Data Type</a></li><li><a href="/teaching/programming/adt/linear-adts/">Linear ADTs</a></li><li><a href="/teaching/programming/ds/tree/">Tree Data Structure</a></li><li><a href="/teaching/programming/ds/graph/">Graph</a></li><li><a href="/teaching/programming/problems/lcs/">Longest Common Subsequence Problem</a></li><li><a href="/teaching/programming/problems/max-sum-subarray/">Max Sum Subarray Problem</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/programming/">Algorithms and Data Structures</a> / Complexity Analysis</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Complexity Analysis</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#concepts">Concepts</a></li>
+    <li><a href="#asymptotic-notation">Asymptotic notation</a>
+      <ul>
+        <li><a href="#motivation">Motivation</a></li>
+        <li><a href="#formal-definitions">Formal Definitions</a></li>
+        <li><a href="#how-they-work-and-which-one-to-choose">How they work and which one to choose</a></li>
+        <li><a href="#considering-cases">Considering Cases</a></li>
+        <li><a href="#representative-algorithms-of-certain-complexity">Representative Algorithms of Certain Complexity</a></li>
+        <li><a href="#properties">Properties</a></li>
+      </ul>
+    </li>
+    <li><a href="#steps-to-find-complexity">Steps to Find Complexity</a>
+      <ul>
+        <li><a href="#find-t-n">Find $T(n)$</a></li>
+        <li><a href="#find-theta-given-t-n">Find $\Theta$ given $T(n)$</a></li>
+        <li><a href="#find-theta-directly">Find $\Theta$ directly</a></li>
+      </ul>
+    </li>
+    <li><a href="#pitfalls">Pitfalls</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="complexity-analysis"></span>
+<p>Computational complexity analysis plays a pivotal role in the theoretical analysis of algorithms. It involves assessing how the performance of an algorithm scales with the size of the input, enabling us to make predictions about an algorithm’s efficiency in terms of time and space usage. This analysis is crucial for understanding the inherent difficulty of solving computational problems and for comparing and selecting algorithms for various tasks.</p>
+<h2 id="concepts">Concepts</h2>
+<span id="term-Computational-complexity"></span>
+<dl>
+<dt>Computational complexity</dt>
+<dd>The computational resources consumed by an algorithm as a function of the size of the problem.</dd>
+</dl>
+<span id="term-Time-complexity"></span>
+<dl>
+<dt>Time complexity</dt>
+<dd>The computational time consumed by an algorithm as a function of the size of the problem. It is usually described using a function $T(n)$.</dd>
+</dl>
+<span id="term-Space-complexity"></span>
+<dl>
+<dt>Space complexity</dt>
+<dd>The computational storage space (usually refer to memory) consumed by an algorithm as a function of the size of the problem. <strong>auxiliary space complexity</strong> is the space complexity excluding the input data. It is usually described using a function $S(n)$.</dd>
+</dl>
+<span id="term-Best-case-worst-case-and-average-case"></span>
+<dl>
+<dt>Best case, worst case, and average case</dt>
+<dd>Best case is the scenario in which the algorithm finished with the least resource consumed. Worst case is the scenario in which the algorithm finished with the most resource consumed. Sometimes we will use average case, which is the average over all possible inputs.</dd>
+</dl>
+<span id="term-Constant-time-operation"></span>
+<dl>
+<dt>Constant time operation</dt>
+<dd>Because the accurate measurement of time consumption is impossible, we usually count the number of constant time operations to estimate the time consumption. A constant time operation is an operation that always consume a certain amount of time regardless of the problem size n.</dd>
+</dl>
+<span id="term-Growth-rate"></span>
+<dl>
+<dt>Growth rate</dt>
+<dd>How much more resource is needed when the problem size grows. It is usually described using simple math functions. It is a simple way to visualize the complexity.</dd>
+</dl>
+<figure class="migration-image align-center"><img src="/teaching/_migration/e684c15df3d860a9.png" alt="Complexity" style="width:400;max-width:100%;height:auto" loading="lazy"></figure>
+<h2 id="asymptotic-notation">Asymptotic notation</h2>
+<p>Asymptotic notation is the math language we use to describe the complexity in a formal way. It is formally known as Bachmann–Landau notation. A mathematical notation system to describe the limiting behavior of a function. It includes $O$ (big-O), $\Omega$ (big-omega), $\Theta$ (big-theta) notations.</p>
+<aside class="callout callout-note" aria-label="note">
+<strong>Note</strong><div><p>Time complexity is more useful and is focused in the following sections. Most of the rules can be used with space complexity with little modification.</p>
+</div></aside>
+<h3 id="motivation">Motivation</h3>
+<p>Time, space or other kind of complexities are functions of the problem size $n$. They are not too helpful to describe the complexity of an algorithm for the following reason:</p>
+<ol>
+<li>They can be very complex functions that cannot be easily described or compared.</li>
+<li>They can be very different for different problem sizes, while we are more interested in the general trend when the problem size grows large.</li>
+</ol>
+<p>Thus, we need a method to describe the complexity as simpler math functions and focus on the general trend when the problem size grows large.</p>
+<p>E.g. $T(n) = 3n^2 + 10n + 4$ is a time function of a certain algorithm. It can be simplified to asymptotic notation $\Theta(n^2)$, which is good enough to describe how the resource consumption grows with the problem size when the problem size is large.</p>
+<h3 id="formal-definitions">Formal Definitions</h3>
+<p>Given $T(n)$ the time function of the problem size $n$</p>
+<p>We will write $T(n) = O(f(n))$ or $T(n) \in O(f(n))$ if there exists a certain positive constant $c$ and a problem size $n_{0}$, such that $T(n) \leq cf(n)$ for all $n \geq n_{0}$.</p>
+<p>We will write $T(n) = \Omega(f(n))$ or $T(n) \in \Omega(f(n))$ if there exists a certain positive constant $c$ and a problem size $n_{0}$, such that $T(n) \geq cf(n)$ for all $n \geq n_{0}$.</p>
+<p>We will write $T(n) = \Theta(f(n))$ if $T(n) = \Omega(f(n))$ and $T(n) = O(f(n))$ are both true. Note: the constants are different.</p>
+<p>We will write $T(n) = o(f(n))$ or $T(n) \in O(f(n))$ if there exists a certain positive constant $c$ and a problem size $n_{0}$, such that $T(n) < cf(n)$ for all $n \geq n_{0}$.</p>
+<aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p>The $=$ used in equations like $T(n) = O(f(n))$ does not mean <em>equal</em>! It means <em>in</em> or <em>belong to</em>.</p>
+</div></aside>
+<p>All notations $O(f(n))$, $\Omega(f(n))$, and $\Theta(f(n))$ define sets of functions that have the same <em>order</em>. Thus, the set will be the same of the function $f(n)$ has the same order. For example, $\Theta(n^2)=\Theta(2*n^2)=\Theta(n^2+3n)=\dots$ so we can use the simplest form of the function to represent the set.</p>
+<h3 id="how-they-work-and-which-one-to-choose">How they work and which one to choose</h3>
+<ul>
+<li>For a complexity, there exist infinite upper and lower bounds and we should focus on the “tightest” bound.</li>
+<li>If a big theta notation exists, it is guaranteed to be the tightest upper and lower bound.</li>
+<li>The big theta notation, $\Theta(f(n))$ is the most precise notation and is preferred as possible. However, it may not always exist in practice.</li>
+<li>When we cannot find the big theta notation, we can use big O $O(f(n))$ to describe the upper bound of the complexity. As it describe the upper bound, which is a guarantee that the complexity will not exceed this value.</li>
+</ul>
+<p>E.g. $T(n) = 3n^2 + 10n + 4$ is a time function of a certain algorithm. It has the big theta notation $\Theta(n^2)$, which is the tightest bound. It also has the tightest upper bound $O(n^2)$ and tightest lower bound $\Omega(n^2)$. Other upper bounds like $O(n^3)$, $O(n^4)$ are also valid but not as tight as $O(n^2)$. Other lower bounds like $\Omega(n)$, $\Omega(\log n)$ are also valid but not as tight as $\Omega(n^2)$.</p>
+<p>E.g. Mark Zuckerberg’s income is an upper bound to your income but it is not helpful to estimate your income because it is not a “tight” upper bound.</p>
+<h3 id="considering-cases">Considering Cases</h3>
+<p>In complexity analysis, various cases are considered to assess the efficiency and performance of algorithms. These cases help us understand how algorithms behave under different scenarios and input distributions.</p>
+<ul>
+<li>Best Case: The minimum amount of resources required by the algorithm.</li>
+<li>Worst Case: The maximum amount of resources required by the algorithm.</li>
+<li>Average Case: The average amount of resources required by the algorithm.</li>
+</ul>
+<aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p><strong>Bounds and cases are not directly related. Do not treat upper bound as worst case and lower bound as best case!</strong></p>
+<p>Each case provides a complexity as a function of problem size and we can use upper/lower/exact bound to estimate the growth rate of this function.</p>
+</div></aside>
+<h3 id="representative-algorithms-of-certain-complexity">Representative Algorithms of Certain Complexity</h3>
+<span id="id1"></span>
+<p><strong>Typical Complexity and Representative Algorithms</strong></p>
+<table>
+	<thead>
+			<tr>
+					<th>Name</th>
+					<th>Bound (prefer big theta)</th>
+					<th>Representative Algorithms</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Constant</td>
+					<td>$\Theta(1)$</td>
+					<td>Array indexing, Hash table lookups</td>
+			</tr>
+			<tr>
+					<td>Logarithmic</td>
+					<td>$\Theta(\log n)$</td>
+					<td>Binary Search, Balanced Binary Search Trees (e.g., AVL, Red-Black)</td>
+			</tr>
+			<tr>
+					<td>Linear</td>
+					<td>$\Theta(n)$</td>
+					<td>Linear Search, Most Simple Array/Linked List Operations</td>
+			</tr>
+			<tr>
+					<td>Linearithmic</td>
+					<td>$\Theta(n \log n)$</td>
+					<td>Merge Sort, Heap Sort, Quick sort</td>
+			</tr>
+			<tr>
+					<td>Quadratic</td>
+					<td>$\Theta(n^2)$</td>
+					<td>Bubble Sort, Selection Sort, Insertion Sort</td>
+			</tr>
+			<tr>
+					<td>Polynomial (k &gt; 2)</td>
+					<td>$\Theta(n^k)$</td>
+					<td>Matrix Multiplication (naive approach)</td>
+			</tr>
+			<tr>
+					<td>Exponential</td>
+					<td>$\Theta(2^n)$</td>
+					<td>Recursive algorithms without memoization (e.g., naive Fibonacci)</td>
+			</tr>
+			<tr>
+					<td>Factorial</td>
+					<td>$\Theta(n!)$</td>
+					<td>Traveling Salesman Problem (naive solution)</td>
+			</tr>
+	</tbody>
+</table>
+<h3 id="properties">Properties</h3>
+<ul>
+<li>$\Theta(f(n))$ is a <strong>set</strong> of functions that have the same order as $f(n)$.
+<ul>
+<li>E.g. $\Theta(n^2) = \Theta(2n^2) = \Theta(n^2 + 3n) = \dots$ because they all have the same order $n^2$.</li>
+<li>Thus, we will always use the simplest form of $f(n)$ to represent the set. E.g. $\Theta(2n^2 + 10n - 4) = \Theta(n^2)$. This step is called <strong>simplification</strong>.</li>
+</ul>
+</li>
+<li>If $T(n) = \Theta(f(n))$ and $g(n)$ is a function with higher order than $f(n)$, then $T(n) = \Theta(g(n))$.
+<ul>
+<li>E.g. if $T(n) = 3n^2 + 10n + 4 = \Theta(n^2)$, then $T(n) = \Theta(n^3) = \Theta(n^4) = \cdots$, All functions with higher order than $n^2$ is a possible upper bound of $T(n)$.</li>
+<li>Thus, we should always use the lowest-possible order to represent the set, $\Theta(n^2)$ in this case. Because higher order functions is always a possible upper bound, they become less meaningful.</li>
+</ul>
+</li>
+<li>Summary, <strong>We should always use the simplest form of the lowest-possible order to represent the set</strong>.</li>
+</ul>
+<h2 id="steps-to-find-complexity">Steps to Find Complexity</h2>
+<ul>
+<li>Option 1: Find $T(n)$ and then find $\Theta(f(n))$.</li>
+<li>Option 2: Estimate $\Theta(f(n))$ directly.</li>
+</ul>
+<h3 id="find-t-n">Find $T(n)$</h3>
+<ul>
+<li>$T(n)$ = number of operations</li>
+<li>Count the number of constant time operations</li>
+<li>Each statement, and expression evaluation is considered to take constant time.
+<ul>
+<li>E.g. In the pseudo code <code>if a &lt; 10 then b = a + 10</code>, the comparison <code>a &lt; 10</code> and the assignment <code>b = a + 10</code> are considered to take constant time. They both should be counted as 1 operation.</li>
+</ul>
+</li>
+<li>Function calls are more complicated. Functions that does not variable size input are mostly constant time. Functions that does variable size input are more complicate and you better check the reference.
+<ul>
+<li><code>std::swap, cout &lt;&lt;, getline</code> are constant time.</li>
+<li><code>std::sort, std::search, std::shuffle</code> are not constant time.</li>
+</ul>
+</li>
+</ul>
+<h3 id="find-theta-given-t-n">Find $\Theta$ given $T(n)$</h3>
+<ul>
+<li>Keep the term with highest order. Drop the coefficient and lower order terms go provide the simplest form.</li>
+<li>Example:
+<ul>
+<li>$T(n) = 20 \times n^2 + 10 \times n + 12 = \Theta(n^2)$</li>
+<li>$T(n) = 5 \times 2^n + 3 \times n^3 = \Theta(2^n)$</li>
+</ul>
+</li>
+</ul>
+<span id="id2"></span>
+<p><strong>Common Growth Rates, from low to high order</strong></p>
+<table>
+	<thead>
+			<tr>
+					<th>Term</th>
+					<th>Growth Rate</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Constant Time</td>
+					<td>$1$</td>
+			</tr>
+			<tr>
+					<td>Logarithmic</td>
+					<td>$\log n$</td>
+			</tr>
+			<tr>
+					<td>Linear</td>
+					<td>$n$</td>
+			</tr>
+			<tr>
+					<td>Linearithmic</td>
+					<td>$n \log n$</td>
+			</tr>
+			<tr>
+					<td>Quadratic</td>
+					<td>$n^2$</td>
+			</tr>
+			<tr>
+					<td>Cubic</td>
+					<td>$n^3$</td>
+			</tr>
+			<tr>
+					<td>Exponential</td>
+					<td>$2^n$</td>
+			</tr>
+			<tr>
+					<td>Factorial</td>
+					<td>$n!$</td>
+			</tr>
+	</tbody>
+</table>
+<h3 id="find-theta-directly">Find $\Theta$ directly</h3>
+<ul>
+<li>additive (sequential, branch)
+<ul>
+<li>$\Theta(f(n)) + \Theta(g(n)) = \Theta(f(n) + g(n))$</li>
+<li>E.g. $\Theta(n^2) + \Theta(n) = \Theta(n^2 + n) = \Theta(n^2)$</li>
+</ul>
+</li>
+<li>multiplicative (loop, recursion)
+<ul>
+<li>for a layer of loop: $\Theta(f(n)) \times \Theta(g(n)) = \Theta(f(n) \times g(n))$</li>
+<li>complexity of number of iterations $\Theta(f(n))$
+<ul>
+<li>how problem size is reduced in each iteration`</li>
+<li>reduce by half each round: $\Theta(\log n)$</li>
+<li>reduce by a constant each round: $\Theta(n)$</li>
+</ul>
+</li>
+<li>complexity in each iteration $\Theta(g(n))$</li>
+<li>E.g. For merge sort, the number of iterations is $\Theta(\log n)$ and the complexity in each iteration is $\Theta(n)$. Thus, the total complexity is $\Theta(\log n) \times \Theta(n) = \Theta(n \log n)$.</li>
+</ul>
+</li>
+</ul>
+<h2 id="pitfalls">Pitfalls</h2>
+<ul>
+<li>Confusing $T(n)$ to $\Theta(f(n))$</li>
+<li>Not all function calls are constant time operations (a.k.a. $\Theta(1)$)</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

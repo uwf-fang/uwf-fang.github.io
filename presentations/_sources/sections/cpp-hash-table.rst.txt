@@ -1,0 +1,201 @@
+*****************
+Hash Table in C++
+*****************
+
+.. container:: subtitle
+
+  |author|
+
+Outline
+=======
++ Overview
++ Hash function for hash table
++ Collision resolution
++ Applications
+
+Overview
+========
+A hash table is a **data structure** that maps keys to values for highly
+efficient lookup. The key-value pairs are stored in "buckets" and the hash
+table maps keys to buckets using a hash function.
+
++ Requirements
+
+  * Keys are unique (no duplicate keys)
+  * Keys are immutable
+
++ Properties
+
+  * Fast lookup, insert, and delete :math:`\Theta(1)`
+  * Unordered
+  * Redundant storage to reduce collision and ensure performance
+
+Hash Function For Hash Table
+============================
++ :math:`h(key)` a special type of hash function used by hash table
++ Maps a key of an arbitrary type to an integer in a certain range :math:`0, 1,
+  2, \ldots, size - 1`, where :math:`size` is the size of the hash table
++ The value obtained by applying the hash function to a key is called the hash
+  value of the key. It is used as an index of the bucket.
++ Modulo arithmetic
++ Considerations
+
+  * Deterministic
+  * Fast to compute
+  * Uniform distribution
+
++ Collision
+
+  * More than one keys map to the same index
+
+Hash Table Applications
+=======================
++ Hash Map (key-value pairs, implementation of map ADT)
++ Hash Set (unique elements, implementation of set ADT)
++ Caching (map)
++ Database indexing (map)
++ Symbol table in compilers (map)
++ Counting unique elements (set)
++ Membership testing (set)
++ Deduping a collection (set)
+
+Chaining (Collision Resolution)
+===============================
++ Each bucket can store a variable number of key-value pairs
+
+  * :math:`\Theta(nk)` space complexity
+
+    - where :math:`n` is the number of buckets
+    - :math:`k` is the average number of key-value pairs in each bucket
+    - Theatrically unlimited space for each bucket
+    - :math:`k` should be ideally a small constant
+
+  * :math:`\Theta(k)` time complexity for lookup, insert, and delete
+
++ Solve collision by chaining the key-value pairs together in one bucket when
+  collision happens
+
+Implementation of Chaining Hash Table
+-------------------------------------
++ Array of Buckets (the hash table)
+
+  * Fixed length
+  * Local array
+  * Dynamic array
+  * Vector
+
++ Bucket
+
+  * Variable length
+  * Stores key-value pairs
+  * Mostly empty
+  * Linked list
+  * Vector
+
+Chaining Hash Table in C++
+--------------------------
++ ``vector<vector<pair<keyType, valueType>>> hashTable``
+
+  Vector of vectors of pair objects.
+
++ ``vector<LinkedListNode<keyType, valueType> *> hashTable``
+
+  Vector of pointers to linked list.
+
++ ``LinkedListNode<keyType, valueType> ** hashTable``
+
+  One dimensional dynamic array of pointers to a linked list.
+
+  .. code-block:: cpp
+
+    template <typename keyType, typename valueType>
+    struct LikedListNode {
+      keyType key;
+      valueType value;
+      LinkedListNode * next;
+      LinkedListNode * prev;
+    };
+
+Open Addressing (Collision Resolution)
+======================================
++ Each bucket stores at most one key-value pair
+
+  * :math:`\Theta(n)` space complexity
+
+    - Can store at most :math:`n` key-value pairs
+
+  * :math:`\Theta(k)` time complexity for lookup, insert, and delete
+
+    - :math:`k` is the average number of probing steps
+    - :math:`k` should be ideally a small constant
+
++ Solve collision by finding another available bucket using a "probing
+  sequence"
+
+Implementation of Open Addressing Hash Table
+--------------------------------------------
++ Array of Buckets (the hash table)
+
+  * Fixed length
+  * Local array
+  * Dynamic array
+  * Vector
+
++ Bucket
+
+  * Stores a key-value pair
+  * Stores empty status and deletion status to indicate whether probing should
+    continue.
+
+    - Empty since start
+    - Empty after deletion
+
++ Performance degradation caused by frequent delete
+
+  * More "tombstone" buckets accumulate
+  * Need rehashing to reset the hash table
+
+Open Addressing Hash Table in C++
+---------------------------------
++ ``Bucket<keyType, valueType> * hashTable``
+
+  One dimensional dynamic array of bucket objects.
+
++ ``vector<Bucket<keyType, valueType>> hashTable``
+
+  Vector of bucket objects.
+
+  .. code-block:: cpp
+
+    template <typename keyType, typename valueType>
+    struct Bucket {
+      keyType key;
+      valueType value;
+      bool isEmpty = true;
+      bool isDeleted = false;
+    };
+
+Probing in Open Addressing
+--------------------------
++ Find another available bucket to store the value when a collision occurs
++ Probing sequence: the sequence of the buckets to check when collision happens
++ You will never probe buckets more than :math:`size` times
++ Linear probing:
+
+  :math:`(h1(key) + C_{1} * i) \% size, i = 0, 1, 2, 3 \dots size - 1`
+
++ quadratic probing:
+
+  :math:`(h1(key) + C_{1} * i^2) \% size, i = 0, 1, 2, 3 \dots size - 1`
+
++ double hashing probing:
+
+  :math:`(h1(key) + C_{1} * i * h2(key)) \% size, i = 0, 1, 2, 3 \dots size -
+  1`
+
+.. container:: footnote
+
+  * :math:`h1(key)` is the primary hash function
+  * :math:`h2(key)` is the secondary hash function
+  * :math:`C_{1}` and :math:`C_{2}`, etc. are constants
+

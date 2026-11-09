@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 5: Distributed Memory Programming with MPI · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/course/cop5522/parallel-env/">Development Environment For Parallel Programming</a></li><li><a href="/teaching/course/cop5522/clang/">C Language Features Used in This Course</a></li><li><a href="/teaching/cpp/ccpp-env/">C/C&#43;&#43; Development Environment</a></li><li><a href="/teaching/developer-tools/make/">GNU Make</a></li></ul><ul><li><a href="/teaching/course/cop5522/ch01/">Chapter 1: Introduction To Parallel Programming</a></li><li><a href="/teaching/course/cop5522/ch02/">Chapter 2: Parallel Hardware and Software</a></li><li><a href="/teaching/course/cop5522/ch03/">Chapter 3: Shared-Memory Programming with OpenMP</a></li><li><a href="/teaching/course/cop5522/ch04/">Chapter 4: OpenMP Case Study: N-body problem</a></li><li><a href="/teaching/course/cop5522/ch05/" aria-current="page">Chapter 5: Distributed Memory Programming with MPI</a></li><li><a href="/teaching/course/cop5522/ch06/">Chapter 6: MPI Case Study, and Pthread</a></li></ul><ul><li><a href="/teaching/course/cop5522/midterm/">Midterm Topic Outline</a></li><li><a href="/teaching/course/cop5522/final/">Final Topic Review</a></li></ul><ul><li><a href="/teaching/course/cop5522/homework/">Homework Instruction</a></li><li><a href="/teaching/course/cop5522/project/">Research Project: Parallelization of Serial Algorithms</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/course/cop5522/">COP 5522 Parallel and Distributed Programming</a> / Chapter 5: Distributed Memory Programming with MPI</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Chapter 5: Distributed Memory Programming with MPI</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-mpi-model">The MPI Model</a></li>
+    <li><a href="#basic-mpi-concepts">Basic MPI Concepts</a></li>
+    <li><a href="#synchronization">Synchronization</a></li>
+    <li><a href="#peer-to-peer-apis">Peer-to-peer APIs</a></li>
+    <li><a href="#collective-apis">Collective APIs</a></li>
+    <li><a href="#derived-data-type">Derived Data-Type</a></li>
+    <li><a href="#evaluation">Evaluation</a></li>
+    <li><a href="#safety">Safety</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="chapter-5-distributed-memory-programming-with-mpi"></span>
+<h2 id="the-mpi-model">The MPI Model</h2>
+<ul>
+<li>An industrial standard to support distributed memory programming</li>
+<li>Multiple implementations
+<ul>
+<li>MPICH</li>
+<li>OpenMPI</li>
+</ul>
+</li>
+<li>Components
+<ul>
+<li>compiler wrapper <code>mpicc</code></li>
+<li>library <code>mpi.h</code></li>
+<li>runner <code>mpiexec</code> or <code>mpirun</code> (not official)</li>
+</ul>
+</li>
+</ul>
+<h2 id="basic-mpi-concepts">Basic MPI Concepts</h2>
+<ul>
+<li>Communicator - collection of processes that can communicate through MPI</li>
+<li>Process - the running unit in MPI, same or different computation nodes</li>
+<li>Size $p$ - number of processes in a communicator</li>
+<li>Rank $0, 1, \cdots p-1$ - unique identifier of a process in a communicator</li>
+<li>API types
+<ul>
+<li>peer-to-peer (P2P)</li>
+<li>collective</li>
+</ul>
+</li>
+<li>Communication call types
+<ul>
+<li>blocking</li>
+<li>non-blocking</li>
+</ul>
+</li>
+<li>Setup/Finalize
+<ul>
+<li>MPI_Init</li>
+<li>MPI_Finalize</li>
+</ul>
+</li>
+<li>Data types</li>
+<li>Message matching</li>
+</ul>
+<h2 id="synchronization">Synchronization</h2>
+<ul>
+<li>MPI_Barrier</li>
+</ul>
+<h2 id="peer-to-peer-apis">Peer-to-peer APIs</h2>
+<ul>
+<li>Send/receive</li>
+<li>Send and receive in one call</li>
+</ul>
+<h2 id="collective-apis">Collective APIs</h2>
+<ul>
+<li>Map</li>
+<li>Reduce</li>
+<li>All Reduce</li>
+<li>Broadcast</li>
+<li>Gather/Scatter</li>
+<li>All Gether</li>
+</ul>
+<h2 id="derived-data-type">Derived Data-Type</h2>
+<ul>
+<li>Customize data type</li>
+</ul>
+<h2 id="evaluation">Evaluation</h2>
+<ul>
+<li>MPI_Wtime</li>
+<li>MPI_Barrier</li>
+</ul>
+<h2 id="safety">Safety</h2>
+<ul>
+<li>Buffering vs Blocking</li>
+<li>Deadlock</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

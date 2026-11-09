@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 5: Symbol Table, Binary Search tree · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/course/cop5417/project/">Programming Project Instruction</a></li><li><a href="/teaching/course/cop5417/java-env/">Development Environment for Java</a></li><li><a href="/teaching/course/cop5417/java-modular/">Code Organization for Modular Java Programs</a></li></ul><ul><li><a href="/teaching/course/cop5417/ch01/">Chapter 1: Get Ready With Java</a></li><li><a href="/teaching/course/cop5417/ch02/">Chapter 2: Stack, Queue and linked-list; Algorithm Analysis</a></li><li><a href="/teaching/course/cop5417/ch03/">Chapter 3: Sorting (Elemental, Merge, Quick)</a></li><li><a href="/teaching/course/cop5417/ch04/">Chapter 4: Priority Queue and Heap Sort</a></li><li><a href="/teaching/course/cop5417/ch05/" aria-current="page">Chapter 5: Symbol Table, Binary Search tree</a></li><li><a href="/teaching/course/cop5417/ch06/">Chapter 6: Self-balancing BST; Hash table</a></li><li><a href="/teaching/course/cop5417/ch07/">Chapter 7: Graph</a></li></ul><ul><li><a href="/teaching/course/cop5417/final-review/">Final Review</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/course/cop5417/">COP 5417 Data Structures and Algorithms Essentials</a> / Chapter 5: Symbol Table, Binary Search tree</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Chapter 5: Symbol Table, Binary Search tree</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#symbol-table">Symbol Table</a></li>
+    <li><a href="#elementary-implementations">Elementary implementations</a></li>
+    <li><a href="#advanced-implementations-of-symbol-table">Advanced implementations of symbol table</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="chapter-5-symbol-table-binary-search-tree"></span>
+<p>In this chapter we will start approaching the topic of <code>searching</code>. Searching problems are a group of problems that require the algorithm to locate a certain record by a <code>key</code>. You should already know methods to search in a sequential data structure such as an array or a linked-list. In this chapter, we will discuss the topic in more complicate scenarios.</p>
+<h2 id="symbol-table">Symbol Table</h2>
+<ul>
+<li><code>Symbol table</code> is a term used historically in compiler to refer to a data structure that keeps track of all the identifiers in a program and how they are used. Under this context, this term refers to a <strong>data structure</strong>.</li>
+<li>It is defined as an <strong>ADT</strong> to store key-value pairs by some authors.</li>
+<li>Alternative names are <code>dictionary</code> and <code>map</code>.</li>
+<li>Key must be unique</li>
+<li>Behaviors
+<ul>
+<li>put: put a key-value pair into the table</li>
+<li>get: return value with a given key</li>
+<li>contains: is there a value paired with a given key?</li>
+<li>delete: remove key-value pair with a given key</li>
+<li>size: number of key-value pairs</li>
+<li>isEmpty: is the table empty?</li>
+</ul>
+</li>
+<li>Conventions for Java
+<ul>
+<li>use of <code>null</code></li>
+<li><code>equals()</code></li>
+<li>key should be immutable (use final keyword)</li>
+<li>key should be comparable</li>
+</ul>
+</li>
+</ul>
+<h2 id="elementary-implementations">Elementary implementations</h2>
+<ul>
+<li>Store key-value pairs in a sequential data structure (array or linked-list)</li>
+<li>put, get, contains and remove are all based on key lookup
+<ul>
+<li>put: search for key, if found, replace value, else add new key-value pair</li>
+<li>get: search for key, if found, return associated value, else return null</li>
+<li>remove: search for key, if found, remove key-value pair, else do nothing</li>
+</ul>
+</li>
+<li>Lookup algorithm
+<ul>
+<li>Unsorted list + Sequential search: $\Theta(n)$</li>
+<li>Sorted list + Binary search: $\Theta(\log n)$</li>
+</ul>
+</li>
+</ul>
+<h2 id="advanced-implementations-of-symbol-table">Advanced implementations of symbol table</h2>
+<ul>
+<li>Binary search tree implementation
+<ul>
+<li><a href="/teaching/programming/ds/tree/">Tree basics</a></li>
+<li><a href="/teaching/programming/ds/bst/">Binary search tree basics</a></li>
+<li><code>Binary search tree</code> (BST) is a binary tree in symmetric order.</li>
+<li>Symmetric order: each node has a key, and every node’s key is
+<ul>
+<li>larger than all keys in its left subtree</li>
+<li>smaller than all keys in its right subtree</li>
+</ul>
+</li>
+<li>BST implementation
+<ul>
+<li>Node class: key, value, left, right</li>
+<li>BST class: root node</li>
+<li>put</li>
+<li>get</li>
+<li>delete</li>
+<li>size</li>
+<li>isEmpty</li>
+<li>min, max, floor, ceiling, rank, select (optional)</li>
+</ul>
+</li>
+<li>Efficiency depends on the height of the tree
+<ul>
+<li>Worst case: $\Theta(n)$ (unbalanced tree)</li>
+<li>Average case: $\Theta(\log n)$ (balanced tree)</li>
+</ul>
+</li>
+<li>Self-balancing BST to guarantee Theta(log n) performance
+<ul>
+<li>AVL tree (optional)</li>
+<li>Red-black tree (next chapter)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Hash table (next chapter)</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

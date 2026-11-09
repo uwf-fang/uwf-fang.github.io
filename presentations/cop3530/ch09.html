@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Data Structure and Algorithm Design</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Data Structure and Algorithm Design</h1>
+<div class="subtitle docutils container">
+<p><strong>Chapter 9</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Sections</h2>
+<ul class="simple">
+<li><p>Sorting Overview</p></li>
+<li><p>Quick Sort</p></li>
+<li><p>Merge Sort</p></li>
+<li><p>Radix Sort</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h1>Sorting Algorithms</h1>
+<div class="subtitle docutils container">
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Sections</h2>
+<ul class="simple">
+<li><p>Overview</p></li>
+<li><p>Categories</p></li>
+<li><p>Sorting Array and Linked List</p></li>
+<li><p>Time Complexity and Space Complexity</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<ul class="simple">
+<li><p>Sorting algorithms are used to arrange a sequence in a particular order. The
+base type must be comparable.</p></li>
+<li><p>Visualizations</p>
+<ul>
+<li><p><a class="reference external" href="https://visualgo.net/en/sorting">visualgo.net</a></p></li>
+<li><p><a class="reference external" href="https://www.cs.usfca.edu/~galles/visualization/Algorithms.html">Data Structure Visualization</a></p></li>
+<li><p><a class="reference external" href="https://www.toptal.com/developers/sorting-algorithms/">Sorting algorithms</a></p></li>
+</ul>
+</li>
+<li><p>Application</p>
+<ul>
+<li><p>Part of many other algorithms</p></li>
+<li><p>Database system</p></li>
+<li><p>File system</p></li>
+<li><p>Operating system</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Categories</h2>
+<ul class="simple">
+<li><p>Comparison-based sorting algorithms (general-purpose sorting algorithms)</p>
+<ul>
+<li><p>Bubble sort</p></li>
+<li><p>Selection sort</p></li>
+<li><p>Insertion sort</p></li>
+<li><p>Merge sort</p></li>
+<li><p>Quick sort</p></li>
+<li><p>Heap sort</p></li>
+</ul>
+</li>
+<li><p>Non-comparison-based sorting algorithms</p>
+<ul>
+<li><p>Counting sort</p></li>
+<li><p>Radix sort</p></li>
+<li><p>Bucket sort</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Other Method To Categorize</h3>
+<ul class="simple">
+<li><p>Stable sorting algorithms (preserve the relative order of equal elements)</p>
+<ul>
+<li><p>Bubble sort</p></li>
+<li><p>Insertion sort</p></li>
+<li><p>Merge sort</p></li>
+</ul>
+</li>
+<li><p>Divide and conquer sorting algorithms</p>
+<ul>
+<li><p>Merge sort</p></li>
+<li><p>Quick sort</p></li>
+</ul>
+</li>
+<li><p>Simple/Naive sorting algorithms</p>
+<ul>
+<li><p>Bubble sort</p></li>
+<li><p>Selection sort</p></li>
+<li><p>Insertion sort</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Array vs Linked List</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>For array</strong></p>
+<ul class="simple">
+<li><p>Array property</p>
+<ul>
+<li><p>fast access by index</p></li>
+<li><p>slow insertion and deletion of elements except at the end</p></li>
+</ul>
+</li>
+<li><p>Preferred general purpose sorting algorithms</p>
+<ul>
+<li><p>Quick sort</p></li>
+<li><p>Merge sort</p></li>
+<li><p>Heap sort</p></li>
+<li><p>Tim sort (a hybrid method, FYI)</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="half docutils container">
+<p><strong>For linked list</strong></p>
+<ul class="simple">
+<li><p>Linked-list property</p>
+<ul>
+<li><p>slow access by index</p></li>
+<li><p>fast reconstruction of new list</p></li>
+<li><p>fast access to neighboring nodes</p></li>
+</ul>
+</li>
+<li><p>With the same time complexity, consider data movement overhead</p></li>
+<li><p>Preferred general purpose sorting algorithms</p>
+<ul>
+<li><p>Merge sort</p></li>
+<li><p>Insertion sort</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Real-World Choices (FYI)</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Summary of real-world state-of-art for array</strong></p>
+<ul class="simple">
+<li><p>For small arrays</p>
+<ul>
+<li><p>Insertion sort</p></li>
+</ul>
+</li>
+<li><p>For large arrays</p>
+<ul>
+<li><p>Quick sort &gt; Merge sort &gt; Heap sort</p></li>
+<li><p>In parallel environment</p>
+<ul>
+<li><p>Merge sort</p></li>
+<li><p>Quick sort</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Overall winner for array: hybrid method</p>
+<ul>
+<li><p>Quick sort + Insertion sort</p></li>
+<li><p>Merge sort + Insertion sort</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="half docutils container">
+<p><strong>Summary of real-world state-of-art for linked list</strong></p>
+<ul class="simple">
+<li><p>For linked list</p>
+<ul>
+<li><p>Direct sort</p>
+<ul>
+<li><p>Merge sort for large linked list (can be parallelized)</p></li>
+<li><p>Insertion sort for small linked list</p></li>
+</ul>
+</li>
+<li><p>Sort as array of pointers</p>
+<ul>
+<li><p>Make an array of pointers</p></li>
+<li><p>Let each element point to the corresponding node in the linked list</p></li>
+<li><p>Sort the array of pointers</p></li>
+<li><p>Generate the new linked list according to the sorted array</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Time Complexity</h2>
+<ul class="simple">
+<li><p>Comparison-based sorting algorithms (Array)</p>
+<ul>
+<li><p>Bubble sort <span class="math notranslate nohighlight">\(\Theta(n^2)\)</span></p></li>
+<li><p>Selection sort <span class="math notranslate nohighlight">\(\Theta(n^2)\)</span></p></li>
+<li><p>Insertion sort <span class="math notranslate nohighlight">\(\Theta(n^2)\)</span></p></li>
+<li><p>Merge sort <span class="math notranslate nohighlight">\(\Theta(n \log n)\)</span></p></li>
+<li><p>Quick sort <span class="math notranslate nohighlight">\(\Theta(n \log n)\)</span> (average), <span class="math notranslate nohighlight">\(\Theta(n^2)\)</span> (worst)</p></li>
+<li><p>Heap sort <span class="math notranslate nohighlight">\(\Theta(n \log n)\)</span></p></li>
+</ul>
+</li>
+<li><p>Non-comparison-based sorting algorithms (Array)</p>
+<ul>
+<li><p>k is a constant value depending on algorithms</p></li>
+<li><p>Radix sort <span class="math notranslate nohighlight">\(\Theta(nk)\)</span></p></li>
+<li><p>Counting sort <span class="math notranslate nohighlight">\(\Theta(n+k)\)</span></p></li>
+<li><p>Bucket sort <span class="math notranslate nohighlight">\(\Theta(n+k)\)</span></p></li>
+</ul>
+</li>
+<li><p>Linked list</p>
+<ul>
+<li><p>Merge sort <span class="math notranslate nohighlight">\(\Theta(n \log n)\)</span></p></li>
+<li><p>Insertion sort <span class="math notranslate nohighlight">\(\Theta(n^2)\)</span></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Space Complexity</h3>
+<p><strong>The following discussion is on array only.</strong></p>
+<ul class="simple">
+<li><p>In-place sorting algorithms (swap based) <span class="math notranslate nohighlight">\(\Theta(1)\)</span></p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\Theta(1)\)</span> for swapping</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Theta(\log n)\)</span> to <span class="math notranslate nohighlight">\(\Theta(n)\)</span> for recursion stack</p></li>
+<li><p>Iterative: swapping only</p></li>
+<li><p>Recursive: swapping + recursion stack</p></li>
+</ul>
+</li>
+<li><p>Out-of-place sorting algorithms <span class="math notranslate nohighlight">\(\Theta(n)\)</span></p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\Theta(n)\)</span> for a new array</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Theta(\log n)\)</span> to <span class="math notranslate nohighlight">\(\Theta(n)\)</span> for recursion stack</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Quick Sort</h2>
+<ul class="simple">
+<li><p>By Sir Tony Hoare in 1959.</p></li>
+<li><p>One of the most widely used</p></li>
+<li><p>Characteristics</p>
+<ul>
+<li><p>Divide and conquer algorithm</p></li>
+<li><p>Comparison based (general purpose)</p></li>
+<li><p>Recursive</p></li>
+<li><p>In-place</p></li>
+<li><p>Efficient</p></li>
+<li><p>Unstable - relative order of equal elements is not preserved</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Quick partition algorithm</h3>
+<ul class="simple">
+<li><p>The core of quick sort</p></li>
+<li><p>Many variations: <strong>Stick to our variation from zyBook!</strong></p></li>
+<li><p>Steps</p>
+<ol class="arabic simple">
+<li><p>Pick an element, called a pivot, from the list.</p></li>
+<li><p>Use the pivot to partition the list into two sublists.</p></li>
+<li><p>Reorder the list in the process so that all elements less than the pivot
+come before the pivot, and all elements greater than the pivot come
+after it.</p></li>
+<li><p>Return the <strong>location of the partition.</strong></p></li>
+</ol>
+</li>
+</ul>
+</section>
+<section >
+<h3>Quick Partition Algorithm</h3>
+<ul class="simple">
+<li><p>Lomuto’s partition scheme (FYI)</p></li>
+<li><p>Hoare’s partition scheme (zyBook variation)</p>
+<ol class="arabic simple">
+<li><p>Let two cursor indices to point to the first - 1 and last + 1 positions of
+the list respectively.</p></li>
+<li><p>Keep moving the left cursor to the right until it points to an element
+<strong>greater and equal</strong> than the pivot.</p></li>
+<li><p>Move the right cursor to the left until it points to an element <strong>less
+and equal</strong> than the pivot.</p></li>
+<li><p>If the left cursor meets or passes the right cursor, the partition is
+complete. Return the right cursor.</p></li>
+<li><p>Swap the elements pointed by the two cursors.</p></li>
+<li><p>Move both cursors one more step</p></li>
+<li><p>Repeat steps 2-6 until the partition is complete (step 4 returns).</p></li>
+</ol>
+</li>
+</ul>
+</section>
+<section >
+<h3>Quick Partition Algorithm: Our Variation (Hoare’s Scheme)</h3>
+<ul class="simple">
+<li><p>Hoare’s partition scheme</p></li>
+<li><p>Middle element as pivot</p></li>
+<li><p><strong>Cursor will not pass by the pivot, so the pivot will be swapped many
+times.</strong></p></li>
+<li><p>The returned index is the final position of the pivot</p></li>
+</ul>
+<pre data-id="quick-partition-algorithm-our-variation-hoare-s-scheme"><code data-trim data-noescape class="c++">int quickPartition(int *arr, int low, int high) {
+  int mid = (high + low) / 2;
+  // int mid = low + (high - low) / 2;
+  int pivot = arr[mid];
+  while (true) {
+    while (arr[low] &lt; pivot) ++low;
+    while (arr[high] &gt; pivot) --high;
+    if (low &gt;= high) break;
+    swap(arr[low], arr[high]);
+    ++low;
+    --high;
+  }
+  return high;
+}</code></pre>
+</section>
+<section >
+<h3>Quick Partition Example (con’d)</h3>
+<ul>
+<li><p>Given an int array <code class="docutils literal notranslate"><span class="pre">{42,</span> <span class="pre">7,</span> <span class="pre">85,</span> <span class="pre">23,</span> <span class="pre">64,</span> <span class="pre">91,</span> <span class="pre">9,</span> <span class="pre">73,</span> <span class="pre">18,</span> <span class="pre">56}</span></code></p></li>
+<li><p>First round of partitioning</p>
+<pre><code data-trim data-noescape class="text">// low is 0, high is 9 initially
+middle = (low + high) / 2 = 4
+pivot = arr[middle] = 64
+
+{42, 7, 85, 23, 64, 91, 9, 73, 18, 56} find position
+        l                          h
+{42, 7, 56, 23, 64, 91, 9, 73, 18, 85} swap 85, 56, and move by 1
+            l                  h
+{42, 7, 56, 23, 64, 91, 9, 73, 18, 85} find position (hit pivot)
+                l              h
+{42, 7, 56, 23, 18, 91, 9, 73, 64, 85} swap 64, 18, and move by 1
+                    l      h
+{42, 7, 56, 23, 18, 91, 9, 73, 64, 85} find position
+                    l   h
+{42, 7, 56, 23, 18, 9, 91, 91, 64, 85} swap 91, 9, and move by 1
+                    h  l
+h &lt;= l, return h; left: low to h, right: h + 1 to high</code></pre>
+</li>
+<li><p>The pivot is moved only once.</p></li>
+<li><p>The returned index is NOT the final position of the pivot!</p></li>
+<li><p><strong>Exercise:</strong></p>
+<ul class="simple">
+<li><p>How about the first element is selected as the pivot? Is there more
+movement of data?</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Quick Sort Algorithm</h3>
+<ul class="simple">
+<li><p>Recursive</p></li>
+<li><p>In-place</p></li>
+<li><p>Need a helper function to work on a sublist</p>
+<ol class="arabic simple">
+<li><p>If the range is empty, return.</p></li>
+<li><p>Call quick partition algorithm to partition the list into two sublists.</p></li>
+<li><p>Recursively call quick sort on both sublists.</p></li>
+</ol>
+</li>
+</ul>
+<pre data-id="quick-sort-algorithm"><code data-trim data-noescape class="c++">void quicksort(int *arr, int size) {
+  quicksortHelper(arr, 0, size - 1);
+}
+
+void quicksortHelper(int *arr, int low, int high) {
+  if (low &gt;= high) return;
+  int part = quickPartition(arr, low, high);
+  quicksortHelper(arr, low, part);
+  quicksortHelper(arr, part + 1, high);
+}</code></pre>
+</section>
+<section >
+<h3>Complexity</h3>
+<ul class="simple">
+<li><p>Time</p>
+<ul>
+<li><p>Depends on whether the pivot can partition the list into two sublists
+of roughly equal size</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Theta(n \log n)\)</span> average case</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Theta(n^2)\)</span> worst case, extremely uneven partitioning</p></li>
+</ul>
+</li>
+<li><p>Space - <span class="math notranslate nohighlight">\(\Theta(\log n)\)</span> to <span class="math notranslate nohighlight">\(\Theta(n)\)</span> depending on partition</p></li>
+<li><p>Improvement attempts</p>
+<ul>
+<li><p>Pivot selection</p>
+<ul>
+<li><p>Randomized quick sort</p></li>
+<li><p>Median of three</p></li>
+</ul>
+</li>
+<li><p>Shuffling the list before sorting</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Visualization For Quick sort</h3>
+<p>Unfortunately, the visualization websites are all using different
+configurations and are not compatible with our demonstration.</p>
+<ul class="simple">
+<li><p>Some of them uses Lomuto’s scheme</p>
+<ul>
+<li><p><a class="reference external" href="http://me.dt.in.th/page/Quicksort/">http://me.dt.in.th/page/Quicksort/</a></p></li>
+<li><p><a class="reference external" href="https://www.toptal.com/developers/sorting-algorithms/quick-sort">https://www.toptal.com/developers/sorting-algorithms/quick-sort</a></p></li>
+<li><p><a class="reference external" href="https://visualgo.net/en/sorting">https://visualgo.net/en/sorting</a></p></li>
+</ul>
+</li>
+<li><p>Some of them uses Hoare’s scheme but select a different pivot</p>
+<ul>
+<li><p><a class="reference external" href="http://www.cs.usfca.edu/~galles/visualization/ComparisonSort.html">http://www.cs.usfca.edu/~galles/visualization/ComparisonSort.html</a></p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Merge Sort</h2>
+<ul class="simple">
+<li><p>John von Neumann in 1945. (Do you know who he is?)</p></li>
+<li><p>Characteristics</p>
+<ul>
+<li><p>Divide and conquer algorithm</p></li>
+<li><p>Comparison based (general purpose)</p></li>
+<li><p>Recursive</p></li>
+<li><p>Out-of-place</p>
+<ul>
+<li><p>Requires additional memory</p></li>
+<li><p>Efficient for linked lists</p></li>
+</ul>
+</li>
+<li><p>Efficient for large data sets</p></li>
+<li><p>Stable - relative order of equal elements is preserved</p></li>
+<li><p>Parallelizable</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Algorithm Details</h3>
+<ul class="simple">
+<li><p>Steps (top-down)</p>
+<ol class="arabic simple">
+<li><p>Divide: Divide the n-element sequence to be sorted into two subsequences
+of n/2 elements each.</p></li>
+<li><p>Conquer: Sort the two subsequences recursively using merge sort.</p></li>
+<li><p>Combine: Merge the two sorted subsequences to produce the sorted sequence.</p></li>
+</ol>
+</li>
+<li><p>Variations</p>
+<ul>
+<li><p>top-down</p>
+<ul>
+<li><p>usually recursive</p></li>
+<li><p>stop repetition when the size of section is 1 or 0</p></li>
+</ul>
+</li>
+<li><p>bottom-up (FYI)</p>
+<ul>
+<li><p>usually iterative</p></li>
+<li><p>merge all <code class="docutils literal notranslate"><span class="pre">n</span></code> size <code class="docutils literal notranslate"><span class="pre">1</span></code> sections (single element) into <code class="docutils literal notranslate"><span class="pre">n/2</span></code> size
+<code class="docutils literal notranslate"><span class="pre">2</span></code> sections</p></li>
+<li><p>merge all size <code class="docutils literal notranslate"><span class="pre">2</span></code> lists to <code class="docutils literal notranslate"><span class="pre">n/4</span></code> size <code class="docutils literal notranslate"><span class="pre">4</span></code> lists</p></li>
+<li><p>continue until done</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Complexity</h3>
+<ul class="simple">
+<li><p>Time</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\Theta(n \log n)\)</span> array and linked list</p></li>
+</ul>
+</li>
+<li><p>Space</p>
+<ul>
+<li><p>Array: <span class="math notranslate nohighlight">\(\Theta(n)\)</span> optimized</p></li>
+<li><p>Linked list: <span class="math notranslate nohighlight">\(\Theta(1)\)</span></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Visualization Website</h3>
+<p>All available visualizations are for top-down merge sort.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.toptal.com/developers/sorting-algorithms/merge-sort">https://www.toptal.com/developers/sorting-algorithms/merge-sort</a></p></li>
+<li><p><a class="reference external" href="http://www.cs.usfca.edu/~galles/visualization/ComparisonSort.html">http://www.cs.usfca.edu/~galles/visualization/ComparisonSort.html</a></p></li>
+<li><p><a class="reference external" href="https://visualgo.net/en/sorting">https://visualgo.net/en/sorting</a></p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Radix Sort</h2>
+<ul class="simple">
+<li><p>Manual sorting methods 19th century</p></li>
+<li><p>Characteristics</p>
+<ul>
+<li><p>Non-comparison-based sorting algorithm</p></li>
+<li><p>Only works with integers, strings whose length is finite</p></li>
+<li><p>Digit/character-based</p></li>
+<li><p>Stable</p></li>
+<li><p>Out-of-place</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Algorithm Details</h3>
+<ul class="simple">
+<li><p>Example Steps (sorting decimal integers)</p>
+<ol class="arabic simple">
+<li><p>Initialize a list of buckets, one for each digit (0-9)</p></li>
+<li><p>Group by digits (two methods):</p>
+<ul>
+<li><p>LSD: Start from the least significant digit (rightmost) and group the
+numbers into buckets based on that digit</p></li>
+<li><p>MSD: Start from the most significant digit (leftmost) and group the
+numbers into buckets based on that digit</p></li>
+</ul>
+</li>
+<li><p>Collect the numbers from the buckets in order</p></li>
+<li><p>Move to the next digit and repeat the group and collect steps until all
+digits have been processed</p></li>
+</ol>
+</li>
+<li><p>Further improvement</p>
+<ul>
+<li><p>Zero-padding</p></li>
+<li><p>Negative number support</p></li>
+<li><p>Buckets storage</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Complexity</h3>
+<ul class="simple">
+<li><p>Time: <span class="math notranslate nohighlight">\(\Theta(nk)\)</span></p></li>
+<li><p>Space: <span class="math notranslate nohighlight">\(\Theta(n+k)\)</span>  (single array method)</p></li>
+<li><p>When k is a constant or much smaller than n, time complexity is
+<span class="math notranslate nohighlight">\(\Theta(n)\)</span>.</p></li>
+<li><p>When k is comparable to n or even greater, DO NOT use radix sort!</p></li>
+</ul>
+</section>
+<section >
+<h3>Visualization</h3>
+<ul class="simple">
+<li><p>The single array method is demonstrated.</p>
+<ul>
+<li><p><a class="reference external" href="https://www.cs.usfca.edu/~galles/visualization/RadixSort.html">https://www.cs.usfca.edu/~galles/visualization/RadixSort.html</a></p></li>
+</ul>
+</li>
+<li><p>The more abstract version is demonstrated without implementation details</p>
+<ul>
+<li><p><a class="reference external" href="https://visualgo.net/en/sorting">https://visualgo.net/en/sorting</a></p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

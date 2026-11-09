@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Input/Output (I/O) · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/cpp/ccpp-env/">C/C&#43;&#43; Development Environment</a></li><li><a href="/teaching/cpp/cpp-lang/">C&#43;&#43; programming language</a></li><li><a href="/teaching/cpp/functions/">User-defined Functions</a></li><li><a href="/teaching/cpp/io/" aria-current="page">Input/Output (I/O)</a></li><li><a href="/teaching/cpp/string/">String (C&#43;&#43; class)</a></li><li><a href="/teaching/cpp/class/class/">Objects and Classes in C&#43;&#43;</a></li><li><a href="/teaching/cpp/variable-type/variable-type/">Type, Variable, Assignment, and Expression</a></li><li><a href="/teaching/cpp/array/array/">Array Data Type</a></li><li><a href="/teaching/cpp/building/gpp/">Compilation Using g&#43;&#43;</a></li><li><a href="/teaching/cpp/building/modular/">Modular Development</a></li><li><a href="/teaching/cpp/testing/testing/">Testing in C&#43;&#43;</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/cpp/">C&#43;&#43; Reference</a> / Input/Output (I/O)</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Input/Output (I/O)</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#general-info">General Info</a></li>
+    <li><a href="#stream-based-i-o">Stream Based I/O</a></li>
+    <li><a href="#standard-i-o">Standard I/O</a></li>
+    <li><a href="#input-output-operations">Input/Output Operations</a></li>
+    <li><a href="#string-i-o">String I/O</a></li>
+    <li><a href="#file-i-o">File I/O</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="input-output-i-o"></span>
+<h2 id="general-info">General Info</h2>
+<p>Input/output related logics are essential components in many computational tasks including interaction with users, file read/write, string parsing/generation</p>
+<aside class="callout callout-note" aria-label="note">
+<strong>Note</strong><div><p>It is always a good practice to group I/O related logics in a minimal number of classes/functions because they are not testable with automatic testing.</p>
+</div></aside>
+<h2 id="stream-based-i-o">Stream Based I/O</h2>
+<p>All I/O covered in this section is about stream based I/O which handles data as sequential structures.</p>
+<p>There are many other I/O patterns. For instance, with block I/O the program read/write data as blocks.</p>
+<h2 id="standard-i-o">Standard I/O</h2>
+<ul>
+<li>
+<p>Input/output in the command-line context</p>
+<ul>
+<li>keyboard input as standard input</li>
+<li>terminal character print/display as standard output</li>
+</ul>
+</li>
+<li>
+<p>iostream - the input/output stream library header</p>
+</li>
+<li>
+<p>Standard input</p>
+<ul>
+<li>std::cin</li>
+<li>a global variable that you can use anywhere in your program</li>
+<li>an instance/object of the istream class</li>
+</ul>
+</li>
+<li>
+<p>Standard output</p>
+<ul>
+<li>std::cout</li>
+<li>a global variable that you can use anywhere in your program</li>
+<li>an instance/object of the ostream class</li>
+</ul>
+</li>
+<li>
+<p>Standard Error</p>
+<ul>
+<li>std::cerr</li>
+<li>a global variable that you can use anywhere in your program</li>
+<li>an instance/object of the ostream class</li>
+<li>used to display error messages</li>
+</ul>
+</li>
+<li>
+<p>Redirection</p>
+<p>In UNIX shells, you can redirect standard I/O using operators like <code>&lt;</code>, <code>&gt;</code>, <code>|</code>.</p>
+<ul>
+<li><code>&lt;</code> to redirect standard input from a file</li>
+<li><code>&gt;</code> to redirect standard output to a file</li>
+<li><code>|</code> to pipeline the standard output of the last command as the standard input of the next program</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./main &lt; input.txt
+</span></span><span style="display:flex;"><span>./main &gt; output.txt
+</span></span><span style="display:flex;"><span>./main &lt; input.txt &gt; output.txt
+</span></span><span style="display:flex;"><span>./cat input.txt <span style="color:#1f2328">|</span> ./main
+</span></span></code></pre></div></li>
+</ul>
+<h2 id="input-output-operations">Input/Output Operations</h2>
+<ul>
+<li>
+<p>Input operations</p>
+<ul>
+<li>
+<p>Extraction operator <code>&gt;&gt;</code></p>
+<ul>
+<li>work with any input stream including cin</li>
+<li>can be chained</li>
+<li>can be used as a boolean value (true if the operation succeed, false otherwise)</li>
+<li>read and convert to desired type</li>
+<li>will leave <code>'\n'</code> or <code>endl</code> character in buffer</li>
+</ul>
+</li>
+<li>
+<p><code>getline()</code> function</p>
+<ul>
+<li>read in a line as string: <code>getline(cin, inputString);</code></li>
+<li>work with any input stream including cin</li>
+<li>read in string only</li>
+<li>may read in empty string</li>
+<li><strong>special handling when used after extraction</strong></li>
+<li>may use other delimiter i.e. <code>getline(cin, inputString, ',');</code></li>
+</ul>
+<aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><pre><code>differentiate it from the `cin.getline()` function!
+</code></pre>
+</div></aside>
+</li>
+<li>
+<p><code>ignore()</code> method</p>
+<ul>
+<li>any input stream has this method</li>
+<li>ignore characters until the first delimiter</li>
+<li>default delimiter is <code>\n</code></li>
+<li><code>std::cin.ignore(std::numeric_limits&lt;std::streamsize&gt;::max(), '\n');</code> to be used after <code>&gt;&gt;</code> to remove the rest of the line</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Output operations</p>
+<ul>
+<li>Insertion operator <code>&lt;&lt;</code>
+<ul>
+<li>
+<p>work with any output stream including cout</p>
+</li>
+<li>
+<p>can be chained</p>
+</li>
+<li>
+<p>buffered, display upon flushing</p>
+<ul>
+<li>inserting <code>'\n'</code> or <code>endl</code> character will trigger flush</li>
+<li>syntax like <code>cin.flush()</code> to force flush</li>
+</ul>
+</li>
+<li>
+<p>formatting</p>
+<ul>
+<li><code>#include &lt;iomanip&gt;</code> header</li>
+<li><code>fixed</code></li>
+<li><code>showpoint</code></li>
+<li><code>scientific</code></li>
+<li><code>setprecision()</code></li>
+<li><code>setw()</code></li>
+<li><code>setfill()</code></li>
+<li><code>left</code></li>
+<li><code>right</code></li>
+</ul>
+<aside class="callout callout-note" aria-label="note">
+<strong>Note</strong><div><pre><code>  All above manipulators are sticky except `setw`. Sticky means that once it is set, it will be affective until it is set again later. However, the effect of setw will only affect the next insertion operation.
+</code></pre>
+</div></aside>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Error handling</p>
+<p>Stream operations are likely to fail. Error handling is essential.</p>
+<ul>
+<li>Methods
+<ul>
+<li><code>eof()</code> if the last successful read hit the end of the file</li>
+<li><code>fail()</code> if the last read fail</li>
+</ul>
+</li>
+<li>Reading errors
+<ul>
+<li>check <code>eof()</code> if read errors are not expected to happen</li>
+<li>check <code>fail()</code> if read errors are likely to happen</li>
+</ul>
+</li>
+<li>Writing errors</li>
+</ul>
+</li>
+</ul>
+<h2 id="string-i-o">String I/O</h2>
+<p>Used for text parsing or formatted string generation</p>
+<ul>
+<li>sstream header</li>
+<li>istringstream class
+<ul>
+<li>an input stream based on the content of a string</li>
+<li><code>&gt;&gt;</code> extraction</li>
+<li><code>getline()</code></li>
+<li>constructor to take a string as parameter</li>
+<li><code>.str()</code> to take a string as the content</li>
+<li><code>.clear()</code> to clear all contents</li>
+<li>end of file check
+<ul>
+<li><code>.eof()</code> call after every read (extraction, getline)</li>
+<li>Extraction operation as bool value <code>while (inSS &gt;&gt; value) ...</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>ostringstream class
+<ul>
+<li>an output stream accept formatted output and generate a string</li>
+<li><code>&lt;&lt;</code> insertion</li>
+<li>all formatting tools from iomanip will work</li>
+<li><code>.str()</code> method to generate a string containing the content in the stream</li>
+</ul>
+</li>
+</ul>
+<aside class="callout callout-note" aria-label="note">
+<strong>Note</strong><div><p>You can also manipulate strings using string methods. Check the <a href="/teaching/cpp/string/#adv-string">string document</a> for more information.</p>
+</div></aside>
+<h2 id="file-i-o">File I/O</h2>
+<ul>
+<li>fstream header</li>
+<li>ifstream class
+<ul>
+<li>read from a file</li>
+</ul>
+</li>
+<li>ofstream class
+<ul>
+<li>write to a file</li>
+</ul>
+</li>
+<li>bind to a file
+<ul>
+<li>pass the path string to the constructor</li>
+<li>call <code>.open()</code> method with the path string</li>
+</ul>
+</li>
+<li><code>open()</code>
+<ul>
+<li>methods to check open status
+<ul>
+<li><code>is_open()</code> is preferred</li>
+<li><code>fail()</code></li>
+</ul>
+</li>
+<li>very likely to fail so must check status after opening
+<ul>
+<li>read a non-existing file</li>
+<li>write a existing file</li>
+<li>other file system problems</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>close()</code> should be called when the file stream is no longer needed</li>
+<li>end of file check
+<ul>
+<li><code>.eof()</code> or <code>fail()</code> function call after read operations (extraction, getline)</li>
+<li>simplified syntax to check the status of reading (same as check fail())
+<ul>
+<li><code>while (inFS &gt;&gt; value) { ... }</code></li>
+<li><code>while (getline(inFS, line)) { ... }</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p><code>while (inFS &gt;&gt; value)</code> will work but <code>while (inFS &gt;&gt; value == true)</code> will fail! The expression must be directly used in the parenthesis. Same rule applies to <code>getline(inFS, line)</code> call.</p>
+</div></aside>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

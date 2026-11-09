@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hash Table · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/course/cop5417/project/">Programming Project Instruction</a></li><li><a href="/teaching/course/cop5417/java-env/">Development Environment for Java</a></li><li><a href="/teaching/course/cop5417/java-modular/">Code Organization for Modular Java Programs</a></li></ul><ul><li><a href="/teaching/course/cop5417/ch01/">Chapter 1: Get Ready With Java</a></li><li><a href="/teaching/course/cop5417/ch02/">Chapter 2: Stack, Queue and linked-list; Algorithm Analysis</a></li><li><a href="/teaching/course/cop5417/ch03/">Chapter 3: Sorting (Elemental, Merge, Quick)</a></li><li><a href="/teaching/course/cop5417/ch04/">Chapter 4: Priority Queue and Heap Sort</a></li><li><a href="/teaching/course/cop5417/ch05/">Chapter 5: Symbol Table, Binary Search tree</a></li><li><a href="/teaching/course/cop5417/ch06/">Chapter 6: Self-balancing BST; Hash table</a></li><li><a href="/teaching/course/cop5417/ch07/">Chapter 7: Graph</a></li></ul><ul><li><a href="/teaching/course/cop5417/final-review/">Final Review</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/course/cop5417/">COP 5417 Data Structures and Algorithms Essentials</a> / Hash Table</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Hash Table</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#characteristics">Characteristics</a></li>
+    <li><a href="#hash-function-for-hash-tables">Hash function for hash tables</a></li>
+    <li><a href="#collision-resolution">Collision resolution</a>
+      <ul>
+        <li><a href="#chaining">Chaining</a></li>
+        <li><a href="#open-addressing">Open addressing</a></li>
+      </ul>
+    </li>
+    <li><a href="#hash-table-glossary">Hash Table Glossary</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="hash-table"></span>
+<p>Hash table uses hashing to implement a data structure that maps a key to an index so the value can be stored in the corresponding location (a bucket) in a sequential data structure like an array.</p>
+<p><strong>Quick question:</strong> why linked-list is not a good way to store buckets in a hash table? (Because the most frequent usage is to access by index, which is slow with linked-list data structure)</p>
+<h2 id="characteristics">Characteristics</h2>
+<ul>
+<li>fast lookup $\Theta(1)$</li>
+<li>redundant storage (certain ratio of empty buckets)
+<ul>
+<li>performance degradation</li>
+</ul>
+</li>
+</ul>
+<h2 id="hash-function-for-hash-tables">Hash function for hash tables</h2>
+<ul>
+<li>$h(x)$</li>
+<li>a key of any type mapping to integer from 0 to N - 1 (indices in a size N array)</li>
+<li>modulo operator on any integer generating hash function</li>
+</ul>
+<h2 id="collision-resolution">Collision resolution</h2>
+<p>Methods to handle collision when multiple keys are mapped to a same bucket.</p>
+<h3 id="chaining">Chaining</h3>
+<ul>
+<li>each bucket is a list to store multiple values (chained)</li>
+<li>Nodes in the linked-list keeps key, value and next pointer</li>
+<li>unlimited storage space</li>
+<li>Performance degradation when over-filled</li>
+</ul>
+<h3 id="open-addressing">Open addressing</h3>
+<ul>
+<li>
+<p>find another available bucket to store the value when a collision occurs</p>
+</li>
+<li>
+<p>probing sequence: the sequence of the buckets to check when collision happens</p>
+</li>
+<li>
+<p>simplest linear probing:</p>
+<p>$(h1(key) + i) \% NUM\_BUCKETS, i = 0, 1, 2, 3 \dots$</p>
+</li>
+<li>
+<p>other probing (optional): linear probing that skips, quadratic probing, and double hashing</p>
+</li>
+<li>
+<p>implementation</p>
+<ul>
+<li>each bucket keeps both key and value</li>
+<li>search in the probing sequence until find the key or an empty bucket.</li>
+<li>insertion
+<ul>
+<li>if the key is already in the hash table, update the value</li>
+<li>if the key is not in the hash table, find an empty bucket in the probing sequence and store the key and value there</li>
+</ul>
+</li>
+<li>deletion
+<ul>
+<li>will create a hole in the probing sequence that interferes with future searches, insertion and deletion</li>
+<li>rearrange after every deletion</li>
+<li>differentiate <strong>empty-since-start</strong> vs <strong>empty-after-removal</strong> (Optional)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="hash-table-glossary">Hash Table Glossary</h2>
+<span id="term-Hash-Table"></span>
+<dl>
+<dt>Hash Table</dt>
+<dd>An associative data structure that models mapping from keys to values. It is usually implemented as an array. A hash function is employed to map the key to the index of the array element where the value is stored</dd>
+</dl>
+<span id="term-Key-hash-table"></span>
+<dl>
+<dt>Key (hash table)</dt>
+<dd>The input to the hash function to calculate the index of the buckets in the hash table</dd>
+</dl>
+<span id="term-Value-hash-table"></span>
+<dl>
+<dt>Value (hash table)</dt>
+<dd>The values stored in the buckets in tha hash table</dd>
+</dl>
+<span id="term-Collision-hash-table"></span>
+<dl>
+<dt>Collision (hash table)</dt>
+<dd>A collision occurs when multiple keys result in the same index in the array</dd>
+</dl>
+<span id="term-Collision-resolution"></span>
+<dl>
+<dt>Collision resolution</dt>
+<dd>The approach to resolve collisions in hash tables</dd>
+</dl>
+<span id="term-Chaining"></span>
+<dl>
+<dt>Chaining</dt>
+<dd>A collision resolution approach in which every element in an array is a linked-list</dd>
+</dl>
+<span id="term-Open-addressing"></span>
+<dl>
+<dt>Open addressing</dt>
+<dd>A collision resolution approach in which an empty bucket elsewhere in the hash table is used when collision happens</dd>
+</dl>
+<span id="term-Probing"></span>
+<dl>
+<dt>Probing</dt>
+<dd>The mechanism to determine the next index of bucket to check in the open addressing collision resolution approach</dd>
+</dl>
+<span id="term-Hash-map"></span>
+<dl>
+<dt>Hash map</dt>
+<dd>An implementation of the Map ADT based on the hash table data structure</dd>
+</dl>
+<span id="term-Hash-set"></span>
+<dl>
+<dt>Hash set</dt>
+<dd>An implementation of the Set ADT based on the hash table data structure</dd>
+</dl>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

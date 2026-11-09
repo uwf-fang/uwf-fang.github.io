@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Big Data For Data Science</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Big Data For Data Science</h1>
+<div class="subtitle docutils container">
+<p><strong>Module 3: Data processing for Big Data</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Data processing for Big Data Overview</p></li>
+<li><p>MapReduce Paradigm</p></li>
+<li><p>Hadoop Ecosystem</p></li>
+<li><p>Apache Spark</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<ul>
+<li><p>Definition</p>
+<ul class="simple">
+<li><p>The second stage in the life cycle</p></li>
+<li><p>Convert raw data from data acquisition and make it ready for data analysis</p></li>
+</ul>
+</li>
+<li><p>Either manual or automatic</p></li>
+<li><p>Many sub-tasks</p>
+<p>Data integration, Data cleansing, Data validation, Data enriching, Data
+validation, etc.</p>
+</li>
+<li><p>Related topics</p>
+<ul class="simple">
+<li><p>Data wangling/munging - manual data processing, usually in exploratory
+analysis</p></li>
+<li><p>Data preprocessing - an obscure definition of the combination of several
+subtasks such as data integration, data cleansing, etc.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>MapReduce Paradigm</h2>
+<ul class="simple">
+<li><p>Allows distributed process of large volume of data</p></li>
+<li><p>Work on key-value pairs</p></li>
+<li><p>Advantages - scalability, fault tolerance, flexibility, and
+cost-effectiveness</p></li>
+<li><p>Mapper and Reducer</p></li>
+<li><p>Phases: Mapping, Shuffling and Sorting, Reducing</p></li>
+<li><p>Implementations:</p>
+<ul>
+<li><p>Hadoop MapReduce</p></li>
+<li><p>Spark</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>MapReduce Paradigm - Word Counting</h2>
+<img alt="Map Reduce Word Counting" src="../_images/mapreduce.png" />
+</section>
+</section>
+<section >
+<section >
+<h2>Apache Hadoop Ecosystem</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p>Definition: Hadoop is an open-source software framework for distributed
+storage and processing of large datasets on clusters of commodity hardware.</p></li>
+<li><p>Components:</p>
+<ul>
+<li><p>Core: HDFS, MapReduce (Java), YARN</p></li>
+<li><p>Other: Hive, Pig, Spark, HBase, Mahout, Oozie</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="half docutils container">
+<img alt="Hadoop Ecosystem" src="../_images/hadoop-eco.png" />
+<div class="footnote docutils container">
+<p>Credit: <a class="reference external" href="https://hkrtrainings.com/hadoop-ecosystem">https://hkrtrainings.com/hadoop-ecosystem</a></p>
+</div>
+</div>
+</div>
+</section>
+<section >
+<h3>Mapper Example</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Mapper class</span></div>
+<pre><code data-trim data-noescape class="java">public static class TokenizerMapper
+    extends Mapper&lt;Object, Text, Text, IntWritable&gt;{
+
+  private final static IntWritable one = new IntWritable(1);
+  private Text word = new Text();
+
+  public void map(Object key, Text value, Context context
+                  ) throws IOException, InterruptedException {
+    StringTokenizer itr = new StringTokenizer(value.toString());
+    while (itr.hasMoreTokens()) {
+      word.set(itr.nextToken());
+      context.write(word, one);
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="half docutils container">
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Reducer class</span></div>
+<pre><code data-trim data-noescape class="java">public static class IntSumReducer
+    extends Reducer&lt;Text,IntWritable,Text,IntWritable&gt; {
+  private IntWritable result = new IntWritable();
+
+  public void reduce(Text key, Iterable&lt;IntWritable&gt; values,
+                    Context context
+                    ) throws IOException, InterruptedException {
+    int sum = 0;
+    for (IntWritable val : values) {
+      sum += val.get();
+    }
+    result.set(sum);
+    context.write(key, result);
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section >
+<h3>Driver Example</h3>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Driver</span></div>
+<pre><code data-trim data-noescape class="java">public static void main(String[] args) throws Exception {
+  Configuration conf = new Configuration();
+  Job job = Job.getInstance(conf, &quot;word count&quot;);
+  job.setJarByClass(WordCount.class);
+  job.setMapperClass(TokenizerMapper.class);
+  job.setCombinerClass(IntSumReducer.class);
+  job.setReducerClass(IntSumReducer.class);
+  job.setOutputKeyClass(Text.class);
+  job.setOutputValueClass(IntWritable.class);
+  FileInputFormat.addInputPath(job, new Path(args[0]));
+  FileOutputFormat.setOutputPath(job, new Path(args[1]));
+  System.exit(job.waitForCompletion(true) ? 0 : 1);
+}</code></pre>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Apache Spark</h2>
+<ul class="simple">
+<li><p>Apache Spark is an open-source distributed computing system that is designed
+to process large-scale data and perform real-time analytics.</p></li>
+<li><p>An all-in-one tool for data processing and data analysis</p></li>
+<li><p>Installation</p>
+<ul>
+<li><p>Standalone</p></li>
+<li><p>Under Hadoop</p></li>
+</ul>
+</li>
+<li><p>Components:</p>
+<ul>
+<li><p>Core, Spark SQL, Streaming, MLLib, GraphX</p></li>
+<li><p>API language support</p>
+<ul>
+<li><p>Scala: native</p></li>
+<li><p>Python: PySpark</p></li>
+<li><p>R</p></li>
+<li><p>Java</p></li>
+<li><p>SQL: through Spark SQL APIs in other languages</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Spark Components</h3>
+<ul class="simple">
+<li><p>Internal Components</p>
+<ul>
+<li><p>Spark Core</p></li>
+<li><p>Spark SQL</p></li>
+<li><p>Spark Streaming</p></li>
+<li><p>MLlib</p></li>
+<li><p>GraphX</p></li>
+<li><p>Language support: Scala, Java, Python, R, SQL (through other languages)</p></li>
+</ul>
+</li>
+<li><p>External Components</p>
+<ul>
+<li><p>Resource/Cluster Managers: Apache Mesos, Hadoop YARN</p></li>
+<li><p>Storage Systems: HDFS, DBFS, S3, ADLS</p></li>
+<li><p>NoSQL Databases: Apache Cassandra, Apache HBase</p></li>
+<li><p>RDBMS: MySQL, PostgreSQL, Oracle, MS SQL</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Comparison</h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Hadoop</p></th>
+<th class="head"><p>Spark</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Processing Paradigm</p></td>
+<td><p>Batch processing</p></td>
+<td><p>Batch and real-time processing</p></td>
+</tr>
+<tr class="row-odd"><td><p>In-Memory Computing</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Supported Languages</p></td>
+<td><p>Java, Python, R, and others</p></td>
+<td><p>Java, Scala, Python, R, and others</p></td>
+</tr>
+<tr class="row-odd"><td><p>Data Processing Speed</p></td>
+<td><p>Slower than Spark</p></td>
+<td><p>Faster than Hadoop</p></td>
+</tr>
+<tr class="row-even"><td><p>Data Processing Model</p></td>
+<td><p>MapReduce, HDFS, and YARN</p></td>
+<td><p>RDDs, DataFrames, Datasets, and Spark Streaming</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section >
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Hadoop</p></th>
+<th class="head"><p>Spark</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Cluster Management</p></td>
+<td><p>Apache Ambari, Apache Mesos, and Cloudera Manager</p></td>
+<td><p>Apache Mesos, Standalone, Hadoop YARN, and Apache Kubernetes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Fault Tolerance</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Real-Time Processing</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Streaming Capabilities</p></td>
+<td><p>Limited</p></td>
+<td><p>Full-featured</p></td>
+</tr>
+<tr class="row-even"><td><p>Ease of Use</p></td>
+<td><p>Complex and requires specialized skills</p></td>
+<td><p>Easier to use and has a simpler learning curve</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section >
+<h3>Data APIs</h3>
+<ul class="simple">
+<li><p><strong>RDD (Resilient Distributed Datasets)</strong></p></li>
+<li><p>DataFrame</p></li>
+<li><p>DataSet</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>RDD</p></th>
+<th class="head"><p>DataFrame</p></th>
+<th class="head"><p>DataSet</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Data type</p></td>
+<td><p>Unstructured, semi-structured</p></td>
+<td><p>Structured, semi-structured</p></td>
+<td><p>Structured</p></td>
+</tr>
+<tr class="row-odd"><td><p>Performance</p></td>
+<td><p>Good</p></td>
+<td><p>Better</p></td>
+<td><p>Better</p></td>
+</tr>
+<tr class="row-even"><td><p>API level</p></td>
+<td><p>Low</p></td>
+<td><p>High</p></td>
+<td><p>High</p></td>
+</tr>
+<tr class="row-odd"><td><p>Typing</p></td>
+<td><p>General object</p></td>
+<td><p>General object</p></td>
+<td><p>Strict type</p></td>
+</tr>
+</tbody>
+</table>
+<div class="footnote docutils container">
+<p>We focus on RDD in this course as it is more relevant to the Big Data
+processing and other APIs are extensively covered elsewhere.</p>
+</div>
+</section>
+<section >
+<h3>PySpark Examples</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">RDD Example</span></div>
+<pre><code data-trim data-noescape class="python"># Import SparkSession
+from pyspark.sql import SparkSession
+
+# Create a Spark Session
+spark = SparkSession.builder.master(&quot;local[*]&quot;).getOrCreate()
+
+# Create an RDD from a list of numbers
+rdd = spark.sparkContext.parallelize([1, 2, 3, 4, 5])
+
+# Perform a map operation to square each number in the RDD
+squared_rdd = rdd.map(lambda x: x**2)
+
+# Filter the squared RDD to keep only even numbers
+even_rdd = squared_rdd.filter(lambda x: x % 2 == 0)
+
+# Collect the even numbers as a list
+even_list = even_rdd.collect()
+
+# Print the list of even numbers
+print(even_list)</code></pre>
+</div>
+</div>
+<div class="half docutils container">
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">DataFrame</span></div>
+<pre><code data-trim data-noescape class="python"># Import SparkSession
+from pyspark.sql import SparkSession
+
+# Create a Spark Session
+spark = SparkSession.builder.master(&quot;local[*]&quot;).getOrCreate()
+
+# Create a DataFrame from a CSV file
+df = spark.read.csv('mydata.csv', header=True, inferSchema=True)
+
+# Select columns and filter rows
+filtered_df = df.select('name', 'age').filter(df['age'] &gt; 30)
+
+# Group the DataFrame by name and calculate the average age
+grouped_df = filtered_df.groupBy('name').agg({'age': 'avg'})
+
+# Show the results in the console
+grouped_df.show()</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section >
+<h3>PySpark Examples</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">DataSet</span></div>
+<pre><code data-trim data-noescape class="python"># Create a case class for representing a person
+from pyspark.sql.types import StructType, StructField, IntegerType, StringType
+from pyspark.sql.functions import col
+
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+# Create a Dataset from a list of Person objects
+schema = StructType([
+    StructField(&quot;name&quot;, StringType()),
+    StructField(&quot;age&quot;, IntegerType())
+])
+people = [Person(&quot;Alice&quot;, 25), Person(&quot;Bob&quot;, 30), Person(&quot;Charlie&quot;, 35)]
+ds = spark.createDataFrame(people, schema).as[Person]
+
+# Filter the Dataset to keep only people older than 30
+filtered_ds = ds.filter(col(&quot;age&quot;) &gt; 30)
+
+# Group the Dataset by name and calculate the average age
+grouped_ds = filtered_ds.groupBy(&quot;name&quot;).avg(&quot;age&quot;)
+
+# Show the results in the console
+grouped_ds.show()</code></pre>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

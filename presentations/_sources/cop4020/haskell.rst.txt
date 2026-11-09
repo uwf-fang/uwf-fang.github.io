@@ -1,0 +1,205 @@
+Introduction to Haskell
+=======================
+
+* A **purely functional** programming language
+* Named after logician Haskell Curry
+* Developed by a committee in the late 1980s
+* Current standard: Haskell 2010
+* Statically typed with type inference
+* Lazy evaluation by default
+* Emphasizes mathematical purity
+
+Key Characteristics of Haskell
+------------------------------
+
+* **Pure functions**: No side effects
+* **Immutability**: Data cannot be changed after creation
+* **Type inference**: Compiler can deduce types
+* **Lazy evaluation**: Expressions evaluated only when needed
+* **Pattern matching**: Destructure data based on its shape
+* **Type classes**: A form of interface/trait system
+* **Strong focus on abstraction**
+
+Why Learn Haskell?
+------------------
+
+* Encourages a different way of thinking about problems
+* Makes concurrent programming easier through immutability
+* Produces highly reliable code (if it compiles, it often works)
+* Many ideas from Haskell influence other languages
+* Builds strong foundations in computer science concepts
+* Elegant solutions to complex problems
+
+Hello World in Haskell
+----------------------
+
+.. code-block:: haskell
+
+   main :: IO ()
+   main = putStrLn "Hello, World!"
+
+Simple, but there's a lot to unpack:
+
+* ``main :: IO ()`` is a type signature
+* ``IO`` is a type that handles side effects
+* The function definition uses ``=`` not ``return``
+
+Pure Functions
+--------------
+
+A pure function:
+
+* Always returns the same output for the same input
+* Has no side effects
+* Does not modify state
+
+.. code-block:: haskell
+
+   -- Pure function
+   add :: Int -> Int -> Int
+   add x y = x + y
+   -- The type Int -> Int -> Int means it takes two Ints and returns an Int
+   -- This is considered a curried function in Haskell
+
+   -- This will always return 7
+   result = add 3 4
+
+Higher-Order Functions
+----------------------
+
+Functions that:
+
+* Take other functions as arguments
+* Return functions as results
+
+.. code-block:: haskell
+
+   -- map is a higher-order function
+   -- it takes a function and a list, and applies the function to each element
+   doubleAll :: [Int] -> [Int]
+   doubleAll numbers = map (\x -> x * 2) numbers
+   -- doubleAll = map (*2)  -- Equivalent to the above
+
+   -- filter is another higher-order function
+   -- it takes a predicate function and a list, and returns elements that satisfy the predicate
+   evenNumbers :: [Int] -> [Int]
+   evenNumbers numbers = filter even numbers
+
+Function Composition
+--------------------
+
+Combining functions to create new functions:
+
+.. code-block:: haskell
+
+   -- Using the composition operator (.)
+   processData :: [Int] -> [Int]
+   processData = filter even . map (*2)
+
+   -- Equivalent to:
+   processData' :: [Int] -> [Int]
+   processData' numbers = filter even (map (*2) numbers)
+
+Function composition makes code:
+
+* More readable
+* More modular
+* Easier to reason about
+
+Tail Recursion
+--------------
+
+A form of recursion where the recursive call is the last operation:
+
+.. code-block:: haskell
+
+   -- Non-tail recursive factorial (builds up computation)
+   factorial :: Integer -> Integer
+   factorial 0 = 1
+   factorial n = n * factorial (n - 1)
+
+   -- Tail recursive factorial (uses accumulator)
+   factorialTail :: Integer -> Integer
+   factorialTail n = helper n 1
+     where
+       helper 0 acc = acc
+       helper n acc = helper (n - 1) (n * acc)
+
++ Tail recursion can be optimized by the compiler into iteration (loop)!
++ `where` clause defines a local helper function
++ `acc` parameter accumulates the result as the recursion progresses
++ `n * acc` is done before the recursive call
++ The last line of `helper` is the recursive call which does nothing but call
+  itself, nothing to do after that
+
+Algebraic Data Types (FYI)
+--------------------------
+
+Custom data structures defined by their shape:
+
+.. code-block:: haskell
+
+   -- Sum type (OR)
+   data Bool = True | False
+
+   -- Product type (AND)
+   data Person = Person String Int  -- name and age
+
+   -- Recursive type
+   data List a = Empty | Cons a (List a)
+
+   -- Pattern matching with algebraic data types
+   getName :: Person -> String
+   getName (Person name _) = name
+
+Lazy Evaluation
+---------------
+
+Expressions are only evaluated when their results are needed:
+
+.. code-block:: haskell
+
+   -- Infinite list definition
+   naturalNumbers = [1..]
+
+   -- Takes only the first 10 elements
+   first10 = take 10 naturalNumbers  -- [1,2,3,4,5,6,7,8,9,10]
+
+Benefits:
+
+* Can work with infinite data structures
+* Improved performance in some cases
+* Enables more compositional programming style
+
+The CodeWorld Environment
+-------------------------
+
+https://code.world/haskell
+
+* Browser-based Haskell environment
+* No installation required
+* Great for learning and experimentation
+* Features:
+  * Code editor with syntax highlighting
+  * Immediate execution
+  * Visual output capabilities
+  * Share your code with others
+  * Save your work locally
+
+Using CodeWorld
+---------------
+
+1. Open https://code.world/haskell in your browser
+2. Write your Haskell code in the editor
+3. Click "Run" to execute
+4. See the results in the output area
+5. Use "Save" to download your code as a .hs file
+
+Resources for Learning More
+---------------------------
+
+* `Learn You a Haskell for Great Good <http://learnyouahaskell.com/>`_
+* `Haskell.org <https://www.haskell.org/>`_
+* `Real World Haskell <http://book.realworldhaskell.org/>`_
+* `Haskell Wiki <https://wiki.haskell.org/>`_
+* `Haskell on Stack Overflow <https://stackoverflow.com/questions/tagged/haskell>`_

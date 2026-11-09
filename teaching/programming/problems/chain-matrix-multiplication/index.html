@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chain Matrix Multiplication Problem · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/programming/">Algorithms and Data Structures</a> / Chain Matrix Multiplication Problem</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Chain Matrix Multiplication Problem</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#the-chain-matrix-multiplication-problem">The Chain Matrix Multiplication Problem</a></li>
+    <li><a href="#brute-force-approach">Brute-Force Approach</a></li>
+    <li><a href="#dynamic-programming-approach">Dynamic Programming Approach</a>
+      <ul>
+        <li><a href="#computational-complexity">Computational Complexity</a></li>
+        <li><a href="#pseudocode">Pseudocode</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="chain-matrix-multiplication-problem"></span>
+<h2 id="introduction">Introduction</h2>
+<p>Matrix multiplication is a fundamental operation in numerous scientific and engineering disciplines. It is not only a cornerstone of linear algebra but also a crucial operation in graphics, physics simulations, and machine learning, among other fields.</p>
+<p>Optimal parenthesization in matrix multiplication is a well-known problem that seeks to find the most efficient way to multiply a given sequence of matrices. The efficiency of matrix multiplication is measured in terms of the number of scalar multiplications performed, which directly impacts the computational cost. The challenge arises because the associative property of matrix multiplication allows for different orders of operations, which can lead to significantly different computational workloads.</p>
+<h2 id="the-chain-matrix-multiplication-problem">The Chain Matrix Multiplication Problem</h2>
+<p>The Chain Matrix Multiplication (CMM) Problem can be stated as follows: Given a chain of matrices $A_1, A_2, ..., A_n$, where each matrix $A_i$ has dimensions $p_{i-1} \times p_i$, determine the most efficient way to multiply these matrices together. The goal is to minimize the total number of scalar multiplications needed to compute the product $A_1A_2...A_n$.</p>
+<p>For example, consider the multiplication of four matrices A, B, C, and D with dimensions $10 \times 30$, $30 \times 5$, $5 \times 60$, and $60 \times 10$, respectively. We can fully parenthesize the product in five distinct ways:</p>
+<ol>
+<li>$((AB)C)D$</li>
+<li>$(A(BC))D$</li>
+<li>$(AB)(CD)$</li>
+<li>$A((BC)D)$</li>
+<li>$A(B(CD))$</li>
+</ol>
+<p>Each parenthesization leads to a different number of total scalar multiplications, which can be computed based on the matrix dimensions. The number of scalar multiplications required for each option is:</p>
+<ol>
+<li>$(10 \times 30 \times 5) + (10 \times 5 \times 60) + (10 \times 60 \times 10) = 1500 + 3000 + 6000 = 10500$</li>
+<li>$(30 \times 5 \times 60) + (10 \times 30 \times 60) + (10 \times 60 \times 10) = 9000 + 18000 + 6000 = 33000$</li>
+<li>$(10 \times 30 \times 5) + (5 \times 60 \times 10) + (10 \times 5 \times 10) = 1500 + 3000 + 500 = 5000$</li>
+<li>$(30 \times 5 \times 60) + (30 \times 60 \times 10) + (10 \times 30 \times 10) = 9000 + 18000 + 3000 = 30000$</li>
+<li>$(5 \times 60 \times 10) + (30 \times 5 \times 10) + (10 \times 30 \times 10) = 3000 + 1500 + 3000 = 7500$</li>
+</ol>
+<p>Option 3 require the least number of scalar multiplications (5000). Without a systematic approach to determine the optimal parenthesization, one might have to compute the cost of all possible parenthesizations to find the most efficient order, which is not feasible as the number of matrices grows.</p>
+<p>The Chain Matrix Multiplication problem seeks to identify the optimal parenthesization that minimizes the number of scalar multiplications needed to multiply a given sequence of matrices. As the number of matrices increases, the brute-force approach to this problem, which entails evaluating every possible parenthesization, becomes exponentially complex. Thus, more sophisticated methods such as dynamic programming are needed to find an optimal solution in a reasonable amount of time.</p>
+<h2 id="brute-force-approach">Brute-Force Approach</h2>
+<p>The brute-force approach to the Matrix Chain Multiplication problem involves exhaustively checking all possible ways of parenthesizing the product to determine the one that results in the least number of scalar multiplications.</p>
+<ol>
+<li><strong>Enumeration of All Possibilities</strong>: The brute-force method entails generating all possible parenthesizations of the matrix chain. Given $n$ matrices, there are $C_{n-1}$ possible parenthesizations, where $C_n$ is the $n$-th <strong>Catalan number</strong>. This number grows exponentially with $n$, making the brute-force approach computationally expensive.</li>
+<li><strong>Computing Scalar Multiplications</strong>: For each parenthesization, the brute-force algorithm computes the number of scalar multiplications required. This requires performing the actual matrix multiplications according to each parenthesization scheme, or calculating the multiplication costs based on matrix dimensions without carrying out the multiplications.</li>
+<li><strong>Identifying the Minimum</strong>: After calculating the multiplication costs for all parenthesizations, the brute-force algorithm identifies the one with the minimum cost. This is the optimal solution for the matrix chain multiplication problem under the brute-force strategy.</li>
+</ol>
+<p>The brute-force approach to matrix chain multiplication has an exponential time complexity due to the number of possible parenthesizations. For $n$ matrices, there are the $(n-1)$-th Catalan number of ways to parenthesize, which is approximately $\Theta(\frac{4^n}{n^{3/2}\sqrt{\pi}})$.</p>
+<h2 id="dynamic-programming-approach">Dynamic Programming Approach</h2>
+<p>Dynamic programming is an algorithmic technique that solves complex problems by breaking them down into simpler subproblems. It is particularly effective for optimization problems where the solution can be constructed from solutions to subproblems. This approach is applicable to the Matrix Chain Multiplication problem because the problem exhibits both optimal substructure and overlapping subproblems—two key properties that make a problem amenable to dynamic programming.</p>
+<p>In the context of matrix chain multiplication, dynamic programming efficiently finds the optimal multiplication order by systematically examining all possible ways to fully parenthesize the product and choosing the one with the lowest cost. This is done by solving smaller instances of the problem (i.e., optimal multiplication orders for shorter chains of matrices) and using these solutions to construct the solution for the full problem.</p>
+<p>The Matrix Chain Order algorithm utilizes dynamic programming to determine the optimal multiplication order. It proceeds as follows:</p>
+<ol>
+<li><strong>Initialization:</strong> Create a table m to store the minimum number of scalar multiplications needed for each subchain of matrices. The table m[i][j] will represent the minimum cost of multiplying matrices from $A_i$ through $A_j$.</li>
+<li><strong>Optimal Substructure Identification:</strong> Determine the optimal split point k for each subchain, where $i \leq k < j$. This split divides the problem into two smaller subproblems: multiplying the chain from $A_i$ to $A_k$ and from $A_{k+1}$ to $A_j$.</li>
+<li><strong>Iteratively Build the Solution:</strong> Build the solution for each subchain based on the solutions to the smaller subproblems. The chain length L which represents the size of the subproblem, is iterated from 2 to n, where n is the total number of matrices. The optimal cost is computed for each subchain of length L and the optimal split point k is stored in the table s. The optimal cost for each subchain is computed by considering all possible split points k and choosing the one with the lowest cost.</li>
+</ol>
+<h3 id="computational-complexity">Computational Complexity</h3>
+<p>The computational complexity of an algorithm is a measure of the amount of computing resources it uses as a function of the size of the input:</p>
+<ol>
+<li><strong>Time Complexity Analysis</strong>: The time complexity of the Matrix Chain Order algorithm is primarily determined by the number of subproblems that need to be solved and the time taken to solve each one. The time complexity is $\Theta(n^3)$, where $n$ is the number of matrices, since for each of the $\Theta(n^2)$ subproblems, the algorithm performs $\Theta(n)$ computations to find the optimal split.</li>
+<li><strong>Space Complexity Analysis</strong>: The space complexity is concerned with the amount of memory space required by the algorithm. For the Matrix Chain Order algorithm, this is $\Theta(n^2)$, due to the storage needed for the two-dimensional memoization table.</li>
+</ol>
+<h3 id="pseudocode">Pseudocode</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">matrixChainOrder</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> p<span style="color:#1f2328">[],</span> <span style="color:#cf222e">int</span> n<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// Create a table to store the solutions to the subproblems
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> m<span style="color:#1f2328">[</span>n<span style="color:#1f2328">][</span>n<span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// Initialize the table
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">;</span> i <span style="color:#0550ae">&lt;</span> n<span style="color:#1f2328">;</span> i<span style="color:#0550ae">++</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    m<span style="color:#1f2328">[</span>i<span style="color:#1f2328">][</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// L is the chain length
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> L <span style="color:#0550ae">=</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">;</span> L <span style="color:#0550ae">&lt;</span> n<span style="color:#1f2328">;</span> L<span style="color:#0550ae">++</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">;</span> i <span style="color:#0550ae">&lt;</span> n <span style="color:#0550ae">-</span> L <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">;</span> i<span style="color:#0550ae">++</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#cf222e">int</span> j <span style="color:#0550ae">=</span> i <span style="color:#0550ae">+</span> L <span style="color:#0550ae">-</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>      m<span style="color:#1f2328">[</span>i<span style="color:#1f2328">][</span>j<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> INT_MAX<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#57606a">// Try all possible split points
+</span></span></span><span style="display:flex;"><span>      <span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> k <span style="color:#0550ae">=</span> i<span style="color:#1f2328">;</span> k <span style="color:#0550ae">&lt;=</span> j <span style="color:#0550ae">-</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">;</span> k<span style="color:#0550ae">++</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">int</span> q <span style="color:#0550ae">=</span> m<span style="color:#1f2328">[</span>i<span style="color:#1f2328">][</span>k<span style="color:#1f2328">]</span> <span style="color:#0550ae">+</span> m<span style="color:#1f2328">[</span>k <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">][</span>j<span style="color:#1f2328">]</span> <span style="color:#0550ae">+</span> p<span style="color:#1f2328">[</span>i <span style="color:#0550ae">-</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">*</span> p<span style="color:#1f2328">[</span>k<span style="color:#1f2328">]</span> <span style="color:#0550ae">*</span> p<span style="color:#1f2328">[</span>j<span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span>q <span style="color:#0550ae">&lt;</span> m<span style="color:#1f2328">[</span>i<span style="color:#1f2328">][</span>j<span style="color:#1f2328">])</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>          m<span style="color:#1f2328">[</span>i<span style="color:#1f2328">][</span>j<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> q<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// Return the minimum number of scalar multiplications needed
+</span></span></span><span style="display:flex;"><span>  <span style="color:#57606a">// to multiply the original chain
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> m<span style="color:#1f2328">[</span><span style="color:#0550ae">1</span><span style="color:#1f2328">][</span>n <span style="color:#0550ae">-</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div></div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

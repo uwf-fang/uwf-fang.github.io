@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dynamic Programming · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/programming/">Algorithms and Data Structures</a> / Dynamic Programming</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Dynamic Programming</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#characteristics">Characteristics</a></li>
+    <li><a href="#implementation-techniques">Implementation Techniques</a></li>
+    <li><a href="#applications">Applications</a></li>
+    <li><a href="#benefits">Benefits</a></li>
+    <li><a href="#challenges">Challenges</a></li>
+    <li><a href="#approaches">Approaches</a></li>
+    <li><a href="#complexity-analysis">Complexity Analysis</a>
+      <ul>
+        <li><a href="#time-complexity">Time complexity</a></li>
+        <li><a href="#space-complexity">Space complexity</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="dynamic-programming"></span>
+<h2 id="overview">Overview</h2>
+<p>Dynamic programming is a powerful problem-solving technique (an algorithmic paradigm) that simplifies complex problems by breaking them into smaller, manageable subproblems. It involves solving these subproblems just once and efficiently storing their solutions using a memory-based data structure like an array or map. Each subproblem’s solution is associated with an index, often based on its input parameters, enabling easy retrieval. This way, when encountering the same subproblem in the future, instead of recalculating its solution, one can simply retrieve the previously computed solution, thus conserving computational resources while incurring a potentially modest increase in storage space usage.</p>
+<h2 id="characteristics">Characteristics</h2>
+<p>The two characteristics are the reasons to justify the use of dynamic programming.</p>
+<ul>
+<li>
+<dl>
+<dt><strong>Optimal Substructure</strong>: Dynamic programming breaks down a problem into</dt>
+<dd>smaller, interconnected subproblems. The optimal solution can be constructed by combining the optimal solutions of its smaller, interconnected subproblems.</dd>
+</dl>
+</li>
+<li>
+<dl>
+<dt><strong>Overlapping Subproblems</strong>: Dynamic programming identifies that the same</dt>
+<dd>subproblems are often encountered multiple times while solving a problem. To avoid redundant calculations, it stores and reuses the solutions to these subproblems.</dd>
+</dl>
+</li>
+</ul>
+<h2 id="implementation-techniques">Implementation Techniques</h2>
+<ul>
+<li><strong>Memoization</strong>: To store the solutions to subproblems, dynamic programming uses memoization techniques, such as arrays or maps. This allows for quick retrieval of previously computed results when needed.</li>
+<li><strong>Recursive Formulation</strong>: Dynamic programming often involves a recursive formulation, where the solution to a larger problem depends on the solutions to smaller subproblems. These recursive relationships are used to derive the optimal solution.</li>
+<li><strong>Bottom-Up or Top-Down Approach</strong>: Dynamic programming can be implemented using either a bottom-up approach, where solutions to smaller subproblems are computed first and combined to solve larger ones, or a top-down approach, which starts with the original problem and recursively solves its subproblems.</li>
+<li><strong>Efficiency</strong>: While dynamic programming saves computational time by avoiding redundant calculations, it may require additional storage space to store intermediate results. The trade-off between time and space efficiency depends on the problem and the chosen implementation.</li>
+</ul>
+<h2 id="applications">Applications</h2>
+<p>Dynamic programming can be employed to solve a wide range of well-known computational problems including:</p>
+<ul>
+<li>Fibonacci numbers: computing the nth Fibonacci number.</li>
+<li>Knapsack problem: finding the optimal combination of items to fit in a knapsack.</li>
+<li>Longest common subsequence: finding the longest subsequence common to two sequences.</li>
+<li>Integer partition: finding the ways to partition an integer.</li>
+<li>Coin change: finding the optimal way to make change for a given amount and a set of coin denominations.</li>
+<li>Rod cutting: finding the optimal way to cut a rod into smaller pieces and maximize the profit.</li>
+<li>Matrix chain multiplication: finding the optimal way to multiply a chain of matrices.</li>
+</ul>
+<p><strong>Quick Exercises:</strong> + Can you categorize the above problems by their problem types? + Why dynamic programming is not a good fit for bin packing problems?</p>
+<h2 id="benefits">Benefits</h2>
+<ul>
+<li><strong>Optimal Solutions:</strong> Dynamic programming guarantees finding the optimal solution to a problem.</li>
+<li><strong>Efficiency:</strong> It reduces redundant calculations by storing and reusing solutions to subproblems, making it more efficient than brute force approaches.</li>
+<li><strong>Versatility:</strong> Dynamic programming can be applied to a wide range of problems across various disciplines.</li>
+<li><strong>Clarity:</strong> It often leads to clean and structured algorithms that are easier to understand and implement.</li>
+</ul>
+<h2 id="challenges">Challenges</h2>
+<ul>
+<li><strong>Memory Usage:</strong> Storing solutions to subproblems may require substantial memory, especially for problems with many subproblems.</li>
+<li><strong>Identifying Subproblems:</strong> Determining the right subproblems and their relationships can be complex in some cases.</li>
+<li><strong>Algorithm Design:</strong> Designing a dynamic programming algorithm can be challenging and may require a deep understanding of the problem domain.</li>
+<li><strong>Time Complexity:</strong> While dynamic programming reduces time complexity in many cases, as an exact algorithmic paradigm, it can still have very high complexity.</li>
+</ul>
+<h2 id="approaches">Approaches</h2>
+<ul>
+<li>Top-down approach: This approach is also known as memoization. It starts with the original problem and recursively breaks it down into smaller subproblems. It then stores and reuses the solutions to these subproblems to solve the original problem.</li>
+<li>Bottom-up approach: This approach is also known as tabulation. It starts with the smallest subproblems and iteratively combines their solutions to solve larger subproblems until the original problem is solved.</li>
+</ul>
+<h2 id="complexity-analysis">Complexity Analysis</h2>
+<h3 id="time-complexity">Time complexity</h3>
+<p>Although dynamic programming can be defined in terms of a recursive algorithm, the complexity is not the same as that of a divide and conquer algorithm. The reason is that solving subproblem may not take the same amount of time as some of the subproblems may have been solved before. Therefore, the time complexity of a dynamic programming algorithm is not simply the number of subproblems multiplied by the time to solve each subproblem. Instead, it is the number of distinct subproblems times the time to solve each subproblem.</p>
+<p>For example, the time complexity of the Fibonacci number algorithm is $\Theta(n)$ as there are $n$ distinct subproblems and each subproblem takes $\Theta(1)$ time to solve.</p>
+<p>Top-down approach and bottom-up approach can be more efficient than each other depending on the problem.</p>
+<h3 id="space-complexity">Space complexity</h3>
+<p>Two parts:</p>
+<ul>
+<li><strong>Memoization table</strong>: The space required to store the solutions to subproblems.</li>
+<li><strong>Recursion Stack</strong>: The space required for the recursive call stack. Only applies to the top-down approach.</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

@@ -1,0 +1,255 @@
+C++ Classes and Objects
+=======================
++ Class
++ Objects and Instances
++ Instance Variables
++ Methods
++ Access Modifiers
++ Class Declaration
++ Method Definition
++ Special Methods
+
+
+Class Concepts
+==============
+**Definition**: A class is a user-defined type that encapsulates data and
+functions that operate on that data.
+
+* Key Points:
+
+  * Classes are blueprints for objects
+  * Objects are instances of classes
+  * Classes combine data and operations
+
+.. code-block:: cpp
+
+    // Correct class definition
+    class Student {
+     private:
+      int grade;
+     public:
+      void setGrade(int score);
+    };
+
+
+Objects and Instances
+=====================
+**Definition**: An object is a variable of a class type that contains its own
+copy of the class's members.
+
+* Key Characteristics:
+
+  * Each object has its own memory space
+  * Objects can be created on stack or heap
+  * Multiple objects of same class are independent
+
+.. code-block:: cpp
+
+    // Correct object creation
+    Student alice;              // Stack allocation
+    Student* bob = new Student; // Heap allocation
+
+    // Wrong - missing variable name
+    Student;
+    new Student;
+
+Instance Variables
+==================
+**Definition**: Instance variables are data elements contained within a class.
+
+* Characteristics:
+
+  * Also called member variables
+  * Each object has its own copy (unless static)
+  * Can have different access levels
+
+.. code-block:: cpp
+
+    // Correct member variable declaration
+    class Car {
+     private:
+      int speed;
+      string model;
+    };
+
+Methods
+=======
+**Definition**: Member functions are methods that operate on class data.
+
+* Properties:
+
+  * Can access private members
+  * Can be overloaded
+  * Can be const-qualified
+
+.. code-block:: cpp
+
+    // Correct member function
+    class Rectangle {
+     private:
+      double width, height;
+     public:
+      double getArea() const {
+        return width * height;
+      }
+    };
+
+Access Modifiers
+================
+**Definition**: Access modifiers control the visibility and accessibility of class members.
+
+* Types:
+
+  * public: accessible from anywhere
+  * private: only accessible within class (default, if not specified)
+  * protected: accessible in class and derived classes
+
+.. code-block:: cpp
+
+    // Correct access specification
+    class BankAccount {
+     public:
+      void deposit(double amount);
+     private:
+      double balance;
+    };
+
+    // Wrong - sensitive data exposed
+    class BankAccount {
+     public:
+      double balance;  // Should be private
+      void deposit(double amount);
+    };
+
+
+Class Declaration
+=================
+**Definition**: A class declaration defines the class interface and structure.
+
+* Guidelines:
+
+  * Public declarations go in header files
+  * Include all member declarations
+  * End with semicolon
+
+.. code-block:: cpp
+
+    // Correct declaration
+    class Time {
+     private:
+      int hour;
+     public:
+      void setHour(int h);
+      int getHour() const;
+    };  // Note the semicolon
+
+Method Definition
+=================
+**Definition**: Member function definition provides the implementation of class
+methods.
+
+* Rules:
+
+  * Implement in cpp files
+  * Use scope resolution operator (::)
+  * Include parameter names
+
+.. code-block:: cpp
+
+    // Correct definition
+    void Time::setHour(int h) {
+      hour = h;
+    }
+
+    Time::Time() : hour(0) {}  // Constructor definition
+
+Constructors
+------------
+**Definition**: Constructors are special methods that initialize objects of a
+class.
+
+* Characteristics:
+
+  * Same name as class
+  * No return type
+  * Can be overloaded
+
+.. code-block:: cpp
+
+    // Correct constructors
+    class Point {
+     private:
+      int x, y;
+     public:
+      Point() : x(0), y(0) {}  // Default constructor
+      Point(int x, int y) : x(x), y(y) {}  // Parameterized
+    };
+
+    // Wrong - return type specified
+    class Point {
+     private:
+      int x, y;
+     public:
+      void Point() {}  // Constructor can't have return type
+    };
+
+Destructor
+----------
+**Definition**: A destructor is a special function that cleans up when an
+object is destroyed.
+
+* Properties:
+
+  * Prefixed with ~
+  * No parameters
+  * Only one per class (no overloading)
+
+.. code-block:: cpp
+
+    // Correct destructor
+    class FileHandler {
+     private:
+      std::fstream file;
+     public:
+      ~FileHandler() {
+        file.close();
+      }
+    };
+
+    // Wrong - parameters in destructor
+    class FileHandler {
+     private:
+      std::fstream file;
+     public:
+      ~FileHandler(bool force) {  // Destructors can't have parameters
+        file.close();
+      }
+    };
+
+
+Getters and Setters
+-------------------
+**Definition**: Accessor (getter) and mutator (setter) methods provide
+controlled access to private members.
+
+* Best Practices:
+
+  * Getters should be const
+  * Use meaningful names
+  * Validate input in setters
+
+.. code-block:: cpp
+
+    // Correct getter/setter
+    class Temperature {
+     private:
+      double celsius;
+     public:
+      double getCelsius() const {
+        return celsius;
+      }
+      void setCelsius(double temp) {
+        celsius = temp;
+      }
+    };
+

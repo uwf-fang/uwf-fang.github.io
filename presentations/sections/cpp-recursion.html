@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Recursion in C++</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Recursion in C++</h1>
+<div class="subtitle docutils container">
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Overview</p></li>
+<li><p>Recursive algorithms</p>
+<ul>
+<li><p>Function call mechanism</p></li>
+<li><p>Recursive functions in C++</p></li>
+</ul>
+</li>
+<li><p>Recursive data structures</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<ul class="simple">
+<li><p>Recursion: Defining a problem or an entity in terms of itself.</p></li>
+<li><p>Recursive algorithm: An algorithm that breaks down the problem to smaller
+pieces and reuses itself to solve sub-problems.</p></li>
+<li><p>Recursive data structure: A data structure that is defined in terms of a
+smaller version of itself.</p></li>
+<li><p>Alternative to recursion: Iteration (loop).</p></li>
+<li><p>Components:</p>
+<ul>
+<li><p>Base case: the case that the problem can be solved directly.</p></li>
+<li><p>Recursive case: the case that the problem can be broken down to smaller
+pieces.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Recursive algorithms</h2>
+<ul>
+<li><p>Example: Factorial</p>
+<ul class="simple">
+<li><p>Base case: 0! = 1</p></li>
+<li><p>Recursive case: n! = n * (n - 1)!</p></li>
+</ul>
+</li>
+<li><p>Implemented as recursive function in C++:</p>
+<pre><code data-trim data-noescape class="cpp">int factorial(int n) {
+  if (n == 0) return 1;  // base case
+  else return n * factorial(n - 1);  // recursive case
+}</code></pre>
+</li>
+</ul>
+</section>
+<section >
+<h3>Function call mechanism</h3>
+<ul class="simple">
+<li><p>Each function call creates a new stack frame in the stack memory.</p></li>
+<li><p>The stack frame contains:</p>
+<ul>
+<li><p>Function arguments.</p></li>
+<li><p>Local variables.</p></li>
+<li><p>Return address.</p></li>
+</ul>
+</li>
+<li><p>The stack frame is popped out of the stack memory when the function returns.</p></li>
+<li><p>Stack overflow: When the stack memory is full. Usually caused by infinite
+recursion.</p></li>
+</ul>
+</section>
+<section >
+<h3>Recursive functions in C++</h3>
+<ul class="simple">
+<li><p>A function/method calls itself (directly or indirectly).</p></li>
+<li><p>Forward declaration not mandatory except for mutual recursion (A calls B and
+B calls A)</p></li>
+<li><p>Record keeping (parameters, return values, global/dynamic variable)</p></li>
+<li><p>Helper functions (extra parameters for record keeping)</p></li>
+<li><p>if statement</p></li>
+</ul>
+</section>
+<section >
+<h3>Recursive Linear Search Example</h3>
+<ul class="simple">
+<li><p>Linear search is a fundamental search algorithm that checks each element
+sequentially until the target is found or the end of the array is reached.</p></li>
+<li><p>Recursion provides an elegant alternative to iteration for implementing
+linear search.</p></li>
+<li><p>Three common approaches:</p>
+<ol class="arabic simple">
+<li><p>Helper function with index parameter</p></li>
+<li><p>Improvement on method 1: default parameter (no helper function)</p></li>
+<li><p>Backward search (compare tail element)</p></li>
+</ol>
+</li>
+</ul>
+</section>
+<section >
+<h3>Method 1: Helper Function with Index Parameter</h3>
+<p>The most straightforward approach uses a helper function to manage the current
+index being checked:</p>
+<pre data-id="method-1-helper-function-with-index-parameter"><code data-trim data-noescape class="cpp">int searchFirst(int *array, int size, int toSearch) {
+  return searchFirstHelper(array, size, toSearch, 0);
+}
+
+int searchFirstHelper(int *array, int size, int toSearch, int start) {
+  if (start &gt;= size)  // hit the end
+    return -1;
+  if (array[start] == toSearch) return start;
+  return searchFirstHelper(array, size, toSearch, start + 1);
+}</code></pre>
+<p>The wrapper function calls a helper function that tracks the current starting
+index. This separates the public interface from the recursive implementation.</p>
+</section>
+<section >
+<h3>Method 2: Default Parameter (No Helper Function)</h3>
+<p>Using default parameters eliminates the need for a separate helper function:</p>
+<pre data-id="method-2-default-parameter-no-helper-function"><code data-trim data-noescape class="cpp">int searchFirst1(int *array, int size, int toSearch, int start = 0) {
+  if (start &gt;= size)  // hit the end
+    return -1;
+  if (array[start] == toSearch) return start;
+  return searchFirst1(array, size, toSearch, start + 1);
+}</code></pre>
+<p>This approach is cleaner for small implementations and allows callers to
+optionally provide a custom starting position.</p>
+</section>
+<section >
+<h3>Method 3: Backward Search (Compare Tail Element)</h3>
+<p>This method searches from the end of the array backward:</p>
+<pre data-id="method-3-backward-search-compare-tail-element"><code data-trim data-noescape class="cpp">int searchLast(int *array, int size, int toSearch) {
+  if (size == 0) return -1;
+  if (array[size - 1] == toSearch) return size - 1;
+  else return searchLast(array, size - 1, toSearch);
+}</code></pre>
+<p>Instead of incrementing an index from the beginning, this method decrements
+the size parameter, effectively checking the last element first and moving
+backward through the array.</p>
+</section>
+<section >
+<h3>Time complexity</h3>
+<ul class="simple">
+<li><p>Use recursive trees to estimate time complexity.</p></li>
+<li><p>Multiplicative relationship</p>
+<ul>
+<li><p>Rounds of recursive calls.</p></li>
+<li><p>Cost per round of recursive calls.</p></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/recursive-tree3.png" class="align-center" src="../_images/recursive-tree3.png" />
+<div class="footnote docutils container">
+<p>Credit: zybooks.com</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Recursive Data Structure in C++</h2>
+<ul class="simple">
+<li><p>A class holds instance or pointer/reference to instance of its own type</p></li>
+<li><p>E.G.</p>
+<ul>
+<li><p>Linked-list</p></li>
+<li><p>Tree</p></li>
+<li><p>Directory structure</p></li>
+</ul>
+</li>
+</ul>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

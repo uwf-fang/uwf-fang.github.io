@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7 ADTs and Implementations · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/course/cop3530/env/">Development Environment</a></li><li><a href="/teaching/course/dsa-project/">Programming Projects</a></li><li><a href="/teaching/developer-tools/git/">Version Control System and Git</a></li><li><a href="/teaching/course/classroom-50/">Classroom 50</a></li><li><a href="/teaching/programming/adt-summary/">Summary of Abstract Data types</a></li></ul><ul><li><a href="/teaching/course/cop3530/ch01/">Chapter 1: Environment and Course Overview</a></li><li><a href="/teaching/course/cop3530/ch02/">Chapter 2: Modular Design, GNU Make and Testing</a></li><li><a href="/teaching/course/cop3530/ch03/">Chapter 3: Memory Management, Rule of Three</a></li><li><a href="/teaching/course/cop3530/ch04/">Chapter 4: Algorithm Analysis</a></li><li><a href="/teaching/course/cop3530/ch05/">Chapter 5: Recursion</a></li><li><a href="/teaching/course/cop3530/ch06/">Chapter 6: Templates</a></li><li><a href="/teaching/course/cop3530/ch07/">Chapter 7: List ADT and Linked-list</a></li><li><a href="/teaching/course/cop3530/ch08/">Chapter 8: Stack, Queue, Deque ADTs</a></li><li><a href="/teaching/course/cop3530/ch09/">Chapter 9: Sorting</a></li><li><a href="/teaching/course/cop3530/ch10/">Chapter 10: Hashing</a></li><li><a href="/teaching/course/cop3530/ch11/">Chapter 11: Tree</a></li><li><a href="/teaching/course/cop3530/ch12/">Chapter 12: Heap and Priority Queue</a></li><li><a href="/teaching/course/cop3530/ch13/">Chapter 13: Brute-Force and Backtracking Algorithm</a></li><li><a href="/teaching/course/cop3530/ch14/">Chapter 14: Graph</a></li></ul><ul><li><a href="/teaching/course/cop3530/mid1-review/">Midterm 1 Topic Review</a></li><li><a href="/teaching/course/cop3530/mid2-review/">Midterm 2 Topic Review</a></li><li><a href="/teaching/course/cop3530/final-review/">Final Topic Review</a></li></ul><ul><li><a href="/teaching/course/cop3530/adt-summary/" aria-current="page">7 ADTs and Implementations</a></li></ul><ul><li><a href="/teaching/cpp/array/obj-array/">Object Array</a></li><li><a href="/teaching/cpp/array/multidim-array/">Multidimensional Array</a></li><li><a href="/teaching/cpp/class/op-overload/">Operator Overloading</a></li></ul><ul><li><a href="/teaching/course/cop3530/ta/">Instructions for Teaching Assistants</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/course/cop3530/">COP 3530 Data Structure and Algorithm Design</a> / 7 ADTs and Implementations</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>7 ADTs and Implementations</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#list-adt">1. List ADT</a></li>
+    <li><a href="#stack-adt">2. Stack ADT</a></li>
+    <li><a href="#queue-adt">3. Queue ADT</a></li>
+    <li><a href="#deque-adt">4. Deque ADT</a></li>
+    <li><a href="#map-adt">5. Map ADT</a></li>
+    <li><a href="#set-adt">6. Set ADT</a></li>
+    <li><a href="#priority-queue-adt">7. Priority Queue ADT</a></li>
+    <li><a href="#quick-view">Quick view</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="adts-and-implementations"></span>
+<h2 id="list-adt">1. List ADT</h2>
+<p><strong>Constraint:</strong> ordered sequence, position-based, duplicates allowed.</p>
+<p><strong>Behaviors:</strong> add, remove, search, access by index, size.</p>
+<p><strong>Implementations</strong></p>
+<ul>
+<li><strong>Array</strong>
+<ul>
+<li>access: <strong>Θ(1)</strong></li>
+<li>search: <strong>Θ(n)</strong></li>
+<li>insert/remove at middle/front: <strong>Θ(n)</strong></li>
+<li>insert/remove at end: <strong>Θ(1)</strong> amortized</li>
+</ul>
+</li>
+<li><strong>Linked list</strong>
+<ul>
+<li>access by index: <strong>Θ(n)</strong></li>
+<li>search: <strong>Θ(n)</strong></li>
+<li>insert/remove at front or known node: <strong>Θ(1)</strong></li>
+<li>insert/remove by position search: <strong>Θ(n)</strong></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="stack-adt">2. Stack ADT</h2>
+<p><strong>Constraint:</strong> LIFO.</p>
+<p><strong>Behaviors:</strong> push, pop, top, empty.</p>
+<p><strong>Implementations</strong></p>
+<ul>
+<li><strong>Array:</strong> push/pop/top = <strong>Θ(1)</strong> amortized / <strong>Θ(1)</strong> / <strong>Θ(1)</strong></li>
+<li><strong>Linked list:</strong> push/pop/top = <strong>Θ(1)</strong> / <strong>Θ(1)</strong> / <strong>Θ(1)</strong></li>
+<li><strong>Wrapper class:</strong> same as wrapped structure</li>
+</ul>
+<hr>
+<h2 id="queue-adt">3. Queue ADT</h2>
+<p><strong>Constraint:</strong> FIFO.</p>
+<p><strong>Behaviors:</strong> enqueue, dequeue, peek, empty.</p>
+<p><strong>Implementations</strong></p>
+<ul>
+<li><strong>Linked list (front + rear):</strong>
+<ul>
+<li>enqueue: <strong>Θ(1)</strong></li>
+<li>dequeue: <strong>Θ(1)</strong></li>
+<li>peek: <strong>Θ(1)</strong></li>
+</ul>
+</li>
+<li><strong>Circular array:</strong>
+<ul>
+<li>enqueue: <strong>Θ(1)</strong></li>
+<li>dequeue: <strong>Θ(1)</strong></li>
+<li>peek: <strong>Θ(1)</strong></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="deque-adt">4. Deque ADT</h2>
+<p><strong>Constraint:</strong> insert/remove at both ends.</p>
+<p><strong>Behaviors:</strong> push front, push rear, pop front, pop rear, peek front/rear, size.</p>
+<p><strong>Implementations</strong></p>
+<ul>
+<li><strong>Doubly linked list:</strong> all end operations <strong>Θ(1)</strong></li>
+<li><strong>Circular array:</strong> all end operations <strong>Θ(1)</strong></li>
+</ul>
+<hr>
+<h2 id="map-adt">5. Map ADT</h2>
+<p><strong>Constraint:</strong> unique keys, each key maps to a value.</p>
+<p><strong>Behaviors:</strong> put, get, remove, contains.</p>
+<p><strong>Implementations</strong></p>
+<ul>
+<li><strong>Hash table:</strong>
+<ul>
+<li>put/get/remove/contains: <strong>Θ(1)</strong> average, <strong>Θ(n)</strong> worst</li>
+</ul>
+</li>
+<li><strong>BST:</strong>
+<ul>
+<li>put/get/remove/contains: <strong>Θ(log n)</strong> average, <strong>Θ(n)</strong> worst</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="set-adt">6. Set ADT</h2>
+<p><strong>Constraint:</strong> unique elements only, no duplicates.</p>
+<p><strong>Behaviors:</strong> add, remove, contains.</p>
+<p><strong>Implementations</strong></p>
+<ul>
+<li><strong>Hash table:</strong>
+<ul>
+<li>add/remove/contains: <strong>Θ(1)</strong> average, <strong>Θ(n)</strong> worst</li>
+</ul>
+</li>
+<li><strong>BST:</strong>
+<ul>
+<li>add/remove/contains: <strong>Θ(log n)</strong> average, <strong>Θ(n)</strong> worst</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="priority-queue-adt">7. Priority Queue ADT</h2>
+<p><strong>Constraint:</strong> removal is by priority, not FIFO.</p>
+<p><strong>Behaviors:</strong> insert, remove highest/lowest priority, peek, empty.</p>
+<p><strong>Implementations</strong></p>
+<ul>
+<li><strong>Heap:</strong>
+<ul>
+<li>insert: <strong>Θ(log n)</strong></li>
+<li>remove priority item: <strong>Θ(log n)</strong></li>
+<li>peek: <strong>Θ(1)</strong></li>
+</ul>
+</li>
+<li><strong>Sorted array:</strong>
+<ul>
+<li>insert: <strong>Θ(n)</strong></li>
+<li>remove priority item: <strong>Θ(1)</strong> if priority end is chosen well</li>
+<li>peek: <strong>Θ(1)</strong></li>
+</ul>
+</li>
+<li><strong>Unsorted array:</strong>
+<ul>
+<li>insert: <strong>Θ(1)</strong></li>
+<li>remove priority item: <strong>Θ(n)</strong></li>
+<li>peek: <strong>Θ(n)</strong></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="quick-view">Quick view</h2>
+<table>
+	<thead>
+			<tr>
+					<th>ADT</th>
+					<th>Constraint</th>
+					<th>Common implementations</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>List</td>
+					<td>ordered, positional</td>
+					<td>array, linked list</td>
+			</tr>
+			<tr>
+					<td>Stack</td>
+					<td>LIFO</td>
+					<td>array, linked list</td>
+			</tr>
+			<tr>
+					<td>Queue</td>
+					<td>FIFO</td>
+					<td>linked list, circular array</td>
+			</tr>
+			<tr>
+					<td>Deque</td>
+					<td>both ends active</td>
+					<td>doubly linked list, circular array</td>
+			</tr>
+			<tr>
+					<td>Map</td>
+					<td>unique key → value</td>
+					<td>hash table, BST</td>
+			</tr>
+			<tr>
+					<td>Set</td>
+					<td>unique elements</td>
+					<td>hash table, BST</td>
+			</tr>
+			<tr>
+					<td>Priority Queue</td>
+					<td>priority order</td>
+					<td>heap, sorted array, unsorted array</td>
+			</tr>
+	</tbody>
+</table>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

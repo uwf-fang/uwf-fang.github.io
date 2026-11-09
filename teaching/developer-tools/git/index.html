@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Version Control System and Git · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/developer-tools/git/" aria-current="page">Version Control System and Git</a></li><li><a href="/teaching/developer-tools/make/">GNU Make</a></li><li><a href="/teaching/developer-tools/ssh-key-pair/">SSH Key Authentication Setup Guide</a></li><li><a href="/teaching/developer-tools/win-key-pair/">Windows SSH Authentication Setup Guide</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/developer-tools/">Developer Tools</a> / Version Control System and Git</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Version Control System and Git</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#learn-git">Learn git</a></li>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#setup-before-the-first-use">Setup before the first use</a></li>
+    <li><a href="#git-concepts">Git Concepts</a></li>
+    <li><a href="#subcommands">Subcommands</a></li>
+    <li><a href="#linear-workflow">linear workflow</a></li>
+    <li><a href="#other-workflows-fyi">Other Workflows (FYI)</a></li>
+    <li><a href="#advanced-topics">Advanced topics</a>
+      <ul>
+        <li><a href="#synchronize-to-the-remote-server">Synchronize to the remote server</a></li>
+        <li><a href="#push-rejected-because-the-remote-was-updated">Push rejected because the remote was updated</a></li>
+        <li><a href="#synchronization-among-multiple-computers">Synchronization among multiple computers</a></li>
+        <li><a href="#filename-case-problem">Filename case problem</a></li>
+        <li><a href="#restore-files">Restore files</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="version-control-system-and-git"></span>
+<p>Version control systems (VCS) are a group of tools that tracks the history of modifications to files. A VCS is essential to modern software development processes. It can facilitate tasks such as modification tracking, context switching, codebase management, team cooperation, team communication, software quality controls, etc.</p>
+<p>Git is the most widely used distributed version control system (dVCS). It enables efficient workflows to work with source code and other textual documents. The <code>git</code> command is the main command to invoke the functionalities of the git system in a command-line environment.</p>
+<p>The git tool is a command-line interface (CLI) based tool and you can access all features through CLI. We will be focusing on CLI based usage of git in the courses.</p>
+<p>Due to its popularity, there are numerous editor/IDE extensions and GUI-based applications available for git. Use the GUI tools and extensions at your own risk for convenience once you have a solid understanding of git.</p>
+<aside class="callout callout-note" aria-label="note">
+<strong>Note</strong><div><p>GUI is short for Graphical User Interface</p>
+</div></aside>
+<aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p>On Microsoft Windows, avoid <code>git bash/git for windows</code>! If possible, uninstall it. It causes a lot of issues. Use the git installed under WSL in this course.</p>
+</div></aside>
+<h2 id="learn-git">Learn git</h2>
+<p>You can download the <a href="/teaching/_downloads/c86225fb6e1b492c44742074e8c1a110/git-cheat-sheet-education.pdf"><code>git cheatsheet</code></a>. Or learn from the <a href="https://git-scm.com/doc">official git documentation</a></p>
+<h2 id="installation">Installation</h2>
+<p>You may refer to the <a href="/teaching/cpp/ccpp-env/">development environment doc</a> to learn how to install git on various operating systems.</p>
+<h2 id="setup-before-the-first-use">Setup before the first use</h2>
+<p>Before you can use git to track changes, you must add your name and email to identify yourself:</p>
+<pre tabindex="0"><code class="language-default" data-lang="default">git config --global user.name &#34;Your Name&#34;
+git config --global user.email id@uwf.edu
+</code></pre><p>Substitute <code>Your Name</code> with your real name and substitute <code>id@uwf.edu</code> with your email address. It is recommended to use your student email address in this course.</p>
+<h2 id="git-concepts">Git Concepts</h2>
+<span id="term-Working-directory-a.k.a.-working-tree"></span>
+<dl>
+<dt>Working directory (a.k.a. working tree)</dt>
+<dd>The directory where the repository is stored. A hidden .git directory is usually present in the working directory to store the database used by git.</dd>
+</dl>
+<span id="term-Staging-area-a.k.a.-git-index"></span>
+<dl>
+<dt>Staging area (a.k.a. git index)</dt>
+<dd>A temporary storage to keep files you wish to add to the database. It is used to temporary hold the changes that you plan to commit to the database. Run <code>git add</code> to add file to the staging area and use <code>git commit</code> to store everything in the staging area to the repository.</dd>
+</dl>
+<span id="term-Repository"></span>
+<dl>
+<dt>Repository</dt>
+<dd>The database used by git to keep track of the history of modifications.</dd>
+</dl>
+<span id="term-Commit"></span>
+<dl>
+<dt>Commit</dt>
+<dd>A commit is a snapshot of the working directory stored in the database; Each commit has a commit message and a unique hash value (ID) bound to it.</dd>
+</dl>
+<span id="term-Remote"></span>
+<dl>
+<dt>Remote</dt>
+<dd>When you push or pull changes to or from the remote repository (e.g. on GitHub.com), you will give a name to each remote repository. It is called <code>remote</code> in git. The default remote is named <code>origin</code> with the URI specified in the <code>git clone &lt;URI&gt;</code> command. For any repository started from scratch, you will need to set the URI for a remote using <code>git remote add &lt;name&gt; &lt;URI&gt;</code> command before you can perform <code>git push &lt;remote&gt; main</code></dd>
+</dl>
+<span id="term-Branch"></span>
+<dl>
+<dt>Branch</dt>
+<dd>Git support branching to allow users to work on various lines simultaneously without inferring each other. It is essential in many workflows. In the linear workflow we use in the course, you will stay in the <code>main</code> branch. Extended reading on the git branching topic can be done by students who are interested in it.</dd>
+</dl>
+<span id="term-.gitignore"></span>
+<dl>
+<dt>.gitignore</dt>
+<dd>A text file to specify the patterns of files to ignore by git. Used to prevent temporary files or large binary files from being included in the database.</dd>
+</dl>
+<h2 id="subcommands">Subcommands</h2>
+<p>All git features can be accessed using git subcommands. The common subcommands are listed below:</p>
+<span id="term-git-clone-URI"></span>
+<dl>
+<dt>git clone &lt;URI&gt;</dt>
+<dd>Clones a repository from an existing remotely hosted repository to a local directory.</dd>
+</dl>
+<span id="term-git-init"></span>
+<dl>
+<dt>git init</dt>
+<dd>Create an empty git repository in the current directory. Used on existing code not monitored by git before.</dd>
+</dl>
+<span id="term-git-add"></span>
+<dl>
+<dt>git add</dt>
+<dd>Add files to the staging area of git. <code>git add -A</code> is the most useful command to add all changes to the staging area. You can run <code>git add .</code> to add everything recursively in the current directory. Run <code>git add list-of-paths</code> to add specific files or directories.</dd>
+</dl>
+<span id="term-git-status"></span>
+<dl>
+<dt>git status</dt>
+<dd>Run <code>git status</code> to check the status of the current repository. It will show you the updated, deleted and new untracked files not in the staging area yet, as well as files added in the staging area.</dd>
+</dl>
+<span id="term-git-commit"></span>
+<dl>
+<dt>git commit</dt>
+<dd>Run <code>git commit -m &quot;commit message&quot;</code> to store everything in the staging area to the database with a commit message.</dd>
+</dl>
+<span id="term-git-push"></span>
+<dl>
+<dt>git push</dt>
+<dd>Run <code>git push origin main</code> to push local commits to the remote repository named <code>origin</code> with the remote branch being <code>main</code>.</dd>
+</dl>
+<span id="term-git-pull"></span>
+<dl>
+<dt>git pull</dt>
+<dd>Run <code>git pull origin main</code> to pull commits from the remote repository named <code>origin</code> with the remote branch being <code>main</code>. The remotes commits will be merged to the local repository.</dd>
+</dl>
+<span id="term-git-log"></span>
+<dl>
+<dt>git log</dt>
+<dd>Run <code>git log</code> to see the history of the past commits.</dd>
+</dl>
+<span id="term-git-config"></span>
+<dl>
+<dt>git config</dt>
+<dd>Run <code>git config</code> to change the configurations. The most common configurations are the name and email address of the user. You must provide them to be able to start.</dd>
+</dl>
+<h2 id="linear-workflow">linear workflow</h2>
+<p>For beginners such as students learning VCS for the first time. You can stick with the linear workflow without branching. In this workflow: You will stick to a single <code>main</code> branch and only take advantage of the snapshot and history logging features of git. In this workflow you will:</p>
+<ol>
+<li>Start your repository by either:
+<ul>
+<li>clone an existing repository: <code>git clone &lt;URI&gt;</code></li>
+<li>initiate a new repository: <code>git init</code></li>
+</ul>
+</li>
+<li>Follow the incremental development approach to develop the project in units iteratively
+<ol>
+<li>Write code of a small unit (function, class, etc.)</li>
+<li>Test it until working</li>
+<li>Take a snapshot and log it using a commit message.
+<ol>
+<li><code>git add -A</code> to add all changes to the staging area.</li>
+<li><code>git commit -m &quot;commit message&quot;</code> to take a snapshot (commit) and add a commit message for the commit.</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Push to the server <code>git push origin main</code> to synchronize to the server.</li>
+</ol>
+<aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p>You must not push too frequent as the quota of autograding is limited. You should rely on local tests to test your code rather than using the autograding. Treat pushing like submitting your work.</p>
+</div></aside>
+<h2 id="other-workflows-fyi">Other Workflows (FYI)</h2>
+<p>Many tutorials available for anyone who is interested:</p>
+<ul>
+<li><a href="https://www.atlassian.com/git/tutorials/comparing-workflows">Altlassian/Bitbucket tutorial</a></li>
+<li><a href="https://www.freecodecamp.org/news/practical-git-and-git-workflows/">FreeCodeCamp.org Git Workflow Tutorial</a></li>
+</ul>
+<h2 id="advanced-topics">Advanced topics</h2>
+<h3 id="synchronize-to-the-remote-server">Synchronize to the remote server</h3>
+<ul>
+<li>The scenario: You have a local repository synchronized with the remote repository. Your instructor pushed an emergency change to the remote repository. You want to synchronize your local repository with the remote repository.</li>
+<li>The solution: Run <code>git pull origin main</code> to pull the changes from the remote repository to your local repository if you have no new commits locally. Or run <code>git rebase origin/main</code> if you have new commits locally. You may need to solve the conflicts if there are any.</li>
+</ul>
+<span id="git-push-rejected"></span>
+<h3 id="push-rejected-because-the-remote-was-updated">Push rejected because the remote was updated</h3>
+<ul>
+<li>
+<p><strong>The scenario:</strong> You committed your local work, but your instructor pushed new commits to the assignment repository. When you try to push, GitHub rejects the push because the remote <code>main</code> branch has commits that are not in your local repository.</p>
+</li>
+<li>
+<p><strong>Before pulling:</strong> Make sure your working directory is clean. In other words, commit all of your local changes before rebasing:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-console" data-lang="console"><span style="display:flex;"><span><span style="color:#1f2328">git status
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">git add -A
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">git commit -m &#34;Save my work&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">git status
+</span></span></span></code></pre></div><p>The final <code>git status</code> should show that there is nothing to commit. Do not commit passwords, API keys, generated files, or other files that do not belong in the assignment.</p>
+</li>
+<li>
+<p><strong>Solution:</strong> Pull the remote commits and replay your local commits on top of them, then push again:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-console" data-lang="console"><span style="display:flex;"><span><span style="color:#1f2328">git pull --rebase origin main
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">git push origin main
+</span></span></span></code></pre></div><p>If Git reports a conflict during the rebase, edit the conflicted files to resolve the conflicts, run <code>git add &lt;resolved-file&gt;</code> for each file, and continue with <code>git rebase --continue</code>. After the rebase finishes, run <code>git push origin main</code> again. If you need to stop the rebase, run <code>git rebase --abort</code>.</p>
+</li>
+</ul>
+<h3 id="synchronization-among-multiple-computers">Synchronization among multiple computers</h3>
+<ul>
+<li>The scenario: One user work on one branch from multiple computers.</li>
+<li>The problem: When you are working on a branch on one computer, you may want to continue working on the same branch on another computer. You will need to synchronize the changes between the two computers.</li>
+<li>The best practice:
+<ul>
+<li>Always <code>pull</code> first when you start on a new computer.</li>
+<li>Do not forget to <code>push</code> before you leave that computer.</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>Other useful approach
+<ul>
+<li>If you already committed something before you remember to pull first. Use <code>git rebase origin/main</code> to rebase your local commits on top of the remote commits. It may fail if there are conflicts. You will need to resolve it manually.</li>
+</ul>
+</li>
+</ul>
+<h3 id="filename-case-problem">Filename case problem</h3>
+<ul>
+<li>The scenario: The changes in the filename case (e.g. <code>file.txt</code> to <code>File.txt</code>) is not tracked by git. It will not be detected by <code>git status</code> and <code>git add</code>.</li>
+<li>The solution: Use <code>git mv</code> to rename the file. It will be detected by <code>git status</code> and <code>git add</code>.</li>
+<li>The backup solution: If <code>git mv</code> is not working, you can use backup the file, <code>git rm</code> to remove the file and commit; Then copy the file back <code>git add</code> to add the new file and commit. This will usually solve the problem.</li>
+</ul>
+<h3 id="restore-files">Restore files</h3>
+<ul>
+<li>The scenario: You accidentally deleted a file or modified a file and want to restore it to the last commit.</li>
+<li>The solution:
+<ul>
+<li>Use <code>git restore &lt;path&gt;</code> to restore the file to the last commit.</li>
+</ul>
+</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

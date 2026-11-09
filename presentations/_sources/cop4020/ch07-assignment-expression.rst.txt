@@ -1,0 +1,161 @@
+Expressions and Assignment
+==========================
++ Expression specifies computation
++ Syntax usually as a **context-free language**
++ Concepts
+
+  * Operands: variable, literal
+  * Operators: unary, binary, ternary
+  * Precedence, associativity
+  * type matching
+  * Coercing
+  * Short-circuit evaluation
+  * Side-effect of assignment
+
+    - essential in imperative PL
+    - avoid in functional PL
+
+Arithmetic Expressions
+======================
++ Types
+
+  * unary, binary and ternary
+  * prefix, infix and postfix
+
++ Order of evaluation
+
+  * Precedence
+  * Associativity
+  * Parentheses
+
++ LISP expression
+
+  * Operator as function name :code:`(+ a (* b c))`
+
++ Conditional expression
+
+  * C :code:`(a > b) ? a : b`
+  * Python :code:`a if a > b else b`
+
+Prefix Infix Postfix
+--------------------
+.. container:: flex-container
+
+  .. container:: half
+
+    + Prefix
+
+      * Polish notation
+      * Example: :code:`+ 3 4`
+
+    + Infix
+
+      * Traditional notation
+      * Example: :code:`3 + 4`
+
+    + Postfix
+
+      * Reverse Polish notation
+      * Example: :code:`3 4 +`
+
+  .. container:: half
+
+    + Prefix and Postfix
+
+      * No parentheses
+      * Easy to parse
+      * Hard to read
+
+    + Infix
+
+      * Parentheses
+      * Easy to read
+      * Hard to parse
+
+Side-effects in Expressions
+===========================
++ Part of the expression changed the value of another part of the expression
++ Example
+
+  .. code-block:: c
+
+    result = (a++ + b) / (a-- - c)
+
+    if ((a = 10) > 0) {
+      a++;
+    }
+
++ Referential transparency
+
+  * Pure function
+  * No side-effect
+
+Type conversion
+===============
++ Widening conversion
+
+  * Implicit conversion
+  * No loss of information
+
++ Coercion (implicit type conversion)
+
+  * in javascript
+
+    .. code-block:: javascript
+
+      "7" + 5 = "75"
+      "7" == 7
+      "7" === 7
+
++ Explicit type conversion
+
+  * C++ :code:`static_cast<int>(3.14)`
+  * Python :code:`int(3.14)`
+  * JavaScript :code:`parseInt("3.14")`
+
+Boolean Expressions
+===================
++ Relational operators
++ Logical operators
++ Short-circuit evaluation
+
+  * the result is determined before evaluating all operands
+  * Great for sanity check
+  * C++ example
+
+    .. code-block:: c
+
+      if (ptr != nullptr && *ptr > 0) {
+        // do something
+      }
+
+  * Python example
+
+    .. code-block:: python
+
+      if ptr is not None and ptr[0] > 0:
+        # do something
+
+      value = ptr and ptr[0]
+
+Assignment Statement
+====================
++ Syntax
+
+  * L-value
+  * R-value
+
++ Side-effect
++ Chained assignment :code:`a = b = c = 0`
++ Multiple assignment :code:`a, b = b, a`
++ Assignment as expression
+
+  .. code-block:: c
+
+    while ((ch = getchar()) != EOF) {
+      // do something
+    }
+
++ Compound assignment: :code:`+=`, :code:`-=`, :code:`*=`, :code:`/=`,
+  :code:`%=`
+

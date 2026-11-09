@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 3: Shared-Memory Programming with OpenMP · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/course/cop5522/parallel-env/">Development Environment For Parallel Programming</a></li><li><a href="/teaching/course/cop5522/clang/">C Language Features Used in This Course</a></li><li><a href="/teaching/cpp/ccpp-env/">C/C&#43;&#43; Development Environment</a></li><li><a href="/teaching/developer-tools/make/">GNU Make</a></li></ul><ul><li><a href="/teaching/course/cop5522/ch01/">Chapter 1: Introduction To Parallel Programming</a></li><li><a href="/teaching/course/cop5522/ch02/">Chapter 2: Parallel Hardware and Software</a></li><li><a href="/teaching/course/cop5522/ch03/" aria-current="page">Chapter 3: Shared-Memory Programming with OpenMP</a></li><li><a href="/teaching/course/cop5522/ch04/">Chapter 4: OpenMP Case Study: N-body problem</a></li><li><a href="/teaching/course/cop5522/ch05/">Chapter 5: Distributed Memory Programming with MPI</a></li><li><a href="/teaching/course/cop5522/ch06/">Chapter 6: MPI Case Study, and Pthread</a></li></ul><ul><li><a href="/teaching/course/cop5522/midterm/">Midterm Topic Outline</a></li><li><a href="/teaching/course/cop5522/final/">Final Topic Review</a></li></ul><ul><li><a href="/teaching/course/cop5522/homework/">Homework Instruction</a></li><li><a href="/teaching/course/cop5522/project/">Research Project: Parallelization of Serial Algorithms</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/course/cop5522/">COP 5522 Parallel and Distributed Programming</a> / Chapter 3: Shared-Memory Programming with OpenMP</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Chapter 3: Shared-Memory Programming with OpenMP</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#characteristics">Characteristics</a></li>
+    <li><a href="#compile-and-run">Compile and run</a>
+      <ul>
+        <li><a href="#gcc">gcc</a></li>
+      </ul>
+    </li>
+    <li><a href="#concepts">Concepts</a></li>
+    <li><a href="#clauses">Clauses</a></li>
+    <li><a href="#synchronization">Synchronization</a></li>
+    <li><a href="#nested-loop">Nested Loop</a></li>
+    <li><a href="#examples">Examples</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="chapter-3-shared-memory-programming-with-openmp"></span>
+<h2 id="characteristics">Characteristics</h2>
+<ul>
+<li>A shared-memory programming model.</li>
+<li>Modifies existing serial program</li>
+<li>Include library header <code>omp.h</code></li>
+<li>Preprocessor directive <code>Pragma</code></li>
+<li>Requires compiler level support</li>
+<li>Thread based</li>
+</ul>
+<h2 id="compile-and-run">Compile and run</h2>
+<h3 id="gcc">gcc</h3>
+<ul>
+<li>include omp.h</li>
+<li>compile with <code>-fopenmp</code> flag</li>
+</ul>
+<h2 id="concepts">Concepts</h2>
+<span id="term-pragmas"></span>
+<dl>
+<dt>pragmas</dt>
+<dd>The preprocessor directive employed by OpenMP. Employ <strong>clauses</strong> to fine control the parallelized behavior. It works like a domain specific language.</dd>
+</dl>
+<span id="term-Structured-block"></span>
+<dl>
+<dt>Structured block</dt>
+<dd>The code block to be parallelized by OpenMP. It can be a for/while/do-while statement, a function call or a code block enclosed by <code>{}</code></dd>
+</dl>
+<span id="term-Threads-OpenMP"></span>
+<dl>
+<dt>Threads (OpenMP)</dt>
+<dd>OpenMP will fork threads to execute the structured block. The collection of threads is called <strong>Team</strong>. There is a <strong>master</strong> thread to execute the codes that are not parallelized and the rest of threads are known as <strong>slave</strong>, which execute the structured block only.</dd>
+</dl>
+<span id="term-Synchronization"></span>
+<dl>
+<dt>Synchronization</dt>
+<dd>A mechanism to constraint the ordering of execution of instructions to preclude potential problems such as racing condition, and other inconsistency problems.</dd>
+</dl>
+<span id="term-Variable-Scope-OpenMP"></span>
+<dl>
+<dt>Variable Scope (OpenMP)</dt>
+<dd>As OpenMP is not part of C standard, the scope of variables in the structured block needs special handling. The can be defined as <code>private</code> or <code>shared</code> in OpenMP <code>pragma</code> directives. The default scope of variables declared outside of the block is <code>shared</code>, while the default scope of variables declared inside the block is <code>private</code>.</dd>
+</dl>
+<h2 id="clauses">Clauses</h2>
+<ul>
+<li>
+<p>parallel</p>
+<p>Create a team</p>
+</li>
+<li>
+<p>num_threads</p>
+<p>Control number of threads</p>
+</li>
+<li>
+<p>private</p>
+<p>Register private variable</p>
+</li>
+<li>
+<p>shared</p>
+<p>Register shared variable</p>
+</li>
+<li>
+<p>default</p>
+<p>Override how the default scope is inferred</p>
+</li>
+<li>
+<p>reduction</p>
+<p>Register how reduction operation is done</p>
+</li>
+<li>
+<p>for</p>
+<p>Register parallelization of a for loop</p>
+</li>
+<li>
+<p>schedule</p>
+<p>Set the scheduling method</p>
+<ul>
+<li>static</li>
+<li>dynamic</li>
+<li>guided</li>
+</ul>
+</li>
+<li>
+<p>critical</p>
+<p>Define a critical region, which can be accessed only one thread</p>
+</li>
+<li>
+<p>atomic</p>
+<p>Define an atomic operation</p>
+</li>
+<li>
+<p>barrier</p>
+<p>Force the thread to join</p>
+</li>
+<li>
+<p>single</p>
+<p>Only run by one thread (not necessarily the master thread)</p>
+</li>
+</ul>
+<h2 id="synchronization">Synchronization</h2>
+<ul>
+<li>critical section</li>
+<li>atomic</li>
+<li>barrier</li>
+<li>mutual exclusion (locks)
+<ul>
+<li>omp_set_lock</li>
+<li>omp_unset_lock</li>
+</ul>
+</li>
+</ul>
+<h2 id="nested-loop">Nested Loop</h2>
+<ul>
+<li>Parallelize outer loop if possible</li>
+<li>Separate <code>parallel</code> and <code>for</code> constructs to reduce fork and join operations if parallelization of inner loop is desirable</li>
+<li>Consider cache friendship
+<ul>
+<li>change scheduling method</li>
+</ul>
+</li>
+</ul>
+<h2 id="examples">Examples</h2>
+<ul>
+<li>Integration calculation (trapezoids)</li>
+<li>Estimation of $\pi$</li>
+<li>Sorting</li>
+<li>Matrix-vector multiplication</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Linked-List Data Structure · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/cpp/ccpp-env/">C/C&#43;&#43; Development Environment</a></li><li><a href="/teaching/cpp/cpp-lang/">C&#43;&#43; programming language</a></li><li><a href="/teaching/cpp/functions/">User-defined Functions</a></li><li><a href="/teaching/cpp/io/">Input/Output (I/O)</a></li><li><a href="/teaching/cpp/string/">String (C&#43;&#43; class)</a></li><li><a href="/teaching/cpp/class/class/">Objects and Classes in C&#43;&#43;</a></li><li><a href="/teaching/cpp/variable-type/variable-type/">Type, Variable, Assignment, and Expression</a></li><li><a href="/teaching/cpp/array/array/">Array Data Type</a></li><li><a href="/teaching/cpp/building/gpp/">Compilation Using g&#43;&#43;</a></li><li><a href="/teaching/cpp/building/modular/">Modular Development</a></li><li><a href="/teaching/cpp/testing/testing/">Testing in C&#43;&#43;</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/cpp/">C&#43;&#43; Reference</a> / Linked-List Data Structure</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Linked-List Data Structure</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#characteristics">Characteristics</a></li>
+    <li><a href="#implementation-variations">Implementation Variations</a></li>
+    <li><a href="#behaviors">Behaviors</a></li>
+    <li><a href="#c-implementation-details">C++ Implementation Details</a></li>
+    <li><a href="#time-complexity">Time Complexity</a></li>
+    <li><a href="#pitfalls">Pitfalls</a></li>
+    <li><a href="#linked-list-glossary">Linked-list Glossary</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="linked-list-data-structure"></span>
+<p>A linked-list is a sequential data structure implemented as linked nodes. Each node typically contains one or more values and one or more links to neighboring nodes. The term <strong>link</strong> means pointers pointing from one node to another.</p>
+<span id="id1"></span>
+<p><img src="/teaching/_migration/graph-74e4309963f06bf8.svg" alt="Graphviz diagram"></p>
+<p><em>a minimal linked-list</em></p>
+<h2 id="characteristics">Characteristics</h2>
+<ul>
+<li>A data structure based on linked nodes</li>
+<li>Nodes are linked together by links</li>
+<li>Logically contiguous, physically non-contiguous</li>
+<li>Advantages
+<ul>
+<li>Dynamic size</li>
+<li>Ease of insertion/deletion</li>
+<li>Not requiring contiguous memory</li>
+<li>Sequential access</li>
+</ul>
+</li>
+<li>Limitations
+<ul>
+<li>Inefficient random access</li>
+<li>Extra memory space</li>
+</ul>
+</li>
+</ul>
+<h2 id="implementation-variations">Implementation Variations</h2>
+<ul>
+<li>Minimal implementation: a head pointer; singly-linked</li>
+<li>Ideal implementation: a head pointer, a tail pointer; a size/count instance variable; doubly-linked</li>
+<li>Reference pointers
+<ul>
+<li>head pointer</li>
+<li>tail pointer</li>
+</ul>
+</li>
+<li>Number of links per node
+<ul>
+<li>singly-linked - a pointer to next node</li>
+<li>doubly-linked - pointers to previous and next nodes</li>
+</ul>
+</li>
+<li>Terminal node handling (FYI)
+<ul>
+<li>cyclic - link(s) connecting the first and last nodes; not useful</li>
+<li>acyclic</li>
+</ul>
+</li>
+<li>Dummy node before the first node (FYI)
+<ul>
+<li>simplifies empty list and first node handling</li>
+<li>complicates other operations</li>
+<li>not useful</li>
+</ul>
+</li>
+</ul>
+<h2 id="behaviors">Behaviors</h2>
+<ul>
+<li>Insertion
+<ul>
+<li>at the beginning</li>
+<li>at the end</li>
+<li>at a specified position (by value, by index)</li>
+</ul>
+</li>
+<li>Removal
+<ul>
+<li>at the beginning</li>
+<li>at the end</li>
+<li>at a specified position (by value, by index)</li>
+</ul>
+</li>
+</ul>
+<h2 id="c-implementation-details">C++ Implementation Details</h2>
+<ul>
+<li>Classes
+<ul>
+<li>linked-list class
+<ul>
+<li>head pointer</li>
+<li>tail pointer</li>
+<li>size/count instance variable</li>
+</ul>
+</li>
+<li>node class/struct
+<ul>
+<li>Option 1: top-level class, not nested (preferred most of the time)</li>
+<li>Option 2: nested class/struct (better information hiding)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Use class templates for generalization
+<ul>
+<li>type of data stored in nodes can be parameterized</li>
+<li>make a header only module</li>
+</ul>
+</li>
+<li>Insert before a given node
+<ul>
+<li>cannot handle insertion after the last node</li>
+</ul>
+</li>
+<li>Append</li>
+<li>Remove</li>
+</ul>
+<h2 id="time-complexity">Time Complexity</h2>
+<ul>
+<li>Based on the <strong>Ideal Implementation</strong> (head pointer, tail pointer, size/count instance variable; doubly-linked)</li>
+<li>Search by value $\Theta(n)$</li>
+<li>Indexing (access kth element) $\Theta(n)$</li>
+<li>Insert $\Theta(1)$ ($\Theta(n)$ if locate the insertion point first)</li>
+<li>Remove $\Theta(1)$ ($\Theta(n)$ if locate the removal point first)</li>
+</ul>
+<h2 id="pitfalls">Pitfalls</h2>
+<ul>
+<li>Linked-List is not an ADT. It is a data structure to be used to implement some ADTs.</li>
+<li>Not handling empty list</li>
+<li>Not handling the first/last element</li>
+</ul>
+<h2 id="linked-list-glossary">Linked-list Glossary</h2>
+<span id="term-Linked-List"></span>
+<dl>
+<dt>Linked-List</dt>
+<dd>A sequential data structure based on linked nodes</dd>
+</dl>
+<span id="term-Link"></span>
+<dl>
+<dt>Link</dt>
+<dd>A pointer pointing to node</dd>
+</dl>
+<span id="term-Node-linked-list"></span>
+<dl>
+<dt>Node (linked-list)</dt>
+<dd>The base unit linked together to form a linked-list</dd>
+</dl>
+<span id="term-Dummy-Node-linked-list"></span>
+<dl>
+<dt>Dummy Node (linked-list)</dt>
+<dd>The empty node added in front of the first node to simplify certain linked-list algorithms</dd>
+</dl>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

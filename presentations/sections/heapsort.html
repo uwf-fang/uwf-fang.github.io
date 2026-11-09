@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Heap Sort</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Heap Sort</h1>
+<ul class="simple">
+<li><p>Heap sort is a comparison based sorting technique based on Binary Heap data
+structure. It is similar to selection sort where we first find the maximum
+element and place the maximum element at the end. We repeat the same process
+for remaining element.</p></li>
+<li><p>Characteristics</p>
+<ul>
+<li><p>Comparison based (general purpose)</p></li>
+<li><p>Iterative</p></li>
+<li><p>In-place</p></li>
+<li><p>Efficient</p></li>
+<li><p>Unstable - relative order of equal elements is not preserved</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Algorithm Details</h2>
+<ol class="arabic simple">
+<li><p>Heapify the array to build a heap</p></li>
+<li><p>Removing the root node repeatedly from a heap</p>
+<ul class="simple">
+<li><p>move root to the sorted region by swapping it with the last leaf</p></li>
+<li><p>percolate the root down</p></li>
+</ul>
+</li>
+</ol>
+<ul class="simple">
+<li><p>Visualization: <a class="reference external" href="https://www.cs.usfca.edu/~galles/visualization/HeapSort.html">https://www.cs.usfca.edu/~galles/visualization/HeapSort.html</a></p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Pseudo Code</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<pre><code data-trim data-noescape class="default">function heapSort(arr):
+  n = length(arr)
+
+  # Heapify the array
+  for i from n/2-1 down to 0:
+    percolateDown(arr, n, i)
+
+  # Extract elements from the heap one by one
+  for i from n - 1 down to 1:
+    # Swap the root (maximum element) with the last element
+    swap(arr[0], arr[i])
+    percolateDown(arr, i, 0)</code></pre>
+</div>
+<div class="half docutils container">
+<pre><code data-trim data-noescape class="default">function percolateDown(arr, n, i):
+  largest := i
+  left := 2 * i + 1
+  right := 2 * i + 2
+
+  # Compare with left child
+  if left &lt;= n and arr[left] &gt; arr[largest]:
+    largest := left
+
+  # Compare with right child
+  if right &lt;= n and arr[right] &gt; arr[largest]:
+    largest := right
+
+  # If the largest element is not the root, swap them
+  if largest != i:
+    swap(arr[i], arr[largest])
+
+    # Recursively percolate down the affected sub-tree
+    percolateDown(arr, n, largest)</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Complexity</h2>
+<ul class="simple">
+<li><p>Time <span class="math notranslate nohighlight">\(\Theta(n \log n)\)</span></p></li>
+<li><p>Space <span class="math notranslate nohighlight">\(\Theta(1)\)</span> as an in-place algorithm</p></li>
+</ul>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

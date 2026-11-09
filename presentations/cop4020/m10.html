@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Programming Languages</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Programming Languages</h1>
+<div class="subtitle docutils container">
+<p><strong>Module 10: Functional Programming</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Functional Programming Languages</h2>
+</section>
+<section >
+<h3>Overview</h3>
+<ul class="simple">
+<li><p>Programming paradigm based on mathematical functions</p></li>
+<li><p>Pure functional languages don’t use variables or assignment statements</p></li>
+<li><p>Evaluation control through recursion and conditional expressions</p></li>
+<li><p>Functions can be arguments and return values (higher-order functions)</p></li>
+<li><p>Pioneered by Lisp (1959), continues with Scheme, ML, Haskell, F#</p></li>
+</ul>
+</section>
+<section >
+<h3>Mathematical Functions</h3>
+<ul>
+<li><p>Mapping from domain set to range set</p></li>
+<li><p>Evaluation order controlled by recursion and conditional expressions</p></li>
+<li><p>Referential transparency - expression can be replaced by its value without
+changing program behavior</p></li>
+<li><p>No side effects - no changes to program state</p></li>
+<li><p>Pure function - same input always produces same output</p></li>
+<li><p>No concept of state or variables as in imperative languages</p></li>
+<li><p>Higher-order functions (functional forms)</p>
+<ul>
+<li><p>Function composition: h = f ∘ g where h(x) = f(g(x))</p></li>
+<li><p>e.g. Apply-to-all higher-level function: applies function to each element
+in list</p>
+<pre><code data-trim data-noescape class="python">map(lambda x: x*x, [1, 3, 5, 7, 9])
+// gives  [1, 9, 25, 49, 81]</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Fundamentals</h3>
+<ul class="simple">
+<li><p>Mimics mathematical functions rather than von Neumann architecture</p></li>
+<li><p>Programs are function definitions and applications</p></li>
+<li><p>Referential transparency - function execution produces same result with same parameters</p></li>
+<li><p>Primitives + functional forms + function application + data structures</p></li>
+<li><p>Most functional languages include some imperative features for practicality</p></li>
+</ul>
+</section>
+<section >
+<h3>Lisp</h3>
+<ul class="simple">
+<li><p>First functional programming language (1959)</p></li>
+<li><p>Originally pure functional but added imperative features</p></li>
+<li><p>S-expressions for both code and data</p></li>
+<li><p>Central to AI research and development</p></li>
+<li><p>Dynamic typing and garbage collection</p></li>
+<li><p>Lists as primary data structure (CAR, CDR, CONS)</p></li>
+</ul>
+<pre data-id="lisp"><code data-trim data-noescape class="lisp">(defun factorial (n)
+  (if (= n 0)
+      1
+      (* n (factorial (- n 1)))))
+(factorial 5)
+// gives 120</code></pre>
+</section>
+<section >
+<h3>Scheme</h3>
+<ul class="simple">
+<li><p>Small dialect of Lisp developed at MIT (1970s)</p></li>
+<li><p>Static scoping exclusively</p></li>
+<li><p>Functions as first-class entities</p></li>
+<li><p>Simple syntax and semantics</p></li>
+<li><p>Used for educational applications</p></li>
+<li><p>Core primitives: list operations, conditionals, predicates</p></li>
+</ul>
+</section>
+<section >
+<h3>Common Lisp</h3>
+<ul class="simple">
+<li><p>Amalgamation of several 1980s Lisp dialects</p></li>
+<li><p>Large and complex with extensive features</p></li>
+<li><p>Supports both static and dynamic scoping</p></li>
+<li><p>Packages for modularization and access control</p></li>
+<li><p>Macros for language extension</p></li>
+<li><p>Used in AI applications, knowledge representation</p></li>
+</ul>
+</section>
+<section >
+<h3>ML</h3>
+<ul class="simple">
+<li><p>Static-scoped, strongly typed functional language</p></li>
+<li><p>Type inference system - automatically determines types</p></li>
+<li><p>No type coercions, no function overloading</p></li>
+<li><p>Pattern matching for parameter forms</p></li>
+<li><p>Syntax closer to imperative languages than Lisp</p></li>
+<li><p>Influenced many later languages</p></li>
+</ul>
+<pre data-id="ml"><code data-trim data-noescape class="default">fun factorial 0 = 1
+  | factorial n = n * factorial (n - 1)
+factorial 5
+// gives 120</code></pre>
+</section>
+<section >
+<h3>Haskell</h3>
+<ul class="simple">
+<li><p>Pure functional language with strong static typing</p></li>
+<li><p>Three key differences from ML:</p>
+<ul>
+<li><p>Function overloading</p></li>
+<li><p>Nonstrict (lazy) evaluation</p></li>
+<li><p>No side effects</p></li>
+</ul>
+</li>
+<li><p>List comprehensions for set creation</p></li>
+<li><p>Elegant and concise code</p></li>
+<li><p>Supports infinite data structures through lazy evaluation</p></li>
+</ul>
+<pre data-id="haskell"><code data-trim data-noescape class="haskell">factorial 0 = 1
+factorial n = n * factorial (n - 1)
+factorial 5
+-- gives 120</code></pre>
+</section>
+<section >
+<h3>F#</h3>
+<ul class="simple">
+<li><p>.NET functional programming language based on OCaml</p></li>
+<li><p>Combines functional, imperative, and object-oriented programming</p></li>
+<li><p>Interoperability with other .NET languages</p></li>
+<li><p>Full-featured IDE and extensive utility library</p></li>
+<li><p>Type inference and pattern matching</p></li>
+<li><p>Sequence values with lazy evaluation capability</p></li>
+</ul>
+<pre data-id="f"><code data-trim data-noescape class="fsharp">let rec factorial n =
+  if n = 0 then 1
+  else n * factorial (n - 1)
+factorial 5
+// gives 120</code></pre>
+</section>
+<section >
+<h3>Functional Features in Imperative Languages</h3>
+<ul class="simple">
+<li><p>Anonymous functions/lambda expressions in JavaScript, Python, Ruby, Java, C#</p></li>
+<li><p>Higher-order functions (map, filter) in Python, Java, JavaScript</p></li>
+<li><p>Partial function application in Python</p></li>
+<li><p>Collection operations in C#, Java</p></li>
+<li><p>Growing trend toward functional programming concepts</p></li>
+</ul>
+</section>
+<section >
+<h3>Comparison with Imperative Languages</h3>
+<ul class="simple">
+<li><p>Advantages:</p>
+<ul>
+<li><p>Simpler semantics</p></li>
+<li><p>More concise code (10-25% size of imperative equivalents)</p></li>
+<li><p>Improved readability (focus on logic rather than state management)</p></li>
+<li><p>Easier concurrent programming</p></li>
+<li><p>Better testability through referential transparency</p></li>
+</ul>
+</li>
+<li><p>Disadvantages:</p>
+<ul>
+<li><p>Generally slower execution (approximately 2x)</p></li>
+<li><p>Steeper learning curve for imperative programmers</p></li>
+<li><p>Less efficiency on von Neumann architecture</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Functional Programming Topics Not Covered In Textbook</h2>
+</section>
+<section >
+<h3>Real-world Applications</h3>
+<ul class="simple">
+<li><p>WhatsApp’s Erlang-based server</p></li>
+<li><p>Facebook’s React framework</p></li>
+<li><p>Sparks and Flink’s Scala-based engines</p></li>
+<li><p>Twitter’s Scala-based server</p></li>
+<li><p>Netflix’s Clojure-based services</p></li>
+</ul>
+</section>
+<section >
+<h3>Clojure</h3>
+<ul class="simple">
+<li><p>Clojure is a dialect of Lisp, and shares with Lisp the code-as-data philosophy and a powerful macro system.</p></li>
+<li><p>A JVM-based language</p></li>
+</ul>
+<pre data-id="clojure"><code data-trim data-noescape class="clojure"> (defn factorial [n]
+   (if (zero? n)
+     1
+     (* n (factorial (dec n)))))
+
+(factorial 5)</code></pre>
+</section>
+<section >
+<h3>Elixir</h3>
+<ul class="simple">
+<li><p>Elixir is a functional, concurrent, general-purpose programming language that runs on the Erlang virtual machine (BEAM).</p></li>
+<li><p>Elixir builds on top of Erlang and shares the same abstractions for building distributed, fault-tolerant applications.</p></li>
+</ul>
+<pre data-id="elixir"><code data-trim data-noescape class="elixir">defmodule Factorial do
+  def factorial(0), do: 1
+  def factorial(n), do: n * factorial(n - 1)
+end
+
+Factorial.factorial(5)</code></pre>
+</section>
+<section >
+<h3>JavaScript</h3>
+<ul class="simple">
+<li><p>JavaScript is a multi-paradigm language that supports functional programming.</p></li>
+<li><p>Functions are first-class objects, and can be passed as arguments to other functions.</p></li>
+</ul>
+<pre data-id="javascript"><code data-trim data-noescape class="javascript">function factorial(n) {
+  if (n === 0) {
+    return 1;
+  } else {
+    return n * factorial(n - 1);
+  }
+}
+factorial(5)
+
+val factorial = (n: Int) =&gt; {
+  if (n == 0) 1
+  else n * factorial(n - 1)
+}
+factorial(5)
+
+val factorial: Int =&gt; Int = n =&gt; if (n == 0) 1 else n * factorial(n - 1)
+factorial(5)</code></pre>
+</section>
+<section >
+<h3>Scala</h3>
+<ul class="simple">
+<li><p>Scala is a hybrid functional programming language that combines object-oriented and functional programming.</p></li>
+<li><p>It runs on the Java Virtual Machine (JVM).</p></li>
+</ul>
+<pre data-id="scala"><code data-trim data-noescape class="scala">def factorial(n: Int): Int = {
+  if (n == 0) 1
+  else n * factorial(n - 1)
+}
+factorial 5
+
+val factorial: Int =&gt; Int = n =&gt; if (n == 0) 1 else n * factorial(n - 1)
+factorial 5
+
+val factorial: Int =&gt; Int = (n: Int) =&gt; {
+  if (n == 0) 1
+  else n * factorial(n - 1)
+}
+factorial 5</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Introduction to Haskell</h2>
+<ul class="simple">
+<li><p>A <strong>purely functional</strong> programming language</p></li>
+<li><p>Named after logician Haskell Curry</p></li>
+<li><p>Developed by a committee in the late 1980s</p></li>
+<li><p>Current standard: Haskell 2010</p></li>
+<li><p>Statically typed with type inference</p></li>
+<li><p>Lazy evaluation by default</p></li>
+<li><p>Emphasizes mathematical purity</p></li>
+</ul>
+</section>
+<section >
+<h3>Key Characteristics of Haskell</h3>
+<ul class="simple">
+<li><p><strong>Pure functions</strong>: No side effects</p></li>
+<li><p><strong>Immutability</strong>: Data cannot be changed after creation</p></li>
+<li><p><strong>Type inference</strong>: Compiler can deduce types</p></li>
+<li><p><strong>Lazy evaluation</strong>: Expressions evaluated only when needed</p></li>
+<li><p><strong>Pattern matching</strong>: Destructure data based on its shape</p></li>
+<li><p><strong>Type classes</strong>: A form of interface/trait system</p></li>
+<li><p><strong>Strong focus on abstraction</strong></p></li>
+</ul>
+</section>
+<section >
+<h3>Why Learn Haskell?</h3>
+<ul class="simple">
+<li><p>Encourages a different way of thinking about problems</p></li>
+<li><p>Makes concurrent programming easier through immutability</p></li>
+<li><p>Produces highly reliable code (if it compiles, it often works)</p></li>
+<li><p>Many ideas from Haskell influence other languages</p></li>
+<li><p>Builds strong foundations in computer science concepts</p></li>
+<li><p>Elegant solutions to complex problems</p></li>
+</ul>
+</section>
+<section >
+<h3>Hello World in Haskell</h3>
+<pre data-id="hello-world-in-haskell"><code data-trim data-noescape class="haskell">main :: IO ()
+main = putStrLn &quot;Hello, World!&quot;</code></pre>
+<p>Simple, but there’s a lot to unpack:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">main</span> <span class="pre">::</span> <span class="pre">IO</span> <span class="pre">()</span></code> is a type signature</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IO</span></code> is a type that handles side effects</p></li>
+<li><p>The function definition uses <code class="docutils literal notranslate"><span class="pre">=</span></code> not <code class="docutils literal notranslate"><span class="pre">return</span></code></p></li>
+</ul>
+</section>
+<section >
+<h3>Pure Functions</h3>
+<p>A pure function:</p>
+<ul class="simple">
+<li><p>Always returns the same output for the same input</p></li>
+<li><p>Has no side effects</p></li>
+<li><p>Does not modify state</p></li>
+</ul>
+<pre data-id="pure-functions"><code data-trim data-noescape class="haskell">-- Pure function
+add :: Int -&gt; Int -&gt; Int
+add x y = x + y
+-- The type Int -&gt; Int -&gt; Int means it takes two Ints and returns an Int
+-- This is considered a curried function in Haskell
+
+-- This will always return 7
+result = add 3 4</code></pre>
+</section>
+<section >
+<h3>Higher-Order Functions</h3>
+<p>Functions that:</p>
+<ul class="simple">
+<li><p>Take other functions as arguments</p></li>
+<li><p>Return functions as results</p></li>
+</ul>
+<pre data-id="higher-order-functions"><code data-trim data-noescape class="haskell">-- map is a higher-order function
+-- it takes a function and a list, and applies the function to each element
+doubleAll :: [Int] -&gt; [Int]
+doubleAll numbers = map (\x -&gt; x * 2) numbers
+-- doubleAll = map (*2)  -- Equivalent to the above
+
+-- filter is another higher-order function
+-- it takes a predicate function and a list, and returns elements that satisfy the predicate
+evenNumbers :: [Int] -&gt; [Int]
+evenNumbers numbers = filter even numbers</code></pre>
+</section>
+<section >
+<h3>Function Composition</h3>
+<p>Combining functions to create new functions:</p>
+<pre data-id="function-composition"><code data-trim data-noescape class="haskell">-- Using the composition operator (.)
+processData :: [Int] -&gt; [Int]
+processData = filter even . map (*2)
+
+-- Equivalent to:
+processData' :: [Int] -&gt; [Int]
+processData' numbers = filter even (map (*2) numbers)</code></pre>
+<p>Function composition makes code:</p>
+<ul class="simple">
+<li><p>More readable</p></li>
+<li><p>More modular</p></li>
+<li><p>Easier to reason about</p></li>
+</ul>
+</section>
+<section >
+<h3>Tail Recursion</h3>
+<p>A form of recursion where the recursive call is the last operation:</p>
+<pre data-id="tail-recursion"><code data-trim data-noescape class="haskell">-- Non-tail recursive factorial (builds up computation)
+factorial :: Integer -&gt; Integer
+factorial 0 = 1
+factorial n = n * factorial (n - 1)
+
+-- Tail recursive factorial (uses accumulator)
+factorialTail :: Integer -&gt; Integer
+factorialTail n = helper n 1
+  where
+    helper 0 acc = acc
+    helper n acc = helper (n - 1) (n * acc)</code></pre>
+<ul class="simple">
+<li><p>Tail recursion can be optimized by the compiler into iteration (loop)!</p></li>
+<li><p><cite>where</cite> clause defines a local helper function</p></li>
+<li><p><cite>acc</cite> parameter accumulates the result as the recursion progresses</p></li>
+<li><p><cite>n * acc</cite> is done before the recursive call</p></li>
+<li><p>The last line of <cite>helper</cite> is the recursive call which does nothing but call
+itself, nothing to do after that</p></li>
+</ul>
+</section>
+<section >
+<h3>Algebraic Data Types (FYI)</h3>
+<p>Custom data structures defined by their shape:</p>
+<pre data-id="algebraic-data-types-fyi"><code data-trim data-noescape class="haskell">-- Sum type (OR)
+data Bool = True | False
+
+-- Product type (AND)
+data Person = Person String Int  -- name and age
+
+-- Recursive type
+data List a = Empty | Cons a (List a)
+
+-- Pattern matching with algebraic data types
+getName :: Person -&gt; String
+getName (Person name _) = name</code></pre>
+</section>
+<section >
+<h3>Lazy Evaluation</h3>
+<p>Expressions are only evaluated when their results are needed:</p>
+<pre data-id="lazy-evaluation"><code data-trim data-noescape class="haskell">-- Infinite list definition
+naturalNumbers = [1..]
+
+-- Takes only the first 10 elements
+first10 = take 10 naturalNumbers  -- [1,2,3,4,5,6,7,8,9,10]</code></pre>
+<p>Benefits:</p>
+<ul class="simple">
+<li><p>Can work with infinite data structures</p></li>
+<li><p>Improved performance in some cases</p></li>
+<li><p>Enables more compositional programming style</p></li>
+</ul>
+</section>
+<section >
+<h3>The CodeWorld Environment</h3>
+<p><a class="reference external" href="https://code.world/haskell">https://code.world/haskell</a></p>
+<ul class="simple">
+<li><p>Browser-based Haskell environment</p></li>
+<li><p>No installation required</p></li>
+<li><p>Great for learning and experimentation</p></li>
+<li><p>Features:
+* Code editor with syntax highlighting
+* Immediate execution
+* Visual output capabilities
+* Share your code with others
+* Save your work locally</p></li>
+</ul>
+</section>
+<section >
+<h3>Using CodeWorld</h3>
+<ol class="arabic simple">
+<li><p>Open <a class="reference external" href="https://code.world/haskell">https://code.world/haskell</a> in your browser</p></li>
+<li><p>Write your Haskell code in the editor</p></li>
+<li><p>Click “Run” to execute</p></li>
+<li><p>See the results in the output area</p></li>
+<li><p>Use “Save” to download your code as a .hs file</p></li>
+</ol>
+</section>
+<section >
+<h3>Resources for Learning More</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="http://learnyouahaskell.com/">Learn You a Haskell for Great Good</a></p></li>
+<li><p><a class="reference external" href="https://www.haskell.org/">Haskell.org</a></p></li>
+<li><p><a class="reference external" href="http://book.realworldhaskell.org/">Real World Haskell</a></p></li>
+<li><p><a class="reference external" href="https://wiki.haskell.org/">Haskell Wiki</a></p></li>
+<li><p><a class="reference external" href="https://stackoverflow.com/questions/tagged/haskell">Haskell on Stack Overflow</a></p></li>
+</ul>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

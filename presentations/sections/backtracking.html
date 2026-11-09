@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Backtracking</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Backtracking</h1>
+<div class="subtitle docutils container">
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Overview</p></li>
+<li><p>Concepts</p></li>
+<li><p>Implementation details</p></li>
+<li><p>Applications</p></li>
+<li><p>Related algorithm and paradigms</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<ul class="simple">
+<li><p>Backtracking is a general algorithmic technique that involves exploring all
+possible solutions to a problem by building solution candidates incrementally
+and abandoning a candidate (“backtracking”) as soon as it is determined that
+the candidate cannot be extended to a valid solution.</p></li>
+<li><p>Solves constraint satisfaction problems (CSPs).</p></li>
+<li><p>Find one or all valid solutions to a problem.</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Core Concepts</h2>
+<ul>
+<li><p>Backtrack operation:</p>
+<p>The backtrack operation is used to undo a decision and try another decision
+at a decision point.</p>
+</li>
+<li><p>Decision Space:</p>
+<p>A tree space of all possible sequences of decisions that can be made to solve
+the problem.</p>
+</li>
+<li><p>Feasibility Checks:</p>
+<p>Feasibility checks are used to determine whether to proceed or backtrack” at
+a decision point.</p>
+</li>
+<li><p>Solution Space:</p>
+<p>The set of all paths or decision sequences that lead to a valid solution.</p>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Implementation details</h2>
+<ul class="simple">
+<li><p>Very problem dependent but has two general forms: Recursive and Iterative</p></li>
+</ul>
+<div class="flex-container smaller docutils container">
+<div class="half docutils container">
+<p><strong>Recursive</strong></p>
+<pre><code data-trim data-noescape class="default">function BACKTRACKING-SOLUTION(problem):
+    if problem is a base case:
+        return solution to the base case
+    for each option in problem:
+        if option is valid:
+            make the option
+            result = BACKTRACKING-SOLUTION(sub-problem created by the option)
+            if result is a valid solution:
+                return result
+            undo the option (backtrack)
+    return no solution found</code></pre>
+</div>
+<div class="half docutils container">
+<p><strong>Iterative</strong></p>
+<pre><code data-trim data-noescape class="default">function ITERATIVE-BACKTRACKING-SOLUTION(initialProblem):
+    create an empty stack S
+    push initialProblem onto S
+
+    while S is not empty:
+        currentProblem = top of S
+
+        if currentProblem is a solution:
+            return currentProblem
+
+        if currentProblem has unexplored options:
+            nextOption = get next unexplored option for currentProblem
+
+            if nextOption is valid:
+                push nextOption onto S
+            else:
+                mark nextOption as explored for currentProblem
+
+        else:
+            // All options for currentProblem have been explored, backtrack
+            pop S
+
+    return no solution found</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Applications</h2>
+<p><a class="reference external" href="https://algorithm-visualizer.org">Visualizations</a></p>
+<ul class="simple">
+<li><p>N-queens problem</p></li>
+<li><p>Sudoku</p></li>
+<li><p>Hamiltonian path</p></li>
+<li><p>Maze solving/generation</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Related Algorithms and Paradigms</h2>
+<ul>
+<li><p>Brute-force</p>
+<p>Brute-force paradigm can be used to solve a wide variety of problems.
+However, it may do substantial work when the candidate space is large.
+Backtracking adds feasibility checks on partial candidates and can reduce
+work when those checks allow large parts of the search space to be pruned.</p>
+</li>
+<li><p>Depth-first search (DFS)</p>
+<p>DFS and backtracking look similar because they both explore as deep as
+possible in the search space. However, DFS is used to find a path from a
+start node to a goal node in a graph. Backtracking is used to find a solution
+to a constraint satisfaction problem. Backtracking is a paradigm that is used
+to implement DFS as an algorithm if you define the search space to be a graph
+or a tree and set the backtracking constraints to be whenever a dead end is
+reached.</p>
+</li>
+<li><p>Branch and bound</p>
+<p>Branch and bound and backtracking both explore a tree of partial candidates
+and prune branches, but use different pruning tests. Backtracking prunes a
+partial candidate when it cannot lead to a feasible solution. Branch and
+bound uses an objective bound to prune a branch that cannot improve the best
+known solution, so it is commonly used for optimization. Backtracking can
+also be adapted to optimization by keeping the best feasible solution found.</p>
+</li>
+</ul>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Remote Linux Server Tutorial · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / Remote Linux Server Tutorial</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Remote Linux Server Tutorial</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#vs-code-remote-ssh-mode">VS Code Remote SSH Mode</a></li>
+    <li><a href="#ssh-client">SSH client</a></li>
+    <li><a href="#ssh-command">SSH command</a>
+      <ul>
+        <li><a href="#typical-ssh-errors">Typical SSH Errors</a></li>
+      </ul>
+    </li>
+    <li><a href="#work-with-linux">Work with Linux</a></li>
+    <li><a href="#edit-in-the-ssh-window">Edit in the SSH window</a>
+      <ul>
+        <li><a href="#use-vim-editor">Use vim editor</a></li>
+      </ul>
+    </li>
+    <li><a href="#file-transfer">File Transfer</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="remote-linux-server-tutorial"></span>
+<aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p>The use of SSH server is optional as long as you have a compatible local development environment (bash CLI environment) such as Windows WSL, macOS or Linux. It is only required if you want to use incompatible environment like MinGW or CygWin to develop C/C++ programs on Windows. You will need SSH server in this case. Take your own risk in this case and I am not capable of providing support for these environments.</p>
+</div></aside>
+<p>There are several Linux servers available to CS students for teaching purposes. The servers can be accessed through secure shell (SSH). The host name for the servers is <strong>cs-ssh.uwf.edu</strong>.</p>
+<h2 id="vs-code-remote-ssh-mode">VS Code Remote SSH Mode</h2>
+<p>The easiest way to work with the remote server is to use the <strong>Remote - SSH</strong> extension in Visual Studio Code.</p>
+<p>Steps:</p>
+<ol>
+<li>Install Visual Studio Code on your computer.</li>
+<li>Install the <strong>Remote - SSH</strong> extension in Visual Studio Code.</li>
+<li>Click the light brown icon on the bottom left corner of the VS Code window and choose “Connect to Host…”</li>
+<li>For the first time use:
+<ul>
+<li>Input the host name with user name <code>uname@cs-ssh.uwf.edu</code></li>
+<li>Choose Linux as the remote server type</li>
+<li>Choose “Continue” to trust the server</li>
+<li>Input your password</li>
+</ul>
+</li>
+<li>For future use, you can choose the host name from the list on your welcome page.</li>
+</ol>
+<aside class="callout callout-note" aria-label="note">
+<strong>Note</strong><div><p>You are now working on the remote server. You can open a terminal in VS Code to run Linux commands. You can also open a file in the remote server to edit in VS Code (may ask for password again).</p>
+</div></aside>
+<aside class="callout callout-note" aria-label="note">
+<strong>Note</strong><div><p>If you are tired of typing the password every time you connect to the server, you can set up an SSH key pair to avoid password input. Read the <a href="/teaching/developer-tools/ssh-key-pair/">ssh key-pair instructions</a> on how to set up a key pair to use with SSH for instant login. Windows users please read <a href="/teaching/developer-tools/win-key-pair/">the windows key-pair instructions</a>.</p>
+</div></aside>
+<h2 id="ssh-client">SSH client</h2>
+<p>You will need an SSH client to connect to the remote server. The standard command-line environments mostly come with a <code>ssh</code> command that you can invoke to connect to servers providing ssh service. These environments include the <strong>Terminal</strong> app available on Linux, macOS, and Windows Subsystem for Linux (WSL).</p>
+<p>To connect to an SSH server on Windows without a terminal, you will need a standalone SSH client software. The most popular SSH client on Windows is Putty. You can find it free online and install it.</p>
+<h2 id="ssh-command">SSH command</h2>
+<p>You need to know the basic SSH command usage to connect to a remote server in your terminal. Use the following command and <strong>replace ``uname`` with your uwf email ID</strong> (part before @ in your UWF email address):</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>ssh uname@cs-ssh.uwf.edu
+</span></span></code></pre></div><p>You will be asked if the server looked safe in your first attempt to connect. Just type yes. Then, input your password to log into the Linux.</p>
+<p>You may add your public key to the server to avoid future hustle to input passwords. Read the <a href="/teaching/developer-tools/ssh-key-pair/">ssh key-pair instructions</a> on how to set up a key pair to use with SSH for instant login.</p>
+<aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p>When you are asked to input the password, no change like moving cursor or stars will appear in the terminal. You will need to type blindly!</p>
+</div></aside>
+<h3 id="typical-ssh-errors">Typical SSH Errors</h3>
+<ul>
+<li>
+<p>Time out</p>
+<p>It is usually a network problem. You should check your internet connection. It may also be an IP ban caused by multiple failed password input. This can be solved by submitting a ticket to the help desk.</p>
+</li>
+<li>
+<p>Wrong password</p>
+<p>People tend to expect a cursor move when inputting the password. In terminal, you will always need to type passwords blindly. Or type in an editor and paste to the terminal window.</p>
+</li>
+</ul>
+<h2 id="work-with-linux">Work with Linux</h2>
+<p>Once you are logged in. You will be manipulating the remote Linux the same way as you can do with your local Linux in its terminal. You need some knowledge of basic Linux commands to do your work on the server. The common Linux commands can be found here.</p>
+<span id="term-ls"></span>
+<dl>
+<dt>ls</dt>
+<dd>List all objects in a directory. Add the <code>-l</code> option to list in a long format. Add the <code>-a</code> option to list all including hidden objects. This command can be followed by a list of objects to be listed. Listing a directory will show objects in the directory. Listing a file object will list a single file.</dd>
+</dl>
+<span id="term-cd"></span>
+<dl>
+<dt>cd</dt>
+<dd>Change the working directory to a new location. You can use <code>cd ..</code> to change to the parent directory. <code>..</code> represents the parent directory in Linux. Learn Linux directory structure for more information. A typical Linux path looked like <code>/usr/lib/lab.so</code> in which the slash symbol is the delimiter.</dd>
+</dl>
+<span id="term-mkdir"></span>
+<dl>
+<dt>mkdir</dt>
+<dd>Followed by a directory name to make a directory or a list of names to make several directories.</dd>
+</dl>
+<span id="term-rm"></span>
+<dl>
+<dt>rm</dt>
+<dd>Remove objects. Can remove files or directories. Add <code>-r</code> to remove a directory recursively.</dd>
+</dl>
+<span id="term-man"></span>
+<dl>
+<dt>man</dt>
+<dd>Show the manual of a command. E.g. <code>man ls</code> to show the manual for the <code>ls</code> command.</dd>
+</dl>
+<span id="term-.-main"></span>
+<dl>
+<dt>./main</dt>
+<dd>Run a program called <code>main</code> in the current directory. Must prefix with <code>./</code> before the name in which <code>.</code> represent the current directory in Bash. You can change main to the name of any program in the current directory to run it.</dd>
+</dl>
+<p>Refer to this <a href="/teaching/_downloads/56b5b8f4a1f593fa3bbfe30e4cda7b9e/linux-cheatsheet.pdf"><code>Linux cheat sheet</code></a> for more information.</p>
+<h2 id="edit-in-the-ssh-window">Edit in the SSH window</h2>
+<h3 id="use-vim-editor">Use vim editor</h3>
+<p>To edit a remote file directly in the terminal or SSH client window. You must use a command-line editor like <code>vi</code>, <code>vim</code>, <code>nano</code>, etc. <code>vim</code> is an enhanced <code>vi</code> editor and is widely used as a command-line text based editor. <code>vim</code> is extremely powerful, but at the same time hard to learn and master. Many programmers found it worth the time to learn it, including myself. You can learn several basic operations in <code>vim</code> to get it started to edit your code.</p>
+<p>When you type the command <code>vim main.cpp</code> to edit a file called <code>main.cpp</code> in the current director, you will enter the full screen edit mode and your main.cpp file will be opened. You can press <code>i</code> key (case sensitive) to enter the <strong>insert mode</strong> and type your content. Press <code>Esc</code> to exit the <strong>insert mode</strong> and type <code>:wq</code> to save and quit.</p>
+<p>To learn more about vim, check out the <a href="/teaching/_downloads/8a4e76448cbddffcfac46ade8e205663/intro-vi.pdf"><code>introduction to VI</code></a> and <a href="/teaching/_downloads/73208a139610384d574dc9f7248ffcc5/vi-ref.pdf"><code>VI cheatsheet</code></a> documents.</p>
+<p>The <code>nano</code> command can invoke a simpler text editor. You can learn how to use nano if you prefer a simpler editor.</p>
+<aside class="callout callout-note" aria-label="note">
+<strong>Note</strong><div><p>You always have the option to edit your code on your own computer and transfer to the server. So you do not have to edit in the terminal window.</p>
+</div></aside>
+<h2 id="file-transfer">File Transfer</h2>
+<p>As mentioned above, you can transfer locally-edited files to the server instead of creating and editing in the terminal window. There are many tools supporting file transferring through an SSH connection (SFTP):</p>
+<ul>
+<li>Command line tools: <code>scp</code>, <code>rsync</code></li>
+<li>GUI tools: <strong>WinSCP</strong> (Windows only), <strong>FileZilla</strong> (All platforms)</li>
+</ul>
+<aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p>If you are transferring a file generated on Windows using certain editors, you may experience line ending problem. The transferred file cannot be compiled because of the Windows line ending. You have to use a tool called <code>dos2unix</code> to convert the line ending characters. Unfortunately, this tool is not pre-installed on many Linux servers. One solution is to use an editor on Windows that can save files using the Unix line ending. It is know to work in VS code and you can perform a web search to see if your favorite editor will provide the option.</p>
+</div></aside>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

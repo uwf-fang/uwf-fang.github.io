@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Introduction to Big Data Analytics</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Introduction to Big Data Analytics</h1>
+<div class="subtitle docutils container">
+<p><strong>Spark RDD programming with Scala</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Spark Data APIs</p></li>
+<li><p>Intro to RDD</p></li>
+<li><p>RDD Operations</p></li>
+<li><p>RDD Transformations</p></li>
+<li><p>RDD Actions</p></li>
+<li><p>Unstructured text data processing</p>
+<ul>
+<li><p>Log Analysis Example</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Spark Data APIs</h2>
+<ul class="simple">
+<li><p><strong>Three APIs: RDDs, DataFrames, Datasets</strong></p>
+<ul>
+<li><p><strong>RDDs</strong>: Low-level API, fine-grained control, supports functional
+programming styles. No restrictions on data types.</p></li>
+<li><p><strong>DataFrames, DataSet</strong>: Higher-level API, optimized execution, built on
+RDDs, supports SQL-like operations. DataSet can be roughly considered a
+type-safe version of DataFrames.</p></li>
+</ul>
+</li>
+<li><p><strong>Choosing the Right API for Your Task</strong></p>
+<ul>
+<li><p>Use <strong>RDDs</strong> for any complicated data processing tasks that require
+fine-grained control over data and low-level transformations. Will be the
+only choice for unstructured/semi-structured data.</p></li>
+<li><p>Use <strong>DataFrames</strong> for high-level abstractions, performance optimizations,
+and SQL queries. Structured data only.</p></li>
+<li><p>Use <strong>Datasets</strong> when you need type safety along with high-level
+abstractions. Structured data only.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Intro to RDD</h2>
+<ul class="simple">
+<li><p><strong>What is RDD?</strong>: RDD (Resilient Distributed Dataset) is the fundamental data
+structure of Spark, designed for in-memory computing and fault tolerance.</p></li>
+<li><p><strong>Features of RDDs</strong></p>
+<ul>
+<li><p><strong>Immutability and Partitioning</strong>: RDDs are immutable collections of
+objects, partitioned across the Spark cluster.</p></li>
+<li><p><strong>Fault Tolerance</strong>: Ability to recover quickly from node failures, using
+lineage information.</p></li>
+<li><p><strong>In-Memory Processing</strong>: Primarily stores data in memory for fast
+processing, but can spill to disk if necessary.</p></li>
+</ul>
+</li>
+<li><p><strong>Creating RDDs</strong></p>
+<ul>
+<li><p><strong>Parallelizing an Existing Collection</strong>: Convert existing collections
+in your program (like lists or arrays) into RDDs using the <cite>parallelize</cite>
+method, facilitating distributed processing.</p></li>
+<li><p><strong>From Data Sources</strong>: Create RDDs from external data sources such as
+files in HDFS, objects in Amazon S3, HBase, and any other Hadoop data
+source.</p></li>
+</ul>
+</li>
+<li><p><strong>Persisting RDDs</strong>: caching/persisting/checkpointing, and saving/exporting
+RDDs.</p></li>
+</ul>
+</section>
+<section >
+<h3>Creating RDDs</h3>
+<p>RDDs are distributed collections of objects. Please differentiate between RDDs
+and collections in Scala. They share similar interfaces but are fundamentally
+different in terms of how they are processed.</p>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Parallelizing an Existing Collection</strong></p>
+<pre><code data-trim data-noescape class="scala">val array1 = Array(1, 2, 3, 4, 5)
+val rdd1 = sc.parallelize(array1)
+
+val list1 = (1 to 100).toList
+val rdd2 = sc.parallelize(list1)</code></pre>
+</div>
+<div class="half docutils container">
+<p><strong>From Data Sources</strong></p>
+<pre><code data-trim data-noescape class="scala">val data1 = sc.textFile(&quot;dbfs:/FileStore/tables/data.txt&quot;)
+val data2 = sc.textFile(&quot;hdfs://path/to/file&quot;)</code></pre>
+</div>
+</div>
+</section>
+<section >
+<h3>Persisting and Saving RDDs</h3>
+<ul class="simple">
+<li><p><strong>Persisting RDDs in Memory</strong>: To reuse RDDs</p>
+<ul>
+<li><p><strong>Caching</strong>: Persist RDDs in memory across operations, to avoid
+re-computation. Use the <cite>cache</cite> method to cache RDDs.</p></li>
+<li><p><strong>Persist</strong>: Persist RDDs in memory or disk or both, across operations.
+Use the <cite>persist</cite> method to persist RDDs.</p></li>
+<li><p><strong>Checkpointing</strong>: Persist RDDs to disk to avoid recomputation in case of
+node failures. Use the <cite>checkpoint</cite> method to checkpoint RDDs.</p></li>
+</ul>
+</li>
+<li><p><strong>Saving RDDs</strong>: Export data to be used in other applications</p>
+<ul>
+<li><p><strong>SaveAsTextFile</strong>: Save RDDs as text files in HDFS or any other Hadoop
+supported file system.</p></li>
+<li><p><strong>SaveAsObjectFile</strong>: Save RDDs as serialized objects in HDFS or any other
+Hadoop supported file system.</p></li>
+<li><p><strong>SaveAsSequenceFile</strong>: Save RDDs as Hadoop SequenceFiles in HDFS or any
+other Hadoop supported file system.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>RDD Operations</h2>
+<ul class="simple">
+<li><p><strong>Understanding Transformations and Actions</strong></p>
+<ul>
+<li><p><strong>Transformations</strong>:</p>
+<ul>
+<li><p>RDD to another RDD (distributed to distributed)</p></li>
+<li><p>Lazy evaluation</p></li>
+<li><p>Each worker node applies the transformation to its partition</p></li>
+<li><p>Examples: <cite>map</cite>, <cite>filter</cite>, <cite>flatMap</cite>, <cite>reduceByKey</cite></p></li>
+</ul>
+</li>
+<li><p><strong>Actions</strong>:</p>
+<ul>
+<li><p>RDD to a non-RDD (distributed to local)</p></li>
+<li><p>Trigger execution of transformations</p></li>
+<li><p>Examples: <cite>collect</cite>, <cite>count</cite>, <cite>take</cite>, <cite>saveAsTextFile</cite></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Lazy Evaluation in RDDs</strong>: RDD transformations are lazy, meaning they do
+not compute their results immediately. Spark builds a DAG (Directed Acyclic
+Graph) of transformations that are only executed when an action is triggered,
+optimizing overall data processing efficiency.</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>RDD Transformations</h2>
+<ul class="simple">
+<li><p><strong>Common Transformations</strong></p>
+<ul>
+<li><p><cite>map</cite>: Applies a function to each element of the RDD, returning a new RDD.</p></li>
+<li><p><cite>filter</cite>: Returns a new RDD containing only the elements that meet a
+specified condition.</p></li>
+<li><p><cite>flatMap</cite>: Similar to <cite>map</cite>, but each input item can be mapped to zero or
+more output items (thus “flattening” the results into a new RDD).</p></li>
+<li><p><cite>groupByKey</cite>: Groups data items by key into a single sequence, allowing for
+subsequent aggregation operations. <strong>Pair RDDs only</strong>.</p></li>
+<li><p><cite>reduceByKey</cite>: Applies a reduce function to the data items with the same
+key, which is useful for aggregating results. <strong>Pair RDDs only</strong>.</p></li>
+</ul>
+</li>
+<li><p><strong>Lazy Evaluation and Shuffling</strong></p>
+<ul>
+<li><p>Transformations that can be executed totally on local share of data are not
+executed immediately, but are stored as a DAG.</p></li>
+<li><p>Some transformations such as <cite>groupByKey</cite> and <cite>reduceByKey</cite> require data
+shuffling across partitions, will trigger execution.</p></li>
+</ul>
+</li>
+<li><p><strong>Functional Programming</strong></p>
+<ul>
+<li><p>RDD transformations are high-level methods that takes functions to process
+the data.</p></li>
+<li><p>Make pure functions to ensure deterministic results and avoid side effects.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>RDD Actions</h2>
+<ul class="simple">
+<li><p><strong>Common Actions</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">collect()</span></code>: Gathers all elements of the RDD into an array at the driver
+program. <strong>Use with caution on large datasets</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">show()</span></code>: Displays the first n elements of the RDD in a tabular format.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">count()</span></code>: Returns the number of elements in the RDD.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">first()</span></code>: Retrieves the first element of the RDD.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">take(n)</span></code>: Returns an array with the first n elements of the RDD.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reduce(func)</span></code>: Aggregates the elements of the RDD using a function that
+takes two arguments and returns one. Related: <code class="docutils literal notranslate"><span class="pre">fold()</span></code>, <code class="docutils literal notranslate"><span class="pre">aggregate()</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sum()</span></code>: Computes the sum of the numeric values in the RDD.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max()</span></code>: Finds the maximum element in the RDD.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">min()</span></code>: Finds the minimum element in the RDD.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mean()</span></code>: Computes the mean (average) of the numeric elements in the RDD.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>RDD Actions (contd.)</h3>
+<ul class="simple">
+<li><p><strong>Common Actions</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">countByValue()</span></code>: Returns a dictionary of each distinct element and its
+count in the RDD. <strong>Pair RDDs only</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reduceByKey(func)</span></code>: Aggregates the values of each key using a function
+and returns a pair RDD. <strong>Pair RDDs only</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">saveAsTextFile(path)</span></code>: Saves the RDD elements as a text file in a
+specified directory, either on a local file system or a distributed file
+system like HDFS. Each element of the RDD is converted to a line of text in
+the file.</p></li>
+</ul>
+</li>
+<li><p><strong>Use with Caution</strong></p>
+<ul>
+<li><p>Be careful with large datasets when using actions like <cite>collect</cite> and
+<cite>show</cite>.</p></li>
+<li><p>Be aware of the computational cost can be high</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Log Analysis Example</h2>
+<ul class="simple">
+<li><p><strong>Problem Statement</strong>: Extract structured data from log files</p></li>
+<li><p><strong>Motivation</strong></p>
+<ul>
+<li><p>log files are a common data source in big data analytics</p></li>
+<li><p>data schema can be unknown, complex or unknown in advance</p></li>
+</ul>
+</li>
+<li><p><strong>Data extraction</strong></p>
+<ul>
+<li><p>Load into Spark RDD of lines</p></li>
+<li><p>Text parsing to extract structured data (RDD)</p></li>
+<li><p>Data cleaning and transformation (DataFrame/DataSet)</p></li>
+<li><p>Data export, analysis and visualization</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Text Parsing with RDD</h3>
+<ul class="simple">
+<li><p><strong>Load log file into RDD</strong></p>
+<ul>
+<li><p>Use <cite>textFile</cite> method to load log file into RDD</p></li>
+<li><p>Each line of the log file is a record in the RDD</p></li>
+</ul>
+</li>
+<li><p><strong>Extract structured data</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">map</span></code> transformation to extract one data or one set of data per line</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flatMap</span></code> transformation to extract multiple data of a same type per line</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">filter</span></code> transformation to remove unwanted lines/items</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">count</span></code>, <code class="docutils literal notranslate"><span class="pre">sum</span></code>, <code class="docutils literal notranslate"><span class="pre">mean</span></code>, etc. to get statistical data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">map</span></code> to convert data to desired format (e.g. pair RDD)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reduceByKey</span></code> to aggregate data</p></li>
+</ul>
+</li>
+<li><p><strong>Example</strong></p>
+<ul>
+<li><p>Extract IP addresses from log file</p></li>
+<li><p>Count the number of times each IP address appears</p></li>
+<li><p>Find the top 10 most frequent IP addresses</p></li>
+<li><p>Find the people who talk to each other the most in a TV show script</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

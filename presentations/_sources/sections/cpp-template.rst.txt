@@ -1,0 +1,148 @@
+***************
+Template in C++
+***************
+
+Outline
+=======
++ Overview
++ Syntaxes
++ Template Organization
+
+Overview
+========
++ Definition: A template is a blueprint or formula for creating a generic class
+  or a function. The library containers like iterators and algorithms are
+  examples of generic programming and have been developed using template
+  concept.
++ Advantage
+
+  * Reduce code redundancy
+  * Increase code reusability
+
++ Disadvantage
+
+  * Code bloat: The compiler generates a new copy of the template function for
+    each instantiation.
+  * Debugging: The error messages are difficult to understand.
+  * Compilation time: The compilation time increases with the number of
+    template functions used in the program.
+  * Header-only templates violate the principle of separation of declaration
+    and implementation
+
++ Other method to allow function to accept different data types
+
+  * Function overloading
+  * Implicit type conversion
+
++ Related to Generic Programming
+
+Syntax: Create Template
+=======================
+.. container:: flex-container
+
+  .. container:: half
+
+    **Create templates using ``template`` keyword**
+
+    * ``template <list of template parameters>`` clause.
+    * The list of template parameters can contain one or more template
+      parameters separated by commas.
+    * The template parameters are enclosed in angle-brackets (<>).
+    * We only focus on **type template parameters**
+
+      - Started with keyword ``class`` or ``typename`` (interchangeable)
+
+    * The ``template`` clause above:
+
+      - function declaration
+      - function definition
+      - class declaration
+      - method definition
+
+  .. container:: half
+
+    .. code-block:: cpp
+
+      template<typename T>
+      void func1(T param1);
+
+      template<typename T>
+      void func1(T param1) {
+        // core logics
+      }
+
+      template<typename T>
+      class MyClass {
+      public:
+        MyClass(T param1);
+      };
+
+      template<typename T>
+      MyClass<T>::MyClass(T param1) {
+        // core logics
+      }
+
+
+Syntax: Use Template
+====================
+.. container:: flex-container
+
+  .. container:: half
+
+    **Using template**
+
+    + ``Instantiation`` a template by specifying the template argument list
+      inside angle brackets following the template name.
+    + Template argument deduction
+
+      - The compiler deduces the template argument list from the function
+        arguments.
+      - The compiler deduces the template argument list from the class
+        constructor arguments.
+
+  .. container:: half
+
+    .. code-block:: cpp
+
+      // function template instantiation
+      func1<int>(10);
+
+      // class template instantiation
+      MyClass<int> obj1;
+
+      // template argument deduction
+      func1(10);  // T will be int
+      func1<>(10);  // T will be int
+      func1(10.0);  // T will be double
+
+      MyClass obj1(10);  // T will be int
+
+
+Template Organization
+=====================
+Templates requires special organization of the source code because the compiler
+needs to see both the template definition (not instantiation) and its use
+within a single translation unit.
+
+.. container:: flex-container
+
+  .. container:: half
+
+    **Template definition all in a header file.**
+
+    + Easy to use. **Use this method in this course!**
+    + For each instantiation of the template, the compiler will be able to find
+      the template definition as included in the header file.
+    + Large header file and long compilation time.
+
+  .. container:: half
+
+    **Template declaration in a header. Template definition and explicit
+    instantiation in a cpp file.**
+
+    + **Optional contents**
+    + Shorter compilation time.
+    + You must know all possible template instantiations in advance. Sometimes
+      not possible. E.g. complicate combination ``vector<vector<pair<int,
+      int>>>``
+

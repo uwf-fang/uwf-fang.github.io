@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Problem B - Blind Bottles — Solution · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/competitive-programming/icpc/">International Collegiate Programming Contest</a></li><li><a href="/teaching/competitive-programming/seusa2025/">2025 Southeast Regional Contest</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/competitive-programming/">Competitive Programming</a> / Problem B - Blind Bottles — Solution</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Problem B - Blind Bottles — Solution</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-game-in-one-minute">1. The Game in One Minute</a></li>
+    <li><a href="#big-idea-no-heavy-math">2. Big Idea (No heavy math)</a></li>
+    <li><a href="#why-swapping-two-spots-tells-us-anything">3. Why swapping two spots tells us anything</a></li>
+    <li><a href="#stepbystep-plan">4. Step‑by‑step plan</a></li>
+    <li><a href="#tiny-example-n-5">5. Tiny example (n = 5)</a></li>
+    <li><a href="#how-many-questions-do-we-ask">6. How many questions do we ask?</a></li>
+    <li><a href="#the-python-solution-accepted-by-kattis">7. The Python solution (Accepted by Kattis)</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="problem-b-blind-bottles-solution"></span>
+<h2 id="the-game-in-one-minute">1. The Game in One Minute</h2>
+<ul>
+<li>There are n bottles, each labeled 1..n, arranged in a secret order.</li>
+<li>A <strong>guess</strong> is a line of n numbers (a rearrangement of 1..n).</li>
+<li>After each guess, you’re told <strong>how many positions are exactly right</strong>.</li>
+<li>You win when <strong>all</strong> positions are right.</li>
+</ul>
+<p>Our goal: figure out the secret order using <strong>at most 10,000 guesses</strong> for n ≤ 100.</p>
+<h2 id="big-idea-no-heavy-math">2. Big Idea (No heavy math)</h2>
+<p>We stick to one <strong>baseline guess</strong> all the way through: the simple list:</p>
+<pre tabindex="0"><code class="language-default" data-lang="default">1 2 3 ... n
+</code></pre><p>Call its score B (how many spots were already right in that baseline).</p>
+<p>Now we learn about the secret order by making <strong>very small, controlled changes</strong> to this baseline:</p>
+<blockquote>
+<p><strong>Swap just two positions `i` and `j`</strong> in the baseline and ask again.</p>
+</blockquote>
+<ul>
+<li>If the score <strong>goes up</strong>, then those two positions are <strong>directly related</strong> in the secret ordering (they are neighbors in a loop).</li>
+<li>If the score <strong>stays the same or goes down</strong>, those positions aren’t directly related.</li>
+</ul>
+<p>Doing this for <strong>every pair `(i, j)`</strong> lets us draw a picture (a graph) of who is connected to whom. That picture always breaks into <strong>loops</strong>:</p>
+<ul>
+<li>A <strong>single dot</strong> (no connections) means that position was already correct.</li>
+<li>A <strong>pair of dots</strong> connected to each other is a simple <strong>2‑swap</strong>.</li>
+<li>Any longer loop (3 or more) means <strong>the correct bottles rotate around</strong> that circle of positions.</li>
+</ul>
+<p>After we have these loops, we make at most <strong>one extra test per long loop</strong> to find which way it rotates. Then we can write down the final, correct order and win.</p>
+<h2 id="why-swapping-two-spots-tells-us-anything">3. Why swapping two spots tells us anything</h2>
+<p>Think about what the final arrangement looks like around any one position:</p>
+<ul>
+<li>There’s the spot where <strong>this position’s bottle</strong> really belongs.</li>
+<li>There’s also the spot whose bottle <strong>belongs here</strong>.</li>
+</ul>
+<p>Those are the two “neighbors” around that position in the final solution. <strong>Swapping</strong> i and j helps <strong>only</strong> when i and j are such neighbors (either the bottle from i belongs in j, or the bottle from j belongs in i). That’s exactly why the score goes <strong>up</strong> when we swap a “neighbor pair”.</p>
+<h2 id="stepbystep-plan">4. Step‑by‑step plan</h2>
+<ol>
+<li><strong>Baseline.</strong> Ask the identity order 1 2 … n once. Save the score as B.</li>
+<li><strong>Build connections.</strong> For every pair of positions (i, j):
+<ul>
+<li>Swap only those two in the baseline and ask again.</li>
+<li>If the score is <strong>higher than `B`</strong>, draw an edge between i and j.</li>
+</ul>
+</li>
+<li><strong>Read the loops.</strong>
+<ul>
+<li><strong>No edges</strong> → position already correct (leave it as is).</li>
+<li><strong>One edge</strong> → a <strong>2‑swap</strong>; those two positions want each other’s bottles.</li>
+<li><strong>Two edges</strong> → part of a <strong>longer loop</strong> (a circle of 3 or more positions).</li>
+</ul>
+</li>
+<li><strong>Decide the direction (for each long loop).</strong>
+<ul>
+<li>Try <strong>pushing everyone in the loop one step forward</strong> (a “rotate once” guess), leaving all other positions as in the baseline.</li>
+<li>If the score jumps by the loop’s length, that is the <strong>right direction</strong>. Otherwise, it’s the reverse direction.</li>
+</ul>
+</li>
+<li><strong>Write the final answer.</strong> Now we know, for each position, <strong>which position’s bottle belongs here</strong>. Build the full line and print it once.</li>
+</ol>
+<h2 id="tiny-example-n-5">5. Tiny example (n = 5)</h2>
+<p>Say the secret order is: [3, 5, 2, 1, 4]</p>
+<ul>
+<li>
+<p>After checking all pair swaps, we discover a single loop:</p>
+<p>positions: 1 → 3 → 2 → 5 → 4 → back to 1</p>
+</li>
+<li>
+<p>That means the correct bottles <strong>cycle around</strong> those positions.</p>
+</li>
+<li>
+<p>We do one “rotate once” test on just that loop. If the score jumps by 5, we already have the exact solution; otherwise we reverse the loop.</p>
+</li>
+<li>
+<p>Either way, we now know the final arrangement and can print it.</p>
+</li>
+</ul>
+<h2 id="how-many-questions-do-we-ask">6. How many questions do we ask?</h2>
+<ul>
+<li>One for the <strong>baseline</strong>.</li>
+<li>One for <strong>each pair</strong> of positions (there are about n(n−1)/2 such pairs; for n = 100 that’s 4950).</li>
+<li>At most <strong>one extra</strong> per longer loop (in the worst case, around 33 of them).</li>
+<li>One final print of the full answer.</li>
+<li>Total ≤ <strong>4,985 guesses</strong> for n = 100, well under the 10,000 limit.</li>
+</ul>
+<h2 id="the-python-solution-accepted-by-kattis">7. The Python solution (Accepted by Kattis)</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#57606a"># Blind Bottles — Python interactive solution</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Deterministic O(n^2) queries (&lt;= 4985 for n&lt;=100)</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Algorithm: pairwise swaps vs identity to reveal cycle adjacencies,</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># then 1 query per long cycle to fix its orientation.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#24292e">sys</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">def</span> <span style="color:#6639ba">ask</span><span style="color:#1f2328">(</span>perm<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0a3069">&#34;&#34;&#34;Print a permutation, flush, and read judge&#39;s reply (number of fixed points).&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6639ba">print</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34; &#34;</span><span style="color:#0550ae">.</span>join<span style="color:#1f2328">(</span><span style="color:#6639ba">map</span><span style="color:#1f2328">(</span><span style="color:#6639ba">str</span><span style="color:#1f2328">,</span> perm<span style="color:#1f2328">)),</span> flush<span style="color:#0550ae">=</span><span style="color:#cf222e">True</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    line <span style="color:#0550ae">=</span> sys<span style="color:#0550ae">.</span>stdin<span style="color:#0550ae">.</span>readline<span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> <span style="color:#0550ae">not</span> line<span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>        sys<span style="color:#0550ae">.</span>exit<span style="color:#1f2328">(</span><span style="color:#0550ae">0</span><span style="color:#1f2328">)</span>  <span style="color:#57606a"># judge closed</span>
+</span></span><span style="display:flex;"><span>    k <span style="color:#0550ae">=</span> <span style="color:#6639ba">int</span><span style="color:#1f2328">(</span>line<span style="color:#0550ae">.</span>strip<span style="color:#1f2328">())</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> k <span style="color:#0550ae">==</span> <span style="color:#6639ba">len</span><span style="color:#1f2328">(</span>perm<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>        sys<span style="color:#0550ae">.</span>exit<span style="color:#1f2328">(</span><span style="color:#0550ae">0</span><span style="color:#1f2328">)</span>  <span style="color:#57606a"># solved; judge ends the game</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">return</span> k
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">def</span> <span style="color:#6639ba">main</span><span style="color:#1f2328">():</span>
+</span></span><span style="display:flex;"><span>    data <span style="color:#0550ae">=</span> sys<span style="color:#0550ae">.</span>stdin<span style="color:#0550ae">.</span>readline<span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> <span style="color:#0550ae">not</span> data<span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">return</span>
+</span></span><span style="display:flex;"><span>    n <span style="color:#0550ae">=</span> <span style="color:#6639ba">int</span><span style="color:#1f2328">(</span>data<span style="color:#0550ae">.</span>strip<span style="color:#1f2328">())</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># 1) Base query: identity</span>
+</span></span><span style="display:flex;"><span>    base <span style="color:#0550ae">=</span> <span style="color:#6639ba">list</span><span style="color:#1f2328">(</span><span style="color:#6639ba">range</span><span style="color:#1f2328">(</span><span style="color:#0550ae">1</span><span style="color:#1f2328">,</span> n <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">))</span>
+</span></span><span style="display:flex;"><span>    B <span style="color:#0550ae">=</span> ask<span style="color:#1f2328">(</span>base<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> B <span style="color:#0550ae">==</span> n<span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">return</span>  <span style="color:#57606a"># already solved</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># 2) For every pair (i, j), swap on top of identity and see if score improves.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a">#    If it does, i and j are adjacent in the hidden permutation&#39;s cycle.</span>
+</span></span><span style="display:flex;"><span>    adj <span style="color:#0550ae">=</span> <span style="color:#1f2328">[[]</span> <span style="color:#cf222e">for</span> _ <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>n<span style="color:#1f2328">)]</span>
+</span></span><span style="display:flex;"><span>    tmp <span style="color:#0550ae">=</span> base<span style="color:#1f2328">[:]</span>  <span style="color:#57606a"># mutable copy of identity</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">for</span> i <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>n<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">for</span> j <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>i <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">,</span> n<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>            tmp<span style="color:#1f2328">[</span>i<span style="color:#1f2328">],</span> tmp<span style="color:#1f2328">[</span>j<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> tmp<span style="color:#1f2328">[</span>j<span style="color:#1f2328">],</span> tmp<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>            s <span style="color:#0550ae">=</span> ask<span style="color:#1f2328">(</span>tmp<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#cf222e">if</span> s <span style="color:#0550ae">&gt;</span> B<span style="color:#1f2328">:</span>                    <span style="color:#57606a"># Δ &gt; 0  -&gt; adjacency between i and j</span>
+</span></span><span style="display:flex;"><span>                adj<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span><span style="color:#0550ae">.</span>append<span style="color:#1f2328">(</span>j<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>                adj<span style="color:#1f2328">[</span>j<span style="color:#1f2328">]</span><span style="color:#0550ae">.</span>append<span style="color:#1f2328">(</span>i<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>            tmp<span style="color:#1f2328">[</span>i<span style="color:#1f2328">],</span> tmp<span style="color:#1f2328">[</span>j<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> tmp<span style="color:#1f2328">[</span>j<span style="color:#1f2328">],</span> tmp<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span>  <span style="color:#57606a"># restore to identity</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># 3) Reconstruct the permutation.</span>
+</span></span><span style="display:flex;"><span>    perm <span style="color:#0550ae">=</span> <span style="color:#1f2328">[</span><span style="color:#0550ae">-</span><span style="color:#0550ae">1</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">*</span> n
+</span></span><span style="display:flex;"><span>    used <span style="color:#0550ae">=</span> <span style="color:#1f2328">[</span><span style="color:#cf222e">False</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">*</span> n
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># Fixed points: degree 0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">for</span> i <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>n<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">if</span> <span style="color:#6639ba">len</span><span style="color:#1f2328">(</span>adj<span style="color:#1f2328">[</span>i<span style="color:#1f2328">])</span> <span style="color:#0550ae">==</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>            perm<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> i <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span>
+</span></span><span style="display:flex;"><span>            used<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">True</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># 2-cycles: degree 1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">for</span> i <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>n<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">if</span> <span style="color:#0550ae">not</span> used<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">and</span> <span style="color:#6639ba">len</span><span style="color:#1f2328">(</span>adj<span style="color:#1f2328">[</span>i<span style="color:#1f2328">])</span> <span style="color:#0550ae">==</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>            j <span style="color:#0550ae">=</span> adj<span style="color:#1f2328">[</span>i<span style="color:#1f2328">][</span><span style="color:#0550ae">0</span><span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>            perm<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> j <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span>
+</span></span><span style="display:flex;"><span>            perm<span style="color:#1f2328">[</span>j<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> i <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span>
+</span></span><span style="display:flex;"><span>            used<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> used<span style="color:#1f2328">[</span>j<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">True</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># Cycles of length &gt;= 3: degree 2</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">for</span> i <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>n<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">if</span> used<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#cf222e">continue</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#57606a"># Collect one undirected cycle in order</span>
+</span></span><span style="display:flex;"><span>        cyc <span style="color:#0550ae">=</span> <span style="color:#1f2328">[]</span>
+</span></span><span style="display:flex;"><span>        u <span style="color:#0550ae">=</span> i
+</span></span><span style="display:flex;"><span>        prev <span style="color:#0550ae">=</span> <span style="color:#0550ae">-</span><span style="color:#0550ae">1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">while</span> <span style="color:#cf222e">True</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>            cyc<span style="color:#0550ae">.</span>append<span style="color:#1f2328">(</span>u<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>            used<span style="color:#1f2328">[</span>u<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">True</span>
+</span></span><span style="display:flex;"><span>            a<span style="color:#1f2328">,</span> b <span style="color:#0550ae">=</span> adj<span style="color:#1f2328">[</span>u<span style="color:#1f2328">][</span><span style="color:#0550ae">0</span><span style="color:#1f2328">],</span> adj<span style="color:#1f2328">[</span>u<span style="color:#1f2328">][</span><span style="color:#0550ae">1</span><span style="color:#1f2328">]</span>   <span style="color:#57606a"># degree 2, so exactly two neighbors</span>
+</span></span><span style="display:flex;"><span>            v <span style="color:#0550ae">=</span> a <span style="color:#cf222e">if</span> a <span style="color:#0550ae">!=</span> prev <span style="color:#cf222e">else</span> b
+</span></span><span style="display:flex;"><span>            prev<span style="color:#1f2328">,</span> u <span style="color:#0550ae">=</span> u<span style="color:#1f2328">,</span> v
+</span></span><span style="display:flex;"><span>            <span style="color:#cf222e">if</span> u <span style="color:#0550ae">==</span> cyc<span style="color:#1f2328">[</span><span style="color:#0550ae">0</span><span style="color:#1f2328">]:</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#cf222e">break</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        L <span style="color:#0550ae">=</span> <span style="color:#6639ba">len</span><span style="color:#1f2328">(</span>cyc<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#57606a"># 4) Determine orientation with one extra query:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#57606a">#    try mapping cyc[k] -&gt; cyc[k+1]; if we gain L matches, that&#39;s the direction.</span>
+</span></span><span style="display:flex;"><span>        test <span style="color:#0550ae">=</span> base<span style="color:#1f2328">[:]</span>  <span style="color:#57606a"># identity elsewhere</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">for</span> k <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>L<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>            test<span style="color:#1f2328">[</span>cyc<span style="color:#1f2328">[</span>k<span style="color:#1f2328">]]</span> <span style="color:#0550ae">=</span> cyc<span style="color:#1f2328">[(</span>k <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">%</span> L<span style="color:#1f2328">]</span> <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span>
+</span></span><span style="display:flex;"><span>        res <span style="color:#0550ae">=</span> ask<span style="color:#1f2328">(</span>test<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">if</span> res <span style="color:#0550ae">-</span> B <span style="color:#0550ae">==</span> L<span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#57606a"># forward orientation is correct</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#cf222e">for</span> k <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>L<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>                perm<span style="color:#1f2328">[</span>cyc<span style="color:#1f2328">[</span>k<span style="color:#1f2328">]]</span> <span style="color:#0550ae">=</span> cyc<span style="color:#1f2328">[(</span>k <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">%</span> L<span style="color:#1f2328">]</span> <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">else</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#57606a"># reverse orientation</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#cf222e">for</span> k <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>L<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>                perm<span style="color:#1f2328">[</span>cyc<span style="color:#1f2328">[</span>k<span style="color:#1f2328">]]</span> <span style="color:#0550ae">=</span> cyc<span style="color:#1f2328">[(</span>k <span style="color:#0550ae">-</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">%</span> L<span style="color:#1f2328">]</span> <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># 5) Final answer</span>
+</span></span><span style="display:flex;"><span>    ask<span style="color:#1f2328">(</span>perm<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">if</span> <span style="color:#953800">__name__</span> <span style="color:#0550ae">==</span> <span style="color:#0a3069">&#34;__main__&#34;</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>    main<span style="color:#1f2328">()</span>
+</span></span></code></pre></div></div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

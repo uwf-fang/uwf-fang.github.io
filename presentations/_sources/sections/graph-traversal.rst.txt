@@ -1,0 +1,88 @@
+Graph Traversal
+===============
++ Overview
++ Depth First Search (DFS)
++ Breadth First Search (BFS)
++ Visualization
+
+Overview
+--------
++ Start from a vertex
++ Visit all reachable vertices connected to it in a systematic order
++ Two common ways to traverse a graph
+
+  + Depth First Search (DFS)
+  + Breadth First Search (BFS)
+
+Depth First Search (DFS)
+------------------------
++ Like walking in a maze, you go as far as you can, then backtrack
+
+.. container:: flex-container
+
+  .. container:: half
+
+    + Stack based implementation
+
+    .. code-block::
+      :caption: Iterative DFS traversal using a stack
+
+      function dfs(startVertex):
+        create a new stack
+
+        push startVertex onto the stack
+        mark startVertex as visited
+
+        while the stack is not empty:
+          current = pop from the stack
+          process(current)  # Perform an action on the current node
+
+          for each neighbor in current.neighbors:
+            if neighbor is not in visited set:
+              push neighbor onto the stack
+              add neighbor to the visited set
+
+  .. container:: half
+
+    + Recursive implementation
+
+    .. code-block::
+      :caption: DFS traversal using recursion
+
+      function dfs(vertex, visited):
+        if vertex is not visited:
+          mark vertex as visited
+          visit(node)  # Perform an action on the vertex
+
+          for each neighbor of the vertex:
+            if neighbor is not visited:
+                dfs(neighbor, visited)
+
+Breadth First Search (BFS)
+--------------------------
++ Like a wave, you visit all vertices at the same level before going deeper
++ Queue based implementation
+
+.. code-block::
+  :caption: BFS traversal using a queue
+
+  function bfs(startVertex):
+    create a new queue
+
+    enqueue the startVertex
+    mark the startVertex as visited
+
+    while the queue is not empty:
+      dequeue a vertex from the queue
+      process(vertex)  # Perform an action on the vertex
+
+      for each neighbor of the vertex:
+        if neighbor is not visited:
+          mark the neighbor as visited
+          enqueue the neighbor
+
+Visualization
+-------------
++ https://visualgo.net/en/dfsbfs
++ https://www.cs.usfca.edu/~galles/visualization/BFS.html
++ https://www.cs.usfca.edu/~galles/visualization/DFS.html

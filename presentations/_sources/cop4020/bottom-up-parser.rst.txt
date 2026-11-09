@@ -1,0 +1,115 @@
+Shift-Reduce Parser Demonstration
+=================================
+
+Grammar
+-------
+.. container:: flex-container
+
+  .. container:: half
+
+    + The grammar for our expression language::
+
+        E → E + T | T
+        T → T * F | F
+        F → (E) | id
+
+    + Left-recursive and ambiguous (not suitable for recursive-descent parsing)
+    + Simplified terminal symbols for a simpler lexer
+
+  .. container:: half
+
+    + It models a language:
+
+      * +, \*, and (): operators
+      * id: the only terminal symbol allowed
+
+    + Examples:
+
+      * id
+      * id + id
+      * id + id * id
+      * id * id + id
+      * (id + id) * id
+
+LR(1) Parsing Tables
+--------------------
+.. code-block:: cpp
+
+  +-------------------------------------------+ +-------------------------+
+  |               ACTION TABLE                | |         GOTO TABLE      |
+  +-------+-----+-----+-----+-----+-----+-----+ +-------+-----+-----+-----+
+  | State | id  | +   | *   | (   | )   | $   | | State | E   | T   | F   |
+  +=======+=====+=====+=====+=====+=====+=====+ +=======+=====+=====+=====+
+  | 0     | s5  |     |     | s4  |     |     | | 0     | 1   | 2   | 3   |
+  +-------+-----+-----+-----+-----+-----+-----+ +-------+-----+-----+-----+
+  | 1     |     | s6  |     |     |     |acc  | | 1     |     |     |     |
+  +-------+-----+-----+-----+-----+-----+-----+ +-------+-----+-----+-----+
+  | 2     |     | r2  | s7  |     |     | r2  | | 2     |     |     |     |
+  +-------+-----+-----+-----+-----+-----+-----+ +-------+-----+-----+-----+
+  | 3     |     | r4  | r4  |     | r4  | r4  | | 3     |     |     |     |
+  +-------+-----+-----+-----+-----+-----+-----+ +-------+-----+-----+-----+
+  | 4     | s5  |     |     | s4  |     |     | | 4     | 8   | 2   | 3   |
+  +-------+-----+-----+-----+-----+-----+-----+ +-------+-----+-----+-----+
+  | 5     |     | r6  | r6  |     | r6  | r6  | | 5     |     |     |     |
+  +-------+-----+-----+-----+-----+-----+-----+ +-------+-----+-----+-----+
+  | 6     | s5  |     |     | s4  |     |     | | 6     |     | 2   | 3   |
+  +-------+-----+-----+-----+-----+-----+-----+ +-------+-----+-----+-----+
+  | 7     | s5  |     |     | s4  |     |     | | 7     |     |     | 3   |
+  +-------+-----+-----+-----+-----+-----+-----+ +-------+-----+-----+-----+
+  | 8     |     | s6  |     |     | s9  |     | | 8     |     |     |     |
+  +-------+-----+-----+-----+-----+-----+-----+ +-------+-----+-----+-----+
+  | 9     |     | r5  | r5  |     | r5  | r5  | | 9     |     |     |     |
+  +-------+-----+-----+-----+-----+-----+-----+ +-------+-----+-----+-----+
+
+**Note**: Empty cells in the Action table mean error
+
+Example Parse: id + id * id
+---------------------------
+**Parse steps**
+
+.. code-block::
+
+  Stack                  Input         Action              Rule Applied
+  ----------------------------------------------------------------------
+  0                      id+id*id$     shift 5             -
+  0 id 5                 +id*id$       reduce by F→id      GOTO(0,F)=3
+  0 F 3                  +id*id$       reduce by T→F       GOTO(0,T)=2
+  0 T 2                  +id*id$       reduce by E→T       GOTO(0,E)=1
+  0 E 1                  +id*id$       shift 6             -
+  0 E 1 + 6              id*id$        shift 5             -
+  0 E 1 + 6 id 5          *id$         reduce by F→id      GOTO(6,F)=3
+  0 E 1 + 6 F 3           *id$         reduce by T→F       GOTO(6,T)=2
+  0 E 1 + 6 T 2           *id$         shift 7             -
+  0 E 1 + 6 T 2 * 7 id     $           shift 5             -
+  0 E 1 + 6 T 2 * 7 id 5   $           reduce by F→id      GOTO(7,F)=3
+  0 E 1 + 6 T 2 * 7 F 3    $           reduce by T→T*F     GOTO(6,T)=2
+  0 E 1 + 6 T 2            $           reduce by E→E+T     GOTO(0,E)=1
+  0 E 1                    $           accept              -
+  ----------------------------------------------------------------------
+
+How to Use the Tables
+---------------------
+1. ACTION Table Usage:
+
+   + 's' means shift: push symbol and next state
+   + 'r' means reduce: pop all RHS items, push LHS and new state from GOTO
+   + 'acc' means accept the input
+
+2. GOTO Table Usage:
+
+   +  After reduction, use current state and non-terminal to find next state
+   +  Only used after reduce actions
+
+3. Parse Process:
+
+   a. Look at current state (top of state stack) and next input symbol
+   b. Find action in ACTION table
+   c. For reduce actions, pop everything to be reduced and use GOTO table with
+      current state (after popping) and non-terminal reduced to
+   d. Continue until accept or error
+
+4. Error Handling:
+
+   + Error when no valid action exists in table
+   + Blank entries (-) in tables indicate error
+   + Parser stops on error

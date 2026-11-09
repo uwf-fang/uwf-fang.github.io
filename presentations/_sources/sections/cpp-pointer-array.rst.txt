@@ -1,0 +1,189 @@
+C++ Pointers and Arrays - Fundamentals
+======================================
++ Introduction to Pointers
+
+  + Pointer Related Operations
+  + Pointer Arithmetic
+  + Common Pointer Pitfalls
+  + Function Pass-by-pointer Example
+
++ Introduction to Arrays
+
+  + Array-Pointer Relationship
+  + Function Parameters
+  + Dynamic Arrays
+
+Introduction to Pointers
+========================
+* Definition: A derived data type that stores memory addresses of the
+  memory location of another variable.
+* Memory addresses in C++: 8 bytes (64-bit systems)
+* Declaration syntax
+
+.. code-block:: cpp
+
+  int* ptr;     // Pointer to integer
+  double* dptr; // Pointer to double
+  char* cptr;   // Pointer to character
+
+Pointer Related Operations
+--------------------------
+* Address-of (referencing) operator (&)
+
+  - &num returns the memory address of num variable (l-value)
+  - &arr[0] kind of syntax is also valid
+
+* Dereferencing operator (*)
+
+  - \*ptr is an alias of the variable it points to
+
+* Example
+
+.. code-block:: cpp
+
+  int num = 42;
+  int* ptr = &num;    // ptr stores address of num
+  cout << *ptr;       // prints 42 (value at address)
+  cout << ptr;        // prints memory address
+  *ptr = 100;         // modifies num through pointer
+
+Pointer Arithmetic
+------------------
+* Adding/subtracting integers
+* Relationship with data type size
+* Example
+
+.. code-block:: cpp
+
+  int arr[5] = {1, 2, 3, 4, 5};
+  int size = 5;
+  int* ptr = arr;  // points to first element
+
+  ptr++;      // moves to next integer (4 bytes)
+  cout << *ptr;   // 2
+
+  ptr += 2;   // moves forward 2 integers
+  cout << *ptr;   // 4
+
+Common Pointer Pitfalls
+-----------------------
+* Uninitialized pointers
+* Dangling pointers
+* Empty pointers (nullptr)
+* Example
+
+.. code-block:: cpp
+
+  int *ptr;           // Uninitialized (dangerous!)
+  int *safe = nullptr;// Safe initialization
+
+  int *danger;
+  {
+    int temp = 42;
+    danger = &temp;
+  }  // danger now dangling!
+
+Function Pass-by-pointer Example
+--------------------------------
+* Passing pointers to functions
+* Modifying variables through pointers
+* Example
+
+.. code-block:: cpp
+
+  void swap(int* a, int* b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+  }
+
+  int x = 10, y = 20;
+  swap(&x, &y);
+
+  cout << x << " " << y;  // 20 10
+
+Introduction to Arrays
+======================
+* Array declaration and initialization
+* Example
+
+.. code-block:: cpp
+
+  int array[10];  // Uninitialized array
+
+  int numbers[] = {1, 2, 3, 4, 5};
+  // int numbers[5] = {1, 2, 3, 4, 5};
+
+  // 2D array
+  int matrix[2][3] = {
+    {1, 2, 3},
+    {4, 5, 6}
+  };
+
+
+Array-Pointer Relationship
+--------------------------
+* Arrays decay to pointers
+* Array indexing vs pointer arithmetic
+* Example
+
+.. code-block:: cpp
+
+  int arr[] = {10, 20, 30, 40, 50};
+  // 5 integers * 4 bytes = 20 bytes are allocated
+  // arr is a pointer pointing to the first element
+
+  int *ptr = arr;  // points to first element
+  // int *prt = &arr[0];
+
+  // These are equivalent:
+  cout << arr[2];  // array indexing
+  cout << *(ptr+2);// pointer arithmetic
+  cout << *(arr+2);// arrays work with pointer arithmetic
+  cout << ptr[2];  // pointers work with array indexing
+
+Function Parameters
+-------------------
+* Arrays as parameters
+
+  * Empty [] or * syntax
+  * Decay to pointers
+  * Accompanied by size
+
+* Example
+
+.. code-block:: cpp
+
+  void processArray(int arr[], int size) {
+    for(int i = 0; i < size; i++)
+      arr[i] *= 2;
+  }
+
+  void processPointer(int *arr, int size) {
+    for(int i = 0; i < size; i++)
+      arr[i] *= 2;
+  }
+
+Dynamic Arrays
+--------------
+* Dynamic memory allocation
+* new and delete operators
+* Example
+
+.. code-block:: cpp
+
+  // Single dynamic array
+  int size = 5;
+  int* dynArr = new int[size];
+
+  // Initialize array
+  for(int i = 0; i < size; i++)
+    dynArr[i] = i * 10;
+
+  // Don't forget to deallocate!
+  delete [] dynArr;
+
+Practice Problems
+-----------------
+1. Write a function that reverses an array
+2. Implement a function to find the second largest element in an array

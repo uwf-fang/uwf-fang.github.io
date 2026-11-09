@@ -1,0 +1,126 @@
+**********************************
+Introduction to Big Data Analytics
+**********************************
+
+.. revealjs-section::
+  :data-background-color: white
+  :data-background-image: ../_static/logo.png
+  :data-background-size: 50%
+  :data-background-position: top center
+  :data-background-repeat: no-repeat
+
+.. container:: subtitle
+
+  **Chapter 10, 11: Cluster Managers; Monitoring**
+
+  |author|
+
+Outline
+=======
++ Overview of Cluster Managers for Spark
++ Standalone Cluster Manager
++ YARN Cluster Manager
++ Mesos Cluster Manager
++ Monitoring Spark Applications
+
+Cluster Managers for Spark
+==========================
++ Cluster manager: software that manages resources across a cluster
++ Major cluster managers for Spark:
+
+  - Standalone
+  - YARN
+  - Mesos
+  - Kubernetes (containerized workloads)
+  - AWS EMR (Elastic MapReduce)
+
+.. image:: /_static/spark-arch.png
+  :alt: Cluster managers
+  :width: 50%
+
+Spark on Cluster
+----------------
++ Spark can run in local mode without a cluster manager (for development)
++ Deploy Modes:
+
+  - Cluster mode: driver runs on a worker node
+  - Client mode: driver runs on the client machine
+
++ General process:
+
+  - Start cluster manager on every node
+  - Submit application to cluster manager
+
+    * spark-submit or spark-shell
+    * Specify master URL
+
+  - Cluster manager launches executors on worker nodes
+  - Executors run tasks for the application
+
+Standalone Cluster Manager
+==========================
++ Simple cluster manager that comes with Spark (no additional installation)
++ Architecture
+
+  * Master process: can run on any node
+  * Worker processes
+
++ Scripts
+
+  * start-master.sh
+  * start-slave.sh
+  * stop-master.sh
+  * stop-slave.sh
+  * start-all.sh
+  * stop-all.sh
+
+Apache Mesos Cluster Manager
+============================
++ General-purpose cluster manager
+
+  * Scalability to 10,000s of nodes
+  * Fault-tolerant masters and slaves
+  * Multi-resource (CPU, memory, disk, and ports) scheduling
+  * Support for Docker containers
+  * Native isolation between tasks
+
++ Architecture
+
+  * Master: 1 with optional standby, runs Spark scheduler
+  * Slave: many, runs Spark executors
+
++ Running mode:
+
+  * Fine-grained mode: dynamic sharing of resources
+  * Coarse-grained mode: single long-running task per slave for each spark
+    application
+
+YARN Cluster Manager
+====================
++ Yet Another Resource Negotiator
++ Hadoop's resource manager after version 2.0
++ Architecture
+
+  * Client
+  * Resource Manager
+  * Node Manager
+  * Application Master
+  * Container
+
+.. image:: /_static/hadoop-evolve.png
+  :alt: YARN in Hadoop
+  :width: 60%
+
+Cluster Monitoring
+==================
++ Spark UI
+
+  * Web interface
+  * Shows application details
+  * View status of jobs, stages, tasks, storage, executor, etc.
+
++ Databricks Community Edition
+
+  * Richer UIs including Spark UI can be opened in pop-up windows
+  * Brief job summary in the output of each cell that runs Spark jobs
+

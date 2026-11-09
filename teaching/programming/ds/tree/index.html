@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tree Data Structure · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/programming/">Algorithms and Data Structures</a> / Tree Data Structure</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Tree Data Structure</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#tree">Tree</a>
+      <ul>
+        <li><a href="#definition">Definition</a></li>
+        <li><a href="#categorized-tree-concepts">Categorized Tree Concepts</a></li>
+        <li><a href="#tree-glossary">Tree Glossary</a></li>
+        <li><a href="#applications-of-trees">Applications of Trees</a></li>
+        <li><a href="#tree-operations">Tree Operations</a></li>
+        <li><a href="#implementation-variations">Implementation Variations</a></li>
+      </ul>
+    </li>
+    <li><a href="#binary-tree">Binary tree</a>
+      <ul>
+        <li><a href="#id1">Definition</a></li>
+        <li><a href="#binary-tree-concepts">Binary Tree Concepts</a></li>
+        <li><a href="#binary-tree-operations">Binary Tree Operations</a></li>
+        <li><a href="#applications-of-binary-trees">Applications of binary trees</a></li>
+        <li><a href="#important-binary-tree-variation">Important Binary Tree Variation</a></li>
+        <li><a href="#binary-tree-implementation">Binary Tree Implementation</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="tree-data-structure"></span>
+<h2 id="tree">Tree</h2>
+<h3 id="definition">Definition</h3>
+<p>In <strong>graph theory</strong>, a tree is a connected and acyclic undirected graph, consisting of nodes and edges, where there are no closed loops or circuits, often used to model various real-world networks and relationships.</p>
+<p>In <strong>computer science</strong>, a tree is a hierarchical <strong>data structure</strong> composed of nodes connected by edges, where each node has a parent (except for the root node) and zero or more children, used for organizing and representing data with a clear and acyclic structure.</p>
+<p><strong>Recursive definition</strong> A tree is a collection of nodes where:</p>
+<ul>
+<li>There is a special node called the root.</li>
+<li>The root is connected to zero or more subtrees, each of which is also a tree.</li>
+<li>Each subtree is a tree in itself and follows the same recursive definition.</li>
+</ul>
+<p><img src="/teaching/_migration/71fb93b9a882b962.png" alt="Recursive definition of a tree"></p>
+<h3 id="categorized-tree-concepts">Categorized Tree Concepts</h3>
+<ul>
+<li>
+<p>Node (Vertex in graph theory)</p>
+<ul>
+<li>root: the topmost node</li>
+<li>internal nodes: nodes with at least one child</li>
+<li>leaf nodes: nodes with no child</li>
+<li>level/depth: the distance from the root node</li>
+<li>degree: the number of child nodes</li>
+</ul>
+</li>
+<li>
+<p>Edge</p>
+<p>Parent-child relationship</p>
+</li>
+<li>
+<p>Connectivity</p>
+<ul>
+<li>path: a sequence of nodes connected by edges</li>
+<li>distance: the number of edges found in a path</li>
+</ul>
+</li>
+<li>
+<p>Relationships</p>
+<ul>
+<li>parent/child: nodes connected by an edge</li>
+<li>ancestor/descendant: nodes reachable by proceeding from child to parent</li>
+<li>siblings: nodes with the same parent</li>
+</ul>
+</li>
+<li>
+<p>Tree properties</p>
+<ul>
+<li>degree: the maximum degree among all nodes</li>
+<li>height: the longest path in a tree; the maximum level/depth among all nodes</li>
+<li>level #: the set of nodes with the same level</li>
+<li>ordered/unordered: the order of sibling nodes</li>
+</ul>
+</li>
+</ul>
+<h3 id="tree-glossary">Tree Glossary</h3>
+<p><img src="/teaching/_migration/11aac088bae91682.png" alt="Tree Glossary"></p>
+<span id="term-Tree"></span>
+<dl>
+<dt>Tree</dt>
+<dd>A collection of nodes. Each node have a value and refers to zero to n other nodes (child nodes). Each node have one parent node except for the root.</dd>
+</dl>
+<span id="term-Root"></span>
+<dl>
+<dt>Root</dt>
+<dd>start point of a tree with no other nodes referring to it (not a child of any other node).</dd>
+</dl>
+<span id="term-Parent"></span>
+<dl>
+<dt>Parent</dt>
+<dd>A node is another node’s parent node if it refers to another node.</dd>
+</dl>
+<span id="term-Child"></span>
+<dl>
+<dt>Child</dt>
+<dd>A node is another node’s child node if it is referred by another node.</dd>
+</dl>
+<span id="term-Sibling"></span>
+<dl>
+<dt>Sibling</dt>
+<dd>A node is another node’s sibling node if they share the same parent.</dd>
+</dl>
+<span id="term-Leaf-node"></span>
+<dl>
+<dt>Leaf node</dt>
+<dd>Nodes with no child.</dd>
+</dl>
+<span id="term-Internal-node"></span>
+<dl>
+<dt>Internal node</dt>
+<dd>Nodes has a least one child. The root node is also an internal node except for the case of a tree with only one node, in which the root is a leaf node.</dd>
+</dl>
+<span id="term-Degree-of-a-node-Tree"></span>
+<dl>
+<dt>Degree of a node (Tree)</dt>
+<dd>The number of child nodes.</dd>
+</dl>
+<span id="term-Degree-of-a-tree"></span>
+<dl>
+<dt>Degree of a tree</dt>
+<dd>The maximum degree among all nodes.</dd>
+</dl>
+<span id="term-Edge-Link-Tree"></span>
+<dl>
+<dt>Edge/Link (Tree)</dt>
+<dd>The relationship between a parent and its child.</dd>
+</dl>
+<span id="term-Ancestor-Tree"></span>
+<dl>
+<dt>Ancestor (Tree)</dt>
+<dd>A node reachable by repeated proceeding from child to parent.</dd>
+</dl>
+<span id="term-Descendant-Tree"></span>
+<dl>
+<dt>Descendant (Tree)</dt>
+<dd>A node reachable by repeated proceeding from parent to child.</dd>
+</dl>
+<span id="term-Path-between-two-nodes-Tree"></span>
+<dl>
+<dt>Path between two nodes (Tree)</dt>
+<dd>A sequence of nodes connected by edges.</dd>
+</dl>
+<span id="term-Distance-between-two-nodes-tree"></span>
+<dl>
+<dt>Distance between two nodes (tree)</dt>
+<dd>The number of edges found in a path.</dd>
+</dl>
+<span id="term-Level-Depth-of-a-node-tree"></span>
+<dl>
+<dt>Level/Depth of a node (tree)</dt>
+<dd>The level of a node is the distance from the root node. Nodes can be grouped by levels.</dd>
+</dl>
+<span id="term-Height-of-a-tree-tree"></span>
+<dl>
+<dt>Height of a tree (tree)</dt>
+<dd>The maximum level/depth among all nodes; the longest path in a tree.</dd>
+</dl>
+<span id="term-Subtree"></span>
+<dl>
+<dt>Subtree</dt>
+<dd>A node with all of its descendants.</dd>
+</dl>
+<span id="term-Ordered-Tree"></span>
+<dl>
+<dt>Ordered Tree</dt>
+<dd>A tree in which sibling nodes are ordered.</dd>
+</dl>
+<span id="term-Unordered-Tree"></span>
+<dl>
+<dt>Unordered Tree</dt>
+<dd>A tree in which sibling nodes are unordered.</dd>
+</dl>
+<h3 id="applications-of-trees">Applications of Trees</h3>
+<ul>
+<li>File system (directory, sub-directory, and file)</li>
+<li>Decision making (decision tree)</li>
+<li>Indexing (binary search tree, B-tree)</li>
+<li>Parsing tree</li>
+<li>Heap (complete binary tree)</li>
+<li>Blockchain (Merkle tree)</li>
+<li>Search-based Artificial Intelligence (game tree)</li>
+</ul>
+<h3 id="tree-operations">Tree Operations</h3>
+<ul>
+<li>
+<p>Search</p>
+<ul>
+<li>Breadth-first search (BFS)</li>
+<li>Depth-first search (DFS)</li>
+</ul>
+</li>
+<li>
+<p>Insert</p>
+</li>
+<li>
+<p>Delete</p>
+</li>
+<li>
+<p>Traversal</p>
+<p>Visit all nodes in a tree in a systematic order.</p>
+<ul>
+<li>Breadth-first traversal: visit all nodes at the same level before proceeding to the next level. Also known as level-order traversal.</li>
+<li>Depth-first traversal: visit all nodes along a path before proceeding to the next path.
+<ul>
+<li>Pre-order: visit the current node before recursively visiting its subtrees.</li>
+<li>Post-order: visit the current node after recursively visiting its subtrees.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="implementation-variations">Implementation Variations</h3>
+<ul>
+<li>Each node stores a variable-length list of references to child nodes</li>
+<li>Each node stores a reference to its first child and a reference to its next sibling</li>
+<li>Each node stores a reference to its parent</li>
+</ul>
+<h2 id="binary-tree">Binary tree</h2>
+<h3 id="id1">Definition</h3>
+<p>Binary trees are ordered trees with degree of 2. Each node have at most two child nodes known as left and right child. Binary trees inherit all properties of trees and only binary tree specific properties are listed below.</p>
+<h3 id="binary-tree-concepts">Binary Tree Concepts</h3>
+<ul>
+<li>left/right child or first/second child</li>
+</ul>
+<h3 id="binary-tree-operations">Binary Tree Operations</h3>
+<ul>
+<li>In-order traversal: visit the current node between recursively visiting its left and right subtrees.</li>
+</ul>
+<h3 id="applications-of-binary-trees">Applications of binary trees</h3>
+<ul>
+<li>Binary search tree</li>
+<li>Expression parsing</li>
+<li>Binary decision tree</li>
+<li>Heap</li>
+<li>Huffman coding</li>
+</ul>
+<h3 id="important-binary-tree-variation">Important Binary Tree Variation</h3>
+<span id="term-Full-binary-tree"></span>
+<dl>
+<dt>Full binary tree</dt>
+<dd>A binary tree in which every node has 0 or 2 children.</dd>
+</dl>
+<span id="term-Complete-binary-tree"></span>
+<dl>
+<dt>Complete binary tree</dt>
+<dd>A Binary Tree is a Complete Binary Tree if all the levels are completely filled except possibly the last level and the last level has all keys as left as possible.</dd>
+</dl>
+<span id="term-Perfect-binary-tree"></span>
+<dl>
+<dt>Perfect binary tree</dt>
+<dd>A binary tree with all level filled.</dd>
+</dl>
+<h3 id="binary-tree-implementation">Binary Tree Implementation</h3>
+<ul>
+<li>Each node stores two references to its left and right child nodes.</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

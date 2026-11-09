@@ -1,0 +1,381 @@
+******************
+Algorithm Analysis
+******************
+
+.. container:: subtitle
+
+  |author|
+
+Outline
+=======
+* Motivation
+* Type of Analysis
+
+  - Empirical Analysis
+  - Theoretical Analysis
+
+    + Computational Complexity
+
+      * Asymptotic Notation
+      * Cases
+      * Examples
+
+Overview
+========
++ Motivation: To compare algorithms and select the best algorithm for a given
+  problem.
++ Types of Analysis
+
+.. container:: flex-container
+
+  .. container:: half
+
+    * Empirical Analysis (FYI)
+
+      + Implement, run, and measure the performance of the algorithms.
+      + Hardware and software dependent.
+      + A simple approach: <chrono> library in C++.
+
+    .. code-block:: cpp
+      :caption: Empirical analysis using <chrono> library
+
+      #include <iostream>
+      #include <chrono>
+
+      int main() {
+          // Start the clock
+          auto start = std::chrono::high_resolution_clock::now();
+          // Call the function to be measured
+          algorithm(parameter);
+          // Stop the clock
+          auto end = std::chrono::high_resolution_clock::now();
+          // Calculate the duration
+          std::chrono::duration<double> duration = end - start;
+          // Print the duration in seconds
+          std::cout << "Function took " << duration.count() << " seconds." << std::endl;
+          return 0;
+      }
+
+  .. container:: half
+
+    * Theoretical Analysis
+
+      + Mathematical analysis of the algorithms.
+      + Hardware and software independent.
+      + Computational complexity.
+
+    .. image:: /_static/growth-rate.png
+      :width: 70%
+
+    .. container:: footnote
+
+       Credit: https://en.wikipedia.org/wiki/Computational_complexity_of_mathematical_operations
+
+Computational Complexity
+========================
++ Definition: The computational complexity of an algorithm is an estimation of
+  the amount of resources required to run it. This model ignores the hardware
+  and software details and focuses on the resources required by the algorithm
+  as the problem size increases.
++ Resources: Time, Space, power consumption, network traffic, etc.
++ Time Complexity
+
+  * The number of constant time operations performed by the algorithm.
+  * A function of the input size n. :math:`T(n)` or :math:`T(N)`
+  * Approximation: **All constant time operations are considered one unit of
+    time.**
+
++ Space Complexity
+
+  * The amount of storage space (usually memory) required by the algorithm.
+  * Auxiliary space: The extra space required by the algorithm, excluding the
+    input size.
+  * A function of the input size n. :math:`S(n)` or :math:`S(N)`
+
+.. container:: footnote
+
+  We will focus on :math:`T(n)` afterwards and the same concepts apply to
+  :math:`S(n)`.
+
+Asymptotic Notation
+-------------------
++ Complexity can be a complicated and non-intuitive function and we need a
+  simple way to describe it.
++ A.k.a Bachmann–Landau notation. A mathematical notation system to
+  describe the limiting behavior of a function.
++ Provides a simple way to describe the complexity of an algorithm.
++ Big O notation :math:`T(n) = O(f(n))` describes the upper bound of the
+  function :math:`T(n)`.
++ Big Omega notation :math:`T(n) = \Omega(f(n))` describes the lower bound of
+  the function :math:`T(n)`.
++ **Big Theta notation** :math:`T(n) = \Theta(f(n))` describes the tight bound
+  of the function :math:`T(n)`.
++ Little o notation :math:`T(n) = o(f(n))` describes the strict upper bound of
+  the function :math:`T(n)`. (FYI)
+
+.. image:: /_static/asymptotic.png
+  :width: 50%
+
+How bounds work and which one to choose
+---------------------------------------
++ Infinite upper and lower bounds exist and we only care the 'tightest' ones.
++ If exist, the exact bound is the tightest upper and lower bound at the same
+  time. Thus, this is the most helpful bound.
++ If big theta does not exist, the tightest upper bound is the most helpful
+  bound.
++ E.g. Mark Zuckerberg's income is an upper bound to your income but it is not
+  helpful to estimate your income because it is not a "tight" upper bound.
+
+Considering Cases
+-----------------
+In complexity analysis, various cases are considered to assess the efficiency
+and performance of algorithms. These cases help us understand how algorithms
+behave under different scenarios and input distributions.
+
++ Best Case: The minimum amount of resources required by the algorithm.
++ Worst Case: The maximum amount of resources required by the algorithm.
++ Average Case: The average amount of resources required by the algorithm.
+
+.. warning::
+
+  **Bounds and cases are not directly related. Do not treat upper bound as
+  worst case and lower bound as best case!**
+
+  Each case provides a complexity as a function of problem size and we can use
+  upper/lower/exact bound to estimate the growth rate of this function.
+
+.. _alg-ana-exercise1:
+
+Checkpoint
+----------
++ How many searching and sorting algorithms do you know so far?
++ What is the complexity of each algorithm?
++ Is a Merge sort (:math:`\Theta(n \log n)`) always **faster** than an Insertion
+  sort (:math:`\Theta(n^2)`)?
+
+.. _alg-ana-answer1:
+
+Answers
+-------
++ You should have learned
+
+  * Linear search (:math:`\Theta(n)`)
+  * Binary search (:math:`\Theta(\log n)`)
+  * Selection sort (:math:`\Theta(n^2)`)
+  * Insertion sort (:math:`\Theta(n^2)`)
+  * Maybe Bubble sort (:math:`\Theta(n^2)`)
+
++ As a programmer, we should no longer use the term "faster" to compare
+  algorithms. We should use the term "more or less complex/efficient" instead.
+  Less complex means more efficient. It also means slower growth rate.
+
++ Merge sort is more efficient than Insertion sort in terms of time complexity.
+  However, it is not always faster than Insertion sort. The efficiency of an
+  algorithm depends on the problem size, the input distribution, and the
+  hardware characteristics.
+
+Find :math:`T(n)` 1
+-------------------
+.. container:: flex-container
+
+  .. container:: half
+
+    + :math:`T(n)` = number of constant time operations
+    + Each statement, and expression evaluation is considered
+      to take constant time.
+    + Function calls depend
+
+      * ``std::swap, cout <<, getline`` are constant time
+      * ``std::sort, std::search, std::shuffle`` are not constant time
+
+    + worst case: :math:`T(n) = 1 + n + 1 + n + n + 1 = 3n + 3 = \Theta(n)`
+    + Best case: :math:`T(n) 1 + 1 + 1 + 1 = 4 = \Theta(1)`
+
+  .. container:: half
+
+    .. code-block:: cpp
+
+      int search(int * arr, int size, int val) {
+        for (int i = 0; i < size; ++i)
+          if (arr[i] == val)
+            return i;
+        return -1;
+      }
+
+:math:`T(n)` of for loops
+-------------------------
+.. container:: flex-container
+
+  .. container:: half
+
+    + For a loop with :math:`n` iterations
+    + Init :math:`T(n) = 1`
+    + condition :math:`T(n) = n + 1`
+    + update :math:`T(n) = n`
+    + body :math:`T(n) = n`
+
+  .. container:: half
+
+    .. code-block:: cpp
+
+      for (init; condition; update) {
+        body statements;
+      }
+
+Find :math:`T(n)` Selection Sort
+--------------------------------
+.. container:: flex-container
+
+  .. container:: half
+
+    + :math:`T(n)` = number of comparisons + number of swaps
+    + number of comparisons = :math:`1 + 2 + 3 + ... + n - 1 = n(n - 1) / 2`
+    + number of swaps = :math:`n - 1`
+    + best case: no swap needed, sorting a sorted array
+    + :math:`T(n) = 1 + 2 + 3 + ... + n - 1 = n(n - 1) / 2 = \Theta(n^2)`
+    + worst case: swap needed every time, sorting a reverse sorted array
+    + :math:`T(n) = n(n - 1) / 2 + n - 1 = \Theta(n^2)`
+
+  .. container:: half
+
+    .. code-block:: cpp
+
+      // Sort an array to ascending order
+      // arr: array to be sorted, must not be nullptr
+      // size: must be greater than 0
+      void selectionSort(int * arr, int size) {
+        for (int i = 0; i < size - 1; ++i) {
+          int min = i;
+          for (int j = i + 1; j < size; ++j)
+            if (arr[j] < arr[min])
+              min = j;
+          if (min != i)
+            std::swap(arr[i], arr[min]);
+        }
+      }
+
+Find :math:`\Theta(f(n))` given :math:`T(n)`
+--------------------------------------------
+.. container:: smaller
+
+  + Keep the term with highest order. Drop the coefficient and lower order
+    terms.
+  + Example:
+
+    * :math:`T(n) = 20 \times n^2 + 10 \times n + 12 = \Theta(n^2)`
+    * :math:`T(n) = 5 \times 2^n + 3 \times n^3 = \Theta(2^n)`
+
+  + Exercise: Find a simplest :math:`\Theta(f(n))` for the following functions
+
+    * :math:`T(n) = 2n^2 + 3n \log n + 10`
+    * :math:`T(n) = 2n^2 + 3n + 1 + 5 \times 2^n`
+    * :math:`T(n) = 5 \log n + 5n`
+    * :math:`T(n) = n! + 2^n + 1000n`
+
+  .. list-table:: Common Growth Rates, from low to high order
+    :widths: 25 25
+    :header-rows: 1
+
+    * - Term
+      - Growth Rate
+    * - Constant Time
+      - :math:`1`
+    * - Logarithmic
+      - :math:`\log n`
+    * - Linear
+      - :math:`n`
+    * - Linearithmic
+      - :math:`n \log n`
+    * - Quadratic
+      - :math:`n^2`
+    * - Cubic
+      - :math:`n^3`
+    * - Exponential
+      - :math:`2^n`
+    * - Factorial
+      - :math:`n!`
+
+Find :math:`\Theta(f(n))` directly
+----------------------------------
++ Much easier than finding :math:`T(n)` first.
++ additive (sequential, branch)
+
+  * :math:`\Theta(f(n)) + \Theta(g(n)) = \Theta(f(n) + g(n))`
+  * E.g. Initialize an array and then sort it using selection sort:
+    :math:`\Theta(n) + \Theta(n^2) = \Theta(n^2)`
+
++ multiplicative (nested loop, recursion)
+
+  * :math:`\Theta(f(n)) \times \Theta(g(n)) = \Theta(f(n) \times g(n))`
+  * Where :math:`f(n)` and :math:`g(n)` are outer loop complexity and per
+    iteration complexity respectively.
+  * Examples:
+
+    - Selection sort :math:`\Theta(n) \times \Theta(n) = \Theta(n^2)`
+    - Binary search :math:`\Theta(\log n) \times \Theta(1) = \Theta(\log n)`
+    - Merge sort :math:`\Theta(\log n) \times \Theta(n) = \Theta(n \log n)`
+
+Algorithms of Certain Complexity
+--------------------------------
+
+.. container:: footnote
+
+  .. list-table:: Typical Complexity and Representative Algorithms
+    :widths: 20 30 50
+    :header-rows: 1
+
+    * - Name
+      - Complexity (Prefer Big Theta)
+      - Representative Algorithms
+    * - Constant
+      - :math:`\Theta(1)`
+      - Array indexing, Hash table lookups
+    * - Logarithmic
+      - :math:`\Theta(\log n)`
+      - Binary Search, Balanced Binary Search Trees (e.g., AVL, Red-Black)
+    * - Linear
+      - :math:`\Theta(n)`
+      - Linear Search, Most Simple Array/Linked List Operations
+    * - Linearithmic
+      - :math:`\Theta(n \log n)`
+      - Merge Sort, Heap Sort, Quick sort
+    * - Quadratic
+      - :math:`\Theta(n^2)`
+      - Bubble Sort, Selection Sort, Insertion Sort
+    * - Exponential
+      - :math:`\Theta(2^n)`
+      - Recursive algorithms without memoization (e.g., naive Fibonacci)
+    * - Factorial
+      - :math:`\Theta(n!)`
+      - Traveling Salesman Problem (naive solution)
+
+.. _alg-ana-exercise2:
+
+Exercise
+--------
++ Given the following function:
+
+  .. code-block::
+
+    bool isReverse(const char* arr1, const char* arr2, int length) {
+        for (int i = 0; i < length; ++i)
+            if (arr1[i] != arr2[length - 1 - i])
+                return false;
+        return true;
+    }
+
++ What is the best and worst case time complexity function?
++ What is the problem size?
++ What is the worst case bound? (which bound to use?)
+
+.. _alg-ana-answer2:
+
+Answers
+-------
++ Best case is when the first comparison fails. The loop will only run once.
++ Worst case is when all comparisons passes or the last comparison fails. The
+  loop will run :math:`n` times.
++ The problem size is the length of the arrays.
++ The worst case bound is :math:`\Theta(n)`.
+
+.. include:: ../sections/amortized-ana.rst

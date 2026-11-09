@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C Language Features Used in This Course · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/course/cop5522/parallel-env/">Development Environment For Parallel Programming</a></li><li><a href="/teaching/course/cop5522/clang/" aria-current="page">C Language Features Used in This Course</a></li><li><a href="/teaching/cpp/ccpp-env/">C/C&#43;&#43; Development Environment</a></li><li><a href="/teaching/developer-tools/make/">GNU Make</a></li></ul><ul><li><a href="/teaching/course/cop5522/ch01/">Chapter 1: Introduction To Parallel Programming</a></li><li><a href="/teaching/course/cop5522/ch02/">Chapter 2: Parallel Hardware and Software</a></li><li><a href="/teaching/course/cop5522/ch03/">Chapter 3: Shared-Memory Programming with OpenMP</a></li><li><a href="/teaching/course/cop5522/ch04/">Chapter 4: OpenMP Case Study: N-body problem</a></li><li><a href="/teaching/course/cop5522/ch05/">Chapter 5: Distributed Memory Programming with MPI</a></li><li><a href="/teaching/course/cop5522/ch06/">Chapter 6: MPI Case Study, and Pthread</a></li></ul><ul><li><a href="/teaching/course/cop5522/midterm/">Midterm Topic Outline</a></li><li><a href="/teaching/course/cop5522/final/">Final Topic Review</a></li></ul><ul><li><a href="/teaching/course/cop5522/homework/">Homework Instruction</a></li><li><a href="/teaching/course/cop5522/project/">Research Project: Parallelization of Serial Algorithms</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/course/cop5522/">COP 5522 Parallel and Distributed Programming</a> / C Language Features Used in This Course</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>C Language Features Used in This Course</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#compiler">Compiler</a>
+      <ul>
+        <li><a href="#gcc">gcc</a></li>
+        <li><a href="#compilation-command">Compilation Command</a></li>
+        <li><a href="#useful-compilation-flags">Useful Compilation Flags</a></li>
+      </ul>
+    </li>
+    <li><a href="#performance-optimization-in-c-language">Performance Optimization in C Language</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="c-language-features-used-in-this-course"></span>
+<p>This documents summarize the C language features frequently employed in this course.</p>
+<h2 id="compiler">Compiler</h2>
+<h3 id="gcc">gcc</h3>
+<p>We choose the <code>gcc</code> C language compiler from GCC (GNU Compiler Collection) as our official compiler. This is the default C compiler on Linux (including the Windows subsystem of Linux, WSL). Use other compilers at your own risk.</p>
+<aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p>The <code>gcc</code> provided with the <code>MinGW</code> package under Windows is not totally compatible to the <code>gcc</code> we use. Use it at your own risk.</p>
+</div></aside>
+<aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p>The <code>gcc</code> from the Xcode Command-line tool on macOS is an alias of <code>clang</code>, which is the LLVM C compiler. It has some known differences with the <code>OpenMP</code> for <code>gcc</code> covered in class.</p>
+</div></aside>
+<h3 id="compilation-command">Compilation Command</h3>
+<p>A typical <code>gcc</code> compilation command looks like:</p>
+<pre tabindex="0"><code class="language-default" data-lang="default">gcc &lt;flags&gt; &lt;arguments&gt;
+</code></pre><ul>
+<li><code>&lt;flags&gt;</code> are the compilation flags</li>
+<li><code>&lt;arguments&gt;</code> are the source files (.c) and libraries (.o)</li>
+</ul>
+<h3 id="useful-compilation-flags">Useful Compilation Flags</h3>
+<ul>
+<li><code>-O</code> specifies the compilation optimization level
+<ul>
+<li><code>-O0</code> reduced optimization, default level, use as baseline</li>
+<li><code>-O2</code></li>
+<li><code>-O3</code> recommended</li>
+<li><code>-Ofast</code> with non-standard-compliant optimizations</li>
+</ul>
+</li>
+<li><code>-I</code> specifies the path to include headers
+<ul>
+<li>No space between <code>-I</code> and the path!</li>
+<li><code>-I.</code> means to look for headers in the current directory</li>
+</ul>
+</li>
+<li><code>-l</code> specifies the libraries to use
+<ul>
+<li><code>-lpthread</code> POSIX thread library</li>
+</ul>
+</li>
+<li><code>-f</code> specifies flags
+<ul>
+<li><code>-fpic</code>  Position dependent</li>
+<li><code>-fopenmp</code>  enable OpenMP support</li>
+</ul>
+</li>
+<li><code>-m</code> specifies the architecture
+<ul>
+<li><code>-march=native</code>  use the native architecture</li>
+<li><code>-m64</code>  use 64-bit architecture</li>
+<li><code>-msse4.2</code>  use SSE4.2 instruction set</li>
+</ul>
+</li>
+<li><code>-std</code> specifies the C language standard
+<ul>
+<li><code>-std=gnu90</code></li>
+<li><code>-std=gnu11</code></li>
+<li><code>-std=c99 -pedantic</code></li>
+<li><code>-std=c11 -pedantic</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="performance-optimization-in-c-language">Performance Optimization in C Language</h2>
+<ul>
+<li>
+<p>Compilation optimization</p>
+<ul>
+<li><code>-O2</code></li>
+<li><code>-O3</code></li>
+<li><code>-Ofast</code></li>
+<li><code>-ffast-math</code></li>
+</ul>
+</li>
+<li>
+<p>Selected Optimization Approaches</p>
+<ul>
+<li>Loop unrolling</li>
+<li>Cache awareness
+<ul>
+<li>Optimize the memory access pattern for better cache performance</li>
+<li>Loop interchange</li>
+<li>Loop tiling</li>
+</ul>
+</li>
+<li>Vectorization (hardware architecture dependent)
+<ul>
+<li>Intel MMX, SSE, AVX</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Memory operations</p>
+<p>Block memory operations are usually faster than element-wise operations. The strategy is to use block memory operations whenever possible. The following functions are frequently used in this course:</p>
+<ul>
+<li>Memory allocation/deallocation
+<ul>
+<li><code>malloc</code> and <code>free</code></li>
+<li><code>calloc</code> and <code>free</code></li>
+<li><code>aligned_alloc</code> and <code>free</code> (C11)</li>
+</ul>
+</li>
+<li>Memory block copy/set
+<ul>
+<li><code>memcpy</code></li>
+<li><code>memset</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GitHub CLI (gh) for Students · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / GitHub CLI (gh) for Students</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>GitHub CLI (gh) for Students</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#recommended-classroom-50-method">Recommended Classroom 50 method</a></li>
+    <li><a href="#what-gh-does">What <code>gh</code> does</a></li>
+    <li><a href="#install-and-authenticate-gh">Install and authenticate <code>gh</code></a></li>
+    <li><a href="#clone-and-inspect-a-repository">Clone and inspect a repository</a></li>
+    <li><a href="#classroom-50-extensions">Classroom 50 extensions</a></li>
+    <li><a href="#submit-only-assignments">Submit-only assignments</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="github-cli-gh-for-students"></span>
+<p>This guide introduces the GitHub Command Line Interface, abbreviated <code>gh</code>, and the optional Classroom 50 student extension. It applies to assignment repositories used in COP3530 and COP4534.</p>
+<h2 id="recommended-classroom-50-method">Recommended Classroom 50 method</h2>
+<p>Use the Classroom 50 web interface to sign in, select your roster name, accept assignments, and check submission status and grades. This is the recommended method for students and the easiest method to troubleshoot.</p>
+<p>The CLI method below is only for experienced users who already understand Git, GitHub repositories, and terminal commands. <code>gh</code> does not replace Classroom 50, and it does not change the assignment submission rules.</p>
+<h2 id="what-gh-does">What <code>gh</code> does</h2>
+<p><code>gh</code> is GitHub’s official command-line tool. It complements standard <code>git</code> commands:</p>
+<ul>
+<li><code>git</code> manages the local repository, including files, commits, branches, and push/pull operations.</li>
+<li><code>gh</code> communicates with GitHub, including repository information and Actions workflow results.</li>
+</ul>
+<p>You can use both tools in the same assignment directory. The normal development and submission loop still uses Git:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-console" data-lang="console"><span style="display:flex;"><span><span style="color:#1f2328">git add .
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">git commit -m &#34;Complete assignment&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">git push origin main
+</span></span></span></code></pre></div><h2 id="install-and-authenticate-gh">Install and authenticate <code>gh</code></h2>
+<p>Install <code>gh</code> using the <a href="https://github.com/cli/cli#installation">official installation instructions</a>. Verify the installation:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-console" data-lang="console"><span style="display:flex;"><span><span style="color:#1f2328">gh --version
+</span></span></span></code></pre></div><p>Authenticate the standard GitHub CLI before using any Classroom 50 extension commands:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-console" data-lang="console"><span style="display:flex;"><span><span style="color:#1f2328">gh auth login
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">gh auth status
+</span></span></span></code></pre></div><p>Choose GitHub.com and complete the browser authentication flow. Use the GitHub account associated with your course account. Do not put access tokens in a command, script, or repository.</p>
+<h2 id="clone-and-inspect-a-repository">Clone and inspect a repository</h2>
+<p>After accepting an assignment through the Classroom 50 web interface, an experienced user may clone the repository with <code>gh</code>:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-console" data-lang="console"><span style="display:flex;"><span><span style="color:#1f2328">gh repo clone ORGANIZATION/REPOSITORY
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">cd REPOSITORY
+</span></span></span></code></pre></div><p>The standard <code>git clone REPOSITORY-URL</code> command is equally valid. From inside the repository, these commands can help inspect GitHub and its automated checks:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-console" data-lang="console"><span style="display:flex;"><span><span style="color:#1f2328">gh repo view --web
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">gh run list
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">gh run view
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">gh run watch
+</span></span></span></code></pre></div><p>The repository page and <strong>Actions</strong> tab in the web interface are recommended if these commands are unfamiliar.</p>
+<h2 id="classroom-50-extensions">Classroom 50 extensions</h2>
+<p>The <code>gh student</code> commands belong to an optional Classroom 50 extension; they are not standard Git commands and are not part of the core <code>gh</code> tool. Use the web interface instead unless you are comfortable installing and troubleshooting CLI extensions.</p>
+<p>If your instructor directs you to use the extension, install it and sign in:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-console" data-lang="console"><span style="display:flex;"><span><span style="color:#1f2328">gh extension install foundation50/gh-student --pin v1.28.1 --force
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">gh extension install foundation50/gh-teacher --pin v1.28.1 --force
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">gh student login
+</span></span></span></code></pre></div><p>The public <a href="https://classroom50.org">classroom50.org</a> frontend is updated frequently, so update the CLI extensions frequently when using it. If your course uses a self-hosted frontend, pin both the website and CLI extensions to the same version. The current course pin is <code>1.28.1</code>; keep both extensions pinned to <code>v1.28.1</code> so the CLI remains compatible with that website.</p>
+<p>After <code>gh auth login</code> and <code>gh student login</code> succeed, an experienced user may accept an assignment from the terminal:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-console" data-lang="console"><span style="display:flex;"><span><span style="color:#1f2328">gh student accept ORGANIZATION CLASSROOM ASSIGNMENT
+</span></span></span></code></pre></div><p>The extension may accept pending organization invitations, create the repository, and print a clone command. Confirm that the organization, classroom, assignment, and GitHub account are correct before continuing.</p>
+<h2 id="submit-only-assignments">Submit-only assignments</h2>
+<p>Some assignments grade every push; others require an explicit submission. Use the method specified by your instructor. Experienced CLI users may use the student extension:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-console" data-lang="console"><span style="display:flex;"><span><span style="color:#1f2328">gh student submit
+</span></span></span></code></pre></div><p>The standard Git tag method is also available when instructed:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-console" data-lang="console"><span style="display:flex;"><span><span style="color:#1f2328">git tag submit/final
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">git push origin submit/final
+</span></span></span></code></pre></div><p>When in doubt, return to the Classroom 50 web interface and the repository’s Actions page, or contact the instructor with the repository URL and error output.</p>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

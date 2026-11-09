@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Development Environment For Parallel Programming · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/course/cop5522/parallel-env/" aria-current="page">Development Environment For Parallel Programming</a></li><li><a href="/teaching/course/cop5522/clang/">C Language Features Used in This Course</a></li><li><a href="/teaching/cpp/ccpp-env/">C/C&#43;&#43; Development Environment</a></li><li><a href="/teaching/developer-tools/make/">GNU Make</a></li></ul><ul><li><a href="/teaching/course/cop5522/ch01/">Chapter 1: Introduction To Parallel Programming</a></li><li><a href="/teaching/course/cop5522/ch02/">Chapter 2: Parallel Hardware and Software</a></li><li><a href="/teaching/course/cop5522/ch03/">Chapter 3: Shared-Memory Programming with OpenMP</a></li><li><a href="/teaching/course/cop5522/ch04/">Chapter 4: OpenMP Case Study: N-body problem</a></li><li><a href="/teaching/course/cop5522/ch05/">Chapter 5: Distributed Memory Programming with MPI</a></li><li><a href="/teaching/course/cop5522/ch06/">Chapter 6: MPI Case Study, and Pthread</a></li></ul><ul><li><a href="/teaching/course/cop5522/midterm/">Midterm Topic Outline</a></li><li><a href="/teaching/course/cop5522/final/">Final Topic Review</a></li></ul><ul><li><a href="/teaching/course/cop5522/homework/">Homework Instruction</a></li><li><a href="/teaching/course/cop5522/project/">Research Project: Parallelization of Serial Algorithms</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/course/cop5522/">COP 5522 Parallel and Distributed Programming</a> / Development Environment For Parallel Programming</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Development Environment For Parallel Programming</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#tool-chain">Tool Chain</a></li>
+    <li><a href="#operating-system-dependent-installation">Operating System Dependent Installation</a>
+      <ul>
+        <li><a href="#linux">Linux</a></li>
+        <li><a href="#ssh-server">SSH server</a></li>
+        <li><a href="#windows-wsl-windows-subsystem-for-linux">Windows WSL (Windows subsystem for linux)</a></li>
+        <li><a href="#macos">macOS</a></li>
+        <li><a href="#external-hpc-cloud">External HPC/Cloud</a></li>
+      </ul>
+    </li>
+    <li><a href="#collect-hardware-info">Collect Hardware Info</a></li>
+    <li><a href="#programming-language">Programming language</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="development-environment-for-parallel-programming"></span>
+<h2 id="tool-chain">Tool Chain</h2>
+<ul>
+<li>gcc</li>
+<li>make</li>
+<li>mpicc/mpiexec</li>
+<li>OpenMP</li>
+</ul>
+<h2 id="operating-system-dependent-installation">Operating System Dependent Installation</h2>
+<h3 id="linux">Linux</h3>
+<ul>
+<li>install gcc and make <code>sudo apt install build-essential</code></li>
+<li>install mpich using <code>sudo apt install mpich</code></li>
+</ul>
+<h3 id="ssh-server">SSH server</h3>
+<ul>
+<li>gcc and make pre-installed</li>
+<li>enable MPI using command <code>module load mpi/openmpi-x86_64</code></li>
+</ul>
+<h3 id="windows-wsl-windows-subsystem-for-linux">Windows WSL (Windows subsystem for linux)</h3>
+<ul>
+<li>install Ubuntu 22.04 LTS from the Microsoft Store</li>
+<li>Run it for the first time and set user name and password for Ubuntu</li>
+<li>install gcc and make <code>sudo apt install build-essential</code></li>
+<li>install mpich using <code>sudo apt install mpich</code></li>
+</ul>
+<h3 id="macos">macOS</h3>
+<p>Overall, macOS is not recommended. One of the reason is that the OpenMP and MPI library under macOS is different from the one under Linux unless you compile your own from source.</p>
+<ul>
+<li>
+<p>Install Xcode command line tool (may have compatibility issue)</p>
+<p>By installing the Xcode command-line tool, you get the <code>gcc</code> command that is actually an alias to the <code>clang</code> command. The <code>clang</code> command is the invocation command of the LLVM C compiler rather than the GNU C compiler. It works in most cases but need special handling for packages like OpenMP, etc.</p>
+<ul>
+<li>install xcode command line tool  <code>sudo xcode-select --install</code></li>
+<li>use <code>homebrew</code> to install mpich
+<ul>
+<li>You need to install homebrew first</li>
+<li><code>brew install mpich</code></li>
+</ul>
+</li>
+<li>special handling to install OpenMP
+<ul>
+<li>install libomp <code>brew install libomp</code></li>
+<li>configure as needed</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Install the real GCC</p>
+<ul>
+<li>
+<p>install gcc <code>brew install gcc</code></p>
+</li>
+<li>
+<p>alias gcc</p>
+<p>The command <code>gcc</code> and <code>g++</code> are usually linked to <code>clang</code> and <code>clang++</code> when Xcode command-line tools are installed. You need to change it back to point to the real <code>gcc</code> and <code>g++</code>.</p>
+<p>In your <code>.bash_profile</code> file, add the following lines (change the suffix 12 to the version number you have):</p>
+<pre tabindex="0"><code class="language-default" data-lang="default">alias gcc=&#39;gcc-12&#39;
+alias g++=&#39;g++-12&#39;
+</code></pre><p>Source the <code>.bash_profile</code> or rerun your shell.</p>
+</li>
+<li>
+<p>install MPI</p>
+<ul>
+<li>
+<p>add the following to the <code>.bash_profile</code> (change the suffix 12 to the version number you have):</p>
+<pre tabindex="0"><code class="language-default" data-lang="default">export HOMEBREW_CC=gcc-12
+export HOMEBREW_CXX=g++-12
+</code></pre></li>
+<li>
+<p><code>brew install mpich --build-from-source</code> will take long time to compile</p>
+</li>
+</ul>
+</li>
+<li>
+<p>OpenMP is built-in in the gcc package</p>
+<ul>
+<li>compile with <code>-pthread</code> flag</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="external-hpc-cloud">External HPC/Cloud</h3>
+<ul>
+<li>Google Colab (<a href="https://colab.research.google.com/">https://colab.research.google.com/</a>)
+<ul>
+<li>free for everyone</li>
+<li>access to GPU</li>
+</ul>
+</li>
+<li>access-ci.org
+<ul>
+<li>NSF Funded</li>
+<li>access to real cluster</li>
+<li>may apply GPU node</li>
+<li>proposal required</li>
+</ul>
+</li>
+</ul>
+<h2 id="collect-hardware-info">Collect Hardware Info</h2>
+<ul>
+<li>Comprehensive CPU information
+<ul>
+<li>Linux shell: <code>lscpu</code>; <code>cat /proc/cpuinfo</code></li>
+<li>macOS shell: <code>sysctl -a machdep.cpu</code></li>
+</ul>
+</li>
+<li>Architecture
+<ul>
+<li>shell: <code>uname -m</code></li>
+</ul>
+</li>
+<li>Important information
+<ul>
+<li>Number of cores</li>
+<li>Architectures
+<ul>
+<li>x86_64 - Intel/AMD x86</li>
+<li>aarch64 - ARM</li>
+</ul>
+</li>
+<li>CPU features
+<ul>
+<li>SIMD features: MMX, SSE, AVX, AVX2, AVX512, etc.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="programming-language">Programming language</h2>
+<ul>
+<li>C
+<ul>
+<li>used in all demonstrations</li>
+<li>recommend to learn by reference search</li>
+</ul>
+</li>
+<li>C++
+<ul>
+<li>not officially supported in this class but you can choose to use it</li>
+<li>more features/libraries</li>
+<li>can call any C library</li>
+<li>heterogeneous compilation with C libraries using gcc</li>
+<li>object-oriented</li>
+</ul>
+</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

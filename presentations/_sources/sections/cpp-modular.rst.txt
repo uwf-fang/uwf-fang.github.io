@@ -1,0 +1,304 @@
+**************************
+Modular Development in C++
+**************************
+
+.. container:: subtitle
+
+  |author|
+
+Outline
+=======
++ Overview
+
+  * Definition
+  * Motivation and benefits
+  * Source code organization
+  * C++ building model
+
++ Building using GNU g++
+
+  * Preprocessing directives
+  * One step compilation
+  * Step-wise modular compilation
+
++ Automate the building process using GNU make
+
+  * Makefile
+  * Modular compilation using make
+
++ Pitfalls and common errors
+
+TL;DR
+=====
++ Must go modular in this course!
++ No longer have single-cpp-file projects.
++ Organize source code as header and source files.
++ Logically organized as drivers and modules.
++ Use g++ step-wise compilation
++ Learn **basic** makefile syntax
+
+Modular Development Overview
+============================
++ Definition
+
+  Modular development in C++ refers to the practice of designing and
+  structuring a software application as a collection of independent and
+  reusable modules or components. Each module encapsulates a specific set of
+  functionality, and these modules can be developed, tested, and maintained
+  separately from each other.
+
++ Motivation and benefits
+
+  * Code reusability
+  * Simplicity
+  * Encapsulation
+  * Parallel development
+  * Flexibility
+  * Testability
+
+Source Code Organization
+------------------------
+.. container:: flex-container
+
+  .. container:: half
+
+    + Two types of files (physical units)
+
+      * Header files
+
+        - contain **declarations** of **public** classes, functions, global
+          variables, etc.
+        - have extension `.hpp`
+
+      * Source files
+
+        - contain **definitions** of **public** classes, functions, etc.
+        - contain **private declarations and definitions**
+        - preferred extension `.cpp`
+
+  .. container:: half
+
+    + Logical units
+
+      * Drivers
+
+        - **contains a ``main`` function**
+        - generally have no paired header file
+        - one per executable
+        - E.g. ``main.cpp``, ``test.cpp``, ``driver.cpp``, etc.
+
+      * Modules (or libraries)
+
+        - **no ``main`` function**
+        - contain classes, functions, global variables, etc. to be used by the
+          driver or other modules
+        - **paired hpp and cpp files** or **header only**
+        - E.g. ``table.hpp + table.cpp``, ``list.hpp + list.cpp``, etc.
+        - this term is used interchangeably with "library" in this course; it
+          may be defined differently in other contexts
+
+Quick Quiz
+----------
+In a project with files: ``main.cpp``, ``table.hpp``, ``table.cpp``, and
+``list.hpp``, find which files belongs to the following categories:
+
+1. Driver
+2. Module (paired files)
+3. Module (header only)
+
+Try it in ExcalidDraw: `link <quiz1_>`_
+
+.. _quiz1: https://excalidraw.com/#json=dCqPvMfGFINUsva4FAEAD,cIEnWcZTtHCA7JKWGCo5IQ
+
+C++ Building Model
+------------------
++ The process of translating source codes into executables or libraries is
+  called **building**.
++ Inherited from C, C++ building process is complicated and tedious.
++ The building process consists of three stages:
+
+  * Preprocessing
+
+    - process all preprocessor directives
+    - the ``#include`` directive injects hpp file contents into cpp files
+
+  * Compiling
+
+    - compile cpp files into object files
+    - one object file for each cpp file
+
+  * Linking
+
+    - link object files into an executable
+    - link object files with libraries (FYI)
+
+.. image:: /_static/cpp-build-process.png
+  :alt: C++ Building Process of an Executable
+  :width: 100%
+
+Building using GNU g++
+======================
++ Overview
+
+  g++ is the GNU C++ compiler invocation command. It builds C++ source codes to
+  produce libraries or executables. It serves as pre-processor, compiler, and
+  linker for C++ projects.
+
++ g++ command syntax
+
+  .. code-block:: bash
+
+    g++ [options] [files]
+
+  * ``files``: source files, object files
+  * ``options``: a list of options to control the building process
+
+Preprocessing directives
+------------------------
++ Commands to the preprocessor.
++ They start with ``#`` and end with no semicolon.
++ ``#include <header>``: inject the content of header file into the current
+  file.
++ ``#define``: define a macro (text replacement rule).
++ Header guards: prevent header files from being included multiple times.
+
+  .. code-block::
+
+    #ifndef HEADER_GUARD
+    #define HEADER_GUARD
+
+    // header file content
+
+    #endif
+
+Two building approaches: One step
+---------------------------------
++ **Not recommended** for modular projects.
++ Should be limited to simple projects.
++ Preprocessing + Compilation + Linking all at once
++ Generate one executable from **a single driver** and other
+  source files for modules
+
+.. code-block:: bash
+
+  g++ -std=c++14 -I<path/to/headers> -o <executable> <list of .cpp files>
+
+Two building approaches: Step-wise
+----------------------------------
++ **Recommended** for modular projects.
++ Allows fine control over the building process of complicated modular
+  projects.
++ Preprocessing + Compilation
+
+  - g++ flag: ``-c``
+  - generate one object file for each cpp file
+
+  .. code-block:: bash
+
+    g++ -c -Wall -std=c++14 -I<path/to/headers> <file>.cpp
+
++ Linking
+
+  - generate one executable from object file of **a driver** and other object
+    files of modules
+
+  .. code-block:: bash
+
+    g++ -o <executable> <list of .o files>
+
++ Common errors: `link <gpp-errors_>`_
+
+.. _gpp-errors: https://uwf-fang.github.io/cpp/building/gpp.html#common-error-messages-from-g
+
+Never Do This!
+--------------
++ Include cpp files using #include directive
++ File name mismatch between #include directive and actual file name; Commonly
+  caused by the use of capital letters in file names
++ Include header file names in the g++ command line
++ Linking object files of multiple drivers into one executable
++ Forget to include header guards in header files
++ Forget ``-c`` flag in the compilation command
+
+Quick Quiz
+----------
+What is wrong with the following commands? What type of building approach is?
+
++ ``g++ -o main main.cpp grade-book.cpp grades.hpp``
++ ``g++ -o main.o main.cpp``
++ ``g++ -c -o main.o main.cpp grade-book.cpp``
+
+Automate the building process using GNU make
+============================================
+.. container:: flex-container
+
+  .. container:: half
+
+    + Overview
+
+      * Step-wise modular building is tedious and error-prone.
+      * GNU make is a tool to automate building process.
+      * ``make`` is the command-line command to trigger GNU make.
+
+    + Makefile
+
+      The configuration file that contains rules to guide the ``make`` command
+      to build targets in a project.
+
+    + Modular building using GNU make
+
+      * Define rules to compile and link
+      * Have complicated syntax for makefile but easy to start with
+
+    + Common make errors: `link <make-errors_>`_
+
+  .. container:: half
+
+    + See the `Diagram <modular1_>`_ of the modular dependencies
+
+    .. code-block:: makefile
+
+      # declare virtual targets
+      .PHONY: clean
+
+      # Linking to provide the executable
+      main: main.o grade-book.o student.o grades.o
+          g++ -o main main.o grade-book.o student.o grades.o
+
+      # Compile. One cpp file a time.
+      main.o: main.cpp grade-book.hpp student.hpp
+          g++ -std=c++14 -Wall -g -c main.cpp
+
+      student.o: student.cpp student.hpp
+          g++ -std=c++14 -Wall -g -c student.cpp
+
+      grades.o: grades.cpp grades.hpp
+          g++ -std=c++14 -Wall -g -c grades.cpp
+
+      grade-book.o: grade-book.cpp grade-book.hpp student.hpp grades.hpp
+          g++ -std=c++14 -Wall -g -c grade-book.cpp
+
+      # the 'clean' virtual target to remove temporary files
+      clean:
+          rm -rf *.o main *.gc* *.dSYM
+
+.. _make-errors: https://uwf-fang.github.io/tools/make.html#common-error-messages-from-make
+
+.. _modular1: https://mermaid.live/edit#pako:eNp1U01zgjAU_CvMOyOjRQE59FLbaw_21NJxAkRjCwlDkhmt439vwjcYuJD3dvftJoEbJCzFEMKpRAWxPnYRtdTDZVw3Xi84kQLFGa4B_eToTOsK0zSiE8V7_IMTYb2dM8zHmgP70i-Hffd9pUnxIWbsV6FVsdDFiMOFTDEVitCsHifwVs07zJRtz2SZYGO2pCjqdGphzqcZg4RjXptRk9qUhkm8n8LnncjYiRidyMCJmJxI79Tjg1PRu7UWi-fmbibN4cVMoO4-TBKu2z1wYL2F2u8DMN71AzzYbHeZrfuI0M02wwN9m3IYuVObwKm2OZRp_PGMGRKZJY2Szo-p4oANOS7VMaXqx71pegSC4BxHEKplio9IZiKCiN4VFUnB9leaQChKiW0omTwRCI8o46qSRYoE3p2RGp933QLRT8byVnIqtVUjV58QLl-YpALClf9UkSG8wQXCYOts3dV2Hbiuu166fmDDVXV9Z7P0PE91PW_lru82_FXDl07gb-7_Elh4IQ
+
+Use GNU make to build
+---------------------
++ Create a makefile in the project directory.
++ Define rules for compiling and linking.
++ Run ``make`` commands:
+
+  * ``make``: build the first target in the makefile, you can press tab to
+    auto-complete the target name
+  * ``make <target>``: build the specified target
+  * ``make clean``: remove temporary files
+
++ Common make targets in projects
+
+  * ``make test-all``: run all tests
+  * ``make test-#-name``: run test number #
+  * ``make test-run``: compile and run the program

@@ -1,0 +1,320 @@
+**********************************
+Introduction to Big Data Analytics
+**********************************
+
+.. revealjs-section::
+  :data-background-color: white
+  :data-background-image: ../_static/logo.png
+  :data-background-size: 50%
+  :data-background-position: top center
+  :data-background-repeat: no-repeat
+
+.. container:: subtitle
+
+  **Chapter 7: Spark SQL**
+
+  |author|
+
+Outline
+=======
++ Spark SQL Overview
++ Performance Optimization
++ Applications
++ DataFrame API
+
+Spark SQL Overview
+==================
++ A Spark module for structured data processing
+
+  * Integrated with other Spark components: Spark Core, Spark Streaming, MLlib,
+    GraphX
+
++ Provides two complementary types of APIs to accomplish the similar goals
+
+  * Higher-level APIs: DataFrames and Datasets
+  * SQL-like querying context: e.g. SQL, HiveQL
+
++ Supports various data sources: Parquet, JSON, Hive, HBase, Cassandra, etc.
+
+APIs vs SQL
+-----------
++ APIs: process data by programming in programming languages
+
+  * More friendly to programmers
+  * More flexible and powerful
+  * DataFrame and Dataset APIs
+
+  .. code-block:: scala
+
+    // Load table1 and table2 into DataFrames df1 and df2 first
+    // === is a type-safe equality operator in Spark
+    df1.join(df2, df1("key") === df2("key"))
+      .filter(df1("age") > 21)
+      .select(df1("name"), df2("address"))
+      .show()
+
++ SQL: process data by writing SQL queries
+
+  * More friendly to data analysts who are familiar with SQL
+  * More sophisticated optimizations inherited from relational databases
+
+  .. code-block:: scala
+
+    // spark is an instance of SparkSession
+    spark.sql("""
+      SELECT table1.name, table2.address
+      FROM table1
+      JOIN table2 ON table1.key = table2.key
+      WHERE table1.age > 21
+    """).show()
+
+Performance optimizations
+=========================
+Some are general optimizations, while some are conditional optimizations based
+on the data source and the query.
+
++ Reduced disk I/O
++ Partitioning (helps when data is partitioned and some partitions can be
+  skipped)
++ Columnar storage (helps when a few columns are queried)
++ In-memory columnar caching (helps columnar storage)
++ Skip-rows (helps when many rows are skipped)
++ Predicate pushdown (delegate certain operations to data source when data
+  source supports it)
++ Query optimization with Catalyst optimizer
+
+  * Analysis, logical optimization, physical planning, code generation stages
+
+Applications
+============
+It provides a unified data access layer for various data sources, and can even
+work directly on top of combined data from different sources.
+
++ ETL (Extract, Transform, Load)
++ Data visualization (skip data movement and processing)
++ Distributed SQL query engine (skip data movement and processing)
++ Data warehousing and data lake solutions (Manage multiple data sources)
+
+DataFrame API
+=============
++ DataFrame API for structured data
++ Entry point of all functionalities in Spark SQL
+
+  + :code:`SparkSession` class
+  + :code:`spark` in Spark shell/DCE is a **provided** instance of
+    :code:`SparkSession` class
+
+  .. code-block:: scala
+
+    // Not needed in Spark shell/DCE
+    val spark = SparkSession.builder()
+      .appName("Spark SQL Example")
+      .config("spark.some.config.option", "some-value")
+      .getOrCreate()
+
++ The :code:`SQLContext` class and the :code:`HiveContext` class
+
+  + Old way to access functionality of Spark SQL
+  + Not recommended after Spark 2.0
+
+Textbook Examples
+-----------------
++ I will stay away from the old way as
+
+  * All newer tutorials and examples you can find use the new way
+  * I do not want you to learn something that is not recommended anymore
+  * The old way is still supported but not recommended
+
++ Textbook employs :code:`SQLContext` and :code:`HiveContext` classes
+
+  * Use :code:`SparkSession` class instead now
+  * Replace any :code:`SQLContext` or :code:`HiveContext` instance with
+    :code:`SparkSession` instance in the examples in the textbook should work
+    in almost all cases
+
++ The :code:`DataFrame` class stays the same
++ The :code:`DataSet` class was introduced in Spark 1.6
+
+DataFrame Creation from RDD 1
+-----------------------------
++ From RDD of tuples
+
+  * Specify column names as parameters of :code:`toDF` method
+
+  .. code-block:: scala
+
+    val rdd = sc.parallelize(Seq((1, "Alice"), (2, "Bob")))
+    val df = rdd.toDF("id", "name")
+
++ From RDD of case classes
+
+  * Automatically infer schema from case class
+
+  .. code-block:: scala
+
+    case class Person(id: Int, name: String)
+    val rdd = sc.parallelize(Seq(Person(1, "Alice"), Person(2, "Bob")))
+    val df = rdd.toDF()
+
+DataFrame Creation from RDD 2
+-----------------------------
++ From RDD of :code:`Row` objects
+
+  * Must specify schema explicitly
+
+  .. code-block:: scala
+
+    import org.apache.spark.sql.Row
+    import org.apache.spark.sql.types.{StructType, StructField, IntegerType, StringType}
+
+    val schema = StructType(
+      StructField("id", IntegerType, true),
+      StructField("name", StringType, true)
+    )
+    val rdd = sc.parallelize(Seq(Row(1, "Alice"), Row(2, "Bob")))
+    val df = rdd.schema(schema).toDF()
+
++ Alternatively, you can use :code:`createDataFrame` method of
+  :code:`SparkSession` object
+
+  .. code-block:: scala
+
+    // val df = rdd.schema(schema).toDF()
+    val df = spark.createDataFrame(rdd, schema)
+
+DataFrame Creation From a Data Source
+-------------------------------------
++ Use :code:`read` method of :code:`SparkSession` object to create a
+  :code:`DataFrameReader` object to read data from a data source
++ :code:`format` method to specify the data source format
++ :code:`load` method to load data from the data source
++ :code:`option` method to specify additional options
+
+  .. code-block:: scala
+
+    val df = spark.read.format("json").load("people.json")
+
++ Alternatively, you can use the data source-specific method like :code:`json`
+
+  .. code-block:: scala
+
+    val df = spark.read.json("people.json")
+
++ Supported formats: JSON, Parquet, ORC, JDBC, CSV, text, Avro, HBase,
+  Cassandra, Hive, and any data source that implements the
+  :code:`DataSourceRegister` interface
+
+DataFrame Operations 1
+----------------------
+.. container:: flex-container
+
+  .. container:: half
+
+    **Basic Operations**
+
+    + cache
+    + columns
+    + createOrReplaceTempView (replace old registerTempTable)
+    + dtypes
+    + explain
+    + persist
+    + printSchema
+    + show
+    + toDF
+
+  .. container:: half
+
+    **Query Operations 1**
+
+    + agg
+    + apply
+    + cube
+    + distinct
+    + explode
+    + filter
+    + groupBy
+    + intersect
+    + join
+    + limit
+
+DataFrame Operations 2
+----------------------
+.. container:: flex-container
+
+  .. container:: half
+
+    **Query Operations 2**
+
+    + orderBy
+    + randomSplit
+    + rollup
+    + sample
+    + select
+    + selectExpr
+    + withColumn
+
+  .. container:: half
+
+    **Operations similar to RDD**
+
+    + transactions: map, flatMap, filter, foreach
+    + actions: collect, count, take, first, describe
+
+    **Convert to RDD**
+
+    + rdd
+    + toJSON
+
+Saving DataFrames
+-----------------
++ Use :code:`write` method of :code:`DataFrame` object to create a
+  :code:`DataFrameWriter` object to write data to a data source
++ :code:`format` method to specify the data source format
++ :code:`mode` method to specify the save mode
++ :code:`option` method to specify additional options
++ :code:`partitionBy` method to partition data by columns
++ :code:`save` method to save data to the data source
+
+  .. code-block:: scala
+
+    df.write.format("json").save("people.json")
+
++ Alternatively, you can use the data source-specific method like :code:`json`
+
+    .. code-block:: scala
+
+      df.write.json("people.json")
+
+Spark SQL Built-in Functions
+----------------------------
++ **DataFrame does not take Scala functions directly!**
++ :code:`org.apache.spark.sql.functions` package provides many built-in
+  functions
++ Learn as needed. Not worth memorizing all of them at once.
++ Aggregate functions: avg, count, max, min, sum
++ Collection functions: size, array_contains, explode, sort_array
++ Date Time functions
++ Mathematical functions
++ String functions
++ Window functions
+
+Spark SQL User-defined Functions
+--------------------------------
++ Must be registered with a name
++ User-defined functions
+
+  * to be applied to each row of a DataFrame
+  * make a Scala function that takes a row as input and returns a value
+  * register with :code:`udf` method
+
+  .. code-block:: scala
+
+    import org.apache.spark.sql.functions.udf
+    val upper: String => String = _.toUpperCase
+    val upperUDF = udf(upper)
+    df.select(upperUDF(df("name")))
+
++ User-defined aggregate functions
+
+  * to be applied to a group of rows of a DataFrame
+  * make a class that extends :code:`UserDefinedAggregateFunction` class

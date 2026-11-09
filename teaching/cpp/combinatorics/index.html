@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Combinatorics Problems That Needs Algorithms · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/cpp/ccpp-env/">C/C&#43;&#43; Development Environment</a></li><li><a href="/teaching/cpp/cpp-lang/">C&#43;&#43; programming language</a></li><li><a href="/teaching/cpp/functions/">User-defined Functions</a></li><li><a href="/teaching/cpp/io/">Input/Output (I/O)</a></li><li><a href="/teaching/cpp/string/">String (C&#43;&#43; class)</a></li><li><a href="/teaching/cpp/class/class/">Objects and Classes in C&#43;&#43;</a></li><li><a href="/teaching/cpp/variable-type/variable-type/">Type, Variable, Assignment, and Expression</a></li><li><a href="/teaching/cpp/array/array/">Array Data Type</a></li><li><a href="/teaching/cpp/building/gpp/">Compilation Using g&#43;&#43;</a></li><li><a href="/teaching/cpp/building/modular/">Modular Development</a></li><li><a href="/teaching/cpp/testing/testing/">Testing in C&#43;&#43;</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/cpp/">C&#43;&#43; Reference</a> / Combinatorics Problems That Needs Algorithms</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Combinatorics Problems That Needs Algorithms</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#why-writing-algorithms">Why Writing Algorithms?</a></li>
+    <li><a href="#typical-approaches">Typical Approaches</a></li>
+    <li><a href="#related-c-features">Related C++ Features</a>
+      <ul>
+        <li><a href="#enumerate-all-us-phone-numbers">Enumerate All US Phone Numbers</a></li>
+        <li><a href="#integer-partition-problem">Integer Partition Problem</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="combinatorics-problems-that-needs-algorithms"></span>
+<p>Demonstrated in C++</p>
+<h2 id="why-writing-algorithms">Why Writing Algorithms?</h2>
+<ul>
+<li>Prove correctness of your solution using math</li>
+<li>Too hard to solve using math</li>
+<li>When we want to see the solution in addition to the count</li>
+</ul>
+<h2 id="typical-approaches">Typical Approaches</h2>
+<ul>
+<li>Strategy: Other algorithmic paradigms</li>
+<li>Enumeration problems
+<ul>
+<li>Simple enumeration: brute force, backtracking</li>
+<li>With overlapping sub-problems: dynamic programming</li>
+</ul>
+</li>
+<li>Optimization problems (Combinatorial optimization)
+<ul>
+<li>Dynamic programming may apply when the problem has overlapping subproblems and the required substructure.</li>
+<li>A greedy algorithm may apply when a greedy-choice argument establishes that local choices produce the requested optimum.</li>
+<li>Neither overlap nor its absence alone determines that greedy is suitable.</li>
+<li>Heuristic algorithms: simulated annealing, genetic algorithm, etc.</li>
+<li>Linear programming</li>
+</ul>
+</li>
+</ul>
+<h2 id="related-c-features">Related C++ Features</h2>
+<ul>
+<li>Recursion
+<ul>
+<li>art of memorization (manipulate parameter and return value)</li>
+</ul>
+</li>
+<li>STL algorithms (<code>&lt;algorithm&gt;</code> header)
+<ul>
+<li><code>next_permutation</code> function</li>
+<li><code>is_permutation</code> function</li>
+<li><code>sort</code> function</li>
+<li><code>is_sorted</code> function</li>
+<li><code>reverse</code> function</li>
+<li><code>rotate</code> function</li>
+<li><code>shuffle</code> function</li>
+</ul>
+</li>
+<li>Useful data structures
+<ul>
+<li><code>std::vector&lt;bool&gt;</code> (bitset)
+<ul>
+<li>to memorize visited/processed/seen states</li>
+<li>small number of total states</li>
+<li>$\Theta(1)$ time complexity for <code>set</code> and <code>test</code> operations</li>
+</ul>
+</li>
+<li><code>std::set</code> to memorize visited/processed/seen states
+<ul>
+<li>large number of total states</li>
+<li>Self-balancing binary search tree</li>
+<li>$\Theta(\log n)$ time complexity for <code>insert</code> and <code>find</code> operations</li>
+<li>$\Theta(n)$ time complexity for <code>erase</code> operation</li>
+</ul>
+</li>
+<li><code>std::unordered_set</code> to memorize visited/processed/seen states
+<ul>
+<li>large number of total states</li>
+<li>Hash table</li>
+<li>$\Theta(1)$ time complexity for <code>insert</code>, <code>find</code>, and <code>erase</code> operations</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="enumerate-all-us-phone-numbers">Enumerate All US Phone Numbers</h3>
+<p>In this problem, we want to enumerate all US phone numbers.</p>
+<p>This is a permutation problem that allow repetition. As an enumeration problem, we can solve this problem using brute force.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">enumeratePhoneNumbers</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> n<span style="color:#1f2328">,</span> string prefix<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span>n <span style="color:#0550ae">==</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    cout <span style="color:#0550ae">&lt;&lt;</span> prefix <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">return</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> i <span style="color:#0550ae">&lt;</span> <span style="color:#0550ae">10</span><span style="color:#1f2328">;</span> i<span style="color:#0550ae">++</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    enumeratePhoneNumbers<span style="color:#1f2328">(</span>n <span style="color:#0550ae">-</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">,</span> prefix <span style="color:#0550ae">+</span> to_string<span style="color:#1f2328">(</span>i<span style="color:#1f2328">));</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><h3 id="integer-partition-problem">Integer Partition Problem</h3>
+<p>In this problem we take advantage of the recurrence relation of the integer partition problem. $p(n, k) = p(n - k, k) + p(n, k - 1)$.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">partition</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> n<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> k<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// Base cases
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span>n <span style="color:#0550ae">==</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">)</span> <span style="color:#cf222e">return</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">;</span>  <span style="color:#57606a">// One way to partition 0 using no numbers
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span>n <span style="color:#0550ae">&lt;</span> <span style="color:#0550ae">0</span> <span style="color:#0550ae">||</span> k <span style="color:#0550ae">&lt;=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">return</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">;</span>  <span style="color:#57606a">// No way to partition with negative number or no numbers left
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// Recursive cases
+</span></span></span><span style="display:flex;"><span>  <span style="color:#57606a">// Include k in the partition and recursively partition n-k with k
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> include_k <span style="color:#0550ae">=</span> partition<span style="color:#1f2328">(</span>n <span style="color:#0550ae">-</span> k<span style="color:#1f2328">,</span> k<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// Exclude k from the partition and recursively partition n with k-1
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> exclude_k <span style="color:#0550ae">=</span> partition<span style="color:#1f2328">(</span>n<span style="color:#1f2328">,</span> k <span style="color:#0550ae">-</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> include_k <span style="color:#0550ae">+</span> exclude_k<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div></div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

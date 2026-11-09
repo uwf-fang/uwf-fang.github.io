@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Modern Concurrency in Programming Languages</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Modern Concurrency in Programming Languages</h1>
+<ul class="simple">
+<li><p>Traditional concurrency models (threads, locks, semaphores)</p></li>
+<li><p>Evolution toward safer, more abstract concurrency primitives</p></li>
+<li><p>Focus on language-level support for concurrent programming</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Rust’s Ownership Model</h2>
+<ul class="simple">
+<li><p>Prevents data races at compile time</p></li>
+<li><p>Thread safety without garbage collection</p></li>
+<li><p>Channels for message passing</p></li>
+<li><p>Reference: <a class="reference external" href="https://doc.rust-lang.org/book/ch16-00-concurrency.html">Rust Programming Language</a></p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Go’s Concurrency Model</h2>
+<ul class="simple">
+<li><p>Lightweight goroutines</p></li>
+<li><p>Channels for communication</p></li>
+<li><p>Based on Communicating Sequential Processes (CSP)</p></li>
+<li><p>“Don’t communicate by sharing memory; share memory by communicating”</p></li>
+<li><p>Reference: “Go Programming Language” by Donovan and Kernighan</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Modern C++ Concurrency</h2>
+<ul class="simple">
+<li><p>Evolution of C++ concurrency features:</p>
+<ul>
+<li><p>C++ 11/14: threading</p></li>
+<li><p>C++ 17: parallel algorithms</p></li>
+<li><p>C++ 20: coroutines</p></li>
+</ul>
+</li>
+<li><p>std::async and std::future</p></li>
+<li><p>Atomic operations</p></li>
+<li><p>Memory model for multi-threaded applications</p></li>
+<li><p>Reference: “Effective Modern C++” by Scott Meyers</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>C++ Example</h2>
+<pre data-id="c-example"><code data-trim data-noescape class="cpp">#include &lt;iostream&gt;
+#include &lt;thread&gt;
+#include &lt;future&gt;
+
+void asyncTask() {
+    std::cout &lt;&lt; &quot;Async task running in thread: &quot; &lt;&lt; std::this_thread::get_id() &lt;&lt; std::endl;
+}
+
+int main() {
+    std::future&lt;void&gt; result = std::async(std::launch::async, asyncTask);
+    result.get(); // Wait for the async task to finish
+    return 0;
+}</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Async/Await Pattern</h2>
+<ul class="simple">
+<li><p>JavaScript/TypeScript</p></li>
+<li><p>C#</p></li>
+<li><p>Python</p></li>
+<li><p>Kotlin</p></li>
+<li><p>Rust</p></li>
+<li><p>Simplifies asynchronous code with sequential syntax</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Async/Await Example</h2>
+<pre data-id="async-await-example"><code data-trim data-noescape class="python">import asyncio
+
+async def async_task():
+    print(&quot;Async task running&quot;)
+    await asyncio.sleep(1)
+    print(&quot;Async task finished&quot;)
+
+async def main():
+    await async_task()
+
+asyncio.run(main())</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Actor Model</h2>
+<ul class="simple">
+<li><p>Isolated units of computation</p></li>
+<li><p>Communication via messages</p></li>
+<li><p>No shared state</p></li>
+<li><p>Examples:</p>
+<ul>
+<li><p>Akka (Java/Scala)</p></li>
+<li><p>Elixir/Erlang processes</p></li>
+<li><p>Pony language</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Kotlin Coroutines</h2>
+<ul class="simple">
+<li><p>Lightweight concurrency with structured approach</p></li>
+<li><p>Sequential code for asynchronous operations</p></li>
+<li><p>Scoped cancellation</p></li>
+<li><p>Safely shared state with context</p></li>
+<li><p>Reference: “Kotlin in Action” by Jemerov and Isakova</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Software Transactional Memory (STM)</h2>
+<ul class="simple">
+<li><p>Transactions for memory operations</p></li>
+<li><p>Atomic, Consistent, Isolated</p></li>
+<li><p>Examples:</p>
+<ul>
+<li><p>Haskell’s STM</p></li>
+<li><p>Clojure’s STM</p></li>
+</ul>
+</li>
+<li><p>Reference: <a class="reference external" href="https://hackage.haskell.org/package/stm">Haskell STM</a></p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Reactive Programming</h2>
+<ul class="simple">
+<li><p>Data flow programming paradigm</p></li>
+<li><p>Asynchronous stream processing</p></li>
+<li><p>Non-blocking back pressure</p></li>
+<li><p>Examples:</p>
+<ul>
+<li><p>ReactiveX (RxJava, RxJS, etc.)</p></li>
+<li><p>Project Reactor (Spring)</p></li>
+</ul>
+</li>
+<li><p>Reference: <a class="reference external" href="http://reactivex.io/">ReactiveX</a></p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Java’s Evolution</h2>
+<ul class="simple">
+<li><p>Classic thread model</p></li>
+<li><p>Executor framework</p></li>
+<li><p>CompletableFuture</p></li>
+<li><p>Java 19+ virtual threads (Project Loom)</p></li>
+<li><p>Reference: “Java Concurrency in Practice” by Brian Goetz</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Non-blocking I/O</h2>
+<ul class="simple">
+<li><p>Event-driven programming</p></li>
+<li><p>Single-threaded event loop handling multiple connections</p></li>
+<li><p>Examples:</p>
+<ul>
+<li><p>Node.js</p></li>
+<li><p>Python asyncio</p></li>
+<li><p>Netty (Java)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Comparison of Approaches</h2>
+<ul class="simple">
+<li><p>Thread-based vs Event-driven</p></li>
+<li><p>Shared-state vs Message-passing</p></li>
+<li><p>Explicit vs Implicit concurrency</p></li>
+<li><p>Reference: “Seven Concurrency Models in Seven Weeks” by Paul Butcher</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Future Trends</h2>
+<ul class="simple">
+<li><p>Language-level support for parallelism</p></li>
+<li><p>Distributed computing primitives</p></li>
+<li><p>Hardware acceleration integration</p></li>
+<li><p>Quantum computing models</p></li>
+</ul>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Multidimensional Array · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/cpp/">C&#43;&#43; Reference</a> / Multidimensional Array</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Multidimensional Array</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#general-multidimensional-array">General Multidimensional Array</a></li>
+    <li><a href="#two-dimensional-array">Two dimensional array</a></li>
+    <li><a href="#pitfalls">Pitfalls</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="multidimensional-array"></span>
+<h2 id="general-multidimensional-array">General Multidimensional Array</h2>
+<ul>
+<li>
+<p>Multidimensional arrays - arrays of arrays</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#cf222e">int</span> a<span style="color:#1f2328">[</span><span style="color:#0550ae">10</span><span style="color:#1f2328">];</span>  <span style="color:#57606a">// 1d local array
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> a1<span style="color:#1f2328">[</span><span style="color:#0550ae">2</span><span style="color:#1f2328">][</span><span style="color:#0550ae">3</span><span style="color:#1f2328">];</span>  <span style="color:#57606a">// 2d local array
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> a2<span style="color:#1f2328">[</span><span style="color:#0550ae">2</span><span style="color:#1f2328">][</span><span style="color:#0550ae">3</span><span style="color:#1f2328">][</span><span style="color:#0550ae">4</span><span style="color:#1f2328">];</span>  <span style="color:#57606a">// 3d local array
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#0550ae">**</span>a3<span style="color:#1f2328">;</span>  <span style="color:#57606a">// pointer of pointer to int, used for 2D dynamic array
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#0550ae">***</span>a4<span style="color:#1f2328">;</span>  <span style="color:#57606a">// pointer of pointer of pointer to int, used for 3D dynamic array
+</span></span></span></code></pre></div></li>
+</ul>
+<span id="id1"></span>
+<p><img src="/teaching/_migration/graph-60ab0386e7f3c3c8.svg" alt="Graphviz diagram"></p>
+<p><em>int matrix[10][10];  // a local 10 x 10 2D array</em></p>
+<h2 id="two-dimensional-array">Two dimensional array</h2>
+<ul>
+<li>
+<p>2d local array</p>
+<p>Example: a local array a1 with 2 rows, 3 columns</p>
+<ul>
+<li>
+<p><code>int a1[2][3];</code></p>
+</li>
+<li>
+<p>a1 has the pointer part of the array with the <code>int **</code> type</p>
+</li>
+<li>
+<p>a1 is an array of 2 element, and each element is an array of 3 int</p>
+</li>
+<li>
+<p>memory allocated on <strong>stack</strong> memory region</p>
+</li>
+<li>
+<p>initialization syntax</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// initialization of 2d array
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// a1[0] is {1, 2, 3}, a1[1] is {4, 5, 6}
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> a1<span style="color:#1f2328">[</span><span style="color:#0550ae">2</span><span style="color:#1f2328">][</span><span style="color:#0550ae">3</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">{{</span><span style="color:#0550ae">1</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">},</span> <span style="color:#1f2328">{</span><span style="color:#0550ae">4</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">5</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">6</span><span style="color:#1f2328">}};</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> a2<span style="color:#1f2328">[</span><span style="color:#0550ae">2</span><span style="color:#1f2328">][</span><span style="color:#0550ae">3</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">{</span><span style="color:#0550ae">1</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">4</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">5</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">6</span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> a3<span style="color:#1f2328">[][</span><span style="color:#0550ae">3</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">{</span><span style="color:#0550ae">1</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">4</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">5</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">6</span><span style="color:#1f2328">};</span>  <span style="color:#57606a">// first dimension can be inferred
+</span></span></span></code></pre></div></li>
+</ul>
+</li>
+<li>
+<p>2d dynamic array</p>
+<p>Example: a dynamic array dynArr1 with 2 rows, 3 columns</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// declaration
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#0550ae">**</span>dynArr1<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// allocate memory (on Heap)
+</span></span></span><span style="display:flex;"><span>dynArr1 <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> <span style="color:#cf222e">int</span> <span style="color:#0550ae">*</span><span style="color:#1f2328">[</span><span style="color:#0550ae">2</span><span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> i <span style="color:#0550ae">&lt;</span> <span style="color:#0550ae">2</span> <span style="color:#1f2328">;</span> <span style="color:#0550ae">++</span>i<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>  dynArr1<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> <span style="color:#cf222e">int</span><span style="color:#1f2328">[</span><span style="color:#0550ae">3</span><span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">//now you can access element using array syntax like dynArr1[0][0]
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// put values into the array
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> i <span style="color:#0550ae">&lt;</span> <span style="color:#0550ae">2</span> <span style="color:#1f2328">;</span> <span style="color:#0550ae">++</span>i<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> j <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> j <span style="color:#0550ae">&lt;</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">;</span> <span style="color:#0550ae">++</span>j<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    dynArr1<span style="color:#1f2328">[</span>i<span style="color:#1f2328">][</span>j<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> i <span style="color:#0550ae">*</span> <span style="color:#0550ae">3</span> <span style="color:#0550ae">+</span> j <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// now dynArr1 is {{1, 2, 3}, {4, 5, 6}}
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// release memory
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> i <span style="color:#0550ae">&lt;</span> <span style="color:#0550ae">2</span> <span style="color:#1f2328">;</span> <span style="color:#0550ae">++</span>i<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">delete</span> <span style="color:#1f2328">[]</span> dynArr1<span style="color:#1f2328">[</span>i<span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">delete</span> <span style="color:#1f2328">[]</span> dynArr1<span style="color:#1f2328">;</span>
+</span></span></code></pre></div></li>
+</ul>
+<span id="pass-2d-array"></span>
+<ul>
+<li>2d array as a function parameter
+<ol>
+<li>
+<p>pass a 2 x 3 <strong>local</strong> array</p>
+<ul>
+<li>Declared like <code>int a1[2][3];</code></li>
+<li>Not useful in real projects because of the limitation on dimension</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// ---- wrong ----
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">matrixOp</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> matrix<span style="color:#1f2328">[</span>rows<span style="color:#1f2328">][</span>cols<span style="color:#1f2328">],</span> <span style="color:#cf222e">int</span> rows<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> cols<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">matrixOp</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> matrix<span style="color:#1f2328">[][],</span> <span style="color:#cf222e">int</span> rows<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> cols<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">matrixOp</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> matrix<span style="color:#1f2328">[</span><span style="color:#0550ae">2</span><span style="color:#1f2328">][],</span> <span style="color:#cf222e">int</span> rows<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> cols<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- correct ----
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// only the first dimension can be empty, use int literals
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// or const variables for other dimensions
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">matrixOp</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> matrix<span style="color:#1f2328">[</span><span style="color:#0550ae">2</span><span style="color:#1f2328">][</span><span style="color:#0550ae">3</span><span style="color:#1f2328">],</span> <span style="color:#cf222e">int</span> rows<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> cols<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">matrixOp</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> matrix<span style="color:#1f2328">[][</span><span style="color:#0550ae">3</span><span style="color:#1f2328">],</span> <span style="color:#cf222e">int</span> rows<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> cols<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// using const variables
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#cf222e">int</span> ROWS <span style="color:#0550ae">=</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#cf222e">int</span> COLS <span style="color:#0550ae">=</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">matrixOp</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> matrix<span style="color:#1f2328">[</span>ROWS<span style="color:#1f2328">][</span>COLS<span style="color:#1f2328">],</span> <span style="color:#cf222e">int</span> rows<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> cols<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">matrixOp</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> matrix<span style="color:#1f2328">[][</span>COLS<span style="color:#1f2328">],</span> <span style="color:#cf222e">int</span> rows<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> cols<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// to call
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> a1<span style="color:#1f2328">[</span><span style="color:#0550ae">2</span><span style="color:#1f2328">][</span><span style="color:#0550ae">3</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#1f2328">{{</span><span style="color:#0550ae">1</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">},</span> <span style="color:#1f2328">{</span><span style="color:#0550ae">4</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">5</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">6</span><span style="color:#1f2328">}};</span>
+</span></span><span style="display:flex;"><span>matrixOp<span style="color:#1f2328">(</span>a1<span style="color:#1f2328">,</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">)</span>
+</span></span></code></pre></div></li>
+<li>
+<p>passing a <strong>dynamic</strong> array, a much nicer solution + declared like <code>int **dyArr1</code></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// correct version 1
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">matrixOp</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> <span style="color:#0550ae">**</span> matrix<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> rows<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> cols<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> i <span style="color:#0550ae">&lt;</span> rows <span style="color:#1f2328">;</span> <span style="color:#0550ae">++</span>i<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> j <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> j <span style="color:#0550ae">&lt;</span> cols<span style="color:#1f2328">;</span> <span style="color:#0550ae">++</span>j<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>      cout <span style="color:#0550ae">&lt;&lt;</span> matrix<span style="color:#1f2328">[</span>i<span style="color:#1f2328">][</span>j<span style="color:#1f2328">]</span> <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34; &#34;</span><span style="color:#1f2328">;</span>  <span style="color:#57606a">// same syntax as local array
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// correct version 2
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">matrixOp</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> <span style="color:#0550ae">*</span>matrix<span style="color:#1f2328">[],</span> <span style="color:#cf222e">int</span> rows<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> cols<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// to call the function
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#0550ae">**</span>dyArr1<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>dyArr1 <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> <span style="color:#cf222e">int</span> <span style="color:#0550ae">*</span><span style="color:#1f2328">[</span><span style="color:#0550ae">2</span><span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> i <span style="color:#0550ae">&lt;</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">;</span> <span style="color:#0550ae">++</span>i<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  dyArr1<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> <span style="color:#cf222e">int</span><span style="color:#1f2328">[</span><span style="color:#0550ae">3</span><span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// initialize values
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>matrixOp<span style="color:#1f2328">(</span>dynArr1<span style="color:#1f2328">,</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// for loop delete []
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> i <span style="color:#0550ae">&lt;</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">;</span> <span style="color:#0550ae">++</span>i<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">delete</span> <span style="color:#1f2328">[]</span> dyArr1<span style="color:#1f2328">[</span>i<span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">delete</span> <span style="color:#1f2328">[]</span> dyArr1<span style="color:#1f2328">;</span>
+</span></span></code></pre></div></li>
+</ol>
+</li>
+</ul>
+<span id="return-md-array"></span>
+<ul>
+<li>
+<p>Returning a Multidimensional array from a function</p>
+<p>Just make a dynamic array and return the pointer:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#0550ae">**</span><span style="color:#6639ba">createMatrix</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> rows<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> cols<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> value<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#0550ae">**</span><span style="color:#6639ba">createMatrix</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> rows<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> cols<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> value<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> <span style="color:#0550ae">**</span>result<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  result <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> <span style="color:#cf222e">int</span> <span style="color:#0550ae">*</span><span style="color:#1f2328">[</span>rows<span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> i <span style="color:#0550ae">&lt;</span> rows<span style="color:#1f2328">;</span> <span style="color:#0550ae">++</span>i<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    result<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> <span style="color:#cf222e">int</span><span style="color:#1f2328">[</span>cols<span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> j <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> j <span style="color:#0550ae">&lt;</span> cols<span style="color:#1f2328">;</span> <span style="color:#0550ae">++</span>j<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>      result<span style="color:#1f2328">[</span>i<span style="color:#1f2328">][</span>j<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> value<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> result<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">main</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> <span style="color:#0550ae">**</span>matrix <span style="color:#0550ae">=</span> createMatrix<span style="color:#1f2328">(</span><span style="color:#0550ae">3</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">5</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// work on the matrix
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// release memory
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> i <span style="color:#0550ae">&lt;</span> rows<span style="color:#1f2328">;</span> <span style="color:#0550ae">++</span>i<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">delete</span> <span style="color:#1f2328">[]</span> matrix<span style="color:#1f2328">[</span>i<span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">delete</span> <span style="color:#1f2328">[]</span> matrix<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div></li>
+</ul>
+<aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p>This is the only option to return an array! Never return a local array!</p>
+</div></aside>
+<aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p>Never forget to delete dynamic array(s)!</p>
+</div></aside>
+<span id="md-arr-pitfall"></span>
+<h2 id="pitfalls">Pitfalls</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// bad local array declaration
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> arr<span style="color:#1f2328">[</span>rows<span style="color:#1f2328">][</span>cols<span style="color:#1f2328">];</span>  <span style="color:#57606a">// rows and cols are not compilation-time constants
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> arr<span style="color:#1f2328">[][];</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> arr<span style="color:#1f2328">[</span><span style="color:#0550ae">2</span><span style="color:#1f2328">][];</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> arr<span style="color:#1f2328">[][</span><span style="color:#0550ae">3</span><span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// bad dynamic array related
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#0550ae">**</span>arr <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> <span style="color:#cf222e">int</span><span style="color:#1f2328">[</span><span style="color:#0550ae">2</span><span style="color:#1f2328">][</span><span style="color:#0550ae">3</span><span style="color:#1f2328">];</span>  <span style="color:#57606a">// cannot use more than one pair of [] with new
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">delete</span> arr<span style="color:#1f2328">;</span>  <span style="color:#57606a">// missing []
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">delete</span> <span style="color:#1f2328">[</span><span style="color:#0550ae">2</span><span style="color:#1f2328">][</span><span style="color:#0550ae">3</span><span style="color:#1f2328">]</span> arr<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">delete</span> <span style="color:#1f2328">[][]</span> arr<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">delete</span> arr<span style="color:#1f2328">[</span><span style="color:#0550ae">2</span><span style="color:#1f2328">][</span><span style="color:#0550ae">3</span><span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// bad function declarations that take local array parameters
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">func1</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> arr<span style="color:#1f2328">[][],</span> <span style="color:#cf222e">int</span> rows<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> cols<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">func1</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> arr<span style="color:#1f2328">[</span><span style="color:#0550ae">2</span><span style="color:#1f2328">][],</span> <span style="color:#cf222e">int</span> rows<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> cols<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">func1</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> arr<span style="color:#1f2328">[</span>rows<span style="color:#1f2328">][</span>cols<span style="color:#1f2328">],</span> <span style="color:#cf222e">int</span> rows<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> cols<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// bad function declarations that take dynamic array parameters
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">func1</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> <span style="color:#0550ae">*</span>arr<span style="color:#1f2328">[],</span> <span style="color:#cf222e">int</span> rows<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> cols<span style="color:#1f2328">);</span>
+</span></span></code></pre></div></div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Input/Output (I/O)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Input/Output (I/O)</h1>
+<ul class="simple">
+<li><p>I/O related logics are essential in many tasks:</p>
+<ul>
+<li><p>Interaction with users</p></li>
+<li><p>File read/write</p></li>
+<li><p>String parsing/generation</p></li>
+</ul>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Group I/O related logics in a minimal number of classes/functions.
+They are not testable with automatic testing.</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Stream Based I/O</h2>
+<ul class="simple">
+<li><p>All I/O covered here is stream based.</p></li>
+<li><p>Handles data as sequential structures.</p></li>
+<li><p>Other I/O patterns exist (e.g., block I/O).</p></li>
+<li><p>Treat any input or output as a stream of bytes.</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h1>Standard I/O</h1>
+<ul class="simple">
+<li><p>Input/output in the command-line context.</p></li>
+<li><p>Keyboard input as standard input.</p></li>
+<li><p>Terminal character print/display as standard output.</p></li>
+<li><p>iostream Header</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">iostream</span></code> - the input/output stream library header.</p></li>
+<li><p>Contains <code class="docutils literal notranslate"><span class="pre">cin</span></code>, <code class="docutils literal notranslate"><span class="pre">cout</span></code>, <code class="docutils literal notranslate"><span class="pre">cerr</span></code>, <code class="docutils literal notranslate"><span class="pre">endl</span></code>, <code class="docutils literal notranslate"><span class="pre">flush</span></code>, etc.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Standard Input</h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cin</span></code></p></li>
+<li><p>A global variable usable anywhere in your program.</p></li>
+<li><p>A instance/object of the <code class="docutils literal notranslate"><span class="pre">istream</span></code> class.</p></li>
+</ul>
+<pre data-id="standard-input"><code data-trim data-noescape class="c++">cin &gt;&gt; inputVariable;</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Standard Output</h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cout</span></code></p></li>
+<li><p>A global variable usable anywhere in your program.</p></li>
+<li><p>An instance/object of the <code class="docutils literal notranslate"><span class="pre">ostream</span></code> class.</p></li>
+</ul>
+<pre data-id="standard-output"><code data-trim data-noescape class="c++">cout &lt;&lt; outputVariable;</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Standard Error</h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cerr</span></code></p></li>
+<li><p>A global variable usable anywhere in your program.</p></li>
+<li><p>An instance/object of the <code class="docutils literal notranslate"><span class="pre">ostream</span></code> class.</p></li>
+<li><p>Used to display error messages.</p></li>
+</ul>
+<pre data-id="standard-error"><code data-trim data-noescape class="c++">cerr &lt;&lt; &quot;Error: &quot; &lt;&lt; errorMessage;</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Redirection</h2>
+<ul class="simple">
+<li><p>In UNIX shells, redirect I/O using <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">|</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;</span></code>: Redirect standard input from a file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&gt;</span></code>: Redirect standard output to a file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">|</span></code>: Pipeline standard output to the next program’s input.</p></li>
+</ul>
+<pre data-id="redirection"><code data-trim data-noescape class="bash">./main &lt; input.txt
+./main &gt; output.txt
+./main &lt; input.txt &gt; output.txt
+./cat input.txt | ./main</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h1>Input/Output Operations</h1>
+<ul class="simple">
+<li><p>Operations are shared among all streams</p>
+<ul>
+<li><p>Standard I/O</p></li>
+<li><p>File I/O</p></li>
+<li><p>String I/O</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Input Operations</h2>
+<ul class="simple">
+<li><p>Extraction operator <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code>:</p>
+<ul>
+<li><p>Works with any input stream (including <code class="docutils literal notranslate"><span class="pre">cin</span></code>).</p></li>
+<li><p>Can be chained.</p></li>
+<li><p>Can be used as a boolean (true if success, false otherwise).</p></li>
+<li><p>Reads and converts to the desired type.</p></li>
+<li><p>Leaves <code class="docutils literal notranslate"><span class="pre">'\n'</span></code> or <code class="docutils literal notranslate"><span class="pre">endl</span></code> in the buffer.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">getline()</span></code> function:</p>
+<ul>
+<li><p>Reads a line as string: <code class="docutils literal notranslate"><span class="pre">getline(cin,</span> <span class="pre">inputString);</span></code></p></li>
+<li><p>Works with any input stream (including <code class="docutils literal notranslate"><span class="pre">cin</span></code>).</p></li>
+<li><p>Reads in string only.</p></li>
+<li><p>May read in an empty string.</p></li>
+<li><p><strong>Special handling when used after extraction.</strong></p></li>
+<li><p>Can use a different delimiter: <code class="docutils literal notranslate"><span class="pre">getline(cin,</span> <span class="pre">inputString,</span> <span class="pre">',');</span></code></p></li>
+<li><p>Differentiate it from the <code class="docutils literal notranslate"><span class="pre">cin.getline()</span></code> function!</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ignore()</span></code> method</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Output Operations</h2>
+<ul class="simple">
+<li><p>Insertion operator <code class="docutils literal notranslate"><span class="pre">&lt;&lt;</span></code>:</p>
+<ul>
+<li><p>Works with any output stream (including <code class="docutils literal notranslate"><span class="pre">cout</span></code>).</p></li>
+<li><p>Can be chained.</p></li>
+<li><p>Buffered, displays upon flushing.</p>
+<ul>
+<li><p>Inserting <code class="docutils literal notranslate"><span class="pre">'\n'</span></code> or <code class="docutils literal notranslate"><span class="pre">endl</span></code> triggers flush.</p></li>
+<li><p>Syntax like <code class="docutils literal notranslate"><span class="pre">cin.flush()</span></code> to force flush.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Formatting:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&lt;iomanip&gt;</span></code> header.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fixed</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">showpoint</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scientific</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">setprecision()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">setw()</span></code> <strong>Not Sticky!!</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">setfill()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">left</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">right</span></code></p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Error Handling</h2>
+<ul class="simple">
+<li><p>Stream operations are likely to fail. Error handling is essential.</p></li>
+<li><p>Methods:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">eof()</span></code>: Last successful read hit the end of the file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fail()</span></code>: Last read failed.</p></li>
+</ul>
+</li>
+<li><p>Reading errors:</p>
+<ul>
+<li><p>Check <code class="docutils literal notranslate"><span class="pre">eof()</span></code> if read errors are not expected.</p></li>
+<li><p>Check <code class="docutils literal notranslate"><span class="pre">fail()</span></code> if read errors are likely.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h1>String I/O</h1>
+<ul class="simple">
+<li><p>Used for text parsing or formatted string generation.</p></li>
+<li><p><strong>Preferred over string manipulation!</strong></p></li>
+<li><p>sstream Header</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">sstream</span></code> header for string stream classes.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">istringstream</span></code>: Input stream based on a string.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ostringstream</span></code>: Output stream to generate a string.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>istringstream Class</h2>
+<ul class="simple">
+<li><p>An input stream based on the content of a string.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code> extraction.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">getline()</span></code>.</p></li>
+<li><p>Constructor to take a string as parameter.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.str()</span></code> to set/get the string content.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.clear()</span></code> to clear all contents.</p></li>
+<li><p>End of file check:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">.eof()</span></code> call after every read.</p></li>
+<li><p>Extraction operation as bool value: <code class="docutils literal notranslate"><span class="pre">while</span> <span class="pre">(inSS</span> <span class="pre">&gt;&gt;</span> <span class="pre">value)</span> <span class="pre">...</span></code></p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>ostringstream Class</h2>
+<ul class="simple">
+<li><p>An output stream to accept formatted output and generate a string.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;&lt;</span></code> insertion.</p></li>
+<li><p>All formatting tools from <code class="docutils literal notranslate"><span class="pre">iomanip</span></code> will work.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.str()</span></code> method to generate the string content.</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>String I/O Example</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Extract data from a string</strong></p>
+<pre><code data-trim data-noescape class="c++">#include &lt;iostream&gt;
+#include &lt;sstream&gt;
+#include &lt;string&gt;
+
+using namespace std;
+int main() {
+    string input = &quot;123 456 789&quot;;
+    istringstream inSS(input);
+    int a, b, c;
+    inSS &gt;&gt; a &gt;&gt; b &gt;&gt; c;
+    cout &lt;&lt; &quot;Extracted: &quot; &lt;&lt; a &lt;&lt; &quot;, &quot; &lt;&lt; b &lt;&lt; &quot;, &quot; &lt;&lt; c &lt;&lt; endl;
+    return 0;
+}</code></pre>
+</div>
+<div class="half docutils container">
+<p><strong>Generate a string from formatted output</strong></p>
+<pre><code data-trim data-noescape class="c++">#include &lt;iostream&gt;
+#include &lt;sstream&gt;
+#include &lt;string&gt;
+
+using namespace std;
+int main() {
+    ostringstream outSS;
+    outSS &lt;&lt; &quot;Formatted output: &quot; &lt;&lt; 123.456 &lt;&lt; endl;
+
+    cout &lt;&lt; output.str();
+    return 0;
+}</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h1>File I/O</h1>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fstream</span></code> header.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ifstream</span></code> Class - Read from a file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ofstream</span></code> Class - Write to a file.</p></li>
+<li><p>Bind a file to a stream.</p>
+<ul>
+<li><p>Pass the path string to the constructor.</p></li>
+<li><p>Call <code class="docutils literal notranslate"><span class="pre">.open()</span></code> method with the path string.</p></li>
+<li><p>Call <code class="docutils literal notranslate"><span class="pre">.close()</span></code> method when done.</p></li>
+<li><p>Check open status with <code class="docutils literal notranslate"><span class="pre">.is_open()</span></code> or <code class="docutils literal notranslate"><span class="pre">.fail()</span></code> after binding</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="half docutils container">
+<pre><code data-trim data-noescape class="c++">#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+
+using namespace std;
+int main() {
+    ifstream inFS(&quot;input.txt&quot;);
+    if (!inFS.is_open()) {
+        cerr &lt;&lt; &quot;Error opening file!&quot; &lt;&lt; endl;
+        return 1;
+    }
+    // Read from the file
+    string line;
+    while (getline(inFS, line)) {
+        cout &lt;&lt; line &lt;&lt; endl;
+    }
+    inFS.close();
+    return 0;
+}</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>End of File Check</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">.eof()</span></code> or <code class="docutils literal notranslate"><span class="pre">fail()</span></code> after read operations (extraction, getline).</p></li>
+<li><p>Simplified syntax to check reading status (same as check fail()):</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">while</span> <span class="pre">(inFS</span> <span class="pre">&gt;&gt;</span> <span class="pre">value)</span> <span class="pre">{</span> <span class="pre">...</span> <span class="pre">}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">while</span> <span class="pre">(getline(inFS,</span> <span class="pre">line))</span> <span class="pre">{</span> <span class="pre">...</span> <span class="pre">}</span></code></p></li>
+</ul>
+</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code class="docutils literal notranslate"><span class="pre">while</span> <span class="pre">(inFS</span> <span class="pre">&gt;&gt;</span> <span class="pre">value)</span></code> will work, but <code class="docutils literal notranslate"><span class="pre">while</span> <span class="pre">(inFS</span> <span class="pre">&gt;&gt;</span> <span class="pre">value</span> <span class="pre">==</span> <span class="pre">true)</span></code> will fail!
+The expression must be directly used in the parenthesis.
+Same rule applies to <code class="docutils literal notranslate"><span class="pre">getline(inFS,</span> <span class="pre">line)</span></code> call.</p>
+</div>
+</div>
+<div class="half docutils container">
+<pre><code data-trim data-noescape class="c++">#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+
+using namespace std;
+int main(){
+    ifstream inFS(&quot;input.txt&quot;);
+    if (!inFS.is_open()) {
+        cerr &lt;&lt; &quot;Error opening file!&quot; &lt;&lt; endl;
+        return 1;
+    }
+    // Read from the file
+    string line;
+    while (getline(inFS, line)) {
+        cout &lt;&lt; line &lt;&lt; endl;
+    }
+    inFS.close();
+    return 0;
+}</code></pre>
+</div>
+</div>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

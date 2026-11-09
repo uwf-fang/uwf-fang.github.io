@@ -1,0 +1,161 @@
+****************
+Recursion in C++
+****************
+
+.. container:: subtitle
+
+  |author|
+
+Outline
+=======
++ Overview
++ Recursive algorithms
+
+  * Function call mechanism
+  * Recursive functions in C++
+
++ Recursive data structures
+
+Overview
+========
++ Recursion: Defining a problem or an entity in terms of itself.
++ Recursive algorithm: An algorithm that breaks down the problem to smaller
+  pieces and reuses itself to solve sub-problems.
++ Recursive data structure: A data structure that is defined in terms of a
+  smaller version of itself.
++ Alternative to recursion: Iteration (loop).
++ Components:
+
+  * Base case: the case that the problem can be solved directly.
+  * Recursive case: the case that the problem can be broken down to smaller
+    pieces.
+
+Recursive algorithms
+====================
++ Example: Factorial
+
+  * Base case: 0! = 1
+  * Recursive case: n! = n * (n - 1)!
+
++ Implemented as recursive function in C++:
+
+  .. code-block:: cpp
+
+    int factorial(int n) {
+      if (n == 0) return 1;  // base case
+      else return n * factorial(n - 1);  // recursive case
+    }
+
+Function call mechanism
+-----------------------
++ Each function call creates a new stack frame in the stack memory.
++ The stack frame contains:
+
+  * Function arguments.
+  * Local variables.
+  * Return address.
+
++ The stack frame is popped out of the stack memory when the function returns.
++ Stack overflow: When the stack memory is full. Usually caused by infinite
+  recursion.
+
+Recursive functions in C++
+--------------------------
++ A function/method calls itself (directly or indirectly).
++ Forward declaration not mandatory except for mutual recursion (A calls B and
+  B calls A)
++ Record keeping (parameters, return values, global/dynamic variable)
++ Helper functions (extra parameters for record keeping)
++ if statement
+
+Recursive Linear Search Example
+-------------------------------
++ Linear search is a fundamental search algorithm that checks each element
+  sequentially until the target is found or the end of the array is reached.
++ Recursion provides an elegant alternative to iteration for implementing
+  linear search.
++ Three common approaches:
+
+  1. Helper function with index parameter
+  2. Improvement on method 1: default parameter (no helper function)
+  3. Backward search (compare tail element)
+
+Method 1: Helper Function with Index Parameter
+----------------------------------------------
+
+The most straightforward approach uses a helper function to manage the current
+index being checked:
+
+.. code-block:: cpp
+
+  int searchFirst(int *array, int size, int toSearch) {
+    return searchFirstHelper(array, size, toSearch, 0);
+  }
+
+  int searchFirstHelper(int *array, int size, int toSearch, int start) {
+    if (start >= size)  // hit the end
+      return -1;
+    if (array[start] == toSearch) return start;
+    return searchFirstHelper(array, size, toSearch, start + 1);
+  }
+
+The wrapper function calls a helper function that tracks the current starting
+index. This separates the public interface from the recursive implementation.
+
+Method 2: Default Parameter (No Helper Function)
+------------------------------------------------
+
+Using default parameters eliminates the need for a separate helper function:
+
+.. code-block:: cpp
+
+  int searchFirst1(int *array, int size, int toSearch, int start = 0) {
+    if (start >= size)  // hit the end
+      return -1;
+    if (array[start] == toSearch) return start;
+    return searchFirst1(array, size, toSearch, start + 1);
+  }
+
+This approach is cleaner for small implementations and allows callers to
+optionally provide a custom starting position.
+
+Method 3: Backward Search (Compare Tail Element)
+------------------------------------------------
+
+This method searches from the end of the array backward:
+
+.. code-block:: cpp
+
+  int searchLast(int *array, int size, int toSearch) {
+    if (size == 0) return -1;
+    if (array[size - 1] == toSearch) return size - 1;
+    else return searchLast(array, size - 1, toSearch);
+  }
+
+Instead of incrementing an index from the beginning, this method decrements
+the size parameter, effectively checking the last element first and moving
+backward through the array.
+
+Time complexity
+---------------
++ Use recursive trees to estimate time complexity.
++ Multiplicative relationship
+
+  * Rounds of recursive calls.
+  * Cost per round of recursive calls.
+
+.. image:: /_static/recursive-tree3.png
+  :align: center
+
+.. container:: footnote
+
+   Credit: zybooks.com
+
+Recursive Data Structure in C++
+===============================
++ A class holds instance or pointer/reference to instance of its own type
++ E.G.
+
+  * Linked-list
+  * Tree
+  * Directory structure

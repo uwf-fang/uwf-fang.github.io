@@ -1,0 +1,151 @@
+Implementing Subprograms
+========================
++ Semantics of Calls and Returns
++ Simple Subprograms
++ Subprograms with Stack-Dynamic Variables
++ Nested subprograms
++ Blocks
++ Dynamic scoping
+
+Semantics of Calls and Returns
+------------------------------
++ Subprogram linkage
++ During call:
+
+  + Save execution status
+  + Compute and pass parameters
+  + Transfer control
+
++ During return:
+
+  + Handle out mode parameters
+  + Restore execution status
+  + Transfer control back
+
+Simple Subprograms
+==================
+* "Simple" subprograms:
+
+  * Cannot be nested
+  * All local variables are static
+  * Example: Early versions of Fortran
+
+* Actions for call:
+
+  * Save execution status
+  * Compute and pass parameters
+  * Pass return address
+  * Transfer control
+
+* Actions for return:
+
+  * Handle out mode parameters
+  * Return function value if needed
+  * Restore execution status
+  * Transfer control back
+
+* Distribution of actions between caller and callee
+
+Activation Records
+------------------
+* Purpose: Storage of information needed for subprogram execution
+* Contains:
+
+  * Status information about caller
+  * Parameters
+  * Return address
+  * Return value (for functions)
+  * Temporaries
+  * Local variables
+
+Subprograms with Stack-Dynamic Variables
+========================================
+* More complex implementation needed for:
+
+  * Dynamic allocation/deallocation of locals
+  * Support for recursion
+  * Multiple simultaneous activations
+
+* Activation record instance contents:
+
+  * Return address
+  * Dynamic link
+  * Parameters
+  * Local variables
+
+* Run-time Stack: Manages activation record instances
+
+Demonstration: Stack and Subprogram Calls
+-----------------------------------------
+
+.. image:: /_static/stack-subprog-calls.png
+   :alt: Stack and Subprogram Calls
+   :align: center
+
+.. container:: footnote
+
+  Credit: Textbook
+
+Nested Subprograms
+==================
+* Nested subprograms:
+
+  * Can be nested
+  * Can access variables in outer scopes
+
+* Focus on static-scoped languages that support nested subprograms
+* Static scope
+
+  * Variables accessed by name
+  * Scope determined at compile time
+  * Static links to access non-local variables
+  * **Static chain** method
+
+Static Chain Implementation
+---------------------------
+.. container:: flex-container
+
+  .. container:: half
+
+    * Adds static link to activation records
+    * Links point to static parent's activation record
+    * Used for accessing nonlocal variables
+    * Components:
+
+      * Chain offset calculation
+      * Local offset determination
+      * Activation record traversal
+
+  .. container:: half
+
+    .. image:: /_static/static-chain.png
+      :alt: Stack Chain Stack View
+      :width: 50%
+
+    .. container:: footnote
+
+       Credit: Textbook
+
+Block Implementation
+====================
+Two main approaches:
+
+1. Static Chain Method:
+
+   * Treats blocks as parameterless subprograms
+   * Creates activation records
+   * Uses static links
+
+2. Simple Method:
+
+   * Allocates block variables in activation record
+   * Computes static offsets
+   * More efficient for most cases
+
+Practice Questions
+==================
+1. What are the key differences between simple and complex subprogram
+   implementations?
+2. How does recursion affect activation record management?
+3. Compare static and dynamic scoping implementations.
+4. What are the tradeoffs between different block implementation approaches?

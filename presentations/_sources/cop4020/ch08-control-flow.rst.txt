@@ -1,0 +1,164 @@
+Statement-Level Control Structures
+==================================
+
+Overview
+--------
+* Flow of control can be examined at several levels:
+
+  * Within expressions (Chapter 7)
+  * Among statements (this chapter)
+  * Among program units (Chapters 9 and 13)
+
+* Key topics:
+
+  * Selection statements
+  * Iterative statements
+  * Unconditional branching
+  * Guarded commands
+
+Selection Statements
+--------------------
+* Two categories:
+
+  * Two-way selection
+  * Multiple selection (n-way)
+
+* Design Issues:
+
+  * Form and type of control expression
+  * How to specify then/else clauses
+  * Semantics of nested selections
+  * Handling of unrepresented values in case statements
+
+Two-Way Selection
+-----------------
+* General form:
+
+  .. code-block:: python
+
+    if control_expression:
+      then_clause
+    else:
+      else_clause
+
+* Common Issues:
+
+  * Control expression type (Boolean vs arithmetic)
+  * Clause form (single vs compound statements)
+  * Nesting and else matching
+  * Expression evaluation rules
+
+Multiple Selection
+------------------
+* Purpose: Choose one of many code segments
+* Common form (switch/case):
+
+  .. code-block:: c
+
+    switch (expression) {
+      case const1: stmt1;
+      case const2: stmt2;
+      default: stmt3;
+    }
+
+* Design considerations:
+
+  * Expression type restrictions
+  * Flow-through vs break
+  * Default handling
+
+Iterative Statements
+--------------------
+* Categories based on:
+
+  * How iteration is controlled
+
+    * Counter-controlled
+    * Logic-controlled
+    * Data structure-based
+
+  * Where control mechanism appears
+
+    * Pretest
+    * Posttest
+    * User-located
+
+Counter-Controlled Loops
+------------------------
+* Components:
+
+  * Loop variable
+  * Initial value
+  * Terminal value
+  * Step size
+
+* Design Issues:
+
+  * Type/scope of loop variable
+  * Parameter evaluation timing
+  * Modifiability during execution
+
+Logic-Controlled Loops
+----------------------
+* Two main forms:
+
+  * Pretest (while)
+  * Posttest (do-while)
+
+* Characteristics:
+
+  * More general than counter-controlled
+  * Based on Boolean expressions
+  * Can simulate counter-controlled loops
+
+User-Located Control
+--------------------
+* Purpose: Allow exit point flexibility
+* Common mechanisms:
+
+  * break
+  * continue
+  * labeled breaks
+
+* Design Issues:
+
+  * Conditional vs unconditional exits
+  * Single vs multiple loop exit
+
+Guarded Commands
+----------------
+* Alternative control structures (Dijkstra)
+* Selection form:
+
+  .. code-block:: text
+
+    if guard1 -> statement1
+    [] guard2 -> statement2
+    [] ...
+    fi
+
+* Characteristics:
+  * Nondeterministic selection
+  * All guards evaluated
+  * Error if no guard true
+
+Summary
+-------
+* Control statements categories:
+
+  * Selection (if, switch)
+  * Iteration (for, while)
+  * Unconditional branching (goto)
+
+* Key considerations:
+
+  * Readability vs flexibility
+  * Safety vs power
+  * Implementation efficiency
+
+Practice Questions
+------------------
+1. What is the difference between pretest and posttest loops?
+2. Why do most languages prefer Boolean expressions for control?
+3. When would you use a switch vs nested if statements?
+4. What are the tradeoffs of allowing flow-through in switch statements?

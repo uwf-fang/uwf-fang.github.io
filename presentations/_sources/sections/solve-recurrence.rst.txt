@@ -1,0 +1,247 @@
+******************
+Solving Recurrence
+******************
+
+Outline
+=======
++ Overview
++ Recurrence Relations
++ Solving Recurrence Relations
+
+  * Substitution Method
+  * Recursion Tree Method
+  * Master Method
+
+Overview
+========
++ Solving recurrence is a process of finding a closed form expression for a
+  given recurrence relation that is usually employed to describe the time
+  function of a recursive algorithm.
++ Note: **It is usually simplified to find the big theta rather than the exact
+  close form expression.**
++ Algorithms that are recursive in nature are usually described by recurrence
+  relations.
+
+  * Tower of Hanoi
+  * Merge Sort
+  * Fibonacci Numbers
+
+Recurrence Relations
+====================
++ A recurrence relation is an equation that recursively defines a sequence,
+  where each term is a function of one or more of the preceding terms.
+
+  * E.g. :math:`T(n) = 2T(n/2) + \Theta(n)` for merge sort
+
++ The goal of "solving a recurrence" is to obtain a closed form expression for
+  :math:`T(n)` that does not involve any recurrence.
+
+  * E.g. :math:`T(n) = \Theta(n \log n)` for merge sort
+
++ This is a very challenging math problem but in computer science we are only
+  interested in some certain patterns of recurrence relations.
++ Depending on the algorithms there are some common recurrence relations
+  employed in the analysis of algorithms.
+
+Common Forms of Recurrence Relations
+------------------------------------
++ Divide and conquer Recurrence
+
+  * :math:`T(n) = aT(n/b) + f(n)`
+  * Merge sort
+  * Binary search
+  * Maximum subarray
+  * Strassen's matrix multiplication
+
++ First order linear Recurrence
+
+  * :math:`T(n) = aT(n-1) + f(n)`
+  * Linear search (recursive version)
+  * Insertion sort/Selection sort (recursive version)
+  * Euclidean's GCD algorithm
+
++ Second order linear Recurrence
+
+  * :math:`T(n) = aT(n-1) + bT(n-2) + f(n)`
+  * Fibonacci numbers (naive recursive version)
+
++ Note: the :math:`f(n)` term is usually simplified to big Theta notation.
+
+Solving Recurrence Relations
+============================
++ Finding a closed form expression for a given recurrence relation is a
+  challenging math problem.
++ In computer science we are only interested in some certain patterns.
++ Three methods:
+
+  * Substitution method
+  * Recursion tree method
+  * Master method
+
+Substitution Method
+===================
++ Two steps
+
+  * Guess the close form of the solution
+
+    - Guess a general form of the solution
+    - Use substitution to refine the formula (optional)
+
+  * Use mathematical induction to prove the guess is correct
+
++ Note: **You do not need to understand the details of the math. Focus on the
+  overall idea and the process.**
+
+Example: Guessing the Close Form
+--------------------------------
++ Start from the recurrence relation: :math:`T(n) = T(n-1) + 3n` and
+  :math:`T(1)=1`.
++ Guess the solution is :math:`T(n) = An^2 + Bn + C` where :math:`A`, :math:`B`, :math:`C` are
+  constants.
++ Use substitution to find :math:`A`, :math:`B`, :math:`C`.
+
+  .. math::
+
+    \begin{align*}
+    T(n) &= T(n-1) + 3n \\
+    An^2 + Bn + C &= A(n-1)^2 + B(n-1) + C + 3n \\
+    An^2 + Bn + C &= An^2 - 2An + A + Bn - B + C + 3n \\
+    An^2 + Bn + C &= An^2 + (-2A + B + 3)n + (A - B + C) \\
+    \end{align*}
+
+  So, we have the following equations:
+
+  .. math::
+
+    \begin{align*}
+    A &= A \\
+    B &= -2A + B + 3 \text{} \\
+    C &= A - B + C \\
+    f(1) &= A + B + C = 1 \\
+    \end{align*}
+
+  Solve them to get :math:`A = 1.5`, :math:`B = 1.5`, :math:`C = -2`.
+
+  The final formula is :math:`T(n) = 1.5n^2 + 1.5n - 2`.
+
+Example: Proof by Mathematical Induction
+----------------------------------------
++ For the recurrence relation: :math:`T(n) = T(n-1) + 3n` and :math:`f(1)=1`.
++ To prove the formula :math:`T(n) = 1.5n^2 + 1.5n - 2` is correct for all
+  :math:`n`.
+
+  * Base case: :math:`T(1) = 1.5 + 1.5 - 2 = 1`. Correct!
+  * If the formula is correct for :math:`n-1`, then
+
+    .. math::
+
+      \begin{align*}
+      T(n) &= T(n-1) + 3n \\
+      &= 1.5(n-1)^2 + 1.5(n-1) - 2 + 3n \\
+      &= 1.5n^2 - 3n + 1.5 + 1.5n - 1.5 - 2 + 3n \\
+      &= 1.5n^2 + 1.5n - 2 \\
+      \end{align*}
+
+    So, the formula is correct for :math:`n`.
+
+  * Done!
+
+Recursion Tree Method
+=====================
++ A graphical visualization to assist the guessing of the closed form.
++ Steps
+
+  * Draw the recursion tree
+  * Sum up the cost of each level
+  * Sum up the cost of all levels
+
++ E.g. :math:`T(n) = 3T(n/4) + \Theta(n^2)`
+
+.. image:: ../_static/recursion-tree2.png
+  :align: center
+
+.. container:: footnote
+
+   Credit: Introduction to Algorithms, 4th Ed., T. Cormen et al.
+
+Master Method
+=============
++ A general method to solve recurrences of the form:
+
+  .. math::
+
+    T(n) = aT(n/b) + f(n)
+
+  where :math:`a \geq 1`, :math:`b > 1` and :math:`f(n)` is an asymptotically positive function.
+
++ :math:`n` is the problem size.
++ :math:`a` is the number of recursive calls.
++ :math:`n/b` is the size of each subproblems where :math:`b` is the size
+  reduction factor.
++ :math:`f(n)` is the cost of dividing the problem and combining the solutions.
++ This is the well-known **divide-and-conquer** form of recurrence.
++ Based on **Master Theorem**.
+
+Three Cases
+-----------
++ Case 1: If :math:`f(n) = O(n^c)` where :math:`c < \log_b a`, then:
+  :math:`T(n) = \Theta(n^{\log_b a})`
++ Case 2: If :math:`f(n) = \Theta(n^{\log_b a} \cdot \log^k n)` for a :math:`k
+  \geq 0`, then: :math:`T(n) = \Theta(n^{\log_b a} \cdot \log^{k+1} n)`
++ Case 3: If :math:`f(n) = \Omega(n^c)` where :math:`c > \log_b a`, and if
+  :math:`a f\left(\frac{n}{b}\right) \leq k f(n)` for some :math:`k < 1` and
+  sufficiently large :math:`n`, then: :math:`T(n) = \Theta(f(n))`
++ Intuitions: The amount of work done in each recursive call is smaller, same
+  level, or larger than the cost of recursive calls.
+
+Examples
+--------
+For the recurrence relation of the Merge Sort algorithm:
+
+:math:`T(n) = 2T\left(\frac{n}{2}\right) + \Theta(n)`
+
+We have:
+
++ :math:`a = 2`
++ :math:`b = 2`
++ :math:`f(n) = \Theta(n) = \Theta(n^1 \times \log ^0 n)`
+
+Using the Master Method:
+
++ :math:`\log_b a = \log_2 2 = 1`
++ :math:`f(n) = \Theta(n^1 \times \log ^0 n)`
+
+This falls under Case 2 with :math:`k = 0`. Thus, the solution is: :math:`T(n)
+= \Theta(n \log n)`
+
+Exercises
+---------
+.. math::
+
+  \begin{align*}
+  1. & \quad T(n) = 3T\left(\frac{n}{4}\right) + n \\
+  2. & \quad T(n) = 2T\left(\frac{n}{2}\right) + n^2 \\
+  3. & \quad T(n) = 4T\left(\frac{n}{2}\right) + n^2 \\
+  4. & \quad T(n) = 4T\left(\frac{n}{3}\right) + n\sqrt{n} \\
+  5. & \quad T(n) = 3T\left(\frac{n}{2}\right) + n \\
+  6. & \quad T(n) = 2T\left(\frac{n}{4}\right) + \sqrt{n} \log n \\
+  \end{align*}
+
+Solutions
+---------
+.. math::
+
+  \begin{align*}
+  1. & \log_b a  = \log_4 3 < 1; f(n) = n = n^1; \\
+                & \text{case 3} \quad T(n) = \Theta(n)\\
+  2. & \log_b a  = \log_2 2 = 1; f(n) = n^2; \\
+                & \text{case 3} \quad T(n) = \Theta(n^2)\\
+  3. & \log_b a  = \log_2 4 = 2; f(n) = n^2 = n^2 \log ^0 n; \\
+                & \text{case 2 (k = 0)} \quad T(n) = \Theta(n^2 \log n)\\
+  4. & \log_b a  = \log_3 4 \approx 1.28; f(n) = n^{1.5}; \\
+                & \text{case 3} \quad T(n) = \Theta(n \sqrt{n}\\
+  5. & \log_b a  = \log_2 3 \approx 1.58; f(n) = n^1; \\
+                & \text{case 1} \quad T(n) = \Theta(n^{\log_2 3})\\
+  6. & \log_b a  = \log_4 2 = 0.5; f(n) = n^{0.5} \log n; \\
+                & \text{case 2 (k = 1)} \quad T(n) = \Theta(\sqrt{n} \log^2 n)\\
+  \end{align*}

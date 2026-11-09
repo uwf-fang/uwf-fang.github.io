@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C/C&#43;&#43; Development Environment · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/cpp/ccpp-env/" aria-current="page">C/C&#43;&#43; Development Environment</a></li><li><a href="/teaching/cpp/cpp-lang/">C&#43;&#43; programming language</a></li><li><a href="/teaching/cpp/functions/">User-defined Functions</a></li><li><a href="/teaching/cpp/io/">Input/Output (I/O)</a></li><li><a href="/teaching/cpp/string/">String (C&#43;&#43; class)</a></li><li><a href="/teaching/cpp/class/class/">Objects and Classes in C&#43;&#43;</a></li><li><a href="/teaching/cpp/variable-type/variable-type/">Type, Variable, Assignment, and Expression</a></li><li><a href="/teaching/cpp/array/array/">Array Data Type</a></li><li><a href="/teaching/cpp/building/gpp/">Compilation Using g&#43;&#43;</a></li><li><a href="/teaching/cpp/building/modular/">Modular Development</a></li><li><a href="/teaching/cpp/testing/testing/">Testing in C&#43;&#43;</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/cpp/">C&#43;&#43; Reference</a> / C/C&#43;&#43; Development Environment</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>C/C&#43;&#43; Development Environment</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#summary">Summary</a></li>
+    <li><a href="#concepts">Concepts</a></li>
+    <li><a href="#minimal-system-requirements">Minimal System Requirements</a></li>
+    <li><a href="#ssh-linux-server">SSH Linux Server</a></li>
+    <li><a href="#local-development-environment">Local Development Environment</a></li>
+    <li><a href="#editor-vs-ide">Editor vs IDE</a></li>
+    <li><a href="#toolchain-installation">Toolchain Installation</a>
+      <ul>
+        <li><a href="#remote">Remote</a></li>
+        <li><a href="#online">Online</a></li>
+        <li><a href="#windows-1x-local">Windows 1x Local</a></li>
+        <li><a href="#macos-local">macOS Local</a></li>
+        <li><a href="#linux-local">Linux Local</a></li>
+      </ul>
+    </li>
+    <li><a href="#extended-reading">Extended reading</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="c-c-development-environment"></span>
+<h2 id="summary">Summary</h2>
+<dl>
+<dt>Under Windows</dt>
+<dd>Install the toolchain under WSL; Use any code editor; Compile and run in WSL bash window; Transfer to the SSH server for an optional final test. <strong>Avoid MinGW (including git bash) or use it at your own risk!</strong> For more detail, read <a href="">Windows 1x Local</a> section. In the classrooms, you can install WSL, VS Code and Windows Terminal in the Microsoft Store. Do not install in the Power Shell or use installers, which may require an administrator account.</dd>
+<dt>Under macOS</dt>
+<dd>Install <strong>X-Code command line tool</strong> as your toolchain; Use any code editor; Compile and run in your terminal; Transfer to the SSH server for an optional final test. For more detail, read <a href="">macOS Local</a> section.</dd>
+<dt>Under Linux</dt>
+<dd>Install the toolchain; Use any code editor; Compile and run in your terminal; Transfer to the SSH server for an optional final test. For more detail, read <a href="">Linux Local</a> section.</dd>
+<dt>In Browser</dt>
+<dd>Use Codespaces for programming project. No installation is required. Your project should be hosted on GitHub.com as a repository first. Launch it directly from GitHub.</dd>
+<dt>SSH Server (CS department)</dt>
+<dd>The SSH server offered by the Department of Computer Science is intended for testing purposes when your local environment is not trustworthy (e.g. MinGW or CygWin).</dd>
+<dt>Single-Click-Run Feature</dt>
+<dd>Single-click-run features in certain text editors such as jGrasp, onlineGDB, and the VS Code run/debug feature may not support make, making them unsuitable for multi-file projects. While these editors can still be used for editing, avoid using them to run your project with a single mouse click. Unless you are willing to invest time into configuring them correctly, this is likely to lead to errors. Furthermore, this approach can be inconvenient, as you may need to reconfigure the settings for each new project.</dd>
+</dl>
+<h2 id="concepts">Concepts</h2>
+<span id="term-Command-line-Interface-CLI"></span>
+<dl>
+<dt>Command-line Interface (CLI)</dt>
+<dd>The Command-line interface (CLI) let user to process commands (computer applications) as lines of texts. Almost all operating systems provide CLIs. It has many advantages for programmers and are exclusively used to control remote computer through networks. Among the many CLI environments available, we stick to <strong>bash</strong> as our CLI shell.</dd>
+</dl>
+<span id="term-Command-line-Command"></span>
+<dl>
+<dt>Command-line Command</dt>
+<dd>A command-line command is an executable that can be invoked in the CLI environment (a terminal/console). A typical command contains the path to the executable followed by with arguments and options.</dd>
+</dl>
+<span id="term-Command-Arguments-and-Options-g"></span>
+<dl>
+<dt>Command Arguments and Options (g++)</dt>
+<dd>Given an example command: <code>g++ -g -o main main.cpp</code>. An argument is a positional parameter provided in a command like <code>main.cpp</code> in the example. An option is a parameter in the form like either <code>-o main</code> (with an option argument) or <code>-g</code> (without option argument). Options can also start with <code>--</code> such as <code>--help</code>.</dd>
+</dl>
+<span id="term-Bash"></span>
+<dl>
+<dt>Bash</dt>
+<dd>Bash is a unix shell to support the usage of CLI commands. It is also a language to allow shell programming. It is the default shell in most Linux distributions and some versions of macOS.</dd>
+</dl>
+<span id="term-Executable"></span>
+<dl>
+<dt>Executable</dt>
+<dd>It is also know as “executable file”, or “binary”. An executable refers to a file that can be invoked to perform certain tasks on a computer. It can be hard-coded in machine language but are mostly compiled from the source code in high-level programming languages such as C++.</dd>
+</dl>
+<span id="term-Source-Code"></span>
+<dl>
+<dt>Source Code</dt>
+<dd>Source code files of high-level programming languages are mostly just plain text files. They are human-readable files that can be translated to executables in machine language. As plain text files, you can used any text editor to work with them.</dd>
+</dl>
+<span id="term-Toolchain"></span>
+<dl>
+<dt>Toolchain</dt>
+<dd>The tools required to generate executables from source code files are known as <strong>toolchain</strong>.</dd>
+</dl>
+<h2 id="minimal-system-requirements">Minimal System Requirements</h2>
+<p>To work on a C++ programming project, the minimal requirements of the development environment are:</p>
+<ol>
+<li>An editor to edit the source code files</li>
+<li>A toolchain to build executables or libraries from the source code files</li>
+</ol>
+<p>The two parts are independent of each other. They can even exist on different computers. For instance, you can edit source codes on your laptop, transfer file to the remote Linux server, build and run your code there.</p>
+<h2 id="ssh-linux-server">SSH Linux Server</h2>
+<p>The Computer Science department provides every student the access to the Linux server through SSH. All tools required to compile and build C++ projects are pre-installed. Students can connect to the server and use the toolchain without any local installation. Read the <a href="/teaching/course/cs-ssh-server/">document</a> for more details.</p>
+<p>It is optional when you have a good local environment.</p>
+<aside class="callout callout-important" aria-label="important">
+<strong>Important</strong><div><p><strong>MinGW user should always test your code on the SSH server before submitting your work for grading.</strong></p>
+</div></aside>
+<h2 id="local-development-environment">Local Development Environment</h2>
+<p>Installing your own local development environment is <strong>highly recommended</strong> for the following reasons:</p>
+<ol>
+<li>Convenience: no need to transfer files to the SSH server every time to compile and run.</li>
+<li>Learning purpose: gain better understanding of the environment though the installation, configuration and execution processes.</li>
+</ol>
+<p>The following list of tools applies to the courses using C or C++ as the main programming language.</p>
+<span id="term-GCC-GNU-Compiler-Collection"></span>
+<dl>
+<dt>GCC (GNU Compiler Collection)</dt>
+<dd>A collection of compilers from GNU to compile many languages including C, C++, Objective-C, Fortran, Ada and Go.</dd>
+</dl>
+<span id="term-gcc"></span>
+<dl>
+<dt>gcc</dt>
+<dd>The GNU C compiler invocation command. Usually used to compile pure C or C/C++ hybrid projects. Not required for courses focusing on C++.</dd>
+</dl>
+<span id="term-g"></span>
+<dl>
+<dt>g++</dt>
+<dd>The GNU C++ compiler invocation command. Employed to compile pure C++ projects.</dd>
+</dl>
+<span id="term-make"></span>
+<dl>
+<dt>make</dt>
+<dd>The GNU building tool to produce executables and libraries. Also used in task automation.</dd>
+</dl>
+<span id="term-ssh"></span>
+<dl>
+<dt>ssh</dt>
+<dd>The secure shell command to access remote computer system through a command-line interface.</dd>
+</dl>
+<span id="term-Linux"></span>
+<dl>
+<dt>Linux</dt>
+<dd>The open-source operating system. Many Linux distributions are available. Ubuntu 22.04 is employed for demonstration in most courses.</dd>
+</dl>
+<span id="term-WSL"></span>
+<dl>
+<dt>WSL</dt>
+<dd>The Windows Subsystem for Linux. It allows students to use Linux environment under the Windows operating system.</dd>
+</dl>
+<span id="term-Editor-IDE"></span>
+<dl>
+<dt>Editor/IDE</dt>
+<dd>Any tool to be used to edit text files. Choose your preferred one. Visual Studio Code is used for demonstration in the classroom.</dd>
+</dl>
+<span id="term-git"></span>
+<dl>
+<dt>git</dt>
+<dd>The distributed version control system to manage source code or other files. Required for assignments using Classroom 50; otherwise it remains useful for managing source code in any software project.</dd>
+</dl>
+<span id="term-valgrind"></span>
+<dl>
+<dt>valgrind</dt>
+<dd>A CLI tool for profiling and diagnosis of C/C++ programs. It is usually used to check memory problem in the courses. It has known installation problem under macOS.</dd>
+</dl>
+<h2 id="editor-vs-ide">Editor vs IDE</h2>
+<p>A pure editor has no knowledge of the toolchain. It makes the setup easier. A programmer’s editor can provide many functionalities but will not be as feature-rich as a professional IDE.</p>
+<p>On the contrast, an IDE can be more powerful than an editor. However, to use the full power of an IDE, you must let the IDE know where to find your toolchain. The configuration step can be challenging for beginners. It is less flexible for this reason. It is also hard to use in grading as the mandatory creation of project structures is redundant in a typical grading process.</p>
+<aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p>Be aware of the compatibility issues! Some IDEs use headers or compilers that are not compatible to the GNU toolchain we use in the course. You will experience huge problem if you do not handle it correctly.</p>
+</div></aside>
+<p>In classroom demonstration will use <strong>Visual Studio Code</strong> as editor and <strong>g++/make under WSL/Linux/macOS</strong> as the toolchain.</p>
+<aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p>For VS Code user, you only need the C/C++ plugin from Microsoft. Install other plugins at your own risk. They need some learning to work.</p>
+</div></aside>
+<h2 id="toolchain-installation">Toolchain Installation</h2>
+<p>The setups are tightly coupled to the workflow you follow. They can be categorized by the location of the toolchain and the operating system you use.</p>
+<h3 id="remote">Remote</h3>
+<p>A remote toolchain exists on a remote computer that you can access through internet. The SSH server from the CS department is one example. Windows remote desktop is another example. To work with a remote toolchain. You need a software to manipulate the remote computer. It can be either text based, like the SSH connection to the Linux server, or GUI based, like remote desktop or TeamViewer.</p>
+<p><strong>No installation of toolchain is necessary</strong> because they are pre-installed on the server. Students need to learning how to access the server and work remotely.</p>
+<p>We will focus on the Linux server from the CS department accessible through SSH in this document because it is employed as the <strong>final/official</strong> environment in our courses.</p>
+<p>A separate tutorial discussing the usage of the Linux server using SSH is available: <a href="/teaching/course/cs-ssh-server/">Remote Linux Server Tutorial</a></p>
+<p>The major drawback using a remote toolchain is that all your files are compiled on the remote server. You will need either edit it remotely using a command-line based editors like <code>vim</code> or constantly transfer file back and forth whenever any changes are made on your local computer.</p>
+<p>Some editors/IDEs support the edition of remote files in the same way as local files. It is very convenient. However, the setup and configuration are not always working and can be challenging to most students.</p>
+<aside class="callout callout-note" aria-label="note">
+<strong>Note</strong><div><p>Ever since WSL was added to Windows and used in my courses, the SSH server become less important. You can finish projects without the server as long as you have a working local environment.</p>
+</div></aside>
+<h3 id="online">Online</h3>
+<p>There are online development environments that allow you to write and run code in your web browser. The zyLib used on zyBooks.com is one example. The onlinegdb.com is another example. You can input code in the text area input box in a webpage or upload your source code and your code will be compiled and executed on the server. It is a special type of remote server. This method has minimal requirement from students as they just need a web browser to use it. The drawbacks are:</p>
+<ol>
+<li>the management of multi-file projects can be complicated or impossible;</li>
+<li>do not have functionalities like git and make.</li>
+</ol>
+<p>However, Codespaces as a powerful online development environment is capable of handling multi-file projects. It is recommended in this course for students who have problem using their local environment.</p>
+<h3 id="windows-1x-local">Windows 1x Local</h3>
+<p>To have the most compatible toolchain working on Windows, the <strong>Windows Subsystem for Linux (WSL)</strong> is preferred over MinGW or CygWin. To set up WSL and related tools:</p>
+<ol>
+<li>
+<p>Install WSL (e.g. Ubuntu 22.04 LTS) from the <strong>Microsoft Store</strong></p>
+</li>
+<li>
+<p>Run for the first time: Setup username and password</p>
+</li>
+<li>
+<p>Update the software management system:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo apt update
+</span></span></code></pre></div></li>
+<li>
+<p>Install common building tools including g++, and make:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo apt install build-essential
+</span></span></code></pre></div></li>
+<li>
+<p>If git is required (DSA 1, 2 for example), install git:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo apt install git
+</span></span></code></pre></div></li>
+</ol>
+<aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p>MinGW (include Git Bash) or Cygwin will cause many compatibility issues. Use them only if you are confident to be able to solve all the compatibility problems by yourself. It usually not worth the effort.</p>
+</div></aside>
+<p>To use WSL, open a shell/terminal/console window. Several options to do that.</p>
+<ul>
+<li>Install the new <code>Windows Terminal</code> in the Microsoft Store and use it with WSL. This is by far the best terminal you can get on Windows.</li>
+<li>Find <code>Ubuntu 22.04</code> app in the start menu to start a Ubuntu bash shell.</li>
+<li>Open the built-in terminal of the editor you use</li>
+</ul>
+<p>Known problems:</p>
+<ul>
+<li><code>WslRegisterDistribution failed with error:</code>
+<ul>
+<li>Reason 1: Home edition of Windows 10/11 may not have that feature.</li>
+<li>Reason 2: You may need to enable hardware virtualization on Windows. Google “enable hyper-v” topic for solutions</li>
+</ul>
+</li>
+</ul>
+<h3 id="macos-local">macOS Local</h3>
+<p>The easiest way to install the toolchain on macOS is to install the <strong>Xcode Command line tool</strong> in the Terminal:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo xcode-select --install
+</span></span></code></pre></div><p>The <code>git</code> command line tool is usually pre-installed on macOS.</p>
+<aside class="callout callout-note" aria-label="note">
+<strong>Note</strong><div><p>You will be asked for your password and then you may see a popup dialog to confirm.</p>
+</div></aside>
+<p>To use the command-line environment, use the default <code>Terminal</code> app. Type the command <code>bash</code> to switch to bash if your default shell is zsh.</p>
+<p>The <code>valgrind</code> tool has no macOS native version available. You may use Homebrew to install a third-party version but the installation is not always working. You may need to use the SSH server to run valgrind in this case.</p>
+<h3 id="linux-local">Linux Local</h3>
+<ol>
+<li>
+<p>Update the software management system:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo apt update
+</span></span></code></pre></div></li>
+<li>
+<p>Install common building tools including g++, and make:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo apt install build-essential
+</span></span></code></pre></div></li>
+<li>
+<p>If git is required (DSA 1, 2 for example), install git:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo apt install git
+</span></span></code></pre></div></li>
+</ol>
+<p>To use the command-line environment, use the default <code>Terminal</code> app.</p>
+<h2 id="extended-reading">Extended reading</h2>
+<ul>
+<li><a href="/teaching/cpp/building/gpp/">Compilation Using g++</a></li>
+<li><a href="/teaching/developer-tools/make/">GNU Make</a></li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vector · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/cpp/">C&#43;&#43; Reference</a> / Vector</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Vector</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#vector-definition">Vector Definition</a></li>
+    <li><a href="#c-std-vector">C++ std::vector</a>
+      <ul>
+        <li><a href="#initialization">Initialization</a></li>
+        <li><a href="#c-iterator-type-extended-reading">C++ Iterator Type (Extended reading)</a></li>
+        <li><a href="#passing-vector-around">Passing vector around</a></li>
+        <li><a href="#algorithms">Algorithms</a></li>
+        <li><a href="#pitfalls">Pitfalls</a></li>
+        <li><a href="#extended-readings">Extended Readings</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="vector"></span>
+<h2 id="vector-definition">Vector Definition</h2>
+<ul>
+<li>A vector is mostly a data structure as it is usually language specific.</li>
+<li>A vector can be sometimes be treated as an ADT, when focusing on the data organization and behaviors only. Implementations are ignored.</li>
+<li>Vector: A sequential ADT, similar to list ADT with some specific behaviors</li>
+<li>Behaviors
+<ul>
+<li>access by index</li>
+<li>insert remove by index</li>
+<li>add remove at the end</li>
+<li>check size/empty</li>
+</ul>
+</li>
+</ul>
+<h2 id="c-std-vector">C++ std::vector</h2>
+<ul>
+<li>A C++ implementation of the Vector ADT</li>
+<li>An STL container</li>
+<li><code>#include &lt;vector&gt;</code></li>
+<li>vector is a class template, not a type! <code>vector&lt;int&gt;</code> is a class type</li>
+<li>Based on a dynamic array internally
+<ul>
+<li>fast access by indexing</li>
+<li>slow erase/insert in the middle</li>
+<li>may re-allocate memory when out of space (capacity)
+<ul>
+<li>create a larger array</li>
+<li>duplicate/move all elements from existing array</li>
+<li>delete the existing array</li>
+</ul>
+</li>
+<li>resize</li>
+</ul>
+</li>
+<li>Variable length allowed</li>
+<li>Out-of-boundary check with <code>.at(n)</code> method</li>
+<li>automatic memory re-allocation</li>
+<li>Methods
+<ul>
+<li>Constructors
+<ul>
+<li>default:  empty vector</li>
+<li><code>(n)</code>:  vector of size n, default values</li>
+<li><code>(n, v)</code>:  vector of size n, fill values as v</li>
+<li><code>(aVectorOfSameType)</code>:  copy another vector, must be same base type</li>
+<li><code>{item1, item2, ...}</code>:  fill items from index 0</li>
+</ul>
+</li>
+<li>Operator =
+<ul>
+<li><code>v1 = {1, 2, 3}</code>: initializer_list assignment</li>
+<li><code>v1 = v2</code>: copy assignment</li>
+</ul>
+</li>
+<li><code>at()</code>
+<ul>
+<li>can assign value like <code>v.at(0) = 10;</code></li>
+<li>with boundary check. Triggers out_of_boundary exception</li>
+<li>preferred over <code>[]</code> syntax</li>
+</ul>
+</li>
+<li><code>clear()</code> clear the content</li>
+<li><code>empty()</code> check empty</li>
+<li><code>size()</code></li>
+<li><code>push_back()</code>
+<ul>
+<li>push the value as the last element</li>
+<li>does not return value</li>
+</ul>
+</li>
+<li><code>pop_back()</code>
+<ul>
+<li>removes the last element</li>
+<li><strong>does not return value! Be careful! Many pop methods in other languages returns a value.</strong></li>
+</ul>
+</li>
+<li><code>back()</code>
+<ul>
+<li>returns the value of the last element</li>
+</ul>
+</li>
+<li><code>resize()</code>
+<ul>
+<li>may or may not re-allocate memory</li>
+<li>does not erase data if downsized</li>
+</ul>
+</li>
+<li><code>find()</code> find an element by value, returns an iterator</li>
+<li><code>insert()</code> requires the use of iterators</li>
+<li><code>erase()</code> requires the use of iterators</li>
+</ul>
+</li>
+</ul>
+<h3 id="initialization">Initialization</h3>
+<p>When the braces are used, the initialization will use the values as items. Must use parentheses when triggering other constructors.</p>
+<ul>
+<li><code>vector&lt;int&gt; v{1, 2, 3, 4, 5}</code> size 5 vector with values</li>
+<li><code>vector&lt;int&gt; v = {1, 2, 3, 4, 5}</code> size 5 vector with values, <strong>preferred for sequence initialization</strong></li>
+<li><code>vector&lt;int&gt; v(5)</code> size 5 vector with 0s, <code>v{5}</code> will make a size 1 vector</li>
+<li><code>vector&lt;int&gt; v(5, 1)</code> size 5 vector with 1s, <strong>warning:</strong> <code>v{5, 1}</code> will make a size 2 vector instead</li>
+<li><code>vector&lt;int&gt; v1(v)</code> make a copy of v</li>
+</ul>
+<span id="iterator"></span>
+<h3 id="c-iterator-type-extended-reading">C++ Iterator Type (Extended reading)</h3>
+<p>In C++, an iterator is an object that enables traversal through the elements of a container, such as a vector, list, or map, without exposing the underlying implementation of the container. Iterators provide a consistent interface to access and modify the elements of a container, regardless of the specific container type. They allow for efficient manipulation of container elements by providing methods for moving between elements, accessing the value at the current position, and modifying the value at the current position. Iterators are an essential tool for generic programming in C++ and allow for efficient, type-independent algorithms to be written for a variety of container types.</p>
+<ul>
+<li>
+<p>A derived type of STL containers such as vector, list, map, etc.</p>
+<ul>
+<li>e.g. <code>vector&lt;int&gt;::iterator</code> is used to iterate through a vector of int.</li>
+<li>May use <code>auto</code> to simplify the type declaration: <code>auto it = v.begin();</code></li>
+</ul>
+</li>
+<li>
+<p>Vector methods using iterator</p>
+<ul>
+<li><code>begin()</code> returns an iterator pointing to the first element</li>
+<li><code>end()</code> returns an iterator pointing to the element after the last element</li>
+<li><code>erase(iterator)</code> removes the element at the iterator position and returns the iterator pointing to the next element</li>
+<li><code>insert(iterator, value)</code> inserts the value before the iterator position and returns the iterator pointing to the inserted element</li>
+</ul>
+</li>
+<li>
+<p>Functions using iterators</p>
+<ul>
+<li><code>find(begin, end, value)</code> returns an iterator pointing to the first element that matches the value in the range defined by a beginning iterator and an ending iterator. It return the end iterator if not found.</li>
+</ul>
+</li>
+<li>
+<p>Example:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>vector<span style="color:#0550ae">&lt;</span><span style="color:#cf222e">int</span><span style="color:#0550ae">&gt;</span> v <span style="color:#0550ae">=</span> <span style="color:#1f2328">{</span><span style="color:#0550ae">1</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">4</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">5</span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span>vector<span style="color:#0550ae">&lt;</span><span style="color:#cf222e">int</span><span style="color:#0550ae">&gt;::</span>iterator it <span style="color:#0550ae">=</span> find<span style="color:#1f2328">(</span>v<span style="color:#1f2328">.</span>begin<span style="color:#1f2328">(),</span> v<span style="color:#1f2328">.</span>end<span style="color:#1f2328">(),</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>it <span style="color:#0550ae">=</span> v<span style="color:#1f2328">.</span>erase<span style="color:#1f2328">(</span>it<span style="color:#1f2328">);</span>  <span style="color:#57606a">// remove the element at the iterator position, returns
+</span></span></span><span style="display:flex;"><span>                  <span style="color:#57606a">// the iterator pointing to the next element
+</span></span></span></code></pre></div></li>
+</ul>
+<h3 id="passing-vector-around">Passing vector around</h3>
+<ul>
+<li>As parameter
+<ul>
+<li>
+<p>by-value (object duplication): <code>void func1(vector&lt;int&gt; vec);</code></p>
+</li>
+<li>
+<p>read-only reference: <code>void func1(const vector&lt;int&gt; &amp;vec);</code></p>
+</li>
+<li>
+<p>by-reference (allow modifications of the actual parameter): <code>void func1(vector&lt;int&gt; &amp;vec);</code></p>
+</li>
+<li>
+<p>example:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// Assume that the Patient class is ready for use
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// read data from a csv file and create the vector of Patient objects
+</span></span></span><span style="display:flex;"><span>loadData<span style="color:#1f2328">(</span>vector<span style="color:#0550ae">&lt;</span>Patient<span style="color:#0550ae">&gt;</span> <span style="color:#0550ae">&amp;</span>patients<span style="color:#1f2328">,</span> string filename<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">TextMenuApp</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  vector<span style="color:#0550ae">&lt;</span>Patient<span style="color:#0550ae">&gt;</span> <span style="color:#0550ae">&amp;</span>patients<span style="color:#1f2328">;</span>  <span style="color:#57606a">// takes a reference to avoid copy overhead
+</span></span></span><span style="display:flex;"><span> <span style="color:#cf222e">public</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  TextMenuApp<span style="color:#1f2328">(</span>vector<span style="color:#0550ae">&lt;</span>Patient<span style="color:#0550ae">&gt;</span> <span style="color:#0550ae">&amp;</span>patients<span style="color:#1f2328">)</span><span style="color:#0550ae">:</span> patients<span style="color:#1f2328">(</span>patients<span style="color:#1f2328">)</span> <span style="color:#1f2328">{}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">void</span> <span style="color:#6639ba">run</span><span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// ...
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">main</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// Only one vector is created in the scope of the main function
+</span></span></span><span style="display:flex;"><span>  <span style="color:#57606a">// Its reference is passed around
+</span></span></span><span style="display:flex;"><span>  vector<span style="color:#0550ae">&lt;</span>Patient<span style="color:#0550ae">&gt;</span> patients<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  loadData<span style="color:#1f2328">(</span>patients<span style="color:#1f2328">,</span> <span style="color:#0a3069">&#34;patients.csv&#34;</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  TextMenuApp app<span style="color:#1f2328">(</span>patients<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  app<span style="color:#1f2328">.</span>run<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> EXIT_SUCCESS<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li>As returned value
+<ul>
+<li>return by value (object not necessary duplicated, some optimization will happen)</li>
+<li>see the <a href="#filter-example">filter example</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="algorithms">Algorithms</h3>
+<ul>
+<li>
+<p>Works with all algorithms on arrays</p>
+<ul>
+<li>change <code>arr[i]</code> to <code>vec.at(i)</code></li>
+<li>no longer need to pass a separate size variable</li>
+</ul>
+</li>
+<li>
+<p>Particularly good for out-of-place algorithms with variable length output</p>
+<span id="filter-example"></span>
+<ul>
+<li>
+<p>filter type of algorithm, i.e. find all positive value in a vector:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>vector<span style="color:#0550ae">&lt;</span><span style="color:#cf222e">int</span><span style="color:#0550ae">&gt;</span> positiveOnly<span style="color:#1f2328">(</span><span style="color:#cf222e">const</span> vector<span style="color:#0550ae">&lt;</span><span style="color:#cf222e">int</span><span style="color:#0550ae">&gt;</span> <span style="color:#0550ae">&amp;</span>v<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  vector<span style="color:#0550ae">&lt;</span><span style="color:#cf222e">int</span><span style="color:#0550ae">&gt;</span> result<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> i <span style="color:#0550ae">&lt;</span> v<span style="color:#1f2328">.</span>size<span style="color:#1f2328">();</span> <span style="color:#0550ae">++</span>i<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span>v<span style="color:#1f2328">.</span>at<span style="color:#1f2328">(</span>i<span style="color:#1f2328">)</span> <span style="color:#0550ae">&gt;</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>      result<span style="color:#1f2328">.</span>push_back<span style="color:#1f2328">(</span>v<span style="color:#1f2328">.</span>at<span style="color:#1f2328">(</span>i<span style="color:#1f2328">));</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> result<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div></li>
+</ul>
+</li>
+</ul>
+<span id="vector-pitfalls"></span>
+<h3 id="pitfalls">Pitfalls</h3>
+<ul>
+<li>use [] rather than at()</li>
+<li><code>int a = v.pop_back();</code> should be <code>int a = v.back(); v.pop_back()</code></li>
+<li><code>cout &lt;&lt; v.length();</code> Wrong! There is no length() method</li>
+<li><code>if (v.size() == 0)</code> this works but better use <code>if (v.empty())</code></li>
+</ul>
+<h3 id="extended-readings">Extended Readings</h3>
+<ul>
+<li>Use <code>.emplace_back()</code> with object vector</li>
+<li>Use for each loop with vectors</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Algorithm and Program Design (COP3014)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Algorithm and Program Design (COP3014)</h1>
+<div class="subtitle docutils container">
+<p><strong>Chapter 11: Vector</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Vector</h2>
+<ul class="simple">
+<li><p>A vector is mostly a data structure, usually language-specific</p></li>
+<li><p>Can be treated as an ADT by focusing on abstract behaviors only</p></li>
+<li><p>A sequential ADT, similar to list ADT</p></li>
+<li><p>Behaviors:</p>
+<ul>
+<li><p>access by index</p></li>
+<li><p>insert/remove by index</p></li>
+<li><p>add/remove at end</p></li>
+<li><p>check size</p></li>
+<li><p>check empty</p></li>
+<li><p>iterate through elements</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>C++ std::vector (Part 1)</h2>
+<ul class="simple">
+<li><p>A C++ implementation of the Vector ADT</p></li>
+<li><p>An STL container</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&lt;vector&gt;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vector&lt;int&gt;</span></code> is a class type (instance of template)</p></li>
+<li><p>Internally based on a dynamic array</p>
+<ul>
+<li><p>fast index access</p></li>
+<li><p>slow erase/insert anywhere but end</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>C++ std::vector (Part 2)</h3>
+<ul class="simple">
+<li><p>May re-allocate memory when full</p>
+<ul>
+<li><p>create larger array</p></li>
+<li><p>move elements</p></li>
+<li><p>delete old array</p></li>
+</ul>
+</li>
+<li><p>Variable length supported</p></li>
+<li><p>Out-of-bound check with <code class="docutils literal notranslate"><span class="pre">.at(n)</span></code></p></li>
+<li><p>The [] operator is not checking range as <code class="docutils literal notranslate"><span class="pre">.at(n)</span></code></p></li>
+<li><p>Auto memory re-allocation</p></li>
+</ul>
+</section>
+<section >
+<h3>C++ std::vector Methods (Part 1)</h3>
+<ul class="simple">
+<li><p>Constructors:</p>
+<ul>
+<li><p>default: empty vector</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(n)</span></code>: size n, default values</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">v)</span></code>: size n, filled with v</p></li>
+<li><p>copy constructor: same type</p></li>
+<li><p>initializer list: <code class="docutils literal notranslate"><span class="pre">{item1,</span> <span class="pre">item2,</span> <span class="pre">...}</span></code></p></li>
+</ul>
+</li>
+<li><p>Operator =:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">v1</span> <span class="pre">=</span> <span class="pre">{1,</span> <span class="pre">2,</span> <span class="pre">3}</span></code>: initializer_list, you cannot do this to array!</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">v1</span> <span class="pre">=</span> <span class="pre">v2</span></code>: copy assignment</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>C++ std::vector Methods (Part 2)</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">at()</span></code></p>
+<ul>
+<li><p>assign: <code class="docutils literal notranslate"><span class="pre">v.at(0)</span> <span class="pre">=</span> <span class="pre">10;</span></code> this is an lvalue</p></li>
+<li><p>boundary check, throws exception</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">clear()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">empty()</span></code> Checks empty only!</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">size()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">push_back()</span></code>: adds to end, no return</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pop_back()</span></code>: removes last, no return</p></li>
+</ul>
+</section>
+<section >
+<h3>C++ std::vector Methods (Part 3)</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">back()</span></code>: returns last value</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">resize()</span></code></p>
+<ul>
+<li><p>may re-allocate</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">find()</span></code>: returns iterator</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">insert()</span></code>, <code class="docutils literal notranslate"><span class="pre">erase()</span></code>: use iterators to locate</p></li>
+</ul>
+</section>
+<section >
+<h3>Initialization</h3>
+<ul class="simple">
+<li><p>Braces initialize with values</p></li>
+<li><p>Parentheses call constructors</p></li>
+<li><p>Examples:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">vector&lt;int&gt;</span> <span class="pre">v{1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4,</span> <span class="pre">5}</span></code> — size 5 with values</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vector&lt;int&gt;</span> <span class="pre">v</span> <span class="pre">=</span> <span class="pre">{1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4,</span> <span class="pre">5}</span></code> — preferred for sequence init</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vector&lt;int&gt;</span> <span class="pre">v(5)</span></code> — size 5, default (0)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vector&lt;int&gt;</span> <span class="pre">v(5,</span> <span class="pre">1)</span></code> — size 5, filled with 1</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vector&lt;int&gt;</span> <span class="pre">v1(v)</span></code> — copy v</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>C++ Iterator Type (FYI)</h2>
+<ul class="simple">
+<li><p>Iterators enable container traversal</p></li>
+<li><p>Hides implementation details</p></li>
+<li><p>Supports:</p>
+<ul>
+<li><p>element access</p></li>
+<li><p>movement between elements</p></li>
+<li><p>modification</p></li>
+</ul>
+</li>
+<li><p>Useful for generic programming</p></li>
+</ul>
+</section>
+<section >
+<h3>C++ Iterator Type (Usage)</h3>
+<ul class="simple">
+<li><p>STL container derived type</p>
+<ul>
+<li><p>e.g. <code class="docutils literal notranslate"><span class="pre">vector&lt;int&gt;::iterator</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">auto</span> <span class="pre">it</span> <span class="pre">=</span> <span class="pre">v.begin();</span></code> for simplicity</p></li>
+</ul>
+</li>
+<li><p>Vector methods:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">begin()</span></code>, <code class="docutils literal notranslate"><span class="pre">end()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">erase(iterator)</span></code>: remove and return next iterator</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">insert(iterator,</span> <span class="pre">value)</span></code>: insert before and return inserted iterator</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>C++ Iterator Type (Example)</h3>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">find(begin,</span> <span class="pre">end,</span> <span class="pre">value)</span></code>: returns iterator or end</p></li>
+<li><p>Example:</p>
+<pre><code data-trim data-noescape class="default">vector&lt;int&gt; v = {1, 2, 3, 4, 5};
+vector&lt;int&gt;::iterator it = find(v.begin(), v.end(), 3);
+it = v.erase(it);</code></pre>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Passing Vector Around</h2>
+<ul>
+<li><p>As parameter:</p>
+<ul class="simple">
+<li><p>by-value: <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">func(vector&lt;int&gt;</span> <span class="pre">vec);</span></code> slow and inefficient</p></li>
+<li><p>read-only ref: <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">func(const</span> <span class="pre">vector&lt;int&gt;</span> <span class="pre">&amp;vec);</span></code></p></li>
+<li><p>by-ref: <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">func(vector&lt;int&gt;</span> <span class="pre">&amp;vec);</span></code> allows modification</p></li>
+</ul>
+</li>
+<li><p>As return value</p></li>
+<li><p>Example:</p>
+<pre><code data-trim data-noescape class="default">loadData(vector&lt;Patient&gt; &amp;patients, string filename);
+
+int main() {
+  vector&lt;Patient&gt; patients;
+  loadData(patients, &quot;patients.csv&quot;);
+  TextMenuApp app(patients);
+  app.run();
+  return EXIT_SUCCESS;
+}</code></pre>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Algorithms With Vectors</h2>
+<ul>
+<li><p>Works like arrays</p>
+<ul class="simple">
+<li><p>use <code class="docutils literal notranslate"><span class="pre">vec.at(i)</span></code> instead of <code class="docutils literal notranslate"><span class="pre">arr[i]</span></code></p></li>
+<li><p>no need for a separate size variable</p></li>
+</ul>
+</li>
+<li><p>Great for variable-length outputs</p>
+<ul>
+<li><p>filter example:</p>
+<pre><code data-trim data-noescape class="default">vector&lt;int&gt; positiveOnly(const vector&lt;int&gt; &amp;v) {
+  vector&lt;int&gt; result;
+  for (int i = 0; i &lt; v.size(); ++i)
+    if (v.at(i) &gt; 0)
+      result.push_back(v.at(i));
+  return result;
+}</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Pitfalls Working With Vectors</h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[]</span></code> doesn’t check bounds, prefer <code class="docutils literal notranslate"><span class="pre">at()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">a</span> <span class="pre">=</span> <span class="pre">v.pop_back();</span></code> is invalid</p>
+<ul>
+<li><p>Correct: <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">a</span> <span class="pre">=</span> <span class="pre">v.back();</span> <span class="pre">v.pop_back();</span></code></p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">v.length()</span></code> is invalid — use <code class="docutils literal notranslate"><span class="pre">v.size()</span></code></p></li>
+<li><p>Prefer <code class="docutils literal notranslate"><span class="pre">v.empty()</span></code> over <code class="docutils literal notranslate"><span class="pre">v.size()</span> <span class="pre">==</span> <span class="pre">0</span></code></p></li>
+</ul>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

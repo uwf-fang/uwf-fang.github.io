@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Introduction to Big Data Analytics</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Introduction to Big Data Analytics</h1>
+<div class="subtitle docutils container">
+<p><strong>Chapter 10, 11: Cluster Managers; Monitoring</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Overview of Cluster Managers for Spark</p></li>
+<li><p>Standalone Cluster Manager</p></li>
+<li><p>YARN Cluster Manager</p></li>
+<li><p>Mesos Cluster Manager</p></li>
+<li><p>Monitoring Spark Applications</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Cluster Managers for Spark</h2>
+<ul class="simple">
+<li><p>Cluster manager: software that manages resources across a cluster</p></li>
+<li><p>Major cluster managers for Spark:</p>
+<ul>
+<li><p>Standalone</p></li>
+<li><p>YARN</p></li>
+<li><p>Mesos</p></li>
+<li><p>Kubernetes (containerized workloads)</p></li>
+<li><p>AWS EMR (Elastic MapReduce)</p></li>
+</ul>
+</li>
+</ul>
+<a class="reference internal image-reference" href="../_images/spark-arch.png"><img alt="Cluster managers" src="../_images/spark-arch.png" style="width: 50%;" />
+</a>
+</section>
+<section >
+<h3>Spark on Cluster</h3>
+<ul class="simple">
+<li><p>Spark can run in local mode without a cluster manager (for development)</p></li>
+<li><p>Deploy Modes:</p>
+<ul>
+<li><p>Cluster mode: driver runs on a worker node</p></li>
+<li><p>Client mode: driver runs on the client machine</p></li>
+</ul>
+</li>
+<li><p>General process:</p>
+<ul>
+<li><p>Start cluster manager on every node</p></li>
+<li><p>Submit application to cluster manager</p>
+<ul>
+<li><p>spark-submit or spark-shell</p></li>
+<li><p>Specify master URL</p></li>
+</ul>
+</li>
+<li><p>Cluster manager launches executors on worker nodes</p></li>
+<li><p>Executors run tasks for the application</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Standalone Cluster Manager</h2>
+<ul class="simple">
+<li><p>Simple cluster manager that comes with Spark (no additional installation)</p></li>
+<li><p>Architecture</p>
+<ul>
+<li><p>Master process: can run on any node</p></li>
+<li><p>Worker processes</p></li>
+</ul>
+</li>
+<li><p>Scripts</p>
+<ul>
+<li><p>start-master.sh</p></li>
+<li><p>start-slave.sh</p></li>
+<li><p>stop-master.sh</p></li>
+<li><p>stop-slave.sh</p></li>
+<li><p>start-all.sh</p></li>
+<li><p>stop-all.sh</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Apache Mesos Cluster Manager</h2>
+<ul class="simple">
+<li><p>General-purpose cluster manager</p>
+<ul>
+<li><p>Scalability to 10,000s of nodes</p></li>
+<li><p>Fault-tolerant masters and slaves</p></li>
+<li><p>Multi-resource (CPU, memory, disk, and ports) scheduling</p></li>
+<li><p>Support for Docker containers</p></li>
+<li><p>Native isolation between tasks</p></li>
+</ul>
+</li>
+<li><p>Architecture</p>
+<ul>
+<li><p>Master: 1 with optional standby, runs Spark scheduler</p></li>
+<li><p>Slave: many, runs Spark executors</p></li>
+</ul>
+</li>
+<li><p>Running mode:</p>
+<ul>
+<li><p>Fine-grained mode: dynamic sharing of resources</p></li>
+<li><p>Coarse-grained mode: single long-running task per slave for each spark
+application</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>YARN Cluster Manager</h2>
+<ul class="simple">
+<li><p>Yet Another Resource Negotiator</p></li>
+<li><p>Hadoop’s resource manager after version 2.0</p></li>
+<li><p>Architecture</p>
+<ul>
+<li><p>Client</p></li>
+<li><p>Resource Manager</p></li>
+<li><p>Node Manager</p></li>
+<li><p>Application Master</p></li>
+<li><p>Container</p></li>
+</ul>
+</li>
+</ul>
+<a class="reference internal image-reference" href="../_images/hadoop-evolve.png"><img alt="YARN in Hadoop" src="../_images/hadoop-evolve.png" style="width: 60%;" />
+</a>
+</section>
+</section>
+<section >
+<section >
+<h2>Cluster Monitoring</h2>
+<ul class="simple">
+<li><p>Spark UI</p>
+<ul>
+<li><p>Web interface</p></li>
+<li><p>Shows application details</p></li>
+<li><p>View status of jobs, stages, tasks, storage, executor, etc.</p></li>
+</ul>
+</li>
+<li><p>Databricks Community Edition</p>
+<ul>
+<li><p>Richer UIs including Spark UI can be opened in pop-up windows</p></li>
+<li><p>Brief job summary in the output of each cell that runs Spark jobs</p></li>
+</ul>
+</li>
+</ul>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

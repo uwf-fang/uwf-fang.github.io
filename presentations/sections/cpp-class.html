@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>C++ Classes and Objects</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>C++ Classes and Objects</h1>
+<ul class="simple">
+<li><p>Class</p></li>
+<li><p>Objects and Instances</p></li>
+<li><p>Instance Variables</p></li>
+<li><p>Methods</p></li>
+<li><p>Access Modifiers</p></li>
+<li><p>Class Declaration</p></li>
+<li><p>Method Definition</p></li>
+<li><p>Special Methods</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h1>Class Concepts</h1>
+<p><strong>Definition</strong>: A class is a user-defined type that encapsulates data and
+functions that operate on that data.</p>
+<ul class="simple">
+<li><p>Key Points:</p>
+<ul>
+<li><p>Classes are blueprints for objects</p></li>
+<li><p>Objects are instances of classes</p></li>
+<li><p>Classes combine data and operations</p></li>
+</ul>
+</li>
+</ul>
+<pre data-id="class-concepts"><code data-trim data-noescape class="cpp">// Correct class definition
+class Student {
+ private:
+  int grade;
+ public:
+  void setGrade(int score);
+};</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h1>Objects and Instances</h1>
+<p><strong>Definition</strong>: An object is a variable of a class type that contains its own
+copy of the class’s members.</p>
+<ul class="simple">
+<li><p>Key Characteristics:</p>
+<ul>
+<li><p>Each object has its own memory space</p></li>
+<li><p>Objects can be created on stack or heap</p></li>
+<li><p>Multiple objects of same class are independent</p></li>
+</ul>
+</li>
+</ul>
+<pre data-id="objects-and-instances"><code data-trim data-noescape class="cpp">// Correct object creation
+Student alice;              // Stack allocation
+Student* bob = new Student; // Heap allocation
+
+// Wrong - missing variable name
+Student;
+new Student;</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h1>Instance Variables</h1>
+<p><strong>Definition</strong>: Instance variables are data elements contained within a class.</p>
+<ul class="simple">
+<li><p>Characteristics:</p>
+<ul>
+<li><p>Also called member variables</p></li>
+<li><p>Each object has its own copy (unless static)</p></li>
+<li><p>Can have different access levels</p></li>
+</ul>
+</li>
+</ul>
+<pre data-id="instance-variables"><code data-trim data-noescape class="cpp">// Correct member variable declaration
+class Car {
+ private:
+  int speed;
+  string model;
+};</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h1>Methods</h1>
+<p><strong>Definition</strong>: Member functions are methods that operate on class data.</p>
+<ul class="simple">
+<li><p>Properties:</p>
+<ul>
+<li><p>Can access private members</p></li>
+<li><p>Can be overloaded</p></li>
+<li><p>Can be const-qualified</p></li>
+</ul>
+</li>
+</ul>
+<pre data-id="methods"><code data-trim data-noescape class="cpp">// Correct member function
+class Rectangle {
+ private:
+  double width, height;
+ public:
+  double getArea() const {
+    return width * height;
+  }
+};</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h1>Access Modifiers</h1>
+<p><strong>Definition</strong>: Access modifiers control the visibility and accessibility of class members.</p>
+<ul class="simple">
+<li><p>Types:</p>
+<ul>
+<li><p>public: accessible from anywhere</p></li>
+<li><p>private: only accessible within class (default, if not specified)</p></li>
+<li><p>protected: accessible in class and derived classes</p></li>
+</ul>
+</li>
+</ul>
+<pre data-id="access-modifiers"><code data-trim data-noescape class="cpp">// Correct access specification
+class BankAccount {
+ public:
+  void deposit(double amount);
+ private:
+  double balance;
+};
+
+// Wrong - sensitive data exposed
+class BankAccount {
+ public:
+  double balance;  // Should be private
+  void deposit(double amount);
+};</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h1>Class Declaration</h1>
+<p><strong>Definition</strong>: A class declaration defines the class interface and structure.</p>
+<ul class="simple">
+<li><p>Guidelines:</p>
+<ul>
+<li><p>Public declarations go in header files</p></li>
+<li><p>Include all member declarations</p></li>
+<li><p>End with semicolon</p></li>
+</ul>
+</li>
+</ul>
+<pre data-id="class-declaration"><code data-trim data-noescape class="cpp">// Correct declaration
+class Time {
+ private:
+  int hour;
+ public:
+  void setHour(int h);
+  int getHour() const;
+};  // Note the semicolon</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h1>Method Definition</h1>
+<p><strong>Definition</strong>: Member function definition provides the implementation of class
+methods.</p>
+<ul class="simple">
+<li><p>Rules:</p>
+<ul>
+<li><p>Implement in cpp files</p></li>
+<li><p>Use scope resolution operator (::)</p></li>
+<li><p>Include parameter names</p></li>
+</ul>
+</li>
+</ul>
+<pre data-id="method-definition"><code data-trim data-noescape class="cpp">// Correct definition
+void Time::setHour(int h) {
+  hour = h;
+}
+
+Time::Time() : hour(0) {}  // Constructor definition</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Constructors</h2>
+<p><strong>Definition</strong>: Constructors are special methods that initialize objects of a
+class.</p>
+<ul class="simple">
+<li><p>Characteristics:</p>
+<ul>
+<li><p>Same name as class</p></li>
+<li><p>No return type</p></li>
+<li><p>Can be overloaded</p></li>
+</ul>
+</li>
+</ul>
+<pre data-id="constructors"><code data-trim data-noescape class="cpp">// Correct constructors
+class Point {
+ private:
+  int x, y;
+ public:
+  Point() : x(0), y(0) {}  // Default constructor
+  Point(int x, int y) : x(x), y(y) {}  // Parameterized
+};
+
+// Wrong - return type specified
+class Point {
+ private:
+  int x, y;
+ public:
+  void Point() {}  // Constructor can't have return type
+};</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Destructor</h2>
+<p><strong>Definition</strong>: A destructor is a special function that cleans up when an
+object is destroyed.</p>
+<ul class="simple">
+<li><p>Properties:</p>
+<ul>
+<li><p>Prefixed with ~</p></li>
+<li><p>No parameters</p></li>
+<li><p>Only one per class (no overloading)</p></li>
+</ul>
+</li>
+</ul>
+<pre data-id="destructor"><code data-trim data-noescape class="cpp">// Correct destructor
+class FileHandler {
+ private:
+  std::fstream file;
+ public:
+  ~FileHandler() {
+    file.close();
+  }
+};
+
+// Wrong - parameters in destructor
+class FileHandler {
+ private:
+  std::fstream file;
+ public:
+  ~FileHandler(bool force) {  // Destructors can't have parameters
+    file.close();
+  }
+};</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Getters and Setters</h2>
+<p><strong>Definition</strong>: Accessor (getter) and mutator (setter) methods provide
+controlled access to private members.</p>
+<ul class="simple">
+<li><p>Best Practices:</p>
+<ul>
+<li><p>Getters should be const</p></li>
+<li><p>Use meaningful names</p></li>
+<li><p>Validate input in setters</p></li>
+</ul>
+</li>
+</ul>
+<pre data-id="getters-and-setters"><code data-trim data-noescape class="cpp">// Correct getter/setter
+class Temperature {
+ private:
+  double celsius;
+ public:
+  double getCelsius() const {
+    return celsius;
+  }
+  void setCelsius(double temp) {
+    celsius = temp;
+  }
+};</code></pre>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

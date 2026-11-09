@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Heap and Heap Sort · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/cpp/ccpp-env/">C/C&#43;&#43; Development Environment</a></li><li><a href="/teaching/cpp/cpp-lang/">C&#43;&#43; programming language</a></li><li><a href="/teaching/cpp/functions/">User-defined Functions</a></li><li><a href="/teaching/cpp/io/">Input/Output (I/O)</a></li><li><a href="/teaching/cpp/string/">String (C&#43;&#43; class)</a></li><li><a href="/teaching/cpp/class/class/">Objects and Classes in C&#43;&#43;</a></li><li><a href="/teaching/cpp/variable-type/variable-type/">Type, Variable, Assignment, and Expression</a></li><li><a href="/teaching/cpp/array/array/">Array Data Type</a></li><li><a href="/teaching/cpp/building/gpp/">Compilation Using g&#43;&#43;</a></li><li><a href="/teaching/cpp/building/modular/">Modular Development</a></li><li><a href="/teaching/cpp/testing/testing/">Testing in C&#43;&#43;</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/cpp/">C&#43;&#43; Reference</a> / Heap and Heap Sort</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Heap and Heap Sort</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#heap">Heap</a></li>
+    <li><a href="#applications">Applications</a></li>
+    <li><a href="#visualization">Visualization</a></li>
+    <li><a href="#priority-queue">Priority queue</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="heap-and-heap-sort"></span>
+<h2 id="heap">Heap</h2>
+<ul>
+<li>
+<p>Definition</p>
+<p>A complete binary tree in which parent node is always less/greater (min/max heap) or equal (if allow overlapped values) than its children</p>
+</li>
+<li>
+<p>Logically a binary complete tree</p>
+</li>
+<li>
+<p>physically an array</p>
+<ul>
+<li>find parent/children by arithmetic calculation of indices
+<ul>
+<li>given the node $i$</li>
+<li>the index of the parent node is $(i-1)/2$</li>
+<li>the indices of the children nodes are left: $i*2+1$ and right: $i*2+2$</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>type</p>
+<ul>
+<li>max heap - root being the greatest value</li>
+<li>min heap - root being the smallest value</li>
+</ul>
+</li>
+<li>
+<p>behaviors</p>
+<ul>
+<li>insert
+<ul>
+<li>insert at the end</li>
+<li>swap with its parent if it violate the rule (percolate up)</li>
+<li>keep checking all ancestors till the root is reached</li>
+</ul>
+</li>
+<li>remove
+<ul>
+<li>remove the root by overwriting it using the last element</li>
+<li>swap the parent node with its least/greatest child starting from the root until the leaf node is reached (percolate down)</li>
+</ul>
+</li>
+<li>percolate up/down
+<ul>
+<li>move one element up/down in an existing heap</li>
+</ul>
+</li>
+<li>Heap creation
+<ol>
+<li>Insert element one by one to a new heap. $\Theta(n \log n)$</li>
+<li>Heapify: Percolate down all internal nodes in the order from the last to the root $\Theta(n)$
+<ul>
+<li>repeatedly percolate from the index $size/2-1$ to $0$</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<span id="id1"></span>
+<p><img src="/teaching/_migration/graph-8bb9cae0a262271b.svg" alt="Graphviz diagram"></p>
+<p><em>A max heap (tree form)</em></p>
+<span id="id2"></span>
+<p><img src="/teaching/_migration/graph-ea9d9edd7911ded5.svg" alt="Graphviz diagram"></p>
+<p><em>A max heap (array form)</em></p>
+<h2 id="applications">Applications</h2>
+<ul>
+<li>Heap sort</li>
+<li>Priority queue</li>
+</ul>
+<h2 id="visualization">Visualization</h2>
+<ul>
+<li><a href="http://www.cs.usfca.edu/~galles/visualization/Heap.html">http://www.cs.usfca.edu/~galles/visualization/Heap.html</a></li>
+<li><a href="https://visualgo.net/en/heap">https://visualgo.net/en/heap</a></li>
+</ul>
+<h2 id="priority-queue">Priority queue</h2>
+<ul>
+<li>Not really a queue or stack because the dequeue order is not related to the enqueue order</li>
+<li>any in min/max out</li>
+<li>behaviors mostly same as a queue
+<ul>
+<li>enqueue</li>
+<li>dequeue</li>
+<li>peek</li>
+<li>isEmpty</li>
+<li>length</li>
+</ul>
+</li>
+<li>Implementations
+<ul>
+<li><strong>heap</strong> best</li>
+<li>sorted array, sorted insert to insert</li>
+<li>sorted linked-list, sorted insert to insert</li>
+</ul>
+</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

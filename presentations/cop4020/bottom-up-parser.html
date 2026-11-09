@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Shift-Reduce Parser Demonstration</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Shift-Reduce Parser Demonstration</h1>
+</section>
+</section>
+<section >
+<section >
+<h2>Grammar</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul>
+<li><p>The grammar for our expression language:</p>
+<pre><code data-trim data-noescape class="default">E → E + T | T
+T → T * F | F
+F → (E) | id</code></pre>
+</li>
+<li><p>Left-recursive and ambiguous (not suitable for recursive-descent parsing)</p></li>
+<li><p>Simplified terminal symbols for a simpler lexer</p></li>
+</ul>
+</div>
+<div class="half docutils container">
+<ul class="simple">
+<li><p>It models a language:</p>
+<ul>
+<li><p>+, *, and (): operators</p></li>
+<li><p>id: the only terminal symbol allowed</p></li>
+</ul>
+</li>
+<li><p>Examples:</p>
+<ul>
+<li><p>id</p></li>
+<li><p>id + id</p></li>
+<li><p>id + id * id</p></li>
+<li><p>id * id + id</p></li>
+<li><p>(id + id) * id</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>LR(1) Parsing Tables</h2>
+<pre data-id="lr-1-parsing-tables"><code data-trim data-noescape class="cpp">+-------------------------------------------+ +-------------------------+
+|               ACTION TABLE                | |         GOTO TABLE      |
++-------+-----+-----+-----+-----+-----+-----+ +-------+-----+-----+-----+
+| State | id  | +   | *   | (   | )   | $   | | State | E   | T   | F   |
++=======+=====+=====+=====+=====+=====+=====+ +=======+=====+=====+=====+
+| 0     | s5  |     |     | s4  |     |     | | 0     | 1   | 2   | 3   |
++-------+-----+-----+-----+-----+-----+-----+ +-------+-----+-----+-----+
+| 1     |     | s6  |     |     |     |acc  | | 1     |     |     |     |
++-------+-----+-----+-----+-----+-----+-----+ +-------+-----+-----+-----+
+| 2     |     | r2  | s7  |     |     | r2  | | 2     |     |     |     |
++-------+-----+-----+-----+-----+-----+-----+ +-------+-----+-----+-----+
+| 3     |     | r4  | r4  |     | r4  | r4  | | 3     |     |     |     |
++-------+-----+-----+-----+-----+-----+-----+ +-------+-----+-----+-----+
+| 4     | s5  |     |     | s4  |     |     | | 4     | 8   | 2   | 3   |
++-------+-----+-----+-----+-----+-----+-----+ +-------+-----+-----+-----+
+| 5     |     | r6  | r6  |     | r6  | r6  | | 5     |     |     |     |
++-------+-----+-----+-----+-----+-----+-----+ +-------+-----+-----+-----+
+| 6     | s5  |     |     | s4  |     |     | | 6     |     | 2   | 3   |
++-------+-----+-----+-----+-----+-----+-----+ +-------+-----+-----+-----+
+| 7     | s5  |     |     | s4  |     |     | | 7     |     |     | 3   |
++-------+-----+-----+-----+-----+-----+-----+ +-------+-----+-----+-----+
+| 8     |     | s6  |     |     | s9  |     | | 8     |     |     |     |
++-------+-----+-----+-----+-----+-----+-----+ +-------+-----+-----+-----+
+| 9     |     | r5  | r5  |     | r5  | r5  | | 9     |     |     |     |
++-------+-----+-----+-----+-----+-----+-----+ +-------+-----+-----+-----+</code></pre>
+<p><strong>Note</strong>: Empty cells in the Action table mean error</p>
+</section>
+</section>
+<section >
+<section >
+<h2>Example Parse: id + id * id</h2>
+<p><strong>Parse steps</strong></p>
+<pre data-id="example-parse-id-id-id"><code data-trim data-noescape class="default">Stack                  Input         Action              Rule Applied
+----------------------------------------------------------------------
+0                      id+id*id$     shift 5             -
+0 id 5                 +id*id$       reduce by F→id      GOTO(0,F)=3
+0 F 3                  +id*id$       reduce by T→F       GOTO(0,T)=2
+0 T 2                  +id*id$       reduce by E→T       GOTO(0,E)=1
+0 E 1                  +id*id$       shift 6             -
+0 E 1 + 6              id*id$        shift 5             -
+0 E 1 + 6 id 5          *id$         reduce by F→id      GOTO(6,F)=3
+0 E 1 + 6 F 3           *id$         reduce by T→F       GOTO(6,T)=2
+0 E 1 + 6 T 2           *id$         shift 7             -
+0 E 1 + 6 T 2 * 7 id     $           shift 5             -
+0 E 1 + 6 T 2 * 7 id 5   $           reduce by F→id      GOTO(7,F)=3
+0 E 1 + 6 T 2 * 7 F 3    $           reduce by T→T*F     GOTO(6,T)=2
+0 E 1 + 6 T 2            $           reduce by E→E+T     GOTO(0,E)=1
+0 E 1                    $           accept              -
+----------------------------------------------------------------------</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>How to Use the Tables</h2>
+<ol class="arabic simple">
+<li><p>ACTION Table Usage:</p>
+<ul class="simple">
+<li><p>‘s’ means shift: push symbol and next state</p></li>
+<li><p>‘r’ means reduce: pop all RHS items, push LHS and new state from GOTO</p></li>
+<li><p>‘acc’ means accept the input</p></li>
+</ul>
+</li>
+<li><p>GOTO Table Usage:</p>
+<ul class="simple">
+<li><p>After reduction, use current state and non-terminal to find next state</p></li>
+<li><p>Only used after reduce actions</p></li>
+</ul>
+</li>
+<li><p>Parse Process:</p>
+<ol class="loweralpha simple">
+<li><p>Look at current state (top of state stack) and next input symbol</p></li>
+<li><p>Find action in ACTION table</p></li>
+<li><p>For reduce actions, pop everything to be reduced and use GOTO table with
+current state (after popping) and non-terminal reduced to</p></li>
+<li><p>Continue until accept or error</p></li>
+</ol>
+</li>
+<li><p>Error Handling:</p>
+<ul class="simple">
+<li><p>Error when no valid action exists in table</p></li>
+<li><p>Blank entries (-) in tables indicate error</p></li>
+<li><p>Parser stops on error</p></li>
+</ul>
+</li>
+</ol>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

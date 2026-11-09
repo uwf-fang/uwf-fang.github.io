@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Syntax And Semantics In Programming Languages · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/course/cop4020/syntax-semantics/" aria-current="page">Syntax And Semantics In Programming Languages</a></li><li><a href="/teaching/course/cop4020/cfg-example/">Context-free Grammar Example</a></li></ul><ul><li><a href="/teaching/course/cop4020/midterm-review1/">Topics in Midterm 1</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/course/cop4020/">COP 4020 Programming Languages</a> / Syntax And Semantics In Programming Languages</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Syntax And Semantics In Programming Languages</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#definition">Definition</a></li>
+    <li><a href="#formal-language-theory">Formal Language Theory</a>
+      <ul>
+        <li><a href="#components-of-a-language-including-programming-languages">Components of a language (including programming languages)</a></li>
+        <li><a href="#related-concepts">Related Concepts</a></li>
+        <li><a href="#chomsky-hierarchy">Chomsky Hierarchy</a></li>
+        <li><a href="#notation-systems">Notation Systems</a></li>
+      </ul>
+    </li>
+    <li><a href="#formal-language-theory-in-programming-languages">Formal Language Theory In Programming Languages</a>
+      <ul>
+        <li><a href="#scope">Scope</a></li>
+        <li><a href="#syntax">Syntax</a></li>
+      </ul>
+    </li>
+    <li><a href="#compiler-interpreter-implementation">Compiler/Interpreter Implementation</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="syntax-and-semantics-in-programming-languages"></span>
+<h2 id="definition">Definition</h2>
+<ul>
+<li>Syntax: The syntax of a programming language is the set of rules that defines the combinations of symbols that are considered to be correctly structured programs in that language.</li>
+<li>Semantics: The semantics of a programming language is the set of rules that defines the meaning of the programs in that language.</li>
+</ul>
+<h2 id="formal-language-theory">Formal Language Theory</h2>
+<p>Formal language theory is a branch of mathematics and computer science that deals with the theoretical properties of formal languages.</p>
+<h3 id="components-of-a-language-including-programming-languages">Components of a language (including programming languages)</h3>
+<ul>
+<li>Alphabet: A finite set of symbols.</li>
+<li>String: A sequence of symbols from the alphabet.</li>
+<li>Language: A set of strings.</li>
+<li>Grammar: A set of rules that generate strings in a language.</li>
+</ul>
+<h3 id="related-concepts">Related Concepts</h3>
+<ul>
+<li>Automata theory: Study of abstract machines and their computational capabilities. Automata are used to recognize patterns in strings for a specific language.</li>
+<li>Chomsky hierarchy: A classification of formal languages based on their generative power.</li>
+</ul>
+<h3 id="chomsky-hierarchy">Chomsky Hierarchy</h3>
+<table>
+	<thead>
+			<tr>
+					<th>Type</th>
+					<th>Grammar</th>
+					<th>Automaton</th>
+					<th>Language Example</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Type 0</td>
+					<td>Unrestricted</td>
+					<td>Turing Machine (TM)</td>
+					<td>Recursively enumerable language</td>
+			</tr>
+			<tr>
+					<td>Subset of Type 0</td>
+					<td>N/A</td>
+					<td>Halting Turing Machine</td>
+					<td>Recursive languages</td>
+			</tr>
+			<tr>
+					<td>Type 1</td>
+					<td>Context-sensitive</td>
+					<td>Linear-bounded automaton (LBA)</td>
+					<td>Most languages</td>
+			</tr>
+			<tr>
+					<td>Type 2</td>
+					<td>Context-free</td>
+					<td>Pushdown automaton (PDA)</td>
+					<td>Expression grammar</td>
+			</tr>
+			<tr>
+					<td>Type 3</td>
+					<td>Regular</td>
+					<td>Finite automaton (FA)</td>
+					<td>Regular expressions, Lexemes</td>
+			</tr>
+	</tbody>
+</table>
+<h3 id="notation-systems">Notation Systems</h3>
+<ul>
+<li>Chomsky notation: describes any formal grammar
+<ul>
+<li>Example: $S → aSb | ε$</li>
+</ul>
+</li>
+<li>Backus-Naur Form (BNF): describes context-free grammars</li>
+<li>Extended Backus-Naur Form (EBNF): equivalent to BNF but more readable</li>
+</ul>
+<h2 id="formal-language-theory-in-programming-languages">Formal Language Theory In Programming Languages</h2>
+<h3 id="scope">Scope</h3>
+<ul>
+<li>Formal language theory fully handles the syntax of programming languages.</li>
+<li>Semantics requires more advanced mathematical tools.</li>
+</ul>
+<h3 id="syntax">Syntax</h3>
+<ul>
+<li>Lexeme/Token level: the smallest unit of syntax.
+<ul>
+<li>Usually as regular languages.</li>
+<li><strong>Alphabet</strong>: ASCII character</li>
+<li><strong>String</strong>: Lexeme</li>
+<li><strong>Grammar</strong>: Rule to construct lexemes</li>
+<li>Tokens: Category of lexemes</li>
+</ul>
+</li>
+<li>Syntax level: the structure of the program.
+<ul>
+<li>Usually as context-free languages.</li>
+<li><strong>Alphabet</strong>: Tokens</li>
+<li><strong>String</strong>: Program</li>
+<li><strong>Grammar</strong>: Rule to construct programs</li>
+</ul>
+</li>
+</ul>
+<h2 id="compiler-interpreter-implementation">Compiler/Interpreter Implementation</h2>
+<ul>
+<li>Lexical analysis
+<ul>
+<li>Lexer/tokenizer/scanner</li>
+<li>Goal:
+<ul>
+<li>Breaks the program into lexemes</li>
+<li>Assigns tokens to lexemes</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Syntax analysis
+<ul>
+<li>Parser</li>
+<li>Goal:
+<ul>
+<li>Checks the structure of the program (syntax) for correctness</li>
+<li>Generates a parse tree</li>
+</ul>
+</li>
+<li>Limitations:
+<ul>
+<li>Most parsers can only handle a subset of context-free languages</li>
+<li>Limits the expressiveness of the language</li>
+</ul>
+</li>
+<li>Types:
+<ul>
+<li>Top-down vs bottom-up</li>
+<li>LL vs LR</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Semantic analysis
+<ul>
+<li>Extensions to the parser to handle context-sensitive portion of the language.</li>
+<li>Examples:
+<ul>
+<li>Static semantics uses type systems and attribute grammars</li>
+<li>Dynamic semantics uses operational, denotational, or axiomatic approaches</li>
+<li>Goes beyond what formal language theory can describe</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

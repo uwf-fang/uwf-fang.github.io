@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data Guide · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/research/data-guide/" aria-current="page">Data Guide</a></li><li><a href="/teaching/research/report-guide/">Report Writing Guidelines</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/research/">Research and Writing</a> / Data Guide</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Data Guide</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#data-collection">Data Collection</a></li>
+    <li><a href="#data-processing">Data Processing</a></li>
+    <li><a href="#generating-views-with-pivot-tables">Generating Views with Pivot Tables</a></li>
+    <li><a href="#plotting-your-data">Plotting Your Data:</a></li>
+    <li><a href="#key-takeaways">Key Takeaways</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="data-guide"></span>
+<p>Navigating the world of data requires a grasp of its three pivotal stages: collection, processing, and presentation. Our guide offers a concise overview, taking you from gathering raw data to refining and presenting it in a comprehensible manner. Ideal for both beginners and seasoned practitioners, this guide sharpens your understanding of effective data management.</p>
+<h2 id="data-collection">Data Collection</h2>
+<ul>
+<li>For every experiment you conduct, record the data in a dedicated row.</li>
+<li>Ensure that the organization of your raw data remains simple. This will facilitate smoother processing later on.</li>
+</ul>
+<span id="id1"></span>
+<figure class="migration-image align-"><img src="/teaching/_migration/96c1f53152c1bbe4.png" alt="Raw data collection" style="width:80%;max-width:100%;height:auto" loading="lazy"></figure>
+<p><em>Sample screenshot of raw data</em></p>
+<h2 id="data-processing">Data Processing</h2>
+<dl>
+<dt><strong>Derived Fields</strong>:</dt>
+<dd>After collecting your data, and before moving on to pivot tables, you might need to generate additional fields (columns). This is especially useful when you want to perform computations based on the existing data fields.
+<ul>
+<li>For instance, if you have columns “Price” and “Quantity”, you can derive a new field “Total” by multiplying these two.</li>
+</ul>
+</dd>
+</dl>
+<span id="id2"></span>
+<figure class="migration-image align-"><img src="/teaching/_migration/abf7f188d0e4fb42.png" alt="Compute derived fields" style="width:80%;max-width:100%;height:auto" loading="lazy"></figure>
+<p><em>Sample screenshot of added derived fields computed from raw data. The “Speed Up” field is calculated by dividing the “Serial Time” by the “Parallel Time”.</em></p>
+<h2 id="generating-views-with-pivot-tables">Generating Views with Pivot Tables</h2>
+<ul>
+<li>Use pivot tables to generate a structured view of your data.</li>
+<li>The generated tables are ready for plotting and analysis.</li>
+<li>
+<dl>
+<dt>Organize your pivot table in the following manner:</dt>
+<dd><ul>
+<li><strong>Rows</strong>: Contains the variables you want to study. It will be the X-axis in your plot.
+<ul>
+<li><strong>Columns</strong>: This is where you separate out the different conditions or variations of your experiment. It will be the series in your plot.</li>
+<li><strong>Cell Data</strong>: These are the results or observations from your experiment. They will be the Y-axis in your plot.</li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<span id="id3"></span>
+<figure class="migration-image align-"><img src="/teaching/_migration/14d15d5a31a5b414.png" alt="Sample screenshot of a pivot table" style="width:80%;max-width:100%;height:auto" loading="lazy"></figure>
+<p><em>Sample screenshot of a pivot table.</em></p>
+<h2 id="plotting-your-data">Plotting Your Data:</h2>
+<ul>
+<li>In the typical plot generation process in software like Google Sheets, Microsoft Excel, etc:
+<ul>
+<li><strong>X-axis</strong>: Rows in the pivot table.</li>
+<li><strong>Y-axis</strong>: Columns in the pivot table.</li>
+<li><strong>Legend</strong>: Represents the different series in the plot.</li>
+</ul>
+</li>
+<li>With the structured data format (as mentioned in the pivot table section), several tools can be utilized to visualize the results:
+<ul>
+<li><strong>Google Sheets</strong>: Offers native support for creating various types of charts and plots.</li>
+<li><strong>Microsoft Excel</strong>: Provides a wide range of chart types for data.</li>
+<li><strong>Python Libraries</strong>:
+<ul>
+<li><strong>Matplotlib</strong>: A basic, yet powerful, plotting library.</li>
+<li><strong>Seaborn</strong>: Built on top of Matplotlib, it provides a higher-level interface for drawing attractive and informative statistical graphics.</li>
+<li><strong>Pandas</strong>: Primarily a data manipulation library, but has plotting capabilities built on Matplotlib.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<span id="id4"></span>
+<figure class="migration-image align-"><img src="/teaching/_migration/745d04a86a0c24e1.png" alt="Sample plot from Google Sheets" style="width:80%;max-width:100%;height:auto" loading="lazy"></figure>
+<p><em>Sample plots from Google Sheets on the efficiency of parallel algorithms for different input sizes and number of processors.</em></p>
+<aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p>Never make your numerical data employed as strings in your plots. It will make the axis out of scale. For example, if you have a column of numbers, and you want to plot them, you should first convert them to numbers. Otherwise, the plot will be wrong.</p>
+</div></aside>
+<h2 id="key-takeaways">Key Takeaways</h2>
+<ul>
+<li>Keep your raw data structure simple and organized.</li>
+<li>Don’t hesitate to derive new fields from existing data, especially if they provide new insights or simplify further processing.</li>
+<li>Pivot tables are invaluable tools for creating structured data views, making data visualization significantly easier.</li>
+<li>Multiple tools are available for data visualization; choose the one that best fits your needs.</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

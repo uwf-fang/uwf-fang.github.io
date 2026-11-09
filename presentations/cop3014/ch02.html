@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Algorithm and Program Design (COP3014)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Algorithm and Program Design (COP3014)</h1>
+<div class="subtitle docutils container">
+<p><strong>Chapter 2: Variables, expressions and control flow in C++</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Sections</h2>
+<ul class="simple">
+<li><p>Variables and types</p></li>
+<li><p>Expressions</p></li>
+<li><p>Control flow</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Variables and types</h2>
+<ul class="simple">
+<li><p>Variables are used to store data in a program. It is a named memory location
+that can store a value of a specific type.</p>
+<ul>
+<li><p>Must have a valid identifier name.</p></li>
+<li><p>Types in C++ are mandatory. Every variable must have a type.</p></li>
+<li><p>Must be declared before use.</p></li>
+<li><p>Can be initialized at the time of declaration.</p></li>
+</ul>
+</li>
+</ul>
+<pre data-id="variables-and-types"><code data-trim data-noescape class="cpp">// without initialization
+int a, b, c;
+
+// with initialization
+int age = 20;
+double weight = 150.5;
+char grade = 'A';</code></pre>
+</section>
+<section >
+<h3>C++ Identifier Naming Rules</h3>
+<ul class="simple">
+<li><p>Employed to name</p>
+<ul>
+<li><p>Variables</p></li>
+<li><p>Functions</p></li>
+<li><p>Classes</p></li>
+<li><p>Objects</p></li>
+<li><p>User-defined types</p></li>
+</ul>
+</li>
+<li><p>Legal characters: letters, digits, and underscore.</p></li>
+<li><p>Must start with a letter or underscore.</p></li>
+<li><p>Case sensitive.</p></li>
+<li><p>Naming convention:</p>
+<ul>
+<li><p>lowerCamelCase: variable, function names</p></li>
+<li><p>PascalCase or UpperCamelCase: class names, type names</p></li>
+<li><p>words-separated-by-hyphens: file names <strong>all lowercase!!</strong></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Types in C++</h3>
+<ul class="simple">
+<li><p>Fundamental types</p>
+<ul>
+<li><p>int, char, double, float, bool, void</p></li>
+</ul>
+</li>
+<li><p>Derived types</p>
+<ul>
+<li><p>Arrays, pointers, references, functions, structures, unions, enumerations</p></li>
+</ul>
+</li>
+<li><p>User-defined types</p>
+<ul>
+<li><p>Classes, structures, enumerations, typedefs</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Variables And Types Pitfalls</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<pre><code data-trim data-noescape class="cpp">**Incorrect examples**
+
+// Bad identifier naming
+int $a;
+int 3b;
+int one-piece;
+
+// Use before/without declaration
+x = 10;
+int x;
+
+// Use without initialization
+int y;
+cout &lt;&lt; y;</code></pre>
+</div>
+<div class="half docutils container">
+<p><strong>Poor examples</strong></p>
+<pre><code data-trim data-noescape class="cpp">int PtAc;  // unknown abbreviation
+int v;  // not informative
+int ___;  // not informative
+double count = 1.5;  // name not matches the purpose
+int NUMBER;  // not following naming convention
+
+int BadName;  // not following naming convention
+int badname;  // not following naming convention
+int bad_name;  // not following naming convention</code></pre>
+</div>
+</div>
+</section>
+<section >
+<h3>Derived Types</h3>
+<ul class="simple">
+<li><p>Arrays: a collection of elements of the same type.</p>
+<ul>
+<li><p>int arr[5] = {1, 2, 3, 4, 5};</p></li>
+<li><p>arr itself is a pointer to the first element.</p></li>
+</ul>
+</li>
+<li><p>Pointers: a variable that stores the memory address of another variable.</p>
+<ul>
+<li><p>stores the memory address of another variable.</p></li>
+<li><p>&amp; operator: address of operator</p></li>
+<li><ul>
+<li><p>operator: dereference operator</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>References: an alias to an existing variable.</p>
+<ul>
+<li><p>Must be initialized! Cannot be changed.</p></li>
+<li><p>Parameter passing in functions is essential initialization!</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Derived Types Pitfalls</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<pre><code data-trim data-noescape class="cpp">// Incorrect examples
+
+int arr[5];
+arr = {1, 2, 3, 4, 5};  // cannot assign array
+
+int *ptr;
+*ptr = 10;  // dereferencing uninitialized pointer
+
+string name = &quot;John&quot;;
+string *currentName = name;  // cannot assign string to pointer
+
+int &amp;ref;  // reference must be initialized
+ref = x;  // reference cannot be changed</code></pre>
+</div>
+<div class="half docutils container">
+<pre><code data-trim data-noescape class="cpp">// Potential logic errors
+
+int arr1[5] = {1, 2, 3, 4, 5};
+int arr2[5] = arr1;  // arr2 is a pointer to arr1[0] now
+
+if (arr1 == arr2)  // comparing pointers, not arrays
+  cout &lt;&lt; &quot;Equal&quot;;</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Expressions</h2>
+<ul class="simple">
+<li><p>Literal: a constant value that appears directly in the program.</p>
+<ul>
+<li><p>normal: 123, 3.14, ‘A’, “Hello”</p></li>
+<li><p>with suffix: 123L, 3.14f, 3.14L, 3.14e-2</p></li>
+</ul>
+</li>
+<li><p>Operators: symbols that represent computations.</p>
+<ul>
+<li><p>arithmetic: +, -, *, /, %</p></li>
+<li><p>relational: ==, !=, &lt;, &gt;, &lt;=, &gt;=</p></li>
+<li><p>logical: &amp;&amp;, ||, !</p></li>
+<li><p>bitwise: &amp;, |, ^, ~, &lt;&lt;, &gt;&gt;</p></li>
+<li><p>increment/decrement: ++, –</p></li>
+<li><p>assignment: =, +=, -=, *=, /=, %=</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Expression Evaluation</h3>
+<ul class="simple">
+<li><p>Operator Precedence: determines the order of evaluation of operators.</p>
+<ul>
+<li><p>Parentheses: ()</p></li>
+<li><p>Unary: +, -, ++, –</p></li>
+<li><p>Multiplicative: *, /, %</p></li>
+<li><p>Additive: +, -</p></li>
+<li><p>Relational: &lt;, &gt;, &lt;=, &gt;=</p></li>
+<li><p>Equality: ==, !=</p></li>
+<li><p>Logical AND: &amp;&amp;</p></li>
+<li><p>Logical OR: ||</p></li>
+<li><p>Conditional: ?:</p></li>
+<li><p>Assignment: =, +=, -=, *=, /=, %=</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Expression Pitfalls</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<pre><code data-trim data-noescape class="cpp">// Unexpected type conversion
+
+double result = 25 / 2;  // 12.0 rather than 12.5
+string result = &quot;25&quot; + 2;  // &quot;252&quot; rather than &quot;27&quot;
+
+// Incorrect operator precedence
+string name = &quot;John&quot;;
+string *ptr = &amp;name;
+
+int length = *ptr.length();  // (*ptr).length() is correct</code></pre>
+</div>
+<div class="half docutils container">
+<pre><code data-trim data-noescape class="default">// inefficient
+
+// greater = (a &gt; b);
+if (a &gt; b)
+  greater = True;
+else
+  greater = False;
+
+// Hard to understand
+// Multiple operations in a single line
+
+arr[--size] = value;</code></pre>
+</div>
+</div>
+</section>
+<section >
+<h3>Step-wise Evaluation</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p>Evaluate the expression step by step.</p></li>
+<li><p>Follow the operator precedence!!</p></li>
+<li><p>Pay attention to type conversion.</p></li>
+</ul>
+</div>
+<div class="half docutils container">
+<pre><code data-trim data-noescape class="cpp">// ==== Expression ====
+
+// ---- step-wise evaluation ----
+// given: x = 2
+  (x + 5) / 4
+= (2 + 5) / 4
+= 7 / 4
+= 1
+
+  static_cast&lt;int&gt;(19.5 / 3) + 5.0
+= static_cast&lt;int&gt;(6.5) + 5.0
+= 6 + 5.0
+= 11.0
+
+  ((17 / 2 + 19 % 3 - 3 * 2 + 4 * 3) &gt;= (5 + 2 * 4)) &amp;&amp; !((((4 * 5) + 1) /2) == (7 / 3 + 2 * 5 - 2) || !(4 &gt;= 3))
+= ((8 + 1 - 6 + 12) &gt;= (5 + 8)) &amp;&amp; !(((20 + 1) / 2) == (2 + 10 - 2) || !(true))
+= (15 &gt;= 13) &amp;&amp; !((21 / 2) == 10 || false)
+= true &amp;&amp; !(true || false)
+= true &amp;&amp; !true
+= true &amp;&amp; false
+= false</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Control Flow</h2>
+<ul class="simple">
+<li><p>Types of control flow</p>
+<ul>
+<li><p>Sequential: executes statements in order.</p></li>
+<li><p>Selection: executes statements based on a condition.</p></li>
+<li><p>Repetition: executes statements repeatedly.</p></li>
+</ul>
+</li>
+<li><p>Selection statements (branching)</p>
+<ul>
+<li><p>if, if-else, if-else-if, switch</p></li>
+</ul>
+</li>
+<li><p>Repetition statements (loops)</p>
+<ul>
+<li><p>while, do-while, for</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Control Flow Pitfalls</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Correct examples</strong></p>
+<pre><code data-trim data-noescape class="cpp">if (a &gt; 10) cout &lt;&lt; &quot;a is greater than 10\n&quot;;
+
+if (a &gt; 10)
+  cout &lt;&lt; &quot;a is greater than 10\n&quot;;
+
+if (a &gt; 10) {
+  cout &lt;&lt; &quot;a is greater than 10\n&quot;;
+}</code></pre>
+</div>
+<div class="half docutils container">
+<p><strong>Wrong examples</strong></p>
+<pre><code data-trim data-noescape class="cpp">if (a &gt; 10);
+  cout &lt;&lt; &quot;a is greater than 10\n&quot;;
+
+if (a &gt; 10)
+  cout &lt;&lt; &quot;a is greater than 10\n&quot;;
+  cout &lt;&lt; &quot;Please try a smaller value!\n&quot;;
+
+if (1 &lt; a &lt; 10)
+  cout &lt;&lt; &quot;a is between 1 and 10\n&quot;;
+
+double a = 0;
+switch (a) {
+  case 0:
+    cout &lt;&lt; &quot;a is 0\n&quot;;
+    break;
+  case 1:
+    cout &lt;&lt; &quot;a is 1\n&quot;;
+    break;
+}</code></pre>
+</div>
+</div>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

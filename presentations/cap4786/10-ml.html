@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Introduction to Big Data Analytics</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Introduction to Big Data Analytics</h1>
+<div class="subtitle docutils container">
+<p><strong>Chapter 8: Machine Learning with Spark</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p>Introduction to Machine Learning</p></li>
+<li><p>Machine Learning with Spark</p></li>
+<li><p>MLlib</p></li>
+<li><p>Spark ML</p></li>
+</ul>
+</div>
+<div class="half docutils container">
+<a class="reference internal image-reference" href="../_images/ml.png"><img alt="Machine learning" src="../_images/ml.png" style="width: 50%;" />
+</a>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Introduction to Machine Learning</h2>
+<ul class="simple">
+<li><p>Machine learning is the science of training a system to learn from data and
+act.</p></li>
+<li><p>Key components of machine learning:</p>
+<ul>
+<li><p><strong>Data</strong>: The raw material that the system learns from.</p></li>
+<li><p><strong>Model</strong>: The system that learns from the data.</p></li>
+</ul>
+</li>
+<li><p>How to develop a machine learning model:</p>
+<ul>
+<li><p><strong>Data Preparation</strong>: Convert data from original to final format.</p></li>
+<li><p><strong>Model</strong>: Choose a model and train it on the data.</p></li>
+<li><p><strong>Evaluation</strong>: Evaluate the model on unseen data.</p></li>
+<li><p><strong>Prediction</strong>: Use the model to make predictions on new data.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Data in Machine Learning</h3>
+<ul class="simple">
+<li><p>Original format: two-dimensional table of many different types of data</p></li>
+<li><p>Final format: two-dimensional table of numerical values</p></li>
+<li><p>Preparation</p></li>
+<li><p>Feature: column in the table</p></li>
+<li><p>Record/observation: row in the table</p>
+<ul>
+<li><p>as a vector of numerical values (features only)</p></li>
+<li><p>as a vector of numerical values (features with the last column treated as a
+label)</p></li>
+<li><p>as a vector-value pair (features and label)</p></li>
+</ul>
+</li>
+<li><p>Label (class label)</p>
+<ul>
+<li><p>the special column we want to learn and predict</p></li>
+<li><p>only used in supervised learning</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Data in Machine Learning Example</h3>
+<a class="reference internal image-reference" href="../_images/ml-data.png"><img alt="Data in Machine Learning" src="../_images/ml-data.png" style="width: 100%;" />
+</a>
+</section>
+<section >
+<h3>Data Preparation</h3>
+<ul class="simple">
+<li><p>Objective: convert from original to final format that is ready for the model</p></li>
+<li><p>encoding: non-numerical features as numerical values</p>
+<ul>
+<li><p>Categorical features: one-hot encoding</p></li>
+</ul>
+</li>
+<li><p>transformation: optimize features</p>
+<ul>
+<li><p>scaling: change the range of features</p></li>
+<li><p>selection: choose the most important features</p></li>
+<li><p>extraction: create new features from existing ones</p></li>
+</ul>
+</li>
+<li><p>split: divide data into multiple sets</p>
+<ul>
+<li><p>training set: used to train the model</p></li>
+<li><p>validation set: used to tune and optimize the model</p></li>
+<li><p>test set: used to evaluate the final model</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Model in Machine Learning</h3>
+<ul class="simple">
+<li><p>Objectives:</p>
+<ul>
+<li><p>classification: predict a categorical label</p></li>
+<li><p>regression: predict a numerical value</p></li>
+<li><p>clustering: group similar records</p></li>
+<li><p>anomaly detection: detect unusual records</p></li>
+<li><p>recommendation: suggest items to users</p></li>
+<li><p>dimension reduction: reduce the number of features</p></li>
+</ul>
+</li>
+<li><p>Types of models:</p>
+<ul>
+<li><p>supervised: learn from labeled data</p></li>
+<li><p>unsupervised: learn from unlabeled data</p></li>
+<li><p>semi-supervised: learn from a small amount of labeled data and a large
+amount of unlabeled data</p></li>
+<li><p>reinforcement: learn from feedback</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Model Development Process</h3>
+<ul class="simple">
+<li><p>Steps:</p>
+<ul>
+<li><p>choose a model</p></li>
+<li><p>train the model (use training set)</p></li>
+<li><p>evaluate the model (use validation set)</p></li>
+<li><p>tune and optimize the model (use validation set)</p></li>
+<li><p>repeat all above steps until the model is satisfactory</p></li>
+<li><p><strong>final</strong> evaluation of the model (use test dataset)</p></li>
+</ul>
+</li>
+<li><p>Cross validation: rotate training and validation sets from the same dataset</p></li>
+<li><p>Evaluation metrics:</p>
+<ul>
+<li><p>classification: accuracy, precision, recall, F1 score, ROC curve, ROC AUC</p></li>
+<li><p>regression: mean squared error, mean absolute error, R-squared</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Machine Learning with Spark</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p>In reality: not that useful</p>
+<ul>
+<li><p>Traditional models do not need large datasets</p>
+<ul>
+<li><p>Models are too simple to learn from large datasets</p></li>
+<li><p>Use spark to process data to a size that fits in memory</p></li>
+<li><p>Use traditional machine learning libraries to develop models</p></li>
+</ul>
+</li>
+<li><p>Deep learning models need large datasets but Spark does not support them</p></li>
+</ul>
+</li>
+<li><p>Components: MLlib</p>
+<ul>
+<li><p>Spark ML merged into MLLib as its primary API now</p></li>
+<li><p>Old MLlib is now known as RDD-based API in MLlib</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="half docutils container">
+<img alt="Spark Architecture in Detail" src="../_images/spark-arch1.png" />
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>MLlib RDD API</h2>
+<ul class="simple">
+<li><p>Original machine learning library in Spark</p></li>
+<li><p>Operates on RDDs</p></li>
+<li><p>MLlib API</p>
+<ul>
+<li><p>Data types: Vector, SparseVector, LabeledPoint, Rating</p></li>
+<li><p>Models (algorithms)</p>
+<ul>
+<li><p>classification</p></li>
+<li><p>regression</p></li>
+<li><p>clustering</p></li>
+<li><p>recommendation</p></li>
+</ul>
+</li>
+<li><p>Metrics</p>
+<ul>
+<li><p>Regression</p></li>
+<li><p>Classification: binary, multiclass and multilabel</p></li>
+<li><p>Recommendation</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><a class="reference external" href="https://spark.apache.org/docs/latest/mllib-guide.html">Official MLlib RDD API Guide</a></p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>MLlib DataFrame API</h2>
+<ul class="simple">
+<li><p>New machine learning library in Spark</p></li>
+<li><p>Higher-level and more user-friendly than RDD ML API</p></li>
+<li><p>Operates on DataFrames</p></li>
+<li><p>Spark ML API</p>
+<ul>
+<li><p>ML dataset</p></li>
+<li><p>Transformer</p></li>
+<li><p>Estimator</p></li>
+<li><p>Pipeline: chain of Transformers and Estimators</p></li>
+<li><p>Evaluator</p></li>
+<li><p>Grid search</p></li>
+<li><p>CrossValidator</p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="https://spark.apache.org/docs/latest/ml-guide.html">Official MLlib Guide</a></p></li>
+</ul>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

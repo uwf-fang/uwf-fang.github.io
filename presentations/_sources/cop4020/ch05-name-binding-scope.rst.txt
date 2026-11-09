@@ -1,0 +1,251 @@
+Names, Bindings, and Scopes
+===========================
+
+Overview
+--------
++ Fundamental concepts of programming language semantics
++ Key topics:
+
+  * Names and variables
+  * Binding and binding times
+  * Scope rules and referencing environments
+  * Variable categories and lifetime
+  * Named constants
+
++ Learning objectives:
+
+  * Understand variable attributes and binding concepts
+  * Master scope rules and referencing environments
+  * Learn different variable categories and their uses
+
+Names
+-----
++ Definition: A string of characters to identify a program entity
++ Design Issues:
+
+  * Case sensitivity
+  * Special words (reserved vs keywords)
+
++ Name Forms:
+
+  * Choice of characters: alphabetical, numeric, underscore, etc.
+  * Casing conventions
+  * Special characters in some languages:
+
+    - PHP: $ prefix required
+    - Perl: $, @, % prefixes indicate type
+    - Ruby: @ and @@ indicate instance/class variables
+
++ Case Sensitivity:
+
+  * Example: rose, ROSE, and Rose are distinct
+  * Tradeoff between flexibility and readability
+
+Variables
+---------
+.. container:: flex-container
+
+  .. container:: half
+
+    + Definition: Named memory location to store data
+    + Variable Attributes (Sextuple):
+
+      * Name
+      * Address (l-value)
+      * Value (r-value)
+      * Type
+      * Lifetime
+      * Scope
+
+  .. container:: half
+
+    + Address:
+
+      * Machine memory location
+      * Can change during execution
+      * Multiple variables can share address (aliasing)
+
+    + Aliases:
+
+      * Multiple variables referencing same memory
+      * Created through:
+
+        - Union types
+        - Pointer variables
+        - Reference variables
+        - Parameter passing
+
+Bindings
+--------
+.. container:: flex-container
+
+  .. container:: half
+
+    **Binding**
+
+    + Definition: Association between attributes and entities
+
+      * variables
+      * constants/literals
+      * types
+
+    **Static Type Binding**
+
+    * Type fixed at compile time
+    * Through explicit/implicit declarations
+    * Examples: Java, C++, C#
+
+  .. container:: half
+
+    **Dynamic Type Binding**
+
+    * Type determined at runtime
+    * Changes possible during execution
+    * Examples: Python, JavaScript
+    * Advantages:
+
+      - More flexible
+      - Supports generic code
+
+    * Disadvantages:
+
+      - Less reliable
+      - Runtime overhead
+      - Harder to optimize
+
+Storage Binding and Lifetime
+----------------------------
+.. container:: flex-container
+
+  .. container:: half
+
+    **Static Variables**
+
+    * Bound to memory before execution
+    * Retain value between calls
+    * Examples: global variables, static locals
+
+    **Stack-Dynamic Variables**
+
+    * Created upon declaration elaboration
+    * Deallocated upon block exit
+    * Used for local variables in functions
+
+  .. container:: half
+
+    **Explicit Heap-Dynamic Variables**
+
+    * Allocated/deallocated by explicit commands
+    * Accessed through pointers/references
+    * Example: new/delete in C++
+
+    **Implicit Heap-Dynamic Variables**
+
+    * Bound to heap storage on assignment
+    * All attributes bound at assignment
+    * Example: JavaScript arrays
+
+Scope
+-----
++ Definition: Range where variable is visible
++ Categories:
+
+  * Static
+  * Dynamic
+
+Static Scope
+~~~~~~~~~~~~
+.. container:: flex-container
+
+  .. container:: half
+
+    **Static Scope**
+
+    + Based on program structure
+    + Rules:
+
+      * Search starts in local unit
+      * Continues in enclosing units
+      * Follows static nesting
+
+    + Advantages:
+
+      * Determinable at compile time
+      * Better readability
+      * More efficient
+
+  .. container:: half
+
+    **Blocks and Declaration Order**
+
+    + Blocks:
+
+      * Create new static scopes
+      * Allow local variables
+      * Stack-dynamic storage
+      * Example: compound statements in C/C++
+
+    + Declaration Order:
+
+      * Some languages require declarations first
+      * Affects variable visibility
+      * Scope can start at declaration or block start
+
+Dynamic Scope
+~~~~~~~~~~~~~
++ Based on call sequence
++ Rules:
+
+  * Search starts in local unit
+  * Continues through calling sequence
+  * Follows dynamic calling chain
+
++ Characteristics:
+
+  * More flexible
+  * Harder to read/understand
+  * Less efficient
+  * Runtime binding resolution
+
+Referencing Environments And Named Constants
+--------------------------------------------
+.. container:: flex-container
+
+  .. container:: half
+
+    **Referencing Environments**
+
+    + Definition: Collection of all active bindings that is visible at a point
+      in a program
+    + Related to scope, lifetime and order of declaration
+    + Further discussed in Chapter 10
+
+  .. container:: half
+
+    **Named Constants**
+
+    * Improve readability
+    * Aid program maintenance
+    * Parameterize programs
+    * Examples:
+
+      - C++: const keyword
+      - Java: final keyword
+      - C#: const and readonly
+
+Summary
+-------
++ Variables characterized by six attributes
++ Binding links attributes to entities
++ Four categories of variable lifetime
++ Static vs dynamic scoping tradeoffs
++ Blocks create local scopes
++ Named constants improve maintainability
+
+Practice Questions
+------------------
+1. What are the six attributes of variables?
+2. Compare static and dynamic type binding
+3. Explain the difference between static and dynamic scope
+4. What are the four categories of variable lifetime?
+5. How do blocks affect variable scope?

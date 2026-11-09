@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Names, Bindings, and Scopes</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Names, Bindings, and Scopes</h1>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<ul class="simple">
+<li><p>Fundamental concepts of programming language semantics</p></li>
+<li><p>Key topics:</p>
+<ul>
+<li><p>Names and variables</p></li>
+<li><p>Binding and binding times</p></li>
+<li><p>Scope rules and referencing environments</p></li>
+<li><p>Variable categories and lifetime</p></li>
+<li><p>Named constants</p></li>
+</ul>
+</li>
+<li><p>Learning objectives:</p>
+<ul>
+<li><p>Understand variable attributes and binding concepts</p></li>
+<li><p>Master scope rules and referencing environments</p></li>
+<li><p>Learn different variable categories and their uses</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Names</h2>
+<ul class="simple">
+<li><p>Definition: A string of characters to identify a program entity</p></li>
+<li><p>Design Issues:</p>
+<ul>
+<li><p>Case sensitivity</p></li>
+<li><p>Special words (reserved vs keywords)</p></li>
+</ul>
+</li>
+<li><p>Name Forms:</p>
+<ul>
+<li><p>Choice of characters: alphabetical, numeric, underscore, etc.</p></li>
+<li><p>Casing conventions</p></li>
+<li><p>Special characters in some languages:</p>
+<ul>
+<li><p>PHP: $ prefix required</p></li>
+<li><p>Perl: $, &#64;, % prefixes indicate type</p></li>
+<li><p>Ruby: &#64; and &#64;&#64; indicate instance/class variables</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Case Sensitivity:</p>
+<ul>
+<li><p>Example: rose, ROSE, and Rose are distinct</p></li>
+<li><p>Tradeoff between flexibility and readability</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Variables</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p>Definition: Named memory location to store data</p></li>
+<li><p>Variable Attributes (Sextuple):</p>
+<ul>
+<li><p>Name</p></li>
+<li><p>Address (l-value)</p></li>
+<li><p>Value (r-value)</p></li>
+<li><p>Type</p></li>
+<li><p>Lifetime</p></li>
+<li><p>Scope</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="half docutils container">
+<ul class="simple">
+<li><p>Address:</p>
+<ul>
+<li><p>Machine memory location</p></li>
+<li><p>Can change during execution</p></li>
+<li><p>Multiple variables can share address (aliasing)</p></li>
+</ul>
+</li>
+<li><p>Aliases:</p>
+<ul>
+<li><p>Multiple variables referencing same memory</p></li>
+<li><p>Created through:</p>
+<ul>
+<li><p>Union types</p></li>
+<li><p>Pointer variables</p></li>
+<li><p>Reference variables</p></li>
+<li><p>Parameter passing</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Bindings</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Binding</strong></p>
+<ul class="simple">
+<li><p>Definition: Association between attributes and entities</p>
+<ul>
+<li><p>variables</p></li>
+<li><p>constants/literals</p></li>
+<li><p>types</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Static Type Binding</strong></p>
+<ul class="simple">
+<li><p>Type fixed at compile time</p></li>
+<li><p>Through explicit/implicit declarations</p></li>
+<li><p>Examples: Java, C++, C#</p></li>
+</ul>
+</div>
+<div class="half docutils container">
+<p><strong>Dynamic Type Binding</strong></p>
+<ul class="simple">
+<li><p>Type determined at runtime</p></li>
+<li><p>Changes possible during execution</p></li>
+<li><p>Examples: Python, JavaScript</p></li>
+<li><p>Advantages:</p>
+<ul>
+<li><p>More flexible</p></li>
+<li><p>Supports generic code</p></li>
+</ul>
+</li>
+<li><p>Disadvantages:</p>
+<ul>
+<li><p>Less reliable</p></li>
+<li><p>Runtime overhead</p></li>
+<li><p>Harder to optimize</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Storage Binding and Lifetime</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Static Variables</strong></p>
+<ul class="simple">
+<li><p>Bound to memory before execution</p></li>
+<li><p>Retain value between calls</p></li>
+<li><p>Examples: global variables, static locals</p></li>
+</ul>
+<p><strong>Stack-Dynamic Variables</strong></p>
+<ul class="simple">
+<li><p>Created upon declaration elaboration</p></li>
+<li><p>Deallocated upon block exit</p></li>
+<li><p>Used for local variables in functions</p></li>
+</ul>
+</div>
+<div class="half docutils container">
+<p><strong>Explicit Heap-Dynamic Variables</strong></p>
+<ul class="simple">
+<li><p>Allocated/deallocated by explicit commands</p></li>
+<li><p>Accessed through pointers/references</p></li>
+<li><p>Example: new/delete in C++</p></li>
+</ul>
+<p><strong>Implicit Heap-Dynamic Variables</strong></p>
+<ul class="simple">
+<li><p>Bound to heap storage on assignment</p></li>
+<li><p>All attributes bound at assignment</p></li>
+<li><p>Example: JavaScript arrays</p></li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Scope</h2>
+<ul class="simple">
+<li><p>Definition: Range where variable is visible</p></li>
+<li><p>Categories:</p>
+<ul>
+<li><p>Static</p></li>
+<li><p>Dynamic</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Static Scope</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Static Scope</strong></p>
+<ul class="simple">
+<li><p>Based on program structure</p></li>
+<li><p>Rules:</p>
+<ul>
+<li><p>Search starts in local unit</p></li>
+<li><p>Continues in enclosing units</p></li>
+<li><p>Follows static nesting</p></li>
+</ul>
+</li>
+<li><p>Advantages:</p>
+<ul>
+<li><p>Determinable at compile time</p></li>
+<li><p>Better readability</p></li>
+<li><p>More efficient</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="half docutils container">
+<p><strong>Blocks and Declaration Order</strong></p>
+<ul class="simple">
+<li><p>Blocks:</p>
+<ul>
+<li><p>Create new static scopes</p></li>
+<li><p>Allow local variables</p></li>
+<li><p>Stack-dynamic storage</p></li>
+<li><p>Example: compound statements in C/C++</p></li>
+</ul>
+</li>
+<li><p>Declaration Order:</p>
+<ul>
+<li><p>Some languages require declarations first</p></li>
+<li><p>Affects variable visibility</p></li>
+<li><p>Scope can start at declaration or block start</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</section>
+<section >
+<h3>Dynamic Scope</h3>
+<ul class="simple">
+<li><p>Based on call sequence</p></li>
+<li><p>Rules:</p>
+<ul>
+<li><p>Search starts in local unit</p></li>
+<li><p>Continues through calling sequence</p></li>
+<li><p>Follows dynamic calling chain</p></li>
+</ul>
+</li>
+<li><p>Characteristics:</p>
+<ul>
+<li><p>More flexible</p></li>
+<li><p>Harder to read/understand</p></li>
+<li><p>Less efficient</p></li>
+<li><p>Runtime binding resolution</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Referencing Environments And Named Constants</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Referencing Environments</strong></p>
+<ul class="simple">
+<li><p>Definition: Collection of all active bindings that is visible at a point
+in a program</p></li>
+<li><p>Related to scope, lifetime and order of declaration</p></li>
+<li><p>Further discussed in Chapter 10</p></li>
+</ul>
+</div>
+<div class="half docutils container">
+<p><strong>Named Constants</strong></p>
+<ul class="simple">
+<li><p>Improve readability</p></li>
+<li><p>Aid program maintenance</p></li>
+<li><p>Parameterize programs</p></li>
+<li><p>Examples:</p>
+<ul>
+<li><p>C++: const keyword</p></li>
+<li><p>Java: final keyword</p></li>
+<li><p>C#: const and readonly</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Summary</h2>
+<ul class="simple">
+<li><p>Variables characterized by six attributes</p></li>
+<li><p>Binding links attributes to entities</p></li>
+<li><p>Four categories of variable lifetime</p></li>
+<li><p>Static vs dynamic scoping tradeoffs</p></li>
+<li><p>Blocks create local scopes</p></li>
+<li><p>Named constants improve maintainability</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Practice Questions</h2>
+<ol class="arabic simple">
+<li><p>What are the six attributes of variables?</p></li>
+<li><p>Compare static and dynamic type binding</p></li>
+<li><p>Explain the difference between static and dynamic scope</p></li>
+<li><p>What are the four categories of variable lifetime?</p></li>
+<li><p>How do blocks affect variable scope?</p></li>
+</ol>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

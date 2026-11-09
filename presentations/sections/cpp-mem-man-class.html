@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Memory Management in Class Context for C++</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Memory Management in Class Context for C++</h1>
+<div class="subtitle docutils container">
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Overview</p></li>
+<li><p>Memory Management in Class Context</p></li>
+<li><p>Ownership of the dynamic data (FYI)</p></li>
+</ul>
+</section>
+<section >
+<h3>Overview</h3>
+<ul>
+<li><p>In the class context, because the flow of the program is not linear, the
+memory management is more complicated than in the function context.</p></li>
+<li><p>E.g. For a class that owns a dynamic int array:</p>
+<ul>
+<li><p>Declare an instance variable <code class="code docutils literal notranslate"><span class="pre">int</span> <span class="pre">*array;</span></code></p></li>
+<li><p>Allocation in the constructor or other methods <code class="code docutils literal notranslate"><span class="pre">this-&gt;array</span> <span class="pre">=</span> <span class="pre">new</span> <span class="pre">int[size];</span></code></p></li>
+<li><p>Deallocation in the destructor, etc. <code class="code docutils literal notranslate"><span class="pre">delete[]</span> <span class="pre">this-&gt;array;</span></code></p></li>
+<li><p>Deep copy in the copy constructor, copy assignment operator, etc.</p>
+<pre><code data-trim data-noescape class="cpp">for (int i = 0; i &lt; size; ++i)
+  this-&gt;array[i] = other.array[i];</code></pre>
+</li>
+</ul>
+</li>
+<li><p>The ownership of the dynamic data is also more complicated. (FYI)</p></li>
+</ul>
+</section>
+<section >
+<h3>Memory Management in Class Context</h3>
+<ul class="simple">
+<li><p>Implicitly defined methods</p></li>
+<li><p>Common mem problems in classes</p></li>
+<li><p>The rule of three</p></li>
+<li><p><a class="reference external" href="https://github.com/uwf-fang/cop3530-examples/tree/main/m03-mem-man-class">Code example</a></p>
+<ul>
+<li><p>shallow-copy.cpp: class with dynamic data and shallow copy</p></li>
+<li><p>rule-of-3.cpp: improved version with the <strong>big three</strong></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Implicitly Defined Methods</h3>
+<ul class="simple">
+<li><p>The compiler will implicitly define the following methods if they are not
+explicitly defined by the programmer. They are called implicitly defined methods.</p>
+<ul>
+<li><p>Default constructor: do nothing, potentially uninitialized variables</p></li>
+<li><p>Copy constructor: straight copy by direct assignment, potentially shallow
+copy</p></li>
+<li><p>Copy assignment operator overloading: straight copy by direct assignment,
+potentially shallow copy</p></li>
+<li><p>Destructor: doing nothing</p></li>
+</ul>
+</li>
+<li><p>They can be used without explicitly defining them.</p></li>
+<li><p>They will cause problem <strong>only when your class owns dynamic data and they are
+triggered</strong>.</p>
+<ul>
+<li><p>You can totally rely on the implicit ones if your class does not own
+dynamic data.</p></li>
+<li><p>You can explicitly define them to avoid the problems.</p></li>
+<li><p>You can omit the ones that are not triggered even if your class owns
+dynamic data. Must be careful!</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>How to trigger</h3>
+<ul class="simple">
+<li><p>Default constructor</p>
+<ul>
+<li><p>The constructor without any parameter</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MyClass</span> <span class="pre">myObj();</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MyClass</span> <span class="pre">*obj</span> <span class="pre">=</span> <span class="pre">new</span> <span class="pre">MyClass();</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MyClass</span> <span class="pre">obj[10];</span></code></p></li>
+<li><p>You can always omit <code class="docutils literal notranslate"><span class="pre">()</span></code> after the class name when they are empty.</p></li>
+</ul>
+</li>
+<li><p>Copy constructor</p>
+<ul>
+<li><p>The constructor with one parameter of the same type as the class</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MyClass</span> <span class="pre">myObj(otherObj);</span></code> or <code class="docutils literal notranslate"><span class="pre">MyClass</span> <span class="pre">myObj</span> <span class="pre">=</span> <span class="pre">otherObj;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MyClass</span> <span class="pre">*obj</span> <span class="pre">=</span> <span class="pre">new</span> <span class="pre">MyClass(otherObj);</span></code></p></li>
+<li><p>Parameter passing by value <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">func(MyClass</span> <span class="pre">obj)</span></code></p></li>
+</ul>
+</li>
+<li><p>Copy assignment operator overloading</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">MyClass</span> <span class="pre">obj1,</span> <span class="pre">obj2(10);</span></code> and then <code class="docutils literal notranslate"><span class="pre">obj1</span> <span class="pre">=</span> <span class="pre">obj2;</span></code></p></li>
+</ul>
+</li>
+<li><p>Destructor</p>
+<ul>
+<li><p>When the local object is out of scope</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MyClass</span> <span class="pre">*obj</span> <span class="pre">=</span> <span class="pre">new</span> <span class="pre">MyClass();</span> <span class="pre">delete</span> <span class="pre">obj;</span></code></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Common Memory Management Problems in Class Context</h3>
+<ul class="simple">
+<li><p>Memory leak</p>
+<ul>
+<li><p>forget to deallocate the dynamic data in the destructor</p></li>
+</ul>
+</li>
+<li><p>Shallow copy</p>
+<ul>
+<li><p>use a <code class="docutils literal notranslate"><span class="pre">=</span></code> operator to copy dynamic data</p></li>
+<li><p>triggered the implicitly defined copy constructor and copy assignment
+operator with dynamic data</p></li>
+<li><p>May cause double free</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Solution: Explicitly Defining These Methods</h3>
+<ul class="simple">
+<li><p><strong>Precondition: your class owns dynamic data</strong></p></li>
+<li><p>Default constructor: initialize the pointer to <code class="docutils literal notranslate"><span class="pre">nullptr</span></code> or allocate
+memory. Or stay away and always use other constructors</p></li>
+<li><p>Copy constructor: deep copy the dynamic data</p></li>
+<li><p>Copy assignment operator overloading: deep copy the dynamic data</p></li>
+<li><p>Destructor: deallocate the dynamic data</p></li>
+<li><p>Known as the “The Rule of Three”</p></li>
+</ul>
+</section>
+<section >
+<h3>The Rule of Three</h3>
+<ul class="simple">
+<li><p>The “Rule of Three”</p>
+<ul>
+<li><p>The Big Three: destructor, copy constructor, copy assignment operator
+overloading</p></li>
+<li><p>Although they may not all be triggered, it is safer to define them all
+explicitly.</p></li>
+</ul>
+</li>
+<li><p>The “Rule of Three” is a rule (not a law)</p>
+<ul>
+<li><p>Not enforced by the compiler.</p></li>
+<li><p>Rather a guideline for memory security.</p></li>
+</ul>
+</li>
+<li><p>The “Rule of five” after C++11 for performance optimization (FYI)</p>
+<ul>
+<li><p>Move constructor</p></li>
+<li><p>Move assignment operator overloading</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Example Class with Dynamic Data</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/uwf-fang/cop3530-examples/blob/main/m03-mem-man-class/rule-of-3.cpp">Code Example</a></p></li>
+<li><p>Copy constructor:</p>
+<ul>
+<li><p>Must take a const reference to class. Pass by value will trigger the copy
+constructor itself and cause problem.</p></li>
+</ul>
+</li>
+<li><p>Copy assignment operator overloading:</p>
+<ul>
+<li><p>Must take a reference to the object too.</p></li>
+<li><p>Must check self-assignment.</p></li>
+<li><p>May need to deallocate the existing dynamic data before allocating new
+memory and copying the data.</p></li>
+<li><p>Must return <code class="docutils literal notranslate"><span class="pre">*this</span></code> to allow chained assignment, if the return type is a
+reference to the class.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Ownership of the Dynamic Data (FYI)</h3>
+<ul class="simple">
+<li><p>Knowing who owns the dynamic data is important for memory management.</p></li>
+<li><p>The class may:</p>
+<ul>
+<li><p>Own the dynamic data.</p>
+<ul>
+<li><p>implement the big three.</p></li>
+</ul>
+</li>
+<li><p>Own a pointer to the external dynamic data</p>
+<ul>
+<li><p>treat the pointer as a regular variable</p></li>
+<li><p>let the external owner to manage the dynamic data</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

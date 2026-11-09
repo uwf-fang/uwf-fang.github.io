@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Algorithm Analysis</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Algorithm Analysis</h1>
+<div class="subtitle docutils container">
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Motivation</p></li>
+<li><p>Type of Analysis</p>
+<ul>
+<li><p>Empirical Analysis</p></li>
+<li><p>Theoretical Analysis</p>
+<ul>
+<li><p>Computational Complexity</p>
+<ul>
+<li><p>Asymptotic Notation</p></li>
+<li><p>Cases</p></li>
+<li><p>Examples</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<ul class="simple">
+<li><p>Motivation: To compare algorithms and select the best algorithm for a given
+problem.</p></li>
+<li><p>Types of Analysis</p></li>
+</ul>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p>Empirical Analysis (FYI)</p>
+<ul>
+<li><p>Implement, run, and measure the performance of the algorithms.</p></li>
+<li><p>Hardware and software dependent.</p></li>
+<li><p>A simple approach: &lt;chrono&gt; library in C++.</p></li>
+</ul>
+</li>
+</ul>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Empirical analysis using &lt;chrono&gt; library</span></div>
+<pre><code data-trim data-noescape class="cpp">#include &lt;iostream&gt;
+#include &lt;chrono&gt;
+
+int main() {
+    // Start the clock
+    auto start = std::chrono::high_resolution_clock::now();
+    // Call the function to be measured
+    algorithm(parameter);
+    // Stop the clock
+    auto end = std::chrono::high_resolution_clock::now();
+    // Calculate the duration
+    std::chrono::duration&lt;double&gt; duration = end - start;
+    // Print the duration in seconds
+    std::cout &lt;&lt; &quot;Function took &quot; &lt;&lt; duration.count() &lt;&lt; &quot; seconds.&quot; &lt;&lt; std::endl;
+    return 0;
+}</code></pre>
+</div>
+</div>
+<div class="half docutils container">
+<ul class="simple">
+<li><p>Theoretical Analysis</p>
+<ul>
+<li><p>Mathematical analysis of the algorithms.</p></li>
+<li><p>Hardware and software independent.</p></li>
+<li><p>Computational complexity.</p></li>
+</ul>
+</li>
+</ul>
+<a class="reference internal image-reference" href="../_images/growth-rate.png"><img alt="../_images/growth-rate.png" src="../_images/growth-rate.png" style="width: 70%;" />
+</a>
+<div class="footnote docutils container">
+<p>Credit: <a class="reference external" href="https://en.wikipedia.org/wiki/Computational_complexity_of_mathematical_operations">https://en.wikipedia.org/wiki/Computational_complexity_of_mathematical_operations</a></p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Computational Complexity</h2>
+<ul class="simple">
+<li><p>Definition: The computational complexity of an algorithm is an estimation of
+the amount of resources required to run it. This model ignores the hardware
+and software details and focuses on the resources required by the algorithm
+as the problem size increases.</p></li>
+<li><p>Resources: Time, Space, power consumption, network traffic, etc.</p></li>
+<li><p>Time Complexity</p>
+<ul>
+<li><p>The number of constant time operations performed by the algorithm.</p></li>
+<li><p>A function of the input size n. <span class="math notranslate nohighlight">\(T(n)\)</span> or <span class="math notranslate nohighlight">\(T(N)\)</span></p></li>
+<li><p>Approximation: <strong>All constant time operations are considered one unit of
+time.</strong></p></li>
+</ul>
+</li>
+<li><p>Space Complexity</p>
+<ul>
+<li><p>The amount of storage space (usually memory) required by the algorithm.</p></li>
+<li><p>Auxiliary space: The extra space required by the algorithm, excluding the
+input size.</p></li>
+<li><p>A function of the input size n. <span class="math notranslate nohighlight">\(S(n)\)</span> or <span class="math notranslate nohighlight">\(S(N)\)</span></p></li>
+</ul>
+</li>
+</ul>
+<div class="footnote docutils container">
+<p>We will focus on <span class="math notranslate nohighlight">\(T(n)\)</span> afterwards and the same concepts apply to
+<span class="math notranslate nohighlight">\(S(n)\)</span>.</p>
+</div>
+</section>
+<section >
+<h3>Asymptotic Notation</h3>
+<ul class="simple">
+<li><p>Complexity can be a complicated and non-intuitive function and we need a
+simple way to describe it.</p></li>
+<li><p>A.k.a Bachmann–Landau notation. A mathematical notation system to
+describe the limiting behavior of a function.</p></li>
+<li><p>Provides a simple way to describe the complexity of an algorithm.</p></li>
+<li><p>Big O notation <span class="math notranslate nohighlight">\(T(n) = O(f(n))\)</span> describes the upper bound of the
+function <span class="math notranslate nohighlight">\(T(n)\)</span>.</p></li>
+<li><p>Big Omega notation <span class="math notranslate nohighlight">\(T(n) = \Omega(f(n))\)</span> describes the lower bound of
+the function <span class="math notranslate nohighlight">\(T(n)\)</span>.</p></li>
+<li><p><strong>Big Theta notation</strong> <span class="math notranslate nohighlight">\(T(n) = \Theta(f(n))\)</span> describes the tight bound
+of the function <span class="math notranslate nohighlight">\(T(n)\)</span>.</p></li>
+<li><p>Little o notation <span class="math notranslate nohighlight">\(T(n) = o(f(n))\)</span> describes the strict upper bound of
+the function <span class="math notranslate nohighlight">\(T(n)\)</span>. (FYI)</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/asymptotic.png"><img alt="../_images/asymptotic.png" src="../_images/asymptotic.png" style="width: 50%;" />
+</a>
+</section>
+<section >
+<h3>How bounds work and which one to choose</h3>
+<ul class="simple">
+<li><p>Infinite upper and lower bounds exist and we only care the ‘tightest’ ones.</p></li>
+<li><p>If exist, the exact bound is the tightest upper and lower bound at the same
+time. Thus, this is the most helpful bound.</p></li>
+<li><p>If big theta does not exist, the tightest upper bound is the most helpful
+bound.</p></li>
+<li><p>E.g. Mark Zuckerberg’s income is an upper bound to your income but it is not
+helpful to estimate your income because it is not a “tight” upper bound.</p></li>
+</ul>
+</section>
+<section >
+<h3>Considering Cases</h3>
+<p>In complexity analysis, various cases are considered to assess the efficiency
+and performance of algorithms. These cases help us understand how algorithms
+behave under different scenarios and input distributions.</p>
+<ul class="simple">
+<li><p>Best Case: The minimum amount of resources required by the algorithm.</p></li>
+<li><p>Worst Case: The maximum amount of resources required by the algorithm.</p></li>
+<li><p>Average Case: The average amount of resources required by the algorithm.</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>Bounds and cases are not directly related. Do not treat upper bound as
+worst case and lower bound as best case!</strong></p>
+<p>Each case provides a complexity as a function of problem size and we can use
+upper/lower/exact bound to estimate the growth rate of this function.</p>
+</div>
+</section>
+<section >
+<h3>Checkpoint</h3>
+<ul class="simple">
+<li><p>How many searching and sorting algorithms do you know so far?</p></li>
+<li><p>What is the complexity of each algorithm?</p></li>
+<li><p>Is a Merge sort (<span class="math notranslate nohighlight">\(\Theta(n \log n)\)</span>) always <strong>faster</strong> than an Insertion
+sort (<span class="math notranslate nohighlight">\(\Theta(n^2)\)</span>)?</p></li>
+</ul>
+</section>
+<section >
+<h3>Answers</h3>
+<ul class="simple">
+<li><p>You should have learned</p>
+<ul>
+<li><p>Linear search (<span class="math notranslate nohighlight">\(\Theta(n)\)</span>)</p></li>
+<li><p>Binary search (<span class="math notranslate nohighlight">\(\Theta(\log n)\)</span>)</p></li>
+<li><p>Selection sort (<span class="math notranslate nohighlight">\(\Theta(n^2)\)</span>)</p></li>
+<li><p>Insertion sort (<span class="math notranslate nohighlight">\(\Theta(n^2)\)</span>)</p></li>
+<li><p>Maybe Bubble sort (<span class="math notranslate nohighlight">\(\Theta(n^2)\)</span>)</p></li>
+</ul>
+</li>
+<li><p>As a programmer, we should no longer use the term “faster” to compare
+algorithms. We should use the term “more or less complex/efficient” instead.
+Less complex means more efficient. It also means slower growth rate.</p></li>
+<li><p>Merge sort is more efficient than Insertion sort in terms of time complexity.
+However, it is not always faster than Insertion sort. The efficiency of an
+algorithm depends on the problem size, the input distribution, and the
+hardware characteristics.</p></li>
+</ul>
+</section>
+<section >
+<h3>Find <span class="math notranslate nohighlight">\(T(n)\)</span> 1</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(T(n)\)</span> = number of constant time operations</p></li>
+<li><p>Each statement, and expression evaluation is considered
+to take constant time.</p></li>
+<li><p>Function calls depend</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::swap,</span> <span class="pre">cout</span> <span class="pre">&lt;&lt;,</span> <span class="pre">getline</span></code> are constant time</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::sort,</span> <span class="pre">std::search,</span> <span class="pre">std::shuffle</span></code> are not constant time</p></li>
+</ul>
+</li>
+<li><p>worst case: <span class="math notranslate nohighlight">\(T(n) = 1 + n + 1 + n + n + 1 = 3n + 3 = \Theta(n)\)</span></p></li>
+<li><p>Best case: <span class="math notranslate nohighlight">\(T(n) 1 + 1 + 1 + 1 = 4 = \Theta(1)\)</span></p></li>
+</ul>
+</div>
+<div class="half docutils container">
+<pre><code data-trim data-noescape class="cpp">int search(int * arr, int size, int val) {
+  for (int i = 0; i &lt; size; ++i)
+    if (arr[i] == val)
+      return i;
+  return -1;
+}</code></pre>
+</div>
+</div>
+</section>
+<section >
+<h3><span class="math notranslate nohighlight">\(T(n)\)</span> of for loops</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p>For a loop with <span class="math notranslate nohighlight">\(n\)</span> iterations</p></li>
+<li><p>Init <span class="math notranslate nohighlight">\(T(n) = 1\)</span></p></li>
+<li><p>condition <span class="math notranslate nohighlight">\(T(n) = n + 1\)</span></p></li>
+<li><p>update <span class="math notranslate nohighlight">\(T(n) = n\)</span></p></li>
+<li><p>body <span class="math notranslate nohighlight">\(T(n) = n\)</span></p></li>
+</ul>
+</div>
+<div class="half docutils container">
+<pre><code data-trim data-noescape class="cpp">for (init; condition; update) {
+  body statements;
+}</code></pre>
+</div>
+</div>
+</section>
+<section >
+<h3>Find <span class="math notranslate nohighlight">\(T(n)\)</span> Selection Sort</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(T(n)\)</span> = number of comparisons + number of swaps</p></li>
+<li><p>number of comparisons = <span class="math notranslate nohighlight">\(1 + 2 + 3 + ... + n - 1 = n(n - 1) / 2\)</span></p></li>
+<li><p>number of swaps = <span class="math notranslate nohighlight">\(n - 1\)</span></p></li>
+<li><p>best case: no swap needed, sorting a sorted array</p></li>
+<li><p><span class="math notranslate nohighlight">\(T(n) = 1 + 2 + 3 + ... + n - 1 = n(n - 1) / 2 = \Theta(n^2)\)</span></p></li>
+<li><p>worst case: swap needed every time, sorting a reverse sorted array</p></li>
+<li><p><span class="math notranslate nohighlight">\(T(n) = n(n - 1) / 2 + n - 1 = \Theta(n^2)\)</span></p></li>
+</ul>
+</div>
+<div class="half docutils container">
+<pre><code data-trim data-noescape class="cpp">// Sort an array to ascending order
+// arr: array to be sorted, must not be nullptr
+// size: must be greater than 0
+void selectionSort(int * arr, int size) {
+  for (int i = 0; i &lt; size - 1; ++i) {
+    int min = i;
+    for (int j = i + 1; j &lt; size; ++j)
+      if (arr[j] &lt; arr[min])
+        min = j;
+    if (min != i)
+      std::swap(arr[i], arr[min]);
+  }
+}</code></pre>
+</div>
+</div>
+</section>
+<section >
+<h3>Find <span class="math notranslate nohighlight">\(\Theta(f(n))\)</span> given <span class="math notranslate nohighlight">\(T(n)\)</span></h3>
+<div class="smaller docutils container">
+<ul class="simple">
+<li><p>Keep the term with highest order. Drop the coefficient and lower order
+terms.</p></li>
+<li><p>Example:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(T(n) = 20 \times n^2 + 10 \times n + 12 = \Theta(n^2)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(T(n) = 5 \times 2^n + 3 \times n^3 = \Theta(2^n)\)</span></p></li>
+</ul>
+</li>
+<li><p>Exercise: Find a simplest <span class="math notranslate nohighlight">\(\Theta(f(n))\)</span> for the following functions</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(T(n) = 2n^2 + 3n \log n + 10\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(T(n) = 2n^2 + 3n + 1 + 5 \times 2^n\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(T(n) = 5 \log n + 5n\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(T(n) = n! + 2^n + 1000n\)</span></p></li>
+</ul>
+</li>
+</ul>
+<table class="docutils align-default" id="id3">
+<caption><span class="caption-text">Common Growth Rates, from low to high order</span></caption>
+<colgroup>
+<col style="width: 50.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Term</p></th>
+<th class="head"><p>Growth Rate</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Constant Time</p></td>
+<td><p><span class="math notranslate nohighlight">\(1\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>Logarithmic</p></td>
+<td><p><span class="math notranslate nohighlight">\(\log n\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>Linear</p></td>
+<td><p><span class="math notranslate nohighlight">\(n\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>Linearithmic</p></td>
+<td><p><span class="math notranslate nohighlight">\(n \log n\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>Quadratic</p></td>
+<td><p><span class="math notranslate nohighlight">\(n^2\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>Cubic</p></td>
+<td><p><span class="math notranslate nohighlight">\(n^3\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>Exponential</p></td>
+<td><p><span class="math notranslate nohighlight">\(2^n\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>Factorial</p></td>
+<td><p><span class="math notranslate nohighlight">\(n!\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section >
+<h3>Find <span class="math notranslate nohighlight">\(\Theta(f(n))\)</span> directly</h3>
+<ul class="simple">
+<li><p>Much easier than finding <span class="math notranslate nohighlight">\(T(n)\)</span> first.</p></li>
+<li><p>additive (sequential, branch)</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\Theta(f(n)) + \Theta(g(n)) = \Theta(f(n) + g(n))\)</span></p></li>
+<li><p>E.g. Initialize an array and then sort it using selection sort:
+<span class="math notranslate nohighlight">\(\Theta(n) + \Theta(n^2) = \Theta(n^2)\)</span></p></li>
+</ul>
+</li>
+<li><p>multiplicative (nested loop, recursion)</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\Theta(f(n)) \times \Theta(g(n)) = \Theta(f(n) \times g(n))\)</span></p></li>
+<li><p>Where <span class="math notranslate nohighlight">\(f(n)\)</span> and <span class="math notranslate nohighlight">\(g(n)\)</span> are outer loop complexity and per
+iteration complexity respectively.</p></li>
+<li><p>Examples:</p>
+<ul>
+<li><p>Selection sort <span class="math notranslate nohighlight">\(\Theta(n) \times \Theta(n) = \Theta(n^2)\)</span></p></li>
+<li><p>Binary search <span class="math notranslate nohighlight">\(\Theta(\log n) \times \Theta(1) = \Theta(\log n)\)</span></p></li>
+<li><p>Merge sort <span class="math notranslate nohighlight">\(\Theta(\log n) \times \Theta(n) = \Theta(n \log n)\)</span></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Algorithms of Certain Complexity</h3>
+<div class="footnote docutils container">
+<table class="docutils align-default" id="id4">
+<caption><span class="caption-text">Typical Complexity and Representative Algorithms</span></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 30.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Complexity (Prefer Big Theta)</p></th>
+<th class="head"><p>Representative Algorithms</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Constant</p></td>
+<td><p><span class="math notranslate nohighlight">\(\Theta(1)\)</span></p></td>
+<td><p>Array indexing, Hash table lookups</p></td>
+</tr>
+<tr class="row-odd"><td><p>Logarithmic</p></td>
+<td><p><span class="math notranslate nohighlight">\(\Theta(\log n)\)</span></p></td>
+<td><p>Binary Search, Balanced Binary Search Trees (e.g., AVL, Red-Black)</p></td>
+</tr>
+<tr class="row-even"><td><p>Linear</p></td>
+<td><p><span class="math notranslate nohighlight">\(\Theta(n)\)</span></p></td>
+<td><p>Linear Search, Most Simple Array/Linked List Operations</p></td>
+</tr>
+<tr class="row-odd"><td><p>Linearithmic</p></td>
+<td><p><span class="math notranslate nohighlight">\(\Theta(n \log n)\)</span></p></td>
+<td><p>Merge Sort, Heap Sort, Quick sort</p></td>
+</tr>
+<tr class="row-even"><td><p>Quadratic</p></td>
+<td><p><span class="math notranslate nohighlight">\(\Theta(n^2)\)</span></p></td>
+<td><p>Bubble Sort, Selection Sort, Insertion Sort</p></td>
+</tr>
+<tr class="row-odd"><td><p>Exponential</p></td>
+<td><p><span class="math notranslate nohighlight">\(\Theta(2^n)\)</span></p></td>
+<td><p>Recursive algorithms without memoization (e.g., naive Fibonacci)</p></td>
+</tr>
+<tr class="row-even"><td><p>Factorial</p></td>
+<td><p><span class="math notranslate nohighlight">\(\Theta(n!)\)</span></p></td>
+<td><p>Traveling Salesman Problem (naive solution)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section >
+<h3>Exercise</h3>
+<ul>
+<li><p>Given the following function:</p>
+<pre><code data-trim data-noescape class="default">bool isReverse(const char* arr1, const char* arr2, int length) {
+    for (int i = 0; i &lt; length; ++i)
+        if (arr1[i] != arr2[length - 1 - i])
+            return false;
+    return true;
+}</code></pre>
+</li>
+<li><p>What is the best and worst case time complexity function?</p></li>
+<li><p>What is the problem size?</p></li>
+<li><p>What is the worst case bound? (which bound to use?)</p></li>
+</ul>
+</section>
+<section >
+<h3>Answers</h3>
+<ul class="simple">
+<li><p>Best case is when the first comparison fails. The loop will only run once.</p></li>
+<li><p>Worst case is when all comparisons passes or the last comparison fails. The
+loop will run <span class="math notranslate nohighlight">\(n\)</span> times.</p></li>
+<li><p>The problem size is the length of the arrays.</p></li>
+<li><p>The worst case bound is <span class="math notranslate nohighlight">\(\Theta(n)\)</span>.</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Amortized Analysis</h2>
+<ul class="simple">
+<li><p>Motivation: To analyze the average time complexity of a sequence of
+operations performed on a data structure.</p></li>
+<li><p>When best, worst, and average cases are not enough to describe the
+performance of an algorithm or a data structure.</p></li>
+<li><p>Types of amortized analysis:</p>
+<ul>
+<li><p>Aggregate analysis</p></li>
+<li><p>Accounting method</p></li>
+<li><p>Potential method</p></li>
+</ul>
+</li>
+<li><p>Example of dynamic data structures that require amortized analysis:</p>
+<ul>
+<li><p>Dynamic arrays (resizing)</p></li>
+<li><p>Hash tables (rehashing)</p></li>
+<li><p>Self-balancing binary search trees (balancing)</p></li>
+<li><p>Splay trees (splaying)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

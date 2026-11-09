@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Algorithms on Sequential Data</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Algorithms on Sequential Data</h1>
+<p><strong>Sequential data can be stored in various containers</strong></p>
+<ul class="simple">
+<li><p>C array - Fixed-size contiguous memory</p></li>
+<li><p>C string - Null-terminated character array</p></li>
+<li><p>C++ string - Modern string class with rich functionality</p></li>
+<li><p>STL containers:</p>
+<ul>
+<li><p>std::vector - Dynamic array</p></li>
+<li><p>std::array - Fixed-size array</p></li>
+<li><p>std::list - Doubly-linked list</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Linear Search</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Compare from left to right</strong></p>
+<ul class="simple">
+<li><p>Time complexity: <span class="math notranslate nohighlight">\(\Theta(n)\)</span></p></li>
+</ul>
+<pre><code data-trim data-noescape class="cpp">int linearSearch(const int arr[], int size, int target) {
+  for (int i = 0; i &lt; size; i++)
+    if (arr[i] == target)
+      return i;  // Found, return index
+  return -1;  // Not found
+}</code></pre>
+</div>
+<div class="half docutils container">
+<p><strong>Example usage</strong></p>
+<pre><code data-trim data-noescape class="cpp">int numbers[] = {4, 2, 7, 1, 9, 5};
+int pos = linearSearch(numbers, 6, 7);  // Returns 2
+pos = linearSearch(numbers, 6, 3);      // Returns -1</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Binary Search</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p>For <strong>sorted</strong> arrays, divide and conquer approach.</p>
+<ul class="simple">
+<li><p>Time complexity: <span class="math notranslate nohighlight">\(\Theta(\log n)\)</span></p></li>
+</ul>
+<pre><code data-trim data-noescape class="cpp">int binarySearch(int arr[], int size, int target) {
+  int left = 0, right = size - 1;
+  while (left &lt;= right) {
+    int mid = left + (right - left) / 2;
+    if (arr[mid] == target)
+      return mid;
+
+    if (arr[mid] &lt; target)
+      left = mid + 1;
+    else
+      right = mid - 1;
+  }
+  return -1;
+}</code></pre>
+</div>
+<div class="half docutils container">
+<p><strong>Example usage</strong></p>
+<pre><code data-trim data-noescape class="cpp">int sorted[] = {1, 2, 4, 5, 7, 9};
+int pos = binarySearch(sorted, 6, 7);  // Returns 4
+pos = binarySearch(sorted, 6, 3);      // Returns -1</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Mapping Functions</h2>
+<p><strong>One-to-one</strong> mapping between input and output</p>
+<pre data-id="mapping-functions"><code data-trim data-noescape class="cpp">void squareAll(int arr[], int size) {
+  for (int i = 0; i &lt; size; i++)
+    arr[i] *= arr[i];
+}
+
+void absAll(int arr[], int size) {
+  for (int i = 0; i &lt; size; i++)
+    if (arr[i] &lt; 0)
+      arr[i] = -arr[i];
+}</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Aggregate Functions</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Statistical functions</strong></p>
+<pre><code data-trim data-noescape class="cpp">double mean(const int arr[], int size) {
+  if (size == 0) return 0.0;
+  double sum = 0.0;
+  for (int i = 0; i &lt; size; i++)
+    sum += arr[i];
+  return sum / size;
+}
+
+double median(int arr[], int size) {
+  if (size == 0) return 0.0;
+  // Sort array first
+  for (int i = 0; i &lt; size-1; i++)
+    for (int j = 0; j &lt; size-i-1; j++)
+      if (arr[j] &gt; arr[j+1]) {
+        int temp = arr[j];
+        arr[j] = arr[j+1];
+        arr[j+1] = temp;
+      }
+  if (size % 2 == 0)
+      return (arr[size/2 - 1] + arr[size/2]) / 2.0;
+  return arr[size/2];
+}</code></pre>
+</div>
+<div class="half docutils container">
+<pre><code data-trim data-noescape class="cpp">double stddev(const int arr[], int size) {
+  if (size == 0) return 0.0;
+  double m = mean(arr, size);
+  double sum = 0.0;
+  for (int i = 0; i &lt; size; i++)
+    sum += (arr[i] - m) * (arr[i] - m);
+  return sqrt(sum / size);
+}</code></pre>
+<p><strong>Example usage</strong></p>
+<pre><code data-trim data-noescape class="cpp">int data[] = {4, 2, 7, 1, 9, 5};
+double avg = mean(data, 6);      // Returns 4.67
+double med = median(data, 6);    // Returns 4.5
+double std = stddev(data, 6);    // Returns 2.73</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Advanced Algorithm</h2>
+<ul>
+<li><p>Palindrome detection</p>
+<pre><code data-trim data-noescape class="cpp">bool isPalindrome(const int arr[], int size) {
+  for (int i = 0; i &lt; size / 2; i++)
+    if (arr[i] != arr[size - i - 1])
+      return false;
+  return true;
+}</code></pre>
+</li>
+<li><p>Subarray search</p>
+<pre><code data-trim data-noescape class="cpp">bool isSubarray(int arr[], int size,
+                int sub[], int subSize) {
+  for (int i = 0; i &lt;= size - subSize; i++) {
+    bool found = true;
+    for (int j = 0; j &lt; subSize; j++)
+      if (arr[i + j] != sub[j]) {
+        found = false;
+        break;
+      }
+    if (found) return true;
+  }
+  return false;
+}</code></pre>
+</li>
+</ul>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

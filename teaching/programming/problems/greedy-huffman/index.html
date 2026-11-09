@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Greedy Solution to Huffman Coding Problem · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/programming/">Algorithms and Data Structures</a> / Greedy Solution to Huffman Coding Problem</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Greedy Solution to Huffman Coding Problem</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#huffman-coding">Huffman Coding</a></li>
+    <li><a href="#characteristics">Characteristics</a></li>
+    <li><a href="#applications">Applications</a></li>
+    <li><a href="#prefix-coding-tree">Prefix Coding Tree</a></li>
+    <li><a href="#example-coding-trees">Example coding trees</a></li>
+    <li><a href="#algorithm-to-build-a-huffman-coding-tree">Algorithm to build a Huffman coding tree</a></li>
+    <li><a href="#steps-to-build-the-example-tree">Steps to build the example tree</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="greedy-solution-to-huffman-coding-problem"></span>
+<h2 id="huffman-coding">Huffman Coding</h2>
+<p>Huffman coding is a lossless data compression algorithm. The idea is to assign variable-length codes to input characters, lengths of the assigned codes are based on the frequencies of corresponding characters. The most frequent character gets the smallest code and the least frequent character gets the largest code.</p>
+<h2 id="characteristics">Characteristics</h2>
+<ul>
+<li>Prefix code (a.k.a Prefix-free code)
+<ul>
+<li>
+<p>No codeword appears as a prefix of any other codeword.</p>
+</li>
+<li>
+<p>No ambiguity when decoding a bitstream.</p>
+<p>For example, if ‘a’ is encoded as ‘01’, ‘b’ cannot be encoded as ‘0’. Otherwise, when decoding ‘01’, it is ambiguous whether it is an ‘a’ (01) or a ‘b’ (0) followed by something (1).</p>
+</li>
+</ul>
+</li>
+<li>Optimal code
+<ul>
+<li>Minimizes the length of the encoded bitstream.</li>
+<li>The most frequent character are encoded with the least number of bits.</li>
+</ul>
+</li>
+</ul>
+<h2 id="applications">Applications</h2>
+<p>As a fundamental algorithm in data compression, Huffman coding is used in various compression schemes such as JPEG, MP3, and DEFLATE (PKZIP). It is also used in other algorithms or applications that require lossless compression and depression like in network transmission software.</p>
+<h2 id="prefix-coding-tree">Prefix Coding Tree</h2>
+<p>The coding tree is a binary tree that represents the mapping between characters and their corresponding codewords.</p>
+<ul>
+<li>Full binary tree</li>
+<li>Leaf nodes are characters (guaranteed prefix code)</li>
+<li>Each internal node means a bit in the codeword</li>
+</ul>
+<h2 id="example-coding-trees">Example coding trees</h2>
+<p><img src="/teaching/_migration/7b3bde7f27d6808c.png" alt="Prefix coding trees"></p>
+<p>Credit: Introduction to Algorithms, 4th Ed., T. Cormen et al.</p>
+<ul>
+<li>Left: Fixed length encoding
+<ul>
+<li>Total space: 3 * (45 + 13 + 12 + 16 + 9 + 5) = 300 bits</li>
+</ul>
+</li>
+<li>Right: Huffman coding
+<ul>
+<li>Total space: 1 * 45 + 3 * (13 + 12 + 16) + 4 * (9 + 5) = 224 bits</li>
+</ul>
+</li>
+<li>Contents in nodes:
+<ul>
+<li>Leaf node: &lt;character&gt;: &lt;frequency&gt;</li>
+<li>Internal node: &lt;total frequency of the subtree&gt;</li>
+</ul>
+</li>
+</ul>
+<h2 id="algorithm-to-build-a-huffman-coding-tree">Algorithm to build a Huffman coding tree</h2>
+<p>This is a greedy algorithm that builds the tree bottom-up from the least frequent characters to the most frequent characters.</p>
+<ul>
+<li>Create a leaf node for each symbol and add it to the min priority priority queue.</li>
+<li>While there is more than one node in the min priority queue:
+<ul>
+<li>Dequeue two nodes with the lowest frequencies from the min priority queue</li>
+<li>Create a new internal node with these two nodes as its children and with frequency equal to the sum of the two nodes’ frequency</li>
+<li>Add the new node to the min priority queue</li>
+</ul>
+</li>
+<li>The remaining node is the root node and the tree is complete</li>
+</ul>
+<p>Credit: Pseudo-code adopted from <a href="https://en.wikipedia.org/wiki/Huffman_coding">Wikipedia</a></p>
+<h2 id="steps-to-build-the-example-tree">Steps to build the example tree</h2>
+<p><img src="/teaching/_migration/85c6ffaddfdf8bef.png" alt="Steps to Build the Example Tree"></p>
+<p>Credit: Introduction to Algorithms, 4th Ed., T. Cormen et al.</p>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

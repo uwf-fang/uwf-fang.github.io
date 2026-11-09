@@ -1,0 +1,71 @@
+
+Simple Sorting Algorithms
+=========================
++ Selection sort
++ Insertion sort
++ Bubble sort (FYI)
+
+
+Selection Sort
+--------------
++ Repeatedly find the minimum/maximum element from unsorted portion. Swap with
+  first unsorted element.
++ Time complexity: :math:`\Theta(n^2)`
+
+.. code-block:: cpp
+
+  void selectionSort(int arr[], int n) {
+    for (int i = 0; i < n-1; i++) {
+      // Find minimum element in unsorted array
+      int min_idx = i;
+      for (int j = i+1; j < n; j++)
+        if (arr[j] < arr[min_idx])
+          min_idx = j;
+      // Swap found minimum with first unsorted element
+      if (min_idx != i) {
+        int temp = arr[min_idx];
+        arr[min_idx] = arr[i];
+        arr[i] = temp;
+      }
+    }
+  }
+
+**Example**
+
+.. code-block:: cpp
+
+  int arr[] = {64, 25, 12, 22, 11};
+  selectionSort(arr, 5);
+  // arr is now {11, 12, 22, 25, 64}
+
+Insertion Sort
+--------------
++ Repeatedly insert an element from unsorted portion to its correct position in
+  sorted portion.
++ Time complexity: :math:`\Theta(n^2)`
+
+.. code-block:: cpp
+
+  void insertionSort(int arr[], int n) {
+    for (int i = 1; i < n; i++) {
+      int key = arr[i];
+      int j = i - 1;
+
+      // Move elements that are greater than key
+      // to one position ahead
+      while (j >= 0 && arr[j] > key) {
+        arr[j + 1] = arr[j];
+        j = j - 1;
+      }
+      arr[j + 1] = key;
+    }
+  }
+
+**Example**
+
+.. code-block:: cpp
+
+  int arr[] = {64, 34, 25, 12, 22, 11, 90};
+  insertionSort(arr, 7);
+  // arr is now {11, 12, 22, 25, 34, 64, 90}
+

@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Programming Projects · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/course/cop3014/env/">Development Environment</a></li><li><a href="/teaching/course/cop3014/project/" aria-current="page">Programming Projects</a></li></ul><ul><li><a href="/teaching/course/cop3014/ch01/">Chapter 1: Environment and Language Overview</a></li><li><a href="/teaching/course/cop3014/ch02/">Chapter 2: Variables, Expressions and Control Structures</a></li><li><a href="/teaching/course/cop3014/ch03/">Chapter 3: User-defined Functions and Modular Development</a></li><li><a href="/teaching/course/cop3014/ch04/">Chapter 4: Objects and Classes</a></li><li><a href="/teaching/course/cop3014/ch05/">Chapter 5: Pointer and Memory Management</a></li><li><a href="/teaching/course/cop3014/ch0607/">Chapter 6, 7: Algorithm design with Sequential Data Structure</a></li><li><a href="/teaching/course/cop3014/ch08/">Chapter 8: Advanced Array Topics</a></li><li><a href="/teaching/course/cop3014/ch09/">Chapter 9: Memory Management in Classes</a></li><li><a href="/teaching/course/cop3014/ch10/">Chapter 10: Input/Output, File Input/Output</a></li><li><a href="/teaching/course/cop3014/ch11/">Chapter 11: Vector</a></li></ul><ul><li><a href="/teaching/course/cop3014/mid1-review/">Midterm 1 Topic Review</a></li><li><a href="/teaching/course/cop3014/mid2-review/">Midterm 2 Topic Review</a></li><li><a href="/teaching/course/cop3014/final-review/">Final Topic Review</a></li></ul><ul><li><a href="/teaching/cpp/getline/">Using getline after extraction</a></li><li><a href="/teaching/cpp/class/op-overload/">Operator Overloading</a></li></ul><ul><li><a href="/teaching/course/cop3014/ta/">Instruction For Teaching Assistant</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/course/cop3014/">COP 3014 Algorithm and Program Design</a> / Programming Projects</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Programming Projects</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#quick-reference">Quick Reference</a></li>
+    <li><a href="#grading">Grading</a></li>
+    <li><a href="#project-workflow">Project Workflow</a>
+      <ul>
+        <li><a href="#design-modelling-stage">Design/Modelling Stage</a></li>
+        <li><a href="#implementation-stage">Implementation Stage</a></li>
+      </ul>
+    </li>
+    <li><a href="#build-run-and-debug">Build, run and debug</a>
+      <ul>
+        <li><a href="#make-command-lines">Make command-lines</a></li>
+        <li><a href="#provided-tests">Provided Tests</a></li>
+      </ul>
+    </li>
+    <li><a href="#get-help">Get Help</a></li>
+    <li><a href="#avoid-common-mistakes">Avoid Common Mistakes</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="programming-projects"></span>
+<h2 id="quick-reference">Quick Reference</h2>
+<ul>
+<li><a href="/teaching/course/faq/#proj-faq">Project FAQ</a></li>
+<li>Common errors in the building process
+<ul>
+<li><a href="/teaching/developer-tools/make/#make-diag">Common Error Messages From make</a></li>
+<li><a href="/teaching/cpp/building/gpp/#gpp-diag">Common Error Messages From g++</a></li>
+</ul>
+</li>
+<li><a href="/teaching/cpp/building/modular/#mod-pitfall">Pitfalls in Modular Development</a></li>
+</ul>
+<h2 id="grading">Grading</h2>
+<p>The grading system of complex projects differs greatly from that used in entry-level courses and in coding questions in exams:</p>
+<ul>
+<li><strong>Your code must compile and run!</strong></li>
+<li><strong>The grader grades your code by running rather than by reading them!</strong></li>
+<li>A program compiles and runs through <code>GNU make</code> using commands like <code>make</code>, <code>./main</code>, <code>make test-all</code>, <code>make test-run</code>, etc.</li>
+<li><strong>You should not expect any partial credits for code that cannot be tested by running your program.</strong> The grader do not have the responsibility to read, debug and understand your unfinished source code.</li>
+</ul>
+<h2 id="project-workflow">Project Workflow</h2>
+<p>This workflow is beginner oriented. Students may develop their own workflow as they gain experience in programming. However, there is still something even the experienced students can learn from here.</p>
+<h3 id="design-modelling-stage">Design/Modelling Stage</h3>
+<p>In this workflow I assume that you start from a problem description to finish an application to solve a problem. In the real-world projects, many steps are already finished and you will be asked to start from implementation specification such as UML class diagrams, detailed descriptions of functions or classes. You will be skipping the design/modeling step in these cases.</p>
+<ol>
+<li>
+<p>Understand the problem</p>
+<p>Read the description carefully! Clarify obscure or ambiguous descriptions with your instructor. Estimate the complexity of the whole project and make a time management plan.</p>
+</li>
+<li>
+<p>Analyze and model the problem (two approaches)</p>
+<ul>
+<li>use top-down design to break the questions into functions (tasks)</li>
+<li>use object-oriented design to break the question into classes</li>
+</ul>
+</li>
+<li>
+<p>Plan your project directory</p>
+<p>Consider the directory structure of the project, the files to create, the makefile to write, etc.</p>
+</li>
+<li>
+<p>Make a skeleton of the project</p>
+<p>Create all files including cpp files, hpp files, supporting data/configuration files, and a makefile. Fill them with empty functions, empty classes, header guards, know includes, etc.</p>
+</li>
+</ol>
+<h3 id="implementation-stage">Implementation Stage</h3>
+<p>The starting code for a project will be provided as a zip file on Canvas. Download it first, extract it to a working directory on your computer, and use the provided makefile to build and test your work.</p>
+<ol>
+<li>Iterative development
+<ol>
+<li>Backup your files (three options)
+<ul>
+<li>compress the directory and give it a serial number or a date time stamp</li>
+<li>duplicate the directory and give it a serial number or a date time stamp</li>
+<li>copy important source files to another safe location</li>
+</ul>
+</li>
+<li>Pick a unit to work with
+<ul>
+<li>start from the simple units first (“simple” means simple in logic and not depending on other units)</li>
+<li>move on to units depending on finished units</li>
+</ul>
+</li>
+<li>Write code in small units (function, class, class method)</li>
+<li>Write a test driver (sometimes provided)</li>
+<li>Use the makefile targets provided with the starting code to build and run the tests</li>
+<li>Fix problems found in the run</li>
+<li>Proceed to the next iteration</li>
+</ol>
+</li>
+<li>Perform a final test on everything</li>
+<li>Upload to Canvas
+<ol>
+<li>Duplicate your project directory</li>
+<li>Change the directory to the base name of your submission file like <code>proj#</code>. Substitute # with your project number.</li>
+<li>Change to the new directory in your terminal with <code>cd</code></li>
+<li>Remove files not needed in the submission (the <code>make clean</code> command should do most if not all of the clean up job for you)</li>
+<li>Perform a last test on everything</li>
+<li>Clean the generated files in the test run using <code>make clean</code> again</li>
+<li>Compress your directory using zip format and name it as <code>proj#.zip</code></li>
+<li>Find the Canvas assignment page and upload</li>
+<li>Visit the page again to confirm the uploaded file is there</li>
+</ol>
+</li>
+</ol>
+<h2 id="build-run-and-debug">Build, run and debug</h2>
+<p>Due to the complexity of compiling and running your modular project manually, building tools such as GNU make, Autotools, Cmake, Ninja, Meson are employed to automate the process. We employ <code>GNU make</code> in our course.</p>
+<h3 id="make-command-lines">Make command-lines</h3>
+<p>The <code>make</code> command-lines commonly employed in the projects are:</p>
+<ul>
+<li><code>make</code></li>
+<li><code>make all</code> to compile multiple targets</li>
+<li><code>make main</code> to compile main</li>
+<li><code>make test-run</code> to test run your main</li>
+<li><code>make test</code> to compile and run a test</li>
+<li><code>make test-all</code> to compile and run multiple tests</li>
+<li><code>make test-#-xxx</code> to compile and run one of the many tests where # is a number, and xxx is a name of the individual test</li>
+</ul>
+<p>You must compile and run your code through these commands because this is how the grader will employ in the grading.</p>
+<h3 id="provided-tests">Provided Tests</h3>
+<ul>
+<li>Tests are provided in some starting code bases to facilitate grading.</li>
+<li>Students are not supposed to change source codes in the test directory or the cpp files provided for test such as <code>test.cpp</code>.</li>
+<li>Make sure your filenames follows the naming convention so the makefile will work properly. The convention requires all lowercase filenames.</li>
+<li>Complete the makefile as needed.</li>
+<li>Run <code>make test</code> or <code>make test-all</code> to run tests.</li>
+<li>You can find other <code>test-#-xxx</code> kind of targets in your makefile to run tests separately.</li>
+<li>Make good use of these tests locally to test your code.</li>
+<li>A major portion of grading will be based on the tests runs.</li>
+</ul>
+<h2 id="get-help">Get Help</h2>
+<ul>
+<li>Post sharable problems on the Discord server</li>
+<li>Email the instructor or TA about the question. Must include your code.</li>
+</ul>
+<aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p><strong>Never ask me question with only limited information like screenshots or error messages.</strong> Attach the zip file of your source code files in your email.</p>
+</div></aside>
+<h2 id="avoid-common-mistakes">Avoid Common Mistakes</h2>
+<ol>
+<li>Avoid over-engineering
+<ul>
+<li>Understand the problem and requirements very well</li>
+<li>Work toward a just-enough solution (follow the instruction) rather than a perfect solution</li>
+<li>Choose the simplest (simple to use) data structures, not the fastest or coolest ones (e.g. choose vector over C array, string over C string)</li>
+</ul>
+</li>
+<li>Avoid bad submission
+<ul>
+<li>Run <code>make clean</code> before creating your submission zip file</li>
+<li>Remove any added files and directories not needed in the submission. They are usually from your editor or IDE and can be huge in size.</li>
+</ul>
+</li>
+<li>Avoid wasting time on anything not required in the instruction
+<ul>
+<li>Read instruction carefully</li>
+<li>Ask questions if you are not sure</li>
+</ul>
+</li>
+<li>Avoid last minute rush
+<ul>
+<li>Projects are usually more challenging than you think</li>
+<li>You will not learn much in the rush</li>
+</ul>
+</li>
+<li>Avoid writing code without testing
+<ul>
+<li>Any project beyond a certain size should be finished in an incremental manner and tested in every step</li>
+<li>In the future, you may want to learn a testing framework but for now tests can be as simple as an extra .cpp file with a main function to run the classes or functions you just finished. Just feed the object/function with some input data and check the output. Testing code should be in a separate cpp file</li>
+<li>A testing framework (e.g. Catch2) will greatly improve this process but need learning</li>
+<li>A final test on the SSH server recommended to avoid compatibility problems when the grading environment may differ from your own computer</li>
+</ul>
+</li>
+<li>Avoid working without backing up your code
+<ul>
+<li>It is common to lose important code snippet by mistake</li>
+<li>You will hesitate to try new idea</li>
+<li>Do backup your changes frequently</li>
+<li>Do keep a log of your progress</li>
+<li>Keep backup copies that you can restore quickly if something breaks</li>
+</ul>
+</li>
+</ol>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

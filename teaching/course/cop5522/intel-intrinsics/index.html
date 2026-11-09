@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Intel SIMD Intrinsics · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/course/cop5522/parallel-env/">Development Environment For Parallel Programming</a></li><li><a href="/teaching/course/cop5522/clang/">C Language Features Used in This Course</a></li><li><a href="/teaching/cpp/ccpp-env/">C/C&#43;&#43; Development Environment</a></li><li><a href="/teaching/developer-tools/make/">GNU Make</a></li></ul><ul><li><a href="/teaching/course/cop5522/ch01/">Chapter 1: Introduction To Parallel Programming</a></li><li><a href="/teaching/course/cop5522/ch02/">Chapter 2: Parallel Hardware and Software</a></li><li><a href="/teaching/course/cop5522/ch03/">Chapter 3: Shared-Memory Programming with OpenMP</a></li><li><a href="/teaching/course/cop5522/ch04/">Chapter 4: OpenMP Case Study: N-body problem</a></li><li><a href="/teaching/course/cop5522/ch05/">Chapter 5: Distributed Memory Programming with MPI</a></li><li><a href="/teaching/course/cop5522/ch06/">Chapter 6: MPI Case Study, and Pthread</a></li></ul><ul><li><a href="/teaching/course/cop5522/midterm/">Midterm Topic Outline</a></li><li><a href="/teaching/course/cop5522/final/">Final Topic Review</a></li></ul><ul><li><a href="/teaching/course/cop5522/homework/">Homework Instruction</a></li><li><a href="/teaching/course/cop5522/project/">Research Project: Parallelization of Serial Algorithms</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/course/cop5522/">COP 5522 Parallel and Distributed Programming</a> / Intel SIMD Intrinsics</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Intel SIMD Intrinsics</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#simd-intrinsics">SIMD Intrinsics</a></li>
+    <li><a href="#intel-intrinsics">Intel Intrinsics</a>
+      <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#sse4-intrinsics-in-c-language">SSE4 Intrinsics in C language</a></li>
+      </ul>
+    </li>
+    <li><a href="#sse4-example">SSE4 Example</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="intel-simd-intrinsics"></span>
+<h2 id="simd-intrinsics">SIMD Intrinsics</h2>
+<ul>
+<li>SIMD: Single Instruction, Multiple Data</li>
+<li>Intrinsics: low-level, compiler-specific instructions that allow programmers to leverage SIMD capabilities without writing assembly code. They provide a higher-level interface for SIMD programming.</li>
+<li>Motivation:
+<ul>
+<li>Critical for performance optimization in certain applications</li>
+<li>Harness the power of modern CPUs</li>
+</ul>
+</li>
+<li>Characteristics:
+<ul>
+<li>Hardware-specific</li>
+<li>Compiler-specific</li>
+</ul>
+</li>
+</ul>
+<h2 id="intel-intrinsics">Intel Intrinsics</h2>
+<h3 id="overview">Overview</h3>
+<ul>
+<li>Only available on Intel processors</li>
+<li>Available in C/C++ and Fortran</li>
+<li>Evolution
+<ul>
+<li>Multimedia Extensions (MMX)</li>
+<li>Streaming SIMD Extensions (SSE)</li>
+<li>Advanced Vector Extensions (AVX)</li>
+</ul>
+</li>
+<li>Operations
+<ul>
+<li>Arithmetic</li>
+<li>Logical</li>
+<li>Data manipulation</li>
+<li>Conversion</li>
+<li>Shuffle</li>
+<li>…</li>
+</ul>
+</li>
+</ul>
+<h3 id="sse4-intrinsics-in-c-language">SSE4 Intrinsics in C language</h3>
+<ul>
+<li>Environment setup
+<ul>
+<li>Compiler: gcc
+<ul>
+<li><code>-march=native</code> flag on a computer with intel CPU</li>
+</ul>
+</li>
+<li>Hardware: Intel CPUs</li>
+</ul>
+</li>
+<li>Include header file
+<ul>
+<li><code>#include &lt;immintrin.h&gt;</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="sse4-example">SSE4 Example</h2>
+<p>Matrix multiplication of a 4x4 matrix by a size-4 vector using SSE4 intrinsics is a fundamental operation. For larger matrices, this example serves as a building block for block-wise matrix multiplication, where the multiplication is efficiently computed in smaller chunks. This approach enhances computational efficiency and scalability when dealing with matrices of larger dimensions.</p>
+<p><a href="https://github.com/uwf-fang/cop5522-examples/blob/main/ch02/intel-simd-example.c">Link to code example</a></p>
+<ul>
+<li>
+<p><code>__m128</code></p>
+<p>The <code>__m128</code> type is used to represent a 128-bit register that can hold 4 float numbers. The number of variables you can declare of this type is limited by the number of registers available on the CPU.</p>
+</li>
+<li>
+<p>The <code>_mm_loadu_ps</code> intrinsic</p>
+<p>This intrinsic loads 4 float numbers from an unaligned memory address into a <code>__m128</code> register. The <code>_mm_load_ps</code> intrinsic can be used to load 4 float numbers from an aligned memory address.</p>
+</li>
+<li>
+<p>The <code>_mm_storeu_ps</code> intrinsic</p>
+<p>This intrinsic stores 4 float numbers from a <code>__m128</code> register into an unaligned memory address. The <code>_mm_store_ps</code> intrinsic can be used to store 4 float numbers from a <code>__m128</code> register into an aligned memory address.</p>
+</li>
+<li>
+<p>The <code>_mm_add_ps</code> intrinsic</p>
+<p>This intrinsic adds two <code>__m128</code> registers element-wise and returns the result in a <code>__m128</code> register.</p>
+</li>
+<li>
+<p>The <code>_mm_hadd_ps</code> intrinsic</p>
+<p>This intrinsic adds two <code>__m128</code> registers horizontally and returns the result in a <code>__m128</code> register. This horizontal addition adds the neighboring two elements from the two registers to create a new register. The first two elements of the result register are the sums from the first register, and the last two elements of the result register are the sums from the second register.
+<img src="/teaching/_migration/2d0f230a1a62af1a.png" alt="Demonstration on horizontal addition"></p>
+</li>
+<li>
+<p>The <code>_mm_mul_ps</code> intrinsic</p>
+<p>This intrinsic multiplies two <code>__m128</code> registers element-wise and returns the result in a <code>__m128</code> register.</p>
+</li>
+<li>
+<p>All intrinsics used in the example are the unaligned versions. The aligned versions are faster but require the memory addresses to be aligned to 16 bytes.</p>
+</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

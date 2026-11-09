@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Final Grade Calculator</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Base reset for custom sliders */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+            margin: 10px 0;
+        }
+        input[type=range]:focus { outline: none; }
+
+        /* --- Individual Item Sliders --- */
+        input[type=range].item-slider::-webkit-slider-runnable-track {
+            width: 100%; height: 8px; cursor: pointer; background: #bfdbfe; border-radius: 4px;
+        }
+        input[type=range].item-slider::-webkit-slider-thumb {
+            height: 24px; width: 24px; border-radius: 50%; background: #ffffff; border: 3px solid #2563eb;
+            cursor: grab; -webkit-appearance: none; margin-top: -8px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: transform 0.1s;
+        }
+        input[type=range].item-slider::-webkit-slider-thumb:active {
+            cursor: grabbing; transform: scale(1.15); background: #eff6ff;
+        }
+
+        /* --- Master Default Sliders --- */
+        input[type=range].master-slider::-webkit-slider-runnable-track {
+            width: 100%; height: 10px; cursor: pointer; background: #d1d5db; border-radius: 5px;
+        }
+        input[type=range].master-slider::-webkit-slider-thumb {
+            height: 28px; width: 28px; border-radius: 50%; background: #ffffff; border: 4px solid #4b5563;
+            cursor: grab; -webkit-appearance: none; margin-top: -9px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            transition: transform 0.1s;
+        }
+        input[type=range].master-slider::-webkit-slider-thumb:active {
+            cursor: grabbing; transform: scale(1.15); background: #f3f4f6;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 p-4 md:p-8 text-gray-800 font-sans">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // --- UI COMPONENTS ---
+        const SliderRow = ({ label, value, onChange, isBonus }) => (
+            <div className={`flex flex-col space-y-1 mt-4 ${isBonus ? 'pt-6 mt-6 border-t-2 border-dashed border-gray-200' : ''}`}>
+                <div className="flex justify-between items-center mb-1">
+                    <label className="font-semibold text-blue-700">{label}</label>
+                    <span className="font-bold text-blue-600 bg-blue-100 px-3 py-1 rounded-md">{value}%</span>
+                </div>
+                <input type="range" min="0" max="100" value={value} onChange={(e) => onChange(e.target.value)} className="item-slider" />
+            </div>
+        );
+
+        const DefaultSliderRow = ({ label, onMasterChange }) => {
+            const [localVal, setLocalVal] = useState(0);
+            const handleChange = (val) => {
+                setLocalVal(val);
+                onMasterChange(val);
+            };
+            return (
+                <div className="flex flex-col space-y-1 pb-6 mb-2 border-b-2 border-gray-100">
+                    <div className="flex justify-between items-center mb-1">
+                        <label className="text-sm font-bold text-gray-500 uppercase tracking-wider">{label}</label>
+                        <span className="text-sm font-bold text-gray-500">{localVal}%</span>
+                    </div>
+                    <input type="range" min="0" max="100" value={localVal} onChange={(e) => handleChange(e.target.value)} className="master-slider" />
+                    <p className="text-xs text-gray-400 italic mt-1">Drag to instantly set all items below</p>
+                </div>
+            );
+        };
+
+        // --- MAIN APP COMPONENT ---
+        function App() {
+            const [scores, setScores] = useState({});
+            const [gradeConfig, setGradeConfig] = useState(null);
+            const [isLoading, setIsLoading] = useState(true);
+            const [error, setError] = useState(null);
+
+            // Fetch the JSON configuration on initial load
+// Fetch the JSON configuration on initial load
+            useEffect(() => {
+                // 1. Check the browser's address bar for parameters
+                const urlParams = new URLSearchParams(window.location.search);
+
+                // 2. Look for a parameter named 'config'
+                const configUrl = urlParams.get('config');
+
+                // 3. If no config parameter is found, show a helpful message
+                if (!configUrl) {
+                    setError("No course data provided. Please add '?config=YOUR_JSON_URL' to the web address.");
+                    setIsLoading(false);
+                    return; // Stop running
+                }
+
+                // 4. Fetch the data from the URL provided in the parameter
+                fetch(configUrl)
+                    .then(response => {
+                        if (!response.ok) throw new Error("Failed to load configuration file. Check the URL.");
+                        return response.json();
+                    })
+                    .then(data => {
+                        setGradeConfig(data);
+                        setIsLoading(false);
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        setError("Could not load the course data. Please ensure the GitHub raw URL is correct and public.");
+                        setIsLoading(false);
+                    });
+            }, []);
+
+            const handleScoreChange = (id, value) => {
+                setScores(prev => ({ ...prev, [id]: Number(value) }));
+            };
+
+            const handleMasterChange = (items, value) => {
+                setScores(prev => {
+                    const newScores = { ...prev };
+                    items.forEach(item => { newScores[item.id] = Number(value); });
+                    return newScores;
+                });
+            };
+
+            const calculateTotal = () => {
+                if (!gradeConfig) return "0.00";
+
+                let totalBaseGrade = 0;
+                let totalBonus = 0;
+
+                gradeConfig.courseGradeConfiguration.displayGroups.forEach(group => {
+                    let groupScoreSum = 0;
+                    let standardItemCount = 0;
+                    let groupBaseContribution = 0;
+
+                    group.assignmentItems.forEach(item => {
+                        const score = scores[item.id] || 0;
+
+                        if (item.itemWeightPercentage) {
+                            const itemContribution = score * (item.itemWeightPercentage / 100);
+                            if (item.isBonus) {
+                                totalBonus += itemContribution;
+                            } else {
+                                groupBaseContribution += itemContribution;
+                            }
+                        } else {
+                            groupScoreSum += score;
+                            standardItemCount++;
+                        }
+                    });
+
+                    if (standardItemCount > 0) {
+                        const groupAvg = groupScoreSum / standardItemCount;
+                        groupBaseContribution += groupAvg * (group.groupWeightPercentage / 100);
+                    }
+
+                    totalBaseGrade += groupBaseContribution;
+                });
+
+                return (totalBaseGrade + totalBonus).toFixed(2);
+            };
+
+            // Render Loading or Error states before rendering the calculator
+            if (isLoading) {
+                return (
+                    <div className="flex justify-center items-center h-64">
+                        <div className="text-xl font-bold text-blue-600 animate-pulse">Loading Calculator Data...</div>
+                    </div>
+                );
+            }
+
+            if (error) {
+                return (
+                    <div className="flex justify-center items-center h-64 text-center p-4">
+                        <div className="text-xl font-bold text-red-600 bg-red-50 p-6 rounded-lg border border-red-200">
+                            Error: {error}<br/>
+                            <span className="text-sm font-normal text-red-500 mt-2 block">Check your GitHub Raw URL and ensure the repository is public.</span>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="max-w-2xl mx-auto flex flex-col space-y-6 pb-12">
+
+                    {/* Header & Total Grade */}
+                    <div className="bg-white shadow-lg rounded-xl p-6 text-center sticky top-0 z-10 border-b-4 border-blue-600">
+                        <h1 className="text-2xl font-bold text-gray-800 mb-2">Final Grade Calculator</h1>
+                        <div className="text-5xl font-extrabold text-blue-600">
+                            {calculateTotal()}%
+                        </div>
+                    </div>
+
+                    {/* Dynamic Rendering of Groups from Fetched JSON */}
+                    {gradeConfig.courseGradeConfiguration.displayGroups.map((group) => (
+                        <div key={group.groupId} className="bg-white shadow-md rounded-xl p-6 border border-gray-200 flex flex-col">
+                            <h2 className="text-xl font-bold text-gray-800 mb-4">
+                                {group.displayTitle}
+                                <span className="text-gray-500 font-medium text-base ml-2">
+                                    ({group.groupWeightPercentage}% Weight{group.groupId === 5 ? ' Total' : ''})
+                                </span>
+                            </h2>
+
+                            {group.requiresMasterDefaultSlider && (
+                                <DefaultSliderRow
+                                    label={`Master ${group.groupName} Score`}
+                                    onMasterChange={(val) => handleMasterChange(group.assignmentItems, val)}
+                                />
+                            )}
+
+                            {group.assignmentItems.map((item) => (
+                                <SliderRow
+                                    key={item.id}
+                                    label={item.label + (item.itemWeightPercentage ? ` (${item.itemWeightPercentage}%)` : '')}
+                                    value={scores[item.id] || 0}
+                                    onChange={(val) => handleScoreChange(item.id, val)}
+                                    isBonus={item.isBonus}
+                                />
+                            ))}
+                        </div>
+                    ))}
+
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

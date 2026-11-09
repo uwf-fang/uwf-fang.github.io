@@ -1,0 +1,267 @@
+**********************************
+Introduction to Big Data Analytics
+**********************************
+
+.. revealjs-section::
+  :data-background-color: white
+  :data-background-image: ../_static/logo.png
+  :data-background-size: 50%
+  :data-background-position: top center
+  :data-background-repeat: no-repeat
+
+.. container:: subtitle
+
+  **Chapter 4: Interactive Data Analysis with Spark**
+
+  |author|
+
+Overview
+========
++ Note: the text book only covers the basics of Spark shell and I will cover
+  more examples and details about data analysis
++ Motivation
++ Introduction to interactive data processing and analysis
++ Interactive shell and notebook interfaces
++ Detailed steps of interactive data processing and analysis
+
+Motivation
+==========
++ Definition: Interactive data processing and analysis is the process of
+  interactively querying, analyzing, and visualizing data.
++ Why interactive?
+
+  * Checking feedback before proceeding to the next step
+  * Interactive debugging and testing according to the feedback
+  * One-shot data data processing and analysis
+  * The counterpart of batch processing which runs sophisticated algorithms
+    end-to-end repeatedly
+
+
+Data Processing Overview
+========================
++ Two types of data processing
+
+  * Batch processing and analysis: repeated end to end process with
+    sophisticated procedures
+  * Interactive processing and analysis: interactively process with unknown
+    procedures; employed in one-time analysis or exploratory data analysis for
+    potential batch processing pipeline development
+
++ Typical steps of **batch** data processing and analysis
+
+  * Load data
+  * Process data
+  * Analyze data
+  * Visualize data
+  * Save/Export report and visualizations
+  * Save/Export data
+
++ Common workflow in data science
+
+  * Collect new data
+  * Perform interactive data processing and analysis as an exploratory data
+    analysis (EDA)
+  * Develop a batch processing pipeline based on the EDA
+  * Deploy the pipeline to production
+
+Interactive Data Processing and Analysis
+========================================
++ In interactive data processing and analysis, the steps are the same but the
+  process is more iterative. You will go back and forth between the steps to
+  refine the data processing and analysis.
++ Try and refine upstream steps and then proceed to the downstream steps
++ When downstream steps are not satisfactory as a problem related to upstream
+  steps, go back to the upstream steps and try again
++ The process is iterative and interactive
++ Two types of interface for interactive data processing and analysis
+
+  * Interactive shell
+  * Notebook interface
+
+Interfaces
+==========
++ Spark shell: traditional command-line interface
+
+  * REPL (Read-Eval-Print Loop) interface
+  * You need to save and manage your code and outcome separately (e.g. copy and
+    paste an editor)
+  * Awkward to reuse code snippets
+
++ Notebook interface: a modern web-based interface
+
+  * Mostly based on Jupyter Notebook
+  * Require backend (local or remote) to run the code snippets
+  * Cells to keep both documentation and code snippets
+  * Run code snippets in cells and see the outcome immediately
+  * Easy import/export of code snippets to code files or html files
+  * Convenient to give and collect assignments in teaching
+  * **Note: Databricks Community Edition provides a notebook interface with on
+    cloud backend free of charge**
+  * **Note: Databricks Community Edition is the only service that supports
+    Scala in the notebook interface**
+
+Introduction to Spark Shell
+---------------------------
++ Spark shell is a command-line interface to interact with Spark using Scala
++ REPL (Read-Eval-Print Loop) interface
++ Start Spark shell to enter the REPL interface
++ Enter a Scala code snippet to interact with Spark backend
++ Commands started with :code:`:` are special commands
+
+  * :code:`help`: list all special commands
+  * :code:`quit`: exit the shell
+
++ Reuse history commands: Ctrl-R to search history commands
++ Multi-line code snippets
+
+  * Single command in multiple lines
+
+    - The shell will wait if the command seems incomplete
+    - the trick is to use open parenthesis or open brackets to make the command
+      incomplete
+
+  * :code:`:paste` to enter multiple lines of code with any number of
+    statements
+
+    - Ctrl-D to exit the paste mode
+
++ Straight forward to use and easy access to local file system
++ Very limited edition capability and awkward to reuse code snippets
++ Refer to :doc:`docker` slides for the setup of the Spark shell in Docker
+
+Introduction to DataBricks Notebook
+-----------------------------------
++ Jupyter notebook like interface
+
+  * Commonly used in data science with support to Python, R, Julia, etc.
+
++ Databricks Community Edition
+
+  * Only known service that supports Scala
+  * Direct access to Spark backend and Databricks File System (DBFS)
+
+    - the SparkContext is already created and named as :code:`sc`
+    - access DBFS with :code:`dbfs:` prefix when using file paths
+    - :code:`dbutils` library to access Databricks utilities
+
++ Refer to :doc:`dce` slides for the setup of DCE
+
+Steps of interactive processing and analysis
+============================================
++ Details are shown for all steps
++ Both Spark shell and Databricks notebook are used for the demonstration
+
++ Spark in docker container handles files in the local file system directly
+
+Load Data
+---------
++ Artificial data, e.g. :code:`val data = (1 to 1000).toList`
++ Load data from a file
+
+  * File sources
+
+    - local file system
+    - distributed file system (e.g. HDFS, DBFS)
+    - file hosted online (access via URL)
+
+      + Direct read from URL (if you only read once)
+      + Download to file system and read
+
+  * :code:`SparkContext` provides methods to load files
+
+    - :code:`textFile` to read simple text files and return an RDD
+    - :code:`read` to read structured text files (e.g. csv, json, parquet) and
+      return a DataFrame
+
+  * Avoid the Scala native file I/O methods! They does not support distributed
+    file system!
+
+Loading/saving Files in Databricks Community Edition
+----------------------------------------------------
++ Your code runs in a disposable container (compute). Thus, data stored in the
+  local file system will be lost after the container is recycled
++ Refer to the file operations with DCE recording on Canvas in module 3
++ Databricks provides a distributed file system called Databricks File System
+  (DBFS)
+
+  * Not accessible in Web Terminal!!! Use the notebook interface instead
+  * All computes have access to the same DBFS
+  * :code:`dbfs:` prefix to access the files in DBFS formally but this prefix
+    can be omitted. In spark, you can access the files in DBFS as if they are
+    in the local file system, although you cannot find the files in the local
+    file system using the terminal. **Note: single slash used after dbfs:**
+
+    - E.g. :code:`val data = sc.textFile("dbfs:/FileStore/tables/data.txt")`
+    - E.g. :code:`val data = sc.textFile("/FileStore/tables/data.txt")`
+
+  * Files stored in :code:`dbfs:/FileStore` are accessible in the notebook
+    interface.
+  * :code:`SparkContext` provides methods to read files in DBFS
+  * :code:`dbutils.fs` library to handle the files in DBFS
+
++ There are other protocols such as :code:`hdfs:` for Hadoop distributed file
+  system, :code:`s3:` for Amazon S3, :code:`wasb:` for Azure Blob Storage, etc.
+
+  * **Note: these protocols should be followed by double slashes, e.g.
+    :code:`s3://my-bucket/my-file`**
+
+Loading/Saving Files in Spark Shell in Docker
+---------------------------------------------
++ The Spark shell in Docker container has access to the local file system
++ Store the data file in your local file system and bind the directory to the
+  container
+
+  * Make a working directory in your computer
+  * Store the files there
+  * Run the Spark docker container with the :code:`-v` option
+
+    .. code:: bash
+
+      docker run -it -v $(pwd):/opt/spark/work-dir --name spark spark:latest /opt/spark/bin/spark-shell
+
+  * Read and write the files in the Spark shell under the director:
+    :code:`/opt/spark/work-dir`
+
+Process Data
+------------
++ Data processing is the process of transforming data into a more useful format
+  in the future analysis
++ Spark data APIs
+
+  * RDD (Resilient Distributed Dataset): low-level API
+  * DataFrame: high-level API for structured data
+  * DataSet: high-level API for structured data with type safety
+
++ Unstructured data (e.g. text files) can be loaded as RDD
++ Structured data (e.g. csv, json, parquet) can be loaded as DataFrame
++ Data processing
+
+  * Data merging
+  * Data cleaning (e.g. missing value imputation, outlier detection)
+  * Unstructured to structured (e.g. parsing, tokenizing, etc.)
+  * Data transformation (structured to structured, e.g. pivot table, feature
+    extraction, normalization, etc.)
+
++ FYI: many deep learning models can take unstructured data without much
+  processing
+
+Analyze Data
+------------
++ Big data applications usually start with big data size
++ After data processing, the data can be either big or small in size
++ For small data, use single machine tools
+
+  * Statistics, visualizations: R, Python Pandas, Python Matplotlib, etc.
+  * Machine learning: Python Scikit-learn, etc.
+  * Deep learning: TensorFlow, PyTorch, etc.
+
++ For big data, use distributed tools
+
+  * Distributed tools
+
+    - Spark MLlib: machine learning library
+    - Spark SQL: SQL-like query language can be used to perform simple
+      statistical analysis
+
+  * Deep learning frameworks with support to distributed workloads: TensorFlow,
+    PyTorch, etc.

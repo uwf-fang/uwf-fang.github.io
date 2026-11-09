@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Probability in Computer Science · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/programming/programming/">General Programming Information</a></li><li><a href="/teaching/programming/algorithm/">Algorithm</a></li><li><a href="/teaching/programming/data-structure/">Data Structure</a></li><li><a href="/teaching/programming/complexity/">Complexity Analysis</a></li><li><a href="/teaching/programming/alg-anal/">Algorithm Analysis</a></li><li><a href="/teaching/programming/adt-intro/">Abstract Data Type</a></li><li><a href="/teaching/programming/adt/linear-adts/">Linear ADTs</a></li><li><a href="/teaching/programming/ds/tree/">Tree Data Structure</a></li><li><a href="/teaching/programming/ds/graph/">Graph</a></li><li><a href="/teaching/programming/problems/lcs/">Longest Common Subsequence Problem</a></li><li><a href="/teaching/programming/problems/max-sum-subarray/">Max Sum Subarray Problem</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/programming/">Algorithms and Data Structures</a> / Probability in Computer Science</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Probability in Computer Science</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#types-of-probability">Types of Probability</a></li>
+    <li><a href="#basic-rules-and-principles-of-probability">Basic Rules and Principles of Probability</a>
+      <ul>
+        <li><a href="#probability-of-an-event">Probability of an Event</a></li>
+        <li><a href="#sample-space-and-events">Sample Space and Events</a></li>
+        <li><a href="#the-additive-rule">The Additive Rule</a></li>
+        <li><a href="#complementary-events">Complementary Events</a></li>
+        <li><a href="#multiplicative-rule">Multiplicative Rule</a></li>
+        <li><a href="#conditional-probability-fyi">Conditional Probability (FYI)</a></li>
+      </ul>
+    </li>
+    <li><a href="#bayes-theorem-fyi">Bayes’ Theorem (FYI)</a>
+      <ul>
+        <li><a href="#the-formula">The Formula</a></li>
+        <li><a href="#bayes-theorem-example">Bayes’ Theorem Example</a></li>
+        <li><a href="#significance-in-computer-science">Significance in Computer Science</a></li>
+      </ul>
+    </li>
+    <li><a href="#applying-combinatorics-in-classic-probability">Applying Combinatorics in Classic Probability</a>
+      <ul>
+        <li><a href="#card-games-poker-hands">Card Games (Poker Hands)</a></li>
+        <li><a href="#dice-games-yahtzee">Dice Games (Yahtzee)</a></li>
+        <li><a href="#lottery-drawings">Lottery Drawings</a></li>
+        <li><a href="#arranging-books-on-a-shelf">Arranging Books on a Shelf</a></li>
+        <li><a href="#drawing-colored-balls-from-a-bag">Drawing Colored Balls from a Bag</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="probability-in-computer-science"></span>
+<h2 id="overview">Overview</h2>
+<ul>
+<li>
+<p><strong>Definition:</strong> Probability quantifies the likelihood of an event or outcome occurring. It is a measure between 0 (implying the event cannot happen) and 1 (implying the event is certain to happen).</p>
+<p>It is often represented as a fraction, decimal, or percentage. For instance, the probability of flipping a fair coin to get heads is 0.5 or 50%.</p>
+</li>
+<li>
+<p><strong>Applications:</strong></p>
+<ul>
+<li>
+<p>Algorithm Efficiency</p>
+<p>Many algorithms, especially randomized algorithms, rely on probabilistic principles to optimize efficiency and provide approximate solutions to complex problems.</p>
+</li>
+<li>
+<p>Data Analysis and Predictive Modeling</p>
+<p>Probabilistic models help in predicting future events based on historical data, which is crucial in machine learning and data mining.</p>
+</li>
+<li>
+<p>System Reliability</p>
+<p>Probability helps in evaluating the reliability and performance of systems, networks, and software, enabling better design and troubleshooting.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Relationship to combinatorics:</strong></p>
+<p>By understanding the total number of possible outcomes (from combinatorics) and the number of desired outcomes, we can assess the likelihood of specific events.</p>
+</li>
+</ul>
+<h2 id="types-of-probability">Types of Probability</h2>
+<ul>
+<li>
+<p>Classical Probability</p>
+<p>Defined for situations where outcomes are equally likely. This method is deterministic in nature. This method is related to combinatorics.</p>
+<p><strong>Examples</strong>:</p>
+<blockquote>
+<ul>
+<li>Flipping a fair coin: The probability of getting a head or tail is equally 0.5.</li>
+<li>Rolling a fair six-sided die: The probability of any given side is 1/6.</li>
+</ul>
+</blockquote>
+</li>
+<li>
+<p>Empirical (or Experimental) Probability (FYI)</p>
+<p>Based on observations, experiments, or historical data rather than theoretical calculation.</p>
+</li>
+<li>
+<p>Subjective Probability (FYI)</p>
+<p>Derived from personal judgment, intuition, or belief, rather than any objective or empirical evidence. It’s less formal and more based on individual perspectives.</p>
+</li>
+</ul>
+<h2 id="basic-rules-and-principles-of-probability">Basic Rules and Principles of Probability</h2>
+<h3 id="probability-of-an-event">Probability of an Event</h3>
+<p>Every event has a probability between 0 and 1, inclusive.</p>
+<ul>
+<li>$0 \leq P(A) \leq 1$ for any event $A$.</li>
+<li><strong>Interpretation</strong>:
+<ul>
+<li>A probability of 0 means the event is impossible.</li>
+<li>A probability of 1 means the event is certain.</li>
+</ul>
+</li>
+</ul>
+<h3 id="sample-space-and-events">Sample Space and Events</h3>
+<p>The set of all possible outcomes of an experiment is the sample space, and any subset of this sample space is an event.</p>
+<ul>
+<li>Tossing a coin: Sample space = {Heads, Tails}.</li>
+</ul>
+<h3 id="the-additive-rule">The Additive Rule</h3>
+<p>For two mutually exclusive (or disjoint) events, the probability that either occurs is the sum of their probabilities.</p>
+<ul>
+<li>$P(A \cup B) = P(A) + P(B)$ for mutually exclusive events $A$ and $B$.</li>
+</ul>
+<h3 id="complementary-events">Complementary Events</h3>
+<p>The event that A doesn’t happen is called the complement of A.</p>
+<ul>
+<li>$P(A') = 1 - P(A)$, where $A'$ is the complement of $A$.</li>
+</ul>
+<h3 id="multiplicative-rule">Multiplicative Rule</h3>
+<p>For two independent events, the probability that both occur is the product of their probabilities.</p>
+<ul>
+<li>$P(A \cap B) = P(A) \times P(B)$ for independent events $A$ and $B$.</li>
+</ul>
+<h3 id="conditional-probability-fyi">Conditional Probability (FYI)</h3>
+<p>The probability of an event $A$ given that another event $B$ has occurred.</p>
+<ul>
+<li>$P(A|B) = \frac{P(A \cap B)}{P(B)}$, provided $P(B) \neq 0$.</li>
+<li><strong>Interpretation</strong>: Provides a way to update our probability based on new evidence.</li>
+</ul>
+<h2 id="bayes-theorem-fyi">Bayes’ Theorem (FYI)</h2>
+<p>Bayes’ theorem is a fundamental concept in probability theory and statistics that helps us update our beliefs or assess the likelihood of an event happening based on new evidence or information. It’s like a mathematical tool for making informed decisions in uncertain situations.</p>
+<p>At its core, Bayes’ theorem is about conditional probability, which means calculating the probability of something occurring given that something else has already occurred. It’s named after the 18th-century statistician and philosopher Thomas Bayes, who developed the idea.</p>
+<h3 id="the-formula">The Formula</h3>
+<p>Bayes’ Theorem provides a way to find a probability when certain other probabilities are known.</p>
+<ul>
+<li>
+<p><strong>Formula</strong>:
+</p>
+$$
+  P(A|B) = \frac{P(B|A) \times P(A)}{P(B)}
+  $$<p>Where:</p>
+<ul>
+<li>
+<dl>
+<dt>$P(A|B)$ is the posterior probability: the probability of hypothesis</dt>
+<dd>$A$ given data $B$.</dd>
+</dl>
+</li>
+<li>
+<dl>
+<dt>$P(B|A)$ is the likelihood: the probability of data $B$ given</dt>
+<dd>hypothesis $A$.</dd>
+</dl>
+</li>
+<li>
+<dl>
+<dt>$P(A)$ is the prior probability: the probability of hypothesis</dt>
+<dd>$A$ before seeing the data.</dd>
+</dl>
+</li>
+<li>
+<dl>
+<dt>$P(B)$ is the marginal likelihood: the total probability of observing</dt>
+<dd>data $B$.</dd>
+</dl>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="bayes-theorem-example">Bayes’ Theorem Example</h3>
+<p>Imagine you’re a detective trying to solve a mystery, and you have a suspect in mind. You initially have a belief, or a prior belief, about how likely it is that this suspect committed the crime. This belief is based on your previous knowledge, but it’s not certain.</p>
+<p>Now, as you investigate further, you gather new evidence, like fingerprints or eyewitness testimonies. Bayes’ theorem helps you combine your initial belief (the prior) with this new evidence to update your belief (the posterior) about the suspect’s guilt.</p>
+<p>In other words:</p>
+<ol>
+<li>You start with an initial belief (prior probability).</li>
+<li>You gather new evidence.</li>
+<li>You use Bayes’ theorem to calculate how likely your initial belief is, given the new evidence (posterior probability).</li>
+</ol>
+<h3 id="significance-in-computer-science">Significance in Computer Science</h3>
+<p>Bayes’ Theorem is foundational in various computer science domains, especially those that require inference from data.</p>
+<ul>
+<li><strong>Machine Learning</strong></li>
+<li><strong>Data Analysis</strong></li>
+<li><strong>Decision Making</strong></li>
+<li><strong>Filtering and Prediction</strong></li>
+</ul>
+<h2 id="applying-combinatorics-in-classic-probability">Applying Combinatorics in Classic Probability</h2>
+<p>In classic probability, all events have a same likelihood. Thus, we can use combinatorics to determine the total number of possible outcomes and the number of desired outcomes, which allows us to calculate the probability of an event.</p>
+<aside class="callout callout-note" aria-label="note">
+<strong>Note</strong><div><p>$P$ denotes probability, not permutation here!</p>
+</div></aside>
+<h3 id="card-games-poker-hands">Card Games (Poker Hands)</h3>
+<p><strong>Question</strong>: What is the probability of getting a royal flush in poker when dealt 5 cards from a standard 52-card deck?</p>
+<ul>
+<li><strong>Solution</strong>:
+<ul>
+<li>Combinatorial Approach: There are $C^{52}_{5}$ ways to choose 5 cards from 52, and only 4 ways to get a royal flush (one for each suit).</li>
+<li>Probability: $P(\text{Royal Flush}) = \frac{4}{C^{52}_{5}}$</li>
+</ul>
+</li>
+</ul>
+<h3 id="dice-games-yahtzee">Dice Games (Yahtzee)</h3>
+<p><strong>Question</strong>: What is the probability of rolling a Yahtzee (five dice showing the same number) in one roll?</p>
+<ul>
+<li><strong>Solution</strong>:
+<ul>
+<li>Combinatorial Approach: There are $6^5$ possible outcomes when rolling 5 dice, and 6 possible Yahtzees (one for each number 1-6).</li>
+<li>Probability: $P(\text{Yahtzee}) = \frac{6}{6^5}$</li>
+</ul>
+</li>
+</ul>
+<h3 id="lottery-drawings">Lottery Drawings</h3>
+<p><strong>Question</strong>: What is the probability of winning a lottery where you must correctly pick 6 numbers out of 49?</p>
+<ul>
+<li><strong>Solution</strong>:
+<ul>
+<li>Combinatorial Approach: There are $C^{49}_{6}$ ways to choose 6 numbers from 49.</li>
+<li>Probability: $P(\text{Winning}) = \frac{1}{C^{49}_{6}}$</li>
+</ul>
+</li>
+</ul>
+<h3 id="arranging-books-on-a-shelf">Arranging Books on a Shelf</h3>
+<p><strong>Question</strong>: If you have 10 different books and want to place 2 specific books next to each other, what’s the probability this happens at random?</p>
+<ul>
+<li><strong>Solution</strong>:
+<ul>
+<li>Combinatorial Approach: Consider the 2 specific books as one item. There are 9! ways to arrange these 9 items, and 2! ways to arrange the 2 books among themselves. There are 10! ways to arrange all books without any restrictions.</li>
+<li>Probability: $P(\text{2 Books Together}) = \frac{9! \times 2!}{10!}$</li>
+</ul>
+</li>
+</ul>
+<h3 id="drawing-colored-balls-from-a-bag">Drawing Colored Balls from a Bag</h3>
+<p><strong>Question</strong>: In a bag with 5 red, 4 blue, and 6 green balls, what’s the probability of drawing 2 red balls consecutively without replacement?</p>
+<ul>
+<li><strong>Solution</strong>:
+<ul>
+<li>Combinatorial Approach: There are $C^{5}_{2}$ ways to choose 2 red balls and $C^{15}_{2}$ ways to choose any 2 balls from 15.</li>
+<li>Probability: $P(\text{2 Red Balls}) = \frac{C^{5}_{2}}{C^{15}_{2}}$</li>
+</ul>
+</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

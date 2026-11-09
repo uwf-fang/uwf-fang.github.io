@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 1: Introduction To Parallel Programming · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/course/cop5522/parallel-env/">Development Environment For Parallel Programming</a></li><li><a href="/teaching/course/cop5522/clang/">C Language Features Used in This Course</a></li><li><a href="/teaching/cpp/ccpp-env/">C/C&#43;&#43; Development Environment</a></li><li><a href="/teaching/developer-tools/make/">GNU Make</a></li></ul><ul><li><a href="/teaching/course/cop5522/ch01/" aria-current="page">Chapter 1: Introduction To Parallel Programming</a></li><li><a href="/teaching/course/cop5522/ch02/">Chapter 2: Parallel Hardware and Software</a></li><li><a href="/teaching/course/cop5522/ch03/">Chapter 3: Shared-Memory Programming with OpenMP</a></li><li><a href="/teaching/course/cop5522/ch04/">Chapter 4: OpenMP Case Study: N-body problem</a></li><li><a href="/teaching/course/cop5522/ch05/">Chapter 5: Distributed Memory Programming with MPI</a></li><li><a href="/teaching/course/cop5522/ch06/">Chapter 6: MPI Case Study, and Pthread</a></li></ul><ul><li><a href="/teaching/course/cop5522/midterm/">Midterm Topic Outline</a></li><li><a href="/teaching/course/cop5522/final/">Final Topic Review</a></li></ul><ul><li><a href="/teaching/course/cop5522/homework/">Homework Instruction</a></li><li><a href="/teaching/course/cop5522/project/">Research Project: Parallelization of Serial Algorithms</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/course/cop5522/">COP 5522 Parallel and Distributed Programming</a> / Chapter 1: Introduction To Parallel Programming</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Chapter 1: Introduction To Parallel Programming</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#motivation">Motivation</a></li>
+    <li><a href="#terminology">Terminology</a></li>
+    <li><a href="#fundamental-strategies">Fundamental strategies</a></li>
+    <li><a href="#coordination">Coordination</a></li>
+    <li><a href="#parallel-programming-models">Parallel programming models</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="chapter-1-introduction-to-parallel-programming"></span>
+<h2 id="motivation">Motivation</h2>
+<ul>
+<li>Moore’s law
+<ul>
+<li>chip density hits the physical limit</li>
+<li>single core performance hits the physical limit</li>
+<li>multi-core system emerge</li>
+</ul>
+</li>
+<li>Hardware price drops
+<ul>
+<li>CPU</li>
+<li>Memory</li>
+<li>Storage</li>
+<li>Network devices</li>
+</ul>
+</li>
+<li>In need of parallel program
+<ul>
+<li>It is challenging
+<ul>
+<li>Hard to translate sequential program to parallel program</li>
+<li>Hard to debug parallel program</li>
+</ul>
+</li>
+<li>Catch up with the rapid development of parallel hardware</li>
+</ul>
+</li>
+</ul>
+<h2 id="terminology">Terminology</h2>
+<ul>
+<li>Concurrent
+<ul>
+<li>can be fake parallelism based on fast switching</li>
+<li>e.g. Unix Time-sharing system</li>
+</ul>
+</li>
+<li>Parallel
+<ul>
+<li>Tightly coupled</li>
+<li>e.g. High performance computing cluster</li>
+<li>e.g. Supercomputer</li>
+</ul>
+</li>
+<li>Distributed
+<ul>
+<li>Loosely coupled</li>
+<li>grid computation</li>
+<li>e.g. crypto network</li>
+</ul>
+</li>
+</ul>
+<h2 id="fundamental-strategies">Fundamental strategies</h2>
+<ul>
+<li>A.k.a parallelism patterns, type of parallelism</li>
+<li>Data parallelism
+<ul>
+<li>divide the data into chunks</li>
+<li>each chunk is processed in parallel</li>
+</ul>
+</li>
+<li>Task parallelism
+<ul>
+<li>divide the program into tasks</li>
+<li>each task is executed in parallel</li>
+</ul>
+</li>
+<li>Hybrid
+<ul>
+<li>combine data parallelism and task parallelism</li>
+</ul>
+</li>
+</ul>
+<h2 id="coordination">Coordination</h2>
+<ul>
+<li>Synchronization
+<ul>
+<li>lock</li>
+<li>barrier</li>
+</ul>
+</li>
+<li>Communication
+<ul>
+<li>message passing</li>
+<li>shared memory</li>
+</ul>
+</li>
+<li>Load balancing
+<ul>
+<li>static</li>
+<li>dynamic</li>
+</ul>
+</li>
+</ul>
+<h2 id="parallel-programming-models">Parallel programming models</h2>
+<ul>
+<li>Shared memory
+<ul>
+<li>OpenMP</li>
+<li>Pthreads</li>
+</ul>
+</li>
+<li>Message passing (distributed memory)
+<ul>
+<li>MPI</li>
+</ul>
+</li>
+<li>Data parallel
+<ul>
+<li>OpenCL (FYI)</li>
+<li>CUDA (FYI)</li>
+</ul>
+</li>
+<li>Task parallel
+<ul>
+<li>OpenMP</li>
+</ul>
+</li>
+<li>Hybrid
+<ul>
+<li>MPI + OpenMP</li>
+<li>MPI + Pthreads</li>
+</ul>
+</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

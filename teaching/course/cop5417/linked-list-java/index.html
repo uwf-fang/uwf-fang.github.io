@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Linked-list in Java · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/course/cop5417/project/">Programming Project Instruction</a></li><li><a href="/teaching/course/cop5417/java-env/">Development Environment for Java</a></li><li><a href="/teaching/course/cop5417/java-modular/">Code Organization for Modular Java Programs</a></li></ul><ul><li><a href="/teaching/course/cop5417/ch01/">Chapter 1: Get Ready With Java</a></li><li><a href="/teaching/course/cop5417/ch02/">Chapter 2: Stack, Queue and linked-list; Algorithm Analysis</a></li><li><a href="/teaching/course/cop5417/ch03/">Chapter 3: Sorting (Elemental, Merge, Quick)</a></li><li><a href="/teaching/course/cop5417/ch04/">Chapter 4: Priority Queue and Heap Sort</a></li><li><a href="/teaching/course/cop5417/ch05/">Chapter 5: Symbol Table, Binary Search tree</a></li><li><a href="/teaching/course/cop5417/ch06/">Chapter 6: Self-balancing BST; Hash table</a></li><li><a href="/teaching/course/cop5417/ch07/">Chapter 7: Graph</a></li></ul><ul><li><a href="/teaching/course/cop5417/final-review/">Final Review</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/course/cop5417/">COP 5417 Data Structures and Algorithms Essentials</a> / Linked-list in Java</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Linked-list in Java</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#motivation">Motivation</a></li>
+    <li><a href="#variations">Variations</a></li>
+    <li><a href="#components">Components</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="linked-list-in-java"></span>
+<span id="id1"></span>
+<p><img src="/teaching/_migration/graph-74e4309963f06bf8.svg" alt="Graphviz diagram"></p>
+<p><em>a minimal linked-list</em></p>
+<h2 id="overview">Overview</h2>
+<p>A linked-list is a linear data structure, in which the elements are not stored at contiguous memory locations. The elements in a linked-list are linked using references.</p>
+<h2 id="motivation">Motivation</h2>
+<ul>
+<li>Alternative to array to store a sequence of data</li>
+<li>Fast to add/remove at the beginning or in the middle of the list</li>
+</ul>
+<table>
+	<thead>
+			<tr>
+					<th>Property</th>
+					<th>Linked-list</th>
+					<th>Array</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Data structure</td>
+					<td>Linear</td>
+					<td>Linear</td>
+			</tr>
+			<tr>
+					<td>Memory usage</td>
+					<td>More</td>
+					<td>Less;Continuous</td>
+			</tr>
+			<tr>
+					<td>Random access</td>
+					<td>Slow</td>
+					<td>Fast</td>
+			</tr>
+			<tr>
+					<td>Insertion/deletion</td>
+					<td>Fast</td>
+					<td>Slow</td>
+			</tr>
+			<tr>
+					<td>Size</td>
+					<td>Dynamic</td>
+					<td>Static</td>
+			</tr>
+	</tbody>
+</table>
+<h2 id="variations">Variations</h2>
+<ul>
+<li>Singly linked-list</li>
+<li>Doubly linked-list</li>
+<li>Circular linked-list (optional)</li>
+<li>With or without dummy head node (optional)</li>
+</ul>
+<h2 id="components">Components</h2>
+<ul>
+<li>
+<p>Head/first variable</p>
+<ul>
+<li>reference to the first node in the linked-list</li>
+<li>can be null if the linked-list is empty</li>
+</ul>
+</li>
+<li>
+<p>Tail/last viable</p>
+<ul>
+<li>reference to the last node in the linked-list</li>
+<li>can be null if the linked-list is empty</li>
+<li>optional, can improve performance when the tail nodes needs to be accessed frequently</li>
+</ul>
+</li>
+<li>
+<p>Node class (nested private class)</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Java" data-lang="Java"><span style="display:flex;"><span><span style="color:#57606a">// Node class for singly linked-list</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// access modifiers for members in the nested class does not matter mostly</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">private</span><span style="color:#fff"> </span><span style="color:#cf222e">class</span> <span style="color:#1f2328">Node</span><span style="color:#fff"> </span><span style="color:#1f2328">{</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#cf222e">int</span><span style="color:#fff"> </span>data<span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>Node<span style="color:#fff"> </span>next<span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// node class for doubly linked-list</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">private</span><span style="color:#fff"> </span><span style="color:#cf222e">class</span> <span style="color:#1f2328">Node</span><span style="color:#fff"> </span><span style="color:#1f2328">{</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span><span style="color:#cf222e">int</span><span style="color:#fff"> </span>data<span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>Node<span style="color:#fff"> </span>prev<span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#fff">  </span>Node<span style="color:#fff"> </span>next<span style="color:#1f2328">;</span><span style="color:#fff">
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span><span style="color:#fff">
+</span></span></span></code></pre></div></li>
+<li>
+<p>Behaviors (methods)</p>
+<ul>
+<li>void addFirst(T data)</li>
+<li>void addLast(T data)</li>
+<li>void removeFirst()</li>
+<li>void removeLast()</li>
+<li>void insertAfter(int data, T index)</li>
+<li>void insertBefore(int data, T index)</li>
+<li>void remove(int index)</li>
+<li>T get(int index)</li>
+<li>void set(int index, T data)</li>
+<li>boolean contains(T data)</li>
+<li>int size()</li>
+<li>boolean isEmpty()</li>
+<li>String toString()</li>
+</ul>
+</li>
+<li>
+<p>Check <a href="https://visualgo.net/en/list">visualgo.net</a> for more details</p>
+</li>
+<li>
+<p>Check Code examples</p>
+</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

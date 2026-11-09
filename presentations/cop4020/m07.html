@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Programming Languages</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Programming Languages</h1>
+<div class="subtitle docutils container">
+<p><strong>Module 7: Imperative PL - Control Flow</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Statement-Level Control Structures</h2>
+</section>
+<section >
+<h3>Overview</h3>
+<ul class="simple">
+<li><p>Flow of control can be examined at several levels:</p>
+<ul>
+<li><p>Within expressions (Chapter 7)</p></li>
+<li><p>Among statements (this chapter)</p></li>
+<li><p>Among program units (Chapters 9 and 13)</p></li>
+</ul>
+</li>
+<li><p>Key topics:</p>
+<ul>
+<li><p>Selection statements</p></li>
+<li><p>Iterative statements</p></li>
+<li><p>Unconditional branching</p></li>
+<li><p>Guarded commands</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Selection Statements</h3>
+<ul class="simple">
+<li><p>Two categories:</p>
+<ul>
+<li><p>Two-way selection</p></li>
+<li><p>Multiple selection (n-way)</p></li>
+</ul>
+</li>
+<li><p>Design Issues:</p>
+<ul>
+<li><p>Form and type of control expression</p></li>
+<li><p>How to specify then/else clauses</p></li>
+<li><p>Semantics of nested selections</p></li>
+<li><p>Handling of unrepresented values in case statements</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Two-Way Selection</h3>
+<ul>
+<li><p>General form:</p>
+<pre><code data-trim data-noescape class="python">if control_expression:
+  then_clause
+else:
+  else_clause</code></pre>
+</li>
+<li><p>Common Issues:</p>
+<ul class="simple">
+<li><p>Control expression type (Boolean vs arithmetic)</p></li>
+<li><p>Clause form (single vs compound statements)</p></li>
+<li><p>Nesting and else matching</p></li>
+<li><p>Expression evaluation rules</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Multiple Selection</h3>
+<ul>
+<li><p>Purpose: Choose one of many code segments</p></li>
+<li><p>Common form (switch/case):</p>
+<pre><code data-trim data-noescape class="c">switch (expression) {
+  case const1: stmt1;
+  case const2: stmt2;
+  default: stmt3;
+}</code></pre>
+</li>
+<li><p>Design considerations:</p>
+<ul class="simple">
+<li><p>Expression type restrictions</p></li>
+<li><p>Flow-through vs break</p></li>
+<li><p>Default handling</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Iterative Statements</h3>
+<ul class="simple">
+<li><p>Categories based on:</p>
+<ul>
+<li><p>How iteration is controlled</p>
+<ul>
+<li><p>Counter-controlled</p></li>
+<li><p>Logic-controlled</p></li>
+<li><p>Data structure-based</p></li>
+</ul>
+</li>
+<li><p>Where control mechanism appears</p>
+<ul>
+<li><p>Pretest</p></li>
+<li><p>Posttest</p></li>
+<li><p>User-located</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Counter-Controlled Loops</h3>
+<ul class="simple">
+<li><p>Components:</p>
+<ul>
+<li><p>Loop variable</p></li>
+<li><p>Initial value</p></li>
+<li><p>Terminal value</p></li>
+<li><p>Step size</p></li>
+</ul>
+</li>
+<li><p>Design Issues:</p>
+<ul>
+<li><p>Type/scope of loop variable</p></li>
+<li><p>Parameter evaluation timing</p></li>
+<li><p>Modifiability during execution</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Logic-Controlled Loops</h3>
+<ul class="simple">
+<li><p>Two main forms:</p>
+<ul>
+<li><p>Pretest (while)</p></li>
+<li><p>Posttest (do-while)</p></li>
+</ul>
+</li>
+<li><p>Characteristics:</p>
+<ul>
+<li><p>More general than counter-controlled</p></li>
+<li><p>Based on Boolean expressions</p></li>
+<li><p>Can simulate counter-controlled loops</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>User-Located Control</h3>
+<ul class="simple">
+<li><p>Purpose: Allow exit point flexibility</p></li>
+<li><p>Common mechanisms:</p>
+<ul>
+<li><p>break</p></li>
+<li><p>continue</p></li>
+<li><p>labeled breaks</p></li>
+</ul>
+</li>
+<li><p>Design Issues:</p>
+<ul>
+<li><p>Conditional vs unconditional exits</p></li>
+<li><p>Single vs multiple loop exit</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Guarded Commands</h3>
+<ul>
+<li><p>Alternative control structures (Dijkstra)</p></li>
+<li><p>Selection form:</p>
+<pre><code data-trim data-noescape class="text">if guard1 -&gt; statement1
+[] guard2 -&gt; statement2
+[] ...
+fi</code></pre>
+</li>
+<li><p>Characteristics:
+* Nondeterministic selection
+* All guards evaluated
+* Error if no guard true</p></li>
+</ul>
+</section>
+<section >
+<h3>Summary</h3>
+<ul class="simple">
+<li><p>Control statements categories:</p>
+<ul>
+<li><p>Selection (if, switch)</p></li>
+<li><p>Iteration (for, while)</p></li>
+<li><p>Unconditional branching (goto)</p></li>
+</ul>
+</li>
+<li><p>Key considerations:</p>
+<ul>
+<li><p>Readability vs flexibility</p></li>
+<li><p>Safety vs power</p></li>
+<li><p>Implementation efficiency</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Practice Questions</h3>
+<ol class="arabic simple">
+<li><p>What is the difference between pretest and posttest loops?</p></li>
+<li><p>Why do most languages prefer Boolean expressions for control?</p></li>
+<li><p>When would you use a switch vs nested if statements?</p></li>
+<li><p>What are the tradeoffs of allowing flow-through in switch statements?</p></li>
+</ol>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

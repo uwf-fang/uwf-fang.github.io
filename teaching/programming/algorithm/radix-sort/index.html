@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Radix Sort · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/programming/">Algorithms and Data Structures</a> / Radix Sort</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Radix Sort</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#characteristics">Characteristics</a></li>
+    <li><a href="#algorithm-details">Algorithm Details</a></li>
+    <li><a href="#complexity">Complexity</a></li>
+    <li><a href="#visualization">Visualization</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="radix-sort"></span>
+<h2 id="overview">Overview</h2>
+<p>The concept behind Radix Sort can be traced back to traditional manual sorting methods used long before the advent of digital computers.</p>
+<p>Radix Sort is a non-comparative sorting algorithm that processes individual digits of numbers to sort them. It handles one digit at a time, starting either from the most significant digit (MSD) or the least significant digit (LSD), and groups numbers based on each digit. Typically used for sorting integers or strings, it follows a digit-by-digit approach until all the digits have been considered.</p>
+<h2 id="characteristics">Characteristics</h2>
+<ul>
+<li>Non-comparison-based sorting algorithm</li>
+<li>Only works with integers, strings whose length is finite</li>
+<li>Digit/character-based</li>
+<li>Stable</li>
+<li>Out-of-place</li>
+</ul>
+<h2 id="algorithm-details">Algorithm Details</h2>
+<ul>
+<li>There are many variations depending on what type of data to sort.</li>
+<li>Example Steps (sorting decimal integers)
+<ol>
+<li>Initialize a list of buckets, one for each digit (0-9)</li>
+<li>Group by digits (two methods):
+<ul>
+<li>LSD: Start from the least significant digit (rightmost) and group the numbers into buckets based on that digit</li>
+<li>MSD: Start from the most significant digit (leftmost) and group the numbers into buckets based on that digit</li>
+</ul>
+</li>
+<li>Collect the numbers from the buckets in order</li>
+<li>Move to the next digit and repeat the group and collect steps until all digits have been processed</li>
+</ol>
+</li>
+<li>Other details
+<ul>
+<li>Zero-padding</li>
+<li>Negative number support</li>
+<li>Bucket storage
+<ul>
+<li>Single array method
+<ul>
+<li>Create a new array of size n to store the buckets</li>
+<li>Use an array of size 10 (0-9) to store the sizes of buckets</li>
+<li>Scan the original array to calculate the sizes and the starting indices of buckets</li>
+<li>Scan the original array again to group elements into buckets and then copy them back to the original array</li>
+<li>Move to the next digit and repeat the steps above until all digits have been processed</li>
+</ul>
+</li>
+<li>Multiple arrays/vectors
+<ul>
+<li>Create 10 arrays/vectors to store the buckets</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="complexity">Complexity</h2>
+<ul>
+<li>Time: $\Theta(nk)$
+<ul>
+<li>n: number of elements</li>
+<li>k: number of digits</li>
+</ul>
+</li>
+<li>Space: $\Theta(n+k)$ (single array method)</li>
+<li>When k is a constant or much smaller than n, time complexity is $\Theta(n)$.</li>
+</ul>
+<h2 id="visualization">Visualization</h2>
+<ul>
+<li>The single array method is demonstrated.
+<ul>
+<li><a href="https://www.cs.usfca.edu/~galles/visualization/RadixSort.html">https://www.cs.usfca.edu/~galles/visualization/RadixSort.html</a></li>
+</ul>
+</li>
+<li>The more abstract version is demonstrated without implementation details
+<ul>
+<li><a href="https://visualgo.net/en/sorting">https://visualgo.net/en/sorting</a></li>
+</ul>
+</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

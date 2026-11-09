@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Memory Management in Classes · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/cpp/">C&#43;&#43; Reference</a> / Memory Management in Classes</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Memory Management in Classes</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#implicitly-declared-methods">Implicitly-declared Methods</a></li>
+    <li><a href="#dynamic-data-in-class">Dynamic data in class</a></li>
+    <li><a href="#ownership-of-dynamic-data">Ownership of Dynamic Data</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="memory-management-in-classes"></span>
+<p>When a class owns dynamic data (part of the data stored in heap memory region), special handling is required to avoid memory problems.</p>
+<h2 id="implicitly-declared-methods">Implicitly-declared Methods</h2>
+<p>Some methods can be used without explicit declarations. They are usually methods that are essential to the object including the default constructor, destructor, copy constructor, copy assignment operator overloading, etc.</p>
+<aside class="callout callout-note" aria-label="note">
+<strong>Note</strong><div><p>No dynamic instance variables in class means no special handling is required.</p>
+</div></aside>
+<ul>
+<li>Default constructor
+<ul>
+<li>Must declare and define explicitly if other constructor is present</li>
+<li>Will only trigger all class-type instance variables’ default constructors; primitive types and arrays are not initialized. <strong>Uninitialized primitive types should be avoided to prevent undefined behaviors.</strong></li>
+</ul>
+</li>
+<li>Destructor</li>
+<li>Copy constructor</li>
+<li>Copy assignment operator overloading</li>
+</ul>
+<aside class="callout callout-note" aria-label="note">
+<strong>Note</strong><div><p>Any implicitly-declared method can only handle non-dynamic instance variables. They must be explicitly declared and defined when they are triggered in objects containing dynamic data.</p>
+</div></aside>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// Operations you can perform without defining any methods
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// works with classes containing no dynamic data
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// all instance variables can be duplicated using simple assignment
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">Example</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  string name<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> age<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">double</span> grades<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">public</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  string getName<span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span><span style="color:#cf222e">return</span> name<span style="color:#1f2328">;}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">void</span> <span style="color:#6639ba">setName</span><span style="color:#1f2328">(</span>string name<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span><span style="color:#cf222e">this</span><span style="color:#0550ae">-&gt;</span>name <span style="color:#0550ae">=</span> name<span style="color:#1f2328">;}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> <span style="color:#6639ba">getAge</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span><span style="color:#cf222e">return</span> age<span style="color:#1f2328">;}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">void</span> <span style="color:#6639ba">setAge</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> age<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span><span style="color:#cf222e">this</span><span style="color:#0550ae">-&gt;</span>age <span style="color:#0550ae">=</span> age<span style="color:#1f2328">;}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">double</span> <span style="color:#6639ba">getGrade</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> index<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span><span style="color:#cf222e">return</span> grades<span style="color:#1f2328">[</span>index<span style="color:#1f2328">];}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">void</span> <span style="color:#6639ba">setGrade</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> index<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> value<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>grades<span style="color:#1f2328">[</span>index<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> value<span style="color:#1f2328">;}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">main</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// allowed without explicit declaration
+</span></span></span><span style="display:flex;"><span>  Example exp<span style="color:#1f2328">;</span>  <span style="color:#57606a">// trigger default constructor
+</span></span></span><span style="display:flex;"><span>  exp<span style="color:#1f2328">.</span>setName<span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;John&#34;</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  exp<span style="color:#1f2328">.</span>setAge<span style="color:#1f2328">(</span><span style="color:#0550ae">14</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  Example exp1<span style="color:#1f2328">(</span>exp<span style="color:#1f2328">);</span>  <span style="color:#57606a">// trigger copy constructor
+</span></span></span><span style="display:flex;"><span>  Example exp2<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  exp2 <span style="color:#0550ae">=</span> exp<span style="color:#1f2328">;</span>  <span style="color:#57606a">// trigger copy assignment operator overload
+</span></span></span><span style="display:flex;"><span>  <span style="color:#57606a">// both exp1 and exp2 will have name as &#34;John&#34; and age as 14
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><h2 id="dynamic-data-in-class">Dynamic data in class</h2>
+<ul>
+<li>
+<p>pointer-typed instance variables</p>
+<ul>
+<li>holding a single value/object or an array</li>
+<li>allocated using <code>new</code> and data stored in heap</li>
+<li>simple assignment will cause <strong>shallow copy</strong></li>
+</ul>
+</li>
+<li>
+<p>Potential memory problems</p>
+<ul>
+<li>memory leak - fail to <code>delete</code>
+<ul>
+<li>bad or no explicit destructor</li>
+<li>dynamic data passed around without correct handling</li>
+</ul>
+</li>
+<li>shallow copy - fail to copy the dynamic data in the heap memory
+<ul>
+<li>only the memory addresses (values of pointers) are copied by assignment</li>
+<li>implicitly-declared methods will cause <strong>shallow copy</strong></li>
+<li>bad or no explicit copy constructor</li>
+<li>bad or no explicit copy assignment operator overload</li>
+<li><strong>only happens when objects are copied or copy assigned</strong></li>
+<li>will consequently cause the destructor to <code>delete</code> a same memory block in heap multiple times</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Rule of three</p>
+<ul>
+<li>The <strong>big three</strong> methods needed for classes to handle dynamic data correctly</li>
+<li>Destructor
+<ul>
+<li><strong>Mandatory</strong> because it will always be triggered</li>
+<li>When an object is destroyed
+<ul>
+<li>Local object going out of scope</li>
+<li>Dynamic object being <code>delete</code> d</li>
+</ul>
+</li>
+<li>place to <code>delete</code> dynamic data</li>
+</ul>
+</li>
+<li>copy constructor
+<ul>
+<li>
+<p><strong>Optional</strong> not needed if never triggered</p>
+</li>
+<li>
+<p>Explicit triggering <code>MyArray obj2(obj1);</code></p>
+</li>
+<li>
+<p>Implicit triggering <code>MyArray obj2 = obj1;</code></p>
+</li>
+<li>
+<p>Implicit triggering in parameter passing:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// declaration
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">function</span><span style="color:#1f2328">(</span>MyArray myObj<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// call
+</span></span></span><span style="display:flex;"><span>MyArray myObj1<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>function<span style="color:#1f2328">(</span>myObj1<span style="color:#1f2328">);</span>
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Take a const reference parameter to avoid triggering itself</strong></p>
+</li>
+<li>
+<p>Perform deep copy here</p>
+</li>
+</ul>
+</li>
+<li>copy assignment operator overload
+<ul>
+<li><strong>optional</strong> not needed if never triggered</li>
+<li>explicit triggering <code>MyArray obj2; obj2 = obj1;</code></li>
+<li>implicit triggering <strong>Easy to miss</strong>
+<ul>
+<li>parameter passed by value</li>
+<li>returned value</li>
+</ul>
+</li>
+<li>must clean up old data</li>
+<li><strong>take a const reference parameter to avoid pass-by-value</strong></li>
+<li>perform deep copy here</li>
+<li><code>return *this;</code> to return a reference of its own class type <code>MyArray &amp;</code></li>
+</ul>
+</li>
+</ul>
+<aside class="callout callout-note" aria-label="note">
+<strong>Note</strong><div><p>Even in classes with dynamic data, the implementation of the big three is not always all mandatory. Only the destructor will be always triggered. Thus, <strong>the copy constructor or the copy assignment operator overloading implementations can be omitted</strong> if they are never triggered.</p>
+</div></aside>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">MyArray</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">private</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> <span style="color:#0550ae">*</span>arr<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> size<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">public</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  MyArray<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>  MyArray<span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> size<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  MyArray<span style="color:#1f2328">(</span><span style="color:#cf222e">const</span> MyArray<span style="color:#0550ae">&amp;</span> other<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  MyArray <span style="color:#0550ae">&amp;</span> <span style="color:#cf222e">operator</span><span style="color:#0550ae">=</span><span style="color:#1f2328">(</span><span style="color:#cf222e">const</span> MyArray<span style="color:#0550ae">&amp;</span> other<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">~</span>MyArray<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>MyArray<span style="color:#0550ae">::</span>MyArray<span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  size <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  arr <span style="color:#0550ae">=</span> <span style="color:#cf222e">nullptr</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>MyArray<span style="color:#0550ae">::</span>MyArray<span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> size<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">this</span><span style="color:#0550ae">-&gt;</span>size <span style="color:#0550ae">=</span> size<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  arr <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> <span style="color:#cf222e">int</span><span style="color:#1f2328">[</span>size<span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>MyArray<span style="color:#0550ae">::</span>MyArray<span style="color:#1f2328">(</span><span style="color:#cf222e">const</span> MyArray<span style="color:#0550ae">&amp;</span> other<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// you can access private members of other directly in C++!
+</span></span></span><span style="display:flex;"><span>  size <span style="color:#0550ae">=</span> other<span style="color:#1f2328">.</span>size<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  arr <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> <span style="color:#cf222e">int</span><span style="color:#1f2328">[</span>size<span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> i <span style="color:#0550ae">&lt;</span> size<span style="color:#1f2328">;</span> <span style="color:#0550ae">++</span>i<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    arr<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> other<span style="color:#1f2328">.</span>arr<span style="color:#1f2328">[</span>i<span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>MyArray<span style="color:#0550ae">&amp;</span> MyArray<span style="color:#0550ae">::</span><span style="color:#cf222e">operator</span><span style="color:#0550ae">=</span><span style="color:#1f2328">(</span><span style="color:#cf222e">const</span> MyArray<span style="color:#0550ae">&amp;</span> other<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">this</span> <span style="color:#0550ae">==</span> <span style="color:#0550ae">&amp;</span>other<span style="color:#1f2328">)</span>  <span style="color:#57606a">// self-assignment check
+</span></span></span><span style="display:flex;"><span>    <span style="color:#cf222e">return</span> <span style="color:#0550ae">*</span><span style="color:#cf222e">this</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  size <span style="color:#0550ae">=</span> other<span style="color:#1f2328">.</span>size<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// must release memory of the old dynamic data first!
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">delete</span> <span style="color:#1f2328">[]</span> arr<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  arr <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> <span style="color:#cf222e">int</span><span style="color:#1f2328">[</span>size<span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i<span style="color:#0550ae">=</span><span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> i<span style="color:#0550ae">&lt;</span>size<span style="color:#1f2328">;</span> <span style="color:#0550ae">++</span>i<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    arr<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> other<span style="color:#1f2328">.</span>arr<span style="color:#1f2328">[</span>i<span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#0550ae">*</span><span style="color:#cf222e">this</span><span style="color:#1f2328">;</span>  <span style="color:#57606a">// IMPORTANT! return the current object by reference
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>MyArray<span style="color:#0550ae">::~</span>MyArray<span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">delete</span> <span style="color:#1f2328">[]</span> arr<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><ul>
+<li>Rule of five (optional content)
+<ul>
+<li>Big three plus two more methods
+<ul>
+<li>Move constructor</li>
+<li>Move assignment operator overloading</li>
+</ul>
+</li>
+<li>Not mandatory but will improve efficiency</li>
+<li>New syntax since c++ 11 using <code>&amp;&amp;</code> to refer to a rvalue reference</li>
+<li>Mutable(non-const) parameter to allow modification</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// the parameter is no longer &#39;const&#39; because you will modify it
+</span></span></span><span style="display:flex;"><span>MyArray<span style="color:#0550ae">::</span>MyArray<span style="color:#1f2328">(</span>MyArray <span style="color:#0550ae">&amp;&amp;</span> other<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  size <span style="color:#0550ae">=</span> other<span style="color:#1f2328">.</span>size<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  arr <span style="color:#0550ae">=</span> other<span style="color:#1f2328">.</span>arr<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// must make the other object ready for destruction
+</span></span></span><span style="display:flex;"><span>  <span style="color:#57606a">// without this step the destructor may try to delete the moved data
+</span></span></span><span style="display:flex;"><span>  other<span style="color:#1f2328">.</span>arr <span style="color:#0550ae">=</span> null<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  other<span style="color:#1f2328">.</span>size <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span>  <span style="color:#57606a">// this is not necessary unless your destructor rely on the size
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// the parameter is no longer &#39;const&#39; because you will modify it
+</span></span></span><span style="display:flex;"><span>MyArray <span style="color:#0550ae">&amp;</span> MyArray<span style="color:#0550ae">::</span><span style="color:#cf222e">operator</span><span style="color:#0550ae">=</span><span style="color:#1f2328">(</span>MyArray <span style="color:#0550ae">&amp;&amp;</span> other<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">this</span> <span style="color:#0550ae">==</span> <span style="color:#0550ae">&amp;</span>other<span style="color:#1f2328">)</span>  <span style="color:#57606a">// self-assignment check
+</span></span></span><span style="display:flex;"><span>    <span style="color:#cf222e">return</span> <span style="color:#0550ae">*</span><span style="color:#cf222e">this</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// Swap both the size and arr with the other object
+</span></span></span><span style="display:flex;"><span>  <span style="color:#57606a">// the destructor of the other object will destroy the old data
+</span></span></span><span style="display:flex;"><span>  swap<span style="color:#1f2328">(</span>size<span style="color:#1f2328">,</span> other<span style="color:#1f2328">.</span>size<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  swap<span style="color:#1f2328">(</span>arr<span style="color:#1f2328">,</span> other<span style="color:#1f2328">.</span>arr<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#0550ae">*</span><span style="color:#cf222e">this</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><h2 id="ownership-of-dynamic-data">Ownership of Dynamic Data</h2>
+<aside class="callout callout-note" aria-label="note">
+<strong>Note</strong><div><p>This section is for <strong>extended reading</strong>. It is beneficial to projects and self-improving but not essential in exams.</p>
+</div></aside>
+<p>A dynamic data can be created anywhere and passed around. As the ownership changed. The last owner should take the responsibility to release the memory.</p>
+<p>#. Passing dynamic data created outside as a parameter. The recipient owns the data after.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">DataType</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// ...
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">MyArray</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">private</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  DataType <span style="color:#0550ae">*</span>myDynamicData<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">public</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  MyArray<span style="color:#1f2328">(</span>DataType <span style="color:#0550ae">*</span>initialData <span style="color:#0550ae">=</span> <span style="color:#cf222e">nullptr</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    myDynamicData <span style="color:#0550ae">=</span> initialData<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">~</span>MyArray<span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a">// delete here although it is not new&#39;ed in the class
+</span></span></span><span style="display:flex;"><span>    <span style="color:#cf222e">delete</span> myDynamicData<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">main</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  DataType <span style="color:#0550ae">*</span>initData <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> DataType<span style="color:#1f2328">();</span>  <span style="color:#57606a">// main function owns it
+</span></span></span><span style="display:flex;"><span>  MyArray obj1<span style="color:#1f2328">(</span>initData<span style="color:#1f2328">);</span>  <span style="color:#57606a">// obj1 owns it now
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><p>#. You may also choose to remove the destructor and let the main function to delete if you feel it make more sense that the recipients are only users of the dynamic data and the main function is still the owner. Sometimes the dynamic data is shared in this case.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">Configuration</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// ...
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">MyArray</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">private</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  Configuration <span style="color:#0550ae">*</span>config<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">public</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  MyArray<span style="color:#1f2328">(</span>Configuration <span style="color:#0550ae">*</span>config <span style="color:#0550ae">=</span> <span style="color:#cf222e">nullptr</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">this</span><span style="color:#0550ae">-&gt;</span>config <span style="color:#0550ae">=</span> config<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">main</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  Configuration <span style="color:#0550ae">*</span>config1 <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> Configuration<span style="color:#1f2328">();</span>  <span style="color:#57606a">// main function owns it
+</span></span></span><span style="display:flex;"><span>  MyArray obj1<span style="color:#1f2328">(</span>config1<span style="color:#1f2328">);</span>  <span style="color:#57606a">// obj1 uses it
+</span></span></span><span style="display:flex;"><span>  MyArray obj2<span style="color:#1f2328">(</span>config1<span style="color:#1f2328">);</span>  <span style="color:#57606a">// obj2 uses it
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">delete</span> config1<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><p>The dynamic data can also be passed as a returned value.</p>
+<p>Example: The object always owns the data. The recipient just used it.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">MyArray</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">private</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> <span style="color:#0550ae">*</span> array<span style="color:#1f2328">;</span>  <span style="color:#57606a">// always owned by the object
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> size<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">public</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// ... other methods
+</span></span></span><span style="display:flex;"><span>  <span style="color:#57606a">// array is new&#39;ed in some methods
+</span></span></span><span style="display:flex;"><span>  <span style="color:#0550ae">~</span>MyArray<span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span><span style="color:#cf222e">delete</span> <span style="color:#1f2328">[]</span> array<span style="color:#1f2328">;}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> <span style="color:#0550ae">*</span><span style="color:#6639ba">getArray</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span><span style="color:#cf222e">return</span> array<span style="color:#1f2328">;}</span>  <span style="color:#57606a">// expose to outside
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> <span style="color:#6639ba">getSize</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span><span style="color:#cf222e">return</span> size<span style="color:#1f2328">;}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">main</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// declare and initialize data in MyArray obj1;
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> size <span style="color:#0550ae">=</span> obj1<span style="color:#1f2328">.</span>getSize<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> <span style="color:#0550ae">*</span>arr <span style="color:#0550ae">=</span> obj1<span style="color:#1f2328">.</span>getArray<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> i <span style="color:#0550ae">&lt;</span> size<span style="color:#1f2328">;</span> <span style="color:#0550ae">++</span>i<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    cout <span style="color:#0550ae">&lt;&lt;</span> arr<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34; &#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><p>Example: The ownership is not clear. You can either let the object or the main function to delete the dynamic data. Both are reasonable.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">MyArray</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">private</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> <span style="color:#0550ae">*</span> array<span style="color:#1f2328">;</span>  <span style="color:#57606a">// always owned by the object
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> size<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">public</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// ... other methods
+</span></span></span><span style="display:flex;"><span>  <span style="color:#57606a">// array is new&#39;ed in some methods
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> <span style="color:#0550ae">*</span>getPositiveValues<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> <span style="color:#6639ba">getPositiveCount</span><span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#0550ae">*</span> MyArray<span style="color:#0550ae">::</span>getPositiveValues<span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> posCount <span style="color:#0550ae">=</span> getPositiveCount<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> <span style="color:#0550ae">*</span>arr <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> <span style="color:#cf222e">int</span><span style="color:#1f2328">[</span>posCount<span style="color:#1f2328">];</span>  <span style="color:#57606a">// dynamic data, not meant to be owned
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> j <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> i <span style="color:#0550ae">&lt;</span> size<span style="color:#1f2328">;</span> <span style="color:#0550ae">++</span>i<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span>array<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">&gt;</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>      arr<span style="color:#1f2328">[</span>j<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> array<span style="color:#1f2328">[</span>i<span style="color:#1f2328">];</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#0550ae">++</span>j<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> arr<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> MyArray<span style="color:#0550ae">::</span>getPositiveCount<span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> count <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> i <span style="color:#0550ae">&lt;</span> size<span style="color:#1f2328">;</span> <span style="color:#0550ae">++</span>i<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span>array<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">&gt;</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">++</span>count<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> count<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">main</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// declare and initialize data in MyArray obj1;
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> <span style="color:#0550ae">*</span>positiveArray <span style="color:#0550ae">=</span> obj1<span style="color:#1f2328">.</span>getPositiveValues<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> size <span style="color:#0550ae">=</span> obj1<span style="color:#1f2328">.</span>getPositiveCount<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">for</span> <span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span> i <span style="color:#0550ae">&lt;</span> size<span style="color:#1f2328">;</span> <span style="color:#0550ae">++</span>i<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    cout <span style="color:#0550ae">&lt;&lt;</span> positiveArray<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34; &#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">delete</span> <span style="color:#1f2328">[]</span> positiveArray<span style="color:#1f2328">;</span>  <span style="color:#57606a">// positiveArray owned by the main function
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div></div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

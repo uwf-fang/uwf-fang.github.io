@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Data Structure and Algorithm Design II</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Data Structure and Algorithm Design II</h1>
+<div class="subtitle docutils container">
+<p><strong>Chapter 7</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Sections</h2>
+<ul class="simple">
+<li><p>Solving Recurrences</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h1>Solving Recurrence</h1>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Overview</p></li>
+<li><p>Recurrence Relations</p></li>
+<li><p>Solving Recurrence Relations</p>
+<ul>
+<li><p>Substitution Method</p></li>
+<li><p>Recursion Tree Method</p></li>
+<li><p>Master Method</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<ul class="simple">
+<li><p>Solving recurrence is a process of finding a closed form expression for a
+given recurrence relation that is usually employed to describe the time
+function of a recursive algorithm.</p></li>
+<li><p>Note: <strong>It is usually simplified to find the big theta rather than the exact
+close form expression.</strong></p></li>
+<li><p>Algorithms that are recursive in nature are usually described by recurrence
+relations.</p>
+<ul>
+<li><p>Tower of Hanoi</p></li>
+<li><p>Merge Sort</p></li>
+<li><p>Fibonacci Numbers</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Recurrence Relations</h2>
+<ul class="simple">
+<li><p>A recurrence relation is an equation that recursively defines a sequence,
+where each term is a function of one or more of the preceding terms.</p>
+<ul>
+<li><p>E.g. <span class="math notranslate nohighlight">\(T(n) = 2T(n/2) + \Theta(n)\)</span> for merge sort</p></li>
+</ul>
+</li>
+<li><p>The goal of “solving a recurrence” is to obtain a closed form expression for
+<span class="math notranslate nohighlight">\(T(n)\)</span> that does not involve any recurrence.</p>
+<ul>
+<li><p>E.g. <span class="math notranslate nohighlight">\(T(n) = \Theta(n \log n)\)</span> for merge sort</p></li>
+</ul>
+</li>
+<li><p>This is a very challenging math problem but in computer science we are only
+interested in some certain patterns of recurrence relations.</p></li>
+<li><p>Depending on the algorithms there are some common recurrence relations
+employed in the analysis of algorithms.</p></li>
+</ul>
+</section>
+<section >
+<h3>Common Forms of Recurrence Relations</h3>
+<ul class="simple">
+<li><p>Divide and conquer Recurrence</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(T(n) = aT(n/b) + f(n)\)</span></p></li>
+<li><p>Merge sort</p></li>
+<li><p>Binary search</p></li>
+<li><p>Maximum subarray</p></li>
+<li><p>Strassen’s matrix multiplication</p></li>
+</ul>
+</li>
+<li><p>First order linear Recurrence</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(T(n) = aT(n-1) + f(n)\)</span></p></li>
+<li><p>Linear search (recursive version)</p></li>
+<li><p>Insertion sort/Selection sort (recursive version)</p></li>
+<li><p>Euclidean’s GCD algorithm</p></li>
+</ul>
+</li>
+<li><p>Second order linear Recurrence</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(T(n) = aT(n-1) + bT(n-2) + f(n)\)</span></p></li>
+<li><p>Fibonacci numbers (naive recursive version)</p></li>
+</ul>
+</li>
+<li><p>Note: the <span class="math notranslate nohighlight">\(f(n)\)</span> term is usually simplified to big Theta notation.</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Solving Recurrence Relations</h2>
+<ul class="simple">
+<li><p>Finding a closed form expression for a given recurrence relation is a
+challenging math problem.</p></li>
+<li><p>In computer science we are only interested in some certain patterns.</p></li>
+<li><p>Three methods:</p>
+<ul>
+<li><p>Substitution method</p></li>
+<li><p>Recursion tree method</p></li>
+<li><p>Master method</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Substitution Method</h2>
+<ul class="simple">
+<li><p>Two steps</p>
+<ul>
+<li><p>Guess the close form of the solution</p>
+<ul>
+<li><p>Guess a general form of the solution</p></li>
+<li><p>Use substitution to refine the formula (optional)</p></li>
+</ul>
+</li>
+<li><p>Use mathematical induction to prove the guess is correct</p></li>
+</ul>
+</li>
+<li><p>Note: <strong>You do not need to understand the details of the math. Focus on the
+overall idea and the process.</strong></p></li>
+</ul>
+</section>
+<section >
+<h3>Example: Guessing the Close Form</h3>
+<ul>
+<li><p>Start from the recurrence relation: <span class="math notranslate nohighlight">\(T(n) = T(n-1) + 3n\)</span> and
+<span class="math notranslate nohighlight">\(T(1)=1\)</span>.</p></li>
+<li><p>Guess the solution is <span class="math notranslate nohighlight">\(T(n) = An^2 + Bn + C\)</span> where <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(B\)</span>, <span class="math notranslate nohighlight">\(C\)</span> are
+constants.</p></li>
+<li><p>Use substitution to find <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(B\)</span>, <span class="math notranslate nohighlight">\(C\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+T(n) &amp;= T(n-1) + 3n \\
+An^2 + Bn + C &amp;= A(n-1)^2 + B(n-1) + C + 3n \\
+An^2 + Bn + C &amp;= An^2 - 2An + A + Bn - B + C + 3n \\
+An^2 + Bn + C &amp;= An^2 + (-2A + B + 3)n + (A - B + C) \\
+\end{align*}\end{split}\]</div>
+<p>So, we have the following equations:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+A &amp;= A \\
+B &amp;= -2A + B + 3 \text{} \\
+C &amp;= A - B + C \\
+f(1) &amp;= A + B + C = 1 \\
+\end{align*}\end{split}\]</div>
+<p>Solve them to get <span class="math notranslate nohighlight">\(A = 1.5\)</span>, <span class="math notranslate nohighlight">\(B = 1.5\)</span>, <span class="math notranslate nohighlight">\(C = -2\)</span>.</p>
+<p>The final formula is <span class="math notranslate nohighlight">\(T(n) = 1.5n^2 + 1.5n - 2\)</span>.</p>
+</li>
+</ul>
+</section>
+<section >
+<h3>Example: Proof by Mathematical Induction</h3>
+<ul>
+<li><p>For the recurrence relation: <span class="math notranslate nohighlight">\(T(n) = T(n-1) + 3n\)</span> and <span class="math notranslate nohighlight">\(f(1)=1\)</span>.</p></li>
+<li><p>To prove the formula <span class="math notranslate nohighlight">\(T(n) = 1.5n^2 + 1.5n - 2\)</span> is correct for all
+<span class="math notranslate nohighlight">\(n\)</span>.</p>
+<ul>
+<li><p>Base case: <span class="math notranslate nohighlight">\(T(1) = 1.5 + 1.5 - 2 = 1\)</span>. Correct!</p></li>
+<li><p>If the formula is correct for <span class="math notranslate nohighlight">\(n-1\)</span>, then</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+T(n) &amp;= T(n-1) + 3n \\
+&amp;= 1.5(n-1)^2 + 1.5(n-1) - 2 + 3n \\
+&amp;= 1.5n^2 - 3n + 1.5 + 1.5n - 1.5 - 2 + 3n \\
+&amp;= 1.5n^2 + 1.5n - 2 \\
+\end{align*}\end{split}\]</div>
+<p>So, the formula is correct for <span class="math notranslate nohighlight">\(n\)</span>.</p>
+</li>
+<li><p>Done!</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Recursion Tree Method</h2>
+<ul class="simple">
+<li><p>A graphical visualization to assist the guessing of the closed form.</p></li>
+<li><p>Steps</p>
+<ul>
+<li><p>Draw the recursion tree</p></li>
+<li><p>Sum up the cost of each level</p></li>
+<li><p>Sum up the cost of all levels</p></li>
+</ul>
+</li>
+<li><p>E.g. <span class="math notranslate nohighlight">\(T(n) = 3T(n/4) + \Theta(n^2)\)</span></p></li>
+</ul>
+<img alt="../_images/recursion-tree2.png" class="align-center" src="../_images/recursion-tree2.png" />
+<div class="footnote docutils container">
+<p>Credit: Introduction to Algorithms, 4th Ed., T. Cormen et al.</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Master Method</h2>
+<ul>
+<li><p>A general method to solve recurrences of the form:</p>
+<div class="math notranslate nohighlight">
+\[T(n) = aT(n/b) + f(n)\]</div>
+<p>where <span class="math notranslate nohighlight">\(a \geq 1\)</span>, <span class="math notranslate nohighlight">\(b &gt; 1\)</span> and <span class="math notranslate nohighlight">\(f(n)\)</span> is an asymptotically positive function.</p>
+</li>
+<li><p><span class="math notranslate nohighlight">\(n\)</span> is the problem size.</p></li>
+<li><p><span class="math notranslate nohighlight">\(a\)</span> is the number of recursive calls.</p></li>
+<li><p><span class="math notranslate nohighlight">\(n/b\)</span> is the size of each subproblems where <span class="math notranslate nohighlight">\(b\)</span> is the size
+reduction factor.</p></li>
+<li><p><span class="math notranslate nohighlight">\(f(n)\)</span> is the cost of dividing the problem and combining the solutions.</p></li>
+<li><p>This is the well-known <strong>divide-and-conquer</strong> form of recurrence.</p></li>
+<li><p>Based on <strong>Master Theorem</strong>.</p></li>
+</ul>
+</section>
+<section >
+<h3>Three Cases</h3>
+<ul class="simple">
+<li><p>Case 1: If <span class="math notranslate nohighlight">\(f(n) = O(n^c)\)</span> where <span class="math notranslate nohighlight">\(c &lt; \log_b a\)</span>, then:
+<span class="math notranslate nohighlight">\(T(n) = \Theta(n^{\log_b a})\)</span></p></li>
+<li><p>Case 2: If <span class="math notranslate nohighlight">\(f(n) = \Theta(n^{\log_b a} \cdot \log^k n)\)</span> for a <span class="math notranslate nohighlight">\(k
+\geq 0\)</span>, then: <span class="math notranslate nohighlight">\(T(n) = \Theta(n^{\log_b a} \cdot \log^{k+1} n)\)</span></p></li>
+<li><p>Case 3: If <span class="math notranslate nohighlight">\(f(n) = \Omega(n^c)\)</span> where <span class="math notranslate nohighlight">\(c &gt; \log_b a\)</span>, and if
+<span class="math notranslate nohighlight">\(a f\left(\frac{n}{b}\right) \leq k f(n)\)</span> for some <span class="math notranslate nohighlight">\(k &lt; 1\)</span> and
+sufficiently large <span class="math notranslate nohighlight">\(n\)</span>, then: <span class="math notranslate nohighlight">\(T(n) = \Theta(f(n))\)</span></p></li>
+<li><p>Intuitions: The amount of work done in each recursive call is smaller, same
+level, or larger than the cost of recursive calls.</p></li>
+</ul>
+</section>
+<section >
+<h3>Examples</h3>
+<p>For the recurrence relation of the Merge Sort algorithm:</p>
+<p><span class="math notranslate nohighlight">\(T(n) = 2T\left(\frac{n}{2}\right) + \Theta(n)\)</span></p>
+<p>We have:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(a = 2\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(b = 2\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(f(n) = \Theta(n) = \Theta(n^1 \times \log ^0 n)\)</span></p></li>
+</ul>
+<p>Using the Master Method:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\log_b a = \log_2 2 = 1\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(f(n) = \Theta(n^1 \times \log ^0 n)\)</span></p></li>
+</ul>
+<p>This falls under Case 2 with <span class="math notranslate nohighlight">\(k = 0\)</span>. Thus, the solution is: <span class="math notranslate nohighlight">\(T(n)
+= \Theta(n \log n)\)</span></p>
+</section>
+<section >
+<h3>Exercises</h3>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+1. &amp; \quad T(n) = 3T\left(\frac{n}{4}\right) + n \\
+2. &amp; \quad T(n) = 2T\left(\frac{n}{2}\right) + n^2 \\
+3. &amp; \quad T(n) = 4T\left(\frac{n}{2}\right) + n^2 \\
+4. &amp; \quad T(n) = 4T\left(\frac{n}{3}\right) + n\sqrt{n} \\
+5. &amp; \quad T(n) = 3T\left(\frac{n}{2}\right) + n \\
+6. &amp; \quad T(n) = 2T\left(\frac{n}{4}\right) + \sqrt{n} \log n \\
+\end{align*}\end{split}\]</div>
+</section>
+<section >
+<h3>Solutions</h3>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+1. &amp; \log_b a  = \log_4 3 &lt; 1; f(n) = n = n^1; \\
+              &amp; \text{case 3} \quad T(n) = \Theta(n)\\
+2. &amp; \log_b a  = \log_2 2 = 1; f(n) = n^2; \\
+              &amp; \text{case 3} \quad T(n) = \Theta(n^2)\\
+3. &amp; \log_b a  = \log_2 4 = 2; f(n) = n^2 = n^2 \log ^0 n; \\
+              &amp; \text{case 2 (k = 0)} \quad T(n) = \Theta(n^2 \log n)\\
+4. &amp; \log_b a  = \log_3 4 \approx 1.28; f(n) = n^{1.5}; \\
+              &amp; \text{case 3} \quad T(n) = \Theta(n \sqrt{n}\\
+5. &amp; \log_b a  = \log_2 3 \approx 1.58; f(n) = n^1; \\
+              &amp; \text{case 1} \quad T(n) = \Theta(n^{\log_2 3})\\
+6. &amp; \log_b a  = \log_4 2 = 0.5; f(n) = n^{0.5} \log n; \\
+              &amp; \text{case 2 (k = 1)} \quad T(n) = \Theta(\sqrt{n} \log^2 n)\\
+\end{align*}\end{split}\]</div>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

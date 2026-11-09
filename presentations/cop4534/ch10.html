@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Data Structure and Algorithm Design II</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Data Structure and Algorithm Design II</h1>
+<div class="subtitle docutils container">
+<p><strong>Chapter 10</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Sections</h2>
+<ul class="simple">
+<li><p>Dynamic Programming</p></li>
+<li><p>Max Sum Subarray Problem</p></li>
+<li><p>Chain Matrix Multiplication Problem</p></li>
+<li><p>Longest Common Subsequence Problem</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h1>Dynamic Programming</h1>
+<div class="subtitle docutils container">
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<ul class="simple">
+<li><p>An algorithmic paradigm</p></li>
+<li><p>Break into overlapping subproblems</p></li>
+<li><p>Only calculate once to avoid repeated work</p></li>
+<li><p>Store the result in a table for future use</p></li>
+</ul>
+</section>
+<section >
+<h3>Characteristics</h3>
+<ul class="simple">
+<li><p>What makes a problem suitable for dynamic programming?</p>
+<ul>
+<li><p>Optimal substructure</p></li>
+<li><p>Overlapping subproblems</p></li>
+</ul>
+</li>
+<li><p>Implementation techniques:</p>
+<ul>
+<li><p>Memoization/tabulation</p></li>
+<li><p>Recursive formulation</p></li>
+<li><p>Either top-down or bottom-up</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Problems Solved by DP</h3>
+<ul class="simple">
+<li><p>Enumeration, decision or optimization types of problems</p></li>
+<li><p><strong>Fibonacci numbers</strong></p></li>
+<li><p><strong>Max subarray sum (Kadane’s algorithm)</strong></p></li>
+<li><p><strong>Matrix chain multiplication</strong></p></li>
+<li><p><strong>Longest common subsequence</strong></p></li>
+<li><p>Knapsack problem</p></li>
+<li><p>Integer partition</p></li>
+<li><p>Coin change</p></li>
+<li><p>Rod cutting</p></li>
+</ul>
+</section>
+<section >
+<h3>Benefit and Challenges</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Benefits</strong></p>
+<ul class="simple">
+<li><p>Optimal solution</p></li>
+<li><p>Efficiency</p></li>
+<li><p>Versatility</p></li>
+<li><p>Clarity</p></li>
+</ul>
+</div>
+<div class="half docutils container">
+<p><strong>Challenges</strong></p>
+<ul class="simple">
+<li><p>Memory usage</p></li>
+<li><p>Identifying subproblems</p></li>
+<li><p>Algorithm design</p></li>
+<li><p>Time complexity</p></li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Complexity Analysis</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Time Complexity</strong></p>
+<ul class="simple">
+<li><p>Number of distinct subproblems</p></li>
+<li><p>Work per subproblem</p></li>
+<li><p>Memoization/tabulation overhead</p></li>
+<li><p>Recursive call overhead (top-down approach)</p></li>
+</ul>
+</div>
+<div class="half docutils container">
+<p><strong>Space Complexity</strong></p>
+<ul class="simple">
+<li><p>Memorization table size</p></li>
+<li><p>Call stack space (top-down approach)</p></li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Max Sum Subarray</h2>
+<ul class="simple">
+<li><p>Given an array of integers, find the contiguous subarray with the largest
+sum. The array can contain both negative and positive values.</p></li>
+<li><p>For array <span class="math notranslate nohighlight">\([-2, -3, 4, -1, -2, 1, 5, -3]\)</span>, the contiguous subarray
+with the largest sum is <span class="math notranslate nohighlight">\([4, -1, -2, 1, 5]\)</span> with sum 7.</p></li>
+<li><p>Many real-life applications</p>
+<ul>
+<li><p>Stock market</p></li>
+<li><p>Image processing</p></li>
+<li><p>Bioinformatics</p></li>
+</ul>
+</li>
+<li><p>Problem type: Optimization</p></li>
+<li><p>Need exact solution</p></li>
+<li><p>Satisfies</p>
+<ul>
+<li><p>Optimal substructure</p></li>
+<li><p>Overlapping subproblems</p></li>
+</ul>
+</li>
+<li><p>Solutions</p>
+<ul>
+<li><p>Brute-force <span class="math notranslate nohighlight">\(\Theta(n^2)\)</span></p></li>
+<li><p>Divide and conquer <span class="math notranslate nohighlight">\(\Theta(n \log n)\)</span></p></li>
+<li><p>Dynamic Programming (Kadane’s algorithm) <span class="math notranslate nohighlight">\(\Theta(n)\)</span></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Brute-force Solutions</h3>
+<ul class="simple">
+<li><p>Consider all possible subarrays and compute their sums</p></li>
+</ul>
+<pre data-id="brute-force-solutions"><code data-trim data-noescape class="default">function brute_force_max_subarray(arr):
+  max_sum = -infinity
+
+  for start from 0 to length(arr) - 1:
+    sum_of_subarray = 0
+
+    for end from start to length(arr) - 1:
+      sum_of_subarray = sum_of_subarray + arr[end]
+
+      if sum_of_subarray &gt; max_sum:
+        max_sum = sum_of_subarray
+
+  return max_sum</code></pre>
+</section>
+<section >
+<h3>Divide and Conquer Solution</h3>
+<ul class="simple">
+<li><p>Divide the array into two halves</p></li>
+<li><p>Recursively find the maximum subarray sum in:</p>
+<ul>
+<li><p>Left half</p></li>
+<li><p>Right half</p></li>
+<li><p>Crossing the midpoint</p></li>
+</ul>
+</li>
+</ul>
+<pre data-id="divide-and-conquer-solution"><code data-trim data-noescape class="default">function max_subarray(arr, low, high):
+  if low == high:
+    return arr[low]
+
+  mid = (low + high) / 2
+  return max(max_subarray(arr, low, mid),
+            max_subarray(arr, mid + 1, high),
+            max_crossing_sum(arr, low, mid, high))</code></pre>
+</section>
+<section >
+<h3>Divide and Conquer Solution (cont.)</h3>
+<pre data-id="divide-and-conquer-solution-cont"><code data-trim data-noescape class="default">function max_crossing_sum(arr, low, mid, high):
+  left_sum = -infinity
+  sum = 0
+  for i from mid downto low:
+    sum = sum + arr[i]
+    if sum &gt; left_sum:
+        left_sum = sum
+
+  right_sum = -infinity
+  sum = 0
+  for j from mid + 1 to high:
+    sum = sum + arr[j]
+    if sum &gt; right_sum:
+        right_sum = sum
+
+  return left_sum + right_sum</code></pre>
+</section>
+<section >
+<h3>Dynamic Programming Solution</h3>
+<ul class="simple">
+<li><p>Kadane’s algorithm</p></li>
+<li><p>Idea: Compute the maximum subarray sum ending at each position</p></li>
+<li><p>At each end position, the maximum subarray sum is either:</p>
+<ul>
+<li><p>The maximum subarray sum ending at the previous position plus the current
+element</p></li>
+<li><p>The current element</p></li>
+</ul>
+</li>
+<li><p>Scan the array from left to right only once</p></li>
+</ul>
+</section>
+<section >
+<h3>Dynamic Programming Solution (cont.)</h3>
+<p>Consider the array <span class="math notranslate nohighlight">\([-2, 1, -3, 4, -1, 2, 1, -5, 4]\)</span>:</p>
+<ul class="simple">
+<li><p>Start with <span class="math notranslate nohighlight">\(current\_max = arr[0] = -2\)</span> and <span class="math notranslate nohighlight">\(global\_max = -2\)</span>.</p></li>
+<li><p>At the second element (1), <span class="math notranslate nohighlight">\(current\_max\)</span> is <span class="math notranslate nohighlight">\(max(-2+1, 1)\)</span>,
+which is 1. <span class="math notranslate nohighlight">\(global\_max\)</span> is now <span class="math notranslate nohighlight">\(max(-2, 1)\)</span>, which is 1.</p></li>
+<li><p>This process continues, updating <span class="math notranslate nohighlight">\(current\_max\)</span> and <span class="math notranslate nohighlight">\(global\_max\)</span>
+with each new element.</p></li>
+<li><p>By the end of the array, <span class="math notranslate nohighlight">\(global\_max\)</span> contains the maximum sum, which
+in this case is 6 from the subarray <span class="math notranslate nohighlight">\([4, -1, 2, 1]\)</span>.</p></li>
+</ul>
+</section>
+<section >
+<h3>Dynamic Programming Solution (cont.)</h3>
+<pre data-id="id1"><code data-trim data-noescape class="default">function kadane_algorithm(arr):
+  current_max = global_max = arr[0]
+
+  for index from 1 to length(arr) - 1:
+    current_max = max(arr[index], current_max + arr[index])
+
+    global_max = max(global_max, current_max)
+
+  return global_max</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Chain Matrix Multiplication Problem</h2>
+</section>
+<section >
+<h3>Overview</h3>
+<ul class="simple">
+<li><p>Given a sequence of matrices, find the most efficient way to multiply these
+matrices together.</p></li>
+<li><p>The costs are different depending on how you associate the matrices in the
+multiplication.</p></li>
+<li><p>Problem type: Optimization</p></li>
+<li><p>Need exact solution</p></li>
+<li><p>Satisfies</p>
+<ul>
+<li><p>Optimal substructure</p></li>
+<li><p>Overlapping subproblems</p></li>
+</ul>
+</li>
+<li><p>Solutions</p>
+<ul>
+<li><p>Brute force</p></li>
+<li><p>Dynamic programming</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Example</h3>
+<ul class="simple">
+<li><p>Consider the multiplication of four matrices A, B, C, and D with dimensions
+<span class="math notranslate nohighlight">\(10 \times 30\)</span>, <span class="math notranslate nohighlight">\(30 \times 5\)</span>, <span class="math notranslate nohighlight">\(5 \times 60\)</span>, and <span class="math notranslate nohighlight">\(60
+\times 10\)</span>, respectively. We can fully parenthesize the product in five
+distinct ways:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(((AB)C)D\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\((A(BC))D\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\((AB)(CD)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(A((BC)D)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(A(B(CD))\)</span></p></li>
+</ol>
+</li>
+<li><p>The cost of 3 is the best:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\((10 \times 30 \times 5) + (10 \times 5 \times 60) + (10 \times 60
+\times 10) = 1500 + 3000 + 6000 = 10500\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\((30 \times 5 \times 60) + (10 \times 30 \times 60) + (10 \times 60
+\times 10) = 9000 + 18000 + 6000 = 33000\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\((10 \times 30 \times 5) + (5 \times 60 \times 10) + (10 \times 5
+\times 10) = 1500 + 3000 + 500 = 5000\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\((30 \times 5 \times 60) + (30 \times 60 \times 10) + (10 \times 30
+\times 10) = 9000 + 18000 + 3000 = 30000\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\((5 \times 60 \times 10) + (30 \times 5 \times 10) + (10 \times 30
+\times 10) = 3000 + 1500 + 3000 = 7500\)</span></p></li>
+</ol>
+</li>
+</ul>
+</section>
+<section >
+<h3>Brute Force Solution</h3>
+<ul class="simple">
+<li><p>The combinatorics: The way to parenthesize a product of <span class="math notranslate nohighlight">\(n\)</span> matrices is
+<span class="math notranslate nohighlight">\(\Theta(\frac{4^n}{n^{3/2}\sqrt{\pi}})\)</span>. A.k.a. the Catalan number.</p></li>
+<li><p>The complexity is close to exponent complexity.</p></li>
+<li><p>The algorithm is not practical.</p></li>
+</ul>
+</section>
+<section >
+<h3>Dynamic Programming Solution</h3>
+<ul class="simple">
+<li><p>Bottom-up approach</p>
+<ul>
+<li><p>Let the length of chain <span class="math notranslate nohighlight">\(L\)</span> range from 2 to <span class="math notranslate nohighlight">\(n\)</span>.</p></li>
+<li><p>Enumerate all subchains of length <span class="math notranslate nohighlight">\(L\)</span> in the sequence.</p></li>
+<li><p>Enumerate all possible ways of parenthesizing each subchain by splitting
+the subchain into two subchains.</p></li>
+<li><p>Time complexity: <span class="math notranslate nohighlight">\(\Theta(n^3)\)</span></p></li>
+</ul>
+</li>
+<li><p>Memorization using two tables</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(m[i, j]\)</span>: The minimum number of scalar multiplications needed to
+compute the matrix <span class="math notranslate nohighlight">\(A_i \cdots A_j\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(s[i, j]\)</span>: The index <span class="math notranslate nohighlight">\(k\)</span> at which we split the product
+<span class="math notranslate nohighlight">\(A_i \cdots A_j\)</span> in an optimal parenthesization <span class="math notranslate nohighlight">\(A_i \cdots
+A_k A_{k+1} \cdots A_j\)</span>.</p></li>
+<li><p>Both <span class="math notranslate nohighlight">\(\Theta(n^2)\)</span> space.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Dynamic Programming Algorithm (cont.)</h3>
+<ul class="simple">
+<li><p>C++ example that only computes the cost</p></li>
+</ul>
+<pre data-id="dynamic-programming-algorithm-cont"><code data-trim data-noescape class="cpp">int matrixChainOrder(int p[], int n) {
+  int m[n][n];
+
+  for (int i = 1; i &lt; n; i++)
+    m[i][i] = 0;
+
+  // L is the chain length
+  for (int L = 2; L &lt; n; L++) {
+    for (int i = 1; i &lt; n - L + 1; i++) {
+      int j = i + L - 1;
+      m[i][j] = INT_MAX;
+      // Try all possible split points
+      for (int k = i; k &lt;= j - 1; k++) {
+        int q = m[i][k] + m[k + 1][j] + p[i - 1] * p[k] * p[j];
+        if (q &lt; m[i][j])
+          m[i][j] = q;
+      }
+    }
+  }
+  // Return the minimum number of scalar multiplications needed
+  // to multiply the original chain
+  return m[1][n - 1];
+}</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Longest Common Subsequence (LCS) Problem</h2>
+<ul class="simple">
+<li><p>Sequences and subsequences: foundational concepts in computational problems</p></li>
+<li><p>Critical for sequence comparison in bioinformatics and computer science</p>
+<ul>
+<li><p>DNA sequence alignment</p></li>
+<li><p>DNA sequence similarity</p></li>
+<li><p>Text comparison and plagiarism detection</p></li>
+<li><p>File comparison</p></li>
+<li><p>Version control systems</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>LCS Problem Overview</h3>
+<ul class="simple">
+<li><p>LCS: finding the longest subsequence common to two sequences</p>
+<ul>
+<li><p>More than one possible solution</p></li>
+<li><p>Subsequence: not necessarily contiguous</p></li>
+</ul>
+</li>
+<li><p>Used in genetics and version control systems</p></li>
+<li><p>Example: The Longest Common Subsequence for the DNA sequences “AGGTAB” and
+“GXTXAYB” is “GGTAB”</p></li>
+</ul>
+</section>
+<section >
+<h3>LCS Problem Properties</h3>
+<ul class="simple">
+<li><p>Optimal Substructure: (last character match version)</p>
+<ul>
+<li><p>For sequences <cite>X</cite> and <cite>Y</cite>, if <cite>X[m]</cite> equals <cite>Y[n]</cite>, the LCS includes <cite>X[m]</cite>
+and is one more than <cite>LCS(X[1..m-1], Y[1..n-1])</cite>.</p>
+<ul>
+<li><p>E.g. <cite>LCS(“ABCBDAB”, “BDCABB”) = 1 + LCS(“ABCBDA”, “BDCAB”)</cite></p></li>
+</ul>
+</li>
+<li><p>If <cite>X[m]</cite> does not equal <cite>Y[n]</cite>, the LCS is the longer of <cite>LCS(X[1..m],
+Y[1..n-1])</cite> or <cite>LCS(X[1..m-1], Y[1..n])</cite>.</p>
+<ul>
+<li><p>E.g. <cite>LCS(“ABCBDAB”, “BDCABD”) = max(LCS(“ABCBDAB”, “BDCAB”),
+LCS(“ABCBDA”, “BDCABD”))</cite></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Overlapping Subproblems:</p>
+<ul>
+<li><p>Calculating <cite>LCS(X[1..m], Y[1..n])</cite> will often require recalculating
+<cite>LCS(X[1..m-1], Y[1..n-1])</cite>, <cite>LCS(X[1..m], Y[1..n-1])</cite>, and <cite>LCS(X[1..m-1],
+Y[1..n])</cite> multiple times.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Brute Force Approach</h3>
+<ul class="simple">
+<li><p>Involves comparing all possible subsequences of both strings and compare</p></li>
+<li><p>Results in exponential time complexity <span class="math notranslate nohighlight">\(2^{m+n}\)</span></p></li>
+<li><p>Not feasible for long sequences due to inefficiency</p></li>
+</ul>
+</section>
+<section >
+<h3>Divide and Conquer Approach</h3>
+<ul class="simple">
+<li><p>Employ the subproblem definition of LCS</p></li>
+<li><p>Recursively divide the problem into smaller subproblems</p></li>
+<li><p>Redundant computations on overlapping subproblems</p></li>
+</ul>
+<pre data-id="divide-and-conquer-approach"><code data-trim data-noescape class="default">function findLCSLength(s1, s2, m, n):
+    // Base case: If either of the strings is empty, LCS length is 0
+    if m == 0 or n == 0:
+        return 0
+
+    // If the last characters of both strings match
+    if s1[m-1] == s2[n-1]:
+        return 1 + findLCSLength(s1, s2, m-1, n-1)
+
+    // If the last characters of both strings don't match
+    return max(findLCSLength(s1, s2, m, n-1), findLCSLength(s1, s2, m-1, n))</code></pre>
+</section>
+<section >
+<h3>Dynamic Programming (DP) Solution</h3>
+<ul class="simple">
+<li><p>DP Table: set up with dimensions one greater than sequence lengths</p></li>
+<li><p>Matching characters: increment LCS length</p></li>
+<li><p>Non-matching characters: take the maximum value from adjacent cells</p></li>
+<li><p>LCS length located at <cite>dp[m][n]</cite></p></li>
+<li><p>Algorithm complexity: <span class="math notranslate nohighlight">\(\Theta(m*n)\)</span> for both time and space</p></li>
+</ul>
+</section>
+<section >
+<h3>Traceback for LCS</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<a class="reference internal image-reference" href="../_images/lcs-traceback.png"><img alt="../_images/lcs-traceback.png" src="../_images/lcs-traceback.png" style="width: 70%;" />
+</a>
+<div class="footnote docutils container">
+<p>Credit: Introduction to Algorithms, 4th Ed., T. Cormen et al.</p>
+</div>
+</div>
+<div class="half docutils container">
+<ul class="simple">
+<li><p><strong>Can only find one LCS</strong></p></li>
+<li><p>Reconstruct LCS from the filled DP table</p></li>
+<li><p>Backtrack from <cite>dp[m][n]</cite>, storing characters</p></li>
+<li><p>Diagonal movement for matches; otherwise to cell with higher value; if
+same, go up</p></li>
+<li><p>Complexity: <span class="math notranslate nohighlight">\(\Theta(m+n)\)</span></p></li>
+<li><p><strong>Question</strong>: How about same values?</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section >
+<h3>Pseudocode</h3>
+<pre data-id="pseudocode"><code data-trim data-noescape class="default">Function LCS(X, Y):
+    m = length of X
+    n = length of Y
+    dp = array of (m+1) rows and (n+1) columns
+
+    # Initialize the table with 0's, as the LCS of an empty sequence
+    # with any sequence is 0
+    For i from 0 to m:
+        dp[i][0] = 0
+    For j from 0 to n:
+        dp[0][j] = 0
+
+    # Fill the dp table
+    For i from 1 to m:
+        For j from 1 to n:
+            If X[i] == Y[j]:
+                dp[i][j] = dp[i-1][j-1] + 1
+            Else:
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+
+    # The length of LCS is in the cell dp[m][n]
+    length_LCS = dp[m][n]</code></pre>
+</section>
+<section >
+<h3>Pseudocode (cont.)</h3>
+<pre data-id="pseudocode-cont"><code data-trim data-noescape class="default"># To find the LCS string, traceback from dp[m][n]
+LCS = &quot;&quot;
+i = m, j = n
+While i &gt; 0 and j &gt; 0:
+    If X[i] == Y[j]:
+        LCS = X[i] + LCS  # Prepend the character to LCS
+        i = i - 1
+        j = j - 1
+    Else If dp[i-1][j] &gt;= dp[i][j-1]: # if same, go up
+        i = i - 1
+    Else:
+        j = j - 1
+
+Return LCS, length_LCS</code></pre>
+</section>
+<section >
+<h3>Variations</h3>
+<ul class="simple">
+<li><p><strong>All LCSs</strong>: The DP solution only finds one LCS. To find all LCSs, use
+backtracking to find all possible paths in the DP table that lead to the
+LCS length.</p></li>
+<li><p><strong>Longest Common Substring</strong>: A substring is a contiguous sequence of
+characters within a string. The Longest Common Substring (LCSu) problem is
+similar to the LCS problem, but requires that the common elements be
+contiguous.</p></li>
+<li><p><strong>Improve space complexity</strong>: The DP solution requires <span class="math notranslate nohighlight">\(\Theta(m*n)\)</span>
+space. This can be improved to <span class="math notranslate nohighlight">\(\Theta(min(m, n))\)</span> by only storing the
+current and previous rows of the DP table.</p></li>
+</ul>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

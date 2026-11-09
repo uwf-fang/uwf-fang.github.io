@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Programming Projects · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / Programming Projects</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Programming Projects</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#quick-reference">Quick Reference</a></li>
+    <li><a href="#grading">Grading</a></li>
+    <li><a href="#prerequisites">Prerequisites</a></li>
+    <li><a href="#learn-the-workflow-in-weeks-1-and-2">Learn the workflow in Weeks 1 and 2</a></li>
+    <li><a href="#project-workflow">Project Workflow</a>
+      <ul>
+        <li><a href="#local-workflow">Local workflow</a></li>
+        <li><a href="#codespaces">CodeSpaces</a></li>
+      </ul>
+    </li>
+    <li><a href="#build-run-and-debug">Build, run and debug</a>
+      <ul>
+        <li><a href="#make-commands">Make commands</a></li>
+        <li><a href="#provided-tests">Provided Tests</a></li>
+        <li><a href="#test-runs">Test Runs</a></li>
+      </ul>
+    </li>
+    <li><a href="#get-help">Get Help</a></li>
+    <li><a href="#avoid-common-mistakes">Avoid Common Mistakes</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="programming-projects"></span>
+<h2 id="quick-reference">Quick Reference</h2>
+<ul>
+<li><a href="/teaching/course/faq/#proj-faq">Project FAQ</a></li>
+<li><a href="/teaching/developer-tools/git/">Version Control System and Git</a></li>
+<li><a href="/teaching/course/classroom-50/">Classroom 50</a></li>
+<li><a href="https://uwf-dsa-teaching.github.io">UWF Classroom 50 web frontend</a></li>
+<li><a href="/teaching/developer-tools/make/#make-diag">Common Error Messages From make</a></li>
+<li><a href="/teaching/cpp/building/gpp/#gpp-diag">Common Error Messages From g++</a></li>
+<li><a href="/teaching/cpp/building/modular/#mod-pitfall">Pitfalls in Modular Development</a></li>
+</ul>
+<aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p>You must use a GitHub Classic Personal Access Token (PAT) to sign in to the UWF Classroom 50 portal. Select <strong>Other sign-in methods -&gt; Use a personal access token</strong>. Do not use the standard <strong>Sign in with GitHub</strong> button or the public <code>classroom50.org</code> site. See <a href="/teaching/course/classroom-50/">Classroom 50</a> for token setup.</p>
+<p>Accepting the course GitHub organization invitation is only an account setup step. It does not accept an assignment. Do not work in the instructor’s template repository that you can find in the course GitHub organization. Use the UWF Classroom 50 portal, verify the classroom and assignment, and accept the assignment. Start work only after Classroom 50 creates and displays your private repository.</p>
+</div></aside>
+<h2 id="grading">Grading</h2>
+<p>The grading system of complex projects differs greatly from that used in entry-level courses and in coding questions in exams:</p>
+<ul>
+<li><strong>Your code must compile and run!</strong></li>
+<li><strong>The grader grades your code by running rather than by reading them!</strong></li>
+<li>A program compiles and runs through <code>GNU make</code> using commands like <code>make</code>, <code>./main</code>, <code>make test-all</code>, <code>make test-run</code>, etc.</li>
+<li><strong>You should not expect any partial credits for code that cannot be tested by running your program.</strong> The grader do not have the responsibility to read, debug and understand your unfinished source code.</li>
+</ul>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>Learn <a href="/teaching/developer-tools/git/">Version Control System and Git</a></li>
+<li>Learn <a href="/teaching/course/classroom-50/">Classroom 50</a>.</li>
+<li>Understand Testing for C++</li>
+<li>Understand building process using GNU make</li>
+</ul>
+<h2 id="learn-the-workflow-in-weeks-1-and-2">Learn the workflow in Weeks 1 and 2</h2>
+<p>Use class time as your primary workspace for the initial Git, Classroom 50, lab, and project walkthroughs. Follow each step, take notes, and ask questions as soon as something is unclear. Reconstructing a missed technical workflow later is usually slower and more stressful. Flexible attendance does not change your responsibility to learn the workflows demonstrated in class.</p>
+<p>Before requesting help with a workflow problem:</p>
+<ol>
+<li>Read the lab or project instructions and locate the relevant Canvas module.</li>
+<li>Review the class Zoom recording if you missed or need to repeat a demonstration.</li>
+<li>Reproduce the problem and copy the exact command and error message.</li>
+<li>Push your current code before requesting help with a programming problem.</li>
+</ol>
+<h2 id="project-workflow">Project Workflow</h2>
+<h3 id="local-workflow">Local workflow</h3>
+<ul>
+<li>
+<p>Open the assignment link supplied by your instructor. In Classroom 50, verify the course and assignment, select your exact roster name, accept the assignment, and wait for your private repository link. Do not search the GitHub organization for the template repository or work in it. Classroom 50 is mainly a brief entry point; after it creates your repository, your normal workflow is in that repository.</p>
+</li>
+<li>
+<p><a href="https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github">Create or verify your GitHub account</a>, and add your UWF email under <a href="https://github.com/settings/emails">GitHub Settings &gt; Emails</a>.</p>
+</li>
+<li>
+<p>Accept the GitHub organization invitation, then select your exact roster name when accepting the assignment. Never select another student’s name.</p>
+</li>
+<li>
+<p>Clone the repository to your local machine:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-console" data-lang="console"><span style="display:flex;"><span><span style="color:#1f2328">git clone &lt;repository-url&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">cd &lt;repository-directory&gt;
+</span></span></span></code></pre></div></li>
+<li>
+<p>Iterative Development</p>
+<ul>
+<li>Write code</li>
+<li>Run tests or your main to verify the progress</li>
+<li>Add and commit the changes</li>
+<li>Push commits when:
+<ul>
+<li>You have passed some tests</li>
+<li>You need to put your work on hold</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Push your work to submit it, then inspect the repository’s <a href="https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows/monitoring-workflows">Actions</a> tab and latest GitHub Release. Detailed results may appear as <code>result.json</code>.</p>
+</li>
+<li>
+<p>If <code>git push</code> is rejected because your instructor has pushed new commits to the remote repository, first make sure your local changes are committed, then follow the <a href="/teaching/developer-tools/git/#git-push-rejected">Git rejected-push procedure</a>.</p>
+</li>
+</ul>
+<h3 id="codespaces">CodeSpaces</h3>
+<p>Everything is the same as the local workflow except that you are working in the browser. No need to clone the repository or configure GitHub user information. Open the repository on GitHub, choose <strong>Code -&gt; Codespaces -&gt; Create codespace on main</strong>, and use the browser terminal. Codespaces is especially important for macOS users because <code>valgrind</code> is not supported natively there:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-console" data-lang="console"><span style="display:flex;"><span><span style="color:#1f2328">make test-mem
+</span></span></span></code></pre></div><h2 id="build-run-and-debug">Build, run and debug</h2>
+<p>Due to the complexity of compiling and running your modular project manually, building tools such as GNU make, Autotools, Cmake, Ninja, Meson are employed to automate the process. We employ <code>GNU make</code> in our course.</p>
+<h3 id="make-commands">Make commands</h3>
+<p>Make commands are employed to build, run and test your project. Please read the instruction carefully to learn how to use them to run tests or build your project.</p>
+<p>Typical targets include:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-console" data-lang="console"><span style="display:flex;"><span><span style="color:#1f2328">make clean
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">make build
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">make test
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">make test-1
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">make test-2
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">make test-mem
+</span></span></span></code></pre></div><h3 id="provided-tests">Provided Tests</h3>
+<ul>
+<li>Tests and autograding configuration may be supplied through the starter repository and Classroom 50 assignment configuration.</li>
+<li><strong>Do not modify or remove provided tests, ``.github`` files, or autograding configuration.</strong></li>
+<li>Use the correct file names. <strong>No Capital letters in file names!</strong></li>
+<li>Tests are often triggered by make commands like <code>make test-xxx</code>.</li>
+<li>Run tests locally to test your code.</li>
+<li>A major portion of grading will be based on the tests runs.</li>
+</ul>
+<h3 id="test-runs">Test Runs</h3>
+<p>For project that requires an executable as the final product. Make sure to run your main executable to reproduce the sample runs. It can usually be done by make commands like <code>make test-run</code> or <code>make run</code>.</p>
+<h2 id="get-help">Get Help</h2>
+<ul>
+<li>Post sharable problems on the Discord server</li>
+<li>Email the instructor or TA about the question. Must include push your code before hand!</li>
+</ul>
+<aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p><strong>Never ask me question with only limited information like screenshots or error messages.</strong></p>
+</div></aside>
+<h2 id="avoid-common-mistakes">Avoid Common Mistakes</h2>
+<ol>
+<li>Avoid over-engineering
+<ul>
+<li>Understand the problem and requirements very well</li>
+<li>Work toward a just-enough solution (follow the instruction) rather than a perfect solution</li>
+<li>Choose the simplest (simple to use) data structures, not the fastest or coolest ones (e.g. choose vector over C array, string over C string)</li>
+</ul>
+</li>
+<li>Avoid bad submission
+<ul>
+<li>Run <code>make clean</code> before add and commit</li>
+<li>Remove any added files and directories not needed in the submission. They are usually from your editor or IDE and can be huge in size.</li>
+</ul>
+</li>
+<li>Avoid wasting time on anything not required in the instruction
+<ul>
+<li>Read instruction carefully</li>
+<li>Ask questions if you are not sure</li>
+</ul>
+</li>
+<li>Avoid last minute rush
+<ul>
+<li>Projects are usually more challenging than you think</li>
+<li>You will not learn much in the rush</li>
+</ul>
+</li>
+<li>Avoid writing code without testing
+<ul>
+<li>Any project beyond a certain size should be finished in an incremental manner and tested in every step</li>
+<li>A testing framework (e.g. Catch2) will greatly improve this process but need learning</li>
+</ul>
+</li>
+<li>Avoid working without backing up your code
+<ul>
+<li>It is common to lose important code snippet by mistake</li>
+<li>You will hesitate to try new idea</li>
+<li>Do backup your changes frequently using git add and commit</li>
+</ul>
+</li>
+</ol>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

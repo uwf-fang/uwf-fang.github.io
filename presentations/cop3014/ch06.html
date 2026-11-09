@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Algorithm and Program Design (COP3014)</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Algorithm and Program Design (COP3014)</h1>
+<div class="subtitle docutils container">
+<p><strong>Chapter 6-7: Algorithm on linear data; String; Sorting</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Sections</h2>
+<ul class="simple">
+<li><p>Linear Data Structures</p></li>
+<li><p>Algorithms on linear data structures</p></li>
+<li><p>Sorting</p></li>
+<li><p>C-string</p></li>
+<li><p>C++ String</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Algorithms on Sequential Data</h2>
+<p><strong>Sequential data can be stored in various containers</strong></p>
+<ul class="simple">
+<li><p>C array - Fixed-size contiguous memory</p></li>
+<li><p>C string - Null-terminated character array</p></li>
+<li><p>C++ string - Modern string class with rich functionality</p></li>
+<li><p>STL containers:</p>
+<ul>
+<li><p>std::vector - Dynamic array</p></li>
+<li><p>std::array - Fixed-size array</p></li>
+<li><p>std::list - Doubly-linked list</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Linear Search</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Compare from left to right</strong></p>
+<ul class="simple">
+<li><p>Time complexity: <span class="math notranslate nohighlight">\(\Theta(n)\)</span></p></li>
+</ul>
+<pre><code data-trim data-noescape class="cpp">int linearSearch(const int arr[], int size, int target) {
+  for (int i = 0; i &lt; size; i++)
+    if (arr[i] == target)
+      return i;  // Found, return index
+  return -1;  // Not found
+}</code></pre>
+</div>
+<div class="half docutils container">
+<p><strong>Example usage</strong></p>
+<pre><code data-trim data-noescape class="cpp">int numbers[] = {4, 2, 7, 1, 9, 5};
+int pos = linearSearch(numbers, 6, 7);  // Returns 2
+pos = linearSearch(numbers, 6, 3);      // Returns -1</code></pre>
+</div>
+</div>
+</section>
+<section >
+<h3>Binary Search</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p>For <strong>sorted</strong> arrays, divide and conquer approach.</p>
+<ul class="simple">
+<li><p>Time complexity: <span class="math notranslate nohighlight">\(\Theta(\log n)\)</span></p></li>
+</ul>
+<pre><code data-trim data-noescape class="cpp">int binarySearch(int arr[], int size, int target) {
+  int left = 0, right = size - 1;
+  while (left &lt;= right) {
+    int mid = left + (right - left) / 2;
+    if (arr[mid] == target)
+      return mid;
+
+    if (arr[mid] &lt; target)
+      left = mid + 1;
+    else
+      right = mid - 1;
+  }
+  return -1;
+}</code></pre>
+</div>
+<div class="half docutils container">
+<p><strong>Example usage</strong></p>
+<pre><code data-trim data-noescape class="cpp">int sorted[] = {1, 2, 4, 5, 7, 9};
+int pos = binarySearch(sorted, 6, 7);  // Returns 4
+pos = binarySearch(sorted, 6, 3);      // Returns -1</code></pre>
+</div>
+</div>
+</section>
+<section >
+<h3>Mapping Functions</h3>
+<p><strong>One-to-one</strong> mapping between input and output</p>
+<pre data-id="mapping-functions"><code data-trim data-noescape class="cpp">void squareAll(int arr[], int size) {
+  for (int i = 0; i &lt; size; i++)
+    arr[i] *= arr[i];
+}
+
+void absAll(int arr[], int size) {
+  for (int i = 0; i &lt; size; i++)
+    if (arr[i] &lt; 0)
+      arr[i] = -arr[i];
+}</code></pre>
+</section>
+<section >
+<h3>Aggregate Functions</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Statistical functions</strong></p>
+<pre><code data-trim data-noescape class="cpp">double mean(const int arr[], int size) {
+  if (size == 0) return 0.0;
+  double sum = 0.0;
+  for (int i = 0; i &lt; size; i++)
+    sum += arr[i];
+  return sum / size;
+}
+
+double median(int arr[], int size) {
+  if (size == 0) return 0.0;
+  // Sort array first
+  for (int i = 0; i &lt; size-1; i++)
+    for (int j = 0; j &lt; size-i-1; j++)
+      if (arr[j] &gt; arr[j+1]) {
+        int temp = arr[j];
+        arr[j] = arr[j+1];
+        arr[j+1] = temp;
+      }
+  if (size % 2 == 0)
+      return (arr[size/2 - 1] + arr[size/2]) / 2.0;
+  return arr[size/2];
+}</code></pre>
+</div>
+<div class="half docutils container">
+<pre><code data-trim data-noescape class="cpp">double stddev(const int arr[], int size) {
+  if (size == 0) return 0.0;
+  double m = mean(arr, size);
+  double sum = 0.0;
+  for (int i = 0; i &lt; size; i++)
+    sum += (arr[i] - m) * (arr[i] - m);
+  return sqrt(sum / size);
+}</code></pre>
+<p><strong>Example usage</strong></p>
+<pre><code data-trim data-noescape class="cpp">int data[] = {4, 2, 7, 1, 9, 5};
+double avg = mean(data, 6);      // Returns 4.67
+double med = median(data, 6);    // Returns 4.5
+double std = stddev(data, 6);    // Returns 2.73</code></pre>
+</div>
+</div>
+</section>
+<section >
+<h3>Advanced Algorithm</h3>
+<ul>
+<li><p>Palindrome detection</p>
+<pre><code data-trim data-noescape class="cpp">bool isPalindrome(const int arr[], int size) {
+  for (int i = 0; i &lt; size / 2; i++)
+    if (arr[i] != arr[size - i - 1])
+      return false;
+  return true;
+}</code></pre>
+</li>
+<li><p>Subarray search</p>
+<pre><code data-trim data-noescape class="cpp">bool isSubarray(int arr[], int size,
+                int sub[], int subSize) {
+  for (int i = 0; i &lt;= size - subSize; i++) {
+    bool found = true;
+    for (int j = 0; j &lt; subSize; j++)
+      if (arr[i + j] != sub[j]) {
+        found = false;
+        break;
+      }
+    if (found) return true;
+  }
+  return false;
+}</code></pre>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Simple Sorting Algorithms</h2>
+<ul class="simple">
+<li><p>Selection sort</p></li>
+<li><p>Insertion sort</p></li>
+<li><p>Bubble sort (FYI)</p></li>
+</ul>
+</section>
+<section >
+<h3>Selection Sort</h3>
+<ul class="simple">
+<li><p>Repeatedly find the minimum/maximum element from unsorted portion. Swap with
+first unsorted element.</p></li>
+<li><p>Time complexity: <span class="math notranslate nohighlight">\(\Theta(n^2)\)</span></p></li>
+</ul>
+<pre data-id="selection-sort"><code data-trim data-noescape class="cpp">void selectionSort(int arr[], int n) {
+  for (int i = 0; i &lt; n-1; i++) {
+    // Find minimum element in unsorted array
+    int min_idx = i;
+    for (int j = i+1; j &lt; n; j++)
+      if (arr[j] &lt; arr[min_idx])
+        min_idx = j;
+    // Swap found minimum with first unsorted element
+    if (min_idx != i) {
+      int temp = arr[min_idx];
+      arr[min_idx] = arr[i];
+      arr[i] = temp;
+    }
+  }
+}</code></pre>
+<p><strong>Example</strong></p>
+<pre data-id="selection-sort"><code data-trim data-noescape class="cpp">int arr[] = {64, 25, 12, 22, 11};
+selectionSort(arr, 5);
+// arr is now {11, 12, 22, 25, 64}</code></pre>
+</section>
+<section >
+<h3>Insertion Sort</h3>
+<ul class="simple">
+<li><p>Repeatedly insert an element from unsorted portion to its correct position in
+sorted portion.</p></li>
+<li><p>Time complexity: <span class="math notranslate nohighlight">\(\Theta(n^2)\)</span></p></li>
+</ul>
+<pre data-id="insertion-sort"><code data-trim data-noescape class="cpp">void insertionSort(int arr[], int n) {
+  for (int i = 1; i &lt; n; i++) {
+    int key = arr[i];
+    int j = i - 1;
+
+    // Move elements that are greater than key
+    // to one position ahead
+    while (j &gt;= 0 &amp;&amp; arr[j] &gt; key) {
+      arr[j + 1] = arr[j];
+      j = j - 1;
+    }
+    arr[j + 1] = key;
+  }
+}</code></pre>
+<p><strong>Example</strong></p>
+<pre data-id="insertion-sort"><code data-trim data-noescape class="cpp">int arr[] = {64, 34, 25, 12, 22, 11, 90};
+insertionSort(arr, 7);
+// arr is now {11, 12, 22, 25, 34, 64, 90}</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>C String Operations</h2>
+<p>Basic operations and common pitfalls:</p>
+<pre data-id="c-string-operations"><code data-trim data-noescape class="cpp">// String initialization
+char str1[100] = &quot;Hello&quot;;  // Fixed buffer
+char* str2 = new char[100];  // Dynamic allocation
+
+// Common operations
+strlen(str1);  // Length
+strcpy(str2, str1);  // Copy
+strcat(str2, &quot; World&quot;);  // Concatenate
+
+// Pitfalls to avoid
+char small[5] = &quot;Hello&quot;;  // Buffer overflow!
+if (str1 == str2) { }  // Wrong comparison!
+
+// Correct string comparison
+if (strcmp(str1, str2) == 0)
+  cout &lt;&lt; &quot;Strings are equal&quot; &lt;&lt; endl;</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>C++ String Class</h2>
+<ul class="simple">
+<li><p>Modern string handling with std::string:</p></li>
+</ul>
+<pre data-id="c-string-class"><code data-trim data-noescape class="cpp">string str1 = &quot;Hello&quot;;
+string str2 = &quot; World&quot;;
+
+// Common operations
+str1 += str2;  // Concatenation
+str1.length();  // Get length
+str1.substr(0, 5);  // Substring
+str1.find(&quot;lo&quot;);  // Search
+
+// String parsing
+string data = &quot;John,30,Engineer&quot;;
+size_t pos = data.find(&quot;,&quot;);
+string name = data.substr(0, pos);</code></pre>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

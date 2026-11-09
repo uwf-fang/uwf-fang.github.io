@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Data Structure and Algorithm Design II</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Data Structure and Algorithm Design II</h1>
+<div class="subtitle docutils container">
+<p><strong>Chapter 5</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Sections</h2>
+<ul class="simple">
+<li><p>Brute-force algorithms</p></li>
+<li><p>Backtracking</p></li>
+<li><p>Genetic algorithms</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h1>Brute-Force Algorithm</h1>
+<div class="subtitle docutils container">
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<p>A brute-force algorithm is a straightforward and exhaustive problem-solving
+approach that systematically explores all possible solutions or combinations to
+a problem. It does not rely on advanced strategies or optimizations and instead
+relies on sheer computational power to find a solution.</p>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Characteristics</strong></p>
+<ul class="simple">
+<li><p>Exhaustive</p></li>
+<li><p>Naive</p></li>
+<li><p>Simple</p></li>
+<li><p>Inefficient: often <span class="math notranslate nohighlight">\(\Theta(n!)\)</span> or <span class="math notranslate nohighlight">\(\Theta(2^n)\)</span></p></li>
+</ul>
+</div>
+<div class="half docutils container">
+<p><strong>Applications</strong></p>
+<ul class="simple">
+<li><p>Baseline for comparison and benchmarking</p></li>
+<li><p>Small search spaces</p></li>
+<li><p>All final states are solutions</p>
+<ul>
+<li><p>Find all permutations/combinations of a set</p></li>
+<li><p>Find all paths in a graph</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h1>Backtracking</h1>
+<div class="subtitle docutils container">
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Overview</p></li>
+<li><p>Concepts</p></li>
+<li><p>Implementation details</p></li>
+<li><p>Applications</p></li>
+<li><p>Related algorithm and paradigms</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<ul class="simple">
+<li><p>Backtracking is a general algorithmic technique that involves exploring all
+possible solutions to a problem by building solution candidates incrementally
+and abandoning a candidate (“backtracking”) as soon as it is determined that
+the candidate cannot be extended to a valid solution.</p></li>
+<li><p>Solves constraint satisfaction problems (CSPs).</p></li>
+<li><p>Find one or all valid solutions to a problem.</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Core Concepts</h2>
+<ul>
+<li><p>Backtrack operation:</p>
+<p>The backtrack operation is used to undo a decision and try another decision
+at a decision point.</p>
+</li>
+<li><p>Decision Space:</p>
+<p>A tree space of all possible sequences of decisions that can be made to solve
+the problem.</p>
+</li>
+<li><p>Feasibility Checks:</p>
+<p>Feasibility checks are used to determine whether to proceed or backtrack” at
+a decision point.</p>
+</li>
+<li><p>Solution Space:</p>
+<p>The set of all paths or decision sequences that lead to a valid solution.</p>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Implementation details</h2>
+<ul class="simple">
+<li><p>Very problem dependent but has two general forms: Recursive and Iterative</p></li>
+</ul>
+<div class="flex-container smaller docutils container">
+<div class="half docutils container">
+<p><strong>Recursive</strong></p>
+<pre><code data-trim data-noescape class="default">function BACKTRACKING-SOLUTION(problem):
+    if problem is a base case:
+        return solution to the base case
+    for each option in problem:
+        if option is valid:
+            make the option
+            result = BACKTRACKING-SOLUTION(sub-problem created by the option)
+            if result is a valid solution:
+                return result
+            undo the option (backtrack)
+    return no solution found</code></pre>
+</div>
+<div class="half docutils container">
+<p><strong>Iterative</strong></p>
+<pre><code data-trim data-noescape class="default">function ITERATIVE-BACKTRACKING-SOLUTION(initialProblem):
+    create an empty stack S
+    push initialProblem onto S
+
+    while S is not empty:
+        currentProblem = top of S
+
+        if currentProblem is a solution:
+            return currentProblem
+
+        if currentProblem has unexplored options:
+            nextOption = get next unexplored option for currentProblem
+
+            if nextOption is valid:
+                push nextOption onto S
+            else:
+                mark nextOption as explored for currentProblem
+
+        else:
+            // All options for currentProblem have been explored, backtrack
+            pop S
+
+    return no solution found</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Applications</h2>
+<p><a class="reference external" href="https://algorithm-visualizer.org">Visualizations</a></p>
+<ul class="simple">
+<li><p>N-queens problem</p></li>
+<li><p>Sudoku</p></li>
+<li><p>Hamiltonian path</p></li>
+<li><p>Maze solving/generation</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Related Algorithms and Paradigms</h2>
+<ul>
+<li><p>Brute-force</p>
+<p>Brute-force paradigm can be used to solve a wide variety of problems.
+However, it may do substantial work when the candidate space is large.
+Backtracking adds feasibility checks on partial candidates and can reduce
+work when those checks allow large parts of the search space to be pruned.</p>
+</li>
+<li><p>Depth-first search (DFS)</p>
+<p>DFS and backtracking look similar because they both explore as deep as
+possible in the search space. However, DFS is used to find a path from a
+start node to a goal node in a graph. Backtracking is used to find a solution
+to a constraint satisfaction problem. Backtracking is a paradigm that is used
+to implement DFS as an algorithm if you define the search space to be a graph
+or a tree and set the backtracking constraints to be whenever a dead end is
+reached.</p>
+</li>
+<li><p>Branch and bound</p>
+<p>Branch and bound and backtracking both explore a tree of partial candidates
+and prune branches, but use different pruning tests. Backtracking prunes a
+partial candidate when it cannot lead to a feasible solution. Branch and
+bound uses an objective bound to prune a branch that cannot improve the best
+known solution, so it is commonly used for optimization. Backtracking can
+also be adapted to optimization by keeping the best feasible solution found.</p>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h1>Genetic Algorithms</h1>
+<div class="subtitle docutils container">
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Overview</p></li>
+<li><p>Metaheuristic Paradigm</p></li>
+<li><p>Basics of Genetics and Evolution</p></li>
+<li><p>Core Components</p></li>
+<li><p>Limitations of Genetic Algorithms</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p><strong>Definition</strong>:</p>
+<ul>
+<li><p>A computational method inspired by natural evolution.</p></li>
+<li><p>Used to find approximate solutions to optimization and search problems.</p></li>
+<li><p>Merges biology and computer science to solve complex challenges.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="half docutils container">
+<ul class="simple">
+<li><p><strong>Historical Context</strong></p>
+<ul>
+<li><p><strong>Origins in Computer Science</strong>:</p>
+<ul>
+<li><p>Traces back to the work of John Holland in the 1960s.</p></li>
+<li><p>Introduced the schema theorem to describe the functioning of Genetic Algorithms.</p></li>
+</ul>
+</li>
+<li><p><strong>Biological Inspiration</strong>:</p>
+<ul>
+<li><p>Deeply rooted in Charles Darwin’s theory of natural selection.</p></li>
+<li><p>Evolution of species through the survival of the fittest individuals.</p></li>
+<li><p>Provides a foundation for computational algorithms.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</section>
+<section >
+<h3>Metaheuristic Paradigm</h3>
+<ul class="simple">
+<li><p><strong>Definition</strong>:</p>
+<ul>
+<li><p>Derived from Greek words “meta” (beyond) and “heuriskein” (to search or
+find).</p></li>
+<li><p>Strategies designed to find or select heuristics for good-enough solutions
+to optimization problems.</p></li>
+<li><p>Especially effective with incomplete information or limited computation
+capacity.</p></li>
+</ul>
+</li>
+<li><p><strong>Examples of Metaheuristic Algorithms</strong>:</p>
+<ul>
+<li><p>Simulated Annealing.</p></li>
+<li><p>Tabu Search.</p></li>
+<li><p>Ant Colony Optimization.</p></li>
+<li><p>Particle Swarm Optimization.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Basics of Genetics and Evolution</h3>
+<ul class="simple">
+<li><p><strong>DNA, Genes, and Chromosomes</strong>:</p>
+<ul>
+<li><p>DNA is the carrier of genetic instructions in biological systems.</p></li>
+<li><p>Organized into chromosomes, which are collections of genes.</p></li>
+<li><p>Each gene represents specific genetic information or functions.</p></li>
+</ul>
+</li>
+<li><p><strong>Core Principles</strong>:</p>
+<ul>
+<li><p><strong>Survival of the Fittest</strong>: Differential survival and reproduction based
+on beneficial traits.</p></li>
+<li><p><strong>Reproduction</strong>: Generation of new solutions based on “fitness” or
+suitability.</p></li>
+<li><p><strong>Mutation</strong>: Introducing genetic diversity via changes in DNA.</p></li>
+<li><p><strong>Crossover (Recombination)</strong>: Combining genetic information from two
+parent genes.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Core Components</h3>
+<ul class="simple">
+<li><p><strong>Individual and encoding</strong></p>
+<ul>
+<li><p>An individual is a possible solution to the problem.</p></li>
+<li><p>Encoded as a string of genes, often binary, integer, real, or sometimes permutation.</p></li>
+</ul>
+</li>
+<li><p><strong>Population</strong>:</p>
+<ul>
+<li><p>Collection of individual potential solutions.</p></li>
+<li><p>Each individual is a possible solution, mostly encoded (e.g., binary
+string).</p></li>
+<li><p>Initial population usually generated randomly.</p></li>
+</ul>
+</li>
+<li><p><strong>Fitness Function</strong>:</p>
+<ul>
+<li><p>Measures how good each solution is with respect to the problem.</p></li>
+<li><p>For example: Shorter path length in a traveling problem might be more
+“fit”.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Core Components (cont.)</h3>
+<ul class="simple">
+<li><p><strong>Selection</strong></p>
+<ul>
+<li><p>Selects individuals for reproduction based on fitness.</p></li>
+<li><p>Individuals with higher fitness are more <strong>likely</strong> to be selected.</p></li>
+<li><p>Randomness + heuristics = <strong>stochastic</strong> selection.</p></li>
+</ul>
+</li>
+<li><p><strong>Crossover (Recombination)</strong></p>
+<ul>
+<li><p>Combines genetic information from two parent individuals.</p></li>
+<li><p>Produces offspring with genetic information from both parents.</p></li>
+<li><p>Often performed with a crossover rate (e.g., 0.8) to control the frequency
+of crossover.</p></li>
+</ul>
+</li>
+<li><p><strong>Mutation</strong></p>
+<ul>
+<li><p>Introduces genetic diversity by randomly changing genes.</p></li>
+<li><p>Random flip for binary encoding; random swap for permutation encoding; etc.</p></li>
+<li><p>Mutation rate (e.g., 0.01) controls the frequency of mutation.</p></li>
+</ul>
+</li>
+<li><p><strong>Replacement</strong></p>
+<ul>
+<li><p>Replaces individuals in the population with new offspring.</p></li>
+<li><p>Total replacement or partial replacement.</p></li>
+<li><p>Often performed with an elitism rate (e.g., 0.1) to preserve the best
+individuals.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Code Framework</h2>
+<p>A basic framework for a Genetic Algorithm is as follows:</p>
+<pre data-id="code-framework"><code data-trim data-noescape class="default">1. Generate initial population of size N.
+2. Evaluate the fitness of each individual in the population.
+
+3. WHILE (stopping condition not met):
+
+  a. Select two parents based on their fitness.
+  b. Perform crossover on the selected parents to produce offsprings.
+  c. Apply mutation on offsprings with a certain probability.
+  d. Evaluate the fitness of the new offsprings.
+  e. Replace individuals in the current population with the new offspring
+      based on a replacement strategy.
+
+4. Return the best solution found.</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>GA Details</h2>
+<ul class="simple">
+<li><p>Encoding, Gene</p>
+<ul>
+<li><p>Binary Encoding: Each gene is a bit (0 or 1).</p></li>
+<li><p>Integer Encoding: Each gene is an integer value.</p></li>
+<li><p>Real-valued Encoding: Each gene is a real number.</p></li>
+<li><p>Permutation Encoding: Each gene represents a position in a sequence.</p></li>
+</ul>
+</li>
+<li><p>Individual</p>
+<ul>
+<li><p>Binary String: e.g., “1100101”.</p></li>
+<li><p>Integer Array: e.g., [3, 5, 2, 8].</p></li>
+<li><p>Real-valued Vector: e.g., [0.5, 1.2, 3.4].</p></li>
+<li><p>Permutation: e.g., [2, 3, 1, 4] for ordering problems.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>GA Details (cont.)</h3>
+<ul class="simple">
+<li><p>Selection Methods</p>
+<ul>
+<li><p>Roulette Wheel Selection: Probability proportional to fitness.</p></li>
+<li><p>Tournament Selection: Randomly select a group and choose the best.</p></li>
+<li><p>Rank-based Selection: Rank individuals and select based on rank.</p></li>
+</ul>
+</li>
+<li><p>Crossover Techniques</p>
+<ul>
+<li><p>Binary, Integer, Real-valued: One-point, Two-point, Uniform crossover.</p></li>
+<li><p>Permutation: Order crossover (OX), Partially matched crossover (PMX).</p></li>
+</ul>
+</li>
+<li><p>Mutation Techniques</p>
+<ul>
+<li><p>Binary: Bit flip mutation.</p></li>
+<li><p>Integer: Random reset mutation.</p></li>
+<li><p>Real-valued: Gaussian mutation.</p></li>
+<li><p>Permutation: Swap mutation, Inversion mutation.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>TSP Example</h2>
+<ul class="simple">
+<li><p>Traveling Salesman Problem (TSP)</p>
+<ul>
+<li><p>A classic optimization problem.</p></li>
+<li><p>Objective: Find the shortest possible route visiting each city exactly once
+and returning to the origin city.</p></li>
+</ul>
+</li>
+<li><p>NP-hard Problem for exact solutions.</p></li>
+<li><p>GAs provide a practical approach to find good-enough solutions.</p>
+<ul>
+<li><p>Encoding: Permutation of city indices.</p></li>
+<li><p>Fitness Function: Minimize the total distance <strong>or</strong> Maximizing the inverse of the total distance of the tour.</p></li>
+<li><p>Selection: Tournament selection.</p></li>
+<li><p>Crossover: Order crossover (OX).</p></li>
+<li><p>Mutation: Swap mutation.</p></li>
+<li><p>Replacement: Total replacement (with elitism).</p></li>
+<li><p>Stop criterion: Fixed number of generations or no improvement over several generations.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Limitations of Genetic Algorithms</h2>
+<ul class="simple">
+<li><p><strong>No Guarantee of Optimal Solution</strong>:</p>
+<ul>
+<li><p>GAs excel at finding near-optimal solutions.</p></li>
+<li><p>They might not always reach the absolute best solution.</p></li>
+</ul>
+</li>
+<li><p><strong>Parameter Sensitivity</strong>:</p>
+<ul>
+<li><p>GA performance can greatly vary based on parameter settings.</p></li>
+<li><p>Tuning parameters like mutation rate, crossover rate, and population size
+may require trial-and-error or domain-specific knowledge.</p></li>
+</ul>
+</li>
+<li><p><strong>Computational Overhead</strong>:</p>
+<ul>
+<li><p>Depending on problem complexity and GA settings, convergence might require
+multiple generations and evaluations.</p></li>
+<li><p>Potential for high computational costs, especially for larger problems.</p></li>
+</ul>
+</li>
+<li><p><strong>Premature Convergence</strong>:</p>
+<ul>
+<li><p>GAs can converge too early to a suboptimal solution.</p></li>
+<li><p>Caused by a lack of genetic diversity in the population.</p></li>
+</ul>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>While GAs have these limitations, they are still a powerful tool. It’s essential to be aware of these challenges and account for them in application and design.</p>
+</div>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Introduction to Big Data Analytics</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Introduction to Big Data Analytics</h1>
+<div class="subtitle docutils container">
+<p><strong>Chapter 5: Writing a Spark Application</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<ul class="simple">
+<li><p>Introduction to Spark Application</p></li>
+<li><p>Create Spark Application</p></li>
+<li><p>Run Spark Application with spark-submit</p></li>
+<li><p>Compared to Spark Shell/Notebook</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Introduction to Spark Application</h2>
+<ul class="simple">
+<li><p>Disclaimer: This chapter extended the textbook content with more detailed
+information and updated examples. Pay attention to the differences.</p></li>
+<li><p>Motivation</p>
+<ul>
+<li><p>Deploy end-to-end pipeline as an application</p></li>
+<li><p>Packaged application for complicated dependencies</p></li>
+<li><p>Full control over the execution environment for each run</p></li>
+<li><p>Full automation</p></li>
+</ul>
+</li>
+<li><p>Create a Spark Application</p>
+<ul>
+<li><p>As a standalone application</p>
+<ul>
+<li><p>jar file for packages developed with JVM languages</p></li>
+<li><p>python file or python package (require PySpark)</p></li>
+<li><p>R file (require SparkR)</p></li>
+</ul>
+</li>
+<li><p>As a notebook</p></li>
+</ul>
+</li>
+<li><p>Run Spark Application</p>
+<ul>
+<li><p>spark-submit for standalone applications</p></li>
+<li><p>Run notebook in notebook interfaces</p></li>
+<li><p>Some environments support Web UI for job creation</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Create Spark Application written in Scala</h2>
+<ul class="simple">
+<li><p>Steps</p>
+<ol class="arabic simple">
+<li><p>Create a project</p></li>
+<li><p>Write the code</p></li>
+<li><p>Build the project</p></li>
+</ol>
+</li>
+<li><p>Simple building tool: sbt</p>
+<ul>
+<li><p>Install separately (not part of Spark or Scala)</p></li>
+<li><p>Create a .sbt file in the project directory to configure the project</p></li>
+<li><p>Build the project: <code class="code docutils literal notranslate"><span class="pre">sbt</span> <span class="pre">package</span></code></p></li>
+<li><p>The jar file is created in the <code class="code docutils literal notranslate"><span class="pre">target</span></code> directory</p></li>
+</ul>
+</li>
+<li><p><strong>WARNING</strong></p>
+<ul>
+<li><p>You can build the project in any place and copy the jar file to the Spark
+cluster to run it</p></li>
+<li><p><strong>The version of Scala and Spark must be the same as the cluster</strong></p></li>
+<li><p>The .sbt file specifies the version of Scala and Spark</p></li>
+<li><p>If you hate sbt, you can use Maven or Gradle.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Word Count Example</h3>
+<ul class="simple">
+<li><p>Project structure</p>
+<ul>
+<li><p><cite>word_count</cite> directory as the root (name doesn’t matter in the building
+process)</p>
+<ul>
+<li><p><cite>WordCount.scala</cite> file, name must be the same as the object name</p></li>
+<li><p><cite>wordcount.sbt</cite> file, base name doesn’t matter</p></li>
+<li><p><cite>simple.txt</cite> file, input file for testing</p></li>
+</ul>
+</li>
+<li><p>No package is defined to simplify the example</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>WordCount.scala</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<pre><code data-trim data-noescape class="scala">object WordCount {
+  def main(args: Array[String]): Unit = {
+    val inputPath = args(0)
+    val outputPath = args(1)
+    val sc = new SparkContext()
+    val lines = sc.textFile(inputPath)
+    val wordCounts = lines.flatMap {line =&gt; line.split(&quot; &quot;)}
+                          .filter(word =&gt; word.length &gt; 0)
+                          .map(word =&gt; word.toLowerCase())
+                          .map(word =&gt; (word, 1))
+                          .reduceByKey(_ + _)
+    wordCounts.saveAsTextFile(outputPath)
+}
+}</code></pre>
+</div>
+<div class="half docutils container">
+<ul class="simple">
+<li><p>flatMap: split each line into words and flatten the result, inherited the
+curly braces from the textbook</p></li>
+<li><p>filter: remove empty words</p></li>
+<li><p>map: convert words to lowercase</p></li>
+<li><p>map: convert words to (word, 1) tuple</p></li>
+<li><p>reduceByKey: count the number of each word</p></li>
+<li><p>saveAsTextFile: save the result to the output path. Will create multiple
+files in the output directory as each partition is saved as a separate
+file by default for Spark distributed data types like RDD, DataFrame, and
+Dataset.</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section >
+<h3>wordcount.sbt</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<pre><code data-trim data-noescape class="scala">name := &quot;word_count&quot;
+version := &quot;1.0.0&quot;
+scalaVersion := &quot;2.12.18&quot;
+libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-core&quot; % &quot;3.3.2&quot; % &quot;provided&quot;</code></pre>
+</div>
+<div class="half docutils container">
+<ul class="simple">
+<li><p><cite>name</cite>: project name</p></li>
+<li><p><cite>version</cite>: project version</p></li>
+<li><p><cite>scalaVersion</cite>: Scala version</p></li>
+<li><p><cite>libraryDependencies</cite>: Spark dependency, <cite>provided</cite> means the dependency
+is provided by the environment, not included in the jar file</p></li>
+<li><p>Both versions of Scala and Spark must be the same as the cluster (at least
+the major version)</p></li>
+<li><p>Execute <code class="code docutils literal notranslate"><span class="pre">sbt</span> <span class="pre">package</span></code> to build the project</p></li>
+<li><p>The jar file is created in the <code class="code docutils literal notranslate"><span class="pre">target</span></code> directory under
+<code class="code docutils literal notranslate"><span class="pre">scala-2.xx</span></code> sub-directory</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section >
+<h3>Run Spark Application as Jar file with spark-submit</h3>
+<ul class="simple">
+<li><p>Note: Spark environments are mostly not shipped with sbt. You need to build
+the project in a separate environment and copy the jar file to the Spark
+cluster to run it.</p></li>
+<li><p>Run the application</p>
+<ul>
+<li><p><cite>spark-submit</cite> command</p></li>
+<li><p><cite>–class</cite> option to specify the main class</p></li>
+<li><p><cite>–master</cite> option to specify the cluster manager</p></li>
+<li><p><cite>–help</cite> option to print the help message</p></li>
+<li><p>Check other options in the official documentation</p></li>
+</ul>
+</li>
+<li><p>Run the jar file in the Spark:latest docker image</p>
+<ul>
+<li><p>direct run <code class="code docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">-it</span> <span class="pre">-v</span> <span class="pre">$(pwd):/opt/spark/work-dir</span> <span class="pre">--name</span> <span class="pre">spark</span>
+<span class="pre">--rm</span> <span class="pre">spark:latest</span> <span class="pre">/opt/spark/bin/spark-submit</span> <span class="pre">--class</span> <span class="pre">&quot;WordCount&quot;</span> <span class="pre">--master</span>
+<span class="pre">local[*]</span> <span class="pre">target/scala-2.12/word-count_2.12-1.0.0.jar</span> <span class="pre">./the-verdict.txt</span>
+<span class="pre">./output</span></code></p></li>
+<li><p>Or run <code class="code docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">-it</span> <span class="pre">-v</span> <span class="pre">$(pwd):/opt/spark/work-dir</span> <span class="pre">--name</span> <span class="pre">spark</span>
+<span class="pre">--rm</span> <span class="pre">spark:latest</span> <span class="pre">/bin/bash</span></code> to enter the container and run the command
+<code class="code docutils literal notranslate"><span class="pre">/opt/spark/bin/spark-submit</span> <span class="pre">--class</span> <span class="pre">&quot;WordCount&quot;</span> <span class="pre">--master</span> <span class="pre">local[*]</span>
+<span class="pre">target/scala-2.12/word-count_2.12-1.0.0.jar</span> <span class="pre">./the-verdict.txt</span> <span class="pre">./output</span></code>
+then.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Run Spark Application On Databricks</h3>
+<ul class="simple">
+<li><p>Run spark-submit in DCE web terminal</p>
+<ul>
+<li><p>Not necessary for simple applications</p></li>
+<li><p>Untested but should work</p></li>
+<li><p>Make sure that the versions of Scala and Spark both match the cluster</p></li>
+<li><p>Upload the jar file to the DCE web terminal in the <cite>dbfs:/FileStore/</cite>
+directory</p></li>
+<li><p>Use a cell to copy the jar file from <code class="code docutils literal notranslate"><span class="pre">dbfs:/FileStore/</span></code> to the local
+file system with <code class="code docutils literal notranslate"><span class="pre">dbutils.fs.cp</span></code> command</p></li>
+<li><p>Run the application with the <code class="code docutils literal notranslate"><span class="pre">/databricks/spark/bin/spark-submit</span></code>
+command</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Compared to Spark Shell/Notebook</h2>
+<ul class="simple">
+<li><p>Advantages</p>
+<ul>
+<li><p>Full control over the execution environment</p></li>
+<li><p>Full automation</p></li>
+<li><p>Packaged application for complicated dependencies</p></li>
+<li><p>Deploy end-to-end pipeline as an application</p></li>
+</ul>
+</li>
+<li><p>Disadvantages</p>
+<ul>
+<li><p>More complicated than the shell or notebook</p></li>
+<li><p>Overkill for simple tasks</p></li>
+<li><p>Require a separate environment to build the project</p></li>
+</ul>
+</li>
+</ul>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>C String Operations</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>C String Operations</h1>
+<p>Basic operations and common pitfalls:</p>
+<pre data-id="c-string-operations"><code data-trim data-noescape class="cpp">// String initialization
+char str1[100] = &quot;Hello&quot;;  // Fixed buffer
+char* str2 = new char[100];  // Dynamic allocation
+
+// Common operations
+strlen(str1);  // Length
+strcpy(str2, str1);  // Copy
+strcat(str2, &quot; World&quot;);  // Concatenate
+
+// Pitfalls to avoid
+char small[5] = &quot;Hello&quot;;  // Buffer overflow!
+if (str1 == str2) { }  // Wrong comparison!
+
+// Correct string comparison
+if (strcmp(str1, str2) == 0)
+  cout &lt;&lt; &quot;Strings are equal&quot; &lt;&lt; endl;</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h1>C++ String Class</h1>
+<ul class="simple">
+<li><p>Modern string handling with std::string:</p></li>
+</ul>
+<pre data-id="c-string-class"><code data-trim data-noescape class="cpp">string str1 = &quot;Hello&quot;;
+string str2 = &quot; World&quot;;
+
+// Common operations
+str1 += str2;  // Concatenation
+str1.length();  // Get length
+str1.substr(0, 5);  // Substring
+str1.find(&quot;lo&quot;);  // Search
+
+// String parsing
+string data = &quot;John,30,Engineer&quot;;
+size_t pos = data.find(&quot;,&quot;);
+string name = data.substr(0, pos);</code></pre>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

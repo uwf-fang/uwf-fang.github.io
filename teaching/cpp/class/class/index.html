@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Objects and Classes in C&#43;&#43; · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/cpp/">C&#43;&#43; Reference</a> / Objects and Classes in C&#43;&#43;</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Objects and Classes in C&#43;&#43;</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#concepts">Concepts</a>
+      <ul>
+        <li><a href="#general-object-oriented-programming">General Object-oriented Programming</a></li>
+        <li><a href="#map-to-c-concepts">map to C++ concepts</a></li>
+      </ul>
+    </li>
+    <li><a href="#class-declaration">Class Declaration</a></li>
+    <li><a href="#methods">Methods</a></li>
+    <li><a href="#data-initialization-of-non-static-instance-variable">Data Initialization of Non-Static Instance Variable</a></li>
+    <li><a href="#using-class-object">Using Class/Object</a></li>
+    <li><a href="#uml-class-diagrams-fyi">UML Class Diagrams (FYI)</a></li>
+    <li><a href="#static-members-fyi">Static Members (FYI)</a></li>
+    <li><a href="#class-example">Class Example</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="objects-and-classes-in-c"></span>
+<h2 id="concepts">Concepts</h2>
+<h3 id="general-object-oriented-programming">General Object-oriented Programming</h3>
+<ul>
+<li><strong>object:</strong>
+a collection of coherent states and behaviors</li>
+<li><strong>class:</strong>
+a template of a group of similar objects</li>
+<li><strong>state:</strong>
+data, property, attribute, member variable</li>
+<li><strong>behavior:</strong>
+method, member function</li>
+</ul>
+<h3 id="map-to-c-concepts">map to C++ concepts</h3>
+<ul>
+<li><strong>class:</strong>
+a type</li>
+<li><strong>object:</strong>
+a variable (instance) of a class type</li>
+<li><strong>state:</strong>
+an instance variable</li>
+<li><strong>behavior:</strong>
+a method</li>
+</ul>
+<span id="id2"></span>
+<p><em>A simple class</em></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-C++" data-lang="C++"><span style="display:flex;"><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">Point</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> x<span style="color:#1f2328">;</span>  <span style="color:#57606a">// an instance variable
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> y<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// above: members are private by default
+</span></span></span><span style="display:flex;"><span> <span style="color:#cf222e">public</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// below: members are public
+</span></span></span><span style="display:flex;"><span>  <span style="color:#57606a">// below are all methods
+</span></span></span><span style="display:flex;"><span>  Point<span style="color:#1f2328">();</span>  <span style="color:#57606a">// default constructor
+</span></span></span><span style="display:flex;"><span>  Point<span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> x<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> y<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">void</span> <span style="color:#6639ba">setX</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> x<span style="color:#1f2328">);</span> <span style="color:#57606a">// mutator/setter
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> <span style="color:#6639ba">getX</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>  <span style="color:#57606a">// accessor/getter, inline definition
+</span></span></span><span style="display:flex;"><span>    <span style="color:#cf222e">return</span> x<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">void</span> <span style="color:#6639ba">setY</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> y<span style="color:#1f2328">);</span> <span style="color:#57606a">// mutator/setter
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> <span style="color:#6639ba">getY</span><span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>  <span style="color:#57606a">// end with ;
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// out-of-line definition after
+</span></span></span><span style="display:flex;"><span>Point<span style="color:#0550ae">::</span>Point<span style="color:#1f2328">()</span><span style="color:#0550ae">:</span> x<span style="color:#1f2328">(</span><span style="color:#0550ae">0</span><span style="color:#1f2328">),</span> y<span style="color:#1f2328">(</span><span style="color:#0550ae">0</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Point<span style="color:#0550ae">::</span>Point<span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> x<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> y<span style="color:#1f2328">)</span><span style="color:#0550ae">:</span> x<span style="color:#1f2328">(</span>x<span style="color:#1f2328">),</span> y<span style="color:#1f2328">(</span>y<span style="color:#1f2328">)</span> <span style="color:#1f2328">{}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> Point<span style="color:#0550ae">::</span>setX<span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> x<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">this</span><span style="color:#0550ae">-&gt;</span>x <span style="color:#0550ae">=</span> x<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> Point<span style="color:#0550ae">::</span>setY<span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> y<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">this</span><span style="color:#0550ae">-&gt;</span>y <span style="color:#0550ae">=</span> y<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> Point<span style="color:#0550ae">::</span>getY<span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span> <span style="color:#cf222e">return</span> y<span style="color:#1f2328">;}</span>
+</span></span></code></pre></div><h2 id="class-declaration">Class Declaration</h2>
+<ul>
+<li>class keyword (or struct keyword)</li>
+<li>Usually in header file</li>
+<li>Semicolon after }</li>
+<li>Members
+<ul>
+<li>data member - instance variable</li>
+<li>function member - method (member function)</li>
+</ul>
+</li>
+<li>visibility (access specifier)
+<ul>
+<li>as sections (different from Java)
+<ul>
+<li>public:  accessible anywhere</li>
+<li>private:  accessible only within objects of the same class</li>
+<li>protected, etc.: not discussed in the courses</li>
+</ul>
+</li>
+<li>default
+<ul>
+<li>private in class</li>
+<li>public in struct</li>
+</ul>
+</li>
+<li>always prefer information hiding
+<ul>
+<li>make private if possible</li>
+<li>almost all instance variables are private</li>
+<li>only methods to be used out of the class should be public</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="methods">Methods</h2>
+<ul>
+<li>
+<p>Inline definitions: in the class declaration</p>
+</li>
+<li>
+<p>Out-of-line definitions: out of the class declaration</p>
+<ul>
+<li>Scope resolution operator <code>::</code> to specify the owner of the method (the class)</li>
+<li><code>this</code> pointer as a pointer pointing to the current object in method definition
+<ul>
+<li>use of <code>-&gt;</code> operator</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Types of methods</p>
+<span id="term-Constructor"></span>
+<dl>
+<dt>Constructor</dt>
+<dd>The methods to be triggered when the object is created. Same name as the class. No return type (because they always return the new object). May be overloaded.</dd>
+</dl>
+<span id="term-Destructor"></span>
+<dl>
+<dt>Destructor</dt>
+<dd>The method to be triggered when the object is destroyed. No parameter. One per class.</dd>
+</dl>
+<span id="term-Accessor"></span>
+<dl>
+<dt>Accessor</dt>
+<dd>A.k.a getter. A simple method to return the value of an instance variable. Should be const methods in most cases.</dd>
+</dl>
+<span id="term-Mutator"></span>
+<dl>
+<dt>Mutator</dt>
+<dd>A.k.a setter. Takes one const parameter and set an instance variable to the value passed in.</dd>
+</dl>
+<span id="term-Private-helper"></span>
+<dl>
+<dt>Private helper</dt>
+<dd>A general name of all private methods as they are usually used to <em>help</em> other methods.</dd>
+</dl>
+</li>
+<li>
+<p>Constructor</p>
+<ul>
+<li>No return type</li>
+<li>Initializer list (read <a href="#data-init">this</a>)
+<ul>
+<li>constructor only syntax</li>
+<li>initializes values of instance variables</li>
+</ul>
+</li>
+<li>Default constructor
+<ul>
+<li>
+<p>no parameter</p>
+</li>
+<li>
+<p>define initial value</p>
+</li>
+<li>
+<p>to trigger</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>MyClass obj<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>MyClass <span style="color:#6639ba">obj</span><span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>MyClass obj<span style="color:#1f2328">{};</span>
+</span></span><span style="display:flex;"><span>MyClass obj<span style="color:#1f2328">[</span><span style="color:#0550ae">10</span><span style="color:#1f2328">];</span> <span style="color:#57606a">// every element created using the default constructor
+</span></span></span></code></pre></div></li>
+</ul>
+</li>
+<li>Parameterized constructor</li>
+<li>Duplication constructors (further discussed <a href="/teaching/cpp/memory-man/memory-man-class/">here</a>)
+<ul>
+<li>copy constructor</li>
+<li>move constructor</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Const methods: methods that cannot not modify any instance variable</p>
+<ul>
+<li><strong>any other method called within a const method must be const too</strong></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">MyClass</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> size<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">public</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">void</span> print<span style="color:#1f2328">()</span> <span style="color:#cf222e">const</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;Hello!</span><span style="color:#0a3069">\n</span><span style="color:#0a3069">&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> <span style="color:#6639ba">size</span><span style="color:#1f2328">()</span> <span style="color:#cf222e">const</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">return</span> size<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span></code></pre></div></li>
+</ul>
+<span id="data-init"></span>
+<h2 id="data-initialization-of-non-static-instance-variable">Data Initialization of Non-Static Instance Variable</h2>
+<ol>
+<li>In-class initializer (constructor only syntax, since c++11)</li>
+<li>Initializer list in the constructor (preferred)</li>
+<li>Assignment in the constructor</li>
+</ol>
+<blockquote>
+<aside class="callout callout-note" aria-label="note">
+<strong>Note</strong><div><blockquote>
+<p>Two methods can be mixed. Use the first method for initial values shared among multiple constructors; Use the second method for values that differs among various constructors. When used together, the first will be ignored.</p>
+</blockquote>
+</div></aside>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// 1. in-class initializer, always effective
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">MyClass</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">private</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> value <span style="color:#0550ae">=</span> <span style="color:#0550ae">10</span><span style="color:#1f2328">;</span>  <span style="color:#57606a">// &lt;-- here
+</span></span></span><span style="display:flex;"><span> <span style="color:#cf222e">public</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  MyClass<span style="color:#1f2328">()</span><span style="color:#0550ae">=</span><span style="color:#cf222e">default</span><span style="color:#1f2328">;</span>  <span style="color:#57606a">// doing nothing
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// 2. constructor member initializer list, only affect one constructor
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">MyClass</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">private</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> value<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">public</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  MyClass<span style="color:#1f2328">()</span><span style="color:#0550ae">:</span> value<span style="color:#1f2328">(</span><span style="color:#0550ae">10</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{}</span>  <span style="color:#57606a">// &lt;-- here
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// 3. Naive assignment
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">MyClass</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">private</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> value<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">public</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  MyClass<span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>    value <span style="color:#0550ae">=</span> <span style="color:#0550ae">10</span><span style="color:#1f2328">;</span>  <span style="color:#57606a">// &lt;-- here
+</span></span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span></code></pre></div><h2 id="using-class-object">Using Class/Object</h2>
+<ul>
+<li>
+<p>Declare a variable of a class type</p>
+<ul>
+<li>
+<p>Initialization using the constructor:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>MyClass <span style="color:#6639ba">myObj1</span><span style="color:#1f2328">(</span><span style="color:#0550ae">10</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>MyClass myObj1 <span style="color:#0550ae">=</span> <span style="color:#0550ae">10</span><span style="color:#1f2328">;</span>  <span style="color:#57606a">// same as the above example
+</span></span></span><span style="display:flex;"><span>MyClass myObj1<span style="color:#1f2328">{</span><span style="color:#0550ae">10</span><span style="color:#1f2328">};</span> <span style="color:#57606a">// since C++11
+</span></span></span></code></pre></div></li>
+<li>
+<p>Disposable object assignment (Class name followed by parenthesis to trigger the constructor):</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">myFunction</span><span style="color:#1f2328">(</span>MyClass obj<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">main</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// as a parameter, MyClass(10) is a temp object
+</span></span></span><span style="display:flex;"><span>  cout <span style="color:#0550ae">&lt;&lt;</span> myFunction<span style="color:#1f2328">(</span>MyClass<span style="color:#1f2328">(</span><span style="color:#0550ae">10</span><span style="color:#1f2328">))</span> <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// assign to another object
+</span></span></span><span style="display:flex;"><span>  <span style="color:#57606a">// copy constructor or copy assignment operator will be triggered
+</span></span></span><span style="display:flex;"><span>  <span style="color:#57606a">// MyClass(10) is a temp object
+</span></span></span><span style="display:flex;"><span>  MyClass objArray<span style="color:#1f2328">[</span><span style="color:#0550ae">10</span><span style="color:#1f2328">];</span>  <span style="color:#57606a">// object array, default constructor triggered
+</span></span></span><span style="display:flex;"><span>  objArray<span style="color:#1f2328">[</span><span style="color:#0550ae">0</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> MyClass<span style="color:#1f2328">(</span><span style="color:#0550ae">10</span><span style="color:#1f2328">);</span>  <span style="color:#57606a">// copy assignment operator triggered
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li>
+<p><code>.</code> member accessing operator:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>MyClass obj<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>cout <span style="color:#0550ae">&lt;&lt;</span> obj<span style="color:#1f2328">.</span>getValue<span style="color:#1f2328">()</span> <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>-&gt;</code> member accessing operator from pointer:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// pointer to class
+</span></span></span><span style="display:flex;"><span>MyClass <span style="color:#0550ae">*</span>objPtr<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>objPtr <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> MyClass<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// objPtr-&gt;getValue() is same as (*objPtr).getValue()
+</span></span></span><span style="display:flex;"><span>cout <span style="color:#0550ae">&lt;&lt;</span> objPtr<span style="color:#0550ae">-&gt;</span>getValue<span style="color:#1f2328">()</span> <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>
+</span></span></code></pre></div></li>
+<li>
+<p><code>::</code> Domain resolution operator:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// Name space
+</span></span></span><span style="display:flex;"><span>std<span style="color:#0550ae">::</span>string myString<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// Class method out-of-line definition
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> MyClass<span style="color:#0550ae">::</span>print<span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;value: &#34;</span> <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#cf222e">this</span><span style="color:#0550ae">-&gt;</span>value <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// Class static members
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// static int square(int value) { return value * value};
+</span></span></span><span style="display:flex;"><span>MyClass obj1<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>cout <span style="color:#0550ae">&lt;&lt;</span> obj1<span style="color:#1f2328">.</span>square<span style="color:#1f2328">(</span><span style="color:#0550ae">5</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>  <span style="color:#57606a">// use object to access
+</span></span></span><span style="display:flex;"><span>cout <span style="color:#0550ae">&lt;&lt;</span> MyClass<span style="color:#0550ae">::</span>square<span style="color:#1f2328">(</span><span style="color:#0550ae">5</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>  <span style="color:#57606a">// use class to access
+</span></span></span></code></pre></div></li>
+</ul>
+<h2 id="uml-class-diagrams-fyi">UML Class Diagrams (FYI)</h2>
+<p>The Unified Modeling Language is a general-purpose modeling language used in software engineering. The class diagram is one type of UML diagram used to model classes and relationships among them in object-oriented programming.</p>
+<p>The class diagrams used here is in the PlantUML format. You can check this <a href="https://plantuml.com/class-diagram#3644720244dd6c6a">document</a> for more information.</p>
+<figure class="migration-image align-"><img src="http://www.plantuml.com/plantuml/png/SoWkIImgAStDuL9GICv9B2vM22rEBLAe1d9rYqkAClFI5J9Ja3XvYRcfGAusI9M69fm5LwgZWAGGB0_bfwUM-065DD34F5t08hLS3gbvAK1d0000" alt="Example: User Class" style="width:300;max-width:100%;height:auto" loading="lazy"></figure>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">User</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">-</span>string id
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">-</span>string name
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">+</span>User<span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">+</span>User<span style="color:#1f2328">(</span>string id<span style="color:#1f2328">,</span> string name<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">+</span>string getName<span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">+</span>string getID<span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">}</span>
+</span></span></code></pre></div><h2 id="static-members-fyi">Static Members (FYI)</h2>
+<ul>
+<li>static keyword</li>
+<li>one per class</li>
+<li>global life span</li>
+<li>stored in the <code>static</code> memory region</li>
+<li>instance variable
+<ul>
+<li>
+<p>data shared among objects</p>
+</li>
+<li>
+<p>can only be initialized outside of the class declaration:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// my-class.hpp
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">MyClass</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">private</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">static</span> <span style="color:#cf222e">int</span> count<span style="color:#1f2328">;</span>  <span style="color:#57606a">// NEVER initialize here!
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">public</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// ...
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// my-class.cpp
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// omit the static keyword
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> MyClass<span style="color:#0550ae">::</span>count <span style="color:#0550ae">=</span> <span style="color:#0550ae">10</span><span style="color:#1f2328">;</span>
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li>method
+<ul>
+<li>can not access any instance variable</li>
+<li>can access static instance variable</li>
+<li>e.g. pure math functions</li>
+<li>either <code>MyClass::method()</code> or <code>obj.method()</code> to trigger</li>
+</ul>
+</li>
+</ul>
+<h2 id="class-example">Class Example</h2>
+<span id="id3"></span>
+<p><em>my-class.hpp</em></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">#ifndef MY_CLASS_HPP
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">#define MY_CLASS_HPP
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">MyClass</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">private</span><span style="color:#0550ae">:</span>  <span style="color:#57606a">// optional, anything not in the public section is private
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> value<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">void</span> <span style="color:#6639ba">doubleVal</span><span style="color:#1f2328">();</span>  <span style="color:#57606a">// private helper
+</span></span></span><span style="display:flex;"><span> <span style="color:#cf222e">public</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  MyClass<span style="color:#1f2328">();</span>  <span style="color:#57606a">// default constructor
+</span></span></span><span style="display:flex;"><span>  MyClass<span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> value<span style="color:#1f2328">);</span>  <span style="color:#57606a">// parameterized constructor
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> <span style="color:#6639ba">getValue</span><span style="color:#1f2328">()</span> <span style="color:#cf222e">const</span><span style="color:#1f2328">;</span>  <span style="color:#57606a">// accessor/getter
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">void</span> <span style="color:#6639ba">setValue</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> value<span style="color:#1f2328">);</span>  <span style="color:#57606a">// mutator/setter
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> <span style="color:#6639ba">getDoubledValue</span><span style="color:#1f2328">();</span>  <span style="color:#57606a">// general public method
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>  <span style="color:#57606a">// WARNING: must have ; here
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">#endif </span><span style="color:#57606a">// MY_CLASS_HPP
+</span></span></span></code></pre></div><span id="id4"></span>
+<p><em>my-class.cpp</em></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">#include</span> <span style="color:#57606a">&#34;my-class.hpp&#34;</span><span style="color:#57606a">
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> MyClass<span style="color:#0550ae">::</span>doubleVal<span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  value <span style="color:#0550ae">*=</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> MyClass<span style="color:#0550ae">::</span>getDoubledValue<span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  doubleVal<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> value<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// default constructor
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// with initializer list to set value to 0
+</span></span></span><span style="display:flex;"><span>MyClass<span style="color:#0550ae">::</span>MyClass<span style="color:#1f2328">()</span><span style="color:#0550ae">:</span> value<span style="color:#1f2328">(</span><span style="color:#0550ae">0</span><span style="color:#1f2328">)</span> <span style="color:#1f2328">{}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// parameterized constructor
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// using initializer list
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// MyClass::MyClass(int value): value(value) {}
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// not using initializer list
+</span></span></span><span style="display:flex;"><span>MyClass<span style="color:#0550ae">::</span>MyClass<span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> value<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// this-&gt;value refers to the instance variable
+</span></span></span><span style="display:flex;"><span>  <span style="color:#57606a">// must add this-&gt; when names conflict
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">this</span><span style="color:#0550ae">-&gt;</span>value <span style="color:#0550ae">=</span> value<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> MyClass<span style="color:#0550ae">::</span>getValue<span style="color:#1f2328">()</span> <span style="color:#cf222e">const</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> value<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// cannot use the initializer list because this is not a constructor
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> MyClass<span style="color:#0550ae">::</span>setValue<span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> value<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">this</span><span style="color:#0550ae">-&gt;</span>value <span style="color:#0550ae">=</span> value<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><span id="id5"></span>
+<p><em>main.cpp</em></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// pay attention to the order
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// user header first
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// system header last
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">#include</span> <span style="color:#57606a">&#34;my-class.hpp&#34;</span><span style="color:#57606a">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">#include</span> <span style="color:#57606a">&lt;iostream&gt;</span><span style="color:#57606a">
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">using</span> <span style="color:#cf222e">namespace</span> std<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">main</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// trigger the default constructor
+</span></span></span><span style="display:flex;"><span>  MyClass obj1<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  cout <span style="color:#0550ae">&lt;&lt;</span> obj1<span style="color:#1f2328">.</span>getValue<span style="color:#1f2328">()</span> <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>  <span style="color:#57606a">// get 0
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// trigger the parameterized constructor
+</span></span></span><span style="display:flex;"><span>  MyClass obj2<span style="color:#1f2328">(</span><span style="color:#0550ae">10</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// alternatives
+</span></span></span><span style="display:flex;"><span>  <span style="color:#57606a">// MyClass obj2{10};  // since c++11, preferred
+</span></span></span><span style="display:flex;"><span>  <span style="color:#57606a">// MyClass obj2 = 10;  // trigger the parameterized constructor
+</span></span></span><span style="display:flex;"><span>  cout <span style="color:#0550ae">&lt;&lt;</span> obj2<span style="color:#1f2328">.</span>getValue<span style="color:#1f2328">()</span> <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>  <span style="color:#57606a">// get 10
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  MyClass <span style="color:#0550ae">*</span>ptr1<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  ptr1 <span style="color:#0550ae">=</span> <span style="color:#cf222e">new</span> MyClass<span style="color:#1f2328">(</span><span style="color:#0550ae">15</span><span style="color:#1f2328">);</span>  <span style="color:#57606a">// use new to call the constructor
+</span></span></span><span style="display:flex;"><span>  cout <span style="color:#0550ae">&lt;&lt;</span> ptr1<span style="color:#0550ae">-&gt;</span>getValue<span style="color:#1f2328">()</span> <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>  <span style="color:#57606a">// get 15
+</span></span></span><span style="display:flex;"><span>  cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#1f2328">(</span><span style="color:#0550ae">*</span>ptr1<span style="color:#1f2328">).</span>getValue<span style="color:#1f2328">()</span> <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>  <span style="color:#57606a">// get 15
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><span id="id6"></span>
+<p><em>makefile</em></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-makefile" data-lang="makefile"><span style="display:flex;"><span><span style="color:#6639ba">main</span><span style="color:#0550ae">:</span> main.o my-class.o
+</span></span><span style="display:flex;"><span>    g++ -o <span style="color:#953800">$@</span> $^
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">main.o</span><span style="color:#0550ae">:</span> main.cpp my-class.hpp
+</span></span><span style="display:flex;"><span>    g++ -std<span style="color:#0550ae">=</span>c++14 -Wall -c -o <span style="color:#953800">$@</span> $&lt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">my-class.o</span><span style="color:#0550ae">:</span> my-class.cpp my-class.hpp
+</span></span><span style="display:flex;"><span>    g++ -std<span style="color:#0550ae">=</span>c++14 -Wall -c -o <span style="color:#953800">$@</span> $&lt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">clean</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>    rm -f *.o main
+</span></span></code></pre></div></div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

@@ -1,0 +1,159 @@
+***************
+Testing For C++
+***************
+
+.. container:: subtitle
+
+  |author|
+
+Outline
+=======
++ Definition
++ Motivation
++ Types
++ Learning outcomes
+
+TL;DR
+=====
++ "Debugging" is too hard! Use "testing" instead.
++ Write drivers (cpp file with main function) to test your code.
++ Feed input and check output.
++ Writing more code (testing code) will actually save you time.
++ Expect you to learn to read tests first in this course.
+
+Overview
+========
++ Definition: Testing in software development is the process of evaluating and
+  validating a software system to ensure its correctness, functionality, and
+  performance. Automated testing is especially important for large projects.
++ Motivation and benefits
+
+  * Large projects are hard to test manually.
+  * Automated testing is more efficient and reliable.
+  * Tests can describe the functionality of the system (requirements).
+  * Testable code is usually modular and well-organized.
+
++ Types
+
+  * Unit tests
+  * Integration tests
+  * System tests
+
++ Test-driven development (FYI)
+
+  * Write tests first
+  * Write code to pass tests
+
+
+Types of tests
+==============
+* Unit tests
+
+  - Test a single function or class method.
+  - Test the correctness of the function/method.
+  - Test the boundary cases.
+  - Test the performance.
+  - May need special techniques to isolate the function/method.
+
+* Integration tests
+
+  - Test the interaction between modules.
+  - Test the correctness of the interaction.
+
+* System tests
+
+  - Test the system as a whole.
+  - Test the correctness of the system.
+  - Test the performance.
+
+Write and run tests
+===================
++ Workflow
+
+  * Write test drivers that call functions/class methods to be tested.
+  * Add building rules for test drivers in the makefile.
+  * Frequently run tests to ensure the correctness of the code.
+
++ Simple test driver
+
+  Display the result of a function call for the tester to compare.
+
+  .. code-block:: cpp
+
+    // test-store-item.cpp
+    #include <iostream>
+    #include "store-item.hpp"
+
+    void testStoreItem() {
+      StoreItem item1("Apple");
+      StoreItem item2("apple");
+      if (item1.equals(item2))
+        std::cout << "They are equal as expect!\n";
+      else
+        std::cout << "They are not equal, wrong!\n";
+    }
+
+Write and run tests (cont'd)
+----------------------------
++ Test driver using assert
+
+  * ``assert`` is a macro that checks the truth of an expression.
+  * If the expression is false, ``assert`` prints an error message and aborts
+    the program.
+  * ``assert`` is a simple way to write test drivers.
+  * include ``<cassert>`` to use ``assert``.
+
+  .. code-block:: cpp
+
+    #include <cassert>  // C assert header
+    #include "store-item.hpp"
+
+    void testStoreItem() {
+      StoreItem item1("Apple");
+      StoreItem item2("apple");
+      assert(item1.equals(item2));
+    }
+
+Write and run tests (cont'd)
+----------------------------
++ Test driver using testing frameworks
+
+  * Testing frameworks are libraries that provide tools to write tests.
+  * They are more powerful than ``assert``.
+  * E.g. Google Test, Boost Test, Catch2 etc.
+  * We use Catch2 in this course.
+
+  .. code-block:: cpp
+
+    #include "catch.hpp"  // Catch2 testing framework
+    #include "store-item.hpp"
+
+    TEST_CASE("StoreItem equality and printing", "[StoreItem]") {
+      SECTION("Case-insensitive comparison") {
+        StoreItem item1("Apple");
+        StoreItem item2("apple");
+        CHECK(item1.equals(item2));
+      }
+    }
+
+Learning outcomes
+=================
++ Understand the importance of testing.
++ Know how to write simple test drivers.
++ Know how to write test drivers using ``assert`` macro.
++ Know how to read test cases written with Catch2 framework and write code to
+  pass the tests.
+
+Testing In DSA Programming Projects
+===================================
++ Test Drivers are provided in DSA Courses
+
+  * Unit and integration tests
+  * Read to learn the expected behavior of the code.
+  * **Should never be modified.**
+  * Serve as part of grading rubric
+
+* System tests are provided
+
+  * Usually in the provided makefile
+  * Separate test.mk file in DSA 2 course

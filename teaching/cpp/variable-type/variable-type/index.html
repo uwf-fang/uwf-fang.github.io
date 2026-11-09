@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Type, Variable, Assignment, and Expression · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/cpp/">C&#43;&#43; Reference</a> / Type, Variable, Assignment, and Expression</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Type, Variable, Assignment, and Expression</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#types">Types</a></li>
+    <li><a href="#variables">Variables</a></li>
+    <li><a href="#literal">Literal</a></li>
+    <li><a href="#assignment">Assignment</a></li>
+    <li><a href="#conversion-and-type-casting">Conversion and Type casting</a></li>
+    <li><a href="#expressions">Expressions</a></li>
+    <li><a href="#core-concepts">Core Concepts</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="type-variable-assignment-and-expression"></span>
+<h2 id="types">Types</h2>
+<ul>
+<li>For each type, understand:
+<ul>
+<li>is a class type?</li>
+<li>is numeric?</li>
+<li>is ordered?</li>
+<li>is signed?</li>
+<li>is exact?</li>
+<li>range</li>
+<li>related types</li>
+</ul>
+</li>
+</ul>
+<span id="id1"></span>
+<p><strong>Common C++ Types</strong></p>
+<table>
+	<thead>
+			<tr>
+					<th>Name</th>
+					<th>Tags</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>int</td>
+					<td>non-class, numeric, signed, ordered, exact</td>
+			</tr>
+			<tr>
+					<td>unsigned int</td>
+					<td>non-class, numeric, unsigned, ordered, exact</td>
+			</tr>
+			<tr>
+					<td>float</td>
+					<td>non-class, numeric, signed, ordered, not exact</td>
+			</tr>
+			<tr>
+					<td>double</td>
+					<td>non-class, numeric, signed, ordered, not exact</td>
+			</tr>
+			<tr>
+					<td>char</td>
+					<td>non-class, numeric, unsigned, ordered, exact</td>
+			</tr>
+			<tr>
+					<td>string</td>
+					<td>class, not numeric, ordered</td>
+			</tr>
+			<tr>
+					<td>vector</td>
+					<td>class template, not numeric</td>
+			</tr>
+	</tbody>
+</table>
+<ul>
+<li>
+<p>Derived types - Types that are derived from other data-types.</p>
+<ul>
+<li><a href="/teaching/cpp/variable-type/pointer/">pointer type</a></li>
+<li><a href="/teaching/cpp/array/array-basics/">array type</a></li>
+<li><a href="/teaching/cpp/ref/ref-basics/">reference type</a></li>
+</ul>
+</li>
+<li>
+<p>Class templates</p>
+<p>Class templates can be instantiated by specifying the template arguments to generate class types.</p>
+<ul>
+<li>The template itself is not a type or class</li>
+<li>E.g. <code>vector</code> is a template while <code>vector&lt;int&gt;</code> is a type</li>
+</ul>
+</li>
+</ul>
+<h2 id="variables">Variables</h2>
+<ul>
+<li>
+<p>identifier naming</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// ==== identifiers ====
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- correct ----
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> _a<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> ____<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> a10___<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> a_1_0<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> _1_0<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- wrong ----
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> a<span style="color:#f6f8fa;background-color:#82071e">$</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#0550ae">3</span>x<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> mid<span style="color:#0550ae">-</span>var<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- Good ----
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> myVar1<span style="color:#1f2328">;</span>  <span style="color:#57606a">// var is a good abbreviation for variable
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> count<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">double</span> avgAge<span style="color:#1f2328">;</span>  <span style="color:#57606a">// avg is a a good abbreviation for average
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">double</span> gpa<span style="color:#1f2328">;</span>  <span style="color:#57606a">// good abbreviation
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- Poor ----
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> PtAc<span style="color:#1f2328">;</span>  <span style="color:#57606a">// unknown abbreviation
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> v<span style="color:#1f2328">;</span>  <span style="color:#57606a">// not informative
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">double</span> count <span style="color:#0550ae">=</span> <span style="color:#0550ae">1.5</span><span style="color:#1f2328">;</span>  <span style="color:#57606a">// name not matches the purpose
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> NUMBER<span style="color:#1f2328">;</span>  <span style="color:#57606a">// not following naming convention
+</span></span></span></code></pre></div></li>
+<li>
+<p>variable declaration - must be declared before being referred</p>
+</li>
+<li>
+<p>initialization</p>
+<ul>
+<li>assignment during declaration</li>
+<li>not assignment! have different syntax!</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// ==== declarations, initialization ====
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- correct ----
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> a<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> a <span style="color:#0550ae">=</span> <span style="color:#0550ae">10</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> a<span style="color:#1f2328">,</span> b<span style="color:#1f2328">,</span> c<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> a<span style="color:#1f2328">,</span> b <span style="color:#0550ae">=</span> <span style="color:#0550ae">5</span><span style="color:#1f2328">,</span> c <span style="color:#0550ae">=</span> <span style="color:#0550ae">10</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- wrong ----
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> a
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> a b c<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// use before declare
+</span></span></span><span style="display:flex;"><span>a <span style="color:#0550ae">=</span> <span style="color:#0550ae">10</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> a<span style="color:#1f2328">;</span>
+</span></span></code></pre></div><ul>
+<li>
+<p>constant variable</p>
+<ul>
+<li>must be initialized!</li>
+<li>can never be changed later!</li>
+<li>all uppercase with under score</li>
+<li><code>const</code> keyword can be before or after the type</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// ---- correct ----
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#cf222e">int</span> CONSTANT1 <span style="color:#0550ae">=</span> <span style="color:#0550ae">100</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#cf222e">const</span> CONSTANT2 <span style="color:#0550ae">=</span> <span style="color:#0550ae">200</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// --- Wrong ----
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">const</span> <span style="color:#cf222e">int</span> CONSTANT3<span style="color:#1f2328">;</span>  <span style="color:#57606a">// no initialization
+</span></span></span><span style="display:flex;"><span>CONSTANT1 <span style="color:#0550ae">=</span> <span style="color:#0550ae">200</span><span style="color:#1f2328">;</span>  <span style="color:#57606a">// modification not allowed
+</span></span></span><span style="display:flex;"><span>cin <span style="color:#0550ae">&gt;&gt;</span> CONSTANT2<span style="color:#1f2328">;</span>  <span style="color:#57606a">// modification not allowed
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- bad ----
+</span></span></span></code></pre></div></li>
+</ul>
+</li>
+</ul>
+<h2 id="literal">Literal</h2>
+<p>How values are represented in the source code.</p>
+<ul>
+<li>int <code>1</code>, <code>100</code></li>
+<li>double <code>3.0</code>, <code>3e2</code>, <code>3.0e-1</code></li>
+<li>char <code>'a'</code></li>
+<li>string <code>&quot;abc&quot;</code>
+<ul>
+<li>escape sequence <code>\n</code>, <code>\t</code>, <code>\&quot;</code>, <code>\'</code>, <code>\\</code> etc. in char or string literal</li>
+</ul>
+</li>
+<li>long <code>1000l</code></li>
+<li>float <code>1.0f</code></li>
+<li>unsigned int <code>100u</code></li>
+</ul>
+<h2 id="assignment">Assignment</h2>
+<ul>
+<li><code>=</code> operator</li>
+<li>assignment operation requires an lvalue on the left and an rvalue on the right</li>
+<li>lvalue
+<ul>
+<li>something that binds to a defined memory address</li>
+<li>variables</li>
+<li>references</li>
+</ul>
+</li>
+<li>rvalue
+<ul>
+<li>anything that does or does not bind to a defined memory address</li>
+<li>temporary and short-lived</li>
+<li>literals</li>
+<li>compound expressions e.g. <code>x + y</code></li>
+<li>temporary object e.g. <code>string(argv[0])</code></li>
+</ul>
+</li>
+<li>short-handed assignment operators
+<ul>
+<li><code>+=</code></li>
+<li><code>-=</code></li>
+<li><code>*=</code></li>
+<li><code>/=</code></li>
+<li><code>%=</code></li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// ==== Assignment ====
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- correct ----
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> a <span style="color:#0550ae">=</span> <span style="color:#0550ae">10</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> b <span style="color:#0550ae">=</span> a<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>b <span style="color:#0550ae">=</span> a<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>a <span style="color:#0550ae">+=</span> b<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">double</span> c <span style="color:#0550ae">=</span> a<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>b <span style="color:#0550ae">=</span> a <span style="color:#0550ae">*</span> c<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- wrong ----
+</span></span></span><span style="display:flex;"><span>a <span style="color:#0550ae">+</span> b <span style="color:#0550ae">=</span> <span style="color:#0550ae">20</span><span style="color:#1f2328">;</span>  <span style="color:#57606a">// non-lvalue on the left
+</span></span></span><span style="display:flex;"><span>a <span style="color:#0550ae">==</span> <span style="color:#0550ae">10</span><span style="color:#1f2328">;</span>  <span style="color:#57606a">// wrong operator
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// use without initial value
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> a<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>a <span style="color:#0550ae">=</span> a <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>a <span style="color:#0550ae">+=</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">;</span>
+</span></span></code></pre></div><h2 id="conversion-and-type-casting">Conversion and Type casting</h2>
+<ul>
+<li>Type conversion (implicit)
+<ol>
+<li>assignment <strong>forces</strong> any type casting</li>
+<li>implicit conversion happens in operations between mixed types (the value of the type with smaller range will be converted to the type with lager range, a.k.a. widened)</li>
+</ol>
+</li>
+<li>Type casting (explicit)
+<ul>
+<li>explicit type casting <code>static_cast&lt;NewType&gt;(variable)</code></li>
+<li><strong>Avoid C style type conversion</strong> like <code>(int) doubleValue</code></li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// ==== conversion, type casting ====
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- correct ----
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> a <span style="color:#0550ae">=</span> <span style="color:#0550ae">10</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">double</span> b<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">char</span> c <span style="color:#0550ae">=</span> <span style="color:#0a3069">&#39;L&#39;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>b <span style="color:#0550ae">=</span> a<span style="color:#1f2328">;</span> <span style="color:#57606a">// a converted to double
+</span></span></span><span style="display:flex;"><span>a <span style="color:#0550ae">=</span> b<span style="color:#1f2328">;</span> <span style="color:#57606a">// b converted to int
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// c converted to int and added to a;
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// the resulting int converted to double when assigned to b
+</span></span></span><span style="display:flex;"><span>b <span style="color:#0550ae">=</span> a <span style="color:#0550ae">+</span> c<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// average without losing precision
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> total <span style="color:#0550ae">=</span> <span style="color:#0550ae">7</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> count <span style="color:#0550ae">=</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">double</span> average <span style="color:#0550ae">=</span> <span style="color:#cf222e">static_cast</span><span style="color:#0550ae">&lt;</span><span style="color:#cf222e">double</span><span style="color:#0550ae">&gt;</span><span style="color:#1f2328">(</span>total<span style="color:#1f2328">)</span> <span style="color:#0550ae">/</span> count<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// convert to 3.210000
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">double</span> val <span style="color:#0550ae">=</span> <span style="color:#0550ae">3.213</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">double</span> result <span style="color:#0550ae">=</span> <span style="color:#cf222e">static_cast</span><span style="color:#0550ae">&lt;</span><span style="color:#cf222e">int</span><span style="color:#0550ae">&gt;</span><span style="color:#1f2328">(</span>val <span style="color:#0550ae">*</span> <span style="color:#0550ae">100</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">/</span> <span style="color:#0550ae">100.0</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- wrong ----
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> total <span style="color:#0550ae">=</span> <span style="color:#0550ae">7</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> count <span style="color:#0550ae">=</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">double</span> average <span style="color:#0550ae">=</span> total <span style="color:#0550ae">/</span> count<span style="color:#1f2328">;</span>  <span style="color:#57606a">// lose precision, get 2.0, expect 2.3333...
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">double</span> average <span style="color:#0550ae">=</span> <span style="color:#cf222e">static_cast</span><span style="color:#0550ae">&lt;</span><span style="color:#cf222e">double</span><span style="color:#0550ae">&gt;</span><span style="color:#1f2328">(</span>total <span style="color:#0550ae">/</span> count<span style="color:#1f2328">);</span> <span style="color:#57606a">// cast too late
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- bad ----
+</span></span></span><span style="display:flex;"><span>cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#1f2328">((</span><span style="color:#cf222e">int</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">3.5</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>  <span style="color:#57606a">// C-style type casting
+</span></span></span></code></pre></div><h2 id="expressions">Expressions</h2>
+<ul>
+<li>
+<p>operators</p>
+<ul>
+<li>arithmetic <code>+ - * / %</code></li>
+<li>increase, decrease: <code>++</code>, <code>--</code>
+<ul>
+<li>requires an lvalue</li>
+<li>similar to <code>+= 1</code> or <code>-= 1</code></li>
+<li>prefix vs suffix</li>
+<li>prefer prefix if possible (run faster, save memory)</li>
+</ul>
+</li>
+<li>relational <code>== != &lt; &gt; &lt;= &gt;=</code></li>
+<li>logic <code>&amp;&amp; || !</code>
+<ul>
+<li>
+<p>short circuit evaluation</p>
+<p>In the evaluation of logical expression with binary logical operators (&amp;&amp; and ||), the operands are evaluated from left to right. If the value of the right operand does not affect the result, it will be skipped in the evaluation.</p>
+</li>
+</ul>
+</li>
+<li>bit-wise <code>&amp; | !</code></li>
+<li>assignment <code>=</code></li>
+<li>other operator: <code>::</code>, <code>&lt;&lt;</code>, <code>&gt;&gt;</code>, <code>&amp;</code>, <code>*</code>, <code>.</code>, <code>-&gt;</code></li>
+</ul>
+</li>
+<li>
+<p>Precedence rule (order of evaluation, arithmetic, relational, and logic only)</p>
+<ol>
+<li><code>()</code></li>
+<li><code>!</code> logical negation</li>
+<li><code>-</code> arithmetic negation</li>
+<li><code>*, /, %</code> arithmetic multiplication, division, and modulo</li>
+<li><code>+, -</code> arithmetic addition, subtraction</li>
+<li><code>&gt;, &lt;, &gt;=, &lt;=</code> relational</li>
+<li><code>==, !=</code> relational</li>
+<li><code>&amp;&amp;</code> logical and</li>
+<li><code>||</code> logical or</li>
+</ol>
+</li>
+<li>
+<p>Pitfalls</p>
+<ul>
+<li><code>=</code> vs <code>==</code></li>
+<li>relational <code>&amp;&amp; ||</code> vs bit-wise <code>&amp; |</code></li>
+<li><code>%</code> on non-int</li>
+<li>lose precision in integer division</li>
+<li>chained range check <code>1 &lt; a &lt; 10</code></li>
+<li>bool vs int, asymmetric interconversion
+<ul>
+<li>true -&gt; 1, false -&gt; 0</li>
+<li>non-zero -&gt; true, 0 -&gt; false</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// ==== operators ====
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- correct ----
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span>age <span style="color:#0550ae">&gt;</span> <span style="color:#0550ae">1</span> <span style="color:#0550ae">&amp;&amp;</span> age <span style="color:#0550ae">&lt;</span> <span style="color:#0550ae">10</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>  cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;Young child</span><span style="color:#0a3069">\n</span><span style="color:#0a3069">&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- wrong ----
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">double</span> a <span style="color:#0550ae">=</span> <span style="color:#0550ae">10</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> b <span style="color:#0550ae">=</span> a <span style="color:#0550ae">%</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span>grade <span style="color:#0550ae">=</span> <span style="color:#0550ae">100</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>  cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;perfect!&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span>age <span style="color:#0550ae">&lt;</span> <span style="color:#0550ae">10</span> <span style="color:#0550ae">&amp;</span> age <span style="color:#0550ae">&gt;</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">)</span>   <span style="color:#57606a">// this actually works well but is a wrong syntax
+</span></span></span><span style="display:flex;"><span>  cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;Young child</span><span style="color:#0a3069">\n</span><span style="color:#0a3069">&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span><span style="color:#0550ae">1</span> <span style="color:#0550ae">&lt;</span> age <span style="color:#0550ae">&lt;</span> <span style="color:#0550ae">10</span><span style="color:#1f2328">)</span>  <span style="color:#57606a">// will compile but wrong!
+</span></span></span><span style="display:flex;"><span>  cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;Young child</span><span style="color:#0a3069">\n</span><span style="color:#0a3069">&#34;</span><span style="color:#1f2328">;</span>
+</span></span></code></pre></div></li>
+<li>
+<p>Step-wise evaluation, in every step consider:</p>
+<ul>
+<li>conversion and type casting</li>
+<li>precedence rule</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// ==== Expression ====
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ---- step-wise evaluation ----
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// given: x = 2
+</span></span></span><span style="display:flex;"><span>  <span style="color:#1f2328">(</span>x <span style="color:#0550ae">+</span> <span style="color:#0550ae">5</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">/</span> <span style="color:#0550ae">4</span>
+</span></span><span style="display:flex;"><span><span style="color:#0550ae">=</span> <span style="color:#1f2328">(</span><span style="color:#0550ae">2</span> <span style="color:#0550ae">+</span> <span style="color:#0550ae">5</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">/</span> <span style="color:#0550ae">4</span>
+</span></span><span style="display:flex;"><span><span style="color:#0550ae">=</span> <span style="color:#0550ae">7</span> <span style="color:#0550ae">/</span> <span style="color:#0550ae">4</span>
+</span></span><span style="display:flex;"><span><span style="color:#0550ae">=</span> <span style="color:#0550ae">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">static_cast</span><span style="color:#0550ae">&lt;</span><span style="color:#cf222e">int</span><span style="color:#0550ae">&gt;</span><span style="color:#1f2328">(</span><span style="color:#0550ae">19.5</span> <span style="color:#0550ae">/</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">+</span> <span style="color:#0550ae">5.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#0550ae">=</span> <span style="color:#cf222e">static_cast</span><span style="color:#0550ae">&lt;</span><span style="color:#cf222e">int</span><span style="color:#0550ae">&gt;</span><span style="color:#1f2328">(</span><span style="color:#0550ae">6.5</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">+</span> <span style="color:#0550ae">5.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#0550ae">=</span> <span style="color:#0550ae">6</span> <span style="color:#0550ae">+</span> <span style="color:#0550ae">5.0</span>
+</span></span><span style="display:flex;"><span><span style="color:#0550ae">=</span> <span style="color:#0550ae">11.0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#1f2328">((</span><span style="color:#0550ae">17</span> <span style="color:#0550ae">/</span> <span style="color:#0550ae">2</span> <span style="color:#0550ae">+</span> <span style="color:#0550ae">19</span> <span style="color:#0550ae">%</span> <span style="color:#0550ae">3</span> <span style="color:#0550ae">-</span> <span style="color:#0550ae">3</span> <span style="color:#0550ae">*</span> <span style="color:#0550ae">2</span> <span style="color:#0550ae">+</span> <span style="color:#0550ae">4</span> <span style="color:#0550ae">*</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">&gt;=</span> <span style="color:#1f2328">(</span><span style="color:#0550ae">5</span> <span style="color:#0550ae">+</span> <span style="color:#0550ae">2</span> <span style="color:#0550ae">*</span> <span style="color:#0550ae">4</span><span style="color:#1f2328">))</span> <span style="color:#0550ae">&amp;&amp;</span> <span style="color:#0550ae">!</span><span style="color:#1f2328">((((</span><span style="color:#0550ae">4</span> <span style="color:#0550ae">*</span> <span style="color:#0550ae">5</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">/</span><span style="color:#0550ae">2</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">==</span> <span style="color:#1f2328">(</span><span style="color:#0550ae">7</span> <span style="color:#0550ae">/</span> <span style="color:#0550ae">3</span> <span style="color:#0550ae">+</span> <span style="color:#0550ae">2</span> <span style="color:#0550ae">*</span> <span style="color:#0550ae">5</span> <span style="color:#0550ae">-</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">||</span> <span style="color:#0550ae">!</span><span style="color:#1f2328">(</span><span style="color:#0550ae">4</span> <span style="color:#0550ae">&gt;=</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#0550ae">=</span> <span style="color:#1f2328">((</span><span style="color:#0550ae">8</span> <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span> <span style="color:#0550ae">-</span> <span style="color:#0550ae">6</span> <span style="color:#0550ae">+</span> <span style="color:#0550ae">12</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">&gt;=</span> <span style="color:#1f2328">(</span><span style="color:#0550ae">5</span> <span style="color:#0550ae">+</span> <span style="color:#0550ae">8</span><span style="color:#1f2328">))</span> <span style="color:#0550ae">&amp;&amp;</span> <span style="color:#0550ae">!</span><span style="color:#1f2328">(((</span><span style="color:#0550ae">20</span> <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">/</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">==</span> <span style="color:#1f2328">(</span><span style="color:#0550ae">2</span> <span style="color:#0550ae">+</span> <span style="color:#0550ae">10</span> <span style="color:#0550ae">-</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">||</span> <span style="color:#0550ae">!</span><span style="color:#1f2328">(</span><span style="color:#6639ba">true</span><span style="color:#1f2328">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#0550ae">=</span> <span style="color:#1f2328">(</span><span style="color:#0550ae">15</span> <span style="color:#0550ae">&gt;=</span> <span style="color:#0550ae">13</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">&amp;&amp;</span> <span style="color:#0550ae">!</span><span style="color:#1f2328">((</span><span style="color:#0550ae">21</span> <span style="color:#0550ae">/</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">==</span> <span style="color:#0550ae">10</span> <span style="color:#0550ae">||</span> <span style="color:#6639ba">false</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#0550ae">=</span> <span style="color:#6639ba">true</span> <span style="color:#0550ae">&amp;&amp;</span> <span style="color:#0550ae">!</span><span style="color:#1f2328">(</span><span style="color:#6639ba">true</span> <span style="color:#0550ae">||</span> <span style="color:#6639ba">false</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#0550ae">=</span> <span style="color:#6639ba">true</span> <span style="color:#0550ae">&amp;&amp;</span> <span style="color:#0550ae">!</span><span style="color:#6639ba">true</span>
+</span></span><span style="display:flex;"><span><span style="color:#0550ae">=</span> <span style="color:#6639ba">true</span> <span style="color:#0550ae">&amp;&amp;</span> <span style="color:#6639ba">false</span>
+</span></span><span style="display:flex;"><span><span style="color:#0550ae">=</span> <span style="color:#6639ba">false</span>
+</span></span></code></pre></div></li>
+<li>
+<p>evaluation tree</p>
+<p>Visual aid when evaluating complex expressions</p>
+<p>e.g. <code>3.0 / a + 5 &lt; 8 &amp;&amp; c &gt; 'b' || d % 2 == 1</code></p>
+<p><img src="/teaching/_migration/graph-365a6d12e217264f.svg" alt="Graphviz diagram"></p>
+</li>
+</ul>
+<h2 id="core-concepts">Core Concepts</h2>
+<span id="term-Identifier"></span>
+<dl>
+<dt>Identifier</dt>
+<dd>User defined names</dd>
+</dl>
+<span id="term-Reserved-word-keyword"></span>
+<dl>
+<dt>Reserved word (keyword)</dt>
+<dd>Names used by the language</dd>
+</dl>
+<span id="term-Variable"></span>
+<dl>
+<dt>Variable</dt>
+<dd>A named container to store a value</dd>
+</dl>
+<span id="term-Type"></span>
+<dl>
+<dt>Type</dt>
+<dd>Storage format supported by the language</dd>
+</dl>
+<span id="term-Variable-initialization"></span>
+<dl>
+<dt>Variable initialization</dt>
+<dd>Providing initial value to a variable when it is declared</dd>
+</dl>
+<span id="term-Literal"></span>
+<dl>
+<dt>Literal</dt>
+<dd>Textual representation of fixed-values used in source code</dd>
+</dl>
+<span id="term-Lvalue"></span>
+<dl>
+<dt>Lvalue</dt>
+<dd>An expression that binds to a defined memory address</dd>
+</dl>
+<span id="term-Rvalue"></span>
+<dl>
+<dt>Rvalue</dt>
+<dd>An expression that does not bind to any defined memory address</dd>
+</dl>
+<span id="term-Expression"></span>
+<dl>
+<dt>Expression</dt>
+<dd>Text representations in source code of something that evaluates to a value</dd>
+</dl>
+<span id="term-Precedence-rule"></span>
+<dl>
+<dt>Precedence rule</dt>
+<dd>The order of evaluation of operators in an expression</dd>
+</dl>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

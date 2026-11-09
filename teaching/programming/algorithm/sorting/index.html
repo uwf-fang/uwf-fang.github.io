@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sorting Algorithms · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/programming/">Algorithms and Data Structures</a> / Sorting Algorithms</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Sorting Algorithms</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#array-vs-linked-list">Array vs Linked-list</a></li>
+    <li><a href="#real-world-choices">Real-World Choices</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="sorting-algorithms"></span>
+<h2 id="overview">Overview</h2>
+<ul>
+<li>
+<p>Visualizations</p>
+<p>Due to the complexity of the sorting algorithms. Visualizations may greatly enhance the learning process. Below are two useful websites providing visualizations of common algorithms and data structures.</p>
+<ul>
+<li><a href="https://visualgo.net/en/sorting">visualgo.net</a></li>
+<li><a href="https://www.cs.usfca.edu/~galles/visualization/Algorithms.html">Data Structure Visualization</a></li>
+</ul>
+</li>
+<li>
+<p>Categories</p>
+<p>All algorithms not mentioned in the book is for your information only. Only algorithm with bold names are covered in the book.</p>
+<ul>
+<li>
+<p>Comparison based</p>
+<ul>
+<li>Selection</li>
+<li>Insertion</li>
+<li>Bubble</li>
+<li>Shell</li>
+<li>Quick</li>
+<li>Merge</li>
+<li>Heap</li>
+</ul>
+</li>
+<li>
+<p>Non-comparison based</p>
+<ul>
+<li>Bucket</li>
+<li>Radix</li>
+<li>Counting</li>
+</ul>
+</li>
+<li>
+<p>Divide-and-conquer $\Theta(n \log n)$</p>
+<ul>
+<li>Quick</li>
+<li>Merge</li>
+</ul>
+</li>
+<li>
+<p>simple/naive $\Theta(n^{2})$</p>
+<ul>
+<li>Selection</li>
+<li>Insertion</li>
+<li>Bubble</li>
+</ul>
+</li>
+<li>
+<p>Hybrid</p>
+<ul>
+<li>Best in real-world scenarios</li>
+<li>Adopted in many C++ standard library implementations</li>
+<li>Tim sort: combination of merge sort and insertion sort</li>
+<li>Intro sort: combination of quick sort, heap sort, and insertion sort</li>
+</ul>
+</li>
+<li>
+<p>Stable sorting algorithm</p>
+<p>The order of duplicate elements is preserved after sorting.</p>
+<ul>
+<li>Insertion</li>
+<li>Merge</li>
+<li>Radix</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Time complexity</p>
+<ul>
+<li>simple $\Theta(n^{2})$: insert, selection, bubble</li>
+<li>fast $\Theta(n \log n)$: quick, merge, heap</li>
+<li>linear: radix $\Theta(nk) = \Theta(n)$, bucket $\Theta(n + k) = \Theta(n)$</li>
+</ul>
+</li>
+<li>
+<p>Space complexity</p>
+<p>The following discussion is on array only.</p>
+<ul>
+<li>in-place (swap based)
+<ul>
+<li>Iterative (loop based) $\Theta(1)$
+<ul>
+<li>selection sort</li>
+<li>bubble sort</li>
+<li>insertion sort</li>
+<li>shell sort</li>
+<li>heap sort</li>
+</ul>
+</li>
+<li>Divide-and-conquer (recursive) $\Theta(\log n)$
+<ul>
+<li>quick sort</li>
+<li>selection sort</li>
+<li>bubble sort</li>
+<li>insertion sort</li>
+<li>shell sort</li>
+<li>heap sort</li>
+</ul>
+</li>
+<li>Divide-and-conquer (recursive)
+<ul>
+<li>quick sort: $\Theta(\log n)$ to $\Theta(n)$ for recursion</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>not-in-place (out-of-place) $\Theta(n)$ for extra arrays
+<ul>
+<li>merge sort</li>
+<li>bucket sort</li>
+<li>radix sort</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="array-vs-linked-list">Array vs Linked-list</h2>
+<ul>
+<li>Sorting an array
+<ul>
+<li>Array property
+<ul>
+<li>fast access by index</li>
+<li>slow insertion and deletion of elements except at the end</li>
+</ul>
+</li>
+<li>With the same time complexity, consider data movement overhead</li>
+<li>Preferred general purpose sorting algorithms
+<ul>
+<li>Quick sort</li>
+<li>Merge sort</li>
+<li>Heap sort</li>
+<li>Shell sort</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Sorting a linked-list
+<ul>
+<li>Linked-list property
+<ul>
+<li>slow access by index</li>
+<li>fast reconstruction of new list</li>
+<li>fast access to neighboring nodes</li>
+</ul>
+</li>
+<li>With the same time complexity, consider data movement overhead</li>
+<li>Preferred general purpose sorting algorithms
+<ul>
+<li>Merge sort</li>
+<li>Insertion sort</li>
+</ul>
+</li>
+<li>Time Complexity
+<ul>
+<li>$\Theta(n \log n)$ for merge sort</li>
+<li>$\Theta(n^2)$ for insertion sort</li>
+</ul>
+</li>
+<li>Space Complexity depends on the implementation</li>
+</ul>
+</li>
+</ul>
+<h2 id="real-world-choices">Real-World Choices</h2>
+<ul>
+<li><strong>This section is OPTIONAL!</strong></li>
+<li><strong>In real-world scenarios, there are more considerations.</strong>
+<ul>
+<li>Data size is not always large</li>
+<li>Performance boost from cache is often significant</li>
+<li>We can always make more complicated sorting algorithms</li>
+</ul>
+</li>
+<li>For small arrays
+<ul>
+<li>Insertion sort
+<ul>
+<li>Fast</li>
+<li>Simple</li>
+<li>Stable (original order of equal elements is preserved)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>For large arrays
+<ul>
+<li>Quick sort &gt; Merge sort &gt; Heap sort
+<ul>
+<li>Quick sort is faster than merge sort and heap sort in practice, inconsistent complexity.</li>
+<li>Merge sort is stable, has consistent complexity, but requires extra space</li>
+<li>Heap sort is in-place but is not stable and cannot make good use of cache</li>
+</ul>
+</li>
+<li>In parallel environment
+<ul>
+<li>Merge sort</li>
+<li>Quick sort</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>The overall winner for array is
+<ul>
+<li>Hybrid
+<ul>
+<li>Use divide-and-conquer to divide the array into small subarrays and then use insertion sort to sort the small subarrays</li>
+<li>Quick sort + Insertion sort</li>
+<li>Merge sort + Insertion sort</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>For linked list
+<ul>
+<li>Out-of-place algorithms are no longer requiring $\Theta(n)$ space</li>
+<li>Cache is not helping at all</li>
+<li>Direct sort
+<ul>
+<li>Merge sort for large linked list (can be parallelized)</li>
+<li>Insertion sort for small linked list</li>
+</ul>
+</li>
+<li>Sort as array
+<ul>
+<li>Make an array from the linked list</li>
+<li>Sort the array</li>
+<li>Create the new linked list according to the sorted array</li>
+</ul>
+</li>
+<li>Sort as array of pointers
+<ul>
+<li>Make an array of pointers</li>
+<li>Sort the array of pointers</li>
+<li>Generate the new linked list according to the sorted array</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

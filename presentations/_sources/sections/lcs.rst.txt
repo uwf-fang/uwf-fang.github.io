@@ -1,0 +1,162 @@
+Longest Common Subsequence (LCS) Problem
+========================================
+- Sequences and subsequences: foundational concepts in computational problems
+- Critical for sequence comparison in bioinformatics and computer science
+
+  * DNA sequence alignment
+  * DNA sequence similarity
+  * Text comparison and plagiarism detection
+  * File comparison
+  * Version control systems
+
+LCS Problem Overview
+--------------------
+- LCS: finding the longest subsequence common to two sequences
+
+  * More than one possible solution
+  * Subsequence: not necessarily contiguous
+
+- Used in genetics and version control systems
+- Example: The Longest Common Subsequence for the DNA sequences "AGGTAB" and
+  "GXTXAYB" is "GGTAB"
+
+LCS Problem Properties
+----------------------
+- Optimal Substructure: (last character match version)
+
+  - For sequences `X` and `Y`, if `X[m]` equals `Y[n]`, the LCS includes `X[m]`
+    and is one more than `LCS(X[1..m-1], Y[1..n-1])`.
+
+    - E.g. `LCS("ABCBDAB", "BDCABB") = 1 + LCS("ABCBDA", "BDCAB")`
+
+  - If `X[m]` does not equal `Y[n]`, the LCS is the longer of `LCS(X[1..m],
+    Y[1..n-1])` or `LCS(X[1..m-1], Y[1..n])`.
+
+    - E.g. `LCS("ABCBDAB", "BDCABD") = max(LCS("ABCBDAB", "BDCAB"),
+      LCS("ABCBDA", "BDCABD"))`
+
+- Overlapping Subproblems:
+
+  - Calculating `LCS(X[1..m], Y[1..n])` will often require recalculating
+    `LCS(X[1..m-1], Y[1..n-1])`, `LCS(X[1..m], Y[1..n-1])`, and `LCS(X[1..m-1],
+    Y[1..n])` multiple times.
+
+Brute Force Approach
+--------------------
+- Involves comparing all possible subsequences of both strings and compare
+- Results in exponential time complexity :math:`2^{m+n}`
+- Not feasible for long sequences due to inefficiency
+
+Divide and Conquer Approach
+---------------------------
++ Employ the subproblem definition of LCS
++ Recursively divide the problem into smaller subproblems
++ Redundant computations on overlapping subproblems
+
+.. code-block::
+
+  function findLCSLength(s1, s2, m, n):
+      // Base case: If either of the strings is empty, LCS length is 0
+      if m == 0 or n == 0:
+          return 0
+
+      // If the last characters of both strings match
+      if s1[m-1] == s2[n-1]:
+          return 1 + findLCSLength(s1, s2, m-1, n-1)
+
+      // If the last characters of both strings don't match
+      return max(findLCSLength(s1, s2, m, n-1), findLCSLength(s1, s2, m-1, n))
+
+
+Dynamic Programming (DP) Solution
+---------------------------------
+- DP Table: set up with dimensions one greater than sequence lengths
+- Matching characters: increment LCS length
+- Non-matching characters: take the maximum value from adjacent cells
+- LCS length located at `dp[m][n]`
+- Algorithm complexity: :math:`\Theta(m*n)` for both time and space
+
+Traceback for LCS
+-----------------
+.. container:: flex-container
+
+  .. container:: half
+
+    .. image:: /_static/lcs-traceback.png
+      :width: 70%
+
+    .. container:: footnote
+
+      Credit: Introduction to Algorithms, 4th Ed., T. Cormen et al.
+
+  .. container:: half
+
+    - **Can only find one LCS**
+    - Reconstruct LCS from the filled DP table
+    - Backtrack from `dp[m][n]`, storing characters
+    - Diagonal movement for matches; otherwise to cell with higher value; if
+      same, go up
+    - Complexity: :math:`\Theta(m+n)`
+    - **Question**: How about same values?
+
+Pseudocode
+----------
+
+.. code-block::
+
+    Function LCS(X, Y):
+        m = length of X
+        n = length of Y
+        dp = array of (m+1) rows and (n+1) columns
+
+        # Initialize the table with 0's, as the LCS of an empty sequence
+        # with any sequence is 0
+        For i from 0 to m:
+            dp[i][0] = 0
+        For j from 0 to n:
+            dp[0][j] = 0
+
+        # Fill the dp table
+        For i from 1 to m:
+            For j from 1 to n:
+                If X[i] == Y[j]:
+                    dp[i][j] = dp[i-1][j-1] + 1
+                Else:
+                    dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+
+        # The length of LCS is in the cell dp[m][n]
+        length_LCS = dp[m][n]
+
+Pseudocode (cont.)
+------------------
+
+.. code-block::
+
+    # To find the LCS string, traceback from dp[m][n]
+    LCS = ""
+    i = m, j = n
+    While i > 0 and j > 0:
+        If X[i] == Y[j]:
+            LCS = X[i] + LCS  # Prepend the character to LCS
+            i = i - 1
+            j = j - 1
+        Else If dp[i-1][j] >= dp[i][j-1]: # if same, go up
+            i = i - 1
+        Else:
+            j = j - 1
+
+    Return LCS, length_LCS
+
+Variations
+----------
+- **All LCSs**: The DP solution only finds one LCS. To find all LCSs, use
+  backtracking to find all possible paths in the DP table that lead to the
+  LCS length.
+- **Longest Common Substring**: A substring is a contiguous sequence of
+  characters within a string. The Longest Common Substring (LCSu) problem is
+  similar to the LCS problem, but requires that the common elements be
+  contiguous.
+- **Improve space complexity**: The DP solution requires :math:`\Theta(m*n)`
+  space. This can be improved to :math:`\Theta(min(m, n))` by only storing the
+  current and previous rows of the DP table.
+

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Testing For C++</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Testing For C++</h1>
+<div class="subtitle docutils container">
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Definition</p></li>
+<li><p>Motivation</p></li>
+<li><p>Types</p></li>
+<li><p>Learning outcomes</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>TL;DR</h2>
+<ul class="simple">
+<li><p>“Debugging” is too hard! Use “testing” instead.</p></li>
+<li><p>Write drivers (cpp file with main function) to test your code.</p></li>
+<li><p>Feed input and check output.</p></li>
+<li><p>Writing more code (testing code) will actually save you time.</p></li>
+<li><p>Expect you to learn to read tests first in this course.</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<ul class="simple">
+<li><p>Definition: Testing in software development is the process of evaluating and
+validating a software system to ensure its correctness, functionality, and
+performance. Automated testing is especially important for large projects.</p></li>
+<li><p>Motivation and benefits</p>
+<ul>
+<li><p>Large projects are hard to test manually.</p></li>
+<li><p>Automated testing is more efficient and reliable.</p></li>
+<li><p>Tests can describe the functionality of the system (requirements).</p></li>
+<li><p>Testable code is usually modular and well-organized.</p></li>
+</ul>
+</li>
+<li><p>Types</p>
+<ul>
+<li><p>Unit tests</p></li>
+<li><p>Integration tests</p></li>
+<li><p>System tests</p></li>
+</ul>
+</li>
+<li><p>Test-driven development (FYI)</p>
+<ul>
+<li><p>Write tests first</p></li>
+<li><p>Write code to pass tests</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Types of tests</h2>
+<ul class="simple">
+<li><p>Unit tests</p>
+<ul>
+<li><p>Test a single function or class method.</p></li>
+<li><p>Test the correctness of the function/method.</p></li>
+<li><p>Test the boundary cases.</p></li>
+<li><p>Test the performance.</p></li>
+<li><p>May need special techniques to isolate the function/method.</p></li>
+</ul>
+</li>
+<li><p>Integration tests</p>
+<ul>
+<li><p>Test the interaction between modules.</p></li>
+<li><p>Test the correctness of the interaction.</p></li>
+</ul>
+</li>
+<li><p>System tests</p>
+<ul>
+<li><p>Test the system as a whole.</p></li>
+<li><p>Test the correctness of the system.</p></li>
+<li><p>Test the performance.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Write and run tests</h2>
+<ul>
+<li><p>Workflow</p>
+<ul class="simple">
+<li><p>Write test drivers that call functions/class methods to be tested.</p></li>
+<li><p>Add building rules for test drivers in the makefile.</p></li>
+<li><p>Frequently run tests to ensure the correctness of the code.</p></li>
+</ul>
+</li>
+<li><p>Simple test driver</p>
+<p>Display the result of a function call for the tester to compare.</p>
+<pre><code data-trim data-noescape class="cpp">// test-store-item.cpp
+#include &lt;iostream&gt;
+#include &quot;store-item.hpp&quot;
+
+void testStoreItem() {
+  StoreItem item1(&quot;Apple&quot;);
+  StoreItem item2(&quot;apple&quot;);
+  if (item1.equals(item2))
+    std::cout &lt;&lt; &quot;They are equal as expect!\n&quot;;
+  else
+    std::cout &lt;&lt; &quot;They are not equal, wrong!\n&quot;;
+}</code></pre>
+</li>
+</ul>
+</section>
+<section >
+<h3>Write and run tests (cont’d)</h3>
+<ul>
+<li><p>Test driver using assert</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">assert</span></code> is a macro that checks the truth of an expression.</p></li>
+<li><p>If the expression is false, <code class="docutils literal notranslate"><span class="pre">assert</span></code> prints an error message and aborts
+the program.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">assert</span></code> is a simple way to write test drivers.</p></li>
+<li><p>include <code class="docutils literal notranslate"><span class="pre">&lt;cassert&gt;</span></code> to use <code class="docutils literal notranslate"><span class="pre">assert</span></code>.</p></li>
+</ul>
+<pre><code data-trim data-noescape class="cpp">#include &lt;cassert&gt;  // C assert header
+#include &quot;store-item.hpp&quot;
+
+void testStoreItem() {
+  StoreItem item1(&quot;Apple&quot;);
+  StoreItem item2(&quot;apple&quot;);
+  assert(item1.equals(item2));
+}</code></pre>
+</li>
+</ul>
+</section>
+<section >
+<h3>Write and run tests (cont’d)</h3>
+<ul>
+<li><p>Test driver using testing frameworks</p>
+<ul class="simple">
+<li><p>Testing frameworks are libraries that provide tools to write tests.</p></li>
+<li><p>They are more powerful than <code class="docutils literal notranslate"><span class="pre">assert</span></code>.</p></li>
+<li><p>E.g. Google Test, Boost Test, Catch2 etc.</p></li>
+<li><p>We use Catch2 in this course.</p></li>
+</ul>
+<pre><code data-trim data-noescape class="cpp">#include &quot;catch.hpp&quot;  // Catch2 testing framework
+#include &quot;store-item.hpp&quot;
+
+TEST_CASE(&quot;StoreItem equality and printing&quot;, &quot;[StoreItem]&quot;) {
+  SECTION(&quot;Case-insensitive comparison&quot;) {
+    StoreItem item1(&quot;Apple&quot;);
+    StoreItem item2(&quot;apple&quot;);
+    CHECK(item1.equals(item2));
+  }
+}</code></pre>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Learning outcomes</h2>
+<ul class="simple">
+<li><p>Understand the importance of testing.</p></li>
+<li><p>Know how to write simple test drivers.</p></li>
+<li><p>Know how to write test drivers using <code class="docutils literal notranslate"><span class="pre">assert</span></code> macro.</p></li>
+<li><p>Know how to read test cases written with Catch2 framework and write code to
+pass the tests.</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Testing In DSA Programming Projects</h2>
+<ul class="simple">
+<li><p>Test Drivers are provided in DSA Courses</p>
+<ul>
+<li><p>Unit and integration tests</p></li>
+<li><p>Read to learn the expected behavior of the code.</p></li>
+<li><p><strong>Should never be modified.</strong></p></li>
+<li><p>Serve as part of grading rubric</p></li>
+</ul>
+</li>
+</ul>
+<ul class="simple">
+<li><p>System tests are provided</p>
+<ul>
+<li><p>Usually in the provided makefile</p></li>
+<li><p>Separate test.mk file in DSA 2 course</p></li>
+</ul>
+</li>
+</ul>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Longest Common Subsequence Problem · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/programming/">Algorithms and Data Structures</a> / Longest Common Subsequence Problem</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Longest Common Subsequence Problem</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#introduction">Introduction</a>
+      <ul>
+        <li><a href="#sequence-comparison">Sequence Comparison</a></li>
+        <li><a href="#lcs-problem">LCS Problem</a></li>
+        <li><a href="#optimal-substructure">Optimal Substructure</a></li>
+        <li><a href="#overlapping-subproblems">Overlapping Subproblems</a></li>
+      </ul>
+    </li>
+    <li><a href="#brute-force-approach">Brute Force Approach</a>
+      <ul>
+        <li><a href="#divide-and-conquer-approach">Divide and Conquer Approach</a></li>
+      </ul>
+    </li>
+    <li><a href="#dp-solution-for-lcs">DP Solution for LCS</a></li>
+    <li><a href="#traceback-to-find-the-lcs">Traceback to Find the LCS</a></li>
+    <li><a href="#pseudocode">Pseudocode</a></li>
+    <li><a href="#variations">Variations</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="longest-common-subsequence-problem"></span>
+<h2 id="introduction">Introduction</h2>
+<h3 id="sequence-comparison">Sequence Comparison</h3>
+<p>Sequences and subsequences are foundational concepts in the study of computational problems. A sequence is an ordered list of elements, while a subsequence is a series of elements that appear in the same order as in the original sequence but not necessarily consecutively. Sequence comparison is a critical operation in various domains such as bioinformatics, where it is used to align DNA sequences, and in computer science for text comparison and file differencing tools.</p>
+<h3 id="lcs-problem">LCS Problem</h3>
+<p>The Longest Common Subsequence (LCS) problem is a classic computer science challenge. It involves finding the longest sequence of elements that are common and in the same order in two given sequences without necessarily being contiguous. This problem has practical applications in areas such as genetics, where it can be used to identify similar regions of DNA between species, and in version control systems to identify changes between file versions.</p>
+<p>An example of the LCS problem can be illustrated with two sequences, “ABCBDAB” and “BDCABC”. The LCS for these sequences is “BCAB”.</p>
+<h3 id="optimal-substructure">Optimal Substructure</h3>
+<ul>
+<li>For sequences X and Y, if X[m] equals Y[n], the LCS includes X[m] and is one more than LCS(X[1..m-1], Y[1..n-1]).
+<ul>
+<li>E.g. LCS(“ABCBDAB”, “BDCABB”) = 1 + LCS(“ABCBDA”, “BDCAB”)</li>
+</ul>
+</li>
+<li>If X[m] does not equal Y[n], the LCS is the longer of LCS(X[1..m], Y[1..n-1]) or LCS(X[1..m-1], Y[1..n]).
+<ul>
+<li>E.g. LCS(“ABCBDAB”, “BDCABD”) = max(LCS(“ABCBDAB”, “BDCAB”), LCS(“ABCBDA”, “BDCABD”))</li>
+</ul>
+</li>
+</ul>
+<h3 id="overlapping-subproblems">Overlapping Subproblems</h3>
+<ul>
+<li>Calculating LCS(X[1..m], Y[1..n]) will often require recalculating LCS(X[1..m-1], Y[1..n-1]), LCS(X[1..m], Y[1..n-1]), and LCS(X[1..m-1], Y[1..n]) multiple times.</li>
+</ul>
+<h2 id="brute-force-approach">Brute Force Approach</h2>
+<p>A naive method to find the Longest Common Subsequence is to compare all subsequences of the first sequence against all subsequences of the second sequence. This brute force approach examines every possible pair of subsequences, which results in exponential time complexity $2^{m+n}$. Due to its inefficiency, particularly with long sequences, this method is impractical for real-world applications where time and computational resources are factors to consider.</p>
+<h3 id="divide-and-conquer-approach">Divide and Conquer Approach</h3>
+<p>The divide-and-conquer solution to the Longest Common Subsequence (LCS) problem leverages the concept of breaking down the problem into smaller subproblems. It begins by employing the subproblem definition of LCS, where the LCS of two strings is found by considering the LCS of their substrings. The algorithm recursively divides the original problem into smaller subproblems by examining characters from the end of the two input strings. When the last characters of the strings match, it incrementally builds the LCS length and continues with shorter substrings. If the last characters do not match, it explores both possibilities: removing the last character from one of the strings and keeping the other intact, selecting the longer LCS length among these alternatives. This divide-and-conquer approach effectively explores all possible combinations and ultimately returns the length of the LCS for the entire input strings.</p>
+<p>This approach still computes redundant subproblems, which results in a time complexity of $\Theta(2^n)$.</p>
+<pre tabindex="0"><code class="language-default" data-lang="default">function findLCSLength(s1, s2, m, n):
+    // Base case: If either of the strings is empty, LCS length is 0
+    if m == 0 or n == 0:
+        return 0
+
+    // If the last characters of both strings match
+    if s1[m-1] == s2[n-1]:
+        return 1 + findLCSLength(s1, s2, m-1, n-1)
+
+    // If the last characters of both strings don&#39;t match
+    return max(findLCSLength(s1, s2, m, n-1), findLCSLength(s1, s2, m-1, n))
+</code></pre><h2 id="dp-solution-for-lcs">DP Solution for LCS</h2>
+<ul>
+<li>DP Table: Create a table with rows and columns corresponding to the lengths of the two sequences being compared plus one. The extra row and column are used to store the LCS length for subsequences of length 0.</li>
+<li>Cell Values:
+<ul>
+<li>If the current characters match, dp[i][j] = dp[i-1][j-1] + 1.</li>
+<li>If not, dp[i][j] is the maximum of dp[i-1][j] or dp[i][j-1].</li>
+</ul>
+</li>
+<li>LCS Length: The length of the LCS is found at dp[m][n], where m and n are the lengths of the sequences.</li>
+<li>Complexity: The algorithm runs in $\Theta(m*n)$ time and requires $\Theta(m*n)$ space.</li>
+</ul>
+<h2 id="traceback-to-find-the-lcs">Traceback to Find the LCS</h2>
+<ul>
+<li><strong>Can only find one LCS</strong></li>
+<li>After the DP table is filled, the LCS is not immediately apparent; it must be constructed by a traceback process.</li>
+<li>Starting from i = m, j = n, move backwards through the table dp:
+<ul>
+<li>If the characters at i in string 1 and j in string 2 match, they are part of the LCS. Store this character. Move diagonally to dp[i-1][j-1].</li>
+<li>If they don’t match, move up to dp[i-1][j] or left to dp[i][j-1] cell, whichever has a higher value.</li>
+</ul>
+</li>
+<li>The traceback continues until it reaches dp[0][0], reconstructing the LCS in reverse.</li>
+</ul>
+<figure class="migration-image align-center"><img src="/teaching/_migration/67d363538bbd4fee.png" alt="image" style="width:400px;max-width:100%;height:auto" loading="lazy"></figure>
+<p>Credit: Introduction to Algorithms, 4th Ed., T. Cormen et al.</p>
+<h2 id="pseudocode">Pseudocode</h2>
+<pre tabindex="0"><code class="language-default" data-lang="default">Function LCS(X, Y):
+    m = length of X
+    n = length of Y
+    dp = array of (m+1) rows and (n+1) columns
+
+    # Initialize the table with 0&#39;s, as the LCS of an empty sequence
+    # with any sequence is 0
+    For i from 0 to m:
+        dp[i][0] = 0
+    For j from 0 to n:
+        dp[0][j] = 0
+
+    # Fill the dp table
+    For i from 1 to m:
+        For j from 1 to n:
+            If X[i] == Y[j]:
+                dp[i][j] = dp[i-1][j-1] + 1
+            Else:
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+
+    # The length of LCS is in the cell dp[m][n]
+    length_LCS = dp[m][n]
+
+    # To find the LCS string, traceback from dp[m][n]
+    LCS = &#34;&#34;
+    i = m, j = n
+    While i &gt; 0 and j &gt; 0:
+        If X[i] == Y[j]:
+            LCS = X[i] + LCS  # Prepend the character to LCS
+            i = i - 1
+            j = j - 1
+        Else If dp[i-1][j] &gt; dp[i][j-1]:
+            i = i - 1
+        Else:
+            j = j - 1
+
+    Return LCS, length_LCS
+</code></pre><h2 id="variations">Variations</h2>
+<ul>
+<li><strong>All LCSs</strong>: The DP solution only finds one LCS. To find all LCSs, use backtracking to find all possible paths in the DP table that lead to the LCS length.</li>
+<li><strong>Longest Common Substring</strong>: A substring is a contiguous sequence of characters within a string. The Longest Common Substring (LCSu) problem is similar to the LCS problem, but requires that the common elements be contiguous.</li>
+<li><strong>Improve space complexity</strong>: The DP solution requires Theta(m*n) space. This can be improved to $\Theta(min(m, n))$ by only storing the current and previous rows of the DP table.</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Support for Object-Oriented Programming</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Support for Object-Oriented Programming</h1>
+<ul class="simple">
+<li><p>Introduction to object-oriented programming principles</p></li>
+<li><p>Key design issues in OOP languages</p></li>
+<li><p>Comparison of OOP implementations across languages:</p>
+<ul>
+<li><p>Smalltalk, C++, Objective-C, Java, C#, Ruby</p></li>
+</ul>
+</li>
+<li><p>Implementation considerations for OOP constructs</p></li>
+<li><p>Reflection in OOP languages</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Fundamentals of Object-Oriented Programming</h2>
+<ul class="simple">
+<li><p>Three essential characteristics:</p>
+<ul>
+<li><p>Abstract data types</p></li>
+<li><p>Inheritance</p></li>
+<li><p>Dynamic binding</p></li>
+</ul>
+</li>
+<li><p>Objects and Classes</p>
+<ul>
+<li><p>Classes define objects (instances)</p></li>
+<li><p>Objects have state (data) and behavior (methods)</p></li>
+</ul>
+</li>
+<li><p>Key Terminology</p>
+<ul>
+<li><p>Methods: operations defined in classes</p></li>
+<li><p>Messages: calls to methods</p></li>
+<li><p>Message protocol: collection of methods of a class</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Inheritance Concepts</h2>
+<ul class="simple">
+<li><p>Inheritance is central to OOP</p>
+<ul>
+<li><p>Creates hierarchies of related classes</p></li>
+<li><p>Allows code reuse and specialization</p></li>
+</ul>
+</li>
+<li><p>Inheritance hierarchy terms:</p>
+<ul>
+<li><p>Base class/superclass/parent class</p></li>
+<li><p>Derived class/subclass/child class</p></li>
+</ul>
+</li>
+<li><p>Inheritance enables:</p>
+<ul>
+<li><p>Adding new variables/methods</p></li>
+<li><p>Inheriting implementation and/or interface</p></li>
+<li><p>Modifying inherited methods (overriding)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Types of Inheritance</h2>
+<ul class="simple">
+<li><p>Single Inheritance</p>
+<ul>
+<li><p>A class inherits from one parent class</p></li>
+<li><p>Creates tree-like class hierarchies</p></li>
+</ul>
+</li>
+<li><p>Multiple Inheritance</p>
+<ul>
+<li><p>A class inherits from multiple parent classes</p></li>
+<li><p>Creates graph-like class hierarchies</p></li>
+<li><p>Can lead to ambiguities (e.g., diamond inheritance)</p></li>
+</ul>
+</li>
+<li><p>Alternatives to Multiple Inheritance</p>
+<ul>
+<li><p>Interfaces (Java, C#)</p></li>
+<li><p>Protocols (Objective-C)</p></li>
+<li><p>Mixins/Categories (Ruby, Objective-C)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Class Members and Access Control</h2>
+<ul class="simple">
+<li><p>Instance vs. Class Members</p>
+<ul>
+<li><p>Instance variables/methods: belong to each object</p></li>
+<li><p>Class variables/methods: belong to the class itself</p></li>
+</ul>
+</li>
+<li><p>Access Control Modifiers</p>
+<ul>
+<li><p>Private: visible only within the class</p></li>
+<li><p>Protected: visible to the class and its subclasses</p></li>
+<li><p>Public: visible to all client code</p></li>
+</ul>
+</li>
+<li><p>Relationship between inheritance and access control</p>
+<ul>
+<li><p>Different languages handle inherited members differently</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Dynamic Binding</h2>
+<ul class="simple">
+<li><p>Dynamic binding (dynamic dispatch):</p>
+<ul>
+<li><p>Runtime determination of which method to call</p></li>
+<li><p>Essential for polymorphism in OOP</p></li>
+</ul>
+</li>
+<li><p>Polymorphism through inheritance:</p>
+<ul>
+<li><p>Variables can reference objects of different types</p></li>
+<li><p>Method calls dynamically bound to appropriate implementation</p></li>
+</ul>
+</li>
+<li><p>Benefits:</p>
+<ul>
+<li><p>Extensibility - new classes can be added without changing client code</p></li>
+<li><p>Flexibility - behavior determined at runtime</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Inheritance-based Polymorphism Demo</h2>
+<figure class="align-center" id="id2">
+<pre  class="mermaid">
+        classDiagram
+    %% Shape Hierarchy
+    class Shape {
+        -string color
+        +draw() void
+        +area() double
+    }
+
+    class Circle {
+        -double radius
+        +draw() void
+        +area() double
+    }
+
+    class Rectangle {
+        -double width
+        -double height
+        +draw() void
+        +area() double
+    }
+
+    class Triangle {
+        -double base
+        -double height
+        +draw() void
+        +area() double
+    }
+
+    Shape &lt;|-- Circle
+    Shape &lt;|-- Rectangle
+    Shape &lt;|-- Triangle
+
+
+    note &quot;Inherite based Polymorphism:
+    Shape *shape = new Circle();
+    shape-&gt;draw(); // calls Circle::draw()
+    shape-&gt;area(); // calls Circle::area()&quot;
+
+    </pre><figcaption>
+<p><span class="caption-text">Inheritance-based Polymorphism</span></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section >
+<section >
+<h2>Key Design Issues for OOP Languages</h2>
+<ol class="arabic simple">
+<li><p>Exclusivity of objects</p>
+<ul class="simple">
+<li><p>Are all data items objects, or just some?</p></li>
+</ul>
+</li>
+<li><p>Are subclasses subtypes?</p>
+<ul class="simple">
+<li><p>Can a subclass always be used where its parent is expected?</p></li>
+</ul>
+</li>
+<li><p>Single vs. multiple inheritance</p>
+<ul class="simple">
+<li><p>Benefits vs. complexity of multiple inheritance</p></li>
+</ul>
+</li>
+<li><p>Object allocation and deallocation</p>
+<ul class="simple">
+<li><p>Stack vs. heap allocation</p></li>
+<li><p>Explicit vs. implicit deallocation</p></li>
+</ul>
+</li>
+<li><p>Dynamic vs. static binding</p>
+<ul class="simple">
+<li><p>When to use each approach?</p></li>
+</ul>
+</li>
+<li><p>Nested classes</p>
+<ul class="simple">
+<li><p>Visibility between nesting and nested classes</p></li>
+</ul>
+</li>
+<li><p>Object initialization</p>
+<ul class="simple">
+<li><p>Constructor calling mechanisms</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section >
+<section >
+<h2>OOP in Smalltalk</h2>
+<ul class="simple">
+<li><p>Pure object-oriented language</p>
+<ul>
+<li><p>Everything is an object</p></li>
+<li><p>All computation through message passing</p></li>
+</ul>
+</li>
+<li><p>Key characteristics:</p>
+<ul>
+<li><p>Only single inheritance</p></li>
+<li><p>All methods dynamically bound</p></li>
+<li><p>All objects heap-allocated</p></li>
+<li><p>No explicit deallocation (garbage collection)</p></li>
+<li><p>No static typing (purely dynamic typing)</p></li>
+</ul>
+</li>
+<li><p>Historical significance:</p>
+<ul>
+<li><p>First language to fully support OOP</p></li>
+<li><p>Influenced GUI development</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>OOP in C++</h2>
+<ul class="simple">
+<li><p>Hybrid language (supports multiple paradigms)</p>
+<ul>
+<li><p>Adds OOP to C’s procedural model</p></li>
+<li><p>Maintains compatibility with C</p></li>
+</ul>
+</li>
+<li><p>Key characteristics:</p>
+<ul>
+<li><p>Supports both single and multiple inheritance</p></li>
+<li><p>Public, protected, private access control</p></li>
+<li><p>Objects can be static, stack, or heap allocated</p></li>
+<li><p>Explicit deallocation with delete</p></li>
+<li><p>Dynamic binding optional (virtual methods)</p></li>
+</ul>
+</li>
+<li><p>C++ innovations:</p>
+<ul>
+<li><p>Friend functions</p></li>
+<li><p>Template-based generic programming</p></li>
+<li><p>Abstract classes and pure virtual methods</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>OOP in Java</h2>
+<ul class="simple">
+<li><p>Pure OOP language with some imperative features</p>
+<ul>
+<li><p>All user-defined types are classes</p></li>
+<li><p>Primitive types for efficiency</p></li>
+</ul>
+</li>
+<li><p>Key characteristics:</p>
+<ul>
+<li><p>Single inheritance for classes</p></li>
+<li><p>Interface mechanism as alternative to multiple inheritance</p></li>
+<li><p>All objects heap-allocated</p></li>
+<li><p>Implicit deallocation (garbage collection)</p></li>
+<li><p>Methods dynamically bound by default</p></li>
+<li><p>All classes derived from Object</p></li>
+</ul>
+</li>
+<li><p>Java features:</p>
+<ul>
+<li><p>No pointers (references instead)</p></li>
+<li><p>No destructors (finalizers instead)</p></li>
+<li><p>Inner classes (static and non-static)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>OOP in C#</h2>
+<ul class="simple">
+<li><p>Similar to Java with additional features</p>
+<ul>
+<li><p>Single inheritance plus interfaces</p></li>
+<li><p>Value types (structs) and reference types (classes)</p></li>
+</ul>
+</li>
+<li><p>Key characteristics:</p>
+<ul>
+<li><p>Methods must be explicitly marked virtual to be overridden</p></li>
+<li><p>Overriding methods must be marked with override</p></li>
+<li><p>All classes derived from Object</p></li>
+<li><p>Properties for controlled access to fields</p></li>
+</ul>
+</li>
+<li><p>C# innovations:</p>
+<ul>
+<li><p>Integration with .NET framework</p></li>
+<li><p>Extension methods</p></li>
+<li><p>Properties as first-class language features</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>OOP in Ruby</h2>
+<ul class="simple">
+<li><p>Pure object-oriented scripting language</p>
+<ul>
+<li><p>Everything is an object</p></li>
+<li><p>Dynamic typing</p></li>
+</ul>
+</li>
+<li><p>Key characteristics:</p>
+<ul>
+<li><p>Single inheritance</p></li>
+<li><p>All objects heap-allocated</p></li>
+<li><p>All variables are references</p></li>
+<li><p>All methods dynamically bound</p></li>
+<li><p>All instance variables private</p></li>
+</ul>
+</li>
+<li><p>Ruby innovations:</p>
+<ul>
+<li><p>Open classes (can be modified at runtime)</p></li>
+<li><p>Mixins through modules</p></li>
+<li><p>Blocks and iterators</p></li>
+<li><p>attr_reader/attr_writer for automatic accessors</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Object-Oriented Implementation Issues</h2>
+<ul class="simple">
+<li><p>Instance Data Storage</p>
+<ul>
+<li><p>Class Instance Records (CIRs)</p></li>
+<li><p>Layout of inherited members</p></li>
+</ul>
+</li>
+<li><p>Method Dispatch</p>
+<ul>
+<li><p>Virtual method tables (vtables)</p></li>
+<li><p>Method lookup in inheritance hierarchies</p></li>
+</ul>
+</li>
+<li><p>Implementation challenges:</p>
+<ul>
+<li><p>Efficient method dispatch</p></li>
+<li><p>Memory layout for subclasses</p></li>
+<li><p>Multiple inheritance complexity</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Reflection</h2>
+<ul class="simple">
+<li><p>Ability for a program to examine itself at runtime</p>
+<ul>
+<li><p>Access to metadata about classes and objects</p></li>
+<li><p>Dynamic invocation of methods</p></li>
+</ul>
+</li>
+<li><p>Reflection capabilities:</p>
+<ul>
+<li><p>Introspection: examining structure of objects</p></li>
+<li><p>Dynamic method calls</p></li>
+<li><p>Creating new types/objects at runtime</p></li>
+</ul>
+</li>
+<li><p>Reflection in Java vs. C#:</p>
+<ul>
+<li><p>Java: java.lang.Class and java.lang.reflect</p></li>
+<li><p>C#: System.Type and System.Reflection</p></li>
+</ul>
+</li>
+<li><p>Tradeoffs:</p>
+<ul>
+<li><p>Flexibility vs. performance</p></li>
+<li><p>Static vs. dynamic type checking</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Practice Questions</h2>
+<ol class="arabic simple">
+<li><p>What are the three essential characteristics of object-oriented programming?</p></li>
+<li><p>How does dynamic binding support polymorphism in OOP languages?</p></li>
+<li><p>Compare single and multiple inheritance. What alternatives to multiple inheritance exist?</p></li>
+<li><p>How do different languages handle object allocation and deallocation?</p></li>
+<li><p>What are the advantages and disadvantages of reflection in programming?</p></li>
+</ol>
+</section>
+</section>
+<section >
+<section >
+<h2>Summary</h2>
+<ul class="simple">
+<li><p>OOP supports modular, reusable code through objects and inheritance</p></li>
+<li><p>Language design choices significantly impact:</p>
+<ul>
+<li><p>How inheritance is implemented</p></li>
+<li><p>Method dispatch mechanisms</p></li>
+<li><p>Memory management approaches</p></li>
+<li><p>Type system integration</p></li>
+</ul>
+</li>
+<li><p>Each language makes different tradeoffs:</p>
+<ul>
+<li><p>Smalltalk: pure OOP, dynamic typing</p></li>
+<li><p>C++: efficiency, static typing, multiple paradigms</p></li>
+<li><p>Java/C#: managed environment, single inheritance</p></li>
+<li><p>Ruby: dynamic, flexible, pure OOP</p></li>
+</ul>
+</li>
+<li><p>Understanding these design decisions helps select appropriate languages for different applications</p></li>
+</ul>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

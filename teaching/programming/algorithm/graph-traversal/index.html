@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Graph Traversal Algorithms · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/programming/">Algorithms and Data Structures</a> / Graph Traversal Algorithms</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Graph Traversal Algorithms</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#depth-first-search-dfs">Depth-First Search (DFS)</a>
+      <ul>
+        <li><a href="#algorithm-overview">Algorithm Overview</a></li>
+        <li><a href="#stack-based-approach">Stack-Based Approach</a></li>
+        <li><a href="#recursive-approach">Recursive Approach</a></li>
+        <li><a href="#pseudo-code">Pseudo-Code</a></li>
+      </ul>
+    </li>
+    <li><a href="#breadth-first-search-bfs">Breadth-First Search (BFS)</a>
+      <ul>
+        <li><a href="#id1">Algorithm Overview</a></li>
+        <li><a href="#queue-based-approach">Queue-Based Approach</a></li>
+        <li><a href="#id2">Pseudo-Code</a></li>
+      </ul>
+    </li>
+    <li><a href="#comparison-between-dfs-and-bfs">Comparison between DFS and BFS</a>
+      <ul>
+        <li><a href="#time-and-space-complexity">Time and Space Complexity</a></li>
+        <li><a href="#when-to-use-dfs-or-bfs">When to Use DFS or BFS</a></li>
+        <li><a href="#trade-offs-and-considerations">Trade-offs and Considerations</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="graph-traversal-algorithms"></span>
+<h2 id="overview">Overview</h2>
+<p>Graph traversals are essential techniques for exploring and analyzing graph structures. They involve systematically visiting nodes within a graph to gather information, discover paths, establish connectivity, and unveil relationships. Graph traversals are a key component of many graph algorithms and play a crucial role in solving complex problems involving graphs.</p>
+<ul>
+<li>Start from a designated source node</li>
+<li>Visit all reachable nodes in a systematic order</li>
+</ul>
+<h2 id="depth-first-search-dfs">Depth-First Search (DFS)</h2>
+<p>It explores a graph like walking through a maze, going as far as possible along a branch before backtracking at a dead end or a visited spot.</p>
+<h3 id="algorithm-overview">Algorithm Overview</h3>
+<p>Depth-First Search (DFS) is a graph traversal algorithm that explores as far as possible along a branch before backtracking at a dead end or visited spot. It starts from a source node and recursively visits neighboring nodes until it reaches the end of a branch before moving on to another branch. DFS is often implemented using a stack or a recursive function call.</p>
+<h3 id="stack-based-approach">Stack-Based Approach</h3>
+<p>In the stack-based approach, DFS uses a stack data structure to keep track of nodes to be visited. It starts with the source node, pushes it onto the stack, and then repeatedly pops nodes from the stack, explores their neighbors, and pushes unvisited neighbors onto the stack. This process continues until the stack is empty or a specific condition is met.</p>
+<h3 id="recursive-approach">Recursive Approach</h3>
+<p>Alternatively, DFS can be implemented using recursion. In this method, a recursive function is called to visit nodes and their neighbors. The function explores a node’s neighbors, calling itself recursively for unvisited neighbors until all reachable nodes are visited. Recursion effectively emulates the behavior of a stack.</p>
+<h3 id="pseudo-code">Pseudo-Code</h3>
+<span id="id3"></span>
+<p><em>DFS traversal using recursion</em></p>
+<pre tabindex="0"><code class="language-default" data-lang="default">function dfs(vertex, visited):
+  if vertex is not visited:
+    mark vertex as visited
+    visit(node)  # Perform an action on the vertex
+
+    for each neighbor of the vertex:
+      if neighbor is not visited:
+          dfs(neighbor, visited)
+</code></pre><span id="id4"></span>
+<p><em>Iterative DFS traversal using a stack</em></p>
+<pre tabindex="0"><code class="language-default" data-lang="default">function dfs(startVertex):
+  create a new stack
+
+  push startVertex onto the stack
+  mark startVertex as visited
+
+  while the stack is not empty:
+    current = pop from the stack
+    process(current)  # Perform an action on the current node
+
+    for each neighbor in current.neighbors:
+      if neighbor is not in visited set:
+        push neighbor onto the stack
+        add neighbor to the visited set
+</code></pre><h2 id="breadth-first-search-bfs">Breadth-First Search (BFS)</h2>
+<p>It explores a graph like a wave of water, spreading out from the source node to all its neighbors before moving on to the next level of neighbors.</p>
+<h3 id="id1">Algorithm Overview</h3>
+<p>Breadth-First Search (BFS) is another graph traversal algorithm that explores a graph in layers or levels. Starting from a source node, BFS visits all its neighbors before moving on to their neighbors, ensuring that nodes at a given level are visited before nodes at the next level. BFS typically uses a queue data structure to manage the order of node exploration.</p>
+<h3 id="queue-based-approach">Queue-Based Approach</h3>
+<p>In the queue-based approach, BFS uses a queue to keep track of nodes to be visited. It starts with the source node, enqueues it, and then repeatedly dequeues nodes, explores their neighbors, and enqueues unvisited neighbors. This process continues until the queue is empty or a specific condition is met.</p>
+<h3 id="id2">Pseudo-Code</h3>
+<span id="id5"></span>
+<p><em>BFS traversal using a queue</em></p>
+<pre tabindex="0"><code class="language-default" data-lang="default">function bfs(startVertex):
+  create a new queue
+
+  enqueue the startVertex
+  mark the startVertex as visited
+
+  while the queue is not empty:
+    dequeue a vertex from the queue
+    process(vertex)  # Perform an action on the vertex
+
+    for each neighbor of the vertex:
+      if neighbor is not visited:
+        mark the neighbor as visited
+        enqueue the neighbor
+</code></pre><h2 id="comparison-between-dfs-and-bfs">Comparison between DFS and BFS</h2>
+<h3 id="time-and-space-complexity">Time and Space Complexity</h3>
+<ul>
+<li>Depth-First Search (DFS) generally has a lower space complexity than Breadth-First Search (BFS) because it only needs to store the path from the source node to the current node, while BFS stores all nodes at a given level.</li>
+<li>In terms of time complexity, both DFS and BFS have $\Theta(V + E)$ time complexity, where V is the number of vertices (nodes) and E is the number of edges in the graph.</li>
+</ul>
+<h3 id="when-to-use-dfs-or-bfs">When to Use DFS or BFS</h3>
+<ul>
+<li>Use DFS when you want to explore as deeply as possible before backtracking, such as finding paths and cycles.</li>
+<li>Use BFS when you need to find the shortest path, explore a graph layer by layer, or perform tasks like minimum spanning tree construction.</li>
+</ul>
+<h3 id="trade-offs-and-considerations">Trade-offs and Considerations</h3>
+<ul>
+<li>DFS may be more memory-efficient but can get stuck in deep branches with a high branching factor.</li>
+<li>BFS ensures the shortest path but may consume more memory due to its queue-based approach.</li>
+<li>The choice between DFS and BFS depends on the specific problem requirements and constraints.</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

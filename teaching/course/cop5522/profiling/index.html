@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Profiling · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/course/cop5522/parallel-env/">Development Environment For Parallel Programming</a></li><li><a href="/teaching/course/cop5522/clang/">C Language Features Used in This Course</a></li><li><a href="/teaching/cpp/ccpp-env/">C/C&#43;&#43; Development Environment</a></li><li><a href="/teaching/developer-tools/make/">GNU Make</a></li></ul><ul><li><a href="/teaching/course/cop5522/ch01/">Chapter 1: Introduction To Parallel Programming</a></li><li><a href="/teaching/course/cop5522/ch02/">Chapter 2: Parallel Hardware and Software</a></li><li><a href="/teaching/course/cop5522/ch03/">Chapter 3: Shared-Memory Programming with OpenMP</a></li><li><a href="/teaching/course/cop5522/ch04/">Chapter 4: OpenMP Case Study: N-body problem</a></li><li><a href="/teaching/course/cop5522/ch05/">Chapter 5: Distributed Memory Programming with MPI</a></li><li><a href="/teaching/course/cop5522/ch06/">Chapter 6: MPI Case Study, and Pthread</a></li></ul><ul><li><a href="/teaching/course/cop5522/midterm/">Midterm Topic Outline</a></li><li><a href="/teaching/course/cop5522/final/">Final Topic Review</a></li></ul><ul><li><a href="/teaching/course/cop5522/homework/">Homework Instruction</a></li><li><a href="/teaching/course/cop5522/project/">Research Project: Parallelization of Serial Algorithms</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/course/cop5522/">COP 5522 Parallel and Distributed Programming</a> / Profiling</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Profiling</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#types">Types</a></li>
+    <li><a href="#time-measurement">Time Measurement</a></li>
+    <li><a href="#profiling-tools">Profiling Tools</a>
+      <ul>
+        <li><a href="#gprof">gprof</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="profiling"></span>
+<p>“Premature optimization is the root of all evil” is a famous saying among software developers. Its source is credited to Donald Knuth. The idea is that one should never consider optimization before they see the performance problem and know where it is.</p>
+<p>In many program, they runs faster enough and any optimization is not noticeable.</p>
+<p>In many program, some certain units (e.g. functions) may be involved in 90% of the computation and only consist 10% lines of code. They are the best target of optimizations. Optimizations on the rest of code is pointless.</p>
+<h2 id="types">Types</h2>
+<ol>
+<li>
+<p>Exact measure</p>
+<p>Use hardware counters to catch events during the execution of a program. Hard to exclude affects from hardware, operating system, etc.</p>
+</li>
+<li>
+<p>Simulation (FYI)</p>
+<p>Simulate how a program executes. Total control of all software and hardware environment.</p>
+</li>
+</ol>
+<h2 id="time-measurement">Time Measurement</h2>
+<ul>
+<li>
+<p>Program level</p>
+<p>Measures the total time to run a program. Not accurate as affected by many conditions.</p>
+<ul>
+<li>GNU time <code>/usr/bin/time</code></li>
+</ul>
+</li>
+<li>
+<p>API level</p>
+<p>Library functions that you can call to measure the time used by a function, etc. rather than the whole program. A finer measurement.</p>
+<ul>
+<li>rdtsc</li>
+<li>getrusage</li>
+<li>clock_gettime</li>
+<li>gettimeofday</li>
+</ul>
+</li>
+</ul>
+<h2 id="profiling-tools">Profiling Tools</h2>
+<p>Profiling tools allow programmers to identify the bottleneck to be optimized later.</p>
+<ul>
+<li>gprof</li>
+<li>valgrind</li>
+<li>Vtune</li>
+<li>HPCToolkit</li>
+<li>Perfsuite</li>
+<li>TAU</li>
+<li>pprof</li>
+</ul>
+<h3 id="gprof">gprof</h3>
+<p>It of from GNU. Working closely with other GNU tools such as <code>gcc</code>.</p>
+<ul>
+<li>add <code>-pg</code> flag to your <code>gcc</code> command to compile the executable.</li>
+<li>run the program to generate a .out file</li>
+<li>run <code>gprof</code> command with the prepared executable as the parameter</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

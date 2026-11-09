@@ -1,0 +1,226 @@
+******************
+Genetic Algorithms
+******************
+
+.. container:: subtitle
+
+  |author|
+
+Outline
+=======
++ Overview
++ Metaheuristic Paradigm
++ Basics of Genetics and Evolution
++ Core Components
++ Limitations of Genetic Algorithms
+
+Overview
+========
+.. container:: flex-container
+
+  .. container:: half
+
+    + **Definition**:
+
+      * A computational method inspired by natural evolution.
+      * Used to find approximate solutions to optimization and search problems.
+      * Merges biology and computer science to solve complex challenges.
+
+  .. container:: half
+
+    + **Historical Context**
+
+      * **Origins in Computer Science**:
+
+        - Traces back to the work of John Holland in the 1960s.
+        - Introduced the schema theorem to describe the functioning of Genetic Algorithms.
+
+      * **Biological Inspiration**:
+
+        - Deeply rooted in Charles Darwin's theory of natural selection.
+        - Evolution of species through the survival of the fittest individuals.
+        - Provides a foundation for computational algorithms.
+
+
+Metaheuristic Paradigm
+----------------------
++ **Definition**:
+
+  * Derived from Greek words "meta" (beyond) and "heuriskein" (to search or
+    find).
+  * Strategies designed to find or select heuristics for good-enough solutions
+    to optimization problems.
+  * Especially effective with incomplete information or limited computation
+    capacity.
+
++ **Examples of Metaheuristic Algorithms**:
+
+  * Simulated Annealing.
+  * Tabu Search.
+  * Ant Colony Optimization.
+  * Particle Swarm Optimization.
+
+Basics of Genetics and Evolution
+--------------------------------
++ **DNA, Genes, and Chromosomes**:
+
+  * DNA is the carrier of genetic instructions in biological systems.
+  * Organized into chromosomes, which are collections of genes.
+  * Each gene represents specific genetic information or functions.
+
++ **Core Principles**:
+
+  * **Survival of the Fittest**: Differential survival and reproduction based
+    on beneficial traits.
+  * **Reproduction**: Generation of new solutions based on "fitness" or
+    suitability.
+  * **Mutation**: Introducing genetic diversity via changes in DNA.
+  * **Crossover (Recombination)**: Combining genetic information from two
+    parent genes.
+
+Core Components
+---------------
++ **Individual and encoding**
+
+  * An individual is a possible solution to the problem.
+  * Encoded as a string of genes, often binary, integer, real, or sometimes permutation.
+
++ **Population**:
+
+  * Collection of individual potential solutions.
+  * Each individual is a possible solution, mostly encoded (e.g., binary
+    string).
+  * Initial population usually generated randomly.
+
++ **Fitness Function**:
+
+  * Measures how good each solution is with respect to the problem.
+  * For example: Shorter path length in a traveling problem might be more
+    "fit".
+
+Core Components (cont.)
+-----------------------
++ **Selection**
+
+  * Selects individuals for reproduction based on fitness.
+  * Individuals with higher fitness are more **likely** to be selected.
+  * Randomness + heuristics = **stochastic** selection.
+
++ **Crossover (Recombination)**
+
+  * Combines genetic information from two parent individuals.
+  * Produces offspring with genetic information from both parents.
+  * Often performed with a crossover rate (e.g., 0.8) to control the frequency
+    of crossover.
+
++ **Mutation**
+
+  * Introduces genetic diversity by randomly changing genes.
+  * Random flip for binary encoding; random swap for permutation encoding; etc.
+  * Mutation rate (e.g., 0.01) controls the frequency of mutation.
+
++ **Replacement**
+
+  * Replaces individuals in the population with new offspring.
+  * Total replacement or partial replacement.
+  * Often performed with an elitism rate (e.g., 0.1) to preserve the best
+    individuals.
+
+Code Framework
+==============
+A basic framework for a Genetic Algorithm is as follows::
+
+  1. Generate initial population of size N.
+  2. Evaluate the fitness of each individual in the population.
+
+  3. WHILE (stopping condition not met):
+
+    a. Select two parents based on their fitness.
+    b. Perform crossover on the selected parents to produce offsprings.
+    c. Apply mutation on offsprings with a certain probability.
+    d. Evaluate the fitness of the new offsprings.
+    e. Replace individuals in the current population with the new offspring
+        based on a replacement strategy.
+
+  4. Return the best solution found.
+
+GA Details
+==========
++ Encoding, Gene
+
+  * Binary Encoding: Each gene is a bit (0 or 1).
+  * Integer Encoding: Each gene is an integer value.
+  * Real-valued Encoding: Each gene is a real number.
+  * Permutation Encoding: Each gene represents a position in a sequence.
+
++ Individual
+
+  * Binary String: e.g., "1100101".
+  * Integer Array: e.g., [3, 5, 2, 8].
+  * Real-valued Vector: e.g., [0.5, 1.2, 3.4].
+  * Permutation: e.g., [2, 3, 1, 4] for ordering problems.
+
+GA Details (cont.)
+------------------
++ Selection Methods
+
+  * Roulette Wheel Selection: Probability proportional to fitness.
+  * Tournament Selection: Randomly select a group and choose the best.
+  * Rank-based Selection: Rank individuals and select based on rank.
+
++ Crossover Techniques
+
+  * Binary, Integer, Real-valued: One-point, Two-point, Uniform crossover.
+  * Permutation: Order crossover (OX), Partially matched crossover (PMX).
+
++ Mutation Techniques
+
+  * Binary: Bit flip mutation.
+  * Integer: Random reset mutation.
+  * Real-valued: Gaussian mutation.
+  * Permutation: Swap mutation, Inversion mutation.
+
+TSP Example
+===========
++ Traveling Salesman Problem (TSP)
+
+  * A classic optimization problem.
+  * Objective: Find the shortest possible route visiting each city exactly once
+    and returning to the origin city.
+
++ NP-hard Problem for exact solutions.
++ GAs provide a practical approach to find good-enough solutions.
+
+  * Encoding: Permutation of city indices.
+  * Fitness Function: Minimize the total distance **or** Maximizing the inverse of the total distance of the tour.
+  * Selection: Tournament selection.
+  * Crossover: Order crossover (OX).
+  * Mutation: Swap mutation.
+  * Replacement: Total replacement (with elitism).
+  * Stop criterion: Fixed number of generations or no improvement over several generations.
+
+Limitations of Genetic Algorithms
+=================================
++ **No Guarantee of Optimal Solution**:
+
+  - GAs excel at finding near-optimal solutions.
+  - They might not always reach the absolute best solution.
+
++ **Parameter Sensitivity**:
+
+  - GA performance can greatly vary based on parameter settings.
+  - Tuning parameters like mutation rate, crossover rate, and population size
+    may require trial-and-error or domain-specific knowledge.
+
++ **Computational Overhead**:
+
+  - Depending on problem complexity and GA settings, convergence might require
+    multiple generations and evaluations.
+  - Potential for high computational costs, especially for larger problems.
+
++ **Premature Convergence**:
+
+  - GAs can converge too early to a suboptimal solution.
+  - Caused by a lack of genetic diversity in the population.
+
+.. note:: While GAs have these limitations, they are still a powerful tool. It's essential to be aware of these challenges and account for them in application and design.

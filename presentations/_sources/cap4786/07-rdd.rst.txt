@@ -1,0 +1,246 @@
+**********************************
+Introduction to Big Data Analytics
+**********************************
+
+.. revealjs-section::
+  :data-background-color: white
+  :data-background-image: ../_static/logo.png
+  :data-background-size: 50%
+  :data-background-position: top center
+  :data-background-repeat: no-repeat
+
+.. container:: subtitle
+
+  **Spark RDD programming with Scala**
+
+  |author|
+
+Outline
+=======
++ Spark Data APIs
++ Intro to RDD
++ RDD Operations
++ RDD Transformations
++ RDD Actions
++ Unstructured text data processing
+
+  * Log Analysis Example
+
+Spark Data APIs
+===============
++ **Three APIs: RDDs, DataFrames, Datasets**
+
+  - **RDDs**: Low-level API, fine-grained control, supports functional
+    programming styles. No restrictions on data types.
+  - **DataFrames, DataSet**: Higher-level API, optimized execution, built on
+    RDDs, supports SQL-like operations. DataSet can be roughly considered a
+    type-safe version of DataFrames.
+
++ **Choosing the Right API for Your Task**
+
+  - Use **RDDs** for any complicated data processing tasks that require
+    fine-grained control over data and low-level transformations. Will be the
+    only choice for unstructured/semi-structured data.
+  - Use **DataFrames** for high-level abstractions, performance optimizations,
+    and SQL queries. Structured data only.
+  - Use **Datasets** when you need type safety along with high-level
+    abstractions. Structured data only.
+
+Intro to RDD
+============
++ **What is RDD?**: RDD (Resilient Distributed Dataset) is the fundamental data
+  structure of Spark, designed for in-memory computing and fault tolerance.
++ **Features of RDDs**
+
+  - **Immutability and Partitioning**: RDDs are immutable collections of
+    objects, partitioned across the Spark cluster.
+  - **Fault Tolerance**: Ability to recover quickly from node failures, using
+    lineage information.
+  - **In-Memory Processing**: Primarily stores data in memory for fast
+    processing, but can spill to disk if necessary.
+
++ **Creating RDDs**
+
+  - **Parallelizing an Existing Collection**: Convert existing collections
+    in your program (like lists or arrays) into RDDs using the `parallelize`
+    method, facilitating distributed processing.
+  - **From Data Sources**: Create RDDs from external data sources such as
+    files in HDFS, objects in Amazon S3, HBase, and any other Hadoop data
+    source.
+
++ **Persisting RDDs**: caching/persisting/checkpointing, and saving/exporting
+  RDDs.
+
+
+Creating RDDs
+-------------
+RDDs are distributed collections of objects. Please differentiate between RDDs
+and collections in Scala. They share similar interfaces but are fundamentally
+different in terms of how they are processed.
+
+.. container:: flex-container
+
+  .. container:: half
+
+    **Parallelizing an Existing Collection**
+
+    .. code-block:: scala
+
+      val array1 = Array(1, 2, 3, 4, 5)
+      val rdd1 = sc.parallelize(array1)
+
+      val list1 = (1 to 100).toList
+      val rdd2 = sc.parallelize(list1)
+
+  .. container:: half
+
+    **From Data Sources**
+
+    .. code-block:: scala
+
+      val data1 = sc.textFile("dbfs:/FileStore/tables/data.txt")
+      val data2 = sc.textFile("hdfs://path/to/file")
+
+Persisting and Saving RDDs
+--------------------------
++ **Persisting RDDs in Memory**: To reuse RDDs
+
+  - **Caching**: Persist RDDs in memory across operations, to avoid
+    re-computation. Use the `cache` method to cache RDDs.
+  - **Persist**: Persist RDDs in memory or disk or both, across operations.
+    Use the `persist` method to persist RDDs.
+  - **Checkpointing**: Persist RDDs to disk to avoid recomputation in case of
+    node failures. Use the `checkpoint` method to checkpoint RDDs.
+
++ **Saving RDDs**: Export data to be used in other applications
+
+  - **SaveAsTextFile**: Save RDDs as text files in HDFS or any other Hadoop
+    supported file system.
+  - **SaveAsObjectFile**: Save RDDs as serialized objects in HDFS or any other
+    Hadoop supported file system.
+  - **SaveAsSequenceFile**: Save RDDs as Hadoop SequenceFiles in HDFS or any
+    other Hadoop supported file system.
+
+RDD Operations
+==============
++ **Understanding Transformations and Actions**
+
+  - **Transformations**:
+
+    * RDD to another RDD (distributed to distributed)
+    * Lazy evaluation
+    * Each worker node applies the transformation to its partition
+    * Examples: `map`, `filter`, `flatMap`, `reduceByKey`
+
+  - **Actions**:
+
+    * RDD to a non-RDD (distributed to local)
+    * Trigger execution of transformations
+    * Examples: `collect`, `count`, `take`, `saveAsTextFile`
+
++ **Lazy Evaluation in RDDs**: RDD transformations are lazy, meaning they do
+  not compute their results immediately. Spark builds a DAG (Directed Acyclic
+  Graph) of transformations that are only executed when an action is triggered,
+  optimizing overall data processing efficiency.
+
+RDD Transformations
+===================
+* **Common Transformations**
+
+  * `map`: Applies a function to each element of the RDD, returning a new RDD.
+  * `filter`: Returns a new RDD containing only the elements that meet a
+    specified condition.
+  * `flatMap`: Similar to `map`, but each input item can be mapped to zero or
+    more output items (thus "flattening" the results into a new RDD).
+  * `groupByKey`: Groups data items by key into a single sequence, allowing for
+    subsequent aggregation operations. **Pair RDDs only**.
+  * `reduceByKey`: Applies a reduce function to the data items with the same
+    key, which is useful for aggregating results. **Pair RDDs only**.
+
+* **Lazy Evaluation and Shuffling**
+
+  * Transformations that can be executed totally on local share of data are not
+    executed immediately, but are stored as a DAG.
+  * Some transformations such as `groupByKey` and `reduceByKey` require data
+    shuffling across partitions, will trigger execution.
+
+* **Functional Programming**
+
+  * RDD transformations are high-level methods that takes functions to process
+    the data.
+  * Make pure functions to ensure deterministic results and avoid side effects.
+
+RDD Actions
+===========
++ **Common Actions**
+
+  - ``collect()``: Gathers all elements of the RDD into an array at the driver
+    program. **Use with caution on large datasets**.
+  - ``show()``: Displays the first n elements of the RDD in a tabular format.
+  - ``count()``: Returns the number of elements in the RDD.
+  - ``first()``: Retrieves the first element of the RDD.
+  - ``take(n)``: Returns an array with the first n elements of the RDD.
+  - ``reduce(func)``: Aggregates the elements of the RDD using a function that
+    takes two arguments and returns one. Related: ``fold()``, ``aggregate()``.
+  - ``sum()``: Computes the sum of the numeric values in the RDD.
+  - ``max()``: Finds the maximum element in the RDD.
+  - ``min()``: Finds the minimum element in the RDD.
+  - ``mean()``: Computes the mean (average) of the numeric elements in the RDD.
+
+RDD Actions (contd.)
+--------------------
++ **Common Actions**
+
+  - ``countByValue()``: Returns a dictionary of each distinct element and its
+    count in the RDD. **Pair RDDs only**.
+  - ``reduceByKey(func)``: Aggregates the values of each key using a function
+    and returns a pair RDD. **Pair RDDs only**.
+  - ``saveAsTextFile(path)``: Saves the RDD elements as a text file in a
+    specified directory, either on a local file system or a distributed file
+    system like HDFS. Each element of the RDD is converted to a line of text in
+    the file.
+
++ **Use with Caution**
+
+  - Be careful with large datasets when using actions like `collect` and
+    `show`.
+  - Be aware of the computational cost can be high
+
+Log Analysis Example
+====================
++ **Problem Statement**: Extract structured data from log files
++ **Motivation**
+
+  * log files are a common data source in big data analytics
+  * data schema can be unknown, complex or unknown in advance
+
++ **Data extraction**
+
+  * Load into Spark RDD of lines
+  * Text parsing to extract structured data (RDD)
+  * Data cleaning and transformation (DataFrame/DataSet)
+  * Data export, analysis and visualization
+
+Text Parsing with RDD
+---------------------
++ **Load log file into RDD**
+
+  - Use `textFile` method to load log file into RDD
+  - Each line of the log file is a record in the RDD
+
++ **Extract structured data**
+
+  - ``map`` transformation to extract one data or one set of data per line
+  - ``flatMap`` transformation to extract multiple data of a same type per line
+  - ``filter`` transformation to remove unwanted lines/items
+  - ``count``, ``sum``, ``mean``, etc. to get statistical data
+  - ``map`` to convert data to desired format (e.g. pair RDD)
+  - ``reduceByKey`` to aggregate data
+
++ **Example**
+
+  - Extract IP addresses from log file
+  - Count the number of times each IP address appears
+  - Find the top 10 most frequent IP addresses
+  - Find the people who talk to each other the most in a TV show script
+

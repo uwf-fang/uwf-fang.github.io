@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Template in C++</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Template in C++</h1>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Overview</p></li>
+<li><p>Syntaxes</p></li>
+<li><p>Template Organization</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<ul class="simple">
+<li><p>Definition: A template is a blueprint or formula for creating a generic class
+or a function. The library containers like iterators and algorithms are
+examples of generic programming and have been developed using template
+concept.</p></li>
+<li><p>Advantage</p>
+<ul>
+<li><p>Reduce code redundancy</p></li>
+<li><p>Increase code reusability</p></li>
+</ul>
+</li>
+<li><p>Disadvantage</p>
+<ul>
+<li><p>Code bloat: The compiler generates a new copy of the template function for
+each instantiation.</p></li>
+<li><p>Debugging: The error messages are difficult to understand.</p></li>
+<li><p>Compilation time: The compilation time increases with the number of
+template functions used in the program.</p></li>
+<li><p>Header-only templates violate the principle of separation of declaration
+and implementation</p></li>
+</ul>
+</li>
+<li><p>Other method to allow function to accept different data types</p>
+<ul>
+<li><p>Function overloading</p></li>
+<li><p>Implicit type conversion</p></li>
+</ul>
+</li>
+<li><p>Related to Generic Programming</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Syntax: Create Template</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Create templates using ``template`` keyword</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">template</span> <span class="pre">&lt;list</span> <span class="pre">of</span> <span class="pre">template</span> <span class="pre">parameters&gt;</span></code> clause.</p></li>
+<li><p>The list of template parameters can contain one or more template
+parameters separated by commas.</p></li>
+<li><p>The template parameters are enclosed in angle-brackets (&lt;&gt;).</p></li>
+<li><p>We only focus on <strong>type template parameters</strong></p>
+<ul>
+<li><p>Started with keyword <code class="docutils literal notranslate"><span class="pre">class</span></code> or <code class="docutils literal notranslate"><span class="pre">typename</span></code> (interchangeable)</p></li>
+</ul>
+</li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">template</span></code> clause above:</p>
+<ul>
+<li><p>function declaration</p></li>
+<li><p>function definition</p></li>
+<li><p>class declaration</p></li>
+<li><p>method definition</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="half docutils container">
+<pre><code data-trim data-noescape class="cpp">template&lt;typename T&gt;
+void func1(T param1);
+
+template&lt;typename T&gt;
+void func1(T param1) {
+  // core logics
+}
+
+template&lt;typename T&gt;
+class MyClass {
+public:
+  MyClass(T param1);
+};
+
+template&lt;typename T&gt;
+MyClass&lt;T&gt;::MyClass(T param1) {
+  // core logics
+}</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Syntax: Use Template</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Using template</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Instantiation</span></code> a template by specifying the template argument list
+inside angle brackets following the template name.</p></li>
+<li><p>Template argument deduction</p>
+<ul>
+<li><p>The compiler deduces the template argument list from the function
+arguments.</p></li>
+<li><p>The compiler deduces the template argument list from the class
+constructor arguments.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="half docutils container">
+<pre><code data-trim data-noescape class="cpp">// function template instantiation
+func1&lt;int&gt;(10);
+
+// class template instantiation
+MyClass&lt;int&gt; obj1;
+
+// template argument deduction
+func1(10);  // T will be int
+func1&lt;&gt;(10);  // T will be int
+func1(10.0);  // T will be double
+
+MyClass obj1(10);  // T will be int</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Template Organization</h2>
+<p>Templates requires special organization of the source code because the compiler
+needs to see both the template definition (not instantiation) and its use
+within a single translation unit.</p>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Template definition all in a header file.</strong></p>
+<ul class="simple">
+<li><p>Easy to use. <strong>Use this method in this course!</strong></p></li>
+<li><p>For each instantiation of the template, the compiler will be able to find
+the template definition as included in the header file.</p></li>
+<li><p>Large header file and long compilation time.</p></li>
+</ul>
+</div>
+<div class="half docutils container">
+<p><strong>Template declaration in a header. Template definition and explicit
+instantiation in a cpp file.</strong></p>
+<ul class="simple">
+<li><p><strong>Optional contents</strong></p></li>
+<li><p>Shorter compilation time.</p></li>
+<li><p>You must know all possible template instantiations in advance. Sometimes
+not possible. E.g. complicate combination <code class="docutils literal notranslate"><span class="pre">vector&lt;vector&lt;pair&lt;int,</span>
+<span class="pre">int&gt;&gt;&gt;</span></code></p></li>
+</ul>
+</div>
+</div>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

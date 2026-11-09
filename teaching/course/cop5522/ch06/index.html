@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 6: MPI Case Study, and Pthread · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/course/cop5522/parallel-env/">Development Environment For Parallel Programming</a></li><li><a href="/teaching/course/cop5522/clang/">C Language Features Used in This Course</a></li><li><a href="/teaching/cpp/ccpp-env/">C/C&#43;&#43; Development Environment</a></li><li><a href="/teaching/developer-tools/make/">GNU Make</a></li></ul><ul><li><a href="/teaching/course/cop5522/ch01/">Chapter 1: Introduction To Parallel Programming</a></li><li><a href="/teaching/course/cop5522/ch02/">Chapter 2: Parallel Hardware and Software</a></li><li><a href="/teaching/course/cop5522/ch03/">Chapter 3: Shared-Memory Programming with OpenMP</a></li><li><a href="/teaching/course/cop5522/ch04/">Chapter 4: OpenMP Case Study: N-body problem</a></li><li><a href="/teaching/course/cop5522/ch05/">Chapter 5: Distributed Memory Programming with MPI</a></li><li><a href="/teaching/course/cop5522/ch06/" aria-current="page">Chapter 6: MPI Case Study, and Pthread</a></li></ul><ul><li><a href="/teaching/course/cop5522/midterm/">Midterm Topic Outline</a></li><li><a href="/teaching/course/cop5522/final/">Final Topic Review</a></li></ul><ul><li><a href="/teaching/course/cop5522/homework/">Homework Instruction</a></li><li><a href="/teaching/course/cop5522/project/">Research Project: Parallelization of Serial Algorithms</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/course/cop5522/">COP 5522 Parallel and Distributed Programming</a> / Chapter 6: MPI Case Study, and Pthread</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Chapter 6: MPI Case Study, and Pthread</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#pthread">Pthread</a></li>
+    <li><a href="#case-studies">Case Studies</a>
+      <ul>
+        <li><a href="#odd-even-transportation-sort">Odd-even transportation sort</a></li>
+        <li><a href="#n-body-mpi">N-body MPI</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="chapter-6-mpi-case-study-and-pthread"></span>
+<h2 id="pthread">Pthread</h2>
+<ul>
+<li>POSIX standard: Unix, Linux, BSD, etc.</li>
+<li>Thread library for POSIX Operating Systems</li>
+<li>Code
+<ul>
+<li><code>pthread.h</code> header file</li>
+<li><code>-lpthread</code> linking flag for gcc</li>
+</ul>
+</li>
+<li>Types
+<ul>
+<li><code>pthread_t</code> thread handle object used to refer to a thread</li>
+</ul>
+</li>
+<li>Function as parameter
+<ul>
+<li>declaration like <code>void *function_name (void * arg);</code></li>
+<li>parameter declared like <code>void *(*function_name)(void)</code></li>
+</ul>
+</li>
+<li>API
+<ul>
+<li><code>pthread-create</code> create a thread, run the function, return a pthread_t object</li>
+<li><code>pthread-join</code> wait for the thread to finish</li>
+</ul>
+</li>
+<li>Compilation with gcc
+<ul>
+<li><code>-pthread</code> flag, preferred</li>
+<li><code>-lpthread</code> old flag, retiring, should put at the very end of the gcc command line</li>
+</ul>
+</li>
+</ul>
+<h2 id="case-studies">Case Studies</h2>
+<h3 id="odd-even-transportation-sort">Odd-even transportation sort</h3>
+<ul>
+<li>Modified bubble sort to adapt to parallelization</li>
+<li>Assuming size <code>N</code>, parallelized on <code>P</code> processes</li>
+<li>Serial version
+<ul>
+<li>Phase 0: compare and swap between even element with its right neighbor</li>
+<li>Phase 1: compare and swap between even element with its left neighbor</li>
+<li>N rounds to finish</li>
+</ul>
+</li>
+<li>Parallelized with MPI
+<ul>
+<li>Sort the local section first</li>
+<li>Phase 0: compare and exchange between even process with its right neighbor</li>
+<li>Phase 1: compare and swap between even process with its left neighbor</li>
+</ul>
+</li>
+</ul>
+<h3 id="n-body-mpi">N-body MPI</h3>
+<ul>
+<li>Decide the data structure
+<ul>
+<li>each process stores a whole array of masses</li>
+<li>computes physical metrics of its share of local particles</li>
+<li>allgether to collect local position array to global position array</li>
+</ul>
+</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

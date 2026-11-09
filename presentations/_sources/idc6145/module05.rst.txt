@@ -1,0 +1,184 @@
+*************************
+Big Data For Data Science
+*************************
+
+.. revealjs-section::
+  :data-background-color: white
+  :data-background-image: ../_static/logo.png
+  :data-background-size: 50%
+  :data-background-position: top center
+  :data-background-repeat: no-repeat
+
+.. container:: subtitle
+
+  **Module 5: PySpark Programming: DataFrame API**
+
+  |author|
+
+Outline
+=======
++ Spark SQL Overview
++ Applications
++ DataFrame API
+
+Spark SQL Overview
+==================
++ A Spark module for structured data processing
+
+  * Integrated with other Spark components: Spark Core, Spark Streaming, MLlib,
+    GraphX
+
++ Provides two complementary types of APIs to accomplish the similar goals
+
+  * Higher-level APIs: DataFrames and Datasets
+  * SQL-like querying context: e.g. SQL, HiveQL
+
++ Supports various data sources: Parquet, JSON, Hive, HBase, Cassandra, etc.
+
+APIs vs SQL
+-----------
+.. container:: flex-container
+
+  .. container:: half
+
+    **API calls**
+
+    * More friendly to programmers
+    * More flexible and powerful
+    * DataFrame and Dataset APIs
+
+    .. code-block:: Python
+
+      df1.join(df2, on="key") \
+          .filter(df1.age > 21) \
+          .select('name', 'address') \
+          .show()
+
+  .. container:: half
+
+    **SQL queries**
+
+    * More friendly to data analysts who are familiar with SQL
+    * More sophisticated optimizations inherited from relational databases
+
+    .. code-block:: Python
+
+      # spark is an instance of SparkSession
+      spark.sql("""
+        SELECT table1.name, table2.address
+        FROM table1
+        JOIN table2 ON table1.key = table2.key
+        WHERE table1.age > 21
+      """).show()
+
+Performance optimizations
+=========================
+Some are general optimizations, while some are conditional optimizations based
+on the data source and the query.
+
++ Reduced disk I/O
++ Partitioning (helps when data is partitioned and some partitions can be
+  skipped)
++ Columnar storage (helps when a few columns are queried)
++ In-memory columnar caching (helps columnar storage)
++ Skip-rows (helps when many rows are skipped)
++ Predicate pushdown (delegate certain operations to data source when data
+  source supports it)
++ Query optimization with Catalyst optimizer
+
+  * Analysis, logical optimization, physical planning, code generation stages
+
+Applications
+============
+It provides a unified data access layer for various data sources, and can even
+work directly on top of combined data from different sources.
+
++ ETL (Extract, Transform, Load)
++ Data visualization (skip data movement and processing)
++ Distributed SQL query engine (skip data movement and processing)
++ Data warehousing and data lake solutions (Manage multiple data sources)
+
+DataFrame API
+=============
++ DataFrame API for structured data
++ Entry point of all functionalities in Spark SQL
+
+  + :code:`SparkSession` class
+
+  .. code-block:: Python
+
+    from pyspark.sql import SparkSession
+
+    spark = SparkSession.builder. \
+               master("local[*]"). \
+               appName("Example"). \
+               getOrCreate()
+
+Convert RDD to DataFrame
+------------------------
++ Use the :code:`toDF` method
+
+  .. code-block:: Python
+
+    data = [(1, "John", 28), (2, "Jane", 35), (3, "Mike", 42)]
+    rdd = sc.parallelize(data)
+    df = rdd.toDF(["id", "name", "age"])
+
++ Use the :code:`createDataFrame` method
+
+  .. code-block:: Python
+
+    data = [(1, "Alice", 25), (2, "Bob", 20), (3, "Charlie", 30)]
+    df = spark.createDataFrame(data, ["key", "name", "age"])
+
+Loading DataFrames from Data Sources
+------------------------------------
++ Use :code:`read` method of :code:`SparkSession` object to create a
+  :code:`DataFrameReader` object to read data from a data source
++ Read CSV, JSON, Parquet files
++ Also supports ORC, Avro, Hive, JDBC, text, and other formats
+
+  .. code-block:: Python
+
+    df = spark.read.csv("path/to/file.csv", header=True, inferSchema=True)
+    df = spark.read.json("path/to/file.json")
+    df = spark.read.parquet("path/to/file.parquet")
+
+Saving DataFrames
+-----------------
++ Use :code:`write` method of :code:`DataFrame` object to create a
+  :code:`DataFrameWriter` object to write data to a data source
++ :code:`format` method to specify the data source format
++ :code:`mode` method to specify the save mode
++ :code:`option` method to specify additional options
++ :code:`partitionBy` method to partition data by columns
++ :code:`save` method to save data to the data source
+
+.. code-block:: Python
+
+  df.write.format("csv").mode("overwrite"). \
+      option("header", "true").save("path/to/save")
+
+DataFrame Built-in Functions
+----------------------------
++ **DataFrame does not take Python functions directly like RDD!**
++ :code:`spark.sql.functions` package provides many built-in
+  functions
++ Learn as needed. Not worth memorizing all of them at once.
++ Common functions:
+
+  * Selecting columns: select()
+  * Filtering rows: filter(), where()
+  * Adding columns: withColumn()
+  * Renaming columns: withColumnRenamed()
+  * Dropping columns: drop()
+  * Sorting rows: orderBy(), sort()
+  * Grouping & aggregating: groupBy(), agg()
+  * Joining DataFrames: join()
+  * Handling missing data: na.drop(), na.fill()
+  * Distinct values: distinct(), dropDuplicates()
+  * Union: union()
+  * Pivot: pivot()
+  * Explode: explode()
+
++ User-defined functions are created using a complicate mechanism (FYI)

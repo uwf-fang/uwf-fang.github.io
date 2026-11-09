@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Using getline after extraction · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/cpp/ccpp-env/">C/C&#43;&#43; Development Environment</a></li><li><a href="/teaching/cpp/cpp-lang/">C&#43;&#43; programming language</a></li><li><a href="/teaching/cpp/functions/">User-defined Functions</a></li><li><a href="/teaching/cpp/io/">Input/Output (I/O)</a></li><li><a href="/teaching/cpp/string/">String (C&#43;&#43; class)</a></li><li><a href="/teaching/cpp/class/class/">Objects and Classes in C&#43;&#43;</a></li><li><a href="/teaching/cpp/variable-type/variable-type/">Type, Variable, Assignment, and Expression</a></li><li><a href="/teaching/cpp/array/array/">Array Data Type</a></li><li><a href="/teaching/cpp/building/gpp/">Compilation Using g&#43;&#43;</a></li><li><a href="/teaching/cpp/building/modular/">Modular Development</a></li><li><a href="/teaching/cpp/testing/testing/">Testing in C&#43;&#43;</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/cpp/">C&#43;&#43; Reference</a> / Using getline after extraction</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Using getline after extraction</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#the-problem">The Problem</a></li>
+    <li><a href="#the-solution">The Solution</a></li>
+    <li><a href="#code-example">Code Example</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="using-getline-after-extraction"></span>
+<h2 id="the-problem">The Problem</h2>
+<p>When using the <code>getline</code> function to read in text all the way to the delimiter (default to the new line character), the text may be empty after the read if the delimiter is the first character in the string. It causes the problem that if you call this function after an extraction <code>&gt;&gt;</code> operation, you may potentially read in an empty string.</p>
+<h2 id="the-solution">The Solution</h2>
+<ul>
+<li>Option 1: keep calling getline until you get a non-empty read</li>
+<li>Option 2: clean up after inputs with leftovers such as extraction operations</li>
+<li>A formal way: make a function to do the work</li>
+</ul>
+<h2 id="code-example">Code Example</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// ==== Wrong ====
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> input<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>string line<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;Input an int: &#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>cin <span style="color:#0550ae">&gt;&gt;</span> input<span style="color:#1f2328">;</span>  <span style="color:#57606a">// leaves a new line character as the first char in the stream
+</span></span></span><span style="display:flex;"><span>cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;Input a line of text (may contain spaces): &#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>getline<span style="color:#1f2328">(</span>cin<span style="color:#1f2328">,</span> line<span style="color:#1f2328">);</span>  <span style="color:#57606a">// the line variable will be an empty string
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// ==== Correct ====
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// option 1: protect the getline and replace the getline with:
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">do</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  getline<span style="color:#1f2328">(</span>cin<span style="color:#1f2328">,</span> line<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span> <span style="color:#cf222e">while</span> <span style="color:#1f2328">(</span>line<span style="color:#1f2328">.</span>empty<span style="color:#1f2328">());</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// option 2: protect the extraction add after the last &gt;&gt; before getline
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// to clear the leftover
+</span></span></span><span style="display:flex;"><span>cin<span style="color:#1f2328">.</span>ignore<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>cin<span style="color:#1f2328">.</span>ignore<span style="color:#1f2328">(</span>numeric_limits<span style="color:#0550ae">&lt;</span>streamsize<span style="color:#0550ae">&gt;::</span>max<span style="color:#1f2328">(),</span> <span style="color:#0a3069">&#39;\n&#39;</span><span style="color:#1f2328">);</span> <span style="color:#57606a">// a safer version
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// recommended: make a function
+</span></span></span><span style="display:flex;"><span>string <span style="color:#6639ba">readline</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  string text<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// text is initially empty so a while loop works here
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">while</span> <span style="color:#1f2328">(</span>text<span style="color:#1f2328">.</span>empty<span style="color:#1f2328">())</span> getline<span style="color:#1f2328">(</span>cin<span style="color:#1f2328">,</span> line<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> text<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// to call:
+</span></span></span><span style="display:flex;"><span>line <span style="color:#0550ae">=</span> readline<span style="color:#1f2328">();</span>
+</span></span></code></pre></div></div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Programming Languages</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Programming Languages</h1>
+<div class="subtitle docutils container">
+<p><strong>Module 13: Exception and Event Handling</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Introduction to Exception Handling (1/3)</h2>
+<ul class="simple">
+<li><p><strong>Definition:</strong> An exception is any unusual event, erroneous or not,
+detectable by hardware or software, requiring special processing.</p></li>
+<li><p><strong>Exception Handling:</strong> The special processing required when an exception is
+detected.</p></li>
+<li><p><strong>Exception Handler:</strong> The code unit that performs the exception handling.</p></li>
+<li><p><strong>Raising/Throwing:</strong> An exception is <code class="docutils literal notranslate"><span class="pre">raised</span></code> (or <code class="docutils literal notranslate"><span class="pre">thrown</span></code> in C-based
+languages) when its associated event occurs.</p></li>
+</ul>
+</section>
+<section >
+<h3>Introduction to Exception Handling (2/3)</h3>
+<ul class="simple">
+<li><p><strong>Need:</strong></p>
+<ul>
+<li><p>Handles run-time errors (hardware/software detected).</p></li>
+<li><p>Handles other unusual conditions.</p></li>
+<li><p>Early languages often just terminated the program.</p></li>
+</ul>
+</li>
+<li><p><strong>Handling without Built-in Support:</strong></p>
+<ul>
+<li><p>Using status variables/return values.</p></li>
+<li><p>Passing label parameters (e.g., Fortran).</p></li>
+<li><p>Passing handler subprogram names.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Introduction to Exception Handling (3/3)</h3>
+<ul class="simple">
+<li><p><strong>Advantages of Built-in Support:</strong></p>
+<ul>
+<li><p>Reduces code clutter for error detection.</p></li>
+<li><p>Allows exception propagation (handling in dynamic/static ancestors).</p></li>
+<li><p>Encourages consideration of potential issues.</p></li>
+<li><p>Simplifies handling of non-erroneous unusual situations.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Design Issues for Exception Handling (1/2)</h3>
+<ul class="simple">
+<li><p><strong>Handler Specification &amp; Scope:</strong> How and where are handlers defined? What
+is their scope?</p></li>
+<li><p><strong>Binding Exception to Handler:</strong></p>
+<ul>
+<li><p>How are exceptions bound to handlers within a unit?</p></li>
+<li><p>How does propagation work if no local handler exists?</p></li>
+</ul>
+</li>
+<li><p><strong>Information Passing:</strong> Can information about the exception be passed to the
+handler?</p></li>
+</ul>
+</section>
+<section >
+<h3>Design Issues for Exception Handling (2/2)</h3>
+<ul class="simple">
+<li><p><strong>Continuation:</strong> What happens after a handler executes?</p>
+<ul>
+<li><p><strong>Termination:</strong> Simplest option. Control proceeds after the <code class="docutils literal notranslate"><span class="pre">try</span></code> block.</p></li>
+<li><p><strong>Resumption:</strong> Continue execution (e.g., at the statement that raised it,
+after it). Requires care.</p></li>
+</ul>
+</li>
+<li><p><strong>Finalization:</strong> Ability to specify computations that must run regardless of
+how a unit terminates (normally or via exception)? (e.g., <code class="docutils literal notranslate"><span class="pre">finally</span></code>
+clause).</p></li>
+<li><p><strong>User-Defined Exceptions:</strong> How are they specified?</p></li>
+<li><p><strong>Predefined Exceptions:</strong> Should there be defaults? Can they be raised
+explicitly?</p></li>
+</ul>
+</section>
+<section >
+<h3>Exception Handling in C++ (1/2)</h3>
+<ul class="simple">
+<li><p><strong>Based on:</strong> CLU, Ada, ML. User/library defined and explicitly raised.</p></li>
+<li><p><strong>Handlers:</strong> Defined in <code class="docutils literal notranslate"><span class="pre">catch</span></code> blocks following a <code class="docutils literal notranslate"><span class="pre">try</span></code> block.</p>
+<ul>
+<li><p>Syntax: <code class="docutils literal notranslate"><span class="pre">try</span> <span class="pre">{</span> <span class="pre">...</span> <span class="pre">}</span> <span class="pre">catch</span> <span class="pre">(ParamType</span> <span class="pre">param)</span> <span class="pre">{</span> <span class="pre">...</span> <span class="pre">}</span> <span class="pre">catch</span> <span class="pre">(...)</span> <span class="pre">{</span> <span class="pre">...</span> <span class="pre">}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">catch</span></code> parameter type determines which exceptions it handles (matches
+type or ancestor classes).</p></li>
+<li><p>Ellipsis <code class="docutils literal notranslate"><span class="pre">(...)</span></code> catches any exception.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Exception Handling in C++ (2/2)</h3>
+<ul class="simple">
+<li><p><strong>Raising Exceptions:</strong> <code class="docutils literal notranslate"><span class="pre">throw</span> <span class="pre">[expression];</span></code>. <code class="docutils literal notranslate"><span class="pre">throw;</span></code> inside a handler
+reraises.</p></li>
+<li><p><strong>Binding:</strong> Search <code class="docutils literal notranslate"><span class="pre">catch</span></code> blocks sequentially. Specific handlers should
+precede general ones.</p></li>
+<li><p><strong>Propagation:</strong> If no local handler matches, propagates up the call stack.
+Uncaught exceptions call <code class="docutils literal notranslate"><span class="pre">unexpected</span></code> (default: terminate).</p></li>
+<li><p><strong>Continuation:</strong> Control goes to the statement after the <code class="docutils literal notranslate"><span class="pre">try</span></code> construct.</p></li>
+<li><p><strong>``throw()`` Specification:</strong> Optional function specifier (often ignored by
+compilers). <code class="docutils literal notranslate"><span class="pre">throw()</span></code> means no exceptions.</p></li>
+<li><p><strong>Evaluation:</strong> No predefined hardware exceptions. Binding via types can be
+less readable than using meaningful class hierarchies.</p></li>
+</ul>
+</section>
+<section >
+<h3>Exception Handling in Java (1/3)</h3>
+<ul class="simple">
+<li><p><strong>Based on:</strong> C++, but more object-oriented. Includes predefined exceptions.</p></li>
+<li><p><strong>Exception Classes:</strong> All descend from <code class="docutils literal notranslate"><span class="pre">Throwable</span></code>.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Error</span></code>: Thrown by JVM (e.g., out of memory), usually not handled.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Exception</span></code>: Parent for user-handled exceptions.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Exception Handling in Java (2/3)</h3>
+<ul class="simple">
+<li><p><strong>Subclasses of</strong> <code class="docutils literal notranslate"><span class="pre">Exception</span></code>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">RuntimeException</span></code>: Often user program errors (e.g.,
+<code class="docutils literal notranslate"><span class="pre">ArrayIndexOutOfBoundsException</span></code>). (Unchecked exceptions).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IOException</span></code>: Input/output errors. (Checked exceptions).</p></li>
+<li><p>User-defined exceptions usually extend <code class="docutils literal notranslate"><span class="pre">Exception</span></code>.</p></li>
+</ul>
+</li>
+<li><p><strong>Checked vs. Unchecked:</strong></p>
+<ul>
+<li><p><strong>Checked:</strong> Must be explicitly caught (in <code class="docutils literal notranslate"><span class="pre">try-catch</span></code>) or declared in
+the method signature (using <code class="docutils literal notranslate"><span class="pre">throws</span></code>). Enforced by the compiler.</p></li>
+<li><p><strong>Unchecked:</strong> (<code class="docutils literal notranslate"><span class="pre">Error</span></code> and <code class="docutils literal notranslate"><span class="pre">RuntimeException</span></code>) Do not require explicit
+handling or declaration.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Exception Handling in Java (3/3)</h3>
+<ul class="simple">
+<li><p><strong>Handlers (``catch``):</strong> Similar to C++, parameter type must descend from
+<code class="docutils literal notranslate"><span class="pre">Throwable</span></code>. Parameter required.</p></li>
+<li><p><strong>``try`` Construct:</strong> Same syntax as C++, but includes an optional
+<code class="docutils literal notranslate"><span class="pre">finally</span></code> clause (always executed).</p></li>
+<li><p><strong>Raising Exceptions:</strong> <code class="docutils literal notranslate"><span class="pre">throw</span> <span class="pre">new</span> <span class="pre">ExceptionType(...);</span></code>.</p></li>
+<li><p><strong>Binding:</strong> Binds to the first matching <code class="docutils literal notranslate"><span class="pre">catch</span></code> block (same class or
+ancestor).</p></li>
+<li><p><strong>Rethrowing:</strong> Use <code class="docutils literal notranslate"><span class="pre">throw</span> <span class="pre">e;</span></code> or <code class="docutils literal notranslate"><span class="pre">throw</span> <span class="pre">new</span> <span class="pre">SomeOtherException(...);</span></code>
+inside a <code class="docutils literal notranslate"><span class="pre">catch</span></code> block.</p></li>
+</ul>
+</section>
+<section >
+<h3>Exception Handling in Python</h3>
+<ul class="simple">
+<li><p><strong>Exceptions:</strong> Objects, many predefined (base: <code class="docutils literal notranslate"><span class="pre">BaseException</span></code>, common:
+<code class="docutils literal notranslate"><span class="pre">Exception</span></code> descendants).</p></li>
+<li><p><strong>Syntax:</strong> <code class="docutils literal notranslate"><span class="pre">try...except...else...finally</span></code>.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">try</span></code>: Code to monitor.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">except</span> <span class="pre">ExceptionType</span> <span class="pre">[as</span> <span class="pre">var]</span></code>: Handler. Can list multiple types.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">else</span></code>: Executes if no exception in <code class="docutils literal notranslate"><span class="pre">try</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">finally</span></code>: Always executes.</p></li>
+</ul>
+</li>
+<li><p><strong>Raising:</strong> <code class="docutils literal notranslate"><span class="pre">raise</span> <span class="pre">ExceptionType(...)</span></code>. <code class="docutils literal notranslate"><span class="pre">raise</span></code> alone reraises.</p></li>
+<li><p><strong>Assertion:</strong> <code class="docutils literal notranslate"><span class="pre">assert</span> <span class="pre">condition,</span> <span class="pre">data</span></code> raises <code class="docutils literal notranslate"><span class="pre">AssertionError</span></code> if
+condition is false (and <code class="docutils literal notranslate"><span class="pre">__debug__</span></code> is True).</p></li>
+</ul>
+</section>
+<section >
+<h3>Exception Handling in Ruby</h3>
+<ul class="simple">
+<li><p><strong>Exceptions:</strong> Objects, many predefined (descendants of <code class="docutils literal notranslate"><span class="pre">Exception</span></code>,
+usually handle <code class="docutils literal notranslate"><span class="pre">StandardError</span></code> descendants). Methods <code class="docutils literal notranslate"><span class="pre">message</span></code> and
+<code class="docutils literal notranslate"><span class="pre">backtrace</span></code>.</p></li>
+<li><p><strong>Syntax:</strong> <code class="docutils literal notranslate"><span class="pre">begin...rescue...else...ensure</span></code> blocks or implicit within
+methods.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">begin</span></code>: Code to monitor.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rescue</span> <span class="pre">ExceptionType</span> <span class="pre">=&gt;</span> <span class="pre">var</span></code>: Handler. Can list multiple types.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">else</span></code>: Executes if no exception.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ensure</span></code>: Like <code class="docutils literal notranslate"><span class="pre">finally</span></code>.</p></li>
+</ul>
+</li>
+<li><p><strong>Raising:</strong> <code class="docutils literal notranslate"><span class="pre">raise</span> <span class="pre">&quot;message&quot;</span></code> (raises <code class="docutils literal notranslate"><span class="pre">RuntimeError</span></code>) or <code class="docutils literal notranslate"><span class="pre">raise</span>
+<span class="pre">ExceptionType,</span> <span class="pre">&quot;message&quot;</span></code>.</p></li>
+<li><p><strong>Retry:</strong> <code class="docutils literal notranslate"><span class="pre">retry</span></code> keyword inside <code class="docutils literal notranslate"><span class="pre">rescue</span></code> reruns the <code class="docutils literal notranslate"><span class="pre">begin</span></code> block.</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Introduction to Event Handling (1/2)</h2>
+<ul class="simple">
+<li><p><strong>Similarity to Exceptions:</strong> Handlers called implicitly based on an
+occurrence (event vs. exception).</p></li>
+<li><p><strong>Event Origin:</strong> Typically external actions (e.g., GUI interactions), not
+usually program code errors.</p></li>
+<li><p><strong>Event-Driven Programming:</strong> Code execution order determined by
+unpredictable events, unlike conventional sequential programming.</p></li>
+</ul>
+</section>
+<section >
+<h3>Introduction to Event Handling (2/2)</h3>
+<ul class="simple">
+<li><p><strong>Context:</strong> Often related to GUIs and user interactions with components
+(widgets).</p></li>
+<li><p><strong>Event:</strong> A notification (often an object) created by the runtime system in
+response to an action (e.g., mouse click, key press).</p></li>
+<li><p><strong>Event Handler:</strong> Code segment executed in response to an event. Makes
+programs responsive.</p></li>
+</ul>
+</section>
+<section >
+<h3>Event Handling with Java (AWT/Swing) (1/2)</h3>
+<ul class="simple">
+<li><p><strong>Model:</strong> Delegation model.</p></li>
+<li><p><strong>Event Source:</strong> GUI component where the event occurs (e.g., <code class="docutils literal notranslate"><span class="pre">JButton</span></code>).</p></li>
+<li><p><strong>Event Object:</strong> Encapsulates information about the event (e.g.,
+<code class="docutils literal notranslate"><span class="pre">ActionEvent</span></code>, <code class="docutils literal notranslate"><span class="pre">ItemEvent</span></code>).</p></li>
+<li><p><strong>Event Listener:</strong> An object that “listens” for events from a source. Must
+implement a specific listener interface.</p></li>
+</ul>
+</section>
+<section >
+<h3>Event Handling with Java (AWT/Swing) (2/2)</h3>
+<ul class="simple">
+<li><p><strong>Listener Interface:</strong> Defines methods that act as handlers (e.g.,
+<code class="docutils literal notranslate"><span class="pre">ActionListener</span></code> interface has <code class="docutils literal notranslate"><span class="pre">actionPerformed</span></code> method).</p></li>
+<li><p><strong>Registration:</strong> Connect the listener to the source using an
+<code class="docutils literal notranslate"><span class="pre">add&lt;Type&gt;Listener</span></code> method (e.g.,
+<code class="docutils literal notranslate"><span class="pre">button.addActionListener(myListener);</span></code>).</p></li>
+<li><p><strong>Handler Method:</strong> Receives the event object as a parameter, allowing access
+to event details.</p></li>
+</ul>
+</section>
+<section >
+<h3>Event Handling in C# (.NET Windows Forms) (1/2)</h3>
+<ul class="simple">
+<li><p><strong>Similarity:</strong> Similar model to Java. Uses Windows Forms or WPF.</p></li>
+<li><p><strong>GUI Creation:</strong> Subclass <code class="docutils literal notranslate"><span class="pre">System.Windows.Forms.Form</span></code>. Components added to
+<code class="docutils literal notranslate"><span class="pre">Form.Controls</span></code>.</p></li>
+<li><p><strong>Component Properties:</strong> Set using properties like <code class="docutils literal notranslate"><span class="pre">Location</span></code>, <code class="docutils literal notranslate"><span class="pre">Text</span></code>,
+<code class="docutils literal notranslate"><span class="pre">AutoSize</span></code>, <code class="docutils literal notranslate"><span class="pre">Checked</span></code>.</p></li>
+</ul>
+</section>
+<section >
+<h3>Event Handling in C# (.NET Windows Forms) (2/2)</h3>
+<ul class="simple">
+<li><p><strong>Event Handlers:</strong> Methods with a specific signature: <code class="docutils literal notranslate"><span class="pre">void</span>
+<span class="pre">HandlerName(object</span> <span class="pre">sender,</span> <span class="pre">EventArgs</span> <span class="pre">e)</span></code>.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">sender</span></code>: The object that raised the event.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">e</span></code>: Event-specific data (can be cast to more specific <code class="docutils literal notranslate"><span class="pre">EventArgs</span></code>
+types).</p></li>
+</ul>
+</li>
+<li><p><strong>Registration (Delegates):</strong></p>
+<ul>
+<li><p>Uses delegates (type-safe function pointers/references).</p></li>
+<li><p>Events are associated with delegate types (e.g., <code class="docutils literal notranslate"><span class="pre">CheckedChanged</span></code> event
+uses <code class="docutils literal notranslate"><span class="pre">EventHandler</span></code> delegate).</p></li>
+<li><p>Create an <code class="docutils literal notranslate"><span class="pre">EventHandler</span></code> object referencing the handler method.</p></li>
+<li><p>Add this delegate object to the component’s event using the <code class="docutils literal notranslate"><span class="pre">+=</span></code> operator
+(e.g., <code class="docutils literal notranslate"><span class="pre">plain.CheckedChanged</span> <span class="pre">+=</span> <span class="pre">new</span> <span class="pre">EventHandler(rb_CheckedChanged);</span></code>).</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>More Examples On Exception and Event</h2>
+<ul class="simple">
+<li><p>Python Example To Compare Traditional vs. Exception Handling</p></li>
+</ul>
+</section>
+<section >
+<h3>Python Example On Exception Handling (1/2)</h3>
+<pre data-id="python-example-on-exception-handling-1-2"><code data-trim data-noescape class="python">def divide_traditional(dividend, divisor):
+    if divisor == 0:
+        return None # Signal error/failure
+    else:
+        return dividend / divisor
+
+# Caller
+result = divide_traditional(10, 0)
+if result is None:
+    print(&quot;Error: Division by zero detected (traditional)&quot;)
+else:
+    print(f&quot;Success: Result is {result}&quot;)</code></pre>
+</section>
+<section >
+<h3>Python Example On Exception Handling (2/2)</h3>
+<pre data-id="python-example-on-exception-handling-2-2"><code data-trim data-noescape class="python">def divide_exceptions(dividend, divisor):
+    # No explicit check needed here for ZeroDivisionError
+    # Python raises it automatically if divisor is 0
+    return dividend / divisor
+
+# Caller
+try:
+    result = divide_exceptions(10, 0)
+    print(f&quot;Success: Result is {result}&quot;) # Won't be reached
+except ZeroDivisionError:
+    print(&quot;Error: Caught ZeroDivisionError exception&quot;)</code></pre>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,166 @@
+******************************************
+Memory Management in Class Context for C++
+******************************************
+
+.. container:: subtitle
+
+  |author|
+
+Outline
+=======
++ Overview
++ Memory Management in Class Context
++ Ownership of the dynamic data (FYI)
+
+Overview
+--------
++ In the class context, because the flow of the program is not linear, the
+  memory management is more complicated than in the function context.
++ E.g. For a class that owns a dynamic int array:
+
+  + Declare an instance variable :code:`int *array;`
+  + Allocation in the constructor or other methods :code:`this->array = new int[size];`
+  + Deallocation in the destructor, etc. :code:`delete[] this->array;`
+  + Deep copy in the copy constructor, copy assignment operator, etc.
+
+    .. code-block:: cpp
+
+      for (int i = 0; i < size; ++i)
+        this->array[i] = other.array[i];
+
++ The ownership of the dynamic data is also more complicated. (FYI)
+
+Memory Management in Class Context
+----------------------------------
++ Implicitly defined methods
++ Common mem problems in classes
++ The rule of three
++ `Code example`__
+
+  * shallow-copy.cpp: class with dynamic data and shallow copy
+  * rule-of-3.cpp: improved version with the **big three**
+
+.. __: https://github.com/uwf-fang/cop3530-examples/tree/main/m03-mem-man-class
+
+Implicitly Defined Methods
+--------------------------
++ The compiler will implicitly define the following methods if they are not
+  explicitly defined by the programmer. They are called implicitly defined methods.
+
+  * Default constructor: do nothing, potentially uninitialized variables
+  * Copy constructor: straight copy by direct assignment, potentially shallow
+    copy
+  * Copy assignment operator overloading: straight copy by direct assignment,
+    potentially shallow copy
+  * Destructor: doing nothing
+
++ They can be used without explicitly defining them.
++ They will cause problem **only when your class owns dynamic data and they are
+  triggered**.
+
+  * You can totally rely on the implicit ones if your class does not own
+    dynamic data.
+  * You can explicitly define them to avoid the problems.
+  * You can omit the ones that are not triggered even if your class owns
+    dynamic data. Must be careful!
+
+How to trigger
+--------------
+* Default constructor
+
+  - The constructor without any parameter
+  - ``MyClass myObj();``
+  - ``MyClass *obj = new MyClass();``
+  - ``MyClass obj[10];``
+  - You can always omit ``()`` after the class name when they are empty.
+
+* Copy constructor
+
+  - The constructor with one parameter of the same type as the class
+  - ``MyClass myObj(otherObj);`` or ``MyClass myObj = otherObj;``
+  - ``MyClass *obj = new MyClass(otherObj);``
+  - Parameter passing by value ``void func(MyClass obj)``
+
+* Copy assignment operator overloading
+
+  - ``MyClass obj1, obj2(10);`` and then ``obj1 = obj2;``
+
+* Destructor
+
+  - When the local object is out of scope
+  - ``MyClass *obj = new MyClass(); delete obj;``
+
+Common Memory Management Problems in Class Context
+--------------------------------------------------
++ Memory leak
+
+  * forget to deallocate the dynamic data in the destructor
+
++ Shallow copy
+
+  * use a ``=`` operator to copy dynamic data
+  * triggered the implicitly defined copy constructor and copy assignment
+    operator with dynamic data
+  * May cause double free
+
+Solution: Explicitly Defining These Methods
+-------------------------------------------
+* **Precondition: your class owns dynamic data**
+* Default constructor: initialize the pointer to ``nullptr`` or allocate
+  memory. Or stay away and always use other constructors
+* Copy constructor: deep copy the dynamic data
+* Copy assignment operator overloading: deep copy the dynamic data
+* Destructor: deallocate the dynamic data
+* Known as the "The Rule of Three"
+
+The Rule of Three
+-----------------
++ The "Rule of Three"
+
+  * The Big Three: destructor, copy constructor, copy assignment operator
+    overloading
+  * Although they may not all be triggered, it is safer to define them all
+    explicitly.
+
++ The "Rule of Three" is a rule (not a law)
+
+  * Not enforced by the compiler.
+  * Rather a guideline for memory security.
+
++ The "Rule of five" after C++11 for performance optimization (FYI)
+
+  * Move constructor
+  * Move assignment operator overloading
+
+Example Class with Dynamic Data
+-------------------------------
++ `Code Example`__
++ Copy constructor:
+
+  * Must take a const reference to class. Pass by value will trigger the copy
+    constructor itself and cause problem.
+
++ Copy assignment operator overloading:
+
+  * Must take a reference to the object too.
+  * Must check self-assignment.
+  * May need to deallocate the existing dynamic data before allocating new
+    memory and copying the data.
+  * Must return ``*this`` to allow chained assignment, if the return type is a
+    reference to the class.
+
+.. __: https://github.com/uwf-fang/cop3530-examples/blob/main/m03-mem-man-class/rule-of-3.cpp
+
+Ownership of the Dynamic Data (FYI)
+-----------------------------------
++ Knowing who owns the dynamic data is important for memory management.
++ The class may:
+
+  * Own the dynamic data.
+
+    - implement the big three.
+
+  * Own a pointer to the external dynamic data
+
+    - treat the pointer as a regular variable
+    - let the external owner to manage the dynamic data

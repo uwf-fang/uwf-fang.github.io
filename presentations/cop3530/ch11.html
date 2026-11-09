@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Data Structure and Algorithm Design</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Data Structure and Algorithm Design</h1>
+<div class="subtitle docutils container">
+<p><strong>Chapter 11</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Sections</h2>
+<ul class="simple">
+<li><p>General Tree Concepts</p></li>
+<li><p>Binary Search Trees</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h1>Tree Data Structure</h1>
+<div class="subtitle docutils container">
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Definitions</p></li>
+<li><p>Tree Concepts</p></li>
+<li><p>Applications</p></li>
+<li><p>Operations</p></li>
+<li><p>Implementation variations</p></li>
+<li><p>Binary tree</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Definitions</h2>
+<ul>
+<li><p>In <strong>graph theory</strong>, a tree is a connected and acyclic undirected graph.</p>
+<ul class="simple">
+<li><p>focus on <strong>connectivity</strong> and <strong>acyclicity</strong></p></li>
+</ul>
+</li>
+<li><p>In <strong>computer science</strong>, a tree is a hierarchical data structure composed
+of nodes connected by edges, where each node has a parent (except for the
+root node) and zero or more children.</p>
+<ul class="simple">
+<li><p>focus on <strong>hierarchy</strong> and <strong>parent-child relationship</strong></p></li>
+<li><p>Recursive definition: root and subtrees, each of which is also a tree</p></li>
+</ul>
+<img alt="Recursive definition of a tree" src="../_images/tree-recursive.png" />
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Tree Concepts</h2>
+<img alt="Tree concepts" src="../_images/tree-glossary.png" />
+<div class="footnote docutils container">
+<p>Concepts: root, internal node, leaf, edge, subtree, sibling, parent, child, level, height</p>
+</div>
+<p><strong>Other Concepts</strong></p>
+<ul class="simple">
+<li><p>Degree of a node or a tree</p></li>
+<li><p>Depth</p></li>
+<li><p>Ancestor and descendant</p></li>
+<li><p>Path</p></li>
+<li><p>Distance</p></li>
+<li><p>Ordered Unordered</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Applications</h2>
+<ul class="simple">
+<li><p>File system (directory, sub-directory, and file)</p></li>
+<li><p>Decision making (decision tree)</p></li>
+<li><p>Indexing (binary search tree, B-tree)</p></li>
+<li><p>Parsing tree</p></li>
+<li><p>Heap (complete binary tree)</p></li>
+<li><p>Blockchain (Merkle tree)</p></li>
+<li><p>Search-based Artificial Intelligence (game tree)</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/merkletree.png"><img alt="Merkle tree" src="../_images/merkletree.png" style="width: 50%;" />
+</a>
+<div class="footnote docutils container">
+<p>Credit: <a class="reference external" href="https://coincentral.com/merkle-tree-hashing-blockchain/">https://coincentral.com/merkle-tree-hashing-blockchain/</a></p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Operations</h2>
+<ul class="simple">
+<li><p>Search</p></li>
+<li><p>Insertion</p></li>
+<li><p>Deletion</p></li>
+<li><p>Traversal</p>
+<ul>
+<li><p>Breadth-first traversal</p></li>
+<li><p>Depth-first traversal</p>
+<ul>
+<li><p>Pre-order traversal</p></li>
+<li><p>Post-order traversal</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Height</p></li>
+<li><p>Degree</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Implementation Variations</h2>
+<ul class="simple">
+<li><p>Each node stores a variable-length list of references to child nodes</p></li>
+<li><p>Each node stores a reference to its first child and a reference to its next
+sibling</p></li>
+<li><p>Each node stores a reference to its parent</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/tree-first-child-next-sibling.png"><img alt="First child next sibling representation" src="../_images/tree-first-child-next-sibling.png" style="width: 80%;" />
+</a>
+<div class="footnote docutils container">
+<p><strong>First child next sibling representation</strong></p>
+<p>Credit: Data Structures and Algorithm Analysis in C++, 4th Edition. Mark Allen Weiss.</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Binary Tree</h2>
+<p>Only concepts and operations that are different from general trees are covered.</p>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p>Definition: Degree 2 ordered tree.</p></li>
+<li><p>Concepts:</p>
+<ul>
+<li><p>Left child and right child</p></li>
+</ul>
+</li>
+<li><p>Operations:</p>
+<ul>
+<li><p>In-order traversal</p></li>
+</ul>
+</li>
+<li><p>Variations:</p>
+<ul>
+<li><p>Full binary tree</p></li>
+<li><p>Complete binary tree</p></li>
+<li><p>Perfect binary tree</p></li>
+</ul>
+</li>
+</ul>
+<img alt="Full, complete, and perfect binary tree" src="../_images/full-complete-perfect-binary-tree.png" />
+<div class="footnote docutils container">
+<p>Credit: <a class="reference external" href="https://dev.to/elmarshall/binary-search-trees-part-i-4p05">https://dev.to/elmarshall/binary-search-trees-part-i-4p05</a></p>
+</div>
+</div>
+<div class="half docutils container">
+<ul class="simple">
+<li><p>Applications:</p>
+<ul>
+<li><p>Binary search tree</p></li>
+<li><p>Expression parsing</p></li>
+<li><p>Decision tree</p></li>
+<li><p>Heap</p></li>
+<li><p>Huffman coding</p></li>
+</ul>
+</li>
+</ul>
+<a class="reference internal image-reference" href="../_images/decision-tree.png"><img alt="Decision tree" src="../_images/decision-tree.png" style="width: 60%;" />
+</a>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h1>Binary Search Tree</h1>
+<div class="subtitle docutils container">
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Definition</p></li>
+<li><p>Behaviors</p></li>
+<li><p>Implementation</p></li>
+<li><p>Drawbacks</p></li>
+<li><p>Applications</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Definition and Behaviors</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Definition</strong> A binary search tree (BST) is a binary tree, in which for
+every node, its left child has a smaller or equal key than itself while its
+right child has a greater or equal key than itself.</p>
+<img alt="BST" src="../_images/bst.png" />
+</div>
+<div class="half docutils container">
+<p><strong>Behaviors</strong></p>
+<ul class="simple">
+<li><p>Insertion</p></li>
+<li><p>Deletion</p></li>
+<li><p>Search</p></li>
+<li><p>Traversal</p>
+<ul>
+<li><p>In-order traversal: left subtree, root, right subtree</p>
+<ul>
+<li><p>Ascending ordered output</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Implementation</h2>
+<ul>
+<li><p>Algorithms that happens from top to bottom</p>
+<p>Easy to implement either iteratively or recursively</p>
+<ul class="simple">
+<li><p>search</p></li>
+<li><p>insert</p></li>
+</ul>
+</li>
+<li><p>Algorithms that happens from bottom to top</p>
+<p>Easy to implement recursively; Hard to implement iteratively (must use stack)</p>
+<ul class="simple">
+<li><p>subtree removal (may be used in the destruction of a tree)</p></li>
+<li><p>find min node or find max node (part of remove)</p></li>
+<li><p>in-order traversal</p></li>
+<li><p>pre-order traversal</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Implementation (cont’d)</h3>
+<ul class="simple">
+<li><p>Search</p>
+<ul>
+<li><p>if equal, found</p></li>
+<li><p>if smaller, search left subtree</p></li>
+<li><p>if greater, search right subtree</p></li>
+</ul>
+</li>
+<li><p>Insertion</p>
+<ul>
+<li><p>if equal, do nothing</p></li>
+<li><p>if smaller, insert to left subtree</p>
+<ul>
+<li><p>if left is empty, insert</p></li>
+</ul>
+</li>
+<li><p>if greater, insert to right subtree</p>
+<ul>
+<li><p>if right is empty, insert</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Removal</p>
+<ul>
+<li><p>remove leaf node: simply remove it</p></li>
+<li><p>remove node with one child: replace the node with its child</p></li>
+<li><p>remove node with two children</p>
+<ul>
+<li><p>find the min node in the right subtree (successor)</p></li>
+<li><p>replace the node to be removed with the min node</p></li>
+<li><p>remove the min node (min node has at most one child)</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Drawbacks of naive BST</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p>Algorithm efficiency depends on the average height of the BST</p></li>
+<li><p>BST may degrade a very unbalanced form or even to a linked list</p></li>
+<li><p>Solution 1: randomize the order of insertion</p></li>
+<li><p>Solution 2: add balancing mechanism</p>
+<ul>
+<li><p>Self-balancing</p></li>
+<li><p>External balancing</p></li>
+</ul>
+</li>
+</ul>
+<ul class="simple">
+<li><p>Solution 3: move the most recently accessed node toward the root</p>
+<ul>
+<li><p>Only optimize the search performance for a specific access pattern</p></li>
+<li><p>No guarantee for the worst case</p></li>
+<li><p>Splay tree</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="half docutils container">
+<img alt="Degraded BST" src="../_images/degraded-bst.png" />
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Applications</h2>
+<ul class="simple">
+<li><p>Indexing: store a set of references to records in a BST and use the key as
+the search key.</p></li>
+<li><p>Tree Sort: sort a sequence of elements by building a BST and then traversing
+it in-order.</p></li>
+<li><p>Tree Map: store a set of (key, value) pairs in a BST and use the key as the
+search key.</p></li>
+<li><p>Tree Set: store a set of elements in a BST and use the element as the search
+key.</p></li>
+</ul>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

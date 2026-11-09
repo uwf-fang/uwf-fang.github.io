@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Data Structure and Algorithm Design</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Data Structure and Algorithm Design</h1>
+<div class="subtitle docutils container">
+<p><strong>Development Environment</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h1>Development Environment For C++</h1>
+<div class="subtitle docutils container">
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Minimal requirements</p></li>
+<li><p>Toolchain and environment</p></li>
+<li><p>Command line environment (bash)</p></li>
+<li><p>Local development environment</p>
+<ul>
+<li><p>Linux Native</p></li>
+<li><p>Windows WSL (Linux CLI)</p></li>
+<li><p>Mac OS Native</p></li>
+</ul>
+</li>
+<li><p>Remote development environment (Optional in this course)</p>
+<ul>
+<li><p>SSH Server (Linux CLI)</p></li>
+<li><p>GitHub Codespaces (Web IDE with Linux Virtual Machine)</p></li>
+</ul>
+</li>
+<li><p>Traps and Pitfalls 🪤</p>
+<ul>
+<li><p>MinGW / MSYS2 / Git Bash</p></li>
+<li><p>Click-and-run single file project</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>TL; DR</h2>
+<ul class="simple">
+<li><p>Everyone</p>
+<ul>
+<li><p>SSH server + VS Code in SSH remote mode 👍</p></li>
+<li><p>GitHub Codespaces 👍</p></li>
+</ul>
+</li>
+<li><p>Windows users</p>
+<ul>
+<li><p>Use WSL (Ubuntu preferred) + VS Code in WSL Mode 👍</p></li>
+<li><p>🚫 NO MinGW/MSYS2/Git Bash!!!!</p></li>
+</ul>
+</li>
+<li><p>Mac OS users</p>
+<ul>
+<li><p>Install XCode command line tools</p></li>
+</ul>
+</li>
+<li><p>Linux users</p>
+<ul>
+<li><p>Install tool-chain package like <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">build-essential</span></code></p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Minimal requirements for C++ Development</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>An editor/IDE to edit the source code files</strong></p>
+<ul class="simple">
+<li><p>Visual Studio Code 👍</p></li>
+<li><p>Other tools</p></li>
+</ul>
+</div>
+<div class="half docutils container">
+<p><strong>A building environment to compile the source code files to applications
+or libraries</strong></p>
+<ul class="simple">
+<li><p>Access through command-line interface (CLI): usually bash</p></li>
+<li><p>Core software: g++, make, git and valgrind</p></li>
+<li><p>Other bash tools</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section >
+<h3>Windows Users!</h3>
+<p><strong>In the case that you do not want to follow the suggested workflow, you are on
+your own, but here are some suggestion to at least help you to avoid the most
+annoying conditions!</strong></p>
+<ul class="simple">
+<li><p>NEVER put your project in One Drive folder!</p></li>
+<li><p>NEVER put your project under any directory that contains a space in its
+name!</p></li>
+<li><p>AVOID MinGW/MSYS2/Git Bash!</p></li>
+<li><p>Pay attention to line endings for any files you obtained from Windows apps.</p></li>
+<li><p>NEVER download and unzip from GitHub. Use “git clone” instead. Guess what?
+Windows zip apps will mess up the line endings.</p></li>
+</ul>
+</section>
+<section >
+<h3>Tools and Environment</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p>GNU <code class="docutils literal notranslate"><span class="pre">make</span></code></p>
+<ul class="simple">
+<li><p>A tool to automate the build process</p></li>
+<li><p>A tool to manage dependencies between source files</p></li>
+<li><p>Not worth the effort to master as there are better alternatives</p></li>
+<li><p>Read more about <a class="reference external" href="https://uwf-fang.github.io/tools/make.html">make</a></p></li>
+</ul>
+</div>
+<div class="half docutils container">
+<p><code class="docutils literal notranslate"><span class="pre">git</span></code></p>
+<ul class="simple">
+<li><p>a distributed version control system to manage pure text files including
+source code files</p></li>
+<li><p>We use a small subset of its functionality as beginners</p>
+<ul>
+<li><p>Backup versions of your work</p></li>
+<li><p>Submit your work</p></li>
+</ul>
+</li>
+<li><p>Read more about <a class="reference external" href="https://uwf-fang.github.io/tools/git.html">git</a></p></li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Command-line Interface (CLI)</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p>Command-line interface (CLI)</p>
+<ul>
+<li><p>A text-based interface to interact with the computer</p></li>
+<li><p>A shell program to interpret the commands</p></li>
+<li><p>A terminal program to display the output</p></li>
+<li><p>Counter part of GUI (Graphical User Interface)</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bash</span></code> CLI environment 👍</p></li>
+<li><p>Why CLI?</p>
+<ul>
+<li><p>Flexible - adjust parameters on the fly</p></li>
+<li><p>Easy-to-use - easily automated no matter how complicate it is</p></li>
+<li><p>Portable - same commands on different platforms</p></li>
+<li><p>Efficient - less resource consumption</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="half docutils container">
+<div class="vcenter docutils container">
+<img alt="Mac OS Terminal" src="../_images/mac-terminal.png" />
+<div class="footnote docutils container">
+<p>Credit: <a class="reference external" href="https://en.wikipedia.org/wiki/Terminal_%28macOS%29">https://en.wikipedia.org/wiki/Terminal_%28macOS%29</a></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section >
+<h3>Problems with GUI</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p><strong>GUI is great but not suitable to our needs</strong></p></li>
+<li><p>Imagine how you learn a new feature of Microsoft Office?</p>
+<ul>
+<li><p>Find the right tutorial of the right version</p></li>
+<li><p>Find the right button or menu item from hundreds of them</p></li>
+</ul>
+</li>
+<li><p>Hard to automate</p></li>
+<li><p>Hard to learn</p></li>
+</ul>
+</div>
+<div class="half docutils container">
+<div class="vcenter docutils container">
+<img alt="Simplified Microsoft Office Ribbon" src="../_images/ms-ribbon.webp" />
+<div class="footnote docutils container">
+<p>Credit: <a class="reference external" href="https://www.reddit.com/r/Windows11/comments/y7g4fp/ms_office_word_has_a_new_simplified_ribbon/">MS Office Word has a new Simplified ribbon</a></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Local Environment</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p>A local development environment is recommended for this course.</p>
+<ul class="simple">
+<li><p>Not the most convenient but worth your time to learn.</p></li>
+<li><p><strong>Come on! You are CS related major, right?</strong></p></li>
+</ul>
+<p>For Linux:</p>
+<ul class="simple">
+<li><p>Install g++ and make from Ubuntu terminal</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">update</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">build-essential</span> <span class="pre">git</span> <span class="pre">valgrind</span></code></p></li>
+</ul>
+</li>
+<li><p>Install Visual Studio Code</p></li>
+<li><p>Do research on your own if you are using other Linux distributions</p></li>
+</ul>
+</div>
+<div class="half docutils container">
+<p>For Windows:</p>
+<ul class="simple">
+<li><p>Install Ubuntu 20.04 LTS from <strong>Microsoft Store</strong></p></li>
+<li><p>Install Visual Studio Code from <strong>Microsoft Store</strong></p></li>
+<li><p>Install Terminal from <strong>Microsoft Store</strong></p></li>
+<li><p>Start an Ubuntu terminal</p></li>
+<li><p>Install g++ and make in Ubuntu terminal (same as Linux)</p></li>
+</ul>
+<div class="footnote docutils container">
+<p>Note: To install WSL in the classroom, you must use the Microsoft Store app</p>
+</div>
+<p>For Mac OS:</p>
+<ul class="simple">
+<li><p>Install XCode Command-line Tools</p></li>
+<li><p>run <code class="docutils literal notranslate"><span class="pre">xcode-select</span> <span class="pre">--install</span></code> in the terminal</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">valgrind</span></code> not directly available on Mac OS</p></li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Remote Environment</h2>
+<p>Remote environment means to use a remote computer to perform the development.
+The whole toolchain is installed on the remote computer. It is useful when
+local environment is not available. For example, when you are using a
+Chromebook or a tablet.</p>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p>SSH Server</p>
+<ul>
+<li><p>From CS department</p></li>
+<li><p>C++ Toolchain pre-installed</p></li>
+<li><p>Handle files remotely</p></li>
+<li><p>Best wth VS Code in SSH remote mode 👍</p></li>
+<li><p>Read <a class="reference external" href="https://uwf-fang.github.io/course/cs-ssh-server.html">SSH instructions</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="half docutils container">
+<ul class="simple">
+<li><p>GitHub Codespaces</p>
+<ul>
+<li><p>An in-browser editor (VS Code) with a Linux virtual machine</p></li>
+<li><p>Free hours for GitHub Classroom</p></li>
+<li><p>Read the <a class="reference external" href="https://docs.github.com/en/codespaces/overview">CodeSpace Overview</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Traps and Pitfalls 🪤</h2>
+<ul class="simple">
+<li><p>MinGW / MSYS2 / Git Bash</p>
+<ul>
+<li><p>A Windows port of g++ toolchain</p></li>
+<li><p>g++ under MinGW is not compatible with g++ under Linux</p></li>
+<li><p>Compatibility issues with <code class="docutils literal notranslate"><span class="pre">make</span></code></p></li>
+<li><p>Not recommended for this course</p></li>
+</ul>
+</li>
+<li><p>Windows line ending</p>
+<ul>
+<li><p>Whenever you use software developed for Windows only on your files</p></li>
+</ul>
+</li>
+<li><p>Click-and-run feature</p>
+<ul>
+<li><p>Extremely tricky to configure for modular project with make</p></li>
+<li><p>Command line is way better!</p></li>
+<li><p>Examples</p>
+<ul>
+<li><p>JGrasp</p></li>
+<li><p>Run and Debug button in VS Code</p></li>
+<li><p>OnlineGDB</p></li>
+<li><p>Eclipse</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

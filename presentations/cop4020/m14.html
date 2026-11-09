@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Programming Languages</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Programming Languages</h1>
+<div class="subtitle docutils container">
+<p><strong>Module 14: Misc. Topics</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Introduction to Multi-Paradigm Programming in Python</h2>
+</section>
+<section >
+<h3>Harnessing Imperative, OOP, and Functional Styles</h3>
+<ul class="simple">
+<li><p>What is Multi-Paradigm Programming?</p></li>
+<li><p>Why Python?</p></li>
+<li><p>Paradigm 1: Imperative Programming</p></li>
+<li><p>Paradigm 2: Object-Oriented Programming (OOP)</p></li>
+<li><p>Paradigm 3: Functional Programming (FP)</p></li>
+<li><p>Python: Blending the Paradigms</p></li>
+</ul>
+</section>
+<section >
+<h3>What is Multi-Paradigm Programming?</h3>
+<ul class="simple">
+<li><p>A programming language is <strong>multi-paradigm</strong> if it supports more than one
+programming paradigm.</p></li>
+<li><p><strong>Paradigm:</strong> A way of thinking about and structuring programming problems
+and their solutions.</p></li>
+<li><p>Think of it like a <strong>toolbox</strong>: Different tools (paradigms) are better suited
+for different jobs.</p></li>
+<li><p>It allows developers to choose the most suitable style for a specific task or
+even mix styles within a single project.</p></li>
+</ul>
+</section>
+<section >
+<h3>Why Python?</h3>
+<ul class="simple">
+<li><p>Python is inherently <strong>multi-paradigm</strong>. Its design philosophy emphasizes
+flexibility and readability.</p></li>
+<li><p>It doesn’t force you into <em>one</em> specific way of structuring code.</p></li>
+<li><p>Core features support:</p>
+<ul>
+<li><p><strong>Imperative</strong> programming (statements, loops, conditionals).</p></li>
+<li><p><strong>Object-Oriented</strong> programming (classes, inheritance).</p></li>
+<li><p>Elements of <strong>Functional</strong> programming (first-class functions, lambdas,
+map/filter).</p></li>
+</ul>
+</li>
+<li><p>This flexibility makes Python powerful and applicable to a wide range of
+problems.</p></li>
+</ul>
+</section>
+<section >
+<h3>Paradigm 1: Imperative Programming</h3>
+<ul class="simple">
+<li><p><strong>Focus:</strong> <em>How</em> to achieve a result.</p></li>
+<li><p><strong>Description:</strong> Describes computation in terms of statements that change the
+program <strong>state</strong>.</p></li>
+<li><p><strong>Core Idea:</strong> A sequence of commands for the computer to perform.</p></li>
+<li><p><strong>Characteristics:</strong></p>
+<ul>
+<li><p>Explicit step-by-step instructions.</p></li>
+<li><p>Use of mutable variables (state that can change).</p></li>
+<li><p>Common constructs: loops (<code class="docutils literal notranslate"><span class="pre">for</span></code>, <code class="docutils literal notranslate"><span class="pre">while</span></code>), conditionals
+(<code class="docutils literal notranslate"><span class="pre">if</span></code>/<code class="docutils literal notranslate"><span class="pre">else</span></code>), assignments (<code class="docutils literal notranslate"><span class="pre">=</span></code>).</p></li>
+</ul>
+</li>
+<li><p>Often the first style learned by programmers.</p></li>
+</ul>
+</section>
+<section >
+<h3>Imperative Example in Python</h3>
+<ul class="simple">
+<li><p><strong>Task:</strong> Calculate the sum of numbers in a list.</p></li>
+</ul>
+<pre data-id="imperative-example-in-python"><code data-trim data-noescape class="python">def sum_list_imperative(numbers):
+  total = 0  # Initialize state (mutable variable) for number in numbers: #
+  Loop through sequence
+    total += number # Change state
+  return total
+
+my_list = [1, 2, 3, 4, 5] result = sum_list_imperative(my_list) print(f&quot;The
+sum is: {result}&quot;) # Output: The sum is: 15</code></pre>
+<ul class="simple">
+<li><p>This code explicitly tells the computer the steps: initialize <code class="docutils literal notranslate"><span class="pre">total</span></code> to 0,
+iterate, add each number to <code class="docutils literal notranslate"><span class="pre">total</span></code>.</p></li>
+</ul>
+</section>
+<section >
+<h3>Paradigm 2: Object-Oriented Programming (OOP)</h3>
+<ul class="simple">
+<li><p><strong>Focus:</strong> Organizing code around data, or “objects”.</p></li>
+<li><p><strong>Description:</strong> Bundles data (attributes) and the functions that operate on
+that data (methods) into <strong>objects</strong>.</p></li>
+<li><p><strong>Core Idea:</strong> Model real-world or abstract entities using <strong>classes</strong>
+(blueprints) and <strong>objects</strong> (instances).</p></li>
+<li><p><strong>Key Principles:</strong></p>
+<ul>
+<li><p><strong>Encapsulation:</strong> Hiding internal state and requiring interaction through
+methods.</p></li>
+<li><p><strong>Inheritance:</strong> Creating new classes that reuse, extend, and modify
+behavior defined in other classes.</p></li>
+<li><p><strong>Polymorphism:</strong> Objects of different classes responding to the same
+method call in their own way.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>OOP Example in Python</h3>
+<ul class="simple">
+<li><p><strong>Task:</strong> Model a simple <code class="docutils literal notranslate"><span class="pre">Dog</span></code>.</p></li>
+</ul>
+<pre data-id="oop-example-in-python"><code data-trim data-noescape class="python">class Dog:
+  # Constructor (initializes object state) def __init__(self, name, breed):
+    self.name = name    # Attribute (data)
+    self.breed = breed  # Attribute (data)
+
+  # Method (behavior)
+  def bark(self):
+    return f&quot;{self.name} says Woof!&quot;
+
+# Create instances (objects) of the Dog class
+my_dog = Dog(&quot;Buddy&quot;, &quot;Golden Retriever&quot;)
+your_dog = Dog(&quot;Lucy&quot;, &quot;Poodle&quot;)
+
+# Call methods on the objects print(my_dog.bark())
+# Output: Buddy says Woof!
+print(your_dog.bark())  # Output: Lucy says Woof!
+print(f&quot;{my_dog.name} is a {my_dog.breed}&quot;) # Accessing attributes</code></pre>
+</section>
+<section >
+<h3>Paradigm 3: Functional Programming (FP)</h3>
+<ul class="simple">
+<li><p><strong>Focus:</strong> Computation as the evaluation of mathematical functions.</p></li>
+<li><p><strong>Description:</strong> Treats functions as <strong>first-class citizens</strong>. Emphasizes
+<strong>immutability</strong> and avoiding <strong>side effects</strong>.</p></li>
+<li><p><strong>Core Idea:</strong> <em>What</em> to compute rather than <em>how</em>. Focus on expressions that
+yield values.</p></li>
+<li><p><strong>Key Concepts:</strong></p>
+<ul>
+<li><p><strong>Pure Functions:</strong> Given the same input, always return the same output,
+and have no side effects (don’t modify external state).</p></li>
+<li><p><strong>Immutability:</strong> Data structures cannot be changed after creation.</p></li>
+<li><p><strong>First-Class Functions:</strong> Functions can be passed as arguments, returned
+from other functions, and assigned to variables.</p></li>
+<li><p><strong>Higher-Order Functions:</strong> Functions that operate on other functions
+(e.g., <code class="docutils literal notranslate"><span class="pre">map</span></code>, <code class="docutils literal notranslate"><span class="pre">filter</span></code>).</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Functional Example in Python</h3>
+<ul class="simple">
+<li><p><strong>Task:</strong> Get the squares of even numbers in a list.</p></li>
+</ul>
+<pre data-id="functional-example-in-python"><code data-trim data-noescape class="python"># Using map, filter, and lambda (anonymous functions)
+numbers = [1, 2, 3, 4, 5, 6]
+
+# Filter out odd numbers
+even_numbers = filter(lambda x: x % 2 == 0, numbers)
+
+# Square the remaining numbers
+squared_evens = map(lambda x: x * x, even_numbers)
+
+# Convert iterator to list to see results
+result_fp = list(squared_evens)
+print(f&quot;Squared evens (FP): {result_fp}&quot;)
+# Output: Squared evens (FP): [4, 16, 36]
+
+# --- Alternative using List Comprehension (Pythonic blend) ---
+result_lc = [x*x for x in numbers if x % 2 == 0]
+print(f&quot;Squared evens (LC): {result_lc}&quot;)
+# Output: Squared evens (LC): [4, 16, 36]</code></pre>
+<ul class="simple">
+<li><p>Focuses on transforming data (<code class="docutils literal notranslate"><span class="pre">filter</span></code>, <code class="docutils literal notranslate"><span class="pre">map</span></code>) rather than modifying
+state in a loop. List comprehensions offer a concise, Pythonic way often
+inspired by functional concepts.</p></li>
+</ul>
+</section>
+<section >
+<h3>Python: Blending the Paradigms</h3>
+<ul class="simple">
+<li><p>Python doesn’t force purity. You can (and often do) mix styles.</p></li>
+<li><p><strong>Imperative:</strong> Use loops and sequences for straightforward tasks.</p></li>
+<li><p><strong>OOP:</strong> Use classes to model complex entities, manage state, and create
+reusable components (GUIs, data structures).</p></li>
+<li><p><strong>Functional:</strong> Use <code class="docutils literal notranslate"><span class="pre">map</span></code>, <code class="docutils literal notranslate"><span class="pre">filter</span></code>, list comprehensions, and <code class="docutils literal notranslate"><span class="pre">lambda</span></code>
+for data transformation and processing pipelines. Pass functions as arguments
+for flexible behavior (e.g., sorting keys, callbacks).</p></li>
+</ul>
+<pre data-id="python-blending-the-paradigms"><code data-trim data-noescape class="python"># Example: Using FP style within an OOP method class DataProcessor:
+    def __init__(self, data):
+        self.data = data # State (OOP)
+
+    def get_processed_data(self, processing_func):
+        # Using map (functional style) within a method return
+        list(map(processing_func, self.data))
+
+processor = DataProcessor([1, 2, 3, 4])
+squares = processor.get_processed_data(lambda x: x * x)
+print(f&quot;Processed data: {squares}&quot;)
+# Output: Processed data: [1, 4, 9, 16]</code></pre>
+</section>
+<section >
+<h3>Benefits of a Multi-Paradigm Approach</h3>
+<ul class="simple">
+<li><p><strong>Flexibility:</strong> Choose the best tool (paradigm) for the specific problem
+you’re solving.</p></li>
+<li><p><strong>Expressiveness:</strong> Some problems are more naturally expressed in one
+paradigm than another.</p></li>
+<li><p><strong>Code Readability &amp; Maintainability:</strong> Using the appropriate paradigm can
+make code easier to understand and modify.</p></li>
+<li><p><strong>Leverage Libraries:</strong> Many Python libraries utilize different paradigms
+(e.g., NumPy has imperative-style array operations, while functional tools
+exist for data pipelines).</p></li>
+<li><p><strong>Problem Decomposition:</strong> Break down complex problems and use different
+paradigms for different parts.</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Modern Trends in Programming Languages</h2>
+<ul class="simple">
+<li><p>The programming language landscape is constantly evolving.</p></li>
+<li><p>Trends are driven by new technologies, developer needs, and industry demands.</p></li>
+<li><p>Key drivers include AI/ML, cloud computing, performance needs, and security
+concerns.</p></li>
+</ul>
+</section>
+<section >
+<h3>Trend: AI &amp; Data Science Dominance</h3>
+<ul class="simple">
+<li><p>Python reigns supreme in AI, Machine Learning, and Data Science.</p>
+<ul>
+<li><p>Rich ecosystem: TensorFlow, PyTorch, Pandas, NumPy.</p></li>
+<li><p>Simplicity and large community support its dominance.</p></li>
+</ul>
+</li>
+<li><p>R remains a strong contender, especially for statistical analysis and
+visualization.</p></li>
+<li><p>SQL is essential for data management and querying, crucial for feeding AI
+models.</p></li>
+</ul>
+</section>
+<section >
+<h3>Trend: Emphasis on Performance &amp; Safety</h3>
+<ul class="simple">
+<li><p>Growing demand for languages that offer both speed and memory safety.</p></li>
+<li><p>Rust is gaining significant traction:</p>
+<ul>
+<li><p>Focus on memory safety without garbage collection.</p></li>
+<li><p>High performance, suitable for systems programming, web assembly, and
+replacing C/C++.</p></li>
+<li><p>Often cited as the “most loved” language by developers.</p></li>
+</ul>
+</li>
+<li><p>Go (Golang) emphasizes simplicity, concurrency, and performance, popular for
+cloud infrastructure and microservices.</p></li>
+<li><p>C++ maintains relevance in performance-critical areas like game development,
+high-frequency trading, and embedded systems.</p></li>
+</ul>
+</section>
+<section >
+<h3>Trend: Web Technologies Continue to Evolve</h3>
+<ul class="simple">
+<li><p>JavaScript remains the cornerstone of front-end web development.</p></li>
+<li><p>TypeScript (a superset of JavaScript) is rapidly growing:</p>
+<ul>
+<li><p>Adds static typing, improving code quality and maintainability for large
+projects.</p></li>
+<li><p>Strong integration with frameworks like Angular and React.</p></li>
+</ul>
+</li>
+<li><p>Frameworks (React, Angular, Vue.js) dominate front-end development.</p></li>
+<li><p>Node.js enables JavaScript for backend development.</p></li>
+</ul>
+</section>
+<section >
+<h3>Trend: Cloud-Native &amp; Concurrency Focus</h3>
+<ul class="simple">
+<li><p>Cloud computing favors languages built for scalability and distributed
+systems.</p></li>
+<li><p>Go (Golang) was designed with concurrency and cloud infrastructure in mind.</p></li>
+<li><p>Python is widely used in DevOps, automation, and scripting for cloud
+platforms (AWS Lambda, etc.).</p></li>
+<li><p>Languages with strong concurrency support (Go, Rust, Java, Kotlin) are
+valuable.</p></li>
+</ul>
+</section>
+<section >
+<h3>Trend: Mobile &amp; Cross-Platform Development</h3>
+<ul class="simple">
+<li><p>Swift is the primary language for Apple’s iOS and macOS ecosystems.</p></li>
+<li><p>Kotlin is the preferred language for modern Android development.</p>
+<ul>
+<li><p>Offers full interoperability with Java.</p></li>
+<li><p>Expanding use in backend development (Kotlin Multiplatform).</p></li>
+</ul>
+</li>
+<li><p>Dart (with the Flutter framework) is gaining popularity for cross-platform UI
+development.</p></li>
+</ul>
+</section>
+<section >
+<h3>Trend: Developer Experience &amp; Simplicity</h3>
+<ul class="simple">
+<li><p>Languages prioritizing ease of learning and use attract developers.</p></li>
+<li><p>Python’s clear syntax makes it a popular choice for beginners and experts.</p></li>
+<li><p>Go emphasizes simplicity and readability.</p></li>
+<li><p>Tooling, community support, and clear documentation are increasingly
+important factors.</p></li>
+</ul>
+</section>
+<section >
+<h3>Looking Ahead</h3>
+<ul class="simple">
+<li><p>AI’s influence will likely grow, potentially assisting in code generation and
+optimization (e.g., GitHub Copilot, experimental languages like Mojo).</p></li>
+<li><p>Continued focus on security and reliability (memory-safe languages).</p></li>
+<li><p>Domain-Specific Languages (DSLs) may become more prevalent.</p></li>
+<li><p>Quantum computing could eventually necessitate new language paradigms.</p></li>
+<li><p>The “best” language depends on the specific project, team expertise, and
+desired outcomes.</p></li>
+</ul>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

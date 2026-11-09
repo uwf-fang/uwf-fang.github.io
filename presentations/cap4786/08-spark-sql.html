@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Introduction to Big Data Analytics</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Introduction to Big Data Analytics</h1>
+<div class="subtitle docutils container">
+<p><strong>Chapter 7: Spark SQL</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Spark SQL Overview</p></li>
+<li><p>Performance Optimization</p></li>
+<li><p>Applications</p></li>
+<li><p>DataFrame API</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Spark SQL Overview</h2>
+<ul class="simple">
+<li><p>A Spark module for structured data processing</p>
+<ul>
+<li><p>Integrated with other Spark components: Spark Core, Spark Streaming, MLlib,
+GraphX</p></li>
+</ul>
+</li>
+<li><p>Provides two complementary types of APIs to accomplish the similar goals</p>
+<ul>
+<li><p>Higher-level APIs: DataFrames and Datasets</p></li>
+<li><p>SQL-like querying context: e.g. SQL, HiveQL</p></li>
+</ul>
+</li>
+<li><p>Supports various data sources: Parquet, JSON, Hive, HBase, Cassandra, etc.</p></li>
+</ul>
+</section>
+<section >
+<h3>APIs vs SQL</h3>
+<ul>
+<li><p>APIs: process data by programming in programming languages</p>
+<ul class="simple">
+<li><p>More friendly to programmers</p></li>
+<li><p>More flexible and powerful</p></li>
+<li><p>DataFrame and Dataset APIs</p></li>
+</ul>
+<pre><code data-trim data-noescape class="scala">// Load table1 and table2 into DataFrames df1 and df2 first
+// === is a type-safe equality operator in Spark
+df1.join(df2, df1(&quot;key&quot;) === df2(&quot;key&quot;))
+  .filter(df1(&quot;age&quot;) &gt; 21)
+  .select(df1(&quot;name&quot;), df2(&quot;address&quot;))
+  .show()</code></pre>
+</li>
+<li><p>SQL: process data by writing SQL queries</p>
+<ul class="simple">
+<li><p>More friendly to data analysts who are familiar with SQL</p></li>
+<li><p>More sophisticated optimizations inherited from relational databases</p></li>
+</ul>
+<pre><code data-trim data-noescape class="scala">// spark is an instance of SparkSession
+spark.sql(&quot;&quot;&quot;
+  SELECT table1.name, table2.address
+  FROM table1
+  JOIN table2 ON table1.key = table2.key
+  WHERE table1.age &gt; 21
+&quot;&quot;&quot;).show()</code></pre>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Performance optimizations</h2>
+<p>Some are general optimizations, while some are conditional optimizations based
+on the data source and the query.</p>
+<ul class="simple">
+<li><p>Reduced disk I/O</p></li>
+<li><p>Partitioning (helps when data is partitioned and some partitions can be
+skipped)</p></li>
+<li><p>Columnar storage (helps when a few columns are queried)</p></li>
+<li><p>In-memory columnar caching (helps columnar storage)</p></li>
+<li><p>Skip-rows (helps when many rows are skipped)</p></li>
+<li><p>Predicate pushdown (delegate certain operations to data source when data
+source supports it)</p></li>
+<li><p>Query optimization with Catalyst optimizer</p>
+<ul>
+<li><p>Analysis, logical optimization, physical planning, code generation stages</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Applications</h2>
+<p>It provides a unified data access layer for various data sources, and can even
+work directly on top of combined data from different sources.</p>
+<ul class="simple">
+<li><p>ETL (Extract, Transform, Load)</p></li>
+<li><p>Data visualization (skip data movement and processing)</p></li>
+<li><p>Distributed SQL query engine (skip data movement and processing)</p></li>
+<li><p>Data warehousing and data lake solutions (Manage multiple data sources)</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>DataFrame API</h2>
+<ul>
+<li><p>DataFrame API for structured data</p></li>
+<li><p>Entry point of all functionalities in Spark SQL</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">SparkSession</span></code> class</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">spark</span></code> in Spark shell/DCE is a <strong>provided</strong> instance of
+<code class="code docutils literal notranslate"><span class="pre">SparkSession</span></code> class</p></li>
+</ul>
+<pre><code data-trim data-noescape class="scala">// Not needed in Spark shell/DCE
+val spark = SparkSession.builder()
+  .appName(&quot;Spark SQL Example&quot;)
+  .config(&quot;spark.some.config.option&quot;, &quot;some-value&quot;)
+  .getOrCreate()</code></pre>
+</li>
+<li><p>The <code class="code docutils literal notranslate"><span class="pre">SQLContext</span></code> class and the <code class="code docutils literal notranslate"><span class="pre">HiveContext</span></code> class</p>
+<ul class="simple">
+<li><p>Old way to access functionality of Spark SQL</p></li>
+<li><p>Not recommended after Spark 2.0</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Textbook Examples</h3>
+<ul class="simple">
+<li><p>I will stay away from the old way as</p>
+<ul>
+<li><p>All newer tutorials and examples you can find use the new way</p></li>
+<li><p>I do not want you to learn something that is not recommended anymore</p></li>
+<li><p>The old way is still supported but not recommended</p></li>
+</ul>
+</li>
+<li><p>Textbook employs <code class="code docutils literal notranslate"><span class="pre">SQLContext</span></code> and <code class="code docutils literal notranslate"><span class="pre">HiveContext</span></code> classes</p>
+<ul>
+<li><p>Use <code class="code docutils literal notranslate"><span class="pre">SparkSession</span></code> class instead now</p></li>
+<li><p>Replace any <code class="code docutils literal notranslate"><span class="pre">SQLContext</span></code> or <code class="code docutils literal notranslate"><span class="pre">HiveContext</span></code> instance with
+<code class="code docutils literal notranslate"><span class="pre">SparkSession</span></code> instance in the examples in the textbook should work
+in almost all cases</p></li>
+</ul>
+</li>
+<li><p>The <code class="code docutils literal notranslate"><span class="pre">DataFrame</span></code> class stays the same</p></li>
+<li><p>The <code class="code docutils literal notranslate"><span class="pre">DataSet</span></code> class was introduced in Spark 1.6</p></li>
+</ul>
+</section>
+<section >
+<h3>DataFrame Creation from RDD 1</h3>
+<ul>
+<li><p>From RDD of tuples</p>
+<ul class="simple">
+<li><p>Specify column names as parameters of <code class="code docutils literal notranslate"><span class="pre">toDF</span></code> method</p></li>
+</ul>
+<pre><code data-trim data-noescape class="scala">val rdd = sc.parallelize(Seq((1, &quot;Alice&quot;), (2, &quot;Bob&quot;)))
+val df = rdd.toDF(&quot;id&quot;, &quot;name&quot;)</code></pre>
+</li>
+<li><p>From RDD of case classes</p>
+<ul class="simple">
+<li><p>Automatically infer schema from case class</p></li>
+</ul>
+<pre><code data-trim data-noescape class="scala">case class Person(id: Int, name: String)
+val rdd = sc.parallelize(Seq(Person(1, &quot;Alice&quot;), Person(2, &quot;Bob&quot;)))
+val df = rdd.toDF()</code></pre>
+</li>
+</ul>
+</section>
+<section >
+<h3>DataFrame Creation from RDD 2</h3>
+<ul>
+<li><p>From RDD of <code class="code docutils literal notranslate"><span class="pre">Row</span></code> objects</p>
+<ul class="simple">
+<li><p>Must specify schema explicitly</p></li>
+</ul>
+<pre><code data-trim data-noescape class="scala">import org.apache.spark.sql.Row
+import org.apache.spark.sql.types.{StructType, StructField, IntegerType, StringType}
+
+val schema = StructType(
+  StructField(&quot;id&quot;, IntegerType, true),
+  StructField(&quot;name&quot;, StringType, true)
+)
+val rdd = sc.parallelize(Seq(Row(1, &quot;Alice&quot;), Row(2, &quot;Bob&quot;)))
+val df = rdd.schema(schema).toDF()</code></pre>
+</li>
+<li><p>Alternatively, you can use <code class="code docutils literal notranslate"><span class="pre">createDataFrame</span></code> method of
+<code class="code docutils literal notranslate"><span class="pre">SparkSession</span></code> object</p>
+<pre><code data-trim data-noescape class="scala">// val df = rdd.schema(schema).toDF()
+val df = spark.createDataFrame(rdd, schema)</code></pre>
+</li>
+</ul>
+</section>
+<section >
+<h3>DataFrame Creation From a Data Source</h3>
+<ul>
+<li><p>Use <code class="code docutils literal notranslate"><span class="pre">read</span></code> method of <code class="code docutils literal notranslate"><span class="pre">SparkSession</span></code> object to create a
+<code class="code docutils literal notranslate"><span class="pre">DataFrameReader</span></code> object to read data from a data source</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">format</span></code> method to specify the data source format</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">load</span></code> method to load data from the data source</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">option</span></code> method to specify additional options</p>
+<pre><code data-trim data-noescape class="scala">val df = spark.read.format(&quot;json&quot;).load(&quot;people.json&quot;)</code></pre>
+</li>
+<li><p>Alternatively, you can use the data source-specific method like <code class="code docutils literal notranslate"><span class="pre">json</span></code></p>
+<pre><code data-trim data-noescape class="scala">val df = spark.read.json(&quot;people.json&quot;)</code></pre>
+</li>
+<li><p>Supported formats: JSON, Parquet, ORC, JDBC, CSV, text, Avro, HBase,
+Cassandra, Hive, and any data source that implements the
+<code class="code docutils literal notranslate"><span class="pre">DataSourceRegister</span></code> interface</p></li>
+</ul>
+</section>
+<section >
+<h3>DataFrame Operations 1</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Basic Operations</strong></p>
+<ul class="simple">
+<li><p>cache</p></li>
+<li><p>columns</p></li>
+<li><p>createOrReplaceTempView (replace old registerTempTable)</p></li>
+<li><p>dtypes</p></li>
+<li><p>explain</p></li>
+<li><p>persist</p></li>
+<li><p>printSchema</p></li>
+<li><p>show</p></li>
+<li><p>toDF</p></li>
+</ul>
+</div>
+<div class="half docutils container">
+<p><strong>Query Operations 1</strong></p>
+<ul class="simple">
+<li><p>agg</p></li>
+<li><p>apply</p></li>
+<li><p>cube</p></li>
+<li><p>distinct</p></li>
+<li><p>explode</p></li>
+<li><p>filter</p></li>
+<li><p>groupBy</p></li>
+<li><p>intersect</p></li>
+<li><p>join</p></li>
+<li><p>limit</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section >
+<h3>DataFrame Operations 2</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Query Operations 2</strong></p>
+<ul class="simple">
+<li><p>orderBy</p></li>
+<li><p>randomSplit</p></li>
+<li><p>rollup</p></li>
+<li><p>sample</p></li>
+<li><p>select</p></li>
+<li><p>selectExpr</p></li>
+<li><p>withColumn</p></li>
+</ul>
+</div>
+<div class="half docutils container">
+<p><strong>Operations similar to RDD</strong></p>
+<ul class="simple">
+<li><p>transactions: map, flatMap, filter, foreach</p></li>
+<li><p>actions: collect, count, take, first, describe</p></li>
+</ul>
+<p><strong>Convert to RDD</strong></p>
+<ul class="simple">
+<li><p>rdd</p></li>
+<li><p>toJSON</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section >
+<h3>Saving DataFrames</h3>
+<ul>
+<li><p>Use <code class="code docutils literal notranslate"><span class="pre">write</span></code> method of <code class="code docutils literal notranslate"><span class="pre">DataFrame</span></code> object to create a
+<code class="code docutils literal notranslate"><span class="pre">DataFrameWriter</span></code> object to write data to a data source</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">format</span></code> method to specify the data source format</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">mode</span></code> method to specify the save mode</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">option</span></code> method to specify additional options</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">partitionBy</span></code> method to partition data by columns</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">save</span></code> method to save data to the data source</p>
+<pre><code data-trim data-noescape class="scala">df.write.format(&quot;json&quot;).save(&quot;people.json&quot;)</code></pre>
+</li>
+<li><p>Alternatively, you can use the data source-specific method like <code class="code docutils literal notranslate"><span class="pre">json</span></code></p>
+<blockquote>
+<div><pre><code data-trim data-noescape class="scala">df.write.json(&quot;people.json&quot;)</code></pre>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section >
+<h3>Spark SQL Built-in Functions</h3>
+<ul class="simple">
+<li><p><strong>DataFrame does not take Scala functions directly!</strong></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">org.apache.spark.sql.functions</span></code> package provides many built-in
+functions</p></li>
+<li><p>Learn as needed. Not worth memorizing all of them at once.</p></li>
+<li><p>Aggregate functions: avg, count, max, min, sum</p></li>
+<li><p>Collection functions: size, array_contains, explode, sort_array</p></li>
+<li><p>Date Time functions</p></li>
+<li><p>Mathematical functions</p></li>
+<li><p>String functions</p></li>
+<li><p>Window functions</p></li>
+</ul>
+</section>
+<section >
+<h3>Spark SQL User-defined Functions</h3>
+<ul>
+<li><p>Must be registered with a name</p></li>
+<li><p>User-defined functions</p>
+<ul class="simple">
+<li><p>to be applied to each row of a DataFrame</p></li>
+<li><p>make a Scala function that takes a row as input and returns a value</p></li>
+<li><p>register with <code class="code docutils literal notranslate"><span class="pre">udf</span></code> method</p></li>
+</ul>
+<pre><code data-trim data-noescape class="scala">import org.apache.spark.sql.functions.udf
+val upper: String =&gt; String = _.toUpperCase
+val upperUDF = udf(upper)
+df.select(upperUDF(df(&quot;name&quot;)))</code></pre>
+</li>
+<li><p>User-defined aggregate functions</p>
+<ul class="simple">
+<li><p>to be applied to a group of rows of a DataFrame</p></li>
+<li><p>make a class that extends <code class="code docutils literal notranslate"><span class="pre">UserDefinedAggregateFunction</span></code> class</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

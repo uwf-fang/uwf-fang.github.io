@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Graph</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Graph</h1>
+<div class="subtitle docutils container">
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Overview</p></li>
+<li><p>Concepts</p></li>
+<li><p>Example graphs</p></li>
+<li><p>Representations</p></li>
+<li><p>Algorithms</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<ul class="simple">
+<li><p>Graphs are a fundamental data structure in computer science.</p></li>
+<li><p>Graphs are used to model networks, complex relationships, etc.</p></li>
+<li><p>Vertices(nodes) connected by edges.</p></li>
+</ul>
+<div class="graphviz"><img src="../_images/graphviz-b46c5fd1269c07b204b329d0c34cb4dc3c25886d.png" alt="digraph G {
+   A -&gt; B;
+   A -&gt; C;
+   B -&gt; C;
+   B -&gt; D;
+   C -&gt; D;
+   D -&gt; C;
+   E -&gt; F;
+   F -&gt; C;
+}" class="graphviz" /></div>
+</section>
+<section >
+<h3>Applications</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p>Social networks</p></li>
+<li><p>Routing algorithms</p></li>
+<li><p>Computer networks</p></li>
+<li><p>Transportation and logistics</p></li>
+<li><p>Machine learning/deep learning</p></li>
+<li><p>Bioinformatics</p></li>
+</ul>
+</div>
+<div class="half docutils container">
+<ul class="simple">
+<li><p>Integrated circuit design</p></li>
+<li><p>Database systems</p></li>
+<li><p>Computer vision</p></li>
+<li><p>Optimization problems</p></li>
+<li><p>Game development</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section >
+<h3>Concepts</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p>Vertex/Node</p>
+<ul>
+<li><p>degree of vertex: number of neighbors</p></li>
+</ul>
+</li>
+<li><p>Edge/Arc</p>
+<ul>
+<li><p>directed/undirected</p></li>
+<li><p>weighted/unweighted</p></li>
+</ul>
+</li>
+<li><p>Connectivity</p>
+<ul>
+<li><p>path between two vertices</p>
+<ul>
+<li><p>length of path</p></li>
+</ul>
+</li>
+<li><p>distance between two vertices</p></li>
+<li><p>adjacent</p></li>
+<li><p>connected / unconnected</p></li>
+<li><p>cyclic / acyclic</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="half docutils container">
+<ul class="simple">
+<li><p>Graph level properties</p>
+<ul>
+<li><p>degree of graph: max degree of vertices</p></li>
+<li><p>directed/undirected</p></li>
+<li><p>weighted/unweighted</p></li>
+<li><p>cyclic/acyclic</p></li>
+<li><p>connected/unconnected</p></li>
+<li><p>dense/sparse</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</section>
+<section >
+<h3>Graph Examples</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<figure class="align-default" id="id1">
+<div class="graphviz"><img src="../_images/graphviz-9ae63e1fa66b9c9f14e9be47b23840da6dbbcc5b.png" alt="digraph G {
+  node[shape=circle];
+  a -&gt; {b, c, d};
+  b -&gt; {a, d};
+}" class="graphviz" /></div>
+<figcaption>
+<p><span class="caption-text">Directed connected cyclic graph</span></p>
+</figcaption>
+</figure>
+</div>
+<div class="half docutils container">
+<figure class="align-default" id="id2">
+<div class="graphviz"><img src="../_images/graphviz-13b5872ebd637af5165a53f77d9ad5698754e591.png" alt="graph G {
+  node[shape=ellipse];
+  Atlanta -- Dallas [label=4];
+  Atlanta -- Miami [label=4];
+  Atlanta -- Orlando [label=3];
+  Dallas -- Austin [label=1];
+  Dallas -- Orlando [label=6];
+}" class="graphviz" /></div>
+<figcaption>
+<p><span class="caption-text">Undirected connected cyclic weighted graph</span></p>
+</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section >
+<h3>Graph Examples (contd.)</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<figure class="align-default" id="id3">
+<div class="graphviz"><img src="../_images/graphviz-bd3796db8a38be3edd8383ff2b84970a977c05dc.png" alt="graph G {
+  node[shape=circle];
+  b -- a;
+  a -- {c, d};
+  b -- {e, f};
+}" class="graphviz" /></div>
+<figcaption>
+<p><span class="caption-text">Undirected connected acyclic graph (Tree)</span></p>
+</figcaption>
+</figure>
+</div>
+<div class="half docutils container">
+<figure class="align-default" id="id4">
+<div class="graphviz"><img src="../_images/graphviz-1d601cf32daf13d96163c7b5ea360e616ecc7e4a.png" alt="digraph G {
+  rankdir=LR;
+  node[shape=box];
+  task1 -&gt; task2;
+  task2 -&gt; {task3, task4};
+  task3 -&gt; {task5, task6};
+  task4 -&gt; task6;
+}" class="graphviz" /></div>
+<figcaption>
+<p><span class="caption-text">Directed acyclic graph (DAG) task planning</span></p>
+</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section >
+<h3>Representations</h3>
+<ul>
+<li><p>Vertices with pointers to neighbors (uncommon)</p></li>
+<li><p>List of edges</p>
+<p>A list of edges is a 1d array in which every element in the array represents
+an edge. It is the simplest way to represent a graph. It is also an easy way
+to store a graph in a relational database. It is not efficient for most graph
+algorithms though.</p>
+</li>
+<li><p>Adjacency list</p>
+<p>An adjacency list is a 1d array in which every element in the array
+represents a vertex and points to a list of its neighbors.</p>
+</li>
+<li><p>Adjacency matrix</p>
+<p>An adjacency matrix is a 2d array in which each row represents a source
+vertex and each column represents a destination vertex. The elements in the
+matrix represents the edge between the two vertices.</p>
+</li>
+</ul>
+</section>
+<section >
+<h3>Algorithms</h3>
+<ul class="simple">
+<li><p>Graph traversal</p>
+<ul>
+<li><p>Breadth-first search</p></li>
+<li><p>Depth-first search</p></li>
+</ul>
+</li>
+<li><p>Topological sort (DAG only)</p></li>
+<li><p>Shortest path</p>
+<ul>
+<li><p>Dijkstra’s algorithm (single source, greedy)</p></li>
+<li><p>Floyd-Warshall Algorithm (all pairs, dynamic programming)</p></li>
+</ul>
+</li>
+<li><p>Minimum spanning tree</p>
+<ul>
+<li><p>Prim’s algorithm (greedy)</p></li>
+<li><p>Kruskal’s algorithm (greedy)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

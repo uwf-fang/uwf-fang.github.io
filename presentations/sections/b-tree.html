@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>B-Tree and Variants</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>B-Tree and Variants</h1>
+<div class="subtitle docutils container">
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Overview</p></li>
+<li><p>Operations</p></li>
+<li><p>Variants</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<ul class="simple">
+<li><p>Invented by Bayer and McCreight (from Boeing Labs) in 1972.</p></li>
+<li><p>A M-ary search tree that stores data in order.</p></li>
+<li><p>A balanced tree with all leaves at the same level.</p></li>
+<li><p><strong>Definition:</strong> A B-tree of order <span class="math notranslate nohighlight">\(m\)</span> is a tree which satisfies the
+following properties:</p>
+<ul>
+<li><p>Each node has at most <span class="math notranslate nohighlight">\(m\)</span> children.</p></li>
+<li><p>Every node, except for the root and the leaves, has at least <span class="math notranslate nohighlight">\(\lceil
+m/2 \rceil\)</span> children.</p></li>
+<li><p>The root node has at least two children unless it is a leaf.</p></li>
+<li><p>All leaves appear on the same level.</p></li>
+<li><p>Every non-leaf node with k children contains k−1 keys.</p></li>
+<li><p>Every leaf node has at least <span class="math notranslate nohighlight">\(\lceil m/2 \rceil - 1\)</span> keys and at
+most <span class="math notranslate nohighlight">\(m - 1\)</span> keys.</p></li>
+</ul>
+</li>
+</ul>
+<img alt="B-tree of order 5" src="../_images/b-tree.png" />
+</section>
+</section>
+<section >
+<section >
+<h2>Operations: Search, Insertion</h2>
+<p><a class="reference external" href="https://www.cs.usfca.edu/~galles/visualization/BTree.html">B-Tree Visualization</a></p>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Search</strong></p>
+<ul class="simple">
+<li><p>Start at the root node.</p></li>
+<li><p>Compare the key with the keys in the node.</p></li>
+<li><p>If the key is found, return the node.</p></li>
+<li><p>If the key is not found and the node is a leaf, return null.</p></li>
+<li><p>If the key is not found and the node is not a leaf, go to the child
+pointer that points to the subtree that may contain the key.</p></li>
+<li><p>Repeat until the key is found or a leaf node is reached.</p></li>
+</ul>
+</div>
+<div class="half docutils container">
+<p><strong>Insertion</strong></p>
+<ul class="simple">
+<li><p>Start at the root node.</p></li>
+<li><p>Find the leaf node where the key should be inserted.</p></li>
+<li><p>If the node is not full, insert the key into the node.</p></li>
+<li><p>If the node is full, split the node into two nodes.</p></li>
+<li><p>Insert the median key into the parent node.</p></li>
+<li><p>If the parent node is full, split the parent node.</p></li>
+<li><p>Repeat until the root node is reached</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section >
+<h3>Operations: Deletion</h3>
+<ul class="simple">
+<li><p>Search Stage: Search for the value to be deleted.</p></li>
+<li><p>Deletion Stage: Delete the value.</p>
+<ul>
+<li><p>If the value is in a leaf node, delete it.</p></li>
+<li><p>If the value is in an internal node, replace it with its predecessor or
+successor and delete the predecessor or successor from the leaf node.</p></li>
+<li><p>You will end up deleting from a leaf node.</p></li>
+</ul>
+</li>
+<li><p>Rebalance Stage:</p>
+<ul>
+<li><p>If the leaf node is underflow (less than <span class="math notranslate nohighlight">\(\lceil m/2 \rceil - 1\)</span>
+keys):</p>
+<ul>
+<li><p>If the left or right sibling has more than minimal number of
+keys, borrow a key from the sibling.</p></li>
+<li><p>If both siblings have minimal number of keys, merge with a sibling. This
+step will take a key from the parent node and merge it with the sibling.</p></li>
+</ul>
+</li>
+<li><p>If the parent node is underflow after merge, repeat the process up to the
+root node.</p></li>
+<li><p>The root node can have as few as 2 children.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Checkpoint Questions</h2>
+<ul class="simple">
+<li><p>Why does the root node may have a least 2 children instead of
+<span class="math notranslate nohighlight">\(\lceil m/2 \rceil\)</span> children?</p></li>
+<li><p>Is insertion always happening at the leaf node?</p></li>
+<li><p>Is deletion always happening at the leaf node?</p></li>
+<li><p>What determines the time complexity of search, insertion, and deletion in a
+B-tree?</p></li>
+<li><p>If the problem size is <span class="math notranslate nohighlight">\(n\)</span>, what is the height of a B-tree of order
+<span class="math notranslate nohighlight">\(m\)</span>?</p></li>
+</ul>
+</section>
+<section >
+<h3>Checkpoint Solution</h3>
+<ul class="simple">
+<li><p>When the number of values is small, the root node must have less than
+<span class="math notranslate nohighlight">\(\lceil m/2 \rceil\)</span> children.</p></li>
+<li><p>Insertion is always happening at the leaf node.</p></li>
+<li><p>Deletion is <strong>not</strong> always happening at the leaf node.</p></li>
+<li><p>The height of the B-tree determines the time complexity of search,
+insertion, and deletion.</p></li>
+<li><p>The time complexity of search, insertion, and deletion in a B-tree is
+<span class="math notranslate nohighlight">\(\Theta(\log_m n)\)</span>, where <span class="math notranslate nohighlight">\(n\)</span> is the number of keys in the tree.</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Special Cases and Variants</h2>
+<ul class="simple">
+<li><p>Some common B-trees are:</p>
+<ul>
+<li><p>Order 3 B Tree: a.k.a 2-3 Tree (2 or 3 children per internal node).</p></li>
+<li><p>Order 4 B Tree: a.k.a 2-3-4 Tree (2, 3, or 4 children per internal node).</p></li>
+</ul>
+</li>
+</ul>
+<ul class="simple">
+<li><p>Enhancements and variants of B-trees:</p>
+<ul>
+<li><p><strong>B+ Tree</strong>: A B-tree of order <span class="math notranslate nohighlight">\(m\)</span> where all keys are stored in the
+leaves.</p></li>
+<li><p>B* Tree</p></li>
+<li><p>B# Tree</p></li>
+</ul>
+</li>
+</ul>
+<img alt="B+ tree of order 5" src="../_images/b-plus-tree.png" />
+</section>
+<section >
+<h3>B+ Tree</h3>
+<ul class="simple">
+<li><p><strong>Definition:</strong> A B+ tree of order <span class="math notranslate nohighlight">\(m\)</span> satisfies the following
+properties:</p>
+<ul>
+<li><p>All data are stored in the leaves.</p></li>
+<li><p>All leaves are linked together.</p></li>
+<li><p>All internal nodes are duplicate keys only for faster search.</p></li>
+<li><p>All internal nodes have between <span class="math notranslate nohighlight">\(\lceil m/2 \rceil\)</span> and <span class="math notranslate nohighlight">\(m\)</span>
+children.</p></li>
+<li><p>All leaves have between <span class="math notranslate nohighlight">\(\lceil m/2 \rceil - 1\)</span> and <span class="math notranslate nohighlight">\(m - 1\)</span>
+keys.</p></li>
+</ul>
+</li>
+<li><p>Works well with sequential access.</p></li>
+<li><p>Ideal for file system and database indexing.</p></li>
+<li><p>Reduced number of disk accesses.</p></li>
+<li><p>Reduced redistribution of data when inserting or deleting.</p></li>
+<li><p><a class="reference external" href="https://www.cs.usfca.edu/~galles/visualization/BPlusTree.html">B+ Tree visualization</a></p></li>
+</ul>
+<img alt="B+ tree of order 5" src="../_images/b-plus-tree.png" />
+</section>
+</section>
+<section >
+<section >
+<h2>Checkpoint Questions 2</h2>
+<ul class="simple">
+<li><p>What is the difference between a B-tree and a B+ tree?</p></li>
+<li><p>Why the sequential access is faster in a B+ tree?</p></li>
+</ul>
+</section>
+<section >
+<h3>Checkpoint Solution 2</h3>
+<ul class="simple">
+<li><p>In a B-tree, keys and data are stored in both internal nodes and leaf nodes.
+In a B+ tree, all data are stored in the leaf nodes, and internal nodes only
+store keys for faster search.</p></li>
+<li><p>Sequential access is faster in a B+ tree because all leaf nodes are linked
+together, allowing for easy traversal of all keys in order.</p></li>
+</ul>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

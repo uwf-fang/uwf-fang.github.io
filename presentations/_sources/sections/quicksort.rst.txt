@@ -1,0 +1,157 @@
+Quick Sort
+==========
++ By Sir Tony Hoare in 1959.
++ One of the most widely used
+
++ Characteristics
+
+  * Divide and conquer algorithm
+  * Comparison based (general purpose)
+  * Recursive
+  * In-place
+  * Efficient
+  * Unstable - relative order of equal elements is not preserved
+
+Quick partition algorithm
+-------------------------
+* The core of quick sort
+* Many variations: **Stick to our variation from zyBook!**
+* Steps
+
+  #. Pick an element, called a pivot, from the list.
+  #. Use the pivot to partition the list into two sublists.
+  #. Reorder the list in the process so that all elements less than the pivot
+     come before the pivot, and all elements greater than the pivot come
+     after it.
+  #. Return the **location of the partition.**
+
+Quick Partition Algorithm
+-------------------------
+- Lomuto's partition scheme (FYI)
+- Hoare's partition scheme (zyBook variation)
+
+  #. Let two cursor indices to point to the first - 1 and last + 1 positions of
+     the list respectively.
+  #. Keep moving the left cursor to the right until it points to an element
+     **greater and equal** than the pivot.
+  #. Move the right cursor to the left until it points to an element **less
+     and equal** than the pivot.
+  #. If the left cursor meets or passes the right cursor, the partition is
+     complete. Return the right cursor.
+  #. Swap the elements pointed by the two cursors.
+  #. Move both cursors one more step
+  #. Repeat steps 2-6 until the partition is complete (step 4 returns).
+
+Quick Partition Algorithm: Our Variation (Hoare's Scheme)
+---------------------------------------------------------
++ Hoare's partition scheme
++ Middle element as pivot
++ **Cursor will not pass by the pivot, so the pivot will be swapped many
+  times.**
++ The returned index is the final position of the pivot
+
+.. code:: c++
+
+  int quickPartition(int *arr, int low, int high) {
+    int mid = (high + low) / 2;
+    // int mid = low + (high - low) / 2;
+    int pivot = arr[mid];
+    while (true) {
+      while (arr[low] < pivot) ++low;
+      while (arr[high] > pivot) --high;
+      if (low >= high) break;
+      swap(arr[low], arr[high]);
+      ++low;
+      --high;
+    }
+    return high;
+  }
+
+Quick Partition Example (con'd)
+-------------------------------
++ Given an int array ``{42, 7, 85, 23, 64, 91, 9, 73, 18, 56}``
++ First round of partitioning
+
+  .. code-block:: text
+
+    // low is 0, high is 9 initially
+    middle = (low + high) / 2 = 4
+    pivot = arr[middle] = 64
+
+    {42, 7, 85, 23, 64, 91, 9, 73, 18, 56} find position
+            l                          h
+    {42, 7, 56, 23, 64, 91, 9, 73, 18, 85} swap 85, 56, and move by 1
+                l                  h
+    {42, 7, 56, 23, 64, 91, 9, 73, 18, 85} find position (hit pivot)
+                    l              h
+    {42, 7, 56, 23, 18, 91, 9, 73, 64, 85} swap 64, 18, and move by 1
+                        l      h
+    {42, 7, 56, 23, 18, 91, 9, 73, 64, 85} find position
+                        l   h
+    {42, 7, 56, 23, 18, 9, 91, 91, 64, 85} swap 91, 9, and move by 1
+                        h  l
+    h <= l, return h; left: low to h, right: h + 1 to high
+
++ The pivot is moved only once.
++ The returned index is NOT the final position of the pivot!
++ **Exercise:**
+
+  * How about the first element is selected as the pivot? Is there more
+    movement of data?
+
+Quick Sort Algorithm
+--------------------
++ Recursive
++ In-place
++ Need a helper function to work on a sublist
+
+  #. If the range is empty, return.
+  #. Call quick partition algorithm to partition the list into two sublists.
+  #. Recursively call quick sort on both sublists.
+
+.. code:: c++
+
+  void quicksort(int *arr, int size) {
+    quicksortHelper(arr, 0, size - 1);
+  }
+
+  void quicksortHelper(int *arr, int low, int high) {
+    if (low >= high) return;
+    int part = quickPartition(arr, low, high);
+    quicksortHelper(arr, low, part);
+    quicksortHelper(arr, part + 1, high);
+  }
+
+Complexity
+----------
++ Time
+
+  * Depends on whether the pivot can partition the list into two sublists
+    of roughly equal size
+  * :math:`\Theta(n \log n)` average case
+  * :math:`\Theta(n^2)` worst case, extremely uneven partitioning
+
++ Space - :math:`\Theta(\log n)` to :math:`\Theta(n)` depending on partition
++ Improvement attempts
+
+  * Pivot selection
+
+    - Randomized quick sort
+    - Median of three
+
+  * Shuffling the list before sorting
+
+Visualization For Quick sort
+----------------------------
+Unfortunately, the visualization websites are all using different
+configurations and are not compatible with our demonstration.
+
++ Some of them uses Lomuto's scheme
+
+  * http://me.dt.in.th/page/Quicksort/
+  * https://www.toptal.com/developers/sorting-algorithms/quick-sort
+  * https://visualgo.net/en/sorting
+
++ Some of them uses Hoare's scheme but select a different pivot
+
+  * http://www.cs.usfca.edu/~galles/visualization/ComparisonSort.html

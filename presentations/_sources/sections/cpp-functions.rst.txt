@@ -1,0 +1,316 @@
+User-defined Functions in C++ by Examples
+=========================================
++ User-Defined Functions
+
+  * Syntax: declaring, defining, and calling functions
+  * Parameter passing
+  * Scope of variables
+  * Overloading and call matching
+
+Function Declaration
+====================
+.. container:: flex-container
+
+  .. container:: half
+
+    **Examples**
+
+    .. code-block:: cpp
+
+      // Correct
+      int add(int, int);
+      int add(int a, int b);
+      int add(int a, int b = 22);
+      int add(int a = 11, int b = 22);
+      int add(int = 11, int = 22);
+
+      // Incorrect
+      int add(int a, b);
+      int add(int a = 11, int b);
+      int add(int a = 11, b = 22);  .. container:: half
+
+  .. container:: half
+
+    **More Examples**
+
+    .. code-block:: cpp
+
+      // This is correct! Surprisingly!
+      int add(int c=2, int d =3);  // names ignored in declaration
+
+      int add(int a, int b) {
+        return a + b;
+      }
+
+      int main() {
+        std::cout<< add() << endl;   // 5
+        std::cout<< add(5) << endl;  // 8
+        std::cout<< add(7, 4) << endl;  // 11
+        return 0;
+      }
+
+Function Definition
+-------------------
+.. container:: flex-container
+
+  .. container:: half
+
+    **Correct**
+
+    .. code-block:: cpp
+
+      int add(int a, int b) {
+        return a + b;
+      }
+
+  .. container:: half
+
+    **Incorrect**
+
+    .. code-block:: cpp
+
+      int add(int , int ) {
+        return a + b;
+      }
+
+      add(int a, int b) {
+        return a + b;
+      }
+
+      int add(int a, b) {
+        int result = a + b;
+      }
+
+Function Call
+-------------
+.. container:: flex-container
+
+  .. container:: half
+
+    **Correct**
+
+    .. code-block:: cpp
+
+      int add(int a, int b) {
+        return a + b;
+      }
+
+      cout<< add(5, 6) << endl;  // 11
+      cout<< add(5.0, 6) << endl;  // 11, auto conversion
+      cout<< add('a', 4) << endl;  // 101, auto conversion
+      cout<< add(true, 4) << endl;  // 5, auto conversion
+
+  .. container:: half
+
+    **Incorrect**
+
+    .. code-block:: cpp
+
+      int add(int a, int b) {
+        return a + b;
+      }
+
+      int result;
+      cout << add(5) << endl;
+      cout << add(5, 6, 7) << endl;
+      cout << add("a", 4) << endl;
+      result = add(int 5, int 6);
+
+Parameter Passing
+=================
++ Pass by value
+
+  * a copy of the argument is passed
+  * changes to the parameter do not affect the argument
+  * will trigger a copy constructor if the argument is an object
+
++ Pass by reference
+
+  * the formal parameter is an alias to the argument
+  * allows the function to change the argument (if not const reference)
+
++ Pass by pointer
+
+  * a special case of pass by value where the value is a memory address
+  * allows the function to change the value that the pointer points to
+
++ Passing arrays
+
+  * \* or [] syntax
+  * the size of the array is not passed together!
+
+Pass by Reference
+-----------------
+.. container:: flex-container
+
+  .. container:: half
+
+    **Examples**
+
+    .. code-block:: cpp
+
+      void swap(int &a, int &b) {
+        int temp = a;
+        a = b;
+        b = temp;
+      }
+      swap(x, y);
+      swap(&x, &y);  // error
+      swap(5, 6);  // error
+
+      void addOne(int &a) {
+        ++a;
+      }
+      addOne(x);
+      addOne(5);  // error
+
+      string makeGreeting(const string &name) {
+        return "Hello, " + name;
+      }
+
+  .. container:: half
+
+    **Incorrect**
+
+    .. code-block:: cpp
+
+      void swap(int a, int b) {
+        int temp = a;
+        a = b;
+        b = temp;
+      }
+
+      void swap(int &a, int &b) {
+        int &temp = a;
+        a = b;
+        b = temp;
+      }
+
+
+Array Passing
+-------------
+.. code-block:: cpp
+
+  // ---- Correct ----
+  // ignore the size
+  double average(double arr[], int size);
+  double average(double *arr, int size);
+
+  // ---- Wrong ----
+  double average(double arr[size], int size);  // not compile
+  double average(double arr[3], int size);  // compile but 3 is ignored
+
+  // ---- to call ----
+  double arr1[3] = {1.0, 2.0, 3.0};
+  cout << average(arr1, 3) << endl;  // correct
+  // cout << average(arr1[], 3) << endl;  // wrong!
+  // cout << average(*arr1, 3) << endl;  // wrong!
+  // cout << average(&arr1, 3) << endl;  // wrong!
+
+Scope of Variables
+==================
+.. container:: flex-container
+
+  .. container:: half
+
+    + C++ has block scope
+
+      * {} defines a block
+      * a single statement is a block
+
+    .. code-block:: cpp
+
+      // Incorrect
+      for (int i = 0; i < size; ++i)
+        cout << i << endl;
+      cout << i << endl;
+
+      // Shadowing
+      int i = 100;
+      {
+        int i = 10;  // treated as another variable, valid in this block only
+        cout << i << endl;  // get 10, outside i is shadowed
+      }
+      cout << i << endl;  // get 100
+
+  .. container:: half
+
+    + Returning a pointer in functions
+
+    .. code-block:: cpp
+
+      // returning an dynamic array that have a lifetime beyond the function
+      // should be deleted after use
+      int *makeArray(int size) {
+        return new int[size];
+      }
+
+      // ---- Wrong ----
+      // returning local array that will be destroyed when the function ends
+      int *makeArray(int size) {
+        int array[size];
+        return array;
+      }
+
+      // ---- Wrong ----
+      // returning local variable by reference/pointer
+      string *func() {
+        string str = "abc";
+        return &str;  // memory address is passed out, str will be destroyed
+      }
+
+
+Function Overloading and Call Matching
+======================================
+.. container:: flex-container
+
+  .. container:: half
+
+    **Overloading Examples**
+
+    .. code-block:: cpp
+
+      // ==== Function Overloading ====
+
+      // given this function
+      int func1(int name);  // func1(3);
+
+      // ---- Correct ----
+      int func1(double);  // func1(3.0);
+      int func1(int, int);  // func1(3, 3);
+      int func1(int, double);  // func1(3, 3,0);
+      int func1(double, int);  // func1(3.0, 3);
+      int func1(double, double);  // func1(3.0, 3.0);
+
+      // ---- Bad overloading ----
+      double func1(int);  // different return type
+      int func1(int name1);  // different parameter name
+
+  .. container:: half
+
+    **Call Matching Examples**
+
+    .. code-block:: cpp
+
+      // Pair 1: wrong
+      // both exact matches
+      void func1(int);
+      void func1(int, int = 1);
+
+      func1(1);
+
+      // Pair 2: wrong
+      // both compatible matches
+      void func2(int, double);
+      void func2(double, int);
+
+      func2(2, 3);
+
+      // Pair 3: correct
+      // first is an exact match
+      // second is a compatible match
+      void func2(int, double);
+      void func2(double, double);
+
+      func2(2, 3.0);
+

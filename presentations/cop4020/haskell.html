@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Introduction to Haskell</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Introduction to Haskell</h1>
+<ul class="simple">
+<li><p>A <strong>purely functional</strong> programming language</p></li>
+<li><p>Named after logician Haskell Curry</p></li>
+<li><p>Developed by a committee in the late 1980s</p></li>
+<li><p>Current standard: Haskell 2010</p></li>
+<li><p>Statically typed with type inference</p></li>
+<li><p>Lazy evaluation by default</p></li>
+<li><p>Emphasizes mathematical purity</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Key Characteristics of Haskell</h2>
+<ul class="simple">
+<li><p><strong>Pure functions</strong>: No side effects</p></li>
+<li><p><strong>Immutability</strong>: Data cannot be changed after creation</p></li>
+<li><p><strong>Type inference</strong>: Compiler can deduce types</p></li>
+<li><p><strong>Lazy evaluation</strong>: Expressions evaluated only when needed</p></li>
+<li><p><strong>Pattern matching</strong>: Destructure data based on its shape</p></li>
+<li><p><strong>Type classes</strong>: A form of interface/trait system</p></li>
+<li><p><strong>Strong focus on abstraction</strong></p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Why Learn Haskell?</h2>
+<ul class="simple">
+<li><p>Encourages a different way of thinking about problems</p></li>
+<li><p>Makes concurrent programming easier through immutability</p></li>
+<li><p>Produces highly reliable code (if it compiles, it often works)</p></li>
+<li><p>Many ideas from Haskell influence other languages</p></li>
+<li><p>Builds strong foundations in computer science concepts</p></li>
+<li><p>Elegant solutions to complex problems</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Hello World in Haskell</h2>
+<pre data-id="hello-world-in-haskell"><code data-trim data-noescape class="haskell">main :: IO ()
+main = putStrLn &quot;Hello, World!&quot;</code></pre>
+<p>Simple, but there’s a lot to unpack:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">main</span> <span class="pre">::</span> <span class="pre">IO</span> <span class="pre">()</span></code> is a type signature</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IO</span></code> is a type that handles side effects</p></li>
+<li><p>The function definition uses <code class="docutils literal notranslate"><span class="pre">=</span></code> not <code class="docutils literal notranslate"><span class="pre">return</span></code></p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Pure Functions</h2>
+<p>A pure function:</p>
+<ul class="simple">
+<li><p>Always returns the same output for the same input</p></li>
+<li><p>Has no side effects</p></li>
+<li><p>Does not modify state</p></li>
+</ul>
+<pre data-id="pure-functions"><code data-trim data-noescape class="haskell">-- Pure function
+add :: Int -&gt; Int -&gt; Int
+add x y = x + y
+-- The type Int -&gt; Int -&gt; Int means it takes two Ints and returns an Int
+-- This is considered a curried function in Haskell
+
+-- This will always return 7
+result = add 3 4</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Higher-Order Functions</h2>
+<p>Functions that:</p>
+<ul class="simple">
+<li><p>Take other functions as arguments</p></li>
+<li><p>Return functions as results</p></li>
+</ul>
+<pre data-id="higher-order-functions"><code data-trim data-noescape class="haskell">-- map is a higher-order function
+-- it takes a function and a list, and applies the function to each element
+doubleAll :: [Int] -&gt; [Int]
+doubleAll numbers = map (\x -&gt; x * 2) numbers
+-- doubleAll = map (*2)  -- Equivalent to the above
+
+-- filter is another higher-order function
+-- it takes a predicate function and a list, and returns elements that satisfy the predicate
+evenNumbers :: [Int] -&gt; [Int]
+evenNumbers numbers = filter even numbers</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Function Composition</h2>
+<p>Combining functions to create new functions:</p>
+<pre data-id="function-composition"><code data-trim data-noescape class="haskell">-- Using the composition operator (.)
+processData :: [Int] -&gt; [Int]
+processData = filter even . map (*2)
+
+-- Equivalent to:
+processData' :: [Int] -&gt; [Int]
+processData' numbers = filter even (map (*2) numbers)</code></pre>
+<p>Function composition makes code:</p>
+<ul class="simple">
+<li><p>More readable</p></li>
+<li><p>More modular</p></li>
+<li><p>Easier to reason about</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Tail Recursion</h2>
+<p>A form of recursion where the recursive call is the last operation:</p>
+<pre data-id="tail-recursion"><code data-trim data-noescape class="haskell">-- Non-tail recursive factorial (builds up computation)
+factorial :: Integer -&gt; Integer
+factorial 0 = 1
+factorial n = n * factorial (n - 1)
+
+-- Tail recursive factorial (uses accumulator)
+factorialTail :: Integer -&gt; Integer
+factorialTail n = helper n 1
+  where
+    helper 0 acc = acc
+    helper n acc = helper (n - 1) (n * acc)</code></pre>
+<ul class="simple">
+<li><p>Tail recursion can be optimized by the compiler into iteration (loop)!</p></li>
+<li><p><cite>where</cite> clause defines a local helper function</p></li>
+<li><p><cite>acc</cite> parameter accumulates the result as the recursion progresses</p></li>
+<li><p><cite>n * acc</cite> is done before the recursive call</p></li>
+<li><p>The last line of <cite>helper</cite> is the recursive call which does nothing but call
+itself, nothing to do after that</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Algebraic Data Types (FYI)</h2>
+<p>Custom data structures defined by their shape:</p>
+<pre data-id="algebraic-data-types-fyi"><code data-trim data-noescape class="haskell">-- Sum type (OR)
+data Bool = True | False
+
+-- Product type (AND)
+data Person = Person String Int  -- name and age
+
+-- Recursive type
+data List a = Empty | Cons a (List a)
+
+-- Pattern matching with algebraic data types
+getName :: Person -&gt; String
+getName (Person name _) = name</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Lazy Evaluation</h2>
+<p>Expressions are only evaluated when their results are needed:</p>
+<pre data-id="lazy-evaluation"><code data-trim data-noescape class="haskell">-- Infinite list definition
+naturalNumbers = [1..]
+
+-- Takes only the first 10 elements
+first10 = take 10 naturalNumbers  -- [1,2,3,4,5,6,7,8,9,10]</code></pre>
+<p>Benefits:</p>
+<ul class="simple">
+<li><p>Can work with infinite data structures</p></li>
+<li><p>Improved performance in some cases</p></li>
+<li><p>Enables more compositional programming style</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>The CodeWorld Environment</h2>
+<p><a class="reference external" href="https://code.world/haskell">https://code.world/haskell</a></p>
+<ul class="simple">
+<li><p>Browser-based Haskell environment</p></li>
+<li><p>No installation required</p></li>
+<li><p>Great for learning and experimentation</p></li>
+<li><p>Features:
+* Code editor with syntax highlighting
+* Immediate execution
+* Visual output capabilities
+* Share your code with others
+* Save your work locally</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Using CodeWorld</h2>
+<ol class="arabic simple">
+<li><p>Open <a class="reference external" href="https://code.world/haskell">https://code.world/haskell</a> in your browser</p></li>
+<li><p>Write your Haskell code in the editor</p></li>
+<li><p>Click “Run” to execute</p></li>
+<li><p>See the results in the output area</p></li>
+<li><p>Use “Save” to download your code as a .hs file</p></li>
+</ol>
+</section>
+</section>
+<section >
+<section >
+<h2>Resources for Learning More</h2>
+<ul class="simple">
+<li><p><a class="reference external" href="http://learnyouahaskell.com/">Learn You a Haskell for Great Good</a></p></li>
+<li><p><a class="reference external" href="https://www.haskell.org/">Haskell.org</a></p></li>
+<li><p><a class="reference external" href="http://book.realworldhaskell.org/">Real World Haskell</a></p></li>
+<li><p><a class="reference external" href="https://wiki.haskell.org/">Haskell Wiki</a></p></li>
+<li><p><a class="reference external" href="https://stackoverflow.com/questions/tagged/haskell">Haskell on Stack Overflow</a></p></li>
+</ul>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

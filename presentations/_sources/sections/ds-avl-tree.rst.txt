@@ -1,0 +1,107 @@
+********
+AVL Tree
+********
+
+.. container:: subtitle
+
+  |author|
+
+Outline
+=======
++ Overview
++ Implementation details
+
+Overview
+========
++ Definition: An AVL (Adelson-Velsky and Landis) tree is a self-balancing
+  binary search tree data structure. It is designed to maintain a balanced tree
+  structure at all times, ensuring that the height difference (balance factor)
+  between the left and right subtrees of any node is limited to no more than
+  one.
++ Worst case guarantee for search, insert, and delete is :math:`\Theta(\log n)`
+
+Characteristics
+---------------
++ Balance factor = height(left subtree) - height(right subtree)
++ Balance factor of 0, -1, or 1 is considered balanced
++ Insertion and deletion operations may cause the tree to become unbalanced, in
+  which cases the balance factor of one or more nodes will be -2 or +2.
++ Self-balancing: balance restored by rotations during insertion and deletion
++ Balancing operations are performed bottom-up, starting with the deepest
+  unbalanced node.
+
+Self-balancing in AVL Trees
+===========================
++ Find and restore the imbalance from bottom up
+
+  1. Check the balance factor of each node.
+  2. If the balance factor is -2 or +2, perform rotations to restore balance.
+
++ 4 types of imbalances and corresponding restoration by rotations
+
+Type of Imbalances
+------------------
++ Balance factor of -2 or +2 indicates an imbalance
++ Go to the longest subtree from top to bottom starting from the unbalanced
+  node
++ **Always refer to the lowest unbalanced node first.** The higher unbalanced
+  nodes may be fixed automatically when the lower ones are fixed.
++ Naming convention for imbalances:
+
+  * Left-Left (LL)
+  * Right-Right (RR)
+  * Left-Right (LR)
+  * Right-Left (RL)
+
+Rotations to restore balance
+----------------------------
+.. container:: flex-container
+
+  .. container:: half
+
+    **Left rotation** to restore right-right (RR) imbalance.
+
+    .. image:: /_static/RR.png
+
+  .. container:: half
+
+    **Right rotation** to restore left-left (LL) imbalance.
+
+    .. image:: /_static/LL.png
+
+.. container:: footnote
+
+   Credit: Data Structures and Algorithm Analysis in C++, 4th Edition. Mark Allen Weiss.
+
+Rotations to restore balance (cont.)
+------------------------------------
++ Double rotations are named from the bottom up. E.g., Left-Right rotation
+  means first a left rotation on the left child, then a right rotation on the
+  unbalanced node.
+
+.. container:: flex-container
+
+  .. container:: half
+
+    **Left-right double rotation** to restore left-right (LR) imbalance.
+
+    .. image:: /_static/LR.png
+
+  .. container:: half
+
+    **Right-left double rotation** to restore right-left (RL) imbalance.
+
+    .. image:: /_static/RL.png
+
+.. container:: footnote
+
+   Credit: Data Structures and Algorithm Analysis in C++, 4th Edition. Mark Allen Weiss.
+
+What to remember
+================
++ What is the imbalance type?
+
++ LL: Right rotation
++ RR: Left rotation
++ LR: Left-right double rotation
++ RL: Right-left double rotation

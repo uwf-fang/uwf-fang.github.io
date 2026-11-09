@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>AVL Tree</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>AVL Tree</h1>
+<div class="subtitle docutils container">
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Overview</p></li>
+<li><p>Implementation details</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<ul class="simple">
+<li><p>Definition: An AVL (Adelson-Velsky and Landis) tree is a self-balancing
+binary search tree data structure. It is designed to maintain a balanced tree
+structure at all times, ensuring that the height difference (balance factor)
+between the left and right subtrees of any node is limited to no more than
+one.</p></li>
+<li><p>Worst case guarantee for search, insert, and delete is <span class="math notranslate nohighlight">\(\Theta(\log n)\)</span></p></li>
+</ul>
+</section>
+<section >
+<h3>Characteristics</h3>
+<ul class="simple">
+<li><p>Balance factor = height(left subtree) - height(right subtree)</p></li>
+<li><p>Balance factor of 0, -1, or 1 is considered balanced</p></li>
+<li><p>Insertion and deletion operations may cause the tree to become unbalanced, in
+which cases the balance factor of one or more nodes will be -2 or +2.</p></li>
+<li><p>Self-balancing: balance restored by rotations during insertion and deletion</p></li>
+<li><p>Balancing operations are performed bottom-up, starting with the deepest
+unbalanced node.</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Self-balancing in AVL Trees</h2>
+<ul class="simple">
+<li><p>Find and restore the imbalance from bottom up</p>
+<ol class="arabic simple">
+<li><p>Check the balance factor of each node.</p></li>
+<li><p>If the balance factor is -2 or +2, perform rotations to restore balance.</p></li>
+</ol>
+</li>
+<li><p>4 types of imbalances and corresponding restoration by rotations</p></li>
+</ul>
+</section>
+<section >
+<h3>Type of Imbalances</h3>
+<ul class="simple">
+<li><p>Balance factor of -2 or +2 indicates an imbalance</p></li>
+<li><p>Go to the longest subtree from top to bottom starting from the unbalanced
+node</p></li>
+<li><p><strong>Always refer to the lowest unbalanced node first.</strong> The higher unbalanced
+nodes may be fixed automatically when the lower ones are fixed.</p></li>
+<li><p>Naming convention for imbalances:</p>
+<ul>
+<li><p>Left-Left (LL)</p></li>
+<li><p>Right-Right (RR)</p></li>
+<li><p>Left-Right (LR)</p></li>
+<li><p>Right-Left (RL)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Rotations to restore balance</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Left rotation</strong> to restore right-right (RR) imbalance.</p>
+<img alt="../_images/RR.png" src="../_images/RR.png" />
+</div>
+<div class="half docutils container">
+<p><strong>Right rotation</strong> to restore left-left (LL) imbalance.</p>
+<img alt="../_images/LL.png" src="../_images/LL.png" />
+</div>
+</div>
+<div class="footnote docutils container">
+<p>Credit: Data Structures and Algorithm Analysis in C++, 4th Edition. Mark Allen Weiss.</p>
+</div>
+</section>
+<section >
+<h3>Rotations to restore balance (cont.)</h3>
+<ul class="simple">
+<li><p>Double rotations are named from the bottom up. E.g., Left-Right rotation
+means first a left rotation on the left child, then a right rotation on the
+unbalanced node.</p></li>
+</ul>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Left-right double rotation</strong> to restore left-right (LR) imbalance.</p>
+<img alt="../_images/LR.png" src="../_images/LR.png" />
+</div>
+<div class="half docutils container">
+<p><strong>Right-left double rotation</strong> to restore right-left (RL) imbalance.</p>
+<img alt="../_images/RL.png" src="../_images/RL.png" />
+</div>
+</div>
+<div class="footnote docutils container">
+<p>Credit: Data Structures and Algorithm Analysis in C++, 4th Edition. Mark Allen Weiss.</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>What to remember</h2>
+<ul class="simple">
+<li><p>What is the imbalance type?</p></li>
+<li><p>LL: Right rotation</p></li>
+<li><p>RR: Left rotation</p></li>
+<li><p>LR: Left-right double rotation</p></li>
+<li><p>RL: Right-left double rotation</p></li>
+</ul>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

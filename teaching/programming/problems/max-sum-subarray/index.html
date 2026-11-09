@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Max Sum Subarray Problem · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/programming/">Algorithms and Data Structures</a> / Max Sum Subarray Problem</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Max Sum Subarray Problem</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#introduction">Introduction</a>
+      <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#applications">Applications</a></li>
+        <li><a href="#problem-statement">Problem Statement</a></li>
+        <li><a href="#solutions">Solutions</a></li>
+      </ul>
+    </li>
+    <li><a href="#baseline-brute-force">Baseline: Brute-force</a>
+      <ul>
+        <li><a href="#pseudocode-for-brute-force-max-sum-subarray">Pseudocode for Brute-Force Max Sum Subarray</a></li>
+      </ul>
+    </li>
+    <li><a href="#divide-and-conquer-solution">Divide and Conquer Solution</a>
+      <ul>
+        <li><a href="#pseudocode-for-divide-and-conquer-max-sum-subarray">Pseudocode for Divide and Conquer Max Sum Subarray</a></li>
+      </ul>
+    </li>
+    <li><a href="#kadanes-algorithm-dynamic-programming-solution">Kadane’s Algorithm: Dynamic Programming Solution</a>
+      <ul>
+        <li><a href="#complexity-analysis">Complexity Analysis</a></li>
+        <li><a href="#pseudocode-for-kadane-s-algorithm">Pseudocode for Kadane’s Algorithm</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="max-sum-subarray-problem"></span>
+<h2 id="introduction">Introduction</h2>
+<h3 id="overview">Overview</h3>
+<p>The Max Sum Subarray Problem, often associated with Kadane’s algorithm, is a classic question in the realm of computer science and algorithm design. It seeks to find the contiguous subarray within a one-dimensional array of numbers which has the largest sum.</p>
+<h3 id="applications">Applications</h3>
+<p>This problem not only serves as an excellent example to illustrate the efficiency of dynamic programming but also has practical applications in numerous fields. Analysts in computational biology use it to find the most significant sequence of elements, while those in finance may apply it to determine the optimal buy and sell points for stocks. In computer vision, identifying features in an image can also be translated into a similar problem. The objective is simple yet powerful: given an array of integers, find the non-empty, contiguous subarray that adds up to the highest possible sum.</p>
+<h3 id="problem-statement">Problem Statement</h3>
+<p>The problem is defined by an array of $n$ integers, which could contain both positive and negative numbers. The goal is to determine the maximum sum possible from a contiguous subarray. The output is the sum itself, not necessarily the subarray, although identifying the subarray is often a related secondary requirement.</p>
+<p>A straightforward example would be the array $[-2, -3, 4, -1, -2, 1, 5, -3]$. The max sum subarray is $[4, -1, -2, 1, 5]$ with a sum of $7$.</p>
+<p>Despite its apparent simplicity, the challenge arises from the need to find an optimal solution that scales well with large inputs, which is where the brute force approach fails.</p>
+<h3 id="solutions">Solutions</h3>
+<p>Three solutions to the Max Sum Subarray problem are presented here from the order of increasing efficiency:</p>
+<ol>
+<li>Brute-force $\Theta(n^2)$</li>
+<li>Divide and conquer $\Theta(n \log n)$</li>
+<li>Dynamic Programming (Kadane’s algorithm) $\Theta(n)$</li>
+</ol>
+<h2 id="baseline-brute-force">Baseline: Brute-force</h2>
+<p>The brute-force solution to the Max Sum Subarray problem involves calculating the sum of every possible subarray in the given array and then returning the maximum of these sums. The process is straightforward: for each element in the array, consider it as a starting point, then iterate through all the end points that come after the current start, accumulating sums and keeping track of the maximum sum encountered.</p>
+<p>The time complexity of this brute-force solution is $\Theta(n^2)$, where n is the number of elements in the array. Due to its inefficiency with large datasets, this approach is not practical for real-world applications where the size of the input can be very large.</p>
+<h3 id="pseudocode-for-brute-force-max-sum-subarray">Pseudocode for Brute-Force Max Sum Subarray</h3>
+<pre tabindex="0"><code class="language-default" data-lang="default">function brute_force_max_subarray(arr):
+  max_sum = -infinity
+
+  for start from 0 to length(arr) - 1:
+    sum_of_subarray = 0
+
+    for end from start to length(arr) - 1:
+      sum_of_subarray = sum_of_subarray + arr[end]
+
+      if sum_of_subarray &gt; max_sum:
+        max_sum = sum_of_subarray
+
+  return max_sum
+</code></pre><h2 id="divide-and-conquer-solution">Divide and Conquer Solution</h2>
+<p>The divide and conquer approach to the Max Sum Subarray problem is a recursive strategy that breaks down the problem into smaller subproblems, solves these subproblems individually, and combines their solutions to get the final result for the original problem. It is based on the observation that the maximum subarray sum will either be:</p>
+<ol>
+<li>In the left half of the array,</li>
+<li>In the right half of the array, or</li>
+<li>Crossing the midpoint, including elements from both halves.</li>
+</ol>
+<p>Here’s how the divide and conquer method works:</p>
+<ol>
+<li><strong>Divide</strong>: Split the array into two halves around the midpoint.</li>
+<li><strong>Conquer</strong>: Recursively find the maximum subarray sum in the left half and the right half.</li>
+<li><strong>Combine</strong>: Find the maximum subarray sum that crosses the midpoint and spans both halves. This is done by finding the maximum sum starting from the midpoint and extending towards the beginning of the array (left subarray), and the maximum sum starting from the midpoint+1 and extending towards the end of the array (right subarray), and then combining these two sums.</li>
+<li>The maximum of these three sums (left, right, and crossing) is the solution to the problem for the current array segment.</li>
+</ol>
+<p>The base case of the recursion is when the array has only one element, in which case the maximum subarray sum is the element itself if it’s positive, or zero if it’s negative (assuming we want non-negative sums).</p>
+<p>This method requires recursively splitting the array, which leads to a time complexity of $\Theta(n \log n)$, where $n$ is the number of elements in the array. The divide and conquer approach is significantly faster than the brute-force method.</p>
+<h3 id="pseudocode-for-divide-and-conquer-max-sum-subarray">Pseudocode for Divide and Conquer Max Sum Subarray</h3>
+<pre tabindex="0"><code class="language-default" data-lang="default">function max_crossing_sum(arr, low, mid, high):
+    left_sum = -infinity
+    sum = 0
+    for i from mid downto low:
+        sum = sum + arr[i]
+        if sum &gt; left_sum:
+            left_sum = sum
+
+    right_sum = -infinity
+    sum = 0
+    for j from mid + 1 to high:
+        sum = sum + arr[j]
+        if sum &gt; right_sum:
+            right_sum = sum
+
+    return left_sum + right_sum
+
+function max_subarray(arr, low, high):
+    if low == high:
+        return arr[low]
+
+    mid = (low + high) / 2
+    return max(max_subarray(arr, low, mid),
+               max_subarray(arr, mid + 1, high),
+               max_crossing_sum(arr, low, mid, high))
+</code></pre><h2 id="kadanes-algorithm-dynamic-programming-solution">Kadane’s Algorithm: Dynamic Programming Solution</h2>
+<p>Kadane’s algorithm stands out for its simplicity and elegance as a dynamic programming solution to the Max Sum Subarray Problem. It operates on the principle that the maximum subarray at any given point in the array is either the current element itself or the current element combined with the maximum subarray ending at the previous position. This leads to the identification of two types of maxima at each step: the local maximum subarray ending at the current index and the global maximum subarray found so far.</p>
+<p>The algorithm initializes two variables: the current maximum subarray sum current_max and the overall maximum subarray sum found global_max. As it iterates through the array, it continually updates these variables. The current_max is updated by taking the maximum between the current array value and the sum of current_max and the current array value. If current_max is greater than global_max at any point, global_max is updated to the value of current_max.</p>
+<p>To illustrate, consider the array $[-2, 1, -3, 4, -1, 2, 1, -5, 4]$. Kadane’s algorithm would process the elements as follows:</p>
+<ul>
+<li>Start with $current\_max = arr[0] = -2$ and $global\_max = -2$.</li>
+<li>At the second element (1), $current\_max$ is $max(-2+1, 1)$, which is 1. $global\_max$ is now $max(-2, 1)$, which is 1.</li>
+<li>This process continues, updating $current\_max$ and $global\_max$ with each new element.</li>
+<li>By the end of the array, $global\_max$ contains the maximum sum, which in this case is 6 from the subarray $[4, -1, 2, 1]$.</li>
+</ul>
+<p>This approach requires only a single pass through the array, making it highly efficient. Code will be more complicated if you want to memorize the start and end indices of the subarray.</p>
+<h3 id="complexity-analysis">Complexity Analysis</h3>
+<p>Kadane’s algorithm has a time complexity of $\Theta(n)$, which means the time to solve the problem increases linearly with the size of the input array. This is a significant improvement over the divide and conquer approach, which has a time complexity of $\Theta(n \log n)$.</p>
+<p>Moreover, Kadane’s algorithm is also space-efficient. The space complexity of the algorithm is $\Theta(1)$.</p>
+<h3 id="pseudocode-for-kadane-s-algorithm">Pseudocode for Kadane’s Algorithm</h3>
+<pre tabindex="0"><code class="language-default" data-lang="default">function kadane_algorithm(arr):
+  current_max = global_max = arr[0]
+
+  for index from 1 to length(arr) - 1:
+    current_max = max(arr[index], current_max + arr[index])
+
+    if current_max &gt; global_max:
+      global_max = current_max
+
+  return global_max
+</code></pre></div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Programming Languages</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Programming Languages</h1>
+<div class="subtitle docutils container">
+<p><strong>Module 12: Concurrency</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Concurrency</h2>
+<ul class="simple">
+<li><p>Introduction to concurrency concepts</p></li>
+<li><p>Semaphores</p></li>
+<li><p>Monitors</p></li>
+<li><p>Message Passing</p></li>
+<li><p>Language-specific implementations:</p>
+<ul>
+<li><p>Ada Support for Concurrency</p></li>
+<li><p>Java Threads</p></li>
+<li><p>C# Threads</p></li>
+<li><p>Concurrency in Functional Languages</p></li>
+</ul>
+</li>
+<li><p>Statement-Level Concurrency</p></li>
+</ul>
+</section>
+<section >
+<h3>Introduction to Concurrency</h3>
+<ul class="simple">
+<li><p><strong>Levels of Concurrency</strong>:</p>
+<ul>
+<li><p>Instruction level</p></li>
+<li><p>Statement level</p></li>
+<li><p>Unit/subprogram level</p></li>
+<li><p>Program level</p></li>
+</ul>
+</li>
+<li><p><strong>Types of Concurrency</strong>:</p>
+<ul>
+<li><p>Physical concurrency (multiple processors)</p></li>
+<li><p>Logical concurrency (interleaved on single processor)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Multiprocessor Architectures</h3>
+<ul class="simple">
+<li><p>Hardware level</p></li>
+<li><p><strong>SIMD</strong> (Single Instruction, Multiple Data)</p>
+<ul>
+<li><p>Multiple processors execute same instruction on different data</p></li>
+<li><p>Example: Vector processors</p></li>
+</ul>
+</li>
+<li><p><strong>MIMD</strong> (Multiple Instruction, Multiple Data)</p>
+<ul>
+<li><p>Multiple processors operate independently</p></li>
+<li><p>Two configurations: distributed and shared memory</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Motivations for Concurrency</h3>
+<ul class="simple">
+<li><p>Speed of execution on multiprocessor machines</p></li>
+<li><p>Improved performance even on single processors for non-compute-bound tasks</p></li>
+<li><p>Natural conceptualization for certain problem domains</p></li>
+<li><p>Distributed applications across multiple machines</p></li>
+</ul>
+</section>
+<section >
+<h3>Fundamental Concepts</h3>
+<ul class="simple">
+<li><p><strong>Task</strong>: Unit of a program that can be in concurrent execution</p></li>
+<li><p><strong>Synchronization</strong>: Mechanism controlling task execution order</p>
+<ul>
+<li><p>Competition synchronization</p></li>
+<li><p>Cooperation synchronization</p>
+<ul>
+<li><p><strong>Producer-consumer</strong>: One task produces data, another consumes it</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Task States and Scheduling</h3>
+<ul class="simple">
+<li><p><strong>New</strong>: Created but not begun execution</p></li>
+<li><p><strong>Ready</strong>: Ready to run but not currently running</p></li>
+<li><p><strong>Running</strong>: Currently executing</p></li>
+<li><p><strong>Blocked</strong>: Execution interrupted (e.g., I/O operation)</p></li>
+<li><p><strong>Dead</strong>: No longer active</p></li>
+</ul>
+</section>
+<section >
+<h3>Semaphores</h3>
+<ul class="simple">
+<li><p>Data structure with:</p>
+<ul>
+<li><p>Integer counter</p></li>
+<li><p>Task descriptor queue</p></li>
+</ul>
+</li>
+<li><p>Two operations:</p>
+<ul>
+<li><p>wait (P): Decrement counter or block</p></li>
+<li><p>release (V): Increment counter or unblock waiting task</p></li>
+</ul>
+</li>
+<li><p>Used for both competition and cooperation synchronization</p></li>
+</ul>
+</section>
+<section >
+<h3>Problems with Semaphores</h3>
+<ul class="simple">
+<li><p>Unsafe programming environment</p></li>
+<li><p>No static checking for correctness</p></li>
+<li><p>Easy to make errors:</p>
+<ul>
+<li><p>Missing wait() or release() calls</p></li>
+<li><p>Incorrect ordering of operations</p></li>
+<li><p>Deadlock situations</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Monitors</h3>
+<ul class="simple">
+<li><p><strong>Monitor</strong>: Encapsulated shared data with controlled access</p></li>
+<li><p>All operations on shared data gathered in a single program unit</p></li>
+<li><p>Competition synchronization handled implicitly</p></li>
+<li><p>Cooperation synchronization requires additional mechanisms</p></li>
+</ul>
+</section>
+<section >
+<h3>Message Passing</h3>
+<ul class="simple">
+<li><p>Tasks communicate by sending messages to each other</p></li>
+<li><p><strong>Rendezvous</strong>: The actual transmission of a message</p></li>
+<li><p>Requires both sender and receiver to be ready</p></li>
+<li><p>Can provide both cooperation and competition synchronization</p></li>
+</ul>
+</section>
+<section >
+<h3>Ada Support for Concurrency</h3>
+<ul class="simple">
+<li><p>Based on message passing model</p></li>
+<li><p><strong>Tasks</strong>: Heavyweight concurrent units</p></li>
+<li><p><strong>Rendezvous</strong>: Synchronous message passing</p></li>
+<li><p><strong>Protected Objects</strong> (Ada 95+): Efficient way to implement monitors</p></li>
+</ul>
+</section>
+<section >
+<h3>Ada Tasks</h3>
+<ul class="simple">
+<li><p>Two parts: specification and body</p></li>
+<li><p><strong>Entry points</strong>: Where tasks accept messages</p></li>
+<li><p><strong>accept clause</strong>: Implementation of entry points</p></li>
+<li><p>Tasks can be actors or servers</p></li>
+</ul>
+</section>
+<section >
+<h3>Ada Task Example</h3>
+<pre data-id="ada-task-example"><code data-trim data-noescape class="ada">task Buf_Task is
+  entry Deposit(Item : in Integer);
+  entry Fetch(Item : out Integer);
+end Buf_Task;
+
+task body Buf_Task is
+  -- Variable declarations
+begin
+  loop
+    select
+      when Filled &lt; Bufsize =&gt;
+        accept Deposit(Item : in Integer) do
+          Buf(Next_In) := Item;
+        end Deposit;
+        -- Extended accept clause
+    or
+      when Filled &gt; 0 =&gt;
+        accept Fetch(Item : out Integer) do
+          Item := Buf(Next_Out);
+        end Fetch;
+        -- Extended accept clause
+    end select;
+  end loop;
+end Buf_Task;</code></pre>
+</section>
+<section >
+<h3>Java Threads</h3>
+<ul class="simple">
+<li><p>Lightweight concurrent units</p></li>
+<li><p><strong>Thread class</strong>: Base for concurrent execution</p></li>
+<li><p><strong>Runnable interface</strong>: Alternative implementation approach</p></li>
+<li><p>Thread methods: start(), sleep(), yield(), join(), interrupt()</p></li>
+</ul>
+</section>
+<section >
+<h3>Java Thread Creation</h3>
+<pre data-id="java-thread-creation"><code data-trim data-noescape class="java">// Method 1: Extending Thread
+class MyThread extends Thread {
+  public void run() { ... }
+}
+Thread myTh = new MyThread();
+myTh.start();
+
+// Method 2: Implementing Runnable
+class MyTask implements Runnable {
+  public void run() { ... }
+}
+Thread myTh = new Thread(new MyTask());
+myTh.start();</code></pre>
+</section>
+<section >
+<h3>Java Synchronization</h3>
+<ul class="simple">
+<li><p><strong>Competition Synchronization</strong>:</p>
+<ul>
+<li><p>synchronized methods</p></li>
+<li><p>synchronized blocks</p></li>
+<li><p>explicit locks (Lock interface)</p></li>
+</ul>
+</li>
+<li><p><strong>Cooperation Synchronization</strong>:</p>
+<ul>
+<li><p>wait(), notify(), notifyAll()</p></li>
+<li><p>Condition interface</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>C# Threads</h3>
+<ul class="simple">
+<li><p>Similar to Java threads but more flexible</p></li>
+<li><p>Any method can run in a thread, controlled through delegates</p></li>
+<li><p>Synchronization options:</p>
+<ul>
+<li><p>lock statement</p></li>
+<li><p>Monitor class</p></li>
+<li><p>Interlocked class</p></li>
+</ul>
+</li>
+<li><p>Generic concurrent collections (ConcurrentQueue&lt;T&gt;, etc.)</p></li>
+</ul>
+</section>
+<section >
+<h3>Concurrency in Functional Languages</h3>
+<ul class="simple">
+<li><p>Multi-LISP: extends Scheme with pcall and future constructs</p></li>
+<li><p>Concurrent ML: adds threads and synchronous channels</p></li>
+<li><p>F#: uses .NET threading model but with functional programming paradigms</p></li>
+<li><p>Advantage: immutable data doesn’t require synchronization</p></li>
+</ul>
+</section>
+<section >
+<h3>Statement-Level Concurrency</h3>
+<ul class="simple">
+<li><p>High-Performance Fortran (HPF):</p>
+<ul>
+<li><p>PROCESSORS: specifies number of processors</p></li>
+<li><p>DISTRIBUTE: specifies data distribution across processors</p></li>
+<li><p>ALIGN: aligns data elements for efficient access</p></li>
+<li><p>FORALL: specifies statements that can execute concurrently</p></li>
+</ul>
+</li>
+<li><p>Similar features in modern languages: C#’s Parallel.For and Parallel.ForEach</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Modern Concurrency in Programming Languages</h2>
+<ul class="simple">
+<li><p>Traditional concurrency models (threads, locks, semaphores)</p></li>
+<li><p>Evolution toward safer, more abstract concurrency primitives</p></li>
+<li><p>Focus on language-level support for concurrent programming</p></li>
+</ul>
+</section>
+<section >
+<h3>Rust’s Ownership Model</h3>
+<ul class="simple">
+<li><p>Prevents data races at compile time</p></li>
+<li><p>Thread safety without garbage collection</p></li>
+<li><p>Channels for message passing</p></li>
+<li><p>Reference: <a class="reference external" href="https://doc.rust-lang.org/book/ch16-00-concurrency.html">Rust Programming Language</a></p></li>
+</ul>
+</section>
+<section >
+<h3>Go’s Concurrency Model</h3>
+<ul class="simple">
+<li><p>Lightweight goroutines</p></li>
+<li><p>Channels for communication</p></li>
+<li><p>Based on Communicating Sequential Processes (CSP)</p></li>
+<li><p>“Don’t communicate by sharing memory; share memory by communicating”</p></li>
+<li><p>Reference: “Go Programming Language” by Donovan and Kernighan</p></li>
+</ul>
+</section>
+<section >
+<h3>Modern C++ Concurrency</h3>
+<ul class="simple">
+<li><p>Evolution of C++ concurrency features:</p>
+<ul>
+<li><p>C++ 11/14: threading</p></li>
+<li><p>C++ 17: parallel algorithms</p></li>
+<li><p>C++ 20: coroutines</p></li>
+</ul>
+</li>
+<li><p>std::async and std::future</p></li>
+<li><p>Atomic operations</p></li>
+<li><p>Memory model for multi-threaded applications</p></li>
+<li><p>Reference: “Effective Modern C++” by Scott Meyers</p></li>
+</ul>
+</section>
+<section >
+<h3>C++ Example</h3>
+<pre data-id="c-example"><code data-trim data-noescape class="cpp">#include &lt;iostream&gt;
+#include &lt;thread&gt;
+#include &lt;future&gt;
+
+void asyncTask() {
+    std::cout &lt;&lt; &quot;Async task running in thread: &quot; &lt;&lt; std::this_thread::get_id() &lt;&lt; std::endl;
+}
+
+int main() {
+    std::future&lt;void&gt; result = std::async(std::launch::async, asyncTask);
+    result.get(); // Wait for the async task to finish
+    return 0;
+}</code></pre>
+</section>
+<section >
+<h3>Async/Await Pattern</h3>
+<ul class="simple">
+<li><p>JavaScript/TypeScript</p></li>
+<li><p>C#</p></li>
+<li><p>Python</p></li>
+<li><p>Kotlin</p></li>
+<li><p>Rust</p></li>
+<li><p>Simplifies asynchronous code with sequential syntax</p></li>
+</ul>
+</section>
+<section >
+<h3>Async/Await Example</h3>
+<pre data-id="async-await-example"><code data-trim data-noescape class="python">import asyncio
+
+async def async_task():
+    print(&quot;Async task running&quot;)
+    await asyncio.sleep(1)
+    print(&quot;Async task finished&quot;)
+
+async def main():
+    await async_task()
+
+asyncio.run(main())</code></pre>
+</section>
+<section >
+<h3>Actor Model</h3>
+<ul class="simple">
+<li><p>Isolated units of computation</p></li>
+<li><p>Communication via messages</p></li>
+<li><p>No shared state</p></li>
+<li><p>Examples:</p>
+<ul>
+<li><p>Akka (Java/Scala)</p></li>
+<li><p>Elixir/Erlang processes</p></li>
+<li><p>Pony language</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Kotlin Coroutines</h3>
+<ul class="simple">
+<li><p>Lightweight concurrency with structured approach</p></li>
+<li><p>Sequential code for asynchronous operations</p></li>
+<li><p>Scoped cancellation</p></li>
+<li><p>Safely shared state with context</p></li>
+<li><p>Reference: “Kotlin in Action” by Jemerov and Isakova</p></li>
+</ul>
+</section>
+<section >
+<h3>Software Transactional Memory (STM)</h3>
+<ul class="simple">
+<li><p>Transactions for memory operations</p></li>
+<li><p>Atomic, Consistent, Isolated</p></li>
+<li><p>Examples:</p>
+<ul>
+<li><p>Haskell’s STM</p></li>
+<li><p>Clojure’s STM</p></li>
+</ul>
+</li>
+<li><p>Reference: <a class="reference external" href="https://hackage.haskell.org/package/stm">Haskell STM</a></p></li>
+</ul>
+</section>
+<section >
+<h3>Reactive Programming</h3>
+<ul class="simple">
+<li><p>Data flow programming paradigm</p></li>
+<li><p>Asynchronous stream processing</p></li>
+<li><p>Non-blocking back pressure</p></li>
+<li><p>Examples:</p>
+<ul>
+<li><p>ReactiveX (RxJava, RxJS, etc.)</p></li>
+<li><p>Project Reactor (Spring)</p></li>
+</ul>
+</li>
+<li><p>Reference: <a class="reference external" href="http://reactivex.io/">ReactiveX</a></p></li>
+</ul>
+</section>
+<section >
+<h3>Java’s Evolution</h3>
+<ul class="simple">
+<li><p>Classic thread model</p></li>
+<li><p>Executor framework</p></li>
+<li><p>CompletableFuture</p></li>
+<li><p>Java 19+ virtual threads (Project Loom)</p></li>
+<li><p>Reference: “Java Concurrency in Practice” by Brian Goetz</p></li>
+</ul>
+</section>
+<section >
+<h3>Non-blocking I/O</h3>
+<ul class="simple">
+<li><p>Event-driven programming</p></li>
+<li><p>Single-threaded event loop handling multiple connections</p></li>
+<li><p>Examples:</p>
+<ul>
+<li><p>Node.js</p></li>
+<li><p>Python asyncio</p></li>
+<li><p>Netty (Java)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Comparison of Approaches</h3>
+<ul class="simple">
+<li><p>Thread-based vs Event-driven</p></li>
+<li><p>Shared-state vs Message-passing</p></li>
+<li><p>Explicit vs Implicit concurrency</p></li>
+<li><p>Reference: “Seven Concurrency Models in Seven Weeks” by Paul Butcher</p></li>
+</ul>
+</section>
+<section >
+<h3>Future Trends</h3>
+<ul class="simple">
+<li><p>Language-level support for parallelism</p></li>
+<li><p>Distributed computing primitives</p></li>
+<li><p>Hardware acceleration integration</p></li>
+<li><p>Quantum computing models</p></li>
+</ul>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

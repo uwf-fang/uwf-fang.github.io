@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Heap Data Structure</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Heap Data Structure</h1>
+<div class="subtitle docutils container">
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Definitions</p></li>
+<li><p>Structures</p></li>
+<li><p>Behaviors</p></li>
+<li><p>Visualization</p></li>
+<li><p>Time Complexity</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<ul class="simple">
+<li><p>Definition: A complete binary tree in which parent node is always
+less/greater (min/max heap) or equal (if allow overlapped values) than all
+elements in its subtrees.</p></li>
+<li><p>Two type: min and max heap</p></li>
+<li><p>Applications</p>
+<ul>
+<li><p>Heap sort</p></li>
+<li><p>Priority queue</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Structures</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p>Logically a complete binary tree</p></li>
+<li><p>Physically a partially filled array</p>
+<ul>
+<li><p>find parent/children by arithmetic calculation of indices</p>
+<ul>
+<li><p>given the node <span class="math notranslate nohighlight">\(i\)</span></p></li>
+<li><p>the index of the parent node is <span class="math notranslate nohighlight">\((i-1)/2\)</span></p></li>
+<li><p>the indices of the children nodes are left: <span class="math notranslate nohighlight">\(i*2+1\)</span> and right:
+<span class="math notranslate nohighlight">\(i*2+2\)</span></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="half docutils container">
+<figure class="align-default" id="id1">
+<div class="graphviz"><img src="../_images/graphviz-313374ab4fd773e146c9994b45cf6f0ce67f05f3.png" alt="digraph tree {
+  26 -&gt; {25 17}[color=red];
+  25 -&gt; {7 19}[color=green];
+  17 -&gt; {2 4}[color=blue];
+  7 -&gt; {1 5}[color=violet];
+}" class="graphviz" /></div>
+<figcaption>
+<p><span class="caption-text">A max heap (tree form)</span></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id2">
+<div class="graphviz"><img src="../_images/graphviz-ff6dbd5a89f5bd4f330b8501524c7f72ce9210de.png" alt="digraph arr {
+  node[shape=record];
+  arr[label=&quot;&lt;f0&gt; 26|&lt;f1&gt; 25|&lt;f2&gt; 17|&lt;f3&gt; 7|&lt;f4&gt; 19|&lt;f5&gt; 2|&lt;f6&gt; 4|&lt;f7&gt; 1|&lt;f8&gt; 5&quot;];
+  arr:f0:n -&gt; arr:f1:n[color=red];
+  arr:f0:n -&gt; arr:f2:n[color=red];
+  arr:f1:s -&gt; arr:f3:s[color=green];
+  arr:f1:s -&gt; arr:f4:s[color=green];
+  arr:f2:s -&gt; arr:f5:s[color=blue];
+  arr:f2:s -&gt; arr:f6:s[color=blue];
+  arr:f3:n -&gt; arr:f7:n[color=violet];
+  arr:f3:n -&gt; arr:f8:n[color=violet];
+}" class="graphviz" /></div>
+<figcaption>
+<p><span class="caption-text">A max heap (array form)</span></p>
+</figcaption>
+</figure>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Behaviors</h2>
+<ul class="simple">
+<li><p>Heapify: make an array of random numbers into a heap</p></li>
+<li><p>Insert: insert a new element into a heap</p>
+<ul>
+<li><p>insert at the end of the array</p></li>
+<li><p>percolate up</p></li>
+</ul>
+</li>
+<li><p>Delete: delete an element from a heap</p>
+<ul>
+<li><p>use the last element to replace the root</p></li>
+<li><p>percolate down</p></li>
+</ul>
+</li>
+<li><p>Percolate up: move an element up to its proper position</p></li>
+<li><p>Percolate down: move an element down to its proper position</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Visualization</h2>
+<ul class="simple">
+<li><p><a class="reference external" href="http://www.cs.usfca.edu/~galles/visualization/Heap.html">http://www.cs.usfca.edu/~galles/visualization/Heap.html</a></p></li>
+<li><p><a class="reference external" href="https://visualgo.net/en/heap">https://visualgo.net/en/heap</a></p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Time Complexity</h2>
+<ul class="simple">
+<li><p>Create a heap</p>
+<ul>
+<li><p>From an array (heapify) <span class="math notranslate nohighlight">\(\Theta(n)\)</span></p></li>
+<li><p>Insert one by one <span class="math notranslate nohighlight">\(\Theta(n\log n)\)</span></p></li>
+</ul>
+</li>
+<li><p>Insert <span class="math notranslate nohighlight">\(\Theta(\log n)\)</span></p></li>
+<li><p>Delete <span class="math notranslate nohighlight">\(\Theta(\log n)\)</span></p></li>
+<li><p>Percolate up <span class="math notranslate nohighlight">\(\Theta(\log n)\)</span></p></li>
+<li><p>Percolate down <span class="math notranslate nohighlight">\(\Theta(\log n)\)</span></p></li>
+</ul>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

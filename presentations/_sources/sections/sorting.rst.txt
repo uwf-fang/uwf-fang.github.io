@@ -1,0 +1,187 @@
+******************
+Sorting Algorithms
+******************
+
+.. container:: subtitle
+
+  |author|
+
+Sections
+========
++ Overview
++ Categories
++ Sorting Array and Linked List
++ Time Complexity and Space Complexity
+
+Overview
+========
++ Sorting algorithms are used to arrange a sequence in a particular order. The
+  base type must be comparable.
++ Visualizations
+
+  * `visualgo.net <https://visualgo.net/en/sorting>`_
+  * `Data Structure Visualization
+    <https://www.cs.usfca.edu/~galles/visualization/Algorithms.html>`_
+  * `Sorting algorithms
+    <https://www.toptal.com/developers/sorting-algorithms/>`_
+
++ Application
+
+  * Part of many other algorithms
+  * Database system
+  * File system
+  * Operating system
+
+Categories
+==========
++ Comparison-based sorting algorithms (general-purpose sorting algorithms)
+
+  * Bubble sort
+  * Selection sort
+  * Insertion sort
+  * Merge sort
+  * Quick sort
+  * Heap sort
+
++ Non-comparison-based sorting algorithms
+
+  * Counting sort
+  * Radix sort
+  * Bucket sort
+
+Other Method To Categorize
+--------------------------
++ Stable sorting algorithms (preserve the relative order of equal elements)
+
+  * Bubble sort
+  * Insertion sort
+  * Merge sort
+
++ Divide and conquer sorting algorithms
+
+  * Merge sort
+  * Quick sort
+
++ Simple/Naive sorting algorithms
+
+  * Bubble sort
+  * Selection sort
+  * Insertion sort
+
+Array vs Linked List
+====================
+.. container:: flex-container
+
+  .. container:: half
+
+    **For array**
+
+    * Array property
+
+      - fast access by index
+      - slow insertion and deletion of elements except at the end
+
+    * Preferred general purpose sorting algorithms
+
+      - Quick sort
+      - Merge sort
+      - Heap sort
+      - Tim sort (a hybrid method, FYI)
+
+  .. container:: half
+
+    **For linked list**
+
+    * Linked-list property
+
+      - slow access by index
+      - fast reconstruction of new list
+      - fast access to neighboring nodes
+
+    * With the same time complexity, consider data movement overhead
+    * Preferred general purpose sorting algorithms
+
+      - Merge sort
+      - Insertion sort
+
+Real-World Choices (FYI)
+========================
+.. container:: flex-container
+
+  .. container:: half
+
+    **Summary of real-world state-of-art for array**
+
+    + For small arrays
+
+      * Insertion sort
+
+    + For large arrays
+
+      * Quick sort > Merge sort > Heap sort
+      * In parallel environment
+
+        - Merge sort
+        - Quick sort
+
+    + Overall winner for array: hybrid method
+
+      * Quick sort + Insertion sort
+      * Merge sort + Insertion sort
+
+  .. container:: half
+
+    **Summary of real-world state-of-art for linked list**
+
+    + For linked list
+
+      * Direct sort
+
+        - Merge sort for large linked list (can be parallelized)
+        - Insertion sort for small linked list
+
+      * Sort as array of pointers
+
+        - Make an array of pointers
+        - Let each element point to the corresponding node in the linked list
+        - Sort the array of pointers
+        - Generate the new linked list according to the sorted array
+
+Time Complexity
+===============
++ Comparison-based sorting algorithms (Array)
+
+  * Bubble sort :math:`\Theta(n^2)`
+  * Selection sort :math:`\Theta(n^2)`
+  * Insertion sort :math:`\Theta(n^2)`
+  * Merge sort :math:`\Theta(n \log n)`
+  * Quick sort :math:`\Theta(n \log n)` (average), :math:`\Theta(n^2)` (worst)
+  * Heap sort :math:`\Theta(n \log n)`
+
++ Non-comparison-based sorting algorithms (Array)
+
+  * k is a constant value depending on algorithms
+  * Radix sort :math:`\Theta(nk)`
+  * Counting sort :math:`\Theta(n+k)`
+  * Bucket sort :math:`\Theta(n+k)`
+
++ Linked list
+
+  * Merge sort :math:`\Theta(n \log n)`
+  * Insertion sort :math:`\Theta(n^2)`
+
+Space Complexity
+----------------
+**The following discussion is on array only.**
+
++ In-place sorting algorithms (swap based) :math:`\Theta(1)`
+
+  * :math:`\Theta(1)` for swapping
+  * :math:`\Theta(\log n)` to :math:`\Theta(n)` for recursion stack
+  * Iterative: swapping only
+  * Recursive: swapping + recursion stack
+
++ Out-of-place sorting algorithms :math:`\Theta(n)`
+
+  * :math:`\Theta(n)` for a new array
+  * :math:`\Theta(\log n)` to :math:`\Theta(n)` for recursion stack

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SSH Key Authentication Setup Guide · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/developer-tools/git/">Version Control System and Git</a></li><li><a href="/teaching/developer-tools/make/">GNU Make</a></li><li><a href="/teaching/developer-tools/ssh-key-pair/" aria-current="page">SSH Key Authentication Setup Guide</a></li><li><a href="/teaching/developer-tools/win-key-pair/">Windows SSH Authentication Setup Guide</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/developer-tools/">Developer Tools</a> / SSH Key Authentication Setup Guide</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>SSH Key Authentication Setup Guide</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#key-concepts">Key Concepts</a>
+      <ul>
+        <li><a href="#public-key-authentication">Public Key Authentication</a></li>
+        <li><a href="#benefits">Benefits</a></li>
+      </ul>
+    </li>
+    <li><a href="#step-by-step-instructions">Step-by-Step Instructions</a>
+      <ul>
+        <li><a href="#generate-your-ssh-key-pair">1. Generate Your SSH Key Pair</a></li>
+        <li><a href="#verify-key-generation">2. Verify Key Generation</a></li>
+        <li><a href="#copy-public-key-to-server">3. Copy Public Key to Server</a></li>
+        <li><a href="#test-connection">4. Test Connection</a></li>
+      </ul>
+    </li>
+    <li><a href="#important-security-notes">Important Security Notes</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="ssh-key-authentication-setup-guide"></span>
+<h2 id="introduction">Introduction</h2>
+<p>I’ll guide you through setting up SSH key authentication for accessing our CS server (cs-ssh.uwf.edu). This method is both more secure and convenient than traditional password authentication, eliminating the need to enter your password each time you connect.</p>
+<h2 id="key-concepts">Key Concepts</h2>
+<h3 id="public-key-authentication">Public Key Authentication</h3>
+<p>SSH key authentication uses a pair of cryptographic keys:</p>
+<ul>
+<li><strong>Public Key</strong>: Like a padlock that you can freely share. It’s placed on the server you want to access.</li>
+<li><strong>Private Key</strong>: Like the unique key that opens your padlock. Must be kept secret and secure on your computer.</li>
+</ul>
+<h3 id="benefits">Benefits</h3>
+<ul>
+<li>Increased security through cryptographic strength</li>
+<li>No need to remember or type passwords</li>
+<li>Protection against brute-force attacks</li>
+<li>Automated secure file transfers and remote operations</li>
+</ul>
+<h2 id="step-by-step-instructions">Step-by-Step Instructions</h2>
+<h3 id="generate-your-ssh-key-pair">1. Generate Your SSH Key Pair</h3>
+<p>Open a bash terminal and run:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ssh-keygen -t ed25519 -C <span style="color:#0a3069">&#34;your_email@uwf.edu&#34;</span>
+</span></span></code></pre></div><p>When prompted:</p>
+<ul>
+<li>Press Enter to accept the default file location</li>
+<li>Enter a passphrase (recommended) or press Enter twice for no passphrase</li>
+</ul>
+<h3 id="verify-key-generation">2. Verify Key Generation</h3>
+<p>Check that your keys were created:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ls ~/.ssh/
+</span></span></code></pre></div><p>You should see two files:</p>
+<ul>
+<li>id_ed25519 (private key)</li>
+<li>id_ed25519.pub (public key)</li>
+</ul>
+<h3 id="copy-public-key-to-server">3. Copy Public Key to Server</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ssh-copy-id -i ~/.ssh/id_ed25519.pub your_username@cs-ssh.uwf.edu
+</span></span></code></pre></div><h3 id="test-connection">4. Test Connection</h3>
+<p>Try connecting to the server:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ssh your_username@cs-ssh.uwf.edu
+</span></span></code></pre></div><p>You should now connect without being prompted for a password.</p>
+<h2 id="important-security-notes">Important Security Notes</h2>
+<ul>
+<li>Never share your private key</li>
+<li>Keep your private key file secure (600 permissions on Unix-like systems)</li>
+<li>Back up your private key securely</li>
+<li>If using a passphrase, remember it can’t be recovered if forgotten</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

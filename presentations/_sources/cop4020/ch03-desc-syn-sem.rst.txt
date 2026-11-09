@@ -1,0 +1,151 @@
+Describing Syntax and Semantics
+===============================
++ Introduction and Challenges
++ Formal Methods of Describing Syntax
+
+Introduction to Syntax and Semantics
+====================================
++ Syntax: form or structure of the expressions, statements, and program units
++ Semantics: meaning of the expressions, statements, and program units
++ Concepts:
+
+  * Lexemes: lowest-level syntactic units in a language
+  * Tokens: a category of lexemes
+
++ Components:
+
+  * Language recognizer: syntax analyzer/parser
+  * Language generator
+
+Formal Methods of Describing Syntax
+===================================
++ Backus- Naur Form (BNF)
+
+  * a metalanguage used to formally describe the syntax of a language
+  * for context-free grammars
+
++ Extended BNF (EBNF)
++ Grammar
+
+  * a generative device for defining languages
+
+Example Grammar in BNF
+----------------------
+
+::
+
+  <program> → begin <statement list> end
+  <statement list> → <statement>
+                  | <statement>; <statement list>
+  <statement> → <var> = <expression>
+  <var> → A | B | C
+  <expression> → <var> + <var>
+              | <var> - <var>
+              | <var>
+
+Derivation Example
+------------------
+Prove that "begin A = B + C; B = C end" is a program in the grammar.
+
+::
+
+  <program> → begin <statement list> end
+            → begin <statement>; <statement list> end
+            → begin <var> = <expression>; <statement list> end
+            → begin A = <expression>; <statement list> end
+            → begin A = <var> + <var>; <statement list> end
+            → begin A = B + <var>; <statement list> end
+            → begin A = B + C; <statement list> end
+            → begin A = B +; <statement> end
+            → begin A = B + C; <var> = <expression> end
+            → begin A = B + C; B = <expression> end
+            → begin A = B + C; B = <var> end
+            → begin A = B + C; B = C end
+
+Parsing Tree
+------------
+.. container:: flex-container
+
+  .. container:: half
+
+    **Example parsing tree for A = B * A + C**
+
+    .. graphviz::
+
+      digraph ParseTree {
+        node [shape=circle];
+        A1 [label="A"];
+        assign [label="="];
+        B [label="B"];
+        mult [label="*"];
+        add [label="+"];
+        A2 [label="A"];
+        C [label="C"];
+
+        assign -> A1;
+        assign -> add;
+        add -> mult;
+        add -> C;
+        mult -> B;
+        mult -> A2;
+      }
+
+  .. container:: half
+
+    + **Example parsing tree for A = B * (A + C)**
+    + **May be an ambiguous to the last example if the grammar is not defined
+      properly**
+
+    .. graphviz::
+
+      digraph ParseTree {
+        node [shape=circle];
+        A1 [label="A"];
+        assign [label="="];
+        B [label="B"];
+        mult [label="*"];
+        add [label="+"];
+        A2 [label="A"];
+        C [label="C"];
+
+        assign -> A1;
+        assign -> mult;
+        mult -> B;
+        mult -> add;
+        add -> A2;
+        add -> C;
+      }
+
+
+Attribute Grammars
+==================
++ Support certain context-sensitive semantics by associating attributes with
+  grammar symbols
++ Parser extension
+
+  * Add attributes to tokens and nonterminals
+  * Add semantic rules to the grammar
+
++ Type of attributes
+
+  * Synthesized attributes - bottom-up attributes that are computed from the
+    attributes of the children
+  * Inherited attributes - top-down attributes that are passed from the parent
+    to the children
+
+Meaning of Programs
+===================
++ Static semantics: meanings that can be determined at compile time
++ Dynamic semantics: meanings that can be determined at run time, referred as
+  **semantics** in the rest of this course!
++ Operational semantics: meanings of programs are defined by interpreting their
+  execution on a machine
+
+  * natural operational semantics
+  * structural operational semantics
+
++ Denotational semantics: meanings of programs are defined by mathematical
+  objects that represent the effect of executing the programs
+
+  * syntactic domain
+  * semantic domain

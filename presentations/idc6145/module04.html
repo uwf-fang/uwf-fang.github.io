@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Big Data For Data Science</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Big Data For Data Science</h1>
+<div class="subtitle docutils container">
+<p><strong>Module 4: PySpark Programming: Overview and RDD APIs</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Why PySpark?</p></li>
+<li><p>PySpark basics</p></li>
+<li><p>Related Python Features</p></li>
+<li><p>Work with RDDs in PySpark</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Why PySpark</h2>
+<ul class="simple">
+<li><p>Other languages</p>
+<ul>
+<li><p>Scala</p>
+<ul>
+<li><p>native language for Spark</p></li>
+<li><p>best performance</p></li>
+<li><p>concise and powerful language</p></li>
+<li><p>the language itself is not worth learning as a new language compared to
+Python</p></li>
+<li><p>complicated syntax</p></li>
+</ul>
+</li>
+<li><p>Java: too verbose</p></li>
+<li><p>R: not a general-purpose language</p></li>
+</ul>
+</li>
+<li><p>Advantages</p>
+<ul>
+<li><p>Easier to install using pip than Scala</p></li>
+<li><p>You may have learned Python already</p></li>
+<li><p>Python as a useful general-purpose language worth the time to learn</p></li>
+<li><p>Better iPython shell and Jupyter notebook interface support</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>PySpark Basics</h2>
+<ul class="simple">
+<li><p>Concepts</p>
+<ul>
+<li><p>SparkContext: Entry point to most of the PySpark functionalities.</p></li>
+<li><p>RDD (Resilient Distributed Dataset): A fundamental building block of
+PySpark which is fault-tolerant, immutable distributed collection of
+objects</p></li>
+<li><p>DataFrame: A distributed collection of data organized into named columns.</p></li>
+<li><p>DataSet: Similar to DataFrame but with strict types. Optional in this
+course.</p></li>
+</ul>
+</li>
+<li><p>RDD</p>
+<ul>
+<li><p>from Spark Core module</p></li>
+<li><p>lower-level API</p></li>
+<li><p>for unstructured data and semi-structured data</p></li>
+</ul>
+</li>
+<li><p>DataFrame and DataSet</p>
+<ul>
+<li><p>from Spark SQL module</p></li>
+<li><p>higher-level API</p></li>
+<li><p>for structured data</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Python Features for PySpark</h2>
+<ul class="simple">
+<li><p>External readings for Python language</p>
+<ul>
+<li><p><a class="reference external" href="https://www.geeksforgeeks.org/python-programming-language-tutorial/">G4G Python Tutorial</a></p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/reference/">Official Python Reference</a></p></li>
+<li><p>Ask Chatbot on specific questions: ChatGPT, Google Gemini, Claude AI, etc.</p></li>
+</ul>
+</li>
+<li><p>Python basics</p>
+<ul>
+<li><p>Data types: int, float, str, list, tuple, dict, set</p></li>
+<li><p>Control structures: if, for, while</p></li>
+<li><p>Functions</p></li>
+<li><p>Classes and objects</p></li>
+</ul>
+</li>
+<li><p>Python features for PySpark</p>
+<ul>
+<li><p>Many RDD APIs requires Python functions as parameters</p></li>
+<li><p>Lambda function for anonymous function definition</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Some useful lambda functions</h3>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">lambda</span> <span class="pre">x:</span> <span class="pre">x*x</span></code>, square the input</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">lambda</span> <span class="pre">line:</span> <span class="pre">line.split()</span></code>, split a text to a list of text using
+spaces as delimiters</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">lambda</span> <span class="pre">paragraph:</span> <span class="pre">paragraph.split('n')</span></code>, split a text to a list of
+lines using new line character as delimiters</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">lambda</span> <span class="pre">word:</span> <span class="pre">(word,</span> <span class="pre">1)</span></code>, convert a work to a key-value pair of word
+and 1</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">lambda</span> <span class="pre">word:</span> <span class="pre">len(word)</span></code>, convert a string to its length</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">lambda</span> <span class="pre">pair:</span> <span class="pre">pair[0]</span></code>, return the first element of the pair</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">lambda</span> <span class="pre">pair:</span> <span class="pre">pair[1]</span></code>, return the second element of the pair</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">lambda</span> <span class="pre">x,</span> <span class="pre">y:</span> <span class="pre">x+y</span></code>, sum up two value</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>RDD (Resilient Distributed Dataset)</h2>
+<ul class="simple">
+<li><p>Refer to our example Colab notebook for more details.</p></li>
+<li><p>External readings</p>
+<ul>
+<li><p><a class="reference external" href="https://spark.apache.org/docs/latest/rdd-programming-guide.html">RDD Programming Guide</a></p></li>
+<li><p><a class="reference external" href="https://www.analyticsvidhya.com/blog/2021/10/a-comprehensive-guide-to-pyspark-rdd-operations/">A Comprehensive Guide to PySpark RDD Operations</a></p></li>
+</ul>
+</li>
+</ul>
+<ul class="simple">
+<li><p>The low-level abstraction in PySpark</p></li>
+<li><p>Can do anything with RDDs but the DataFrame and DataSet APIs are more
+user-friendly and efficient for structured data</p></li>
+<li><p>RDDs are more flexible and can be used for unstructured and semi-structured
+data</p></li>
+<li><p>Characteristics</p>
+<ul>
+<li><p>Distributed (data is distributed across multiple machines)</p></li>
+<li><p>Immutable (once created, it cannot be changed)</p></li>
+<li><p>Lazy evaluation (operations are not executed until a operation that
+requires shuffling is called)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Types of operations</h3>
+<ul class="simple">
+<li><p>As extensions to traditional map/reduce paradigm</p></li>
+<li><p>Transformations</p>
+<ul>
+<li><p>Takes an RDD and return another RDD</p></li>
+<li><p>Distributed RDD to distributed RDD</p></li>
+<li><p>Can be chained</p></li>
+<li><p>Include but more than just mapping</p></li>
+<li><p>Most transformations are lazy</p></li>
+<li><p>Some transformations may trigger shuffling</p></li>
+</ul>
+</li>
+<li><p>Actions</p>
+<ul>
+<li><p>Take an RDD and return a single object</p></li>
+<li><p><strong>Distributed</strong> RDD to <strong>local</strong> object</p></li>
+<li><p>Include but more than just reducing</p></li>
+<li><p>All actions will trigger the execution of the DAG (Directed Acyclic Graph)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Useful transformations</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">map(func)</span></code>, apply a function to every element in an iterable, func
+should transform one item to another</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flatMap(func)</span></code>, apply a function to every element in an iterable and
+flatten the resulting list, func should take one item and
+generate a list</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">filter(func)</span></code>, filter elements elements according to the returned value
+of a boolean function applied to every element, func should return True or
+False according to the input</p></li>
+</ul>
+</section>
+<section >
+<h3>Useful actions</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">collect()</span></code>, collect all data and return a local list, <strong>Never use with
+large dataset</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">count()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">first()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">take(num)</span></code>, take the first num of values and return a local list</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reduce(func)</span></code>, func should take two parameters and give one result</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sum()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">min()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mean()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">countByValue()</span></code></p>
+<ul>
+<li><p>Python dict like type as output <code class="docutils literal notranslate"><span class="pre">{value1:</span> <span class="pre">count1,</span> <span class="pre">value2:</span> <span class="pre">count2,</span> <span class="pre">...}</span></code></p></li>
+<li><p>models key-value pair</p></li>
+<li><p>key must be unique</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Pair RDD</h3>
+<ul class="simple">
+<li><p>One type of useful RDD that contains key-value pairs</p>
+<ul>
+<li><p>example <code class="docutils literal notranslate"><span class="pre">[(key1,</span> <span class="pre">value1),</span> <span class="pre">(key2,</span> <span class="pre">value2),</span> <span class="pre">...]</span></code></p></li>
+<li><p>Useful transformations for pair RDDs</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">sortByKey(ascending=True)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sortBy(func,</span> <span class="pre">ascending=True)</span></code></p>
+<ul>
+<li><p>func should take an item and return the value used to perform sorting</p></li>
+<li><p>e.g. <code class="docutils literal notranslate"><span class="pre">pairs.sortBy(lambda</span> <span class="pre">p:</span> <span class="pre">p[1])</span></code> use the value (second item in the
+pair) to sort the pairs</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">groupByKey()</span></code></p>
+<ul>
+<li><p>create a new RDD with each item being pairs with a same key</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Useful actions for pair RDDs</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">reduceByKey(func)</span></code></p>
+<ul>
+<li><p>func should take two values (second item in the pair) and return one</p></li>
+<li><p>used to combine values that have a same key</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">countByKey()</span></code></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recursion · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/cpp/ccpp-env/">C/C&#43;&#43; Development Environment</a></li><li><a href="/teaching/cpp/cpp-lang/">C&#43;&#43; programming language</a></li><li><a href="/teaching/cpp/functions/">User-defined Functions</a></li><li><a href="/teaching/cpp/io/">Input/Output (I/O)</a></li><li><a href="/teaching/cpp/string/">String (C&#43;&#43; class)</a></li><li><a href="/teaching/cpp/class/class/">Objects and Classes in C&#43;&#43;</a></li><li><a href="/teaching/cpp/variable-type/variable-type/">Type, Variable, Assignment, and Expression</a></li><li><a href="/teaching/cpp/array/array/">Array Data Type</a></li><li><a href="/teaching/cpp/building/gpp/">Compilation Using g&#43;&#43;</a></li><li><a href="/teaching/cpp/building/modular/">Modular Development</a></li><li><a href="/teaching/cpp/testing/testing/">Testing in C&#43;&#43;</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/cpp/">C&#43;&#43; Reference</a> / Recursion</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Recursion</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#definition">Definition</a></li>
+    <li><a href="#recursive-algorithm">Recursive Algorithm</a>
+      <ul>
+        <li><a href="#key-components">Key components</a></li>
+        <li><a href="#function-call-mechanism">Function Call Mechanism</a></li>
+        <li><a href="#recursive-function-in-c">Recursive function in C++</a></li>
+        <li><a href="#complexity-analysis">Complexity analysis</a></li>
+      </ul>
+    </li>
+    <li><a href="#recursive-data-structure">Recursive Data Structure</a>
+      <ul>
+        <li><a href="#recursive-data-structure-in-c">Recursive Data Structure in C++</a></li>
+      </ul>
+    </li>
+    <li><a href="#example-recursive-linear-search">Example: Recursive Linear Search</a>
+      <ul>
+        <li><a href="#method-1-using-a-helper-function">Method 1: Using a Helper Function</a></li>
+        <li><a href="#method-2-using-default-parameters">Method 2: Using Default Parameters</a></li>
+        <li><a href="#method-3-comparing-from-the-end">Method 3: Comparing from the End</a></li>
+        <li><a href="#key-differences">Key Differences</a></li>
+      </ul>
+    </li>
+    <li><a href="#pitfall">Pitfall</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="recursion"></span>
+<h2 id="definition">Definition</h2>
+<p>Defining a problem or an entity in terms of itself. E.g. An ancestor is either parents or parents’ ancestor.</p>
+<h2 id="recursive-algorithm">Recursive Algorithm</h2>
+<p>An algorithm that breaks down the problem to smaller pieces and reuses itself to solve sub-problems.</p>
+<p>Many algorithms have both recursive and iterative versions. E.G. binary search</p>
+<p>FYI: In functional programming, recursion will replace loop/iteration totally.</p>
+<h3 id="key-components">Key components</h3>
+<ol>
+<li>Base case - the case that the problem can be solved without reusing itself</li>
+<li>Recursive rule - the rule to reduce the problem toward the base case</li>
+</ol>
+<h3 id="function-call-mechanism">Function Call Mechanism</h3>
+<ul>
+<li>Each function call creates a new stack frame in the stack memory.</li>
+<li>The stack frame contains:
+<ul>
+<li>Function arguments.</li>
+<li>Local variables.</li>
+<li>Return address.</li>
+</ul>
+</li>
+<li>The stack frame is popped out of the stack memory when the function returns.</li>
+<li>Stack overflow: When the stack memory is full. Usually caused by infinite recursion.</li>
+</ul>
+<h3 id="recursive-function-in-c">Recursive function in C++</h3>
+<ul>
+<li>A function/method calls itself (directly or indirectly).</li>
+<li>Forward declaration not mandatory except for mutual recursion (A calls B and B calls A)</li>
+<li>Record keeping (parameters, return values, global/dynamic variable)</li>
+<li>Helper functions (extra parameters for record keeping)</li>
+<li>if statement</li>
+</ul>
+<pre tabindex="0"><code class="language-default" data-lang="default">int factorial(int n) {
+  if (n &lt;= 1) // base case
+    return 1;
+  return n * factorial(n - 1);  // recursive rule that calls itself
+}
+</code></pre><h3 id="complexity-analysis">Complexity analysis</h3>
+<ul>
+<li>number of recurve calls $\times$ total resource in each iteration</li>
+<li>recursion tree to visually assist the analysis</li>
+</ul>
+<h2 id="recursive-data-structure">Recursive Data Structure</h2>
+<h3 id="recursive-data-structure-in-c">Recursive Data Structure in C++</h3>
+<ul>
+<li>A class holds instance or pointer/reference to instance of its own type</li>
+<li>E.G. Linked-list</li>
+<li>E.G. Tree, directory structure</li>
+</ul>
+<h2 id="example-recursive-linear-search">Example: Recursive Linear Search</h2>
+<p>Linear search can be implemented recursively in multiple ways. Here are three common approaches:</p>
+<h3 id="method-1-using-a-helper-function">Method 1: Using a Helper Function</h3>
+<p>This approach uses a helper function with an additional parameter to track the current position. The main function provides a clean interface while the helper function handles the recursion.</p>
+<pre tabindex="0"><code class="language-default" data-lang="default">// Main function with clean interface
+int searchFirst(int *array, int size, int toSearch) {
+  return searchFirstHelper(array, size, toSearch, 0);
+}
+
+// Helper function that does the actual recursive work
+int searchFirstHelper(int *array, int size, int toSearch, int start) {
+  if (start &gt;= size)  // base case: hit the end
+    return -1;
+  if (array[start] == toSearch)  // base case: found the element
+    return start;
+  return searchFirstHelper(array, size, toSearch, start + 1);  // recursive rule
+}
+</code></pre><h3 id="method-2-using-default-parameters">Method 2: Using Default Parameters</h3>
+<p>This approach eliminates the need for a helper function by using a default parameter. This provides a cleaner solution with a single function.</p>
+<pre tabindex="0"><code class="language-default" data-lang="default">int searchFirst1(int *array, int size, int toSearch, int start = 0) {
+  if (start &gt;= size)  // base case: hit the end
+    return -1;
+  if (array[start] == toSearch)  // base case: found the element
+    return start;
+  return searchFirst1(array, size, toSearch, start + 1);  // recursive rule
+}
+</code></pre><h3 id="method-3-comparing-from-the-end">Method 3: Comparing from the End</h3>
+<p>This approach compares the tail element in each recursive call and reduces the array size instead of using an index. This eliminates the need for an extra parameter.</p>
+<pre tabindex="0"><code class="language-default" data-lang="default">int searchLast(int *array, int size, int toSearch) {
+  if (size == 0)  // base case: empty array
+    return -1;
+  if (array[size - 1] == toSearch)  // base case: found the element
+    return size - 1;
+  else
+    return searchLast(array, size - 1, toSearch);  // recursive rule
+}
+</code></pre><h3 id="key-differences">Key Differences</h3>
+<ul>
+<li><strong>Method 1</strong>: Most structured; separates interface from implementation.</li>
+<li><strong>Method 2</strong>: Most concise; single function with default parameter.</li>
+<li><strong>Method 3</strong>: Searches from the end; reduces size instead of incrementing index.</li>
+</ul>
+<p>All three methods have the same time complexity of $\Theta(n)$ and space complexity of $\Theta(n)$ due to the recursion stack.</p>
+<h2 id="pitfall">Pitfall</h2>
+<ul>
+<li>missing base case</li>
+<li>recursive rule does not reduce toward the base case</li>
+<li>skipped base case</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

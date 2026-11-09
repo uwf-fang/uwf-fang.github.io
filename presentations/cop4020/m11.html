@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Programming Languages</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Programming Languages</h1>
+<div class="subtitle docutils container">
+<p><strong>Module 11: Logic Programming Languages</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Logic Programming Languages</h2>
+<ul class="simple">
+<li><p>Logic programming is based on symbolic logic</p></li>
+<li><p>Programs consist of facts and rules - <strong>declarative</strong>, not
+procedural/imperative</p></li>
+<li><p>Solution characteristics are specified rather than computation steps</p></li>
+<li><p>Most widely used logic language: <strong>Prolog</strong> (PROgramming in LOGic)</p></li>
+<li><p>Developed primarily by Alain Colmerauer and Phillippe Roussel (1970s)</p></li>
+</ul>
+</section>
+<section >
+<h3>Predicate Calculus</h3>
+<ul class="simple">
+<li><p>Foundation for logic programming languages</p></li>
+<li><p><strong>Proposition</strong>: Statement that is either true or false</p></li>
+<li><p>Types</p>
+<ul>
+<li><p><strong>Atomic proposition</strong>: compound terms</p></li>
+<li><p><strong>Compound proposition</strong>: combination of atomic propositions</p></li>
+</ul>
+</li>
+<li><p><strong>Compound term</strong>: One element of a mathematical relation</p>
+<ul>
+<li><p>Functor (function symbol naming the relation)</p></li>
+<li><p>Ordered list of parameters</p></li>
+<li><p>E.g. <cite>man(jake)</cite> <cite>like(bob, steak)</cite></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Horn Clauses</h3>
+<ul class="simple">
+<li><p>Special form of propositions used in logic programming</p></li>
+<li><p>Two forms:</p>
+<ul>
+<li><p>Headed Horn clause: Single atomic proposition on left side</p></li>
+<li><p>Headless Horn clause: Empty left side</p></li>
+</ul>
+</li>
+<li><p>Examples:</p>
+<ul>
+<li><p>Headed <cite>likes(bob, trout) ⊂ likes(bob, fish) ∩ fish(trout)</cite></p></li>
+<li><p>Headless <cite>father(bob, jake)</cite></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Resolution</h3>
+<ul class="simple">
+<li><p>Inference rule for deriving new propositions from existing ones</p></li>
+<li><p>Key to automatic theorem proving and logic programming</p></li>
+<li><p>When variables exist, <strong>unification</strong> finds values to enable matching</p></li>
+<li><p><strong>Instantiation</strong>: Process of replacing variables with values</p></li>
+<li><p>Example:</p>
+<ul>
+<li><p>From <cite>older(joanne, jake) ⊂ mother(joanne, jake)</cite> and</p></li>
+<li><p><cite>wiser(joanne, jake) ⊂ older(joanne, jake)</cite></p></li>
+<li><p>Can derive: <cite>wiser(joanne, jake) ⊂ mother(joanne, jake)</cite></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Prolog Basics</h3>
+<ul class="simple">
+<li><p><strong>Prolog</strong> (PROgramming in LOGic) is most widely used logic programming
+language</p></li>
+<li><p>Developed in 1972 by Alain Colmerauer and Phillippe Roussel</p></li>
+<li><p>Declarative</p></li>
+<li><p>Three types of terms:</p>
+<ul>
+<li><p>Constants (values, can be atoms or integers)</p></li>
+<li><p>Variables (names to be instantiated to values, start with uppercase letter
+or underscore)</p></li>
+<li><p>Structures (compound terms with functor and parameters)</p></li>
+</ul>
+</li>
+<li><p>Statement types:</p>
+<ul>
+<li><p>Facts - simple assertions</p></li>
+<li><p>Rules - implications between facts</p></li>
+<li><p>Goals/Queries - propositions to be proven</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Prolog Facts</h3>
+<ul class="simple">
+<li><p>Unconditional assertions assumed to be true</p></li>
+<li><p>Represented as structures terminated by period</p></li>
+<li><p>Examples:</p></li>
+</ul>
+<pre data-id="prolog-facts"><code data-trim data-noescape class="prolog">female(shelley).
+male(bill).
+father(bill, jake).
+mother(mary, shelley).</code></pre>
+</section>
+<section >
+<h3>Prolog Rules</h3>
+<ul class="simple">
+<li><p>Implications between facts</p></li>
+<li><p>Format: <cite>consequence :- antecedent_expression.</cite></p></li>
+<li><p>Read as: “consequence can be concluded if antecedent expression is true”</p></li>
+<li><p>One consequence, multiple antecedents</p></li>
+<li><p>Multiple antecedents separated by comma means logical AND</p></li>
+<li><p>Multiple rules for same consequence means logical OR</p></li>
+<li><p>Example:</p></li>
+</ul>
+<pre data-id="prolog-rules"><code data-trim data-noescape class="prolog">% X, Y, Z are variables
+parent(X, Y) :- mother(X, Y).
+parent(X, Y) :- father(X, Y).
+grandparent(X, Z) :- parent(X, Y), parent(Y, Z).</code></pre>
+</section>
+<section >
+<h3>Prolog Goals/Queries</h3>
+<ul class="simple">
+<li><p>Propositions to be proven true/false based on facts and rules</p></li>
+<li><p>Same syntax as facts</p></li>
+<li><p>Checks</p>
+<ul>
+<li><p>yes or no</p></li>
+<li><p>If yes, instantiate variables</p></li>
+</ul>
+</li>
+<li><p>Examples:</p></li>
+</ul>
+<pre data-id="prolog-goals-queries"><code data-trim data-noescape class="prolog">member(a, [b, c, d]).     % Asks if 'a' is in the list [b,c,d]
+father(X, mike).          % Asks who is mike's father</code></pre>
+</section>
+<section >
+<h3>Prolog Inferencing Process</h3>
+<ul class="simple">
+<li><p>Backward-chaining resolution (starts with goal, works backward)</p></li>
+<li><p>Depth-first search approach rather than breadth-first</p></li>
+<li><p>Backtracking when a subgoal fails</p></li>
+<li><p>Database search proceeds from first to last</p></li>
+</ul>
+</section>
+<section >
+<h3>Arithmetic in Prolog</h3>
+<ul class="simple">
+<li><p>Integer variables and arithmetic operations supported</p></li>
+<li><p><cite>is</cite> operator assigns arithmetic results</p>
+<ul>
+<li><p>Right operand = expression</p></li>
+<li><p>Left operand = uninstantiated variable</p></li>
+</ul>
+</li>
+<li><p>Example:</p></li>
+</ul>
+<pre data-id="arithmetic-in-prolog"><code data-trim data-noescape class="prolog">A is B / 17 + C.
+distance(X, Y) :- speed(X, Speed), time(X, Time), Y is Speed * Time.</code></pre>
+</section>
+<section >
+<h3>Tracing in Prolog</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p><cite>trace</cite> command enables tracing</p></li>
+<li><p>Shows resolution process</p></li>
+<li><p>Tracing model and four types of events</p>
+<ul>
+<li><p><cite>Call</cite> - goal to be proven</p></li>
+<li><p><cite>Exit</cite> - goal proven true</p></li>
+<li><p><cite>Fail</cite> - goal proven false</p></li>
+<li><p><cite>Redo</cite> - backtracking</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="half docutils container">
+<pre><code data-trim data-noescape class="prolog">trace.
+distance(chevy, Chevy_Distance).
+(1) 1 Call: distance(chevy, _0)?
+(2) 2 Call: speed(chevy, _5)?
+(2) 2 Exit: speed(chevy, 105)
+(3) 2 Call: time(chevy, _6)?
+(3) 2 Exit: time(chevy, 21)
+(4) 2 Call: _0 is 105*21?
+(4) 2 Exit: 2205 is 105*21
+(1) 1 Exit: distance(chevy, 2205)
+Chevy_Distance = 2205</code></pre>
+</div>
+</div>
+</section>
+<section >
+<h3>Lists in Prolog</h3>
+<ul class="simple">
+<li><p>Key data structure - sequence of elements</p></li>
+<li><p>Square brackets and comma-separated: <cite>[apple, prune, grape]</cite></p></li>
+<li><p>Empty list: <cite>[]</cite></p></li>
+<li><p>Head-tail notation: <cite>[X | Y]</cite></p></li>
+<li><p>Example operations:</p></li>
+</ul>
+<pre data-id="lists-in-prolog"><code data-trim data-noescape class="prolog">append([], List, List).
+append([Head | List_1], List_2, [Head | List_3]) :-
+    append(List_1, List_2, List_3).</code></pre>
+</section>
+<section >
+<h3>Deficiencies of Prolog</h3>
+<ul class="simple">
+<li><p>Resolution order control requirements</p></li>
+<li><p>Closed-world assumption (if can’t prove true, assume false)</p></li>
+<li><p>Difficulty with negation (not a true logical NOT)</p></li>
+<li><p>Intrinsic limitations (must specify ‘how’ for efficiency)</p></li>
+</ul>
+</section>
+<section >
+<h3>The Cut Operator</h3>
+<ul class="simple">
+<li><p>Controls backtracking with <cite>!</cite> symbol</p></li>
+<li><p>The cut (!) is a special goal that always succeeds immediately and commits
+Prolog to all choices made since the rule containing the cut was selected. It
+prevents backtracking to:</p>
+<ul>
+<li><p>Find alternative solutions for goals listed before the ! in the current
+rule.</p></li>
+<li><p>Try any alternative rules (clauses) for the predicate.</p></li>
+</ul>
+</li>
+<li><p>Example:</p></li>
+</ul>
+<pre data-id="the-cut-operator"><code data-trim data-noescape class="prolog">member(Element, [Element | _]) :- !.
+member(Element, [_ | List]) :- member(Element, List).</code></pre>
+</section>
+<section >
+<h3>Applications of Logic Programming</h3>
+<ul class="simple">
+<li><p>Relational Database Management Systems</p></li>
+<li><p>Expert Systems</p></li>
+<li><p>Natural-Language Processing</p></li>
+<li><p>Theorem proving</p></li>
+<li><p>Artificial Intelligence applications</p></li>
+</ul>
+</section>
+<section >
+<h3>Key Advantages</h3>
+<ul class="simple">
+<li><p>Declarative semantics (simpler than imperative languages)</p></li>
+<li><p>Programs specify what, not how</p></li>
+<li><p>Flexible pattern matching</p></li>
+<li><p>Built-in backtracking and unification</p></li>
+<li><p>Natural fit for relational and symbolic problems</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>ProLog Programming Language</h2>
+<ul class="simple">
+<li><p>Environment</p></li>
+<li><p>Example</p></li>
+</ul>
+</section>
+<section >
+<h3>ProLog Programming Environment</h3>
+<ul>
+<li><p>Online ProLog Compiler</p>
+<ul class="simple">
+<li><p>Official SWI-Prolog <a class="reference external" href="https://swish.swi-prolog.org/">https://swish.swi-prolog.org/</a></p></li>
+<li><p>Goto <a class="reference external" href="https://rextester.com/">https://rextester.com/</a> and choose Prolog</p></li>
+</ul>
+</li>
+<li><p>Local ProLog Compiler</p>
+<ul class="simple">
+<li><p>Install SWI-Prolog</p>
+<ul>
+<li><p>Linux <code class="code docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">swi-prolog</span></code></p></li>
+<li><p>Mac OS <code class="code docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">swi-prolog</span></code></p></li>
+</ul>
+</li>
+<li><p>Run SWI-Prolog <code class="code docutils literal notranslate"><span class="pre">swipl</span> <span class="pre">-s</span> <span class="pre">hello.pl</span></code></p></li>
+</ul>
+<pre><code data-trim data-noescape class="bash">$ sudo apt-get install swi-prolog
+$ swipl -s hello.pl</code></pre>
+</li>
+</ul>
+</section>
+<section >
+<h3>Code Example</h3>
+<ul class="simple">
+<li><p>Course prerequisites resolution application</p></li>
+<li><p>Source code: <a class="reference external" href="https://github.com/uwf-fang/cop4020-examples/blob/main/ch16/course.prolog">Link</a></p></li>
+</ul>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

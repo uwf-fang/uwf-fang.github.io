@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Simple Sorting Algorithms</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Simple Sorting Algorithms</h1>
+<ul class="simple">
+<li><p>Selection sort</p></li>
+<li><p>Insertion sort</p></li>
+<li><p>Bubble sort (FYI)</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Selection Sort</h2>
+<ul class="simple">
+<li><p>Repeatedly find the minimum/maximum element from unsorted portion. Swap with
+first unsorted element.</p></li>
+<li><p>Time complexity: <span class="math notranslate nohighlight">\(\Theta(n^2)\)</span></p></li>
+</ul>
+<pre data-id="selection-sort"><code data-trim data-noescape class="cpp">void selectionSort(int arr[], int n) {
+  for (int i = 0; i &lt; n-1; i++) {
+    // Find minimum element in unsorted array
+    int min_idx = i;
+    for (int j = i+1; j &lt; n; j++)
+      if (arr[j] &lt; arr[min_idx])
+        min_idx = j;
+    // Swap found minimum with first unsorted element
+    if (min_idx != i) {
+      int temp = arr[min_idx];
+      arr[min_idx] = arr[i];
+      arr[i] = temp;
+    }
+  }
+}</code></pre>
+<p><strong>Example</strong></p>
+<pre data-id="selection-sort"><code data-trim data-noescape class="cpp">int arr[] = {64, 25, 12, 22, 11};
+selectionSort(arr, 5);
+// arr is now {11, 12, 22, 25, 64}</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h2>Insertion Sort</h2>
+<ul class="simple">
+<li><p>Repeatedly insert an element from unsorted portion to its correct position in
+sorted portion.</p></li>
+<li><p>Time complexity: <span class="math notranslate nohighlight">\(\Theta(n^2)\)</span></p></li>
+</ul>
+<pre data-id="insertion-sort"><code data-trim data-noescape class="cpp">void insertionSort(int arr[], int n) {
+  for (int i = 1; i &lt; n; i++) {
+    int key = arr[i];
+    int j = i - 1;
+
+    // Move elements that are greater than key
+    // to one position ahead
+    while (j &gt;= 0 &amp;&amp; arr[j] &gt; key) {
+      arr[j + 1] = arr[j];
+      j = j - 1;
+    }
+    arr[j + 1] = key;
+  }
+}</code></pre>
+<p><strong>Example</strong></p>
+<pre data-id="insertion-sort"><code data-trim data-noescape class="cpp">int arr[] = {64, 34, 25, 12, 22, 11, 90};
+insertionSort(arr, 7);
+// arr is now {11, 12, 22, 25, 34, 64, 90}</code></pre>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

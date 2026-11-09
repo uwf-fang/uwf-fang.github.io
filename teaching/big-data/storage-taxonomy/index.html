@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Taxonomy of Data Storage: From Local to Cloud · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/big-data/big-data-intro/">Introduction To Big Data</a></li><li><a href="/teaching/big-data/big-data-lifecycle/">Big Data Life Cycle</a></li><li><a href="/teaching/big-data/big-data-processing/">Big Data Processing</a></li><li><a href="/teaching/big-data/data-analysis/">Data Analysis for Big Data: Overview</a></li><li><a href="/teaching/big-data/ml-dl/">Machine Learning And Deep Learning For Data Analysis</a></li><li><a href="/teaching/big-data/pyspark/">PySpark Programming for Big Data</a></li><li><a href="/teaching/big-data/streaming/">Streaming for Big Data</a></li><li><a href="/teaching/big-data/cloud-computing/">Cloud Computing For Big Data</a></li><li><a href="/teaching/big-data/misc/">Security, Privacy, and Compliance for Big Data</a></li><li><a href="/teaching/big-data/glossary/">Big Data Glossary</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/big-data/">Big Data</a> / Taxonomy of Data Storage: From Local to Cloud</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Taxonomy of Data Storage: From Local to Cloud</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#local-and-small-scale-infrastructure-storage-the-foundations">Local and Small-Scale Infrastructure Storage: The Foundations</a>
+      <ul>
+        <li><a href="#unmanaged-storage-the-raw-file-system">1.1 Unmanaged Storage (The Raw File System)</a></li>
+        <li><a href="#embedded-managed-storage-the-rise-of-the-in-process-engine">1.2 Embedded Managed Storage: The Rise of the In-Process Engine</a></li>
+        <li><a href="#client-server-rdbms-traditional">1.3 Client-Server RDBMS (Traditional)</a></li>
+        <li><a href="#the-hybrid-approach-sidecar-indexing-custom-parsers">1.4 The Hybrid Approach: Sidecar Indexing &amp; Custom Parsers</a></li>
+      </ul>
+    </li>
+    <li><a href="#distributed-high-scale-storage-the-big-data-era">Distributed &amp; High-Scale Storage: The Big Data Era</a>
+      <ul>
+        <li><a href="#the-decline-of-legacy-distributed-file-systems">2.1 The Decline of Legacy Distributed File Systems</a></li>
+        <li><a href="#cloud-object-store">2.2 Cloud Object Store</a></li>
+        <li><a href="#nosql-and-the-multi-model-evolution">2.3 NoSQL and the Multi-Model Evolution</a></li>
+        <li><a href="#newsql-the-distributed-relational-breakthrough">2.4 NewSQL: The Distributed Relational Breakthrough</a></li>
+      </ul>
+    </li>
+    <li><a href="#the-ai-frontier-vector-databases">The AI Frontier: Vector Databases</a></li>
+    <li><a href="#cloud-native-analytical-architectures">Cloud-Native Analytical Architectures</a>
+      <ul>
+        <li><a href="#data-warehouse-olap-and-decoupled-compute">4.1 Data Warehouse (OLAP) and Decoupled Compute</a></li>
+        <li><a href="#object-storage-the-infinite-hard-drive">4.2 Object Storage: The “Infinite” Hard Drive</a></li>
+        <li><a href="#the-data-lakehouse-the-grand-convergence">4.3 The Data Lakehouse: The Grand Convergence</a></li>
+      </ul>
+    </li>
+    <li><a href="#technical-selection-matrix">Technical Selection Matrix</a></li>
+    <li><a href="#summary-navigating-the-trade-offs">Summary: Navigating the Trade-offs</a></li>
+    <li><a href="#appendix-table-for-comparison">Appendix: Table for comparison</a></li>
+    <li><a href="#glossary">Glossary</a>
+      <ul>
+        <li><a href="#abbreviations">Abbreviations</a></li>
+        <li><a href="#essential-concepts-for-beginners">Essential concepts for beginners</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="taxonomy-of-data-storage-from-local-to-cloud"></span>
+<p>Last reviewed: May 2026 Scope: reflects tools and practices commonly used in 2026.</p>
+<p>In the early decades of computing, the choice of data storage was binary: it was either a file on a disk or a row in a database. As we navigate 2026, the landscape has fractured into a sophisticated spectrum of specialized engines. Choosing the right storage layer is no longer just about capacity; it is about balancing latency, consistency guarantees, and the inherent complexity of the modern architectural stack.</p>
+<h2 id="local-and-small-scale-infrastructure-storage-the-foundations">Local and Small-Scale Infrastructure Storage: The Foundations</h2>
+<p>Every modern system, regardless of its eventual scale, begins with the management of bits on a single physical or virtual machine. Even the most complex cloud architectures often rely on highly optimized local storage to handle caching, configuration, or temporary state.</p>
+<h3 id="unmanaged-storage-the-raw-file-system">1.1 Unmanaged Storage (The Raw File System)</h3>
+<p>At the most fundamental level, applications interact directly with the Operating System’s file system—NTFS for Windows, APFS for macOS, or ext4 for Linux. This is “unmanaged” because the developer is responsible for the internal structure, serialization, and retrieval logic of the data.</p>
+<p>While simple, this method is “dumb” storage. There is no built-in query engine, no indexing beyond what the OS provides for filenames, and zero concurrency control. If an application needs to find a specific user record in a 2GB JSON file, it must perform a linear $O(n)$ scan, loading the entire file into memory and iterating through it—a process that is computationally expensive and slow. In the 2026 landscape, raw file storage is strictly relegated to “static” assets such as high-resolution media, environment variables, or raw logs that are intended for asynchronous ingestion by more capable systems.</p>
+<h3 id="embedded-managed-storage-the-rise-of-the-in-process-engine">1.2 Embedded Managed Storage: The Rise of the In-Process Engine</h3>
+<p>The most significant shift in local storage over the last five years has been the professionalization of the “embedded” engine. An embedded database is not a separate service you connect to over a network; it is a library that lives <em>inside</em> your application process. This eliminates network latency entirely.</p>
+<p><strong>SQLite</strong> remains the undisputed king of this category, providing full ACID compliance in a single file. It is the invisible engine powering everything from mobile apps to the internal state of web browsers. However, 2026 has seen the meteoric rise of <strong>DuckDB</strong>, often called “The SQLite for Analytics.” Unlike SQLite, which is row-based and optimized for quick updates, DuckDB uses a columnar format. This makes it exceptionally fast for local data science; a developer can query a 50-million-row Parquet file directly on their laptop with speeds that rival massive cloud clusters. For high-performance key-value needs, engines like <strong>RocksDB</strong> provide the underlying “storage plumbing” for many larger distributed systems, managing data at the byte-level with extreme efficiency.</p>
+<h3 id="client-server-rdbms-traditional">1.3 Client-Server RDBMS (Traditional)</h3>
+<p>The traditional “Database Server” model, exemplified by <strong>PostgreSQL</strong> and <strong>MySQL</strong>, remains the enterprise backbone. In this architecture, the database runs as a separate service (a daemon), allowing multiple independent clients to connect and share data. These systems are the gold standard for transactional integrity. They are optimized for <strong>Vertical Scaling</strong>—the practice of adding more RAM, faster NVMe drives, or more CPU cores to a single machine. While they can be “replicated” for read safety, they fundamentally assume a centralized model of truth, making them the safest bet for financial records and core business logic.</p>
+<h3 id="the-hybrid-approach-sidecar-indexing-custom-parsers">1.4 The Hybrid Approach: Sidecar Indexing &amp; Custom Parsers</h3>
+<p>There is a sophisticated middle ground between “dumb” raw files and “rigid” databases: the <strong>Sidecar Index</strong>. In this model, the data remains in its raw, unmanaged state (e.g., a directory of 10,000 JSON files), but a separate, customized parser scans these files to build a lightweight index store.</p>
+<p>This approach is highly popular in modern “Local-First” AI applications. For example, a system like <strong>LlamaIndex</strong> might crawl a local folder of PDF documents, parse their text, and store only the “metadata” (file path, keywords, or summary) in a small SQLite or Vector index. When a user queries the data, the system searches the fast index first to find the relevant file path, and only then performs a “targeted read” on the raw file. This grants the developer the speed of a managed database without the “lock-in” of a proprietary file format.</p>
+<h2 id="distributed-high-scale-storage-the-big-data-era">Distributed &amp; High-Scale Storage: The Big Data Era</h2>
+<p>When data grows beyond the physical limits of a single machine, or when the cost of downtime makes a single-node system too risky, we move into the distributed tier.</p>
+<h3 id="the-decline-of-legacy-distributed-file-systems">2.1 The Decline of Legacy Distributed File Systems</h3>
+<p>The “Big Data” revolution of the early 2010s was built on the <strong>Hadoop Distributed File System (HDFS)</strong>. HDFS allowed a single massive file to be chopped into blocks and mirrored across hundreds of commodity servers. While revolutionary at the time, HDFS is viewed in 2026 as a legacy pillar. Its complexity and the requirement to manage physical server clusters have led most organizations to migrate toward cloud-native object stores (like S3) or “Lakehouse” architectures.</p>
+<h3 id="cloud-object-store">2.2 Cloud Object Store</h3>
+<p>Cloud object storage is the simplest modern way to store very large amounts of unstructured data, such as logs, images, videos, documents, backups, and raw event files. Instead of managing disks and folders directly, users store each file-like unit as an object in a bucket, identified by a key. Services like <strong>Amazon S3</strong>, <strong>Azure Blob Storage</strong>, and <strong>Google Cloud Storage</strong> provide virtually unlimited capacity, high durability, and low operational overhead.</p>
+<p>In practice, object stores have replaced many self-managed distributed file systems (DFS), including large on-prem HDFS deployments, because teams no longer need to operate storage clusters, handle node failures, or plan complex capacity expansion manually. Object storage is now the default persistence layer for modern analytics.</p>
+<p>It also became the foundation of both data warehouses and lakehouses. Warehouses use object storage as their durable data layer behind managed SQL engines, while lakehouses build open table formats (such as Iceberg or Delta) on top of object storage to add transactions, schema evolution, and time travel. In short, object storage is the base layer that enables scalable cloud analytics.</p>
+<h3 id="nosql-and-the-multi-model-evolution">2.3 NoSQL and the Multi-Model Evolution</h3>
+<p>NoSQL was born from the necessity of scaling web applications to millions of concurrent users. However, NoSQL databases are not well-suited for unstructured data; they require schemas or at least semi-structured formats to function effectively. For truly unstructured data like raw logs or media files, object storage remains the better choice.</p>
+<ul>
+<li><strong>Document Stores (MongoDB):</strong> Store data as JSON, ideal for evolving catalogs.</li>
+<li><strong>Wide-Column Stores (Cassandra):</strong> Built for massive global write volumes with zero single points of failure.</li>
+<li><strong>Graph Databases (Neo4j):</strong> Optimized for traversing complex relationships (social networks, supply chains) rather than tables.</li>
+</ul>
+<h3 id="newsql-the-distributed-relational-breakthrough">2.4 NewSQL: The Distributed Relational Breakthrough</h3>
+<p><strong>NewSQL</strong> broke the dichotomy between ACID and Scale. Technologies like <strong>Google Spanner</strong> and <strong>CockroachDB</strong> use atomic clocks and consensus algorithms (like Raft) to provide a consistent SQL interface that spans the globe.</p>
+<h2 id="the-ai-frontier-vector-databases">The AI Frontier: Vector Databases</h2>
+<p>A 2026 taxonomy would be incomplete without addressing <strong>Vector Databases</strong>. With the explosion of LLMs, the challenge is storing “meaning.” Vector databases like <strong>Pinecone</strong> or <strong>Milvus</strong> store data as high-dimensional mathematical coordinates (embeddings). This allows for “Semantic Search”—finding data by conceptual similarity rather than keyword matching.</p>
+<h2 id="cloud-native-analytical-architectures">Cloud-Native Analytical Architectures</h2>
+<p>In cloud systems, storage should still be treated as a separate architectural concern, but it is no longer accurate to think of cloud storage as only a passive disk replacement. Modern cloud storage layers are tightly integrated with catalogs, eventing, governance controls, and analytics engines. That is why a separate cloud computing discussion is still useful: storage explains how data is persisted, while cloud computing explains how platform services act on that data.</p>
+<h3 id="data-warehouse-olap-and-decoupled-compute">4.1 Data Warehouse (OLAP) and Decoupled Compute</h3>
+<p>Modern warehouses like <strong>Snowflake</strong> have perfected the “decoupled” architecture. Storage and compute are billed separately, allowing petabyte-scale storage on cheap cloud tiers with high-power compute triggered only during query execution.</p>
+<h3 id="object-storage-the-infinite-hard-drive">4.2 Object Storage: The “Infinite” Hard Drive</h3>
+<p><strong>AWS S3</strong> and its peers have become the modern baseline. They use a flat namespace of objects identified by keys inside buckets or containers, and they serve as the physical storage layer for many other cloud services. In modern platforms, object storage also exposes compute-adjacent capabilities such as event notifications, lifecycle automation, fine-grained access control, metadata integration, and compatibility with higher-level table formats. That means object storage is still fundamentally storage, but it often behaves like the entry point to a larger data platform rather than just an online hard drive.</p>
+<h3 id="the-data-lakehouse-the-grand-convergence">4.3 The Data Lakehouse: The Grand Convergence</h3>
+<p>Historically, companies had a “Data Lake” (cheap/messy) and a “Data Warehouse” (expensive/clean). The <strong>Lakehouse</strong> merges these. By applying a layer like <strong>Apache Iceberg</strong> on top of S3, organizations get ACID transactions and “time-travel” on their raw data files.</p>
+<p>This is also where the boundary between storage and compute becomes blurry. The object store still keeps the bytes, but the surrounding metadata layer, catalog, and query engines determine how that data is interpreted, optimized, secured, and queried. In practice, a lakehouse is not just a storage choice; it is a storage-plus-compute architecture.</p>
+<h2 id="technical-selection-matrix">Technical Selection Matrix</h2>
+<table>
+	<thead>
+			<tr>
+					<th>Dimension</th>
+					<th>Local/Embedded</th>
+					<th>Traditional RDBMS</th>
+					<th>NoSQL / Vector</th>
+					<th>Lakehouse/Warehouse</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>Primary Scale</strong></td>
+					<td>MB to GB</td>
+					<td>Gigabytes</td>
+					<td>TB to PB</td>
+					<td>PB to EB (Exabytes)</td>
+			</tr>
+			<tr>
+					<td><strong>Consistency</strong></td>
+					<td>Strong (Local)</td>
+					<td>Strong (ACID)</td>
+					<td>Eventual to Strong</td>
+					<td>Strong (via Metadata)</td>
+			</tr>
+			<tr>
+					<td><strong>Primary Latency</strong></td>
+					<td>Microseconds</td>
+					<td>Milliseconds</td>
+					<td>Single-digit ms</td>
+					<td>Seconds to Minutes</td>
+			</tr>
+			<tr>
+					<td><strong>Ideal User</strong></td>
+					<td>Single App / Dev</td>
+					<td>Multi-user App</td>
+					<td>Real-time Web / AI</td>
+					<td>Data Scientist / Analyst</td>
+			</tr>
+	</tbody>
+</table>
+<h2 id="summary-navigating-the-trade-offs">Summary: Navigating the Trade-offs</h2>
+<ol>
+<li><strong>RDBMS vs. NewSQL:</strong> Use <strong>Postgres</strong> for single-region simplicity. Move to <strong>CockroachDB</strong> only when global availability is mandatory.</li>
+<li><strong>Object Store vs. Lakehouse:</strong> The Object Store is the library shelf; the Lakehouse is the librarian plus part of the reading room. You need the storage layer and the compute/metadata layer together for an efficient system.</li>
+<li><strong>Complexity vs. Capability:</strong> Choose only as much complexity as your scale requires. Do not adopt Exabyte solutions for Gigabyte problems.</li>
+</ol>
+<h2 id="appendix-table-for-comparison">Appendix: Table for comparison</h2>
+<table>
+	<thead>
+			<tr>
+					<th>Storage Method</th>
+					<th>Architecture</th>
+					<th>Scalability</th>
+					<th>Data Structure</th>
+					<th>Consistency Model</th>
+					<th>2026 Evolution / Modern Shift</th>
+					<th>Example Technologies</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Local File System</td>
+					<td>Direct OS-level access; unmanaged.</td>
+					<td>Small (GB)</td>
+					<td>Unstructured (Raw files)</td>
+					<td>N/A (Atomic at OS level)</td>
+					<td>Now used primarily for local configuration or “cold” media storage.</td>
+					<td>NTFS, APFS, ext4</td>
+			</tr>
+			<tr>
+					<td>Embedded DB</td>
+					<td>In-process engine; no separate server.</td>
+					<td>Small to Medium (GB)</td>
+					<td>Structured / Semi-structured</td>
+					<td>Strong ACID</td>
+					<td>Shifted from simple storage to high-performance local analytics (OLAP).</td>
+					<td>SQLite, DuckDB, RocksDB</td>
+			</tr>
+			<tr>
+					<td>Legacy Distributed File System</td>
+					<td>Cluster-managed distributed file blocks.</td>
+					<td>Large (TB to PB)</td>
+					<td>Unstructured files</td>
+					<td>Typically strong within cluster</td>
+					<td>Now considered legacy in many environments as teams migrate to cloud object storage and lakehouse patterns.</td>
+					<td>HDFS, GlusterFS</td>
+			</tr>
+			<tr>
+					<td>Object Store</td>
+					<td>Cloud object storage with bucket/key namespace.</td>
+					<td>Massive (PB to EB)</td>
+					<td>Unstructured and semi-structured objects</td>
+					<td>Strong durability; service-dependent consistency</td>
+					<td>Default persistence layer for cloud analytics; foundation for warehouses and lakehouses.</td>
+					<td>Amazon S3, Azure Blob Storage, Google Cloud Storage</td>
+			</tr>
+			<tr>
+					<td>Traditional RDBMS</td>
+					<td>Centralized Client-Server.</td>
+					<td>Medium (GB to TB)</td>
+					<td>Strictly Structured (Relational)</td>
+					<td>Strong ACID</td>
+					<td>Now frequently used as “RDS” managed cloud services; increasingly supports JSON.</td>
+					<td>PostgreSQL, MySQL, MariaDB</td>
+			</tr>
+			<tr>
+					<td>NewSQL</td>
+					<td>Distributed Relational (Horizontal).</td>
+					<td>Large (TB to PB)</td>
+					<td>Strictly Structured</td>
+					<td>Global ACID</td>
+					<td>Adoption of HTAP (Hybrid Transactional/Analytical Processing).</td>
+					<td>Google Spanner, CockroachDB, TiDB</td>
+			</tr>
+			<tr>
+					<td>NoSQL</td>
+					<td>Distributed Non-Relational.</td>
+					<td>Massive (PB+)</td>
+					<td>Flexible for Structured and Semi-structured</td>
+					<td>Eventual to Strong</td>
+					<td>Evolved into Multi-model systems with multi-document ACID support.</td>
+					<td>MongoDB, DynamoDB, Cassandra</td>
+			</tr>
+			<tr>
+					<td>Cloud Lakehouse</td>
+					<td>Object Storage + Metadata + Compute Layer.</td>
+					<td>Infinite (Exabyte+)</td>
+					<td>Multi-modal (Structured to Unstructured)</td>
+					<td>ACID via Metadata</td>
+					<td>The “Grand Convergence”; serves as a single source for both BI and AI.</td>
+					<td>Delta Lake, Apache Iceberg, Snowflake</td>
+			</tr>
+	</tbody>
+</table>
+<h2 id="glossary">Glossary</h2>
+<p>This glossary collects abbreviations and core ideas that beginners are likely to encounter in this document.</p>
+<h3 id="abbreviations">Abbreviations</h3>
+<table>
+	<thead>
+			<tr>
+					<th>Term</th>
+					<th>Full name</th>
+					<th>Explanation</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>ACID</strong></td>
+					<td>Atomicity, Consistency, Isolation, Durability</td>
+					<td>A set of properties that help transactions remain correct and reliable, even if systems fail or multiple users access data at once.</td>
+			</tr>
+			<tr>
+					<td><strong>AI</strong></td>
+					<td>Artificial Intelligence</td>
+					<td>Computer systems designed to perform tasks that usually require human-like reasoning or pattern recognition.</td>
+			</tr>
+			<tr>
+					<td><strong>APFS</strong></td>
+					<td>Apple File System</td>
+					<td>The file system commonly used by modern macOS devices.</td>
+			</tr>
+			<tr>
+					<td><strong>AWS</strong></td>
+					<td>Amazon Web Services</td>
+					<td>Amazon’s cloud computing platform, which includes services such as S3 and managed databases.</td>
+			</tr>
+			<tr>
+					<td><strong>BI</strong></td>
+					<td>Business Intelligence</td>
+					<td>Reporting and analysis tools used to help organizations understand data and make decisions.</td>
+			</tr>
+			<tr>
+					<td><strong>CPU</strong></td>
+					<td>Central Processing Unit</td>
+					<td>The main processor that executes instructions in a computer.</td>
+			</tr>
+			<tr>
+					<td><strong>DB</strong></td>
+					<td>Database</td>
+					<td>A system for storing, organizing, and retrieving data.</td>
+			</tr>
+			<tr>
+					<td><strong>EB</strong></td>
+					<td>Exabyte</td>
+					<td>A very large unit of storage. One EB is about one billion gigabytes.</td>
+			</tr>
+			<tr>
+					<td><strong>ext4</strong></td>
+					<td>Fourth Extended Filesystem</td>
+					<td>A widely used file system on Linux machines.</td>
+			</tr>
+			<tr>
+					<td><strong>GB</strong></td>
+					<td>Gigabyte</td>
+					<td>A common unit of storage capacity.</td>
+			</tr>
+			<tr>
+					<td><strong>HDFS</strong></td>
+					<td>Hadoop Distributed File System</td>
+					<td>A distributed file system designed for storing very large files across many machines.</td>
+			</tr>
+			<tr>
+					<td><strong>HTAP</strong></td>
+					<td>Hybrid Transactional/Analytical Processing</td>
+					<td>A system design that supports both day-to-day transactions and large analytical queries.</td>
+			</tr>
+			<tr>
+					<td><strong>JSON</strong></td>
+					<td>JavaScript Object Notation</td>
+					<td>A text-based data format widely used for data exchange and document storage.</td>
+			</tr>
+			<tr>
+					<td><strong>KV</strong></td>
+					<td>Key-Value</td>
+					<td>A data model that stores values by unique keys, similar to a dictionary or hash map.</td>
+			</tr>
+			<tr>
+					<td><strong>LLM</strong></td>
+					<td>Large Language Model</td>
+					<td>A machine learning model trained on very large amounts of text to understand and generate language.</td>
+			</tr>
+			<tr>
+					<td><strong>MB</strong></td>
+					<td>Megabyte</td>
+					<td>A smaller unit of storage than a gigabyte.</td>
+			</tr>
+			<tr>
+					<td><strong>ms</strong></td>
+					<td>Millisecond</td>
+					<td>One-thousandth of a second, often used to describe latency.</td>
+			</tr>
+			<tr>
+					<td><strong>N/A</strong></td>
+					<td>Not Applicable</td>
+					<td>Indicates that a field or property does not apply in a given situation.</td>
+			</tr>
+			<tr>
+					<td><strong>NTFS</strong></td>
+					<td>New Technology File System</td>
+					<td>A common file system used by Windows.</td>
+			</tr>
+			<tr>
+					<td><strong>NVMe</strong></td>
+					<td>Non-Volatile Memory Express</td>
+					<td>A high-speed storage interface used by modern solid-state drives.</td>
+			</tr>
+			<tr>
+					<td><strong>OLAP</strong></td>
+					<td>Online Analytical Processing</td>
+					<td>A style of data processing optimized for large analytical queries rather than frequent small updates.</td>
+			</tr>
+			<tr>
+					<td><strong>OS</strong></td>
+					<td>Operating System</td>
+					<td>The core software that manages hardware and provides services for applications.</td>
+			</tr>
+			<tr>
+					<td><strong>PB</strong></td>
+					<td>Petabyte</td>
+					<td>A storage unit larger than a terabyte and commonly used for very large datasets.</td>
+			</tr>
+			<tr>
+					<td><strong>PDF</strong></td>
+					<td>Portable Document Format</td>
+					<td>A file format used to share documents while preserving layout.</td>
+			</tr>
+			<tr>
+					<td><strong>RAM</strong></td>
+					<td>Random Access Memory</td>
+					<td>Fast temporary memory used by active programs while a computer is running.</td>
+			</tr>
+			<tr>
+					<td><strong>RDBMS</strong></td>
+					<td>Relational Database Management System</td>
+					<td>A database system based on tables, rows, columns, and SQL.</td>
+			</tr>
+			<tr>
+					<td><strong>RDS</strong></td>
+					<td>Relational Database Service</td>
+					<td>A cloud-managed relational database service, often meaning AWS RDS in practice.</td>
+			</tr>
+			<tr>
+					<td><strong>S3</strong></td>
+					<td>Simple Storage Service</td>
+					<td>Amazon’s cloud object storage service.</td>
+			</tr>
+			<tr>
+					<td><strong>SQL</strong></td>
+					<td>Structured Query Language</td>
+					<td>The standard language used to query and manage relational databases.</td>
+			</tr>
+			<tr>
+					<td><strong>TB</strong></td>
+					<td>Terabyte</td>
+					<td>A large storage unit commonly used for disks and datasets.</td>
+			</tr>
+			<tr>
+					<td><strong>URL</strong></td>
+					<td>Uniform Resource Locator</td>
+					<td>A network address used to locate a resource, such as a file or web page.</td>
+			</tr>
+	</tbody>
+</table>
+<h3 id="essential-concepts-for-beginners">Essential concepts for beginners</h3>
+<table>
+	<thead>
+			<tr>
+					<th>Concept</th>
+					<th>Explanation</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>Latency</strong></td>
+					<td>The time it takes for one operation, such as a read or query, to complete. Lower latency usually means a faster user experience.</td>
+			</tr>
+			<tr>
+					<td><strong>Consistency</strong></td>
+					<td>The degree to which all users or machines see the same data after updates.</td>
+			</tr>
+			<tr>
+					<td><strong>Strong consistency</strong></td>
+					<td>A model in which readers see the latest successful write immediately.</td>
+			</tr>
+			<tr>
+					<td><strong>Eventual consistency</strong></td>
+					<td>A model in which copies of data may temporarily differ, but they converge over time.</td>
+			</tr>
+			<tr>
+					<td><strong>Transaction</strong></td>
+					<td>A group of operations treated as one unit so they either all succeed or all fail together.</td>
+			</tr>
+			<tr>
+					<td><strong>Concurrency control</strong></td>
+					<td>Techniques for keeping data correct when many users or processes access it at the same time.</td>
+			</tr>
+			<tr>
+					<td><strong>Index</strong></td>
+					<td>A helper data structure that speeds up searching, much like an index in a book.</td>
+			</tr>
+			<tr>
+					<td><strong>Replication</strong></td>
+					<td>Keeping multiple copies of data on different machines to improve availability and durability.</td>
+			</tr>
+			<tr>
+					<td><strong>Vertical scaling</strong></td>
+					<td>Making one machine more powerful by adding more CPU, RAM, or faster storage.</td>
+			</tr>
+			<tr>
+					<td><strong>Horizontal scaling</strong></td>
+					<td>Expanding capacity by adding more machines and distributing work across them.</td>
+			</tr>
+			<tr>
+					<td><strong>Sharding</strong></td>
+					<td>Splitting data across multiple machines so that no single machine stores everything.</td>
+			</tr>
+			<tr>
+					<td><strong>Columnar storage</strong></td>
+					<td>A storage layout that keeps values from the same column together, which is efficient for analytics.</td>
+			</tr>
+			<tr>
+					<td><strong>Row-oriented storage</strong></td>
+					<td>A storage layout that keeps each full record together, which is efficient for frequent inserts and updates.</td>
+			</tr>
+			<tr>
+					<td><strong>Object storage</strong></td>
+					<td>A storage model in which data is stored as objects identified by keys rather than arranged in folders and blocks like a traditional file system.</td>
+			</tr>
+			<tr>
+					<td><strong>Storage-compute convergence</strong></td>
+					<td>A trend in cloud systems where storage layers are closely integrated with catalogs, eventing, policy engines, and analytics services, so stored data can immediately participate in downstream computation.</td>
+			</tr>
+			<tr>
+					<td><strong>Data lake</strong></td>
+					<td>A large repository that stores raw data in many formats for later processing.</td>
+			</tr>
+			<tr>
+					<td><strong>Data warehouse</strong></td>
+					<td>A structured analytical system optimized for reporting and large-scale queries.</td>
+			</tr>
+			<tr>
+					<td><strong>Lakehouse</strong></td>
+					<td>An architecture that combines low-cost data lake storage with some of the management and query benefits of a warehouse.</td>
+			</tr>
+			<tr>
+					<td><strong>Embedding</strong></td>
+					<td>A numeric representation of data, often text or images, that captures meaning in vector form.</td>
+			</tr>
+			<tr>
+					<td><strong>Semantic search</strong></td>
+					<td>Searching by meaning or similarity instead of exact keyword matches.</td>
+			</tr>
+			<tr>
+					<td><strong>Consensus algorithm</strong></td>
+					<td>A method that distributed systems use to agree on a shared state, even when many machines are involved.</td>
+			</tr>
+	</tbody>
+</table>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

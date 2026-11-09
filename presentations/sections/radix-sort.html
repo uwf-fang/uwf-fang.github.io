@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Radix Sort</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Radix Sort</h1>
+<ul class="simple">
+<li><p>Manual sorting methods 19th century</p></li>
+<li><p>Characteristics</p>
+<ul>
+<li><p>Non-comparison-based sorting algorithm</p></li>
+<li><p>Only works with integers, strings whose length is finite</p></li>
+<li><p>Digit/character-based</p></li>
+<li><p>Stable</p></li>
+<li><p>Out-of-place</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Algorithm Details</h2>
+<ul class="simple">
+<li><p>Example Steps (sorting decimal integers)</p>
+<ol class="arabic simple">
+<li><p>Initialize a list of buckets, one for each digit (0-9)</p></li>
+<li><p>Group by digits (two methods):</p>
+<ul>
+<li><p>LSD: Start from the least significant digit (rightmost) and group the
+numbers into buckets based on that digit</p></li>
+<li><p>MSD: Start from the most significant digit (leftmost) and group the
+numbers into buckets based on that digit</p></li>
+</ul>
+</li>
+<li><p>Collect the numbers from the buckets in order</p></li>
+<li><p>Move to the next digit and repeat the group and collect steps until all
+digits have been processed</p></li>
+</ol>
+</li>
+<li><p>Further improvement</p>
+<ul>
+<li><p>Zero-padding</p></li>
+<li><p>Negative number support</p></li>
+<li><p>Buckets storage</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Complexity</h2>
+<ul class="simple">
+<li><p>Time: <span class="math notranslate nohighlight">\(\Theta(nk)\)</span></p></li>
+<li><p>Space: <span class="math notranslate nohighlight">\(\Theta(n+k)\)</span>  (single array method)</p></li>
+<li><p>When k is a constant or much smaller than n, time complexity is
+<span class="math notranslate nohighlight">\(\Theta(n)\)</span>.</p></li>
+<li><p>When k is comparable to n or even greater, DO NOT use radix sort!</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Visualization</h2>
+<ul class="simple">
+<li><p>The single array method is demonstrated.</p>
+<ul>
+<li><p><a class="reference external" href="https://www.cs.usfca.edu/~galles/visualization/RadixSort.html">https://www.cs.usfca.edu/~galles/visualization/RadixSort.html</a></p></li>
+</ul>
+</li>
+<li><p>The more abstract version is demonstrated without implementation details</p>
+<ul>
+<li><p><a class="reference external" href="https://visualgo.net/en/sorting">https://visualgo.net/en/sorting</a></p></li>
+</ul>
+</li>
+</ul>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

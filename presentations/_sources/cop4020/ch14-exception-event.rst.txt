@@ -1,0 +1,214 @@
+Introduction to Exception Handling (1/3)
+========================================
+* **Definition:** An exception is any unusual event, erroneous or not,
+  detectable by hardware or software, requiring special processing.
+* **Exception Handling:** The special processing required when an exception is
+  detected.
+* **Exception Handler:** The code unit that performs the exception handling.
+* **Raising/Throwing:** An exception is ``raised`` (or ``thrown`` in C-based
+  languages) when its associated event occurs.
+
+Introduction to Exception Handling (2/3)
+----------------------------------------
+* **Need:**
+
+  * Handles run-time errors (hardware/software detected).
+  * Handles other unusual conditions.
+  * Early languages often just terminated the program.
+
+* **Handling without Built-in Support:**
+
+  * Using status variables/return values.
+  * Passing label parameters (e.g., Fortran).
+  * Passing handler subprogram names.
+
+Introduction to Exception Handling (3/3)
+----------------------------------------
+* **Advantages of Built-in Support:**
+
+  * Reduces code clutter for error detection.
+  * Allows exception propagation (handling in dynamic/static ancestors).
+  * Encourages consideration of potential issues.
+  * Simplifies handling of non-erroneous unusual situations.
+
+Design Issues for Exception Handling (1/2)
+------------------------------------------
+* **Handler Specification & Scope:** How and where are handlers defined? What
+  is their scope?
+* **Binding Exception to Handler:**
+
+  * How are exceptions bound to handlers within a unit?
+  * How does propagation work if no local handler exists?
+
+* **Information Passing:** Can information about the exception be passed to the
+  handler?
+
+Design Issues for Exception Handling (2/2)
+------------------------------------------
+* **Continuation:** What happens after a handler executes?
+
+  * **Termination:** Simplest option. Control proceeds after the ``try`` block.
+  * **Resumption:** Continue execution (e.g., at the statement that raised it,
+    after it). Requires care.
+
+* **Finalization:** Ability to specify computations that must run regardless of
+  how a unit terminates (normally or via exception)? (e.g., ``finally``
+  clause).
+* **User-Defined Exceptions:** How are they specified?
+* **Predefined Exceptions:** Should there be defaults? Can they be raised
+  explicitly?
+
+Exception Handling in C++ (1/2)
+-------------------------------
+* **Based on:** CLU, Ada, ML. User/library defined and explicitly raised.
+* **Handlers:** Defined in ``catch`` blocks following a ``try`` block.
+
+  * Syntax: ``try { ... } catch (ParamType param) { ... } catch (...) { ... }``
+  * ``catch`` parameter type determines which exceptions it handles (matches
+    type or ancestor classes).
+  * Ellipsis ``(...)`` catches any exception.
+
+Exception Handling in C++ (2/2)
+-------------------------------
+* **Raising Exceptions:** ``throw [expression];``. ``throw;`` inside a handler
+  reraises.
+* **Binding:** Search ``catch`` blocks sequentially. Specific handlers should
+  precede general ones.
+* **Propagation:** If no local handler matches, propagates up the call stack.
+  Uncaught exceptions call ``unexpected`` (default: terminate).
+* **Continuation:** Control goes to the statement after the ``try`` construct.
+* **``throw()`` Specification:** Optional function specifier (often ignored by
+  compilers). ``throw()`` means no exceptions.
+* **Evaluation:** No predefined hardware exceptions. Binding via types can be
+  less readable than using meaningful class hierarchies.
+
+Exception Handling in Java (1/3)
+--------------------------------
+* **Based on:** C++, but more object-oriented. Includes predefined exceptions.
+* **Exception Classes:** All descend from ``Throwable``.
+
+  * ``Error``: Thrown by JVM (e.g., out of memory), usually not handled.
+  * ``Exception``: Parent for user-handled exceptions.
+
+Exception Handling in Java (2/3)
+--------------------------------
+* **Subclasses of** ``Exception``:
+
+  * ``RuntimeException``: Often user program errors (e.g.,
+    ``ArrayIndexOutOfBoundsException``). (Unchecked exceptions).
+  * ``IOException``: Input/output errors. (Checked exceptions).
+  * User-defined exceptions usually extend ``Exception``.
+
+* **Checked vs. Unchecked:**
+
+  * **Checked:** Must be explicitly caught (in ``try-catch``) or declared in
+    the method signature (using ``throws``). Enforced by the compiler.
+  * **Unchecked:** (``Error`` and ``RuntimeException``) Do not require explicit
+    handling or declaration.
+
+Exception Handling in Java (3/3)
+--------------------------------
+* **Handlers (``catch``):** Similar to C++, parameter type must descend from
+  ``Throwable``. Parameter required.
+* **``try`` Construct:** Same syntax as C++, but includes an optional
+  ``finally`` clause (always executed).
+* **Raising Exceptions:** ``throw new ExceptionType(...);``.
+* **Binding:** Binds to the first matching ``catch`` block (same class or
+  ancestor).
+* **Rethrowing:** Use ``throw e;`` or ``throw new SomeOtherException(...);``
+  inside a ``catch`` block.
+
+Exception Handling in Python
+----------------------------
+* **Exceptions:** Objects, many predefined (base: ``BaseException``, common:
+  ``Exception`` descendants).
+* **Syntax:** ``try...except...else...finally``.
+
+  * ``try``: Code to monitor.
+  * ``except ExceptionType [as var]``: Handler. Can list multiple types.
+  * ``else``: Executes if no exception in ``try``.
+  * ``finally``: Always executes.
+
+* **Raising:** ``raise ExceptionType(...)``. ``raise`` alone reraises.
+* **Assertion:** ``assert condition, data`` raises ``AssertionError`` if
+  condition is false (and ``__debug__`` is True).
+
+Exception Handling in Ruby
+--------------------------
+* **Exceptions:** Objects, many predefined (descendants of ``Exception``,
+  usually handle ``StandardError`` descendants). Methods ``message`` and
+  ``backtrace``.
+* **Syntax:** ``begin...rescue...else...ensure`` blocks or implicit within
+  methods.
+
+  * ``begin``: Code to monitor.
+  * ``rescue ExceptionType => var``: Handler. Can list multiple types.
+  * ``else``: Executes if no exception.
+  * ``ensure``: Like ``finally``.
+
+* **Raising:** ``raise "message"`` (raises ``RuntimeError``) or ``raise
+  ExceptionType, "message"``.
+* **Retry:** ``retry`` keyword inside ``rescue`` reruns the ``begin`` block.
+
+Introduction to Event Handling (1/2)
+====================================
+* **Similarity to Exceptions:** Handlers called implicitly based on an
+  occurrence (event vs. exception).
+* **Event Origin:** Typically external actions (e.g., GUI interactions), not
+  usually program code errors.
+* **Event-Driven Programming:** Code execution order determined by
+  unpredictable events, unlike conventional sequential programming.
+
+Introduction to Event Handling (2/2)
+------------------------------------
+* **Context:** Often related to GUIs and user interactions with components
+  (widgets).
+* **Event:** A notification (often an object) created by the runtime system in
+  response to an action (e.g., mouse click, key press).
+* **Event Handler:** Code segment executed in response to an event. Makes
+  programs responsive.
+
+Event Handling with Java (AWT/Swing) (1/2)
+------------------------------------------
+* **Model:** Delegation model.
+* **Event Source:** GUI component where the event occurs (e.g., ``JButton``).
+* **Event Object:** Encapsulates information about the event (e.g.,
+  ``ActionEvent``, ``ItemEvent``).
+* **Event Listener:** An object that "listens" for events from a source. Must
+  implement a specific listener interface.
+
+Event Handling with Java (AWT/Swing) (2/2)
+------------------------------------------
+* **Listener Interface:** Defines methods that act as handlers (e.g.,
+  ``ActionListener`` interface has ``actionPerformed`` method).
+* **Registration:** Connect the listener to the source using an
+  ``add<Type>Listener`` method (e.g.,
+  ``button.addActionListener(myListener);``).
+* **Handler Method:** Receives the event object as a parameter, allowing access
+  to event details.
+
+Event Handling in C# (.NET Windows Forms) (1/2)
+-----------------------------------------------
+* **Similarity:** Similar model to Java. Uses Windows Forms or WPF.
+* **GUI Creation:** Subclass ``System.Windows.Forms.Form``. Components added to
+  ``Form.Controls``.
+* **Component Properties:** Set using properties like ``Location``, ``Text``,
+  ``AutoSize``, ``Checked``.
+
+Event Handling in C# (.NET Windows Forms) (2/2)
+-----------------------------------------------
+* **Event Handlers:** Methods with a specific signature: ``void
+  HandlerName(object sender, EventArgs e)``.
+
+  * ``sender``: The object that raised the event.
+  * ``e``: Event-specific data (can be cast to more specific ``EventArgs``
+    types).
+
+* **Registration (Delegates):**
+
+  * Uses delegates (type-safe function pointers/references).
+  * Events are associated with delegate types (e.g., ``CheckedChanged`` event
+    uses ``EventHandler`` delegate).
+  * Create an ``EventHandler`` object referencing the handler method.
+  * Add this delegate object to the component's event using the ``+=`` operator
+    (e.g., ``plain.CheckedChanged += new EventHandler(rb_CheckedChanged);``).

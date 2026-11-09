@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reference-type in Functions · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/cpp/">C&#43;&#43; Reference</a> / Reference-type in Functions</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Reference-type in Functions</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#pass-by-reference">Pass by reference</a></li>
+    <li><a href="#returning-a-reference">Returning a Reference</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="reference-type-in-functions"></span>
+<span id="ref-in-functions"></span>
+<span id="pass-by-ref"></span>
+<h2 id="pass-by-reference">Pass by reference</h2>
+<ul>
+<li>
+<p>Allows modifications of the actual parameters:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// modifies the actual parameter
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// no return value
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> <span style="color:#6639ba">addOne</span><span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> <span style="color:#0550ae">&amp;</span>var<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">++</span>var<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">main</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> a <span style="color:#0550ae">=</span> <span style="color:#0550ae">10</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  addOne<span style="color:#1f2328">(</span>a<span style="color:#1f2328">);</span>  <span style="color:#57606a">// the actual parameter is a, must be an lvalue
+</span></span></span><span style="display:flex;"><span>  cout <span style="color:#0550ae">&lt;&lt;</span> a <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>  <span style="color:#57606a">// 11
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div></li>
+<li>
+<p>Avoid duplication of the value (reduce overhead when the value is an object):</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>string <span style="color:#6639ba">processText</span><span style="color:#1f2328">(</span><span style="color:#cf222e">const</span> string <span style="color:#0550ae">&amp;</span>inputText<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  string processedText<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// process the text
+</span></span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> processedText<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">main</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  string inputText <span style="color:#0550ae">=</span> <span style="color:#0a3069">&#34;This is a very long text&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  string result <span style="color:#0550ae">=</span> processText<span style="color:#1f2328">(</span>inputText<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  cout <span style="color:#0550ae">&lt;&lt;</span> result <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div></li>
+<li>
+<p>It is a good practice to always use pass-by-reference for objects (class-typed variables)</p>
+</li>
+<li>
+<p>Extensively used in many scenarios</p>
+<ul>
+<li>copy constructor</li>
+<li>copy assignment operator overloading</li>
+</ul>
+</li>
+</ul>
+<h2 id="returning-a-reference">Returning a Reference</h2>
+<p>Returning a reference allows a function call to be used as a lvalue. It allows modifications to the result of a function call.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">MyArr</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">private</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> <span style="color:#0550ae">*</span>arr<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> size<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">public</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  MyArr<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>  MyArr<span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> size<span style="color:#1f2328">,</span> <span style="color:#cf222e">int</span> value<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#0550ae">~</span>MyArr<span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">int</span> <span style="color:#0550ae">&amp;</span>at<span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// returns a reference
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#0550ae">&amp;</span> MyArr<span style="color:#0550ae">::</span>at<span style="color:#1f2328">(</span><span style="color:#cf222e">int</span> i<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> arr<span style="color:#1f2328">[</span>i<span style="color:#1f2328">];</span>  <span style="color:#57606a">// the reference to arr[i] is passed out
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">main</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  MyArr myArr1<span style="color:#1f2328">(</span><span style="color:#0550ae">10</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">10</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  myArr1<span style="color:#1f2328">.</span>at<span style="color:#1f2328">(</span><span style="color:#0550ae">0</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">=</span> <span style="color:#0550ae">10</span><span style="color:#1f2328">;</span>  <span style="color:#57606a">// you can assign a value to a function call now
+</span></span></span><span style="display:flex;"><span>                      <span style="color:#57606a">// because myArr1.at() is an alias of myArr1.arr[i]
+</span></span></span><span style="display:flex;"><span>  myArr1<span style="color:#1f2328">.</span>at<span style="color:#1f2328">(</span><span style="color:#0550ae">1</span><span style="color:#1f2328">)</span><span style="color:#0550ae">++</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p>Never return a reference to a local variable! Returning a reference to an instance variable is fine.</p>
+</div></aside>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

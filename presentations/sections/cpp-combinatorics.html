@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Combinatorics Problems That Needs Algorithms</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>Combinatorics Problems That Needs Algorithms</h1>
+<div class="subtitle docutils container">
+<p>Demonstrated in C++</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Why Writing Algorithms?</h2>
+<ul class="simple">
+<li><p>Prove correctness of your solution using math</p></li>
+<li><p>Too hard to solve using math</p></li>
+<li><p>When we want to see the solution in addition to the count</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Typical Approaches</h2>
+<ul class="simple">
+<li><p>Strategy: Other algorithmic paradigms</p></li>
+<li><p>Enumeration problems</p>
+<ul>
+<li><p>Simple enumeration: brute force, backtracking</p></li>
+<li><p>With overlapping sub-problems: dynamic programming</p></li>
+</ul>
+</li>
+<li><p>Optimization problems (Combinatorial optimization)</p>
+<ul>
+<li><p>Dynamic programming may apply when the problem has overlapping
+subproblems and the required substructure.</p></li>
+<li><p>A greedy algorithm may apply when a greedy-choice argument establishes
+that local choices produce the requested optimum.</p></li>
+<li><p>Neither overlap nor its absence alone determines that greedy is suitable.</p></li>
+<li><p>Heuristic algorithms: simulated annealing, genetic algorithm, etc.</p></li>
+<li><p>Linear programming</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Related C++ Features</h2>
+<ul class="simple">
+<li><p>Recursion</p>
+<ul>
+<li><p>art of memorization (manipulate parameter and return value)</p></li>
+</ul>
+</li>
+<li><p>STL algorithms (<code class="docutils literal notranslate"><span class="pre">&lt;algorithm&gt;</span></code> header)</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">next_permutation</span></code> function</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_permutation</span></code> function</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sort</span></code> function</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_sorted</span></code> function</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reverse</span></code> function</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rotate</span></code> function</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">shuffle</span></code> function</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Related C++ Features (cont.)</h3>
+<ul class="simple">
+<li><p>Useful data structures</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::vector&lt;bool&gt;</span></code> (bitset)</p>
+<ul>
+<li><p>to memorize visited/processed/seen states</p></li>
+<li><p>small number of total states</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Theta(1)\)</span> time complexity for <code class="docutils literal notranslate"><span class="pre">set</span></code> and <code class="docutils literal notranslate"><span class="pre">test</span></code> operations</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::set</span></code> to memorize visited/processed/seen states</p>
+<ul>
+<li><p>large number of total states</p></li>
+<li><p>Self-balancing binary search tree</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Theta(\log n)\)</span> time complexity for <code class="docutils literal notranslate"><span class="pre">insert</span></code> and <code class="docutils literal notranslate"><span class="pre">find</span></code>
+operations</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Theta(n)\)</span> time complexity for <code class="docutils literal notranslate"><span class="pre">erase</span></code> operation</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">std::unordered_set</span></code> to memorize visited/processed/seen states</p>
+<ul>
+<li><p>large number of total states</p></li>
+<li><p>Hash table</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Theta(1)\)</span> time complexity for <code class="docutils literal notranslate"><span class="pre">insert</span></code>, <code class="docutils literal notranslate"><span class="pre">find</span></code>, and <code class="docutils literal notranslate"><span class="pre">erase</span></code>
+operations</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Enumerate All US Phone Numbers</h3>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p>Order matters? Yes</p></li>
+<li><p>Repetition allowed? Yes</p></li>
+<li><p>Size of problem? 10</p></li>
+<li><p>Type of problem? Permutation with repetition</p></li>
+<li><p>Counting principle? Product rule</p></li>
+<li><p>Formula? <span class="math notranslate nohighlight">\(10^{10}\)</span></p></li>
+<li><p>Goal? Enumerate</p></li>
+<li><p>Write code? Yes</p></li>
+<li><p>Algorithmic paradigm? Brute force</p></li>
+</ul>
+</div>
+<div class="half docutils container">
+<pre><code data-trim data-noescape class="cpp">void enumeratePhoneNumbers(int n, string prefix) {
+  if (n == 0) {
+    cout &lt;&lt; prefix &lt;&lt; endl;
+    return;
+  }
+  for (int i = 0; i &lt; 10; i++) {
+    enumeratePhoneNumbers(n - 1, prefix + to_string(i));
+  }
+}</code></pre>
+</div>
+</div>
+</section>
+<section >
+<h3>Integer Partition Problem</h3>
+<ul class="simple">
+<li><p>Find the number of ways to partition a positive integer <span class="math notranslate nohighlight">\(n\)</span> using
+positive integers <span class="math notranslate nohighlight">\(\leq k\)</span>.</p></li>
+<li><p>Recurrence relation <span class="math notranslate nohighlight">\(p(n, k) = p(n - k, k) + p(n, k - 1)\)</span>.</p></li>
+<li><p>Not easy to solve using math.</p></li>
+</ul>
+<pre data-id="integer-partition-problem"><code data-trim data-noescape class="cpp">int partition(int n, int k) {
+  // Base cases
+  if (n == 0) return 1;  // One way to partition 0 using no numbers
+  if (n &lt; 0 || k &lt;= 0)
+    return 1;  // No way to partition with negative number or no numbers left
+
+  // Recursive cases
+  // Include k in the partition and recursively partition n-k with k
+  int include_k = partition(n - k, k);
+
+  // Exclude k from the partition and recursively partition n with k-1
+  int exclude_k = partition(n, k - 1);
+
+  return include_k + exclude_k;
+}</code></pre>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

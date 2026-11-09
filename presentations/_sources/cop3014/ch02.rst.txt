@@ -1,0 +1,333 @@
+**************************************
+Algorithm and Program Design (COP3014)
+**************************************
+.. revealjs-section::
+  :data-background-color: white
+  :data-background-image: ../_static/logo.png
+  :data-background-size: 50%
+  :data-background-position: top center
+  :data-background-repeat: no-repeat
+
+.. container:: subtitle
+
+  **Chapter 2: Variables, expressions and control flow in C++**
+
+  |author|
+
+Sections
+========
++ Variables and types
++ Expressions
++ Control flow
+
+Variables and types
+===================
++ Variables are used to store data in a program. It is a named memory location
+  that can store a value of a specific type.
+
+  * Must have a valid identifier name.
+  * Types in C++ are mandatory. Every variable must have a type.
+  * Must be declared before use.
+  * Can be initialized at the time of declaration.
+
+.. code-block:: cpp
+
+  // without initialization
+  int a, b, c;
+
+  // with initialization
+  int age = 20;
+  double weight = 150.5;
+  char grade = 'A';
+
+C++ Identifier Naming Rules
+---------------------------
++ Employed to name
+
+  * Variables
+  * Functions
+  * Classes
+  * Objects
+  * User-defined types
+
++ Legal characters: letters, digits, and underscore.
++ Must start with a letter or underscore.
++ Case sensitive.
++ Naming convention:
+
+  * lowerCamelCase: variable, function names
+  * PascalCase or UpperCamelCase: class names, type names
+  * words-separated-by-hyphens: file names **all lowercase!!**
+
+Types in C++
+------------
++ Fundamental types
+
+  * int, char, double, float, bool, void
+
++ Derived types
+
+  * Arrays, pointers, references, functions, structures, unions, enumerations
+
++ User-defined types
+
+  * Classes, structures, enumerations, typedefs
+
+
+
+Variables And Types Pitfalls
+----------------------------
+.. container:: flex-container
+
+  .. container:: half
+
+    .. code-block:: cpp
+
+      **Incorrect examples**
+
+      // Bad identifier naming
+      int $a;
+      int 3b;
+      int one-piece;
+
+      // Use before/without declaration
+      x = 10;
+      int x;
+
+      // Use without initialization
+      int y;
+      cout << y;
+
+
+  .. container:: half
+
+    **Poor examples**
+
+    .. code-block:: cpp
+
+      int PtAc;  // unknown abbreviation
+      int v;  // not informative
+      int ___;  // not informative
+      double count = 1.5;  // name not matches the purpose
+      int NUMBER;  // not following naming convention
+
+      int BadName;  // not following naming convention
+      int badname;  // not following naming convention
+      int bad_name;  // not following naming convention
+
+Derived Types
+-------------
++ Arrays: a collection of elements of the same type.
+
+  * int arr[5] = {1, 2, 3, 4, 5};
+  * arr itself is a pointer to the first element.
+
++ Pointers: a variable that stores the memory address of another variable.
+
+  * stores the memory address of another variable.
+  * & operator: address of operator
+  * * operator: dereference operator
+
++ References: an alias to an existing variable.
+
+  * Must be initialized! Cannot be changed.
+  * Parameter passing in functions is essential initialization!
+
+Derived Types Pitfalls
+----------------------
+.. container:: flex-container
+
+  .. container:: half
+
+    .. code-block:: cpp
+
+      // Incorrect examples
+
+      int arr[5];
+      arr = {1, 2, 3, 4, 5};  // cannot assign array
+
+      int *ptr;
+      *ptr = 10;  // dereferencing uninitialized pointer
+
+      string name = "John";
+      string *currentName = name;  // cannot assign string to pointer
+
+      int &ref;  // reference must be initialized
+      ref = x;  // reference cannot be changed
+
+  .. container:: half
+
+    .. code-block:: cpp
+
+      // Potential logic errors
+
+      int arr1[5] = {1, 2, 3, 4, 5};
+      int arr2[5] = arr1;  // arr2 is a pointer to arr1[0] now
+
+      if (arr1 == arr2)  // comparing pointers, not arrays
+        cout << "Equal";
+
+Expressions
+===========
++ Literal: a constant value that appears directly in the program.
+
+  * normal: 123, 3.14, 'A', "Hello"
+  * with suffix: 123L, 3.14f, 3.14L, 3.14e-2
+
++ Operators: symbols that represent computations.
+
+  * arithmetic: +, -, \*, /, %
+  * relational: ==, !=, <, >, <=, >=
+  * logical: &&, ||, !
+  * bitwise: &, \|, ^, ~, <<, >>
+  * increment/decrement: ++, --
+  * assignment: =, +=, -=, \*=, /=, %=
+
+Expression Evaluation
+---------------------
++ Operator Precedence: determines the order of evaluation of operators.
+
+  * Parentheses: ()
+  * Unary: +, -, ++, --
+  * Multiplicative: \*, /, %
+  * Additive: +, -
+  * Relational: <, >, <=, >=
+  * Equality: ==, !=
+  * Logical AND: &&
+  * Logical OR: ||
+  * Conditional: ?:
+  * Assignment: =, +=, -=, \*=, /=, %=
+
+Expression Pitfalls
+-------------------
+.. container:: flex-container
+
+  .. container:: half
+
+    .. code-block:: cpp
+
+      // Unexpected type conversion
+
+      double result = 25 / 2;  // 12.0 rather than 12.5
+      string result = "25" + 2;  // "252" rather than "27"
+
+      // Incorrect operator precedence
+      string name = "John";
+      string *ptr = &name;
+
+      int length = *ptr.length();  // (*ptr).length() is correct
+
+  .. container:: half
+
+    .. code-block::
+
+      // inefficient
+
+      // greater = (a > b);
+      if (a > b)
+        greater = True;
+      else
+        greater = False;
+
+      // Hard to understand
+      // Multiple operations in a single line
+
+      arr[--size] = value;
+
+Step-wise Evaluation
+--------------------
+.. container:: flex-container
+
+  .. container:: half
+
+    + Evaluate the expression step by step.
+    + Follow the operator precedence!!
+    + Pay attention to type conversion.
+
+  .. container:: half
+
+    .. code-block:: cpp
+
+      // ==== Expression ====
+
+      // ---- step-wise evaluation ----
+      // given: x = 2
+        (x + 5) / 4
+      = (2 + 5) / 4
+      = 7 / 4
+      = 1
+
+        static_cast<int>(19.5 / 3) + 5.0
+      = static_cast<int>(6.5) + 5.0
+      = 6 + 5.0
+      = 11.0
+
+        ((17 / 2 + 19 % 3 - 3 * 2 + 4 * 3) >= (5 + 2 * 4)) && !((((4 * 5) + 1) /2) == (7 / 3 + 2 * 5 - 2) || !(4 >= 3))
+      = ((8 + 1 - 6 + 12) >= (5 + 8)) && !(((20 + 1) / 2) == (2 + 10 - 2) || !(true))
+      = (15 >= 13) && !((21 / 2) == 10 || false)
+      = true && !(true || false)
+      = true && !true
+      = true && false
+      = false
+
+
+Control Flow
+============
++ Types of control flow
+
+  * Sequential: executes statements in order.
+  * Selection: executes statements based on a condition.
+  * Repetition: executes statements repeatedly.
+
++ Selection statements (branching)
+
+  * if, if-else, if-else-if, switch
+
++ Repetition statements (loops)
+
+  * while, do-while, for
+
+Control Flow Pitfalls
+---------------------
+.. container:: flex-container
+
+  .. container:: half
+
+    **Correct examples**
+
+    .. code-block:: cpp
+
+      if (a > 10) cout << "a is greater than 10\n";
+
+      if (a > 10)
+        cout << "a is greater than 10\n";
+
+      if (a > 10) {
+        cout << "a is greater than 10\n";
+      }
+
+  .. container:: half
+
+    **Wrong examples**
+
+    .. code-block:: cpp
+
+      if (a > 10);
+        cout << "a is greater than 10\n";
+
+      if (a > 10)
+        cout << "a is greater than 10\n";
+        cout << "Please try a smaller value!\n";
+
+      if (1 < a < 10)
+        cout << "a is between 1 and 10\n";
+
+      double a = 0;
+      switch (a) {
+        case 0:
+          cout << "a is 0\n";
+          break;
+        case 1:
+          cout << "a is 1\n";
+          break;
+      }

@@ -1,0 +1,296 @@
+Input/Output (I/O)
+==================
+* I/O related logics are essential in many tasks:
+
+  * Interaction with users
+  * File read/write
+  * String parsing/generation
+
+.. note::
+
+   Group I/O related logics in a minimal number of classes/functions.
+   They are not testable with automatic testing.
+
+Stream Based I/O
+----------------
+* All I/O covered here is stream based.
+* Handles data as sequential structures.
+* Other I/O patterns exist (e.g., block I/O).
+* Treat any input or output as a stream of bytes.
+
+Standard I/O
+============
+* Input/output in the command-line context.
+* Keyboard input as standard input.
+* Terminal character print/display as standard output.
+* iostream Header
+
+  * ``iostream`` - the input/output stream library header.
+  * Contains ``cin``, ``cout``, ``cerr``, ``endl``, ``flush``, etc.
+
+Standard Input
+--------------
+* ``cin``
+* A global variable usable anywhere in your program.
+* A instance/object of the ``istream`` class.
+
+.. code-block:: c++
+
+  cin >> inputVariable;
+
+Standard Output
+---------------
+* ``cout``
+* A global variable usable anywhere in your program.
+* An instance/object of the ``ostream`` class.
+
+.. code-block:: c++
+
+  cout << outputVariable;
+
+Standard Error
+--------------
+* ``cerr``
+* A global variable usable anywhere in your program.
+* An instance/object of the ``ostream`` class.
+* Used to display error messages.
+
+.. code-block:: c++
+
+  cerr << "Error: " << errorMessage;
+
+Redirection
+-----------
+* In UNIX shells, redirect I/O using ``<``, ``>``, ``|``.
+* ``<``: Redirect standard input from a file.
+* ``>``: Redirect standard output to a file.
+* ``|``: Pipeline standard output to the next program's input.
+
+.. code-block:: bash
+
+   ./main < input.txt
+   ./main > output.txt
+   ./main < input.txt > output.txt
+   ./cat input.txt | ./main
+
+Input/Output Operations
+=======================
++ Operations are shared among all streams
+
+  + Standard I/O
+  + File I/O
+  + String I/O
+
+Input Operations
+----------------
+* Extraction operator ``>>``:
+
+  * Works with any input stream (including ``cin``).
+  * Can be chained.
+  * Can be used as a boolean (true if success, false otherwise).
+  * Reads and converts to the desired type.
+  * Leaves ``'\n'`` or ``endl`` in the buffer.
+
+* ``getline()`` function:
+
+  * Reads a line as string: ``getline(cin, inputString);``
+  * Works with any input stream (including ``cin``).
+  * Reads in string only.
+  * May read in an empty string.
+  * **Special handling when used after extraction.**
+  * Can use a different delimiter: ``getline(cin, inputString, ',');``
+  * Differentiate it from the ``cin.getline()`` function!
+
+* ``ignore()`` method
+
+Output Operations
+-----------------
+* Insertion operator ``<<``:
+
+  * Works with any output stream (including ``cout``).
+  * Can be chained.
+  * Buffered, displays upon flushing.
+
+    * Inserting ``'\n'`` or ``endl`` triggers flush.
+    * Syntax like ``cin.flush()`` to force flush.
+
+* Formatting:
+
+  * ``#include <iomanip>`` header.
+  * ``fixed``
+  * ``showpoint``
+  * ``scientific``
+  * ``setprecision()``
+  * ``setw()`` **Not Sticky!!**
+  * ``setfill()``
+  * ``left``
+  * ``right``
+
+Error Handling
+--------------
+* Stream operations are likely to fail. Error handling is essential.
+* Methods:
+
+  * ``eof()``: Last successful read hit the end of the file.
+  * ``fail()``: Last read failed.
+
+* Reading errors:
+
+  * Check ``eof()`` if read errors are not expected.
+  * Check ``fail()`` if read errors are likely.
+
+String I/O
+==========
+* Used for text parsing or formatted string generation.
+* **Preferred over string manipulation!**
+* sstream Header
+
+  * ``sstream`` header for string stream classes.
+  * ``istringstream``: Input stream based on a string.
+  * ``ostringstream``: Output stream to generate a string.
+
+istringstream Class
+-------------------
+* An input stream based on the content of a string.
+* ``>>`` extraction.
+* ``getline()``.
+* Constructor to take a string as parameter.
+* ``.str()`` to set/get the string content.
+* ``.clear()`` to clear all contents.
+* End of file check:
+
+  * ``.eof()`` call after every read.
+  * Extraction operation as bool value: ``while (inSS >> value) ...``
+
+ostringstream Class
+-------------------
+* An output stream to accept formatted output and generate a string.
+* ``<<`` insertion.
+* All formatting tools from ``iomanip`` will work.
+* ``.str()`` method to generate the string content.
+
+String I/O Example
+------------------
+.. container:: flex-container
+
+  .. container:: half
+
+    **Extract data from a string**
+
+    .. code-block:: c++
+
+      #include <iostream>
+      #include <sstream>
+      #include <string>
+
+      using namespace std;
+      int main() {
+          string input = "123 456 789";
+          istringstream inSS(input);
+          int a, b, c;
+          inSS >> a >> b >> c;
+          cout << "Extracted: " << a << ", " << b << ", " << c << endl;
+          return 0;
+      }
+
+  .. container:: half
+
+    **Generate a string from formatted output**
+
+    .. code-block:: c++
+
+      #include <iostream>
+      #include <sstream>
+      #include <string>
+
+      using namespace std;
+      int main() {
+          ostringstream outSS;
+          outSS << "Formatted output: " << 123.456 << endl;
+
+          cout << output.str();
+          return 0;
+      }
+
+
+File I/O
+========
+.. container:: flex-container
+
+  .. container:: half
+
+    * ``fstream`` header.
+    * ``ifstream`` Class - Read from a file.
+    * ``ofstream`` Class - Write to a file.
+    * Bind a file to a stream.
+
+      * Pass the path string to the constructor.
+      * Call ``.open()`` method with the path string.
+      * Call ``.close()`` method when done.
+      * Check open status with ``.is_open()`` or ``.fail()`` after binding
+
+  .. container:: half
+
+    .. code-block:: c++
+
+      #include <iostream>
+      #include <fstream>
+      #include <string>
+
+      using namespace std;
+      int main() {
+          ifstream inFS("input.txt");
+          if (!inFS.is_open()) {
+              cerr << "Error opening file!" << endl;
+              return 1;
+          }
+          // Read from the file
+          string line;
+          while (getline(inFS, line)) {
+              cout << line << endl;
+          }
+          inFS.close();
+          return 0;
+      }
+
+End of File Check
+-----------------
+.. container:: flex-container
+
+  .. container:: half
+
+    * ``.eof()`` or ``fail()`` after read operations (extraction, getline).
+    * Simplified syntax to check reading status (same as check fail()):
+
+      * ``while (inFS >> value) { ... }``
+      * ``while (getline(inFS, line)) { ... }``
+
+    .. warning::
+
+      ``while (inFS >> value)`` will work, but ``while (inFS >> value == true)`` will fail!
+      The expression must be directly used in the parenthesis.
+      Same rule applies to ``getline(inFS, line)`` call.
+
+  .. container:: half
+
+    .. code-block:: c++
+
+      #include <iostream>
+      #include <fstream>
+      #include <string>
+
+      using namespace std;
+      int main(){
+          ifstream inFS("input.txt");
+          if (!inFS.is_open()) {
+              cerr << "Error opening file!" << endl;
+              return 1;
+          }
+          // Read from the file
+          string line;
+          while (getline(inFS, line)) {
+              cout << line << endl;
+          }
+          inFS.close();
+          return 0;
+      }

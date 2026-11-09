@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GNU Make · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/developer-tools/git/">Version Control System and Git</a></li><li><a href="/teaching/developer-tools/make/" aria-current="page">GNU Make</a></li><li><a href="/teaching/developer-tools/ssh-key-pair/">SSH Key Authentication Setup Guide</a></li><li><a href="/teaching/developer-tools/win-key-pair/">Windows SSH Authentication Setup Guide</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/developer-tools/">Developer Tools</a> / GNU Make</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>GNU Make</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#make-command">make command</a></li>
+    <li><a href="#makefile">makefile</a></li>
+    <li><a href="#modular-compilation">Modular Compilation</a>
+      <ul>
+        <li><a href="#hard-coded-rules">Hard-coded rules</a></li>
+        <li><a href="#introducing-variables">Introducing variables</a></li>
+        <li><a href="#introducing-automatic-variables">Introducing automatic variables</a></li>
+        <li><a href="#use-pattern-match">Use Pattern Match</a></li>
+        <li><a href="#further-improvement">Further Improvement</a></li>
+      </ul>
+    </li>
+    <li><a href="#pitfalls">Pitfalls</a></li>
+    <li><a href="#common-error-messages-from-make">Common Error Messages From make</a></li>
+    <li><a href="#debug-makefile">Debug makefile</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="gnu-make"></span>
+<p>The GNU Make project provides a command-line tool and a configuration system to facilitate the building of complex projects and generate executables. It is also employed to automate command-line tasks. Read the the <a href="https://www.gnu.org/software/make/manual/html_node/index.html">official documentation</a> for a more detailed view.</p>
+<h2 id="make-command">make command</h2>
+<p>The command-line tool <code>make</code> is how you run all tasks.</p>
+<h2 id="makefile">makefile</h2>
+<p>A makefile is the configuration file for the make command. It contains all the logics to guide the make to build the executables.</p>
+<p>A makefile is usually named <code>makefile</code> or <code>Makefile</code> and locate in top-level directory in a project. When you run the <code>make</code> command, it will search for <code>makefile</code> or <code>Makefile</code> in the current directory. You can use a command-line argument <code>-f &lt;filename&gt;</code> with the <code>make</code> command to specify the makefile of another name or in another directory.</p>
+<p>The core component called rule in a makefile looked like this</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>target: prerequisites
+</span></span><span style="display:flex;"><span>    recipe
+</span></span></code></pre></div><span id="term-Target"></span>
+<dl>
+<dt>Target</dt>
+<dd>It is usually the file you want to generate. However, virtual targets such as <code>main</code>, <code>clean</code> are extensively used in many makefiles. They do not bind to a real file but can be used in the make command-line like <code>make main</code> or <code>make clean</code></dd>
+</dl>
+<span id="term-Prerequisites"></span>
+<dl>
+<dt>Prerequisites</dt>
+<dd>It is a list of dependent files/targets needed to build the target. When any of the files or targets are updated, the target will be re-built.</dd>
+</dl>
+<span id="term-Recipe"></span>
+<dl>
+<dt>Recipe</dt>
+<dd>An indented block including command-line commands in each line in order to generate the target.</dd>
+</dl>
+<aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p>The indentation for commands <strong>must be a single &lt;tab&gt; character</strong> for older versions of GNU make. The newer versions can take spaces for indentation.</p>
+<p>If you do not know g++ command well, refer to the <a href="/teaching/cpp/building/gpp/">g++ document</a>. One important thing to remember is <strong>never list header files in the g++ command-line!</strong> Provide cpp files only!</p>
+</div></aside>
+<h2 id="modular-compilation">Modular Compilation</h2>
+<p>Let’s assume that we are writing a makefile for a project with multiple files. The relationship among files are demonstrated in the diagram. Arrows means include relationship: <code>main.cpp -&gt; student.hpp</code> means the <code>student.hpp</code> file is included by the <code>main.cpp</code> so the <code>main.cpp</code> is depending on the <code>student.hpp</code> file.</p>
+<p><img src="/teaching/_migration/graph-079a9473196b1d22.svg" alt="Graphviz diagram"></p>
+<p>For projects with multiple files, modular compilation is usually preferred. In this approach, .cpp source code files are compiled to .o object files first and then all object files are linked to provide the executable(s). It has many benefits over direct compilation to output executables from source code files:</p>
+<ul>
+<li>
+<p>Specify different g++ flags</p>
+</li>
+<li>
+<p>Easier to debug</p>
+</li>
+<li>
+<p>No need to recompile everything after a partial modification</p>
+<aside class="callout callout-warning" aria-label="warning">
+<strong>Warning</strong><div><p>Examples in this pages has all indentations as spaces. It is due to the limitation of the website generating system. You should change them to real <code>tab</code> characters to ensure the backward compatibility.</p>
+</div></aside>
+</li>
+</ul>
+<h3 id="hard-coded-rules">Hard-coded rules</h3>
+<p>A simple makefile with hard coded g++ commands:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-makefile" data-lang="makefile"><span style="display:flex;"><span><span style="color:#57606a"># declare virtual targets
+</span></span></span><span style="display:flex;"><span><span style="color:#6639ba">.PHONY</span><span style="color:#0550ae">:</span> clean
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Linking to provide the executable
+</span></span></span><span style="display:flex;"><span><span style="color:#6639ba">main</span><span style="color:#0550ae">:</span> main.o grade-book.o student.o grades.o
+</span></span><span style="display:flex;"><span>    g++ -o main main.o grade-book.o student.o grades.o
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Compile. One cpp file a time.
+</span></span></span><span style="display:flex;"><span><span style="color:#6639ba">main.o</span><span style="color:#0550ae">:</span> main.cpp grade-book.hpp student.hpp
+</span></span><span style="display:flex;"><span>    g++ -std<span style="color:#0550ae">=</span>c++14 -Wall -g -c main.cpp
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">student.o</span><span style="color:#0550ae">:</span> student.cpp student.hpp
+</span></span><span style="display:flex;"><span>    g++ -std<span style="color:#0550ae">=</span>c++14 -Wall -g -c student.cpp
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">grades.o</span><span style="color:#0550ae">:</span> grades.cpp grades.hpp
+</span></span><span style="display:flex;"><span>    g++ -std<span style="color:#0550ae">=</span>c++14 -Wall -g -c grades.cpp
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">grade-book.o</span><span style="color:#0550ae">:</span> grade-book.cpp grade-book.hpp student.hpp grades.hpp
+</span></span><span style="display:flex;"><span>    g++ -std<span style="color:#0550ae">=</span>c++14 -Wall -g -c grade-book.cpp
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># the &#39;clean&#39; virtual target to remove temporary files
+</span></span></span><span style="display:flex;"><span><span style="color:#6639ba">clean</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>    rm -rf *.o main *.gc* *.dSYM
+</span></span></code></pre></div><p>The first rule is to produce the <code>main</code> executable. It calls g++ to link a list of object files to build the final program. The targets of .o files are compilations rules to generate every object file. The clean target is used to remove generated temporary files and the executable.</p>
+<p>You may now build your executable <code>main</code> by the command <code>make</code> or <code>make main</code>. The <code>make</code> command without parameters will take the first target in the makefile as the target to make.</p>
+<h3 id="introducing-variables">Introducing variables</h3>
+<p>You may noticed a lot of redundant texts such as the g++ flags (<code>-std=c++14 -Wall -g</code>), list of file names, etc. Many of the redundancy can be remove by introducing variables. With variables, you can also extract configurations out of the commands for efficient management of configurations.</p>
+<p>A makefile using variables:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-makefile" data-lang="makefile"><span style="display:flex;"><span><span style="color:#953800">CXX</span><span style="color:#0550ae">=</span>g++
+</span></span><span style="display:flex;"><span><span style="color:#953800">CXXFLAGS</span><span style="color:#0550ae">=</span>-std<span style="color:#0550ae">=</span>c++14 -Wall -g
+</span></span><span style="display:flex;"><span><span style="color:#953800">RM</span><span style="color:#0550ae">=</span>rm -rf
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">.PHONY</span><span style="color:#0550ae">:</span> clean
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">main</span><span style="color:#0550ae">:</span> main.o grade-book.o student.o grades.o
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">$(</span>CXX<span style="color:#cf222e">)</span> -o main main.o grade-book.o student.o grades.o
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">main.o</span><span style="color:#0550ae">:</span> main.cpp grade-book.hpp student.hpp
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">$(</span>CXX<span style="color:#cf222e">)</span> <span style="color:#cf222e">$(</span>CXXFLAGS<span style="color:#cf222e">)</span> -c main.cpp
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">student.o</span><span style="color:#0550ae">:</span> student.cpp student.hpp
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">$(</span>CXX<span style="color:#cf222e">)</span> <span style="color:#cf222e">$(</span>CXXFLAGS<span style="color:#cf222e">)</span> -c student.cpp
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">grades.o</span><span style="color:#0550ae">:</span> grades.cpp grades.hpp
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">$(</span>CXX<span style="color:#cf222e">)</span> <span style="color:#cf222e">$(</span>CXXFLAGS<span style="color:#cf222e">)</span> -c grades.cpp
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">grade-book.o</span><span style="color:#0550ae">:</span> grade-book.cpp grade-book.hpp student.hpp grades.hpp
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">$(</span>CXX<span style="color:#cf222e">)</span> <span style="color:#cf222e">$(</span>CXXFLAGS<span style="color:#cf222e">)</span> -c grade-book.cpp
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">clean</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">$(</span>RM<span style="color:#cf222e">)</span> *.o main *.gc* *.dSYM
+</span></span></code></pre></div><p>With variables, we can easily make modifications to the compiler command and compilation flags by modifying variables.</p>
+<h3 id="introducing-automatic-variables">Introducing automatic variables</h3>
+<p>You may notice that we still have redundancy. The file names listed as part of the target or dependencies are hard-coded in the g++ commands. It can be improved using the <strong>automatic variables</strong> like $@, $^, $&lt;.</p>
+<span id="term-0"></span>
+<dl>
+<dt>$@</dt>
+<dd>the target</dd>
+</dl>
+<span id="term-1"></span>
+<dl>
+<dt>$^</dt>
+<dd>all prerequisites</dd>
+</dl>
+<span id="term-2"></span>
+<dl>
+<dt>$&lt;</dt>
+<dd>the first prerequisite</dd>
+</dl>
+<p>The further simplified makefile:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-makefile" data-lang="makefile"><span style="display:flex;"><span><span style="color:#953800">CXX</span><span style="color:#0550ae">=</span>g++
+</span></span><span style="display:flex;"><span><span style="color:#953800">CXXFLAGS</span><span style="color:#0550ae">=</span>-std<span style="color:#0550ae">=</span>c++14 -Wall -g
+</span></span><span style="display:flex;"><span><span style="color:#953800">RM</span><span style="color:#0550ae">=</span>rm -rf
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">.PHONY</span><span style="color:#0550ae">:</span> clean
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">main</span><span style="color:#0550ae">:</span> main.o grade-book.o student.o grades.o
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">$(</span>CXX<span style="color:#cf222e">)</span> -o <span style="color:#953800">$@</span> $^
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">main.o</span><span style="color:#0550ae">:</span> main.cpp grade-book.hpp student.hpp
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">$(</span>CXX<span style="color:#cf222e">)</span> <span style="color:#cf222e">$(</span>CXXFLAGS<span style="color:#cf222e">)</span> -c $&lt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">student.o</span><span style="color:#0550ae">:</span> student.cpp student.hpp
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">$(</span>CXX<span style="color:#cf222e">)</span> <span style="color:#cf222e">$(</span>CXXFLAGS<span style="color:#cf222e">)</span> -c $&lt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">grades.o</span><span style="color:#0550ae">:</span> grades.cpp grades.hpp
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">$(</span>CXX<span style="color:#cf222e">)</span> <span style="color:#cf222e">$(</span>CXXFLAGS<span style="color:#cf222e">)</span> -c $&lt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">grade-book.o</span><span style="color:#0550ae">:</span> grade-book.cpp grade-book.hpp student.hpp grades.hpp
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">$(</span>CXX<span style="color:#cf222e">)</span> <span style="color:#cf222e">$(</span>CXXFLAGS<span style="color:#cf222e">)</span> -c $&lt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">clean</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">$(</span>RM<span style="color:#cf222e">)</span> *.o main *.gc* *.dSYM
+</span></span></code></pre></div><aside class="callout callout-note" aria-label="note">
+<strong>Note</strong><div><p>The commands in the .o file rules used $&lt; to avoid including header files in the g++ command-line. Make sure to put the .cpp file as the first dependency in the list!</p>
+</div></aside>
+<h3 id="use-pattern-match">Use Pattern Match</h3>
+<p>It is still verbose. By sacrificing the header prerequisites in the object file rules, we can merge these rules into one:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-makefile" data-lang="makefile"><span style="display:flex;"><span><span style="color:#953800">CXX</span><span style="color:#0550ae">=</span>g++
+</span></span><span style="display:flex;"><span><span style="color:#953800">CXXFLAGS</span><span style="color:#0550ae">=</span>-std<span style="color:#0550ae">=</span>c++14 -Wall -g
+</span></span><span style="display:flex;"><span><span style="color:#953800">RM</span><span style="color:#0550ae">=</span>rm -rf
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">.PHONY</span><span style="color:#0550ae">:</span> clean
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">main</span><span style="color:#0550ae">:</span> main.o grade-book.o student.o grades.o
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">$(</span>CXX<span style="color:#cf222e">)</span> -o <span style="color:#953800">$@</span> $^
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">%.o</span><span style="color:#0550ae">:</span> %.cpp
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">$(</span>CXX<span style="color:#cf222e">)</span> <span style="color:#cf222e">$(</span>CXXFLAGS<span style="color:#cf222e">)</span> -c $&lt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">clean</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">$(</span>RM<span style="color:#cf222e">)</span> -rf *.o main *.gc* *.dSYM
+</span></span></code></pre></div><aside class="callout callout-note" aria-label="note">
+<strong>Note</strong><div><p>The drawback is that the .o file will not depend on certain header files and the modification of the header files will not trigger the recompilation of the .o file. A workaround is to force recompilation by running <code>make clean main</code>. This will be slow if your project is huge. No easy solution without heavy coding. It is a limitation of make any.</p>
+</div></aside>
+<h3 id="further-improvement">Further Improvement</h3>
+<p>Now we have a very concise makefile.</p>
+<p>You can learn potential improvement from the :</p>
+<ul>
+<li>Store generated files in a subdirectory</li>
+<li>Use wildcard to catch file names automatically</li>
+</ul>
+<h2 id="pitfalls">Pitfalls</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-makefile" data-lang="makefile"><span style="display:flex;"><span><span style="color:#57606a"># use the wrong variable
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"># the use of $^ with -c will include the hpp file in the g++ command
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"># use $&lt; to only include the first prerequisite, which should be the cpp file
+</span></span></span><span style="display:flex;"><span><span style="color:#6639ba">lib1.o</span><span style="color:#0550ae">:</span> lib1.cpp lib1.hpp
+</span></span><span style="display:flex;"><span>    g++ -o <span style="color:#953800">$@</span> $^
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># the order of prerequisites are wrong
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"># it will cause the g++ to run with hpp file as its argument
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"># the cpp file should go first so $&lt; will refer to it
+</span></span></span><span style="display:flex;"><span><span style="color:#6639ba">lib1.o</span><span style="color:#0550ae">:</span> lib1.hpp lib1.cpp
+</span></span><span style="display:flex;"><span>    g++ -o <span style="color:#953800">$@</span> $&lt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Typo in variables
+</span></span></span><span style="display:flex;"><span><span style="color:#6639ba">main.o</span><span style="color:#0550ae">:</span> main.cpp
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">$(</span>CXX<span style="color:#cf222e">)</span> <span style="color:#cf222e">$(</span>CXXFLAG<span style="color:#cf222e">)</span> -c <span style="color:#953800">$@</span> $&lt;
+</span></span></code></pre></div><span id="make-diag"></span>
+<h2 id="common-error-messages-from-make">Common Error Messages From make</h2>
+<aside class="callout callout-note" aria-label="note">
+<strong>Note</strong><div><p>The terms ‘xxx’, ‘yyy’, etc. are placeholders of names. The term ‘#’ is a placeholder for numbers.</p>
+</div></aside>
+<ul>
+<li>
+<p><code>No rule to make target 'xxx'.</code></p>
+<p>Wrong target name. For example, you try to run <code>make foo</code> but <code>foo</code> is not defined as a target name in the <code>makefile</code></p>
+</li>
+<li>
+<p><code>No rule to make target 'xxx.o', needed by 'yyy'.</code></p>
+<p>This is a common error when make require a <code>xxx.cpp</code> file to compile <code>xxx.o</code> but the file does not exist. Check for missing file or bad file name! Names like <code>Xxx.cpp</code> is wrong because Linux is case sensitive with file names!</p>
+</li>
+<li>
+<p><code>missing separator. Stop.</code></p>
+<p>It is likely that you have used the space characters for indentation. It is not supported in some old version of make. <strong>Use tab for indentation for best compatibility!</strong></p>
+</li>
+<li>
+<p><code>make: *** [makefile:#: xxx] Error 1</code></p>
+<p>This is caused by a bad command runs by make.</p>
+<ul>
+<li>Scroll up to see the last command that went wrong (mostly g++)</li>
+<li>Also refer to the #th line in the makefile to see which command caused the problem. There are sometimes useful hints in the comments in the makefile.</li>
+</ul>
+</li>
+<li>
+<p><strong>warning: overriding recipe for target `xxx’</strong></p>
+<p>It means that you have multiple rules for a same target. It can be dangerous if you do not know which one is finally employed to build your target.</p>
+</li>
+</ul>
+<h2 id="debug-makefile">Debug makefile</h2>
+<p>You may use the make command with option -d to show debugging information. E.g. make -d main to show the details about target and rule matching process.</p>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

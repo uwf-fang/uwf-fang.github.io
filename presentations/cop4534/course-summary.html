@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Data Structure and Algorithm Design</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Data Structure and Algorithm Design</h1>
+<div class="subtitle docutils container">
+<p><strong>Course content summary</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Overview</p></li>
+<li><p>Learning outcomes and assessments</p></li>
+<li><p>Math and analysis</p></li>
+<li><p>Problem classification</p></li>
+<li><p>Algorithmic paradigms</p></li>
+<li><p>Other Algorithm Categories</p></li>
+<li><p>Advanced data structures and algorithms</p></li>
+<li><p>Well-known problems</p></li>
+<li><p>Misc. relationships and comparisons</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<ul class="simple">
+<li><p>This document is a summary of the topics covered in the course.</p></li>
+<li><p>This is a systematic high-level overview. <strong>Fragmented details are not
+included!</strong></p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Learning outcomes and assessments</h2>
+<ul class="simple">
+<li><p>Know the fundamentals of advanced data structures, and algorithm paradigms:
+TF, MC, MA, FIB</p>
+<ul>
+<li><p>Definitions</p></li>
+<li><p>Limitations</p></li>
+<li><p>Pros and cons</p></li>
+</ul>
+</li>
+<li><p>Which data structure, ADT or algorithm to choose: MC, MA</p>
+<ul>
+<li><p>Some are required</p></li>
+<li><p>Some are better than others</p></li>
+<li><p>Some depends</p></li>
+<li><p>Analysis based on time/space complexity</p></li>
+</ul>
+</li>
+<li><p>How algorithm/data structure works on paper: MC, MA, FIB, SA</p></li>
+<li><p>How to implement a data structure, ADT or algorithm (not much in this course
+due to the complexity of implementations). MC, MA, coding</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Math and analysis</h2>
+<ul class="simple">
+<li><p>Math tools are mostly employed in algorithm analysis</p></li>
+<li><p>Basic math tools</p>
+<ul>
+<li><p>Exponential and logarithmic functions</p></li>
+<li><p>Proof techniques: 4 types</p></li>
+</ul>
+</li>
+<li><p>Solve recurrence relations</p>
+<ul>
+<li><p>substitution method</p></li>
+<li><p>recursion tree method</p></li>
+<li><p>master method</p></li>
+</ul>
+</li>
+<li><p>Combinatorics and counting</p></li>
+<li><p>Probability</p>
+<ul>
+<li><p>Classical probability</p></li>
+<li><p>Ratio of two counting results</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Combinatorics</h3>
+<ul class="simple">
+<li><p>Types</p>
+<ul>
+<li><p>Arrangement/Permutation</p></li>
+<li><p>Selection/Combination</p></li>
+<li><p>Partition/Distribution</p></li>
+</ul>
+</li>
+<li><p>Principles</p>
+<ul>
+<li><p>sum - exclusive events, a or b</p></li>
+<li><p>product - independent events, a and b</p></li>
+<li><p>division - correct overcounting</p></li>
+<li><p>inclusion-exclusion - correct overcounting</p></li>
+<li><p>pigeonhole - at least one</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Combinatorics Examples</h3>
+<ul class="simple">
+<li><p>Greasy spoon problem</p></li>
+<li><p>Anagrams</p>
+<ul>
+<li><p>permutations with duplicates</p></li>
+<li><p>correct overcounting caused by identical items</p></li>
+</ul>
+</li>
+<li><p>Play cards</p></li>
+<li><p>Distribution</p>
+<ul>
+<li><p>star and bars method</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Problem classification</h2>
+<ul class="simple">
+<li><p>Help to understand the nature of the problem and thus the best approach to
+solve it</p></li>
+<li><p>By the goal</p>
+<ul>
+<li><p>Enumeration - find all qualifying solutions</p></li>
+<li><p>Search - find one</p></li>
+<li><p>Optimization - find the best</p></li>
+<li><p>Decision - answer yes or no</p></li>
+<li><p>Counting - report how many qualifying solutions</p></li>
+<li><p>Evaluation - calculate the value, usually math problems</p></li>
+</ul>
+</li>
+<li><p>Relationships</p>
+<ul>
+<li><p>These are goals (requested outputs), not algorithmic paradigms.</p></li>
+<li><p>Enumerating all solutions can answer search, decision, counting, or
+optimization questions, but may do more work than necessary.</p></li>
+<li><p>Search asks for a witness; decision asks only whether one exists.</p></li>
+<li><p>Interactive reference: <a class="reference external" href="https://uwf-fang.github.io/interactive/problem-type-paradigm.html">Connecting Problem Types to Algorithm Paradigms</a></p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Algorithmic paradigms</h2>
+<ul class="simple">
+<li><p>Frameworks to design algorithms</p></li>
+<li><p>Not all algorithms fit into a single or any paradigm</p></li>
+<li><p>Brute-force</p></li>
+<li><p>Backtracking (brute-force with pruning on unfeasible partial solutions)</p></li>
+<li><p>Branch and bound (use bounds to prune partial candidates that cannot improve
+the best known solution; commonly used for exact optimization)</p></li>
+<li><p>Divide and conquer (solve subproblems and combine their results; suited to
+independent subproblems)</p></li>
+<li><p>Greedy (make locally best choices; exact only when a greedy-choice argument
+applies, otherwise may be heuristic or approximate)</p></li>
+<li><p>Dynamic programming (reuse results for overlapping subproblems; can compute
+an optimum, count, yes/no answer, or other value)</p></li>
+</ul>
+</section>
+<section >
+<h3>Brute-force</h3>
+<ul class="simple">
+<li><p>Find one or all feasible solutions</p></li>
+<li><p>No heuristics</p></li>
+<li><p>No pruning, only check feasibility of complete solutions</p></li>
+<li><p>Usually exponential or factorial time complexity</p></li>
+</ul>
+</section>
+<section >
+<h3>Backtracking</h3>
+<ul class="simple">
+<li><p>Find one or all feasible solutions</p></li>
+<li><p>With pruning, check feasibility of partial solutions to avoid unnecessary
+exploration</p></li>
+<li><p>Share the same recursive code structure as brute-force with extra feasibility
+check to return early</p></li>
+<li><p>May also be iterative using a <strong>stack</strong></p></li>
+</ul>
+</section>
+<section >
+<h3>Divide and conquer</h3>
+<ul class="simple">
+<li><p>Divide the problem into subproblems, solve them individually, and combine
+the results</p></li>
+<li><p>Suited to problems whose subproblems can be solved independently; repeated
+subproblems may be recomputed</p></li>
+<li><p>Recursive structure</p></li>
+<li><p>Master method to solve time complexity</p></li>
+</ul>
+</section>
+<section >
+<h3>Greedy</h3>
+<ul class="simple">
+<li><p>Make a locally best choice at each step</p></li>
+<li><p>Gives an exact optimum when the greedy-choice property is established;
+otherwise it may be a heuristic or approximation</p></li>
+<li><p>Choices are not revised later</p></li>
+<li><p>Runtime depends on the problem and implementation; it is not inherently
+linear</p></li>
+<li><p>Employs a <strong>priority queue</strong> or a sorted list to get the best option</p></li>
+</ul>
+</section>
+<section >
+<h3>Dynamic programming</h3>
+<ul class="simple">
+<li><p>Compute a result from overlapping subproblems without necessarily listing
+every feasible solution</p></li>
+<li><p>Characteristics</p>
+<ul>
+<li><p>Overlapping subproblems</p></li>
+<li><p>Many DP optimization problems have optimal substructure: an optimal
+solution can be constructed from optimal solutions to subproblems</p></li>
+<li><p>Depending on the recurrence, DP can compute an optimum, count, Boolean
+answer, or other value</p></li>
+</ul>
+</li>
+<li><p>Tabulation (bottom-up) or memoization (top-down)</p></li>
+<li><p>Multi-dimensional array to store intermediate results</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Other Algorithm Categories</h2>
+<ul class="simple">
+<li><p>By data structure</p>
+<ul>
+<li><p>Graph algorithms</p></li>
+</ul>
+</li>
+<li><p>By technique used in the algorithm</p>
+<ul>
+<li><p>Randomized algorithms</p>
+<ul>
+<li><p>random number generator</p></li>
+<li><p>Monte Carlo</p></li>
+<li><p>Las Vegas</p></li>
+<li><p>genetic algorithm</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Advanced Data Structures and Algorithms</h2>
+<ul class="simple">
+<li><p>Self-balancing trees</p>
+<ul>
+<li><p>AVL tree</p></li>
+<li><p>B-tree</p></li>
+</ul>
+</li>
+<li><p>Graph algorithms</p></li>
+</ul>
+</section>
+<section >
+<h3>AVL tree</h3>
+<ul class="simple">
+<li><p>A self-balancing binary search tree</p></li>
+<li><p>Height-balanced</p>
+<ul>
+<li><p>Balance factor: 0, -1, 1</p></li>
+<li><p>Rebalance after insertion/deletion</p></li>
+</ul>
+</li>
+<li><p>Types of imbalance and rotation to rebalance</p>
+<ul>
+<li><p>RL - right-left double rotation</p></li>
+<li><p>RR - left rotation</p></li>
+<li><p>LL - right rotation</p></li>
+<li><p>LR - left-right double rotation</p></li>
+</ul>
+</li>
+<li><p>Time complexity, tree height <span class="math notranslate nohighlight">\(\Theta(\log n)\)</span></p></li>
+</ul>
+</section>
+<section >
+<h3>B-tree</h3>
+<ul class="simple">
+<li><p>A self-balancing tree</p></li>
+<li><p>Degree</p>
+<ul>
+<li><p>order of a B-tree</p></li>
+<li><p>max degree <span class="math notranslate nohighlight">\(m\)</span></p></li>
+<li><p>min degree <span class="math notranslate nohighlight">\(\lceil m/2 \rceil\)</span> (only root can have less when the tree
+is height 1)</p></li>
+</ul>
+</li>
+<li><p>Self-balancing</p>
+<ul>
+<li><p>Rebalance after insertion/deletion</p></li>
+<li><p>Split, merge</p></li>
+<li><p>Borrow from siblings</p></li>
+</ul>
+</li>
+<li><p>Variations</p>
+<ul>
+<li><p>B+ tree: only leaf nodes store data, leaves are linked, great for indexing</p></li>
+<li><p>B* tree (FYI)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Graph</h3>
+<ul class="simple">
+<li><p>Minimum spanning tree (MST)</p>
+<ul>
+<li><p>Prim’s algorithm</p>
+<ul>
+<li><p>greedy</p></li>
+<li><p>priority queue</p></li>
+<li><p>grow the tree from a single vertex</p></li>
+</ul>
+</li>
+<li><p>Kruskal’s algorithm</p>
+<ul>
+<li><p>greedy</p></li>
+<li><p>disjoint set and sorted edges</p></li>
+<li><p>grow the forest (trees) from edges and let them connect</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Shortest path</p>
+<ul>
+<li><p>single source: Dijkstra’s algorithm</p></li>
+<li><p>all pairs: Floyd-Warshall algorithm</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Genetic algorithm</h3>
+<ul class="simple">
+<li><p>a meta-heuristic randomized algorithm</p></li>
+<li><p>an evolutionary algorithm</p></li>
+<li><p>an approximate algorithm</p></li>
+<li><p>solves optimization problems</p></li>
+<li><p>inspired by natural selection</p></li>
+<li><p>familiar with the framework and techniques</p>
+<ul>
+<li><p>repeat until stopping criteria</p>
+<ul>
+<li><p>selection</p></li>
+<li><p>crossover</p></li>
+<li><p>mutation</p></li>
+<li><p>evaluation</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Well-known problems</h2>
+<ul class="simple">
+<li><p>Traveling salesman problem (TSP): GA</p></li>
+<li><p>Bin packing problem: Greedy</p></li>
+<li><p>Graph MST and shortest path (mentioned already)</p></li>
+<li><p>Huffman coding: Greedy, full binary tree</p></li>
+<li><p>Chain matrix multiplication: Dynamic programming</p></li>
+<li><p>Max sum subarray: Divide and conquer; dynamic programming</p></li>
+<li><p>Longest common subsequence: Dynamic programming</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Misc. relationships and comparisons</h2>
+<ul class="simple">
+<li><p>Brute-force vs backtracking: with/without pruning</p></li>
+<li><p>Greedy vs backtracking: never look back vs look back on rejection</p></li>
+<li><p>Divide and conquer vs dynamic programming: consider/ignore overlapping
+subproblems</p></li>
+<li><p>Online vs offline algorithms: with/without future information</p></li>
+<li><p>Online vs offline bin packing: pre-sorting</p></li>
+</ul>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,181 @@
+Algorithms on Sequential Data
+=============================
+**Sequential data can be stored in various containers**
+
++ C array - Fixed-size contiguous memory
++ C string - Null-terminated character array
++ C++ string - Modern string class with rich functionality
++ STL containers:
+
+  * std::vector - Dynamic array
+  * std::array - Fixed-size array
+  * std::list - Doubly-linked list
+
+Linear Search
+-------------
+.. container:: flex-container
+
+  .. container:: half
+
+    **Compare from left to right**
+
+    + Time complexity: :math:`\Theta(n)`
+
+    .. code-block:: cpp
+
+      int linearSearch(const int arr[], int size, int target) {
+        for (int i = 0; i < size; i++)
+          if (arr[i] == target)
+            return i;  // Found, return index
+        return -1;  // Not found
+      }
+
+  .. container:: half
+
+    **Example usage**
+
+    .. code-block:: cpp
+
+      int numbers[] = {4, 2, 7, 1, 9, 5};
+      int pos = linearSearch(numbers, 6, 7);  // Returns 2
+      pos = linearSearch(numbers, 6, 3);      // Returns -1
+
+Binary Search
+-------------
+.. container:: flex-container
+
+  .. container:: half
+
+    For **sorted** arrays, divide and conquer approach.
+
+    + Time complexity: :math:`\Theta(\log n)`
+
+    .. code-block:: cpp
+
+      int binarySearch(int arr[], int size, int target) {
+        int left = 0, right = size - 1;
+        while (left <= right) {
+          int mid = left + (right - left) / 2;
+          if (arr[mid] == target)
+            return mid;
+
+          if (arr[mid] < target)
+            left = mid + 1;
+          else
+            right = mid - 1;
+        }
+        return -1;
+      }
+
+  .. container:: half
+
+    **Example usage**
+
+    .. code-block:: cpp
+
+      int sorted[] = {1, 2, 4, 5, 7, 9};
+      int pos = binarySearch(sorted, 6, 7);  // Returns 4
+      pos = binarySearch(sorted, 6, 3);      // Returns -1
+
+Mapping Functions
+-----------------
+**One-to-one** mapping between input and output
+
+.. code-block:: cpp
+
+  void squareAll(int arr[], int size) {
+    for (int i = 0; i < size; i++)
+      arr[i] *= arr[i];
+  }
+
+  void absAll(int arr[], int size) {
+    for (int i = 0; i < size; i++)
+      if (arr[i] < 0)
+        arr[i] = -arr[i];
+  }
+
+Aggregate Functions
+-------------------
+.. container:: flex-container
+
+  .. container:: half
+
+    **Statistical functions**
+
+    .. code-block:: cpp
+
+      double mean(const int arr[], int size) {
+        if (size == 0) return 0.0;
+        double sum = 0.0;
+        for (int i = 0; i < size; i++)
+          sum += arr[i];
+        return sum / size;
+      }
+
+      double median(int arr[], int size) {
+        if (size == 0) return 0.0;
+        // Sort array first
+        for (int i = 0; i < size-1; i++)
+          for (int j = 0; j < size-i-1; j++)
+            if (arr[j] > arr[j+1]) {
+              int temp = arr[j];
+              arr[j] = arr[j+1];
+              arr[j+1] = temp;
+            }
+        if (size % 2 == 0)
+            return (arr[size/2 - 1] + arr[size/2]) / 2.0;
+        return arr[size/2];
+      }
+
+  .. container:: half
+
+    .. code-block:: cpp
+
+      double stddev(const int arr[], int size) {
+        if (size == 0) return 0.0;
+        double m = mean(arr, size);
+        double sum = 0.0;
+        for (int i = 0; i < size; i++)
+          sum += (arr[i] - m) * (arr[i] - m);
+        return sqrt(sum / size);
+      }
+
+    **Example usage**
+
+    .. code-block:: cpp
+
+      int data[] = {4, 2, 7, 1, 9, 5};
+      double avg = mean(data, 6);      // Returns 4.67
+      double med = median(data, 6);    // Returns 4.5
+      double std = stddev(data, 6);    // Returns 2.73
+
+Advanced Algorithm
+------------------
++ Palindrome detection
+
+  .. code-block:: cpp
+
+    bool isPalindrome(const int arr[], int size) {
+      for (int i = 0; i < size / 2; i++)
+        if (arr[i] != arr[size - i - 1])
+          return false;
+      return true;
+    }
+
++ Subarray search
+
+  .. code-block:: cpp
+
+    bool isSubarray(int arr[], int size,
+                    int sub[], int subSize) {
+      for (int i = 0; i <= size - subSize; i++) {
+        bool found = true;
+        for (int j = 0; j < subSize; j++)
+          if (arr[i + j] != sub[j]) {
+            found = false;
+            break;
+          }
+        if (found) return true;
+      }
+      return false;
+    }

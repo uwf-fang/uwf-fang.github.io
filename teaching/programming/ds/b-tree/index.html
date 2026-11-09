@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B-Tree · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/programming/">Algorithms and Data Structures</a> / B-Tree</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>B-Tree</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#definition">Definition</a></li>
+    <li><a href="#characteristics">Characteristics</a></li>
+    <li><a href="#terminology">Terminology</a></li>
+    <li><a href="#id1">Characteristics</a></li>
+    <li><a href="#behavior">Behavior</a></li>
+    <li><a href="#variations">Variations</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="b-tree"></span>
+<h2 id="overview">Overview</h2>
+<p>The name B-Tree is after the name of its inventors, Bayer and McCreight. It also suggests that it is “balanced”.</p>
+<p>A B-tree, short for “balanced tree,” is a self-balancing tree data structure used in computer science for organizing and storing data efficiently. It is designed to provide fast access to data, especially in situations where the data set is large and dynamic. B-trees are commonly used in database management systems and file systems.</p>
+<h2 id="definition">Definition</h2>
+<p>A B-tree of order $m$ is a tree which satisfies the following properties:</p>
+<ul>
+<li>Every node has at most $m$ children and $m-1$ keys.</li>
+<li>Every internal node has at least $\lceil m/2 \rceil$ children.</li>
+<li>The root has at least 2 children if it is not a leaf node.</li>
+<li>All leaves appear on the same level.</li>
+<li>A non-leaf node with $k$ children contains $k-1$ keys.</li>
+</ul>
+<p><img src="/teaching/_migration/fee4a78ba0ea7a9a.png" alt="B-Tree of order 5"></p>
+<h2 id="characteristics">Characteristics</h2>
+<ul>
+<li>Balanced
+<ul>
+<li>All leaves appear on the same level.</li>
+<li>The height of the tree is always $\Theta(\log n)$.</li>
+</ul>
+</li>
+<li>N-ary search tree
+<ul>
+<li>In-order traversal of a B-tree will provide a sorted sequence.</li>
+<li>Each node defines a range of keys stored in the subtree rooted at that node.</li>
+<li>The keys in each node partitions the keys in the subtree it rooted at.</li>
+<li>$m-1$ keys partition keys into $m$ sections that correspond to $m$ children.</li>
+</ul>
+</li>
+<li>Self-balancing
+<ul>
+<li>The tree is always balanced.</li>
+<li>The balance is maintained by redistribution of keys
+<ul>
+<li>splitting and merging nodes.</li>
+<li>borrowing keys from sibling nodes.</li>
+</ul>
+</li>
+<li>The height of the tree changes only when the root is split or merged.</li>
+</ul>
+</li>
+</ul>
+<h2 id="terminology">Terminology</h2>
+<p>There are two sets of terminology for B-trees. One focus on “order” and another focus on “degree”. They are not the same as what they mean in general tree and graph theory. Be careful when reading the literature.</p>
+<ul>
+<li>Order (B-tree) <strong>Preferred</strong>
+<ul>
+<li>The maximum number of children a node can have: $m$.</li>
+<li>The maximum number of keys a node can have is always one less: $m-1$.</li>
+<li>This is the same as what we defined as “degree of a tree” in general tree theory.</li>
+<li>Sometimes referred as “maximum degree”.</li>
+</ul>
+</li>
+<li>Degree $t$ (B-tree)
+<ul>
+<li>It is actually short for “minimum degree”.</li>
+<li>The minimum number of children an internal node may have.</li>
+<li>Sometimes referred as $t$ in the literature.</li>
+<li>This term is very confusing because it is not the same as what we defined as “degree” in tree theory.</li>
+<li>It is even more confusing in some places where it is called “order”.</li>
+<li>This term cannot describe all possible B-trees.</li>
+<li>We will prefer to stay away from this term!</li>
+</ul>
+</li>
+</ul>
+<p>We will use the term “order” in this document.</p>
+<h2 id="id1">Characteristics</h2>
+<ul>
+<li>Balanced</li>
+<li>N-ary search tree</li>
+<li>Sorted</li>
+</ul>
+<h2 id="behavior">Behavior</h2>
+<ul>
+<li>
+<p>Insertion</p>
+<ul>
+<li>Start at the root node.</li>
+<li>Find the leaf node where the key should be inserted.</li>
+<li>If the node is not full, insert the key into the node.</li>
+<li>If the node is full, split the node into two nodes.</li>
+<li>Insert the key into the appropriate child.</li>
+<li>Insert the median key into the parent node.</li>
+<li>If the parent node is full after insertion of the median key, split the parent node.</li>
+<li>Repeat until the root node is reached.</li>
+</ul>
+<p>In this method, when split a full node, the split happens before the key is inserted. This method does not work well with 2-3 trees because finding a median out of 2 keys will create an empty child.</p>
+<p>There is another way to insert a key to a full node. In that method, the key is inserted to the node first, which causes a temporary overflow, then the node is split. After that, the median key is inserted to the parent node. An equivalent version is to take the new key into consideration when finding the median key. This method works well with 2-3 trees.</p>
+</li>
+<li>
+<p>Deletion</p>
+<ul>
+<li>Start at the root node.</li>
+<li>Find the node where the key should be deleted.</li>
+<li>If the node is a leaf node, delete the key from the node.</li>
+<li>If the node is an internal node, replace the key with the predecessor or successor key. Then delete the predecessor or successor key from the leaf node.</li>
+<li>If the node is underfilled, borrow a key from a sibling node.</li>
+<li>If the node is underfilled and no sibling node can lend a key, merge the node with a sibling node.</li>
+<li>If the merge causes the parent node to be underfilled, repeat the process on the parent node.</li>
+<li>Repeat until the root node is reached.</li>
+</ul>
+</li>
+<li>
+<p>Visualization</p>
+<ul>
+<li><a href="https://www.cs.usfca.edu/~galles/visualization/BTree.html">B-Tree Visualization</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="variations">Variations</h2>
+<ul>
+<li>B+ Tree (Textbook example)
+<ul>
+<li>A B+ tree of order $m$ satisfies the following properties:
+<ul>
+<li>All data are stored in the leaves.</li>
+<li>All leaves are linked together for better sequential access.</li>
+<li>All internal nodes are keys only for faster search.</li>
+<li>All internal nodes have between $\lceil m/2 \rceil$ and $m$ children.</li>
+<li>All leaves have between $\lceil l/2 \rceil$ and $l$ keys.</li>
+</ul>
+</li>
+<li>The $l$ can be adjusted according to the block size of the disk.</li>
+<li>Ideal as a file system or database index.</li>
+<li>Reduced number of disk accesses.</li>
+<li>Reduced potential key redistribution when inserting or deleting.</li>
+<li>Visualization
+<ul>
+<li><a href="https://www.cs.usfca.edu/~galles/visualization/BPlusTree.html">B+ Tree visualization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/teaching/_migration/42d09083000493fa.png" alt="B+ Tree of order 5"></p>
+<ul>
+<li>B* Tree (FYI)</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

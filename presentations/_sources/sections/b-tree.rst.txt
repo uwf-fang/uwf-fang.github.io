@@ -1,0 +1,165 @@
+*******************
+B-Tree and Variants
+*******************
+
+.. container:: subtitle
+
+  |author|
+
+Outline
+=======
++ Overview
++ Operations
++ Variants
+
+Overview
+========
++ Invented by Bayer and McCreight (from Boeing Labs) in 1972.
++ A M-ary search tree that stores data in order.
++ A balanced tree with all leaves at the same level.
++ **Definition:** A B-tree of order :math:`m` is a tree which satisfies the
+  following properties:
+
+  * Each node has at most :math:`m` children.
+  * Every node, except for the root and the leaves, has at least :math:`\lceil
+    m/2 \rceil` children.
+  * The root node has at least two children unless it is a leaf.
+  * All leaves appear on the same level.
+  * Every non-leaf node with k children contains k−1 keys.
+  * Every leaf node has at least :math:`\lceil m/2 \rceil - 1` keys and at
+    most :math:`m - 1` keys.
+
+.. image:: /_static/b-tree.png
+  :alt: B-tree of order 5
+
+Operations: Search, Insertion
+=============================
+`B-Tree Visualization <b-tree-vis_>`_
+
+.. _b-tree-vis: https://www.cs.usfca.edu/~galles/visualization/BTree.html
+
+.. container:: flex-container
+
+  .. container:: half
+
+    **Search**
+
+    + Start at the root node.
+    + Compare the key with the keys in the node.
+    + If the key is found, return the node.
+    + If the key is not found and the node is a leaf, return null.
+    + If the key is not found and the node is not a leaf, go to the child
+      pointer that points to the subtree that may contain the key.
+    + Repeat until the key is found or a leaf node is reached.
+
+  .. container:: half
+
+    **Insertion**
+
+    + Start at the root node.
+    + Find the leaf node where the key should be inserted.
+    + If the node is not full, insert the key into the node.
+    + If the node is full, split the node into two nodes.
+    + Insert the median key into the parent node.
+    + If the parent node is full, split the parent node.
+    + Repeat until the root node is reached
+
+Operations: Deletion
+--------------------
++ Search Stage: Search for the value to be deleted.
++ Deletion Stage: Delete the value.
+
+  * If the value is in a leaf node, delete it.
+  * If the value is in an internal node, replace it with its predecessor or
+    successor and delete the predecessor or successor from the leaf node.
+  * You will end up deleting from a leaf node.
+
++ Rebalance Stage:
+
+  * If the leaf node is underflow (less than :math:`\lceil m/2 \rceil - 1`
+    keys):
+
+    - If the left or right sibling has more than minimal number of
+      keys, borrow a key from the sibling.
+    - If both siblings have minimal number of keys, merge with a sibling. This
+      step will take a key from the parent node and merge it with the sibling.
+
+  * If the parent node is underflow after merge, repeat the process up to the
+    root node.
+  * The root node can have as few as 2 children.
+
+Checkpoint Questions
+====================
++ Why does the root node may have a least 2 children instead of
+  :math:`\lceil m/2 \rceil` children?
++ Is insertion always happening at the leaf node?
++ Is deletion always happening at the leaf node?
++ What determines the time complexity of search, insertion, and deletion in a
+  B-tree?
++ If the problem size is :math:`n`, what is the height of a B-tree of order
+  :math:`m`?
+
+Checkpoint Solution
+-------------------
++ When the number of values is small, the root node must have less than
+  :math:`\lceil m/2 \rceil` children.
++ Insertion is always happening at the leaf node.
++ Deletion is **not** always happening at the leaf node.
++ The height of the B-tree determines the time complexity of search,
+  insertion, and deletion.
++ The time complexity of search, insertion, and deletion in a B-tree is
+  :math:`\Theta(\log_m n)`, where :math:`n` is the number of keys in the tree.
+
+Special Cases and Variants
+==========================
+* Some common B-trees are:
+
+  + Order 3 B Tree: a.k.a 2-3 Tree (2 or 3 children per internal node).
+  + Order 4 B Tree: a.k.a 2-3-4 Tree (2, 3, or 4 children per internal node).
+
++ Enhancements and variants of B-trees:
+
+  * **B+ Tree**: A B-tree of order :math:`m` where all keys are stored in the
+    leaves.
+  * B* Tree
+  * B# Tree
+
+.. image:: /_static/b-plus-tree.png
+  :alt: B+ tree of order 5
+
+B+ Tree
+-------
++ **Definition:** A B+ tree of order :math:`m` satisfies the following
+  properties:
+
+  * All data are stored in the leaves.
+  * All leaves are linked together.
+  * All internal nodes are duplicate keys only for faster search.
+  * All internal nodes have between :math:`\lceil m/2 \rceil` and :math:`m`
+    children.
+  * All leaves have between :math:`\lceil m/2 \rceil - 1` and :math:`m - 1`
+    keys.
+
++ Works well with sequential access.
++ Ideal for file system and database indexing.
++ Reduced number of disk accesses.
++ Reduced redistribution of data when inserting or deleting.
++ `B+ Tree visualization <b-plus-vis_>`_
+
+.. _b-plus-vis: https://www.cs.usfca.edu/~galles/visualization/BPlusTree.html
+
+.. image:: /_static/b-plus-tree.png
+  :alt: B+ tree of order 5
+
+Checkpoint Questions 2
+======================
++ What is the difference between a B-tree and a B+ tree?
++ Why the sequential access is faster in a B+ tree?
+
+Checkpoint Solution 2
+---------------------
++ In a B-tree, keys and data are stored in both internal nodes and leaf nodes.
+  In a B+ tree, all data are stored in the leaf nodes, and internal nodes only
+  store keys for faster search.
++ Sequential access is faster in a B+ tree because all leaf nodes are linked
+  together, allowing for easy traversal of all keys in order.

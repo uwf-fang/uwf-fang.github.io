@@ -1,0 +1,192 @@
+*****
+Graph
+*****
+
+.. container:: subtitle
+
+  |author|
+
+Outline
+=======
++ Overview
++ Concepts
++ Example graphs
++ Representations
++ Algorithms
+
+Overview
+========
++ Graphs are a fundamental data structure in computer science.
++ Graphs are used to model networks, complex relationships, etc.
++ Vertices(nodes) connected by edges.
+
+.. graphviz::
+
+   digraph G {
+      A -> B;
+      A -> C;
+      B -> C;
+      B -> D;
+      C -> D;
+      D -> C;
+      E -> F;
+      F -> C;
+   }
+
+Applications
+------------
+.. container:: flex-container
+
+  .. container:: half
+
+    + Social networks
+    + Routing algorithms
+    + Computer networks
+    + Transportation and logistics
+    + Machine learning/deep learning
+    + Bioinformatics
+
+  .. container:: half
+
+    + Integrated circuit design
+    + Database systems
+    + Computer vision
+    + Optimization problems
+    + Game development
+
+Concepts
+--------
+.. container:: flex-container
+
+  .. container:: half
+
+    + Vertex/Node
+
+      * degree of vertex: number of neighbors
+
+    + Edge/Arc
+
+      * directed/undirected
+      * weighted/unweighted
+
+    + Connectivity
+
+      * path between two vertices
+
+        - length of path
+
+      * distance between two vertices
+      * adjacent
+      * connected / unconnected
+      * cyclic / acyclic
+
+  .. container:: half
+
+    + Graph level properties
+
+      * degree of graph: max degree of vertices
+      * directed/undirected
+      * weighted/unweighted
+      * cyclic/acyclic
+      * connected/unconnected
+      * dense/sparse
+
+
+Graph Examples
+--------------
+.. container:: flex-container
+
+  .. container:: half
+
+    .. graphviz::
+      :caption: Directed connected cyclic graph
+
+      digraph G {
+        node[shape=circle];
+        a -> {b, c, d};
+        b -> {a, d};
+      }
+
+  .. container:: half
+
+    .. graphviz::
+      :caption: Undirected connected cyclic weighted graph
+
+      graph G {
+        node[shape=ellipse];
+        Atlanta -- Dallas [label=4];
+        Atlanta -- Miami [label=4];
+        Atlanta -- Orlando [label=3];
+        Dallas -- Austin [label=1];
+        Dallas -- Orlando [label=6];
+      }
+
+Graph Examples (contd.)
+-----------------------
+.. container:: flex-container
+
+  .. container:: half
+
+    .. graphviz::
+      :caption: Undirected connected acyclic graph (Tree)
+
+      graph G {
+        node[shape=circle];
+        b -- a;
+        a -- {c, d};
+        b -- {e, f};
+      }
+
+  .. container:: half
+
+    .. graphviz::
+      :caption: Directed acyclic graph (DAG) task planning
+
+      digraph G {
+        rankdir=LR;
+        node[shape=box];
+        task1 -> task2;
+        task2 -> {task3, task4};
+        task3 -> {task5, task6};
+        task4 -> task6;
+      }
+
+Representations
+---------------
++ Vertices with pointers to neighbors (uncommon)
++ List of edges
+
+  A list of edges is a 1d array in which every element in the array represents
+  an edge. It is the simplest way to represent a graph. It is also an easy way
+  to store a graph in a relational database. It is not efficient for most graph
+  algorithms though.
+
++ Adjacency list
+
+  An adjacency list is a 1d array in which every element in the array
+  represents a vertex and points to a list of its neighbors.
+
++ Adjacency matrix
+
+  An adjacency matrix is a 2d array in which each row represents a source
+  vertex and each column represents a destination vertex. The elements in the
+  matrix represents the edge between the two vertices.
+
+Algorithms
+----------
++ Graph traversal
+
+  * Breadth-first search
+  * Depth-first search
+
++ Topological sort (DAG only)
++ Shortest path
+
+  * Dijkstra's algorithm (single source, greedy)
+  * Floyd-Warshall Algorithm (all pairs, dynamic programming)
+
++ Minimum spanning tree
+
+  * Prim's algorithm (greedy)
+  * Kruskal's algorithm (greedy)
+

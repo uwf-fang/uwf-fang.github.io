@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>User-defined Functions in C++ by Examples</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section >
+<h1>User-defined Functions in C++ by Examples</h1>
+<ul class="simple">
+<li><p>User-Defined Functions</p>
+<ul>
+<li><p>Syntax: declaring, defining, and calling functions</p></li>
+<li><p>Parameter passing</p></li>
+<li><p>Scope of variables</p></li>
+<li><p>Overloading and call matching</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h1>Function Declaration</h1>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Examples</strong></p>
+<pre><code data-trim data-noescape class="cpp">// Correct
+int add(int, int);
+int add(int a, int b);
+int add(int a, int b = 22);
+int add(int a = 11, int b = 22);
+int add(int = 11, int = 22);
+
+// Incorrect
+int add(int a, b);
+int add(int a = 11, int b);
+int add(int a = 11, b = 22);  .. container:: half</code></pre>
+</div>
+<div class="half docutils container">
+<p><strong>More Examples</strong></p>
+<pre><code data-trim data-noescape class="cpp">// This is correct! Surprisingly!
+int add(int c=2, int d =3);  // names ignored in declaration
+
+int add(int a, int b) {
+  return a + b;
+}
+
+int main() {
+  std::cout&lt;&lt; add() &lt;&lt; endl;   // 5
+  std::cout&lt;&lt; add(5) &lt;&lt; endl;  // 8
+  std::cout&lt;&lt; add(7, 4) &lt;&lt; endl;  // 11
+  return 0;
+}</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Function Definition</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Correct</strong></p>
+<pre><code data-trim data-noescape class="cpp">int add(int a, int b) {
+  return a + b;
+}</code></pre>
+</div>
+<div class="half docutils container">
+<p><strong>Incorrect</strong></p>
+<pre><code data-trim data-noescape class="cpp">int add(int , int ) {
+  return a + b;
+}
+
+add(int a, int b) {
+  return a + b;
+}
+
+int add(int a, b) {
+  int result = a + b;
+}</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Function Call</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Correct</strong></p>
+<pre><code data-trim data-noescape class="cpp">int add(int a, int b) {
+  return a + b;
+}
+
+cout&lt;&lt; add(5, 6) &lt;&lt; endl;  // 11
+cout&lt;&lt; add(5.0, 6) &lt;&lt; endl;  // 11, auto conversion
+cout&lt;&lt; add('a', 4) &lt;&lt; endl;  // 101, auto conversion
+cout&lt;&lt; add(true, 4) &lt;&lt; endl;  // 5, auto conversion</code></pre>
+</div>
+<div class="half docutils container">
+<p><strong>Incorrect</strong></p>
+<pre><code data-trim data-noescape class="cpp">int add(int a, int b) {
+  return a + b;
+}
+
+int result;
+cout &lt;&lt; add(5) &lt;&lt; endl;
+cout &lt;&lt; add(5, 6, 7) &lt;&lt; endl;
+cout &lt;&lt; add(&quot;a&quot;, 4) &lt;&lt; endl;
+result = add(int 5, int 6);</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h1>Parameter Passing</h1>
+<ul class="simple">
+<li><p>Pass by value</p>
+<ul>
+<li><p>a copy of the argument is passed</p></li>
+<li><p>changes to the parameter do not affect the argument</p></li>
+<li><p>will trigger a copy constructor if the argument is an object</p></li>
+</ul>
+</li>
+<li><p>Pass by reference</p>
+<ul>
+<li><p>the formal parameter is an alias to the argument</p></li>
+<li><p>allows the function to change the argument (if not const reference)</p></li>
+</ul>
+</li>
+<li><p>Pass by pointer</p>
+<ul>
+<li><p>a special case of pass by value where the value is a memory address</p></li>
+<li><p>allows the function to change the value that the pointer points to</p></li>
+</ul>
+</li>
+<li><p>Passing arrays</p>
+<ul>
+<li><p>* or [] syntax</p></li>
+<li><p>the size of the array is not passed together!</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Pass by Reference</h2>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Examples</strong></p>
+<pre><code data-trim data-noescape class="cpp">void swap(int &amp;a, int &amp;b) {
+  int temp = a;
+  a = b;
+  b = temp;
+}
+swap(x, y);
+swap(&amp;x, &amp;y);  // error
+swap(5, 6);  // error
+
+void addOne(int &amp;a) {
+  ++a;
+}
+addOne(x);
+addOne(5);  // error
+
+string makeGreeting(const string &amp;name) {
+  return &quot;Hello, &quot; + name;
+}</code></pre>
+</div>
+<div class="half docutils container">
+<p><strong>Incorrect</strong></p>
+<pre><code data-trim data-noescape class="cpp">void swap(int a, int b) {
+  int temp = a;
+  a = b;
+  b = temp;
+}
+
+void swap(int &amp;a, int &amp;b) {
+  int &amp;temp = a;
+  a = b;
+  b = temp;
+}</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Array Passing</h2>
+<pre data-id="array-passing"><code data-trim data-noescape class="cpp">// ---- Correct ----
+// ignore the size
+double average(double arr[], int size);
+double average(double *arr, int size);
+
+// ---- Wrong ----
+double average(double arr[size], int size);  // not compile
+double average(double arr[3], int size);  // compile but 3 is ignored
+
+// ---- to call ----
+double arr1[3] = {1.0, 2.0, 3.0};
+cout &lt;&lt; average(arr1, 3) &lt;&lt; endl;  // correct
+// cout &lt;&lt; average(arr1[], 3) &lt;&lt; endl;  // wrong!
+// cout &lt;&lt; average(*arr1, 3) &lt;&lt; endl;  // wrong!
+// cout &lt;&lt; average(&amp;arr1, 3) &lt;&lt; endl;  // wrong!</code></pre>
+</section>
+</section>
+<section >
+<section >
+<h1>Scope of Variables</h1>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<ul class="simple">
+<li><p>C++ has block scope</p>
+<ul>
+<li><p>{} defines a block</p></li>
+<li><p>a single statement is a block</p></li>
+</ul>
+</li>
+</ul>
+<pre><code data-trim data-noescape class="cpp">// Incorrect
+for (int i = 0; i &lt; size; ++i)
+  cout &lt;&lt; i &lt;&lt; endl;
+cout &lt;&lt; i &lt;&lt; endl;
+
+// Shadowing
+int i = 100;
+{
+  int i = 10;  // treated as another variable, valid in this block only
+  cout &lt;&lt; i &lt;&lt; endl;  // get 10, outside i is shadowed
+}
+cout &lt;&lt; i &lt;&lt; endl;  // get 100</code></pre>
+</div>
+<div class="half docutils container">
+<ul class="simple">
+<li><p>Returning a pointer in functions</p></li>
+</ul>
+<pre><code data-trim data-noescape class="cpp">// returning an dynamic array that have a lifetime beyond the function
+// should be deleted after use
+int *makeArray(int size) {
+  return new int[size];
+}
+
+// ---- Wrong ----
+// returning local array that will be destroyed when the function ends
+int *makeArray(int size) {
+  int array[size];
+  return array;
+}
+
+// ---- Wrong ----
+// returning local variable by reference/pointer
+string *func() {
+  string str = &quot;abc&quot;;
+  return &amp;str;  // memory address is passed out, str will be destroyed
+}</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h1>Function Overloading and Call Matching</h1>
+<div class="flex-container docutils container">
+<div class="half docutils container">
+<p><strong>Overloading Examples</strong></p>
+<pre><code data-trim data-noescape class="cpp">// ==== Function Overloading ====
+
+// given this function
+int func1(int name);  // func1(3);
+
+// ---- Correct ----
+int func1(double);  // func1(3.0);
+int func1(int, int);  // func1(3, 3);
+int func1(int, double);  // func1(3, 3,0);
+int func1(double, int);  // func1(3.0, 3);
+int func1(double, double);  // func1(3.0, 3.0);
+
+// ---- Bad overloading ----
+double func1(int);  // different return type
+int func1(int name1);  // different parameter name</code></pre>
+</div>
+<div class="half docutils container">
+<p><strong>Call Matching Examples</strong></p>
+<pre><code data-trim data-noescape class="cpp">// Pair 1: wrong
+// both exact matches
+void func1(int);
+void func1(int, int = 1);
+
+func1(1);
+
+// Pair 2: wrong
+// both compatible matches
+void func2(int, double);
+void func2(double, int);
+
+func2(2, 3);
+
+// Pair 3: correct
+// first is an exact match
+// second is a compatible match
+void func2(int, double);
+void func2(double, double);
+
+func2(2, 3.0);</code></pre>
+</div>
+</div>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

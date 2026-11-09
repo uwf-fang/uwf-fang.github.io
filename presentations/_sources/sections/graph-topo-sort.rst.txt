@@ -1,0 +1,43 @@
+Topological sort
+================
+
++ Overview
++ Algorithm
+
+Overview
+--------
++ Only works on directed acyclic graphs (DAGs)
++ Will provide a unique ordering of the vertices if the order of of vertices in
+  the graph is unique
++ Will provide a linear ordering of the vertices
++ Applications and Use cases
+
+  * Task scheduling
+  * Dependency resolution
+  * Compiler optimization
+
+Algorithm
+---------
++ For every vertex, use DFS to find all vertices reachable from it
++ Add the vertex to a result list after the recursive call
++ Reverse the result list to get the topological sort
++ visualization https://www.cs.usfca.edu/~galles/visualization/TopoSortDFS.html
+
+.. code-block::
+
+    function topologicalSort(graph):
+      initialize an empty list 'result' to store the topological order
+      initialize a set 'visited' to keep track of visited nodes
+
+      for each node 'v' in graph:
+        if 'v' is not in 'visited':
+          performDFS(v, visited, result)
+
+    return 'result' in reverse order
+
+    function performDFS(node, visited, result):
+      mark 'node' as visited
+      for each neighbor 'n' of 'node':
+        if 'n' is not in 'visited':
+          performDFS(n, visited, result)
+      append 'node' to 'result'

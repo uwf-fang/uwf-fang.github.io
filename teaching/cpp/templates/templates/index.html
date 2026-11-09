@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Templates in C&#43;&#43; · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+</aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/cpp/">C&#43;&#43; Reference</a> / Templates in C&#43;&#43;</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Templates in C&#43;&#43;</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#pro-and-con">Pro and Con</a></li>
+    <li><a href="#alternatives">Alternatives</a></li>
+    <li><a href="#syntax">Syntax</a></li>
+    <li><a href="#split-header-implementation-file">Split header/implementation file</a>
+      <ul>
+        <li><a href="#single-header-file">Single Header File</a></li>
+        <li><a href="#split-to-multiple-files">Split To Multiple Files</a></li>
+      </ul>
+    </li>
+    <li><a href="#examples">Examples</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="templates-in-c"></span>
+<p>Template is a method in C++ language to generalize functions/classes to be used with various base types. It allows a same function or class to work with various data types.</p>
+<ul>
+<li>E.g. STL containers like <code>vector&lt;int&gt;</code>, <code>vector&lt;string&gt;</code>, <code>set&lt;int&gt;</code>, <code>map&lt;int, double&gt;</code>, etc. are templates.</li>
+<li>E.g. type cast functions like <code>static_cast&lt;int&gt;(3.5)</code></li>
+<li>Similar idea to Java generics but with different implementation details</li>
+</ul>
+<h2 id="pro-and-con">Pro and Con</h2>
+<ul>
+<li>Pro
+<ul>
+<li>Generalize functions/classes to work with various data types</li>
+<li>Avoid code redundancy</li>
+<li>Allow type-safe operations</li>
+</ul>
+</li>
+<li>Con
+<ul>
+<li>
+<p>Code bloat</p>
+<p>The compiler will generate a copy of the function/class for each base type used. This may cause the executable file to be very large.</p>
+</li>
+<li>
+<p>Hard to debug</p>
+<p>The error messages from the compiler may be hard to understand.</p>
+</li>
+<li>
+<p>Compilation</p>
+<p>The compilation can be very slow if the template is used in many places.</p>
+</li>
+<li>
+<p>Header-only library</p>
+<p>It violates the principle of separation of declaration and implementation.</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="alternatives">Alternatives</h2>
+<p>There are other way to allow generalization of functions to work with different types.</p>
+<ul>
+<li>function overloading
+<ul>
+<li>Define many functions like <code>min(int, int)</code>, <code>min(double, double)</code>, <code>min(char, char)</code>, with a same name but different parameter types.</li>
+<li>Similar logics may be repeated many times.</li>
+</ul>
+</li>
+<li>implicit type casting
+<ul>
+<li>A function <code>min(double, double)</code> can handle calls like <code>min(2, 3)</code>, <code>min(2.0, 3)</code>, <code>min('a', 66)</code>, etc.</li>
+<li>May cause confusion</li>
+<li>Not work with complex data types</li>
+</ul>
+</li>
+</ul>
+<p>Sometimes the base types are not used as parameter types but internal variables. In these cases, template is the only solution.</p>
+<h2 id="syntax">Syntax</h2>
+<ul>
+<li>
+<p><code>template</code> keyword</p>
+<ul>
+<li><code>template &lt;list of template parameters&gt;</code> clause.</li>
+<li>The list of template parameters can contain one or more template parameters separated by commas.</li>
+<li>The template parameters are enclosed in angle-brackets (&lt;&gt;).</li>
+<li>We only focus on <strong>type template parameters</strong>, which is used to match a type.
+<ul>
+<li>Started with keyword <code>class</code> or <code>typename</code> (interchangeable)</li>
+</ul>
+</li>
+<li>The <code>template</code> clause must be above the following entities when every the parameterized type is used.
+<ul>
+<li>function declaration</li>
+<li>function definition</li>
+<li>class declaration</li>
+<li>method definition</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#cf222e">template</span><span style="color:#0550ae">&lt;</span><span style="color:#cf222e">typename</span> T<span style="color:#0550ae">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">void</span> func1<span style="color:#1f2328">(</span>T param1<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">template</span><span style="color:#0550ae">&lt;</span><span style="color:#cf222e">typename</span> T<span style="color:#0550ae">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">MyClass</span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">public</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  MyClass<span style="color:#1f2328">(</span>T param1<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// important to notice that the first MyClass is followed by &lt;T&gt; here!
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">// MyClass is the name of the template while MyClass&lt;T&gt; is the
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">//     name of the class
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">template</span><span style="color:#0550ae">&lt;</span><span style="color:#cf222e">typename</span> T<span style="color:#0550ae">&gt;</span>
+</span></span><span style="display:flex;"><span>MyClass<span style="color:#0550ae">&lt;</span>T<span style="color:#0550ae">&gt;::</span>MyClass<span style="color:#1f2328">(</span>T param1<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// core logics
+</span></span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div></li>
+<li>
+<p>To use a template</p>
+<ul>
+<li>
+<p>Specify the template argument to <strong>instantiate</strong> the template:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#57606a">// function template
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> result <span style="color:#0550ae">=</span> func1<span style="color:#0550ae">&lt;</span><span style="color:#cf222e">int</span><span style="color:#0550ae">&gt;</span><span style="color:#1f2328">(</span><span style="color:#0550ae">10</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// class template
+</span></span></span><span style="display:flex;"><span>MyClass<span style="color:#0550ae">&lt;</span><span style="color:#cf222e">int</span><span style="color:#0550ae">&gt;</span> obj1<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span>obj1<span style="color:#1f2328">.</span>method1<span style="color:#1f2328">(</span><span style="color:#0550ae">10</span><span style="color:#1f2328">))</span>
+</span></span><span style="display:flex;"><span>  cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;True&#34;</span> <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>
+</span></span></code></pre></div></li>
+<li>
+<p><strong>Template argument deduction</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span>func1<span style="color:#1f2328">(</span><span style="color:#0550ae">10</span><span style="color:#1f2328">);</span>  <span style="color:#57606a">// T will be int
+</span></span></span><span style="display:flex;"><span>func1<span style="color:#0550ae">&lt;&gt;</span><span style="color:#1f2328">(</span><span style="color:#0550ae">10</span><span style="color:#1f2328">);</span>  <span style="color:#57606a">// T will be int
+</span></span></span><span style="display:flex;"><span>func1<span style="color:#1f2328">(</span><span style="color:#0550ae">10.0</span><span style="color:#1f2328">);</span>  <span style="color:#57606a">// T will be double
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>MyClass <span style="color:#6639ba">obj1</span><span style="color:#1f2328">(</span><span style="color:#0550ae">10</span><span style="color:#1f2328">);</span>  <span style="color:#57606a">// T will be int
+</span></span></span></code></pre></div><aside class="callout callout-note" aria-label="note">
+<strong>Note</strong><div><pre><code>Template argument deduction for class template not available until C++ 17
+</code></pre>
+</div></aside>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="split-header-implementation-file">Split header/implementation file</h2>
+<p><strong>TL;DR Put everything of a template in a single header file.</strong></p>
+<h3 id="single-header-file">Single Header File</h3>
+<p>A template must be instantiated to provided the compilable source code. The instantiation of templates is lazy. Only when a templated entity is used with base type(s) specified, the template will be instantiated. For instance, <code>vector&lt;int&gt;</code> is an instantiation of the <code>vector</code> template. When an occurrence of <code>vector&lt;int&gt;</code> is seen by the compiler, the compiler will search to see if there is a version of it. If not, the compiler will look for the source code of the <code>vector</code> template and instantiate it to generate the instance of <code>vector&lt;int&gt;</code>.</p>
+<ul>
+<li>a template itself cannot be compiled</li>
+<li>a template must be instantiated to generate code to be compiled</li>
+<li>instantiation is a process to provide really parameter to a template</li>
+<li>when you instantiate a template in a cpp file and try to compile it, the compiler will look for the template to instantiate from the current cpp file, and all included header files, etc.</li>
+<li>if the template code (not instantiated) is in another cpp file, the compiler cannot find it and the instantiation will fail.</li>
+</ul>
+<p>Thus, it is natural to have a templated function/class in a single header file so that when a cpp file uses the template, the compiler can find all the template code in the header. This method is recommended in our courses.</p>
+<h3 id="split-to-multiple-files">Split To Multiple Files</h3>
+<p><strong>Optional Contents</strong> Templates requires special organization of the source code because the compiler needs to see both the template definition (not instantiation) and its use within a single translation unit. Thus, it is not possible to split the template into a header file and a cpp file like normal modular code.</p>
+<p>There are two work-around methods when the split is preferred:</p>
+<ol>
+<li>split implementations in a separate text file and include it in the header file after the declarations. This method is not recommended but commonly seen in old-fashioned courses.</li>
+<li>split implementations into a cpp file, explicitly declare all possible instantiations of the template in the cpp file; Thus, when other cpp needs to use the template, the instantiated codes have already been instantiated and ready for use.</li>
+</ol>
+<span id="example"></span>
+<h2 id="examples">Examples</h2>
+<span id="id1"></span>
+<p><em>Template Syntax</em></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span> <span style="color:#cf222e">template</span><span style="color:#0550ae">&lt;</span><span style="color:#cf222e">typename</span> T<span style="color:#0550ae">&gt;</span>
+</span></span><span style="display:flex;"><span> T func1<span style="color:#1f2328">(</span>T param1<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">template</span><span style="color:#0550ae">&lt;</span><span style="color:#cf222e">typename</span> T<span style="color:#0550ae">&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">class</span> <span style="color:#1f2328">MyClass</span><span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">public</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#cf222e">bool</span> method1<span style="color:#1f2328">(</span>T param1<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span> <span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#57606a">// important to notice that MyClass is followed by &lt;T&gt; here!
+</span></span></span><span style="display:flex;"><span> <span style="color:#cf222e">template</span><span style="color:#0550ae">&lt;</span><span style="color:#cf222e">typename</span> T<span style="color:#0550ae">&gt;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#cf222e">bool</span> MyClass<span style="color:#0550ae">&lt;</span>T<span style="color:#0550ae">&gt;::</span>method1<span style="color:#1f2328">(</span>T param1<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#57606a">// logics
+</span></span></span><span style="display:flex;"><span>   <span style="color:#cf222e">return</span> <span style="color:#6639ba">true</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span> <span style="color:#1f2328">}</span>
+</span></span></code></pre></div><span id="id2"></span>
+<p><em>template-demo.hpp</em></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#57606a">#ifndef TEMPLATE_DEMO_HPP
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">#define TEMPLATE_DEMO_HPP
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// function template
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">template</span><span style="color:#0550ae">&lt;</span><span style="color:#cf222e">typename</span> T<span style="color:#0550ae">&gt;</span>
+</span></span><span style="display:flex;"><span>T myMin<span style="color:#1f2328">(</span>T<span style="color:#1f2328">,</span> T<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">template</span><span style="color:#0550ae">&lt;</span><span style="color:#cf222e">typename</span> T<span style="color:#0550ae">&gt;</span>
+</span></span><span style="display:flex;"><span>T myMin<span style="color:#1f2328">(</span>T val1<span style="color:#1f2328">,</span> T val2<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span>val1 <span style="color:#0550ae">&gt;</span> val2<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">return</span> val2<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">else</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">return</span> val1<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// class template
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">template</span><span style="color:#0550ae">&lt;</span><span style="color:#cf222e">typename</span> T<span style="color:#0550ae">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">class</span> <span style="color:#1f2328">Min</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">private</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  T val1<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  T val2<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">public</span><span style="color:#0550ae">:</span>
+</span></span><span style="display:flex;"><span>  Min<span style="color:#1f2328">(</span>T val1<span style="color:#1f2328">,</span> T val2<span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  T <span style="color:#6639ba">getMin</span><span style="color:#1f2328">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">// class methods implementations, not inline
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">template</span><span style="color:#0550ae">&lt;</span><span style="color:#cf222e">typename</span> T<span style="color:#0550ae">&gt;</span>
+</span></span><span style="display:flex;"><span>Min<span style="color:#0550ae">&lt;</span>T<span style="color:#0550ae">&gt;::</span>Min<span style="color:#1f2328">(</span>T val1<span style="color:#1f2328">,</span> T val2<span style="color:#1f2328">)</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">this</span><span style="color:#0550ae">-&gt;</span>val1 <span style="color:#0550ae">=</span> val1<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">this</span><span style="color:#0550ae">-&gt;</span>val2 <span style="color:#0550ae">=</span> val2<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">template</span><span style="color:#0550ae">&lt;</span><span style="color:#cf222e">typename</span> T<span style="color:#0550ae">&gt;</span>
+</span></span><span style="display:flex;"><span>T Min<span style="color:#0550ae">&lt;</span>T<span style="color:#0550ae">&gt;::</span>getMin<span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span>val1 <span style="color:#0550ae">&gt;</span> val2<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">return</span> val2<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">else</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">return</span> val1<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a">#endif
+</span></span></span></code></pre></div><span id="id3"></span>
+<p><em>template-test.cpp</em></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#57606a">#include</span> <span style="color:#57606a">&#34;template-demo.hpp&#34;</span><span style="color:#57606a">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">#include</span> <span style="color:#57606a">&lt;iostream&gt;</span><span style="color:#57606a">
+</span></span></span><span style="display:flex;"><span><span style="color:#cf222e">using</span> <span style="color:#cf222e">namespace</span> std<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">main</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// test myMin function, the function template
+</span></span></span><span style="display:flex;"><span>  cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;min(2, 3) = &#34;</span> <span style="color:#0550ae">&lt;&lt;</span> myMin<span style="color:#1f2328">(</span><span style="color:#0550ae">2</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>  <span style="color:#57606a">// myMin(int, int)
+</span></span></span><span style="display:flex;"><span>  cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;min(2.0, 3.0) = &#34;</span> <span style="color:#0550ae">&lt;&lt;</span> myMin<span style="color:#1f2328">(</span><span style="color:#0550ae">2.0</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">3.0</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>  <span style="color:#57606a">// myMin(double, double)
+</span></span></span><span style="display:flex;"><span>  <span style="color:#57606a">// myMin(2, 3.0) cannot compile because types much match
+</span></span></span><span style="display:flex;"><span>  <span style="color:#57606a">// Self-test: now to delare the function to make myMin(2, 3.0) work?
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// test Min class, the class template
+</span></span></span><span style="display:flex;"><span>  Min<span style="color:#0550ae">&lt;</span><span style="color:#cf222e">int</span><span style="color:#0550ae">&gt;</span> myMin1<span style="color:#1f2328">(</span><span style="color:#0550ae">2</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>  Min<span style="color:#0550ae">&lt;</span><span style="color:#cf222e">double</span><span style="color:#0550ae">&gt;</span> myMin2<span style="color:#1f2328">(</span><span style="color:#0550ae">2.0</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">3.0</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;The min from the class Min&lt;int&gt;(2, 3) &#34;</span> <span style="color:#0550ae">&lt;&lt;</span> myMin1<span style="color:#1f2328">.</span>getMin<span style="color:#1f2328">()</span> <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;The min from the class Min&lt;double&gt;(2.0, 3.0) &#34;</span> <span style="color:#0550ae">&lt;&lt;</span> fixed
+</span></span><span style="display:flex;"><span>    <span style="color:#0550ae">&lt;&lt;</span> myMin2<span style="color:#1f2328">.</span>getMin<span style="color:#1f2328">()</span> <span style="color:#0550ae">&lt;&lt;</span> endl<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div></div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

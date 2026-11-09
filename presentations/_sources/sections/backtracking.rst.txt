@@ -1,0 +1,136 @@
+************
+Backtracking
+************
+
+.. container:: subtitle
+
+  |author|
+
+Outline
+=======
++ Overview
++ Concepts
++ Implementation details
++ Applications
++ Related algorithm and paradigms
+
+Overview
+========
++ Backtracking is a general algorithmic technique that involves exploring all
+  possible solutions to a problem by building solution candidates incrementally
+  and abandoning a candidate ("backtracking") as soon as it is determined that
+  the candidate cannot be extended to a valid solution.
++ Solves constraint satisfaction problems (CSPs).
++ Find one or all valid solutions to a problem.
+
+Core Concepts
+=============
++ Backtrack operation:
+
+  The backtrack operation is used to undo a decision and try another decision
+  at a decision point.
+
++ Decision Space:
+
+  A tree space of all possible sequences of decisions that can be made to solve
+  the problem.
+
++ Feasibility Checks:
+
+  Feasibility checks are used to determine whether to proceed or backtrack" at
+  a decision point.
+
++ Solution Space:
+
+  The set of all paths or decision sequences that lead to a valid solution.
+
+Implementation details
+======================
++ Very problem dependent but has two general forms: Recursive and Iterative
+
+.. container:: flex-container smaller
+
+  .. container:: half
+
+    **Recursive**
+
+    .. code-block::
+
+      function BACKTRACKING-SOLUTION(problem):
+          if problem is a base case:
+              return solution to the base case
+          for each option in problem:
+              if option is valid:
+                  make the option
+                  result = BACKTRACKING-SOLUTION(sub-problem created by the option)
+                  if result is a valid solution:
+                      return result
+                  undo the option (backtrack)
+          return no solution found
+
+  .. container:: half
+
+    **Iterative**
+
+    .. code-block::
+
+      function ITERATIVE-BACKTRACKING-SOLUTION(initialProblem):
+          create an empty stack S
+          push initialProblem onto S
+
+          while S is not empty:
+              currentProblem = top of S
+
+              if currentProblem is a solution:
+                  return currentProblem
+
+              if currentProblem has unexplored options:
+                  nextOption = get next unexplored option for currentProblem
+
+                  if nextOption is valid:
+                      push nextOption onto S
+                  else:
+                      mark nextOption as explored for currentProblem
+
+              else:
+                  // All options for currentProblem have been explored, backtrack
+                  pop S
+
+          return no solution found
+
+Applications
+============
+`Visualizations <https://algorithm-visualizer.org>`_
+
++ N-queens problem
++ Sudoku
++ Hamiltonian path
++ Maze solving/generation
+
+Related Algorithms and Paradigms
+================================
++ Brute-force
+
+  Brute-force paradigm can be used to solve a wide variety of problems.
+  However, it may do substantial work when the candidate space is large.
+  Backtracking adds feasibility checks on partial candidates and can reduce
+  work when those checks allow large parts of the search space to be pruned.
+
++ Depth-first search (DFS)
+
+  DFS and backtracking look similar because they both explore as deep as
+  possible in the search space. However, DFS is used to find a path from a
+  start node to a goal node in a graph. Backtracking is used to find a solution
+  to a constraint satisfaction problem. Backtracking is a paradigm that is used
+  to implement DFS as an algorithm if you define the search space to be a graph
+  or a tree and set the backtracking constraints to be whenever a dead end is
+  reached.
+
++ Branch and bound
+
+  Branch and bound and backtracking both explore a tree of partial candidates
+  and prune branches, but use different pruning tests. Backtracking prunes a
+  partial candidate when it cannot lead to a feasible solution. Branch and
+  bound uses an objective bound to prune a branch that cannot improve the best
+  known solution, so it is commonly used for optimization. Backtracking can
+  also be adapted to optimization by keeping the best feasible solution found.

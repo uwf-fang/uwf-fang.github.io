@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modular Development · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><strong>Related Readings:</strong><ul><li><a href="/teaching/cpp/building/gpp/">Compilation Using g&#43;&#43;</a></li><li><a href="/teaching/developer-tools/make/">GNU Make</a></li><li><a href="/teaching/cpp/testing/testing/">Testing in C&#43;&#43;</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/cpp/">C&#43;&#43; Reference</a> / Modular Development</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Modular Development</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#tl-dr">TL;DR</a></li>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#advantages">Advantages</a></li>
+    <li><a href="#c-building-process">C++ Building Process</a></li>
+    <li><a href="#multi-file-organization-in-c">Multi-file Organization in C++</a>
+      <ul>
+        <li><a href="#types-of-files">Types of Files</a></li>
+        <li><a href="#header-file">Header file</a></li>
+        <li><a href="#source-code-file">Source code file</a></li>
+        <li><a href="#module">Module</a></li>
+        <li><a href="#driver">Driver</a></li>
+      </ul>
+    </li>
+    <li><a href="#best-practices-in-modular-development">Best Practices in Modular Development</a></li>
+    <li><a href="#pitfalls-in-modular-development">Pitfalls in Modular Development</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="modular-development"></span>
+<h2 id="tl-dr">TL;DR</h2>
+<ul>
+<li>No more single file project except in Intro to C++ class.</li>
+<li>Learning how modules work together.</li>
+<li>Use <code>make</code> to automated the building process.</li>
+<li>Create source files
+<ul>
+<li>hpp/cpp pair for normal module</li>
+<li>hpp for header-only module (class templates)</li>
+<li>cpp for driver</li>
+</ul>
+</li>
+</ul>
+<h2 id="overview">Overview</h2>
+<p>Modular development in C++ refers to the practice of designing and structuring a software application as a collection of independent and reusable modules or components. Each module encapsulates a specific set of functionality, and these modules can be developed, tested, and maintained separately from each other.</p>
+<p>Unless in the introductory courses, we will always use modular development rather than single-file development. <strong>You can not survive the course if you stick to single-file development.</strong></p>
+<h2 id="advantages">Advantages</h2>
+<ul>
+<li>Code reusability: Modules can be designed and implemented as stand-alone entities, which can be reused in other projects. This can help reduce development time and improve overall code quality.</li>
+<li>Simplicity: By breaking down a large program into smaller modules, it becomes easier to manage and understand the code. This makes it easier to debug and maintain, as well as more readable for other programmers.</li>
+<li>Encapsulation: Modules provide a way to encapsulate data and functions, allowing them to be accessed only through a specific interface. This can improve code security and help prevent errors caused by unintentional modifications of data or functions.</li>
+<li>Parallel development: Modular development allows multiple programmers to work on different modules simultaneously without interfering with each other’s code. This can significantly speed up the development process and improve overall efficiency.</li>
+<li>Flexibility: Modules can be developed and tested independently, making it easier to modify or add functionality to a program without affecting other parts of the code. This can help make the program more adaptable to changing requirements and user needs.</li>
+<li>Testability: Modular development allows for easier testing of individual components, which can help detect errors earlier in the development process and improve overall code quality.</li>
+</ul>
+<h2 id="c-building-process">C++ Building Process</h2>
+<p>The process of translating source codes into executables or libraries is called building.</p>
+<p>The building process of a modular C++ project generally involves three main steps: pre-processing, compilation, and linking. External libraries may also be involved in the process.</p>
+<ul>
+<li>Pre-processing: In this step, the pre-processor examines the source code files and performs tasks such as including header files, expanding macros, and removing comments. The pre-processor outputs a modified version of the source code, which is then sent to the compiler.</li>
+<li>Compilation: The compiler takes the pre-processed source code and translates it into machine-readable object code. Each source code file is compiled independently, resulting in one object code file for each source file.</li>
+<li>Linking: In this step, the linker takes all of the object code files and combines them into a single executable program or library. During this process, unresolved external references are resolved by linking with external libraries.</li>
+</ul>
+<p>If the modular C++ project uses external libraries, the libraries need to be included in the build process. This can be done by specifying the library file paths and names in the linker command line or in a configuration file.</p>
+<p>It’s important to note that the building process for a modular C++ project can vary depending on the specific build tools and development environment used. However, the general steps of pre-processing, compilation, and linking are common to most build processes.</p>
+<p>It is discussed in detail in the <a href="/teaching/cpp/building/gpp/">g++ document</a>.</p>
+<p><img src="/teaching/_migration/98e682c2fe3c52b0.png" alt="C++ Building Process of an Executable"></p>
+<h2 id="multi-file-organization-in-c">Multi-file Organization in C++</h2>
+<h3 id="types-of-files">Types of Files</h3>
+<span id="term-Header-file"></span>
+<dl>
+<dt>Header file</dt>
+<dd>A header file is a text file that is included by other files to share public contents such as function and class declarations, as well as public configurations such as variables, macros, and type aliases.</dd>
+</dl>
+<span id="term-Source-code-file"></span>
+<dl>
+<dt>Source code file</dt>
+<dd>A source code file is a text file that is compiled to create an object file. It typically contains private declarations, private configurations, and the definitions of functions and methods.</dd>
+</dl>
+<h3 id="header-file">Header file</h3>
+<ul>
+<li>.h extension for C header files</li>
+<li>.hpp extension for C++ header files</li>
+<li>Store public/sharable components
+<ul>
+<li>Declarations of functions</li>
+<li>Declarations of classes</li>
+<li>Global variables</li>
+<li>Declarations of types, type alias, macros, etc.</li>
+<li>Class templates</li>
+</ul>
+</li>
+</ul>
+<h3 id="source-code-file">Source code file</h3>
+<ul>
+<li>.c extension for C source files</li>
+<li>.cpp extension for C++ source files</li>
+<li>Store private components
+<ul>
+<li>Declarations of anything that will be only used in the current cpp file</li>
+<li>Function/class method definitions (implementation)</li>
+</ul>
+</li>
+</ul>
+<h3 id="module">Module</h3>
+<ul>
+<li>A module is a collection of header files and source files that are related to each other. In our class, we will use the term “module” to refer to a pair of header and source code file with the same base name. It is also called a library.</li>
+<li>E.g. <code>lib1.hpp</code> and <code>lib1.cpp</code> are a module.</li>
+<li>Allows multiple classes and functions in a same module.</li>
+<li>Two types
+<ul>
+<li>Normal module: A pair of .hpp and .cpp files with the same base name.</li>
+<li>Header-only module: A single .hpp file.</li>
+</ul>
+</li>
+</ul>
+<h3 id="driver">Driver</h3>
+<ul>
+<li>A driver is a program that uses the modules to perform a specific task.</li>
+<li>It compiles and links the modules to create an executable.</li>
+<li>Contains a <code>main</code> function.</li>
+<li>Without header file.</li>
+<li>E.g. <code>main.cpp</code> is a driver.</li>
+</ul>
+<aside class="callout callout-note" aria-label="note">
+<strong>Note</strong><div><p>C++ do not require the programmer to put only one class in a module!</p>
+</div></aside>
+<h2 id="best-practices-in-modular-development">Best Practices in Modular Development</h2>
+<p>Generally, it is recommended to follow these rules, especially for beginners. However, there may be situations where it is appropriate to deviate from these guidelines if there is a good reason and the programmer knows what they are doing.</p>
+<ul>
+<li>Sort the <code>#include</code> directive in the following order:
+<ol>
+<li>own header (paired header)</li>
+<li>headers in the same project</li>
+<li>third-party library headers</li>
+<li>system library headers</li>
+</ol>
+</li>
+<li>Only include headers as needed</li>
+<li>Avoid include-all headers like <code>bits/stdc++.h</code></li>
+<li>Always add header guards</li>
+<li>Minimize your header (move contents to the cpp file as much as possible)</li>
+<li>Follow a consistent naming convention for all files</li>
+</ul>
+<span id="mod-pitfall"></span>
+<h2 id="pitfalls-in-modular-development">Pitfalls in Modular Development</h2>
+<p>Many of these pitfalls are not necessarily incorrect, but they are generally not recommended, especially for beginners. C++ is a highly flexible language, but following established conventions can make it more accessible for those who are new to programming.</p>
+<ul>
+<li>Missing header guards in header files</li>
+<li>Store all declarations in the header file even though they are not shared</li>
+<li>Not following a strict naming convention of files
+<ul>
+<li>Upper case letters in the file names</li>
+<li>Space and special characters in the file names</li>
+</ul>
+</li>
+<li>Use .h extension for C++ header files</li>
+<li>Include cpp files like <code>#include &quot;lib1.cpp&quot;</code></li>
+<li>g++ commands with header files like <code>g++ -std=c++14 -o main main.cpp lib1.hpp lib1.cpp</code></li>
+</ul>
+<p><strong>Related Readings:</strong></p>
+<ul>
+<li><a href="/teaching/cpp/building/gpp/">Compilation Using g++</a></li>
+<li><a href="/teaching/developer-tools/make/">GNU Make</a></li>
+<li><a href="/teaching/cpp/testing/testing/">Testing in C++</a></li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

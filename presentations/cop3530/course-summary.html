@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Data Structure and Algorithm Design</title>
+    <link rel="stylesheet" type="text/css" href="../_static/revealjs/dist/reveal.css?v=40f0a724" />
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/idea.css?v=e717f371" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides" role="main">
+            <section >
+<section data-background-color="white" data-background-image="../_static/logo.png" data-background-size="50%" data-background-position="top center" data-background-repeat="no-repeat">
+<h1>Data Structure and Algorithm Design</h1>
+<div class="subtitle docutils container">
+<p><strong>Course content summary</strong></p>
+<p>Xingang (Ian) Fang</p>
+</div>
+</section>
+</section>
+<section >
+<section >
+<h2>Outline</h2>
+<ul class="simple">
+<li><p>Overview</p></li>
+<li><p>Learning outcomes and assessments</p></li>
+<li><p>Environment and building process</p></li>
+<li><p>C++ features</p></li>
+<li><p>ADTs: List, Stack, Queue, Deque, Priority Queue, Set, Map</p></li>
+<li><p>Data structures: Partially filled array, linked list, heap, hash table, tree,
+graph</p></li>
+<li><p>Algorithms (stand-alone): sorting</p></li>
+<li><p>Algorithmic paradigms: brute-force, backtracking</p></li>
+<li><p>Relationships</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Overview</h2>
+<ul class="simple">
+<li><p>This document is a summary of the topics covered in the course.</p></li>
+<li><p>This is a systematic high-level overview. <strong>Fragmented details are not
+included!</strong></p></li>
+<li><p>Other documents to prepare for the final exam</p>
+<ul>
+<li><p>Past exams</p></li>
+<li><p>Practice exams</p></li>
+<li><p>All three review documents</p></li>
+<li><p>zybook activities</p></li>
+<li><p>Supplement material website</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Type of questions</h3>
+<ul class="simple">
+<li><p>True/False questions TF</p></li>
+<li><p>Multiple choice questions MC</p></li>
+<li><p>Multiple answer questions MA</p></li>
+<li><p>Fill in the blank questions FIB</p></li>
+<li><p>Matching questions MAT</p></li>
+<li><p>Short answer questions SA</p>
+<ul>
+<li><p>Use the right format to reduce ambiguity</p></li>
+<li><p>Be concise</p></li>
+</ul>
+</li>
+<li><p>Short/long coding questions</p>
+<ul>
+<li><p>Try to show the logic</p></li>
+<li><p>Make framework of the code for partial credit</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Learning outcomes and assessments</h2>
+<ul class="simple">
+<li><p>Know the fundamentals of ADTs, data structures, and algorithms: TF, MC, MA,
+FIB</p>
+<ul>
+<li><p>Definitions</p></li>
+<li><p>Complexity of typical operations</p></li>
+<li><p>Limitations</p></li>
+<li><p>General pros and cons</p></li>
+</ul>
+</li>
+<li><p>Which data structure, ADT or algorithm to choose? MC, MA</p>
+<ul>
+<li><p>Some are required</p></li>
+<li><p>Some are better than others</p></li>
+<li><p>Based on time/space complexity</p></li>
+</ul>
+</li>
+<li><p>How algorithm/data structure works on paper: MC, MA, FIB, SA</p></li>
+<li><p>How to implement a data structure, ADT or algorithm: MC, MA, coding</p></li>
+<li><p>How to use C++ features to implement a data structure, ADT or algorithm: MC,
+MA, coding</p>
+<ul>
+<li><p>Templates</p></li>
+<li><p>Rule of three</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Environment and building process</h2>
+<ul class="simple">
+<li><p>Environment</p>
+<ul>
+<li><p>g++: compilation and linking (with or without -c)</p></li>
+<li><p>make</p>
+<ul>
+<li><p>makefile: three parts of a rule</p></li>
+<li><p>How to trigger a rule</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Modular units</p>
+<ul>
+<li><p>driver</p></li>
+<li><p>normal module</p></li>
+<li><p>header only module (template)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>C++ features</h2>
+<ul class="simple">
+<li><p>Templates</p>
+<ul>
+<li><p>Header only module</p></li>
+<li><p>Syntax</p></li>
+<li><p>Know how to convert an existing class/function to a template class/function</p></li>
+</ul>
+</li>
+<li><p>Rule of three</p>
+<ul>
+<li><p>Destructor, copy constructor, copy assignment operator overloading</p></li>
+<li><p>Not required but highly recommended as needed</p></li>
+<li><p>When are they needed? (when a class owns dynamic data)</p></li>
+<li><p>What needs to be done? (deep copy, release memory, etc.)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Abstract Data Types (ADTs)</h2>
+<ul class="simple">
+<li><p>Know the following for each ADT</p>
+<ul>
+<li><p>Definition</p></li>
+<li><p>Operations</p></li>
+<li><p>Data structures employed to implement the ADT</p>
+<ul>
+<li><p>Pro and cons at various scenarios</p></li>
+</ul>
+</li>
+<li><p>Related data structures/algorithms/ADTs</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>List ADT</h3>
+<ul class="simple">
+<li><p>A collection of sequential elements. The general model of a list of data.</p>
+<ul>
+<li><p>Finite</p></li>
+<li><p>Homogeneous</p></li>
+<li><p>Indexable</p></li>
+</ul>
+</li>
+<li><p>Operation</p>
+<ul>
+<li><p>Insert after/before index/value (require indexing or search)</p></li>
+<li><p>Delete by index/value (require indexing or search)</p></li>
+<li><p>Search by value</p></li>
+<li><p>Access by index (indexing)</p></li>
+<li><p>Update by index</p></li>
+<li><p>Get size</p></li>
+</ul>
+</li>
+<li><p>Implementation</p>
+<ul>
+<li><p>Partially filled array</p>
+<ul>
+<li><p>indexing <span class="math notranslate nohighlight">\(\Theta(1)\)</span></p></li>
+<li><p>search/insert/delete <span class="math notranslate nohighlight">\(\Theta(n)\)</span></p></li>
+</ul>
+</li>
+<li><p>Linked list</p>
+<ul>
+<li><p>indexing/search <span class="math notranslate nohighlight">\(\Theta(n)\)</span></p></li>
+<li><p>insert/delete (given a pointer) <span class="math notranslate nohighlight">\(\Theta(1)\)</span></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Stack ADT</h3>
+<ul class="simple">
+<li><p>A collection of elements that can be added or removed in a last-in,
+first-out (LIFO) manner. Usually implemented as a sequence of elements that can be added to one end and removed from the same end.</p></li>
+<li><p>Operation</p>
+<ul>
+<li><p>Push</p></li>
+<li><p>Pop</p></li>
+<li><p>Top/Peek</p></li>
+<li><p>Is empty</p></li>
+</ul>
+</li>
+<li><p>Implementation</p>
+<ul>
+<li><p>Partially filled array</p>
+<ul>
+<li><p>push/pop at the end</p></li>
+<li><p>all operations <span class="math notranslate nohighlight">\(\Theta(1)\)</span></p></li>
+<li><p>re-allocation: <span class="math notranslate nohighlight">\(\Theta(n)\)</span></p></li>
+</ul>
+</li>
+<li><p>Linked list</p>
+<ul>
+<li><p>push/pop at the beginning for singly-linked list</p></li>
+<li><p>all operations <span class="math notranslate nohighlight">\(\Theta(1)\)</span></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Queue ADT</h3>
+<ul class="simple">
+<li><p>A collection of elements that can be added or removed in a first-in,
+first-out (FIFO) manner. Usually implemented as a sequence of elements that can be added to one end and removed from the other end.</p></li>
+<li><p>Operation</p>
+<ul>
+<li><p>Enqueue</p></li>
+<li><p>Dequeue</p></li>
+<li><p>Peek</p></li>
+<li><p>Is empty</p></li>
+</ul>
+</li>
+<li><p>Implementation</p>
+<ul>
+<li><p>Circular Partially filled array (FYI)</p></li>
+<li><p>Linked list</p>
+<ul>
+<li><p>dequeue at the beginning, enqueue at the end for singly-linked list</p></li>
+<li><p>all operations <span class="math notranslate nohighlight">\(\Theta(1)\)</span></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Deque ADT</h3>
+<ul class="simple">
+<li><p>A sequence/list of elements that can be added to or removed from both ends.</p></li>
+<li><p>Operation</p>
+<ul>
+<li><p>Enqueue front/back</p></li>
+<li><p>Dequeue front/back</p></li>
+<li><p>Peek front/back</p></li>
+<li><p>Is empty</p></li>
+</ul>
+</li>
+<li><p>Implementation</p>
+<ul>
+<li><p>Circular Partially filled array (FYI)</p></li>
+<li><p>Linked list</p>
+<ul>
+<li><p>Avoid singly-linked list, use double-linked list</p></li>
+<li><p>all operations <span class="math notranslate nohighlight">\(\Theta(1)\)</span></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Relationship</p>
+<ul>
+<li><p>Can fully cover stack and queue, so stack and queue can be implemented
+using deque</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Priority Queue ADT</h3>
+<ul class="simple">
+<li><p>A collection of elements that can be added in an arbitrary order or removed
+in a priority order.</p></li>
+<li><p>Types: min/max priority queue</p></li>
+<li><p>Operations</p>
+<ul>
+<li><p>Enqueue</p></li>
+<li><p>Dequeue</p></li>
+<li><p>Peek</p></li>
+<li><p>Is empty</p></li>
+</ul>
+</li>
+<li><p>Implementation</p>
+<ul>
+<li><p>Heap: enqueue/dequeue <span class="math notranslate nohighlight">\(\Theta(\log n)\)</span></p></li>
+<li><p>Unsorted array: enqueue <span class="math notranslate nohighlight">\(\Theta(1)\)</span>, dequeue <span class="math notranslate nohighlight">\(\Theta(n)\)</span></p></li>
+<li><p>Sorted array: enqueue <span class="math notranslate nohighlight">\(\Theta(n)\)</span>, dequeue <span class="math notranslate nohighlight">\(\Theta(1)\)</span></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Map ADT</h3>
+<ul class="simple">
+<li><p>A collection of key-value pairs. The key is unique.</p></li>
+<li><p>Operations</p>
+<ul>
+<li><p>Set key-value pair (can both add new or update existing)</p></li>
+<li><p>Get value by key</p></li>
+<li><p>Delete key-value pair by key</p></li>
+<li><p>Check if a key exists</p></li>
+<li><p>Get size</p></li>
+</ul>
+</li>
+<li><p>Implementation</p>
+<ul>
+<li><p>Hash table</p>
+<ul>
+<li><p>set/get/delete <span class="math notranslate nohighlight">\(\Theta(1)\)</span></p></li>
+<li><p>rehashing: <span class="math notranslate nohighlight">\(\Theta(n)\)</span></p></li>
+</ul>
+</li>
+<li><p>Balanced binary search tree</p>
+<ul>
+<li><p>set/get/delete <span class="math notranslate nohighlight">\(\Theta(\log n)\)</span></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Set ADT</h3>
+<ul class="simple">
+<li><p>A collection of unique elements (keys).</p></li>
+<li><p>Operations</p>
+<ul>
+<li><p>Add element</p></li>
+<li><p>Remove element</p></li>
+<li><p>Check if an element exists</p></li>
+<li><p>Get size</p></li>
+</ul>
+</li>
+<li><p>Implementation same as MAP</p></li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Data structures</h2>
+<ul class="simple">
+<li><p>Partially filled array</p>
+<ul>
+<li><p>Usually dynamic array to allow re-allocation</p></li>
+<li><p>Keep track of the size and capacity</p></li>
+<li><p>Re-allocation when the array is full</p></li>
+<li><p>Indexing, insert/delete at the end: <span class="math notranslate nohighlight">\(\Theta(1)\)</span></p></li>
+<li><p>Insert/delete: <span class="math notranslate nohighlight">\(\Theta(n)\)</span></p></li>
+<li><p>Search: <span class="math notranslate nohighlight">\(\Theta(n)\)</span></p></li>
+<li><p>Re-allocation: <span class="math notranslate nohighlight">\(\Theta(n)\)</span></p></li>
+</ul>
+</li>
+<li><p>Linked list</p>
+<ul>
+<li><p>Singly-linked vs double-linked</p></li>
+<li><p>Indexing: <span class="math notranslate nohighlight">\(\Theta(n)\)</span></p></li>
+<li><p>Insert/delete: <span class="math notranslate nohighlight">\(\Theta(1)\)</span> when the location is given, to find the
+location: perform indexing or search first</p></li>
+<li><p>Search: <span class="math notranslate nohighlight">\(\Theta(n)\)</span></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Data structures (cont’d) 1</h3>
+<ul class="simple">
+<li><p>Hash table</p>
+<ul>
+<li><p>Buckets: an array</p></li>
+<li><p>Hash function: map key to an index</p></li>
+<li><p>Implements Map and Set ADTs</p></li>
+<li><p>Collision: multiple keys map to the same index</p></li>
+<li><p>Collision resolution:</p>
+<ul>
+<li><p>Separate chaining</p>
+<ul>
+<li><p>each bucket allows multiple elements</p></li>
+<li><p>linked list (or vector) as the bucket</p></li>
+</ul>
+</li>
+<li><p>Open addressing</p>
+<ul>
+<li><p>Use other available buckets</p></li>
+<li><p>Probe sequence: linear, quadratic, double hashing</p></li>
+<li><p>Empty-since-start vs empty-after-delete</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Heap</p>
+<ul>
+<li><p>Stored as an partially filled array</p></li>
+<li><p>Algorithms works as if it is a <strong>complete binary tree</strong></p></li>
+<li><p>Percolate up/down: <span class="math notranslate nohighlight">\(\Theta(\log n)\)</span></p></li>
+<li><p>Insert: add to tail and percolate up</p></li>
+<li><p>Delete: overwrite root with tail, remove tail, percolate down the root</p></li>
+<li><p>Heapify: adjust a random array to a heap <span class="math notranslate nohighlight">\(\Theta(n)\)</span></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Data structures (cont’d) 2</h3>
+<ul class="simple">
+<li><p>Tree</p>
+<ul>
+<li><p>Concepts: root, parent, child, leaf, level, height, depth, sibling,
+ancestor, descendant, degree</p></li>
+</ul>
+</li>
+<li><p>Binary tree</p>
+<ul>
+<li><p>degree 2</p></li>
+<li><p>ordered: left, right child</p></li>
+<li><p>Full, complete, perfect binary trees</p></li>
+</ul>
+</li>
+<li><p>Binary search tree</p>
+<ul>
+<li><p>all keys in the left subtree are less than the root key and all keys in the
+right subtree are greater than the root key</p></li>
+<li><p>Implements Map and Set ADTs</p></li>
+<li><p>Operations: add/insert, remove/delete, search, traversal</p></li>
+<li><p>Time complexity</p>
+<ul>
+<li><p>depends on the height of the tree</p></li>
+<li><p>ideally <span class="math notranslate nohighlight">\(\Theta(\log n)\)</span>, worst case <span class="math notranslate nohighlight">\(\Theta(n)\)</span></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Data structures (cont’d) 3</h3>
+<ul class="simple">
+<li><p>Graph</p>
+<ul>
+<li><p>A.k.a network</p></li>
+<li><p>Models relationships between objects</p></li>
+<li><p>Concepts: vertex, edge, directed/undirected, weighted/unweighted,
+cyclic/acyclic, path, connected, sparse/dense</p></li>
+<li><p>Given the number of edges <span class="math notranslate nohighlight">\(E\)</span>, and vertices <span class="math notranslate nohighlight">\(V\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(V-1 \leq E \leq V(V-1)/2\)</span></p></li>
+<li><p>Representation</p>
+<ul>
+<li><p>Adjacency matrix: better for dense graph</p></li>
+<li><p>Adjacency list: better for sparse graph</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Data structures (cont’d) 4</h3>
+<ul class="simple">
+<li><p>Graph (cont’d)</p>
+<ul>
+<li><p>Graph traversal</p>
+<ul>
+<li><p>Depth-first search (DFS)</p>
+<ul>
+<li><p>Recursive</p></li>
+<li><p>Stack-based</p></li>
+</ul>
+</li>
+<li><p>Breadth-first search (BFS)</p>
+<ul>
+<li><p>Queue-based</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Shortest path</p>
+<ul>
+<li><p>Dijkstra’s algorithm</p>
+<ul>
+<li><p>Single-source shortest path</p></li>
+<li><p>Non-negative edge weight</p></li>
+<li><p>Requires priority queue</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Algorithms (stand-alone)</h2>
+<ul class="simple">
+<li><p>Sorting algorithms</p>
+<ul>
+<li><p>Naive/simple sorting algorithms <span class="math notranslate nohighlight">\(\Theta(n^2)\)</span></p></li>
+<li><p>Efficient sorting algorithms <span class="math notranslate nohighlight">\(\Theta(n \log n)\)</span></p></li>
+<li><p>Non-comparison based sorting algorithms</p>
+<ul>
+<li><p>Radix <span class="math notranslate nohighlight">\(\Theta(n)\)</span></p></li>
+</ul>
+</li>
+<li><p>In-place vs out-of-place</p></li>
+<li><p>Stable vs unstable</p></li>
+<li><p>Sorting linked list efficiently</p>
+<ul>
+<li><p>insertion sort</p></li>
+<li><p>merge sort</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Sorting (cont’d) 1</h3>
+<ul class="simple">
+<li><p>Quick sort</p>
+<ul>
+<li><p>Divide and conquer</p></li>
+<li><p>Partitioning (variation of Hoare’s partitioning)</p>
+<ul>
+<li><p>Middle element as pivot</p></li>
+<li><p>Return the final position of the pivot</p></li>
+<li><p>Pivot is swapped several times</p></li>
+</ul>
+</li>
+<li><p>Time complexity</p>
+<ul>
+<li><p>best/average: <span class="math notranslate nohighlight">\(\Theta(n \log n)\)</span></p></li>
+<li><p>worst: <span class="math notranslate nohighlight">\(\Theta(n^2)\)</span></p></li>
+</ul>
+</li>
+<li><p>In-place, unstable</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Sorting (cont’d) 2</h3>
+<ul class="simple">
+<li><p>Merge sort (top-down variation)</p>
+<ul>
+<li><p>Divide and conquer</p></li>
+<li><p>Recursively divide the array into two halves (<span class="math notranslate nohighlight">\(\Theta(\log n)\)</span>
+rounds)</p></li>
+<li><p>Merge two sorted halves <span class="math notranslate nohighlight">\(\Theta(n)\)</span></p></li>
+<li><p>Time complexity</p>
+<ul>
+<li><p>best/average/worst: <span class="math notranslate nohighlight">\(\Theta(n \log n)\)</span></p></li>
+</ul>
+</li>
+<li><p>Out-of-place, stable</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Sorting (cont’d) 3</h3>
+<ul class="simple">
+<li><p>Heap sort</p>
+<ul>
+<li><p>In-place</p></li>
+<li><p>Build a heap from the array (Heapify <span class="math notranslate nohighlight">\(\Theta(n)\)</span>)</p></li>
+<li><p>Repeatedly remove the root and adjust the heap <span class="math notranslate nohighlight">\(\Theta(n \log n)\)</span></p></li>
+<li><p>Time complexity</p>
+<ul>
+<li><p>best/average/worst: <span class="math notranslate nohighlight">\(\Theta(n \log n)\)</span></p></li>
+</ul>
+</li>
+<li><p>In-place, unstable</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section >
+<h3>Sorting (cont’d) 4</h3>
+<ul class="simple">
+<li><p>Radix sort</p>
+<ul>
+<li><p>Non-comparison based</p></li>
+<li><p>Sort by digits (rounds decided by the max number of digits)</p></li>
+<li><p>Time complexity</p>
+<ul>
+<li><p>best/average/worst: <span class="math notranslate nohighlight">\(\Theta(n)\)</span></p></li>
+</ul>
+</li>
+<li><p>Out-of-place, stable</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Algorithmic paradigms</h2>
+<ul class="simple">
+<li><p>Brute-force</p>
+<ul>
+<li><p>Enumerate all possible solutions</p></li>
+<li><p>Only check at the final stage (no early rejection)</p></li>
+</ul>
+</li>
+<li><p>Backtracking</p>
+<ul>
+<li><p>Recursive or Stack-based iterative</p></li>
+<li><p>Check partial solution (backtracking, early rejection)</p></li>
+<li><p>Examples</p>
+<ul>
+<li><p>N-Queens</p></li>
+<li><p>Sudoku</p></li>
+<li><p>Maze</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Divide and conquer</p>
+<ul>
+<li><p>Examples: merge sort, quick sort</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section >
+<section >
+<h2>Misc. Relationships</h2>
+<ul class="simple">
+<li><p>ADTs that can cover other ADTs</p>
+<ul>
+<li><p>Deque can cover stack and queue</p></li>
+<li><p>Map can cover set (by ignoring the value)</p></li>
+</ul>
+</li>
+<li><p>ADTs implemented by data structures</p>
+<ul>
+<li><p>Partially filled array: List, Stack, Queue, Deque, Priority Queue</p></li>
+<li><p>Linked list: List, Stack, Queue, Deque</p></li>
+<li><p>Hash table: Map, Set</p></li>
+<li><p>Heap: Priority Queue</p></li>
+<li><p>Binary search tree: Map, Set</p></li>
+</ul>
+</li>
+<li><p>ADTs/Data structures employed by algorithms</p>
+<ul>
+<li><p>Stack: iterative DFS, backtracking</p></li>
+<li><p>Queue: BFS</p></li>
+<li><p>Heap: heap sort</p></li>
+<li><p>Priority Queue: Dijkstra’s algorithm</p></li>
+</ul>
+</li>
+<li><p>Algorithms employed by other algorithms</p>
+<ul>
+<li><p>Sorted merge: merge sort</p></li>
+<li><p>Sorted insertion: insertion sort</p></li>
+<li><p>Quick partitioning: quick sort</p></li>
+<li><p>Heapify: heap sort</p></li>
+<li><p>Percolate up/down: heap insert/delete, heap sort</p></li>
+</ul>
+</li>
+</ul>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="../_static/revealjs/dist/reveal.js"></script>
+    
+    
+      <script src="../_static/revealjs/plugin/notes/notes.js"></script>
+      <script src="../_static/revealjs/plugin/highlight/highlight.js"></script>
+      <script src="../_static/revealjs/plugin/math/math.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, {"controls": true, "progress": true, "hash": true, "center": true, "transition": "slide", "slideNumber": true, "scrollActivationWidth": null});
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealNotes,RevealHighlight,RevealMath,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>

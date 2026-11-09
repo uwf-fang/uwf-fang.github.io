@@ -1,0 +1,104 @@
+Chain Matrix Multiplication Problem
+===================================
+
+Overview
+--------
++ Given a sequence of matrices, find the most efficient way to multiply these
+  matrices together.
++ The costs are different depending on how you associate the matrices in the
+  multiplication.
++ Problem type: Optimization
++ Need exact solution
++ Satisfies
+
+  * Optimal substructure
+  * Overlapping subproblems
+
++ Solutions
+
+  * Brute force
+  * Dynamic programming
+
+Example
+-------
++ Consider the multiplication of four matrices A, B, C, and D with dimensions
+  :math:`10 \times 30`, :math:`30 \times 5`, :math:`5 \times 60`, and :math:`60
+  \times 10`, respectively. We can fully parenthesize the product in five
+  distinct ways:
+
+  1. :math:`((AB)C)D`
+  2. :math:`(A(BC))D`
+  3. :math:`(AB)(CD)`
+  4. :math:`A((BC)D)`
+  5. :math:`A(B(CD))`
+
++ The cost of 3 is the best:
+
+  1. :math:`(10 \times 30 \times 5) + (10 \times 5 \times 60) + (10 \times 60
+     \times 10) = 1500 + 3000 + 6000 = 10500`
+  2. :math:`(30 \times 5 \times 60) + (10 \times 30 \times 60) + (10 \times 60
+     \times 10) = 9000 + 18000 + 6000 = 33000`
+  3. :math:`(10 \times 30 \times 5) + (5 \times 60 \times 10) + (10 \times 5
+     \times 10) = 1500 + 3000 + 500 = 5000`
+  4. :math:`(30 \times 5 \times 60) + (30 \times 60 \times 10) + (10 \times 30
+     \times 10) = 9000 + 18000 + 3000 = 30000`
+  5. :math:`(5 \times 60 \times 10) + (30 \times 5 \times 10) + (10 \times 30
+     \times 10) = 3000 + 1500 + 3000 = 7500`
+
+Brute Force Solution
+--------------------
++ The combinatorics: The way to parenthesize a product of :math:`n` matrices is
+  :math:`\Theta(\frac{4^n}{n^{3/2}\sqrt{\pi}})`. A.k.a. the Catalan number.
++ The complexity is close to exponent complexity.
++ The algorithm is not practical.
+
+Dynamic Programming Solution
+----------------------------
++ Bottom-up approach
+
+  * Let the length of chain :math:`L` range from 2 to :math:`n`.
+  * Enumerate all subchains of length :math:`L` in the sequence.
+  * Enumerate all possible ways of parenthesizing each subchain by splitting
+    the subchain into two subchains.
+  * Time complexity: :math:`\Theta(n^3)`
+
++ Memorization using two tables
+
+  * :math:`m[i, j]`: The minimum number of scalar multiplications needed to
+    compute the matrix :math:`A_i \cdots A_j`.
+  * :math:`s[i, j]`: The index :math:`k` at which we split the product
+    :math:`A_i \cdots A_j` in an optimal parenthesization :math:`A_i \cdots
+    A_k A_{k+1} \cdots A_j`.
+  * Both :math:`\Theta(n^2)` space.
+
+Dynamic Programming Algorithm (cont.)
+-------------------------------------
++ C++ example that only computes the cost
+
+.. code-block:: cpp
+
+  int matrixChainOrder(int p[], int n) {
+    int m[n][n];
+
+    for (int i = 1; i < n; i++)
+      m[i][i] = 0;
+
+    // L is the chain length
+    for (int L = 2; L < n; L++) {
+      for (int i = 1; i < n - L + 1; i++) {
+        int j = i + L - 1;
+        m[i][j] = INT_MAX;
+        // Try all possible split points
+        for (int k = i; k <= j - 1; k++) {
+          int q = m[i][k] + m[k + 1][j] + p[i - 1] * p[k] * p[j];
+          if (q < m[i][j])
+            m[i][j] = q;
+        }
+      }
+    }
+    // Return the minimum number of scalar multiplications needed
+    // to multiply the original chain
+    return m[1][n - 1];
+  }
+
+

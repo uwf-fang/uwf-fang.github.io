@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Random Number Generation In C&#43;&#43; · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/cpp/ccpp-env/">C/C&#43;&#43; Development Environment</a></li><li><a href="/teaching/cpp/cpp-lang/">C&#43;&#43; programming language</a></li><li><a href="/teaching/cpp/functions/">User-defined Functions</a></li><li><a href="/teaching/cpp/io/">Input/Output (I/O)</a></li><li><a href="/teaching/cpp/string/">String (C&#43;&#43; class)</a></li><li><a href="/teaching/cpp/class/class/">Objects and Classes in C&#43;&#43;</a></li><li><a href="/teaching/cpp/variable-type/variable-type/">Type, Variable, Assignment, and Expression</a></li><li><a href="/teaching/cpp/array/array/">Array Data Type</a></li><li><a href="/teaching/cpp/building/gpp/">Compilation Using g&#43;&#43;</a></li><li><a href="/teaching/cpp/building/modular/">Modular Development</a></li><li><a href="/teaching/cpp/testing/testing/">Testing in C&#43;&#43;</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/cpp/">C&#43;&#43; Reference</a> / Random Number Generation In C&#43;&#43;</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Random Number Generation In C&#43;&#43;</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#components">Components</a>
+      <ul>
+        <li><a href="#engines">Engines</a></li>
+        <li><a href="#distributions">Distributions</a></li>
+        <li><a href="#std-random-device">std::random_device</a></li>
+        <li><a href="#example">Example</a></li>
+      </ul>
+    </li>
+    <li><a href="#comparison-with-the-old-way">Comparison with the Old Way</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="random-number-generation-in-c"></span>
+<h2 id="overview">Overview</h2>
+<p>Random number generation (RNG) is pivotal in a myriad of applications, from simulating complex systems in scientific research and ensuring fairness in games, to bolstering security in cryptographic protocols. The ability to produce unpredictable and statistically unbiased sequences is crucial for the accuracy of simulations, the integrity of security systems, and the unpredictability of various algorithms. Thus, RNG serves as a foundational tool, driving innovation, ensuring data integrity, and fostering trust in digital systems.</p>
+<p>In modern C++, random number generation is facilitated through a combination of engines and distributions. Engines, like <code>std::mt19937</code>, provide the core random sequences, which can be seeded deterministically or with non-deterministic sources like <code>std::random_device</code>. These raw sequences are then transformed by distributions, such as <code>std::uniform_int_distribution&lt;&gt;</code> or <code>std::uniform_real_distribution&lt;&gt;</code>, to produce numbers fitting specific statistical patterns. This approach offers a robust, flexible, and precise method for generating random numbers, catering to a wide range of applications.</p>
+<h2 id="components">Components</h2>
+<h3 id="engines">Engines</h3>
+<ul>
+<li>These are the core random number generators.</li>
+<li>Common engines include:
+<ul>
+<li><code>std::mt19937</code>: Mersenne Twister with a period of (2^{19937}-1).</li>
+<li><code>std::mt19937_64</code>: 64-bit version of Mersenne Twister.</li>
+<li><code>std::ranlux48</code>: A high-quality engine with longer cycle.</li>
+</ul>
+</li>
+<li>Engines can be seeded with a fixed value or with a value from <code>std::random_device</code>.</li>
+</ul>
+<h3 id="distributions">Distributions</h3>
+<ul>
+<li>Transform the raw numbers generated by engines into numbers that fit a specific statistical distribution.</li>
+<li>Common distributions include:
+<ul>
+<li><code>std::uniform_int_distribution&lt;&gt;</code>: Produces integers uniformly distributed over a range.</li>
+<li><code>std::uniform_real_distribution&lt;&gt;</code>: Produces floating-point numbers uniformly distributed over a range.</li>
+<li><code>std::normal_distribution&lt;&gt;</code>: Produces floating-point numbers according to the normal (Gaussian) distribution.</li>
+<li><code>std::bernoulli_distribution</code>: Produces boolean values according to a Bernoulli distribution.</li>
+</ul>
+</li>
+<li>There are many other distributions available, such as <code>binomial_distribution</code>, <code>exponential_distribution</code>, and more.</li>
+</ul>
+<h3 id="std-random-device">std::random_device</h3>
+<ul>
+<li>A non-deterministic random number generator.</li>
+<li>Often used to seed other engines for truly random sequences.</li>
+<li>On some platforms, it might be deterministic, so it’s essential to check its entropy before relying on its randomness.</li>
+</ul>
+<h3 id="example">Example</h3>
+<p>Generating random <code>double</code> values between 1.0 and 2.0 using a fixed seed vs. using <code>std::random_device</code>:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#57606a">#include</span> <span style="color:#57606a">&lt;iostream&gt;</span><span style="color:#57606a">
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a">#include</span> <span style="color:#57606a">&lt;random&gt;</span><span style="color:#57606a">
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">int</span> <span style="color:#6639ba">main</span><span style="color:#1f2328">()</span> <span style="color:#1f2328">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// Using a fixed seed
+</span></span></span><span style="display:flex;"><span>  std<span style="color:#0550ae">::</span>mt19937 engine_fixed_seed<span style="color:#1f2328">(</span><span style="color:#0550ae">42</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// Using std::random_device to seed
+</span></span></span><span style="display:flex;"><span>  std<span style="color:#0550ae">::</span>random_device rd<span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  std<span style="color:#0550ae">::</span>mt19937 engine_random_device<span style="color:#1f2328">(</span>rd<span style="color:#1f2328">());</span> <span style="color:#57606a">// pay attention to the ()
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#57606a">// Generate random numbers between 1.0 and 2.0 using a uniform distribution
+</span></span></span><span style="display:flex;"><span>  <span style="color:#57606a">// This is a callable object
+</span></span></span><span style="display:flex;"><span>  <span style="color:#57606a">// to make random integers between 1 and 100, use this:
+</span></span></span><span style="display:flex;"><span>  <span style="color:#57606a">//    std::uniform_int_distribution&lt;int&gt; dist(1, 100)
+</span></span></span><span style="display:flex;"><span>  std<span style="color:#0550ae">::</span>uniform_real_distribution<span style="color:#0550ae">&lt;</span><span style="color:#cf222e">double</span><span style="color:#0550ae">&gt;</span> dist<span style="color:#1f2328">(</span><span style="color:#0550ae">1.0</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">2.0</span><span style="color:#1f2328">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  std<span style="color:#0550ae">::</span>cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;Using fixed seed: &#34;</span> <span style="color:#0550ae">&lt;&lt;</span> dist<span style="color:#1f2328">(</span>engine_fixed_seed<span style="color:#1f2328">)</span> <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;</span><span style="color:#0a3069">\n</span><span style="color:#0a3069">&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>  std<span style="color:#0550ae">::</span>cout <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;Using random device: &#34;</span> <span style="color:#0550ae">&lt;&lt;</span> dist<span style="color:#1f2328">(</span>engine_random_device<span style="color:#1f2328">)</span> <span style="color:#0550ae">&lt;&lt;</span> <span style="color:#0a3069">&#34;</span><span style="color:#0a3069">\n</span><span style="color:#0a3069">&#34;</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cf222e">return</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#1f2328">}</span>
+</span></span></code></pre></div><h2 id="comparison-with-the-old-way">Comparison with the Old Way</h2>
+<p><strong>Old Method</strong>:</p>
+<blockquote>
+<ul>
+<li>Used <code>rand()</code> and <code>srand()</code> functions from the <code>&lt;cstdlib&gt;</code> header.</li>
+<li><code>srand()</code> was used to seed the generator, often with the current time.</li>
+<li><code>rand()</code> produced integers between 0 and <code>RAND_MAX</code>.</li>
+<li>To get a random number in a range, modulo arithmetic and scaling were used.</li>
+<li>WARNING: <code>rand() % n</code> is not a good way to get a random number between 0 and n-1, as it’s biased if <code>RAND_MAX</code> is not divisible by n.</li>
+</ul>
+</blockquote>
+<p><strong>Modern Method</strong>:</p>
+<blockquote>
+<ul>
+<li>Offers a variety of engines and distributions, providing more flexibility and precision.</li>
+<li>Produces numbers that adhere to specific statistical distributions.</li>
+<li>Allows for non-deterministic seeding with <code>std::random_device</code>.</li>
+<li>Generally more robust and reliable than the old method.</li>
+</ul>
+</blockquote>
+<p>In conclusion, while the old method with <code>rand()</code> and <code>srand()</code> is simpler, it’s less versatile and can have platform-specific behaviors. The modern method in C++ offers a comprehensive suite of tools for random number generation, catering to a wide range of applications and needs.</p>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>

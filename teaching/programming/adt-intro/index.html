@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Abstract Data Type · Ian Fang Teaching</title>
+<meta name="description" content="Course materials and reusable computing resources by Ian Fang."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/teaching/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/teaching/assets/style.css"><script src="/teaching/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation">
+<a href="/">Home</a><a href="/projects/">Projects</a>
+<a href="/teaching/" aria-current="page">Teaching</a><a href="/notes/">Notes</a>
+<a href="/about/">About</a><a class="nav-github" href="https://github.com/uwf-fang">GitHub ↗</a></nav></div></header>
+<main id="main"><div class="wrap teaching-shell"><aside class="teaching-sidebar" aria-label="Teaching navigation"><a class="sidebar-home" href="/teaching/">Teaching materials</a><nav aria-label="Collections"><a href="/teaching/courses/">Courses</a><a href="/teaching/resources/">Learning resources</a><a href="/teaching/presentations/">Presentations</a><a href="/teaching/search/">Search materials</a><a href="/teaching/using-these-materials/">Using these materials</a></nav>
+
+
+
+<div class="sidebar-related"><span class="eyebrow">In this collection</span><ul><li><a href="/teaching/programming/programming/">General Programming Information</a></li><li><a href="/teaching/programming/algorithm/">Algorithm</a></li><li><a href="/teaching/programming/data-structure/">Data Structure</a></li><li><a href="/teaching/programming/complexity/">Complexity Analysis</a></li><li><a href="/teaching/programming/alg-anal/">Algorithm Analysis</a></li><li><a href="/teaching/programming/adt-intro/" aria-current="page">Abstract Data Type</a></li><li><a href="/teaching/programming/adt/linear-adts/">Linear ADTs</a></li><li><a href="/teaching/programming/ds/tree/">Tree Data Structure</a></li><li><a href="/teaching/programming/ds/graph/">Graph</a></li><li><a href="/teaching/programming/problems/lcs/">Longest Common Subsequence Problem</a></li><li><a href="/teaching/programming/problems/max-sum-subarray/">Max Sum Subarray Problem</a></li></ul></div></aside><article class="teaching-article"><div class="breadcrumb"><a href="/teaching/">Teaching</a> / <a href="/teaching/programming/">Algorithms and Data Structures</a> / Abstract Data Type</div><header class="article-heading"><div class="eyebrow">Learning materials</div><h1>Abstract Data Type</h1></header><details class="article-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#tl-dr">TL;DR</a></li>
+    <li><a href="#definition">Definition</a></li>
+    <li><a href="#context">Context</a></li>
+    <li><a href="#characteristics">Characteristics</a></li>
+    <li><a href="#describing-adts">Describing ADTs</a></li>
+    <li><a href="#example-stack-adt">Example: Stack ADT</a></li>
+  </ul>
+</nav></details><div class="teaching-prose"><span id="abstract-data-type"></span>
+<h2 id="tl-dr">TL;DR</h2>
+<ul>
+<li>It is an <strong>abstract</strong> black box:
+<ul>
+<li>With language details -&gt; not ADT</li>
+<li>With implementation details -&gt; not ADT</li>
+<li>With internal details -&gt; not ADT</li>
+</ul>
+</li>
+<li>It is a <strong>data</strong> type:
+<ul>
+<li>Not used to keep data -&gt; not ADT</li>
+</ul>
+</li>
+<li>ADTs covered in our courses:
+<ul>
+<li>List</li>
+<li>Stack</li>
+<li>Queue</li>
+<li>Deque</li>
+<li>Priority Queue</li>
+<li>Map</li>
+<li>Set</li>
+</ul>
+</li>
+</ul>
+<h2 id="definition">Definition</h2>
+<p>An Abstract Data Type (ADT) is a high-level mathematical model that defines a set of data values and a set of operations that can be performed on those values, without specifying how the data is represented or how the operations are implemented. It provides a clear interface for interacting with data, allowing programmers to focus on the functionality of the data structure rather than its implementation details. ADTs are essential in computer science for organizing and managing data efficiently, and common examples include stacks, queues, lists, and trees.</p>
+<h2 id="context">Context</h2>
+<ul>
+<li>High-level abstraction of data structures.</li>
+<li>Usually defined as <code>Interface</code> in various programming languages.</li>
+<li>May have multiple implementations.</li>
+</ul>
+<h2 id="characteristics">Characteristics</h2>
+<ul>
+<li>Encapsulation: ADTs encapsulate data and operations into a single unit, providing a well-defined interface for interacting with the data while hiding the internal details. This concept is closely related to the idea of data abstraction.</li>
+<li>Implementation independence: ADTs are independent of their implementation, meaning that the interface is defined in such a way that it does not depend on the underlying implementation. This allows the implementation to be changed without affecting the interface.</li>
+<li>Abstraction: ADTs abstract away the low-level details of data manipulation, focusing on high-level behaviors and operations. This abstraction simplifies complex data structures and algorithms, making them easier to understand and use.</li>
+<li>Modularity: ADTs promote modular design by encapsulating data and operations within a self-contained unit. This modular approach enhances code organization and maintainability.</li>
+</ul>
+<h2 id="describing-adts">Describing ADTs</h2>
+<ul>
+<li>Describe by interface as a set of operations.</li>
+<li>For each operation, describe its behavior.
+<ul>
+<li>What does it do?</li>
+<li>What are its parameters?</li>
+<li>What are its return values?</li>
+<li>What are its preconditions?</li>
+<li>What are its postconditions?</li>
+<li>Do not describe how it is implemented.</li>
+</ul>
+</li>
+</ul>
+<h2 id="example-stack-adt">Example: Stack ADT</h2>
+<ul>
+<li>We do not describe how the data is stored or how the operations are implemented. So it is not accurate to say that a stack is like a stack of items that you can only add and remove from the top. This is an implementation detail, not part of the ADT.</li>
+<li>The only essential information is FILO (First in last out)</li>
+<li>Operations:
+<ul>
+<li><code>push(item)</code>
+<ul>
+<li>Behavior: Pushes an item into the stack.</li>
+<li>Parameters: <code>item</code> - the item to be pushed.</li>
+<li>Returns: <code>None</code>.</li>
+<li>Preconditions: <code>None</code>.</li>
+<li>Postconditions: <code>item</code> is added to the stack.</li>
+</ul>
+</li>
+<li><code>pop()</code>
+<ul>
+<li>Behavior: Removes and returns the <strong>last</strong> item that is pushed into the stack. (FILO)</li>
+<li>Parameters: <code>None</code>.</li>
+<li>Returns: The last item that is pushed into the stack.</li>
+<li>Preconditions: The stack is not empty.</li>
+<li>Postconditions: The last item that is pushed into the stack is removed.</li>
+</ul>
+</li>
+<li><code>peek()</code>
+<ul>
+<li>Behavior: Returns the item the last item that is pushed into the stack without removing it.</li>
+<li>Parameters: <code>None</code>.</li>
+<li>Returns: The last item that is pushed into the stack.</li>
+<li>Preconditions: The stack is not empty.</li>
+<li>Postconditions: <code>None</code>.</li>
+</ul>
+</li>
+<li><code>isEmpty()</code>
+<ul>
+<li>Behavior: Returns whether the stack is empty.</li>
+<li>Parameters: <code>None</code>.</li>
+<li>Returns: <code>True</code> if the stack is empty, <code>False</code> otherwise.</li>
+<li>Preconditions: <code>None</code>.</li>
+<li>Postconditions: <code>None</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div><footer class="article-footer"><a href="/teaching/search/">Find another topic →</a><span>Adapted from the teaching collection</span></footer></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Computing, one idea at a time.</div><div class="footer-links"><a href="/">Personal site ↗</a><a href="/teaching/">Teaching</a><a href="/teaching/presentations/">Presentations</a></div></div></footer></body></html>
