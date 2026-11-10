@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2025 Southeast Regional Solutions · Ian Fang</title>
+<meta name="description" content="Ian Fang’s teaching, interactive projects, and notes on computing and useful tools."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/style.css"><script src="/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation"><a href="/">Home</a>
+<a href="/projects/">Projects</a>
+<a href="/teaching/">Teaching</a>
+<a href="/competitive-programming/" aria-current="page">Competitive Programming</a>
+<a href="/notes/">Notes</a>
+<a href="/about/">About</a>
+<a class="nav-github" href="https://github.com/uwf-fang">GitHub <span aria-hidden="true">↗</span></a></nav></div></header>
+<main id="main"><div class="wrap competition-layout"><aside class="competition-sidebar" aria-label="Competitive programming navigation"><a class="competition-home" href="/competitive-programming/">← All competitive programming</a><nav aria-label="Articles"><span class="eyebrow">In this section</span><ul><li><a href="/competitive-programming/seusa2025/">2025 Southeast Regional Contest</a></li><li><a href="/competitive-programming/icpc/">International Collegiate Programming Contest</a></li><li><a href="/competitive-programming/seusa2025-solutions/" aria-current="page">2025 Southeast Regional Solutions</a></li><li><a href="/competitive-programming/trd/">How to Use the ICPC Division 2 TRD</a></li><li><a href="/competitive-programming/seusa2026/">2026 Southeast Regional Contest</a></li><li><a href="/competitive-programming/seusa2026-solutions/">2026 Southeast Regional Solutions</a></li></ul></nav></aside><article class="competition-article"><header class="page-intro"><div class="breadcrumb"><a href="/competitive-programming/">Competitive programming</a> / 2025 Southeast Regional Solutions</div><div class="eyebrow">Computing competitions</div><h1>2025 Southeast Regional Solutions</h1></header><details class="competition-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#problem-a-snakeystring">Problem A — Snakey String</a>
+      <ul>
+        <li><a href="#a-solution">Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#problem-b-blindbottles">Problem B — Blind Bottles</a>
+      <ul>
+        <li><a href="#b-the-game-in-one-minute">1. The Game in One Minute</a></li>
+        <li><a href="#b-big-idea-no-heavy-math">2. Big Idea (No heavy math)</a></li>
+        <li><a href="#b-why-swapping-two-spots-tells-us-anything">3. Why swapping two spots tells us anything</a></li>
+        <li><a href="#b-stepbystep-plan">4. Step‑by‑step plan</a></li>
+        <li><a href="#b-tiny-example-n-5">5. Tiny example (n = 5)</a></li>
+        <li><a href="#b-how-many-questions-do-we-ask">6. How many questions do we ask?</a></li>
+        <li><a href="#b-the-python-solution-accepted-by-kattis">7. The Python solution (Accepted by Kattis)</a></li>
+      </ul>
+    </li>
+    <li><a href="#problem-c-onewayonly">Problem C — One Way Only</a>
+      <ul>
+        <li><a href="#c-the-intuition">1. The Intuition</a></li>
+        <li><a href="#c-deconstructing-the-path-logic">2. Deconstructing the Path logic</a></li>
+        <li><a href="#c-the-algorithm-greedy-matching-parentheses-balancing">3. The Algorithm: Greedy Matching (Parentheses Balancing)</a></li>
+        <li><a href="#c-step-by-step-walkthrough">4. Step-by-Step Walkthrough</a></li>
+        <li><a href="#c-complexity-analysis">5. Complexity Analysis</a></li>
+        <li><a href="#c-python-solution">6. Python Solution</a></li>
+      </ul>
+    </li>
+    <li><a href="#problem-j-gameofnines">Problem J — Game of Nines</a>
+      <ul>
+        <li><a href="#j-story-style-intuition">1. Story-style intuition</a></li>
+        <li><a href="#j-what-is-d">2. What is $d$?</a></li>
+        <li><a href="#j-everything-reduces-to-one-gcd">3. Everything reduces to one gcd</a></li>
+        <li><a href="#j-constructive-play-when-g-1">4. Constructive play when $g=1$</a></li>
+        <li><a href="#j-short-proof">5. Short proof</a></li>
+        <li><a href="#j-algorithm">6. Algorithm</a></li>
+        <li><a href="#j-reference-implementations">7. Reference implementations</a></li>
+        <li><a href="#j-quick-sanity-checks">8. Quick sanity checks</a></li>
+      </ul>
+    </li>
+    <li><a href="#back-to-the-contest">Back to the contest</a></li>
+  </ul>
+</nav></details><div class="article-prose competition-prose"><span id="southeast-regional-solutions-2025"></span>
+
+<p>The problem statements are linked from Kattis. The explanations below preserve the full solution notes and code for the selected UWF problems.</p>
+<h2 id="problem-a-snakeystring">Problem A — Snakey String</h2>
+<p><a href="https://open.kattis.com/problems/snakeystring">Open the original problem on Kattis</a>
+.</p>
+<p>Here is a <strong>simple explanation</strong> and a <strong>clean Python 3 solution</strong>.</p>
+<h3 id="a-solution">Solution</h3>
+<h4 id="a-explanation">Explanation</h4>
+<ul>
+<li>You are given an <strong>r × c</strong> grid.</li>
+<li><strong>Each column contains exactly ONE uppercase letter</strong> (the others are dots).</li>
+<li>To recover the original string, you just:
+<ol>
+<li>Look at <strong>each column from left to right</strong>.</li>
+<li>Find the <strong>uppercase letter</strong> in that column.</li>
+<li>Append it to the result.</li>
+</ol>
+</li>
+</ul>
+<p>That’s it—no actual snake traversal is needed because the puzzle guarantees exactly one letter per column.</p>
+<h4 id="a-python-3-solution">Python 3 Solution</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python3" data-lang="python3"><span style="display:flex;"><span><span style="color:#cf222e">def</span> <span style="color:#6639ba">solve</span><span style="color:#1f2328">():</span>
+</span></span><span style="display:flex;"><span>    r<span style="color:#1f2328">,</span> c <span style="color:#0550ae">=</span> <span style="color:#6639ba">map</span><span style="color:#1f2328">(</span><span style="color:#6639ba">int</span><span style="color:#1f2328">,</span> <span style="color:#6639ba">input</span><span style="color:#1f2328">()</span><span style="color:#0550ae">.</span>split<span style="color:#1f2328">())</span>
+</span></span><span style="display:flex;"><span>    grid <span style="color:#0550ae">=</span> <span style="color:#1f2328">[</span><span style="color:#6639ba">input</span><span style="color:#1f2328">()</span><span style="color:#0550ae">.</span>strip<span style="color:#1f2328">()</span> <span style="color:#cf222e">for</span> _ <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>r<span style="color:#1f2328">)]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    result <span style="color:#0550ae">=</span> <span style="color:#1f2328">[]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># For each column, find the one uppercase letter</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">for</span> col <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>c<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">for</span> row <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>r<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>            ch <span style="color:#0550ae">=</span> grid<span style="color:#1f2328">[</span>row<span style="color:#1f2328">][</span>col<span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#cf222e">if</span> <span style="color:#0a3069">&#39;A&#39;</span> <span style="color:#0550ae">&lt;=</span> ch <span style="color:#0550ae">&lt;=</span> <span style="color:#0a3069">&#39;Z&#39;</span><span style="color:#1f2328">:</span>  <span style="color:#57606a"># meaningful letter</span>
+</span></span><span style="display:flex;"><span>                result<span style="color:#0550ae">.</span>append<span style="color:#1f2328">(</span>ch<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#cf222e">break</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6639ba">print</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;&#34;</span><span style="color:#0550ae">.</span>join<span style="color:#1f2328">(</span>result<span style="color:#1f2328">))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">if</span> <span style="color:#953800">__name__</span> <span style="color:#0550ae">==</span> <span style="color:#0a3069">&#34;__main__&#34;</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>    solve<span style="color:#1f2328">()</span>
+</span></span></code></pre></div><h2 id="problem-b-blindbottles">Problem B — Blind Bottles</h2>
+<p><a href="https://open.kattis.com/problems/blindbottles">Open the original problem on Kattis</a>
+.</p>
+<span id="problem-b-blind-bottles-solution"></span>
+
+<h3 id="b-the-game-in-one-minute">1. The Game in One Minute</h3>
+<ul>
+<li>There are n bottles, each labeled 1..n, arranged in a secret order.</li>
+<li>A <strong>guess</strong> is a line of n numbers (a rearrangement of 1..n).</li>
+<li>After each guess, you’re told <strong>how many positions are exactly right</strong>.</li>
+<li>You win when <strong>all</strong> positions are right.</li>
+</ul>
+<p>Our goal: figure out the secret order using <strong>at most 10,000 guesses</strong> for n ≤ 100.</p>
+<h3 id="b-big-idea-no-heavy-math">2. Big Idea (No heavy math)</h3>
+<p>We stick to one <strong>baseline guess</strong> all the way through: the simple list:</p>
+<pre tabindex="0"><code class="language-default" data-lang="default">1 2 3 ... n
+</code></pre><p>Call its score B (how many spots were already right in that baseline).</p>
+<p>Now we learn about the secret order by making <strong>very small, controlled changes</strong> to this baseline:</p>
+<blockquote>
+<p><strong>Swap just two positions `i` and `j`</strong> in the baseline and ask again.</p>
+</blockquote>
+<ul>
+<li>If the score <strong>goes up</strong>, then those two positions are <strong>directly related</strong> in the secret ordering (they are neighbors in a loop).</li>
+<li>If the score <strong>stays the same or goes down</strong>, those positions aren’t directly related.</li>
+</ul>
+<p>Doing this for <strong>every pair `(i, j)`</strong> lets us draw a picture (a graph) of who is connected to whom. That picture always breaks into <strong>loops</strong>:</p>
+<ul>
+<li>A <strong>single dot</strong> (no connections) means that position was already correct.</li>
+<li>A <strong>pair of dots</strong> connected to each other is a simple <strong>2‑swap</strong>.</li>
+<li>Any longer loop (3 or more) means <strong>the correct bottles rotate around</strong> that circle of positions.</li>
+</ul>
+<p>After we have these loops, we make at most <strong>one extra test per long loop</strong> to find which way it rotates. Then we can write down the final, correct order and win.</p>
+<h3 id="b-why-swapping-two-spots-tells-us-anything">3. Why swapping two spots tells us anything</h3>
+<p>Think about what the final arrangement looks like around any one position:</p>
+<ul>
+<li>There’s the spot where <strong>this position’s bottle</strong> really belongs.</li>
+<li>There’s also the spot whose bottle <strong>belongs here</strong>.</li>
+</ul>
+<p>Those are the two “neighbors” around that position in the final solution. <strong>Swapping</strong> i and j helps <strong>only</strong> when i and j are such neighbors (either the bottle from i belongs in j, or the bottle from j belongs in i). That’s exactly why the score goes <strong>up</strong> when we swap a “neighbor pair”.</p>
+<h3 id="b-stepbystep-plan">4. Step‑by‑step plan</h3>
+<ol>
+<li><strong>Baseline.</strong> Ask the identity order 1 2 … n once. Save the score as B.</li>
+<li><strong>Build connections.</strong> For every pair of positions (i, j):
+<ul>
+<li>Swap only those two in the baseline and ask again.</li>
+<li>If the score is <strong>higher than `B`</strong>, draw an edge between i and j.</li>
+</ul>
+</li>
+<li><strong>Read the loops.</strong>
+<ul>
+<li><strong>No edges</strong> → position already correct (leave it as is).</li>
+<li><strong>One edge</strong> → a <strong>2‑swap</strong>; those two positions want each other’s bottles.</li>
+<li><strong>Two edges</strong> → part of a <strong>longer loop</strong> (a circle of 3 or more positions).</li>
+</ul>
+</li>
+<li><strong>Decide the direction (for each long loop).</strong>
+<ul>
+<li>Try <strong>pushing everyone in the loop one step forward</strong> (a “rotate once” guess), leaving all other positions as in the baseline.</li>
+<li>If the score jumps by the loop’s length, that is the <strong>right direction</strong>. Otherwise, it’s the reverse direction.</li>
+</ul>
+</li>
+<li><strong>Write the final answer.</strong> Now we know, for each position, <strong>which position’s bottle belongs here</strong>. Build the full line and print it once.</li>
+</ol>
+<h3 id="b-tiny-example-n-5">5. Tiny example (n = 5)</h3>
+<p>Say the secret order is: [3, 5, 2, 1, 4]</p>
+<ul>
+<li>
+<p>After checking all pair swaps, we discover a single loop:</p>
+<p>positions: 1 → 3 → 2 → 5 → 4 → back to 1</p>
+</li>
+<li>
+<p>That means the correct bottles <strong>cycle around</strong> those positions.</p>
+</li>
+<li>
+<p>We do one “rotate once” test on just that loop. If the score jumps by 5, we already have the exact solution; otherwise we reverse the loop.</p>
+</li>
+<li>
+<p>Either way, we now know the final arrangement and can print it.</p>
+</li>
+</ul>
+<h3 id="b-how-many-questions-do-we-ask">6. How many questions do we ask?</h3>
+<ul>
+<li>One for the <strong>baseline</strong>.</li>
+<li>One for <strong>each pair</strong> of positions (there are about n(n−1)/2 such pairs; for n = 100 that’s 4950).</li>
+<li>At most <strong>one extra</strong> per longer loop (in the worst case, around 33 of them).</li>
+<li>One final print of the full answer.</li>
+<li>Total ≤ <strong>4,985 guesses</strong> for n = 100, well under the 10,000 limit.</li>
+</ul>
+<h3 id="b-the-python-solution-accepted-by-kattis">7. The Python solution (Accepted by Kattis)</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#57606a"># Blind Bottles — Python interactive solution</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Deterministic O(n^2) queries (&lt;= 4985 for n&lt;=100)</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Algorithm: pairwise swaps vs identity to reveal cycle adjacencies,</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># then 1 query per long cycle to fix its orientation.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#24292e">sys</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">def</span> <span style="color:#6639ba">ask</span><span style="color:#1f2328">(</span>perm<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0a3069">&#34;&#34;&#34;Print a permutation, flush, and read judge&#39;s reply (number of fixed points).&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6639ba">print</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34; &#34;</span><span style="color:#0550ae">.</span>join<span style="color:#1f2328">(</span><span style="color:#6639ba">map</span><span style="color:#1f2328">(</span><span style="color:#6639ba">str</span><span style="color:#1f2328">,</span> perm<span style="color:#1f2328">)),</span> flush<span style="color:#0550ae">=</span><span style="color:#cf222e">True</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    line <span style="color:#0550ae">=</span> sys<span style="color:#0550ae">.</span>stdin<span style="color:#0550ae">.</span>readline<span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> <span style="color:#0550ae">not</span> line<span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>        sys<span style="color:#0550ae">.</span>exit<span style="color:#1f2328">(</span><span style="color:#0550ae">0</span><span style="color:#1f2328">)</span>  <span style="color:#57606a"># judge closed</span>
+</span></span><span style="display:flex;"><span>    k <span style="color:#0550ae">=</span> <span style="color:#6639ba">int</span><span style="color:#1f2328">(</span>line<span style="color:#0550ae">.</span>strip<span style="color:#1f2328">())</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> k <span style="color:#0550ae">==</span> <span style="color:#6639ba">len</span><span style="color:#1f2328">(</span>perm<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>        sys<span style="color:#0550ae">.</span>exit<span style="color:#1f2328">(</span><span style="color:#0550ae">0</span><span style="color:#1f2328">)</span>  <span style="color:#57606a"># solved; judge ends the game</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">return</span> k
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">def</span> <span style="color:#6639ba">main</span><span style="color:#1f2328">():</span>
+</span></span><span style="display:flex;"><span>    data <span style="color:#0550ae">=</span> sys<span style="color:#0550ae">.</span>stdin<span style="color:#0550ae">.</span>readline<span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> <span style="color:#0550ae">not</span> data<span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">return</span>
+</span></span><span style="display:flex;"><span>    n <span style="color:#0550ae">=</span> <span style="color:#6639ba">int</span><span style="color:#1f2328">(</span>data<span style="color:#0550ae">.</span>strip<span style="color:#1f2328">())</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># 1) Base query: identity</span>
+</span></span><span style="display:flex;"><span>    base <span style="color:#0550ae">=</span> <span style="color:#6639ba">list</span><span style="color:#1f2328">(</span><span style="color:#6639ba">range</span><span style="color:#1f2328">(</span><span style="color:#0550ae">1</span><span style="color:#1f2328">,</span> n <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">))</span>
+</span></span><span style="display:flex;"><span>    B <span style="color:#0550ae">=</span> ask<span style="color:#1f2328">(</span>base<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> B <span style="color:#0550ae">==</span> n<span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">return</span>  <span style="color:#57606a"># already solved</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># 2) For every pair (i, j), swap on top of identity and see if score improves.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a">#    If it does, i and j are adjacent in the hidden permutation&#39;s cycle.</span>
+</span></span><span style="display:flex;"><span>    adj <span style="color:#0550ae">=</span> <span style="color:#1f2328">[[]</span> <span style="color:#cf222e">for</span> _ <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>n<span style="color:#1f2328">)]</span>
+</span></span><span style="display:flex;"><span>    tmp <span style="color:#0550ae">=</span> base<span style="color:#1f2328">[:]</span>  <span style="color:#57606a"># mutable copy of identity</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">for</span> i <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>n<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">for</span> j <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>i <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">,</span> n<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>            tmp<span style="color:#1f2328">[</span>i<span style="color:#1f2328">],</span> tmp<span style="color:#1f2328">[</span>j<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> tmp<span style="color:#1f2328">[</span>j<span style="color:#1f2328">],</span> tmp<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>            s <span style="color:#0550ae">=</span> ask<span style="color:#1f2328">(</span>tmp<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#cf222e">if</span> s <span style="color:#0550ae">&gt;</span> B<span style="color:#1f2328">:</span>                    <span style="color:#57606a"># Δ &gt; 0  -&gt; adjacency between i and j</span>
+</span></span><span style="display:flex;"><span>                adj<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span><span style="color:#0550ae">.</span>append<span style="color:#1f2328">(</span>j<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>                adj<span style="color:#1f2328">[</span>j<span style="color:#1f2328">]</span><span style="color:#0550ae">.</span>append<span style="color:#1f2328">(</span>i<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>            tmp<span style="color:#1f2328">[</span>i<span style="color:#1f2328">],</span> tmp<span style="color:#1f2328">[</span>j<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> tmp<span style="color:#1f2328">[</span>j<span style="color:#1f2328">],</span> tmp<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span>  <span style="color:#57606a"># restore to identity</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># 3) Reconstruct the permutation.</span>
+</span></span><span style="display:flex;"><span>    perm <span style="color:#0550ae">=</span> <span style="color:#1f2328">[</span><span style="color:#0550ae">-</span><span style="color:#0550ae">1</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">*</span> n
+</span></span><span style="display:flex;"><span>    used <span style="color:#0550ae">=</span> <span style="color:#1f2328">[</span><span style="color:#cf222e">False</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">*</span> n
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># Fixed points: degree 0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">for</span> i <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>n<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">if</span> <span style="color:#6639ba">len</span><span style="color:#1f2328">(</span>adj<span style="color:#1f2328">[</span>i<span style="color:#1f2328">])</span> <span style="color:#0550ae">==</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>            perm<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> i <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span>
+</span></span><span style="display:flex;"><span>            used<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">True</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># 2-cycles: degree 1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">for</span> i <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>n<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">if</span> <span style="color:#0550ae">not</span> used<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">and</span> <span style="color:#6639ba">len</span><span style="color:#1f2328">(</span>adj<span style="color:#1f2328">[</span>i<span style="color:#1f2328">])</span> <span style="color:#0550ae">==</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>            j <span style="color:#0550ae">=</span> adj<span style="color:#1f2328">[</span>i<span style="color:#1f2328">][</span><span style="color:#0550ae">0</span><span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>            perm<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> j <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span>
+</span></span><span style="display:flex;"><span>            perm<span style="color:#1f2328">[</span>j<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> i <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span>
+</span></span><span style="display:flex;"><span>            used<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> used<span style="color:#1f2328">[</span>j<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">True</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># Cycles of length &gt;= 3: degree 2</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">for</span> i <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>n<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">if</span> used<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#cf222e">continue</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#57606a"># Collect one undirected cycle in order</span>
+</span></span><span style="display:flex;"><span>        cyc <span style="color:#0550ae">=</span> <span style="color:#1f2328">[]</span>
+</span></span><span style="display:flex;"><span>        u <span style="color:#0550ae">=</span> i
+</span></span><span style="display:flex;"><span>        prev <span style="color:#0550ae">=</span> <span style="color:#0550ae">-</span><span style="color:#0550ae">1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">while</span> <span style="color:#cf222e">True</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>            cyc<span style="color:#0550ae">.</span>append<span style="color:#1f2328">(</span>u<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>            used<span style="color:#1f2328">[</span>u<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">True</span>
+</span></span><span style="display:flex;"><span>            a<span style="color:#1f2328">,</span> b <span style="color:#0550ae">=</span> adj<span style="color:#1f2328">[</span>u<span style="color:#1f2328">][</span><span style="color:#0550ae">0</span><span style="color:#1f2328">],</span> adj<span style="color:#1f2328">[</span>u<span style="color:#1f2328">][</span><span style="color:#0550ae">1</span><span style="color:#1f2328">]</span>   <span style="color:#57606a"># degree 2, so exactly two neighbors</span>
+</span></span><span style="display:flex;"><span>            v <span style="color:#0550ae">=</span> a <span style="color:#cf222e">if</span> a <span style="color:#0550ae">!=</span> prev <span style="color:#cf222e">else</span> b
+</span></span><span style="display:flex;"><span>            prev<span style="color:#1f2328">,</span> u <span style="color:#0550ae">=</span> u<span style="color:#1f2328">,</span> v
+</span></span><span style="display:flex;"><span>            <span style="color:#cf222e">if</span> u <span style="color:#0550ae">==</span> cyc<span style="color:#1f2328">[</span><span style="color:#0550ae">0</span><span style="color:#1f2328">]:</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#cf222e">break</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        L <span style="color:#0550ae">=</span> <span style="color:#6639ba">len</span><span style="color:#1f2328">(</span>cyc<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#57606a"># 4) Determine orientation with one extra query:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#57606a">#    try mapping cyc[k] -&gt; cyc[k+1]; if we gain L matches, that&#39;s the direction.</span>
+</span></span><span style="display:flex;"><span>        test <span style="color:#0550ae">=</span> base<span style="color:#1f2328">[:]</span>  <span style="color:#57606a"># identity elsewhere</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">for</span> k <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>L<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>            test<span style="color:#1f2328">[</span>cyc<span style="color:#1f2328">[</span>k<span style="color:#1f2328">]]</span> <span style="color:#0550ae">=</span> cyc<span style="color:#1f2328">[(</span>k <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">%</span> L<span style="color:#1f2328">]</span> <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span>
+</span></span><span style="display:flex;"><span>        res <span style="color:#0550ae">=</span> ask<span style="color:#1f2328">(</span>test<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">if</span> res <span style="color:#0550ae">-</span> B <span style="color:#0550ae">==</span> L<span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#57606a"># forward orientation is correct</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#cf222e">for</span> k <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>L<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>                perm<span style="color:#1f2328">[</span>cyc<span style="color:#1f2328">[</span>k<span style="color:#1f2328">]]</span> <span style="color:#0550ae">=</span> cyc<span style="color:#1f2328">[(</span>k <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">%</span> L<span style="color:#1f2328">]</span> <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">else</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#57606a"># reverse orientation</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#cf222e">for</span> k <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>L<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>                perm<span style="color:#1f2328">[</span>cyc<span style="color:#1f2328">[</span>k<span style="color:#1f2328">]]</span> <span style="color:#0550ae">=</span> cyc<span style="color:#1f2328">[(</span>k <span style="color:#0550ae">-</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">%</span> L<span style="color:#1f2328">]</span> <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># 5) Final answer</span>
+</span></span><span style="display:flex;"><span>    ask<span style="color:#1f2328">(</span>perm<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">if</span> <span style="color:#953800">__name__</span> <span style="color:#0550ae">==</span> <span style="color:#0a3069">&#34;__main__&#34;</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>    main<span style="color:#1f2328">()</span>
+</span></span></code></pre></div><h2 id="problem-c-onewayonly">Problem C — One Way Only</h2>
+<p><a href="https://open.kattis.com/problems/onewayonly">Open the original problem on Kattis</a>
+.</p>
+<span id="problem-c-one-way-only-solution"></span>
+
+<p><strong>Strategy Guide &amp; Solution</strong></p>
+<h3 id="c-the-intuition">1. The Intuition</h3>
+<p>At first glance, this problem looks like it requires complex graph theory or a search algorithm (BFS/DFS). However, the constraints ($r, c \le 10^5$) suggest that an $\Theta(r \times c)$ simulation is too slow. We need a linear time solution $\Theta(r+c)$, which implies a <strong>Greedy</strong> approach.</p>
+<p>The core insight lies in geometry. A preferred path cuts a rectangular grid into two distinct, non-overlapping regions:</p>
+<ol>
+<li><strong>The Upper-Right Region</strong> (Strictly above/right of the path).</li>
+<li><strong>The Lower-Left Region</strong> (Strictly below/left of the path).</li>
+</ol>
+<p>Since hikers can only move <strong>Right</strong> and <strong>Down</strong>, they cannot cross <em>from</em> the Lower-Left region <em>to</em> the Upper-Right region (or vice versa) without crossing the preferred path itself. Therefore, we can solve the problem for these two regions <strong>independently</strong> and sum the results.</p>
+<h3 id="c-deconstructing-the-path-logic">2. Deconstructing the Path logic</h3>
+<p>Let’s analyze how a hiker “cheats” (deviates from the preferred path).</p>
+<h4 id="c-the-upper-right-deviation">The Upper-Right Deviation</h4>
+<p>In the Upper-Right region, a hiker deviates and rejoins the path under specific conditions:</p>
+<ul>
+<li><strong>The Deviation (Exit):</strong> The preferred path moves <strong>Down</strong> (D). This exposes a tile to the <strong>Right</strong>, allowing a hiker to slip into the upper region.</li>
+<li><strong>The Re-entry (Entrance):</strong> Later, the preferred path moves <strong>Right</strong> (R). This exposes a tile from <strong>Above</strong>, allowing the hiker to slip back onto the path.</li>
+</ul>
+<p><strong>Goal:</strong> We must break the connection between every “Exit” and its corresponding “Entrance”.</p>
+<h4 id="c-the-lower-left-deviation">The Lower-Left Deviation</h4>
+<p>In the Lower-Left region, the logic is mirrored:</p>
+<ul>
+<li><strong>The Deviation (Exit):</strong> The preferred path moves <strong>Right</strong> (R). This exposes a tile <strong>Below</strong>, allowing a hiker to slip into the lower region.</li>
+<li><strong>The Re-entry (Entrance):</strong> Later, the preferred path moves <strong>Down</strong> (D). This exposes a tile to the <strong>Left</strong>, allowing the hiker to slip back onto the path.</li>
+</ul>
+<h3 id="c-the-algorithm-greedy-matching-parentheses-balancing">3. The Algorithm: Greedy Matching (Parentheses Balancing)</h3>
+<p>We can model this problem exactly like the <strong>“Valid Parentheses”</strong> problem common in Data Structures courses.</p>
+<h4 id="c-logic-for-region-1-upper-right">Logic for Region 1 (Upper-Right)</h4>
+<p>We need to find how many times a D (Exit) is followed eventually by an R (Entrance).</p>
+<ul>
+<li>Treat every D as an <strong>Open Parenthesis</strong> (.</li>
+<li>Treat every R as a <strong>Closing Parenthesis</strong> ).</li>
+<li>We iterate through the string. Every time we find a matching pair ( … ), it represents a valid detour that exists. To block it, we must place an ‘X’.</li>
+<li><strong>Action:</strong> Count the pairs. Each pair requires 1 X to block.</li>
+</ul>
+<h4 id="c-logic-for-region-2-lower-left">Logic for Region 2 (Lower-Left)</h4>
+<ul>
+<li>Treat every R as an <strong>Open Parenthesis</strong> (.</li>
+<li>Treat every D as a <strong>Closing Parenthesis</strong> ).</li>
+<li><strong>Action:</strong> Count the pairs. Each pair requires 1 X.</li>
+</ul>
+<h4 id="c-why-greedy-works">Why “Greedy” works</h4>
+<p>Why don’t we need complex flow networks? Because the grid structure is linear along the path. The “earliest” available Exit will always connect to the “earliest” available Entrance. Blocking one tile effectively “consumes” one Exit/Entrance pair.</p>
+<h3 id="c-step-by-step-walkthrough">4. Step-by-Step Walkthrough</h3>
+<p><strong>Input:</strong> RRDRD (Dimensions 3x4)</p>
+<p><strong>Step A: Analyze Upper-Right (Sources=`D`, Sinks=`R`)</strong></p>
+<ol>
+<li>R: Ignore.</li>
+<li>R: Ignore.</li>
+<li>D: <strong>Exit found</strong>. (Open connections: 1)</li>
+<li>R: <strong>Re-entry found</strong>. We have an open connection!
+<blockquote>
+<ul>
+<li><strong>Action:</strong> Place an X (increment count).</li>
+<li><strong>Update:</strong> Close the connection (Open connections: 0).</li>
+</ul>
+</blockquote>
+</li>
+<li>D: <strong>Exit found</strong>. (Open connections: 1)</li>
+<li>End of string.</li>
+</ol>
+<ul>
+<li><strong>Region Result:</strong> 1 tile needed.</li>
+</ul>
+<p><strong>Step B: Analyze Lower-Left (Sources=`R`, Sinks=`D`)</strong></p>
+<ol>
+<li>R: <strong>Exit found</strong>. (Open connections: 1)</li>
+<li>R: <strong>Exit found</strong>. (Open connections: 2)</li>
+<li>D: <strong>Re-entry found</strong>.
+<blockquote>
+<ul>
+<li><strong>Action:</strong> Place an X (increment count).</li>
+<li><strong>Update:</strong> Use one open connection (Open connections: 1).</li>
+</ul>
+</blockquote>
+</li>
+<li>R: <strong>Exit found</strong>. (Open connections: 2)</li>
+<li>D: <strong>Re-entry found</strong>.
+<blockquote>
+<ul>
+<li><strong>Action:</strong> Place an X (increment count).</li>
+<li><strong>Update:</strong> Use one open connection (Open connections: 1).</li>
+</ul>
+</blockquote>
+</li>
+<li>End of string.</li>
+</ol>
+<ul>
+<li><strong>Region Result:</strong> 2 tiles needed.</li>
+</ul>
+<p><strong>Total:</strong> $1 + 2 = 3$.</p>
+<h3 id="c-complexity-analysis">5. Complexity Analysis</h3>
+<ul>
+<li><strong>Time Complexity:</strong> $\Theta(N)$, where $N = r + c - 2$. We iterate through the path string exactly twice (once for each region).</li>
+<li><strong>Space Complexity:</strong> $\Theta(N)$ to store the input string, or $\Theta(1)$ if reading character by character.</li>
+</ul>
+<h3 id="c-python-solution">6. Python Solution</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#24292e">sys</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">def</span> <span style="color:#6639ba">solve</span><span style="color:#1f2328">():</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># Reading all input from stdin</span>
+</span></span><span style="display:flex;"><span>    input_data <span style="color:#0550ae">=</span> sys<span style="color:#0550ae">.</span>stdin<span style="color:#0550ae">.</span>read<span style="color:#1f2328">()</span><span style="color:#0550ae">.</span>split<span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> <span style="color:#0550ae">not</span> input_data<span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">return</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># While r and c are provided, we primarily need the path string &#39;s&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># r = int(input_data[0])</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># c = int(input_data[1])</span>
+</span></span><span style="display:flex;"><span>    s <span style="color:#0550ae">=</span> input_data<span style="color:#1f2328">[</span><span style="color:#0550ae">2</span><span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    total_x_needed <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># --- Pass 1: Upper-Right Region ---</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># A detour is possible if we go Down (Exit) and later come back via Right (Entrance)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># We treat &#39;D&#39; as open &#39;(&#39; and &#39;R&#39; as closed &#39;)&#39;</span>
+</span></span><span style="display:flex;"><span>    balance <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">for</span> char <span style="color:#0550ae">in</span> s<span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">if</span> char <span style="color:#0550ae">==</span> <span style="color:#0a3069">&#39;D&#39;</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>            balance <span style="color:#0550ae">+=</span> <span style="color:#0550ae">1</span>       <span style="color:#57606a"># Opened a potential detour</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">elif</span> char <span style="color:#0550ae">==</span> <span style="color:#0a3069">&#39;R&#39;</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#cf222e">if</span> balance <span style="color:#0550ae">&gt;</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">:</span>    <span style="color:#57606a"># Closing a detour</span>
+</span></span><span style="display:flex;"><span>                total_x_needed <span style="color:#0550ae">+=</span> <span style="color:#0550ae">1</span>
+</span></span><span style="display:flex;"><span>                balance <span style="color:#0550ae">-=</span> <span style="color:#0550ae">1</span>   <span style="color:#57606a"># We blocked this specific pair</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># --- Pass 2: Lower-Left Region ---</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># A detour is possible if we go Right (Exit) and later come back via Down (Entrance)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># We treat &#39;R&#39; as open &#39;(&#39; and &#39;D&#39; as closed &#39;)&#39;</span>
+</span></span><span style="display:flex;"><span>    balance <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">for</span> char <span style="color:#0550ae">in</span> s<span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">if</span> char <span style="color:#0550ae">==</span> <span style="color:#0a3069">&#39;R&#39;</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>            balance <span style="color:#0550ae">+=</span> <span style="color:#0550ae">1</span>       <span style="color:#57606a"># Opened a potential detour</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">elif</span> char <span style="color:#0550ae">==</span> <span style="color:#0a3069">&#39;D&#39;</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#cf222e">if</span> balance <span style="color:#0550ae">&gt;</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">:</span>    <span style="color:#57606a"># Closing a detour</span>
+</span></span><span style="display:flex;"><span>                total_x_needed <span style="color:#0550ae">+=</span> <span style="color:#0550ae">1</span>
+</span></span><span style="display:flex;"><span>                balance <span style="color:#0550ae">-=</span> <span style="color:#0550ae">1</span>   <span style="color:#57606a"># We blocked this specific pair</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6639ba">print</span><span style="color:#1f2328">(</span>total_x_needed<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">if</span> <span style="color:#953800">__name__</span> <span style="color:#0550ae">==</span> <span style="color:#0a3069">&#39;__main__&#39;</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>    solve<span style="color:#1f2328">()</span>
+</span></span></code></pre></div><h2 id="problem-j-gameofnines">Problem J — Game of Nines</h2>
+<p><a href="https://open.kattis.com/problems/gameofnines">Open the original problem on Kattis</a>
+.</p>
+<span id="problem-j-game-of-nines-solution"></span>
+
+<h3 id="j-story-style-intuition">1. Story-style intuition</h3>
+<p>Picture your digits $0$–$8$ as tokens on a <strong>10-hour clock</strong> (positions $0$ through $9$). When you “add digit $a$ to digit $b$”, you <strong>move</strong> token $b$ forward by $a$ ticks around the clock. If you land exactly on $9$, that token disappears.</p>
+<p>Two important facts drive everything:</p>
+<ol>
+<li>
+<p><strong>Helpers don’t get used up.</strong></p>
+<p>A digit you use as an adder stays on the table. You can reuse it indefinitely.</p>
+</li>
+<li>
+<p><strong>Only the total step size matters.</strong></p>
+<p>Adders are reusable and order doesn’t matter, so what matters is the <strong>set of step sizes you can produce in total</strong> modulo $10$.</p>
+</li>
+</ol>
+<p>We call this set of reusable digits the <strong>helper set</strong> $H$.</p>
+<h3 id="j-what-is-d">2. What is $d$?</h3>
+<p>Given a helper set $H$, the achievable total steps (mod $10$) are exactly the multiples of:</p>
+<p>$$
+d := \gcd\bigl(10,; \text{all digits in } H\bigr).
+$$</p>
+<p>This is because the sums of helpers form a subgroup of $\mathbb{Z}_{10}$, and every subgroup is ${0,d,2d,\ldots,10-d}$ for some $d\in{1,2,5,10}$.</p>
+<p>Interpretation: <strong>:math:`d` is your tick size</strong> around the circle.</p>
+<ul>
+<li>$d=1$ → can move any number of steps</li>
+<li>$d=2$ → even steps only</li>
+<li>$d=5$ → only multiples of 5</li>
+<li>$d=10$ → no movement possible</li>
+</ul>
+<p>A token $b$ is eliminable <strong>iff</strong>:</p>
+<p>$$
+b \text{ is eliminable using } H \iff d \mid (9-b).
+$$</p>
+<h3 id="j-everything-reduces-to-one-gcd">3. Everything reduces to one gcd</h3>
+<p>Take $H$ to be <strong>all digits</strong> you have. Define:</p>
+<p>$$
+g = \gcd(10, a_1, a_2, \dots, a_n).
+$$</p>
+<ul>
+<li>If $g=1$, you can produce every step size → you can eliminate tokens until only <strong>one</strong> remains.</li>
+<li>If $g\in{2,5,10}$, no $9-b$ is divisible by $g$, so <strong>nothing can be eliminated</strong>.</li>
+</ul>
+<p>Thus:</p>
+<p>$$
+\text{Answer} =
+\begin{cases}
+1 &amp; \text{if } \gcd(10, a_1,\dots,a_n)=1,\[4pt]
+n &amp; \text{otherwise.}
+\end{cases}
+$$</p>
+<h3 id="j-constructive-play-when-g-1">4. Constructive play when $g=1$</h3>
+<p><strong>Case 1:</strong> You have a digit in ${1,3,7}$ (coprime with 10). Keep one; repeatedly add it to any other digit until that digit becomes $9$ and disappears.</p>
+<p><strong>Case 2:</strong> Otherwise, $g=1$ implies you have a $5$ and a nonzero even $e\in{2,4,6,8}$. Keep ${e,5}$ as helpers.</p>
+<p>For a target $b$:</p>
+<ul>
+<li>If $b$ is odd → eliminate using repeated $e$ moves.</li>
+<li>If $b$ is even → apply $5$ once to make it odd, then finish with $e$.</li>
+</ul>
+<p>You can also eliminate the $5$ using $e$ because $5 + ke \equiv 9 \pmod{10}$ always has a solution.</p>
+<h3 id="j-short-proof">5. Short proof</h3>
+<ol>
+<li>Achievable totals form a subgroup of $\mathbb{Z}_{10}$ → equal to multiples of $d$.</li>
+<li>$b$ is eliminable ⇔ $b+t\equiv9\pmod{10}$ for some achievable $t$ ⇔ $d\mid(9-b)$.</li>
+<li>If $g=1$, all digits are eliminable; if $g\in{2,5,10}$, none are.</li>
+<li>A move consumes two digits but removes at most one, so <strong>one token remaining</strong> is optimal.</li>
+</ol>
+<h3 id="j-algorithm">6. Algorithm</h3>
+<ol>
+<li>Read $n$ and digits $a_i$.</li>
+<li>Compute $g=\gcd(10,a_1,\ldots,a_n)$.</li>
+<li>Output <strong>1</strong> if $g=1$, else $n$.</li>
+</ol>
+<ul>
+<li><strong>Time:</strong> $\Theta(n)$</li>
+<li><strong>Memory:</strong> $\Theta(1)$</li>
+</ul>
+<h3 id="j-reference-implementations">7. Reference implementations</h3>
+<h4 id="j-python">Python</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#24292e">sys</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#24292e">math</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">def</span> <span style="color:#6639ba">solve</span><span style="color:#1f2328">():</span>
+</span></span><span style="display:flex;"><span>    data <span style="color:#0550ae">=</span> sys<span style="color:#0550ae">.</span>stdin<span style="color:#0550ae">.</span>read<span style="color:#1f2328">()</span><span style="color:#0550ae">.</span>strip<span style="color:#1f2328">()</span><span style="color:#0550ae">.</span>split<span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span>    n <span style="color:#0550ae">=</span> <span style="color:#6639ba">int</span><span style="color:#1f2328">(</span>data<span style="color:#1f2328">[</span><span style="color:#0550ae">0</span><span style="color:#1f2328">])</span>
+</span></span><span style="display:flex;"><span>    g <span style="color:#0550ae">=</span> <span style="color:#0550ae">10</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">for</span> i <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span><span style="color:#0550ae">1</span><span style="color:#1f2328">,</span> n <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>        x <span style="color:#0550ae">=</span> <span style="color:#6639ba">int</span><span style="color:#1f2328">(</span>data<span style="color:#1f2328">[</span>i<span style="color:#1f2328">])</span>
+</span></span><span style="display:flex;"><span>        g <span style="color:#0550ae">=</span> math<span style="color:#0550ae">.</span>gcd<span style="color:#1f2328">(</span>g<span style="color:#1f2328">,</span> x<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6639ba">print</span><span style="color:#1f2328">(</span><span style="color:#0550ae">1</span> <span style="color:#cf222e">if</span> g <span style="color:#0550ae">==</span> <span style="color:#0550ae">1</span> <span style="color:#cf222e">else</span> n<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">if</span> <span style="color:#953800">__name__</span> <span style="color:#0550ae">==</span> <span style="color:#0a3069">&#34;__main__&#34;</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>    solve<span style="color:#1f2328">()</span>
+</span></span></code></pre></div><h3 id="j-quick-sanity-checks">8. Quick sanity checks</h3>
+<ul>
+<li>$2 3 6$ ⇒ $\gcd(10,2,3,6)=1$ ⇒ output <strong>1</strong></li>
+<li>$4 4$ ⇒ $\gcd(10,4,4)=2$ ⇒ output <strong>2</strong></li>
+<li>$0 5 5$ ⇒ $\gcd(10,0,5,5)=5$ ⇒ output <strong>3</strong></li>
+<li>$2 5$ ⇒ $\gcd(10,2,5)=1$ ⇒ output <strong>1</strong></li>
+</ul>
+<h2 id="back-to-the-contest">Back to the contest</h2>
+<p><a href="../seusa2025/">2025 Southeast Regional Contest</a>
+ · <a href="../seusa2026/">2026 Southeast Regional Contest</a>
+</p>
+</div></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Teaching, tools, and things worth sharing.</div><div class="footer-links"><a href="/notes/">Notes</a><a href="/teaching/">Teaching</a><a href="/competitive-programming/">Competitive Programming</a><a href="https://github.com/uwf-fang">GitHub ↗</a><span>Ian Fang</span></div></div></footer></body></html>

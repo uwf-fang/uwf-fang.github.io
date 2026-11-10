@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 Southeast Regional Solutions · Ian Fang</title>
+<meta name="description" content="Ian Fang’s teaching, interactive projects, and notes on computing and useful tools."><meta name="theme-color" content="#163f73">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/style.css"><script src="/assets/app.js" defer></script>
+
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']],processEscapes:true}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head><body><a href="#main" class="skip">Skip to content</a><header class="site-header"><div class="wrap header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation"><a href="/">Home</a>
+<a href="/projects/">Projects</a>
+<a href="/teaching/">Teaching</a>
+<a href="/competitive-programming/" aria-current="page">Competitive Programming</a>
+<a href="/notes/">Notes</a>
+<a href="/about/">About</a>
+<a class="nav-github" href="https://github.com/uwf-fang">GitHub <span aria-hidden="true">↗</span></a></nav></div></header>
+<main id="main"><div class="wrap competition-layout"><aside class="competition-sidebar" aria-label="Competitive programming navigation"><a class="competition-home" href="/competitive-programming/">← All competitive programming</a><nav aria-label="Articles"><span class="eyebrow">In this section</span><ul><li><a href="/competitive-programming/seusa2025/">2025 Southeast Regional Contest</a></li><li><a href="/competitive-programming/icpc/">International Collegiate Programming Contest</a></li><li><a href="/competitive-programming/seusa2025-solutions/">2025 Southeast Regional Solutions</a></li><li><a href="/competitive-programming/trd/">How to Use the ICPC Division 2 TRD</a></li><li><a href="/competitive-programming/seusa2026/">2026 Southeast Regional Contest</a></li><li><a href="/competitive-programming/seusa2026-solutions/" aria-current="page">2026 Southeast Regional Solutions</a></li></ul></nav></aside><article class="competition-article"><header class="page-intro"><div class="breadcrumb"><a href="/competitive-programming/">Competitive programming</a> / 2026 Southeast Regional Solutions</div><div class="eyebrow">Computing competitions</div><h1>2026 Southeast Regional Solutions</h1></header><details class="competition-toc" open><summary>On this page</summary><nav id="TableOfContents">
+  <ul>
+    <li><a href="#problem-a-whatisicpc">Problem A — What Really Is ICPC?</a></li>
+    <li><a href="#problem-b-castlepult">Problem B — Castle-pult</a></li>
+    <li><a href="#problem-c-crystallinecreation">Problem C — Crystalline Creation</a></li>
+    <li><a href="#problem-d-splitthebill">Problem D — Split the Bill</a></li>
+    <li><a href="#problem-e-paintedmaze">Problem E — Painted Maze</a></li>
+    <li><a href="#problem-f-forkitover">Problem F — Fork It Over</a></li>
+    <li><a href="#problem-g-guaranteeddrop">Problem G — Guaranteed Drop</a></li>
+    <li><a href="#problem-i-feelinlucky">Problem I — Feelin&rsquo; Lucky?</a></li>
+    <li><a href="#problem-j-snowmanyways">Problem J — Snow Many Ways</a></li>
+    <li><a href="#problem-l-volleyballscoring">Problem L — Volleyball Scoring</a></li>
+    <li><a href="#back-to-the-contest">Back to the contest</a></li>
+  </ul>
+</nav></details><div class="article-prose competition-prose"><span id="southeast-regional-solutions-2026"></span>
+
+<p>Each section connects a selected contest problem to its algorithm, explains why the algorithm works, and includes the provided Python implementation. Follow the Kattis link for the complete statement, input format, and constraints.</p>
+<h2 id="problem-a-whatisicpc">Problem A — What Really Is ICPC?</h2>
+<p><a href="https://open.kattis.com/problems/whatisicpc">Open the original problem on Kattis</a>
+.</p>
+<p><strong>Goal.</strong> Four words are proposed as an expansion of the acronym <code>ICPC</code>. Determine whether their first letters, read in the given order, form that acronym.</p>
+<p><strong>From the problem to the algorithm.</strong> An acronym depends only on the first character of each word. The remaining letters can be ignored, even when their capitalization looks unusual. The input guarantees four words with uppercase first letters, so splitting the line on whitespace gives exactly the pieces we need.</p>
+<p>Build the list of initials and compare it with <code>['I', 'C', 'P', 'C']</code>. Order matters: having the right letters somewhere among the four words is insufficient. There is also no need to check whether the words are the official expansion of ICPC; any words with those initials satisfy the condition.</p>
+<p><strong>Example.</strong> The official first sample, <code>International Collegiate Programming Contest</code>, produces <code>I</code>, <code>C</code>, <code>P</code>, <code>C</code>, so the answer is <code>1</code>. In <code>Undergraduate Competitive Programming Club</code>, the first initial is <code>U</code>, so the answer is <code>0</code>.</p>
+<p><strong>Why it works.</strong> The program extracts exactly the characters used to define the acronym. The list comparison succeeds precisely when all four initials match the required letters in their required positions.</p>
+<p><strong>Complexity.</strong> Let $L$ be the total input length. Splitting the input takes $O(L)$ time and space; extracting and comparing four initials takes constant time.</p>
+<p><strong>Python solution.</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>words <span style="color:#0550ae">=</span> <span style="color:#6639ba">input</span><span style="color:#1f2328">()</span><span style="color:#0550ae">.</span>split<span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fl <span style="color:#0550ae">=</span> <span style="color:#1f2328">[</span>word<span style="color:#1f2328">[</span><span style="color:#0550ae">0</span><span style="color:#1f2328">]</span> <span style="color:#cf222e">for</span> word <span style="color:#0550ae">in</span> words<span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">print</span><span style="color:#1f2328">(</span><span style="color:#0550ae">1</span> <span style="color:#cf222e">if</span> fl <span style="color:#0550ae">==</span> <span style="color:#6639ba">list</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;ICPC&#34;</span><span style="color:#1f2328">)</span> <span style="color:#cf222e">else</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">)</span>
+</span></span></code></pre></div><h2 id="problem-b-castlepult">Problem B — Castle-pult</h2>
+<p><a href="https://open.kattis.com/problems/castlepult">Open the original problem on Kattis</a>
+.</p>
+<p><strong>Goal.</strong> Three castles lie on a circle with $n$ equally spaced zones. Each castle must launch its troops exactly $x$ zones clockwise or counterclockwise before they walk to another castle. The launch is free, walking costs one day per zone, and every castle must use the same positive integer $x$. Choose $x$ to minimize the longest travel time between any pair of castles. Output that minimum travel time, rather than the launch distance itself.</p>
+<p><strong>First reduce the geometry.</strong> For positions $a$ and $b$, let $\delta=|a-b|$. Walking around the circle gives two possible distances, so their shortest separation is</p>
+<p>$$
+d=\min(\delta,n-\delta).
+$$</p>
+<p>There are only three pairs of castles, so compute these three values. Each lies between $1$ and $\lfloor n/2\rfloor$.</p>
+<p><strong>What does the cannon change?</strong> A launch length can be reduced modulo $n$, and choosing between clockwise and counterclockwise makes launch lengths $x$ and $n-x$ equivalent. We can therefore reason about a normalized launch length $y$ between $0$ and $\lfloor n/2\rfloor$.</p>
+<p>For a pair with shortest separation $d$, the best launch leaves $|d-y|$ zones to walk. If $y&lt;d$, launch along the shorter arc and walk the remaining distance. If $y&gt;d$, overshoot along that arc and walk back. Launching the other way cannot improve this: its possible walking distances are $d+y$ and $n-d-y$, both at least $|d-y|$ because $d,y\le n/2$.</p>
+<p><strong>Choose one launch distance for every pair.</strong> Let $\ell$ and $h$ be the smallest and largest of the three separations. We want to minimize</p>
+<p>$$
+\max_i |d_i-y|=\max(|\ell-y|,|h-y|).
+$$</p>
+<p>For any choice of $y$, covering the gap from $\ell$ to $h$ requires a worst error of at least $\lceil(h-\ell)/2\rceil$. Choosing an integer nearest their midpoint achieves that bound. All intermediate separations lie within the same interval and introduce no larger error. The midpoint is a valid positive launch length because all three separations are positive.</p>
+<p>Thus the answer is</p>
+<p>$$
+\left\lceil\frac{h-\ell}{2}\right\rceil,
+$$</p>
+<p>which is exactly <code>(max(distances) - min(distances) + 1) // 2</code> in the code.</p>
+<p><strong>Example.</strong> For the official sample <code>11 1 4 9</code>, the three shortest separations are $3$, $3$, and $5$. Launching $4$ zones leaves at most one zone to walk, so the answer is $1$.</p>
+<p><strong>Complexity.</strong> Three pairwise calculations take $O(1)$ time and space, even when $n$ is very large.</p>
+<p><strong>Python solution.</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>n<span style="color:#1f2328">,</span> <span style="color:#0550ae">*</span>positions <span style="color:#0550ae">=</span> <span style="color:#6639ba">map</span><span style="color:#1f2328">(</span><span style="color:#6639ba">int</span><span style="color:#1f2328">,</span> <span style="color:#6639ba">input</span><span style="color:#1f2328">()</span><span style="color:#0550ae">.</span>split<span style="color:#1f2328">())</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>distances <span style="color:#0550ae">=</span> <span style="color:#1f2328">[]</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">for</span> i <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span><span style="color:#0550ae">3</span><span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">for</span> j <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>i <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">,</span> <span style="color:#0550ae">3</span><span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>        delta <span style="color:#0550ae">=</span> <span style="color:#6639ba">abs</span><span style="color:#1f2328">(</span>positions<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">-</span> positions<span style="color:#1f2328">[</span>j<span style="color:#1f2328">])</span>
+</span></span><span style="display:flex;"><span>        distances<span style="color:#0550ae">.</span>append<span style="color:#1f2328">(</span><span style="color:#6639ba">min</span><span style="color:#1f2328">(</span>delta<span style="color:#1f2328">,</span> n <span style="color:#0550ae">-</span> delta<span style="color:#1f2328">))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">print</span><span style="color:#1f2328">((</span><span style="color:#6639ba">max</span><span style="color:#1f2328">(</span>distances<span style="color:#1f2328">)</span> <span style="color:#0550ae">-</span> <span style="color:#6639ba">min</span><span style="color:#1f2328">(</span>distances<span style="color:#1f2328">)</span> <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">//</span> <span style="color:#0550ae">2</span><span style="color:#1f2328">)</span>
+</span></span></code></pre></div><h2 id="problem-c-crystallinecreation">Problem C — Crystalline Creation</h2>
+<p><a href="https://open.kattis.com/problems/crystallinecreation">Open the original problem on Kattis</a>
+.</p>
+<p><strong>Goal.</strong> Recreate a target grid of crystals, initially starting with an empty grid. You may place a crystal manually, grow one immediately above the highest crystal in a column, or grow one immediately left of the leftmost crystal in a row. Minimize the number of manual placements. Crystals cannot be removed, so growing a crystal into a target <code>.</code> cell would make the result invalid.</p>
+<p><strong>Reason backward from a target crystal.</strong> A crystal at row $i$, column $j$ can be grown only from a crystal immediately below it or immediately to its right. If both of those neighboring positions are either outside the grid or <code>.</code> in the target, neither growth method can create this crystal. It must be placed manually.</p>
+<p>This gives a necessary count: count every <code>*</code> that has no <code>*</code> directly below and no <code>*</code> directly to its right. Notice that both neighbors must be absent for a manual placement to be forced. One useful neighbor is enough to avoid that placement.</p>
+<p><strong>Why this count is also sufficient.</strong> The rules mention the <em>highest</em> crystal in a column and the <em>leftmost</em> crystal in a row, so we must show that other crystals will not block the proposed growth. Imagine constructing the target from the bottom row upward, and within each row from right to left:</p>
+<ol>
+<li>When processing a target <code>*</code>, its below and right neighbors have already been processed.</li>
+<li>If the below neighbor is <code>*</code>, it is currently the highest existing crystal in that column: all rows above it are still unprocessed. Shining on the column creates the current crystal.</li>
+<li>Otherwise, if the right neighbor is <code>*</code>, it is the leftmost existing crystal in this row: the cells farther left are still unprocessed. Shining on the row creates the current crystal.</li>
+<li>If neither neighbor is <code>*</code>, place the current crystal manually.</li>
+</ol>
+<p>Every added crystal belongs in the target, and manual placement is used only for the cells already shown to require it. This construction matches the lower bound, so the count is optimal. The program only needs to count these cells; it does not need to simulate the construction order.</p>
+<p><strong>Example.</strong> In the first official sample, the top horizontal run needs one manual crystal at its right end. The lower group needs one at its bottom end, from which the remaining crystals can grow upward and leftward. The answer is $2$.</p>
+<p><strong>Connection to the code.</strong> For a <code>*</code>, the <code>if</code> condition asks whether either supporting neighbor exists. If so, the program skips it; otherwise it increments the answer. Bounds checks make a neighbor outside the grid behave like an absent crystal.</p>
+<p><strong>Complexity.</strong> Scanning all $rc$ cells takes $O(rc)$ time. The stored grid uses $O(rc)$ space, and the counting logic uses $O(1)$ additional space.</p>
+<p><strong>Python solution.</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>r<span style="color:#1f2328">,</span> c <span style="color:#0550ae">=</span> <span style="color:#6639ba">map</span><span style="color:#1f2328">(</span><span style="color:#6639ba">int</span><span style="color:#1f2328">,</span> <span style="color:#6639ba">input</span><span style="color:#1f2328">()</span><span style="color:#0550ae">.</span>split<span style="color:#1f2328">())</span>
+</span></span><span style="display:flex;"><span>rows <span style="color:#0550ae">=</span> <span style="color:#1f2328">[</span><span style="color:#6639ba">input</span><span style="color:#1f2328">()</span> <span style="color:#cf222e">for</span> _ <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>r<span style="color:#1f2328">)]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>count <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">for</span> i <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>r<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">for</span> j <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>c<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">if</span> rows<span style="color:#1f2328">[</span>i<span style="color:#1f2328">][</span>j<span style="color:#1f2328">]</span> <span style="color:#0550ae">==</span> <span style="color:#0a3069">&#34;*&#34;</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#cf222e">if</span> <span style="color:#1f2328">(</span>i <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span> <span style="color:#0550ae">&lt;</span> r <span style="color:#0550ae">and</span> rows<span style="color:#1f2328">[</span>i <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">][</span>j<span style="color:#1f2328">]</span> <span style="color:#0550ae">==</span> <span style="color:#0a3069">&#34;*&#34;</span><span style="color:#1f2328">)</span> <span style="color:#0550ae">or</span> <span style="color:#1f2328">(</span>j <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span> <span style="color:#0550ae">&lt;</span> c <span style="color:#0550ae">and</span> rows<span style="color:#1f2328">[</span>i<span style="color:#1f2328">][</span>j <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">==</span> <span style="color:#0a3069">&#34;*&#34;</span><span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#cf222e">continue</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#cf222e">else</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>                count <span style="color:#0550ae">+=</span> <span style="color:#0550ae">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">print</span><span style="color:#1f2328">(</span>count<span style="color:#1f2328">)</span>
+</span></span></code></pre></div><h2 id="problem-d-splitthebill">Problem D — Split the Bill</h2>
+<p><a href="https://open.kattis.com/problems/splitthebill">Open the original problem on Kattis</a>
+.</p>
+<p><strong>Goal.</strong> A group of friends splits each meal&rsquo;s bill using whole dollars. Within one meal, no two payments may differ by more than one dollar. Different friends may pay the extra dollars at different meals. Decide whether everyone can finish with the same total payment across all meals.</p>
+<p><strong>Separate a bill into equal payments and extras.</strong> For $p$ friends, write a bill as</p>
+<p>$$
+c_i=pq_i+r_i,\qquad 0\le r_i&lt;p.
+$$</p>
+<p>Everyone pays the base amount $q_i$. Exactly $r_i$ distinct friends pay one additional dollar. The base amounts are already equal for everyone, so only the allocation of these extras matters.</p>
+<p><strong>A necessary condition.</strong> If everyone pays the same integer total, the sum of all bills must be divisible by $p$. A nonzero remainder makes equal final totals impossible.</p>
+<p><strong>Why divisibility is sufficient.</strong> Line up the friends in a circle and distribute the extra dollars in cyclic order, continuing from where the previous meal stopped. A meal has fewer than $p$ extras, so this assigns at most one extra dollar to any friend for that meal and obeys the payment rule. If the total bill is divisible by $p$, then $\sum_i r_i$ is also divisible by $p$. The extra assignments complete a whole number of cycles, giving every friend the same number of extras.</p>
+<p>This proves that checking the grand total is enough. We do not need to search over who pays extra at each meal, and individual bills do not all have to be divisible by the group size.</p>
+<p><strong>Example.</strong> The first official sample has $5$ friends and bills $17$, $3$, and $15$. Everyone&rsquo;s base payments total $3+0+3=6$ dollars. The meals require $2+3+0=5$ extras altogether, which can give one extra to each friend. Everyone pays $7$ dollars, so the answer is <code>1</code>.</p>
+<p><strong>Complexity.</strong> Summing $m$ bills takes $O(m)$ time. The provided implementation stores the bills in a list, using $O(m)$ space; a running sum could use $O(1)$ additional space.</p>
+<p><strong>Python solution.</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>p<span style="color:#1f2328">,</span> m <span style="color:#0550ae">=</span> <span style="color:#6639ba">map</span><span style="color:#1f2328">(</span><span style="color:#6639ba">int</span><span style="color:#1f2328">,</span> <span style="color:#6639ba">input</span><span style="color:#1f2328">()</span><span style="color:#0550ae">.</span>split<span style="color:#1f2328">())</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>c <span style="color:#0550ae">=</span> <span style="color:#1f2328">[</span><span style="color:#6639ba">int</span><span style="color:#1f2328">(</span><span style="color:#6639ba">input</span><span style="color:#1f2328">())</span> <span style="color:#cf222e">for</span> _ <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>m<span style="color:#1f2328">)]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">print</span><span style="color:#1f2328">(</span><span style="color:#0550ae">1</span> <span style="color:#cf222e">if</span> <span style="color:#6639ba">sum</span><span style="color:#1f2328">(</span>c<span style="color:#1f2328">)</span> <span style="color:#0550ae">%</span> p <span style="color:#0550ae">==</span> <span style="color:#0550ae">0</span> <span style="color:#cf222e">else</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">)</span>
+</span></span></code></pre></div><h2 id="problem-e-paintedmaze">Problem E — Painted Maze</h2>
+<p><a href="https://open.kattis.com/problems/paintedmaze">Open the original problem on Kattis</a>
+.</p>
+<p><strong>Goal.</strong> Reach the bottom-right cell from the top-left cell of a colored grid. A <code>0</code> is an obstacle. You may step to a side-adjacent non-obstacle cell for cost $0$ if the color stays the same or cost $1$ if it changes. From a cell of a designated special color, you may also teleport to any other cell of that color for free. Find the minimum total cost, or report <code>-1</code> if the destination is unreachable.</p>
+<p><strong>Recognize the shortest-path problem.</strong> Treat each usable cell as a graph vertex. Walking and teleporting provide edges, and the edge weights are either $0$ or $1$. We minimize the sum of edge costs, so the path with the fewest moves need not be best: many free moves can be preferable to one color change. Ordinary BFS, which treats every move equally, would optimize the wrong quantity.</p>
+<p><strong>Use 0–1 BFS.</strong> This is Dijkstra&rsquo;s shortest-path idea specialized to weights $0$ and $1$. A deque holds cells waiting to be processed. When relaxing an edge from a cell at distance $d$:</p>
+<ul>
+<li>a zero-cost improvement has distance $d$, so add it to the front;</li>
+<li>a one-cost improvement has distance $d+1$, so add it to the back.</li>
+</ul>
+<p>This keeps the search in increasing distance order. A cell&rsquo;s distance is final when it is first processed. The <code>done</code> array skips duplicate queue entries, and this ordering makes it safe to stop as soon as the destination is processed.</p>
+<p><strong>Avoid building every teleport edge.</strong> If $t$ cells share one special color, explicitly connecting every pair would require $O(t^2)$ edges. Instead, group their indices in a list for that color. When the search first processes a cell of this color at distance $d$, relax every member of its group to distance $d$.</p>
+<p>That group never needs to be scanned again. The first processed member has the minimum distance among all members, and free teleportation already gives every other member that distance. Reaching the color again cannot improve those teleport distances. <code>teleports.pop(color, ())</code> both retrieves and removes the list, enforcing this rule.</p>
+<p><strong>How the implementation represents the grid.</strong> Use row and column indices starting from $0$, and flatten the grid so cell $(i,j)$ has index $i\cdot\text{cols}+j$. Up and down differ by <code>cols</code>; left and right differ by $1$. The column checks prevent a horizontal move from accidentally wrapping from one row into the next. Neighboring obstacle cells are skipped. <code>dist[0] = 0</code> initializes the source; all other distances start above any possible shortest simple path&rsquo;s cost.</p>
+<p><strong>Example.</strong> In the first official sample, walk through color $1$ to cell $(1,3)$ of color $2$, paying $1$ for that color change. Teleport to $(3,5)$, also color $2$, for free. Step to $(3,6)$ of color $4$, paying another $1$, then continue to $(4,6)$ for free. The total is $2$. Coordinates here use the statement&rsquo;s numbering from $1$.</p>
+<p><strong>Why it works.</strong> Every allowed move is represented by an edge with its correct cost. The deque processes distance improvements in the order required by 0–1 BFS. Scanning a teleport group once preserves all useful free connections, so the optimization does not discard a better route. If the deque empties without reaching the destination, no allowed path reaches it.</p>
+<p><strong>Complexity.</strong> Let $N=rc$. Each cell has at most four walking neighbors, and each special-color list is scanned at most once. Total time and space are $O(N)$, including the stored grid, distances, deque, and color groups.</p>
+<p><strong>Python solution.</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#24292e">sys</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">from</span> <span style="color:#24292e">collections</span> <span style="color:#cf222e">import</span> deque
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>data <span style="color:#0550ae">=</span> <span style="color:#6639ba">list</span><span style="color:#1f2328">(</span><span style="color:#6639ba">map</span><span style="color:#1f2328">(</span><span style="color:#6639ba">int</span><span style="color:#1f2328">,</span> sys<span style="color:#0550ae">.</span>stdin<span style="color:#0550ae">.</span>buffer<span style="color:#0550ae">.</span>read<span style="color:#1f2328">()</span><span style="color:#0550ae">.</span>split<span style="color:#1f2328">()))</span>
+</span></span><span style="display:flex;"><span>rows<span style="color:#1f2328">,</span> cols<span style="color:#1f2328">,</span> k<span style="color:#1f2328">,</span> s <span style="color:#0550ae">=</span> data<span style="color:#1f2328">[:</span><span style="color:#0550ae">4</span><span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>n <span style="color:#0550ae">=</span> rows <span style="color:#0550ae">*</span> cols
+</span></span><span style="display:flex;"><span>grid <span style="color:#0550ae">=</span> data<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span><span style="color:#1f2328">:</span><span style="color:#0550ae">4</span> <span style="color:#0550ae">+</span> n<span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>teleports <span style="color:#0550ae">=</span> <span style="color:#1f2328">{</span>color<span style="color:#1f2328">:</span> <span style="color:#1f2328">[]</span> <span style="color:#cf222e">for</span> color <span style="color:#0550ae">in</span> data<span style="color:#1f2328">[</span><span style="color:#0550ae">4</span> <span style="color:#0550ae">+</span> n<span style="color:#1f2328">:]}</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">for</span> cell<span style="color:#1f2328">,</span> color <span style="color:#0550ae">in</span> <span style="color:#6639ba">enumerate</span><span style="color:#1f2328">(</span>grid<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> color <span style="color:#0550ae">in</span> teleports<span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>        teleports<span style="color:#1f2328">[</span>color<span style="color:#1f2328">]</span><span style="color:#0550ae">.</span>append<span style="color:#1f2328">(</span>cell<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">del</span> data
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dist <span style="color:#0550ae">=</span> <span style="color:#1f2328">[</span>n <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">*</span> n
+</span></span><span style="display:flex;"><span>dist<span style="color:#1f2328">[</span><span style="color:#0550ae">0</span><span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span>
+</span></span><span style="display:flex;"><span>done <span style="color:#0550ae">=</span> <span style="color:#6639ba">bytearray</span><span style="color:#1f2328">(</span>n<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>queue <span style="color:#0550ae">=</span> deque<span style="color:#1f2328">([</span><span style="color:#0550ae">0</span><span style="color:#1f2328">])</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">while</span> queue<span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>    cell <span style="color:#0550ae">=</span> queue<span style="color:#0550ae">.</span>popleft<span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> done<span style="color:#1f2328">[</span>cell<span style="color:#1f2328">]:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">continue</span>
+</span></span><span style="display:flex;"><span>    done<span style="color:#1f2328">[</span>cell<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> <span style="color:#0550ae">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> cell <span style="color:#0550ae">==</span> n <span style="color:#0550ae">-</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6639ba">print</span><span style="color:#1f2328">(</span>dist<span style="color:#1f2328">[</span>cell<span style="color:#1f2328">])</span>
+</span></span><span style="display:flex;"><span>        exit<span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    current_dist <span style="color:#0550ae">=</span> dist<span style="color:#1f2328">[</span>cell<span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>    color <span style="color:#0550ae">=</span> grid<span style="color:#1f2328">[</span>cell<span style="color:#1f2328">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># Expand each special color only once.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">for</span> nxt <span style="color:#0550ae">in</span> teleports<span style="color:#0550ae">.</span>pop<span style="color:#1f2328">(</span>color<span style="color:#1f2328">,</span> <span style="color:#1f2328">()):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">if</span> current_dist <span style="color:#0550ae">&lt;</span> dist<span style="color:#1f2328">[</span>nxt<span style="color:#1f2328">]:</span>
+</span></span><span style="display:flex;"><span>            dist<span style="color:#1f2328">[</span>nxt<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> current_dist
+</span></span><span style="display:flex;"><span>            queue<span style="color:#0550ae">.</span>appendleft<span style="color:#1f2328">(</span>nxt<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    neighbors <span style="color:#0550ae">=</span> <span style="color:#1f2328">[]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> cell <span style="color:#0550ae">&gt;=</span> cols<span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>        neighbors<span style="color:#0550ae">.</span>append<span style="color:#1f2328">(</span>cell <span style="color:#0550ae">-</span> cols<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> cell <span style="color:#0550ae">+</span> cols <span style="color:#0550ae">&lt;</span> n<span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>        neighbors<span style="color:#0550ae">.</span>append<span style="color:#1f2328">(</span>cell <span style="color:#0550ae">+</span> cols<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    column <span style="color:#0550ae">=</span> cell <span style="color:#0550ae">%</span> cols
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> column <span style="color:#0550ae">&gt;</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>        neighbors<span style="color:#0550ae">.</span>append<span style="color:#1f2328">(</span>cell <span style="color:#0550ae">-</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> column <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span> <span style="color:#0550ae">&lt;</span> cols<span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>        neighbors<span style="color:#0550ae">.</span>append<span style="color:#1f2328">(</span>cell <span style="color:#0550ae">+</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">for</span> nxt <span style="color:#0550ae">in</span> neighbors<span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">if</span> grid<span style="color:#1f2328">[</span>nxt<span style="color:#1f2328">]</span> <span style="color:#0550ae">==</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#cf222e">continue</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        weight <span style="color:#0550ae">=</span> <span style="color:#6639ba">int</span><span style="color:#1f2328">(</span>grid<span style="color:#1f2328">[</span>nxt<span style="color:#1f2328">]</span> <span style="color:#0550ae">!=</span> color<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>        new_dist <span style="color:#0550ae">=</span> current_dist <span style="color:#0550ae">+</span> weight
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">if</span> new_dist <span style="color:#0550ae">&lt;</span> dist<span style="color:#1f2328">[</span>nxt<span style="color:#1f2328">]:</span>
+</span></span><span style="display:flex;"><span>            dist<span style="color:#1f2328">[</span>nxt<span style="color:#1f2328">]</span> <span style="color:#0550ae">=</span> new_dist
+</span></span><span style="display:flex;"><span>            <span style="color:#cf222e">if</span> weight <span style="color:#0550ae">==</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>                queue<span style="color:#0550ae">.</span>appendleft<span style="color:#1f2328">(</span>nxt<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#cf222e">else</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>                queue<span style="color:#0550ae">.</span>append<span style="color:#1f2328">(</span>nxt<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">print</span><span style="color:#1f2328">(</span><span style="color:#0550ae">-</span><span style="color:#0550ae">1</span><span style="color:#1f2328">)</span>
+</span></span></code></pre></div><h2 id="problem-f-forkitover">Problem F — Fork It Over</h2>
+<p><a href="https://open.kattis.com/problems/forkitover">Open the original problem on Kattis</a>
+.</p>
+<p><strong>Goal.</strong> Each day an office receives some utensil bags and needs one bag per person eating lunch. Extra bags go into an unlimited reserve. A shortage first uses the reserve; any remaining shortage must be bought from a store immediately. The reserve starts empty. Find the total number of bags bought over all days.</p>
+<p><strong>Choose the state that connects one day to the next.</strong> Past days matter only through the unused bags left in the reserve. Keep <code>store</code> for this reserve and <code>purchase</code> for the cumulative number bought. For a day with $b$ delivered bags and $p$ people, there are <code>store + b</code> bags available before buying anything.</p>
+<p>If this covers the people, subtract $p$ and carry the remainder forward. Otherwise, the missing amount is <code>p - store - b</code>; add that amount to <code>purchase</code> and set the reserve to zero. Purchased bags are all used immediately, so they never increase the reserve.</p>
+<p><strong>Why the days must stay in order.</strong> Later deliveries cannot supply an earlier lunch. Subtracting total people from total deliveries loses this timing information and can underestimate the purchases.</p>
+<p><strong>Example.</strong> The official sample evolves as follows:</p>
+<table>
+	<thead>
+			<tr>
+					<th>Day</th>
+					<th style="text-align: right">Delivered</th>
+					<th style="text-align: right">People</th>
+					<th style="text-align: right">Bought that day</th>
+					<th style="text-align: right">Reserve afterward</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>1</td>
+					<td style="text-align: right">2</td>
+					<td style="text-align: right">4</td>
+					<td style="text-align: right">2</td>
+					<td style="text-align: right">0</td>
+			</tr>
+			<tr>
+					<td>2</td>
+					<td style="text-align: right">5</td>
+					<td style="text-align: right">1</td>
+					<td style="text-align: right">0</td>
+					<td style="text-align: right">4</td>
+			</tr>
+			<tr>
+					<td>3</td>
+					<td style="text-align: right">3</td>
+					<td style="text-align: right">3</td>
+					<td style="text-align: right">0</td>
+					<td style="text-align: right">4</td>
+			</tr>
+			<tr>
+					<td>4</td>
+					<td style="text-align: right">1</td>
+					<td style="text-align: right">6</td>
+					<td style="text-align: right">1</td>
+					<td style="text-align: right">0</td>
+			</tr>
+			<tr>
+					<td>5</td>
+					<td style="text-align: right">4</td>
+					<td style="text-align: right">2</td>
+					<td style="text-align: right">0</td>
+					<td style="text-align: right">2</td>
+			</tr>
+	</tbody>
+</table>
+<p>The answer is $3$, even though the total deliveries fall short of the total demand by only $1$ bag. Two bags arrive too late to offset the earlier purchases and remain in reserve.</p>
+<p><strong>Why it works.</strong> Before each day, <code>store</code> is exactly the number of unused bags from previous deliveries. The update uses all currently available bags and buys precisely the uncovered demand, as the rules require. This maintains the invariant for the next day and records every purchase exactly once.</p>
+<p><strong>Complexity.</strong> The simulation takes $O(n)$ time and $O(1)$ additional space.</p>
+<p><strong>Python solution.</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>n <span style="color:#0550ae">=</span> <span style="color:#6639ba">int</span><span style="color:#1f2328">(</span><span style="color:#6639ba">input</span><span style="color:#1f2328">())</span>
+</span></span><span style="display:flex;"><span>store <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span>
+</span></span><span style="display:flex;"><span>purchase <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">for</span> i <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>n<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>    b<span style="color:#1f2328">,</span> p <span style="color:#0550ae">=</span> <span style="color:#6639ba">map</span><span style="color:#1f2328">(</span><span style="color:#6639ba">int</span><span style="color:#1f2328">,</span> <span style="color:#6639ba">input</span><span style="color:#1f2328">()</span><span style="color:#0550ae">.</span>split<span style="color:#1f2328">())</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> store <span style="color:#0550ae">+</span> b <span style="color:#0550ae">&lt;</span> p<span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>        purchase <span style="color:#0550ae">+=</span> p <span style="color:#0550ae">-</span> store <span style="color:#0550ae">-</span> b
+</span></span><span style="display:flex;"><span>        store <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">else</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>        store <span style="color:#0550ae">=</span> store <span style="color:#0550ae">+</span> b <span style="color:#0550ae">-</span> p
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">print</span><span style="color:#1f2328">(</span>purchase<span style="color:#1f2328">)</span>
+</span></span></code></pre></div><h2 id="problem-g-guaranteeddrop">Problem G — Guaranteed Drop</h2>
+<p><a href="https://open.kattis.com/problems/guaranteeddrop">Open the original problem on Kattis</a>
+.</p>
+<p><strong>Goal.</strong> Buy containers until one drops a desired ship. A container type has price $p$, ordinary success probability $r$, and a guarantee $g$: if its first $g-1$ openings fail, its $g$-th opening must succeed. Guarantees are tracked separately for each type. The problem permits switching types before each purchase and asks for the smallest expected total cost.</p>
+<p><strong>Compute the cost of committing to one type.</strong> Let $q=1-r$ be the failure probability. You always pay for the first container. You pay for a second only if the first fails, for a third only if the first two fail, and so on. No more than $g$ containers are needed. Therefore,</p>
+<p>$$
+C_g=p+pq+pq^2+\cdots+pq^{g-1}.
+$$</p>
+<p>Here $p$ is the cost per purchase, and $g$ is the purchase count at which that type guarantees success.</p>
+<p>We can evaluate this finite sum without exponentiation. Define $C_0=0$ and build</p>
+<p>$$
+C_t=p+qC_{t-1},\qquad t=1,\ldots,g.
+$$</p>
+<p>For $t=1$, this gives $C_1=p$, the price of a guaranteed final container. For larger $t$, pay $p$ now and incur the remaining expected cost only on failure. The loop builds the expected cost from the guaranteed last purchase back to the first purchase.</p>
+<p><strong>Why is taking the best single type enough?</strong> Switching is allowed, so this needs justification. At any point, let $C_i$ be the expected additional cost of using only type $i$ from then on. A failed opening moves that type closer to its guarantee, so its remaining cost decreases; the costs of untouched types stay the same.</p>
+<p>A more precise argument shows that mixing cannot beat $M=\min_i C_i$. Use induction on the total number of failures still possible before the guarantees. If no failures remain, every next purchase guarantees success and the cheapest one is optimal. A failed purchase reduces the remaining failure count by one, so the same claim can be assumed for the state reached after that failure.</p>
+<p>Suppose the next purchase is a non-guaranteed container of type $j$. Let $C&rsquo;_j$ be its remaining committed cost after failure, and let $B$ be the smallest committed cost among the other types. With no other type, take $B=+\infty$. The induction hypothesis makes the best continuation cost $\min(C&rsquo;_j,B)$.</p>
+<ul>
+<li>If $C&rsquo;_j\le B$, the best continuation after failure costs $C&rsquo;_j$. Buying this container and continuing has expectation $p_j+q_jC&rsquo;_j=C_j\ge M$.</li>
+<li>If $B&lt;C&rsquo;_j$, switching to another type after failure gives expectation $p_j+q_jB$. Since $C&rsquo;_j$ is a finite geometric sum, $C&rsquo;_j\le p_j/r_j$. Thus $B&lt;p_j/r_j$ and $p_j+q_jB\ge B\ge M$.</li>
+</ul>
+<p>A guaranteed next purchase costs $p_j=C_j\ge M$ as well. This argument applies recursively after failures: there are only finitely many possible failures before some guarantee forces success. It proves that no first choice and continuation can do better than $M$.</p>
+<p>Choosing the type that attains $M$ and committing to it achieves $M$. After any failure, that type&rsquo;s remaining committed cost becomes smaller, so there is no reason to switch. The algorithm can therefore evaluate each type independently and take the minimum.</p>
+<p><strong>Example.</strong> In the first official sample, $p=5$, $r=0.5$, and $g=3$. The expected payment is $5+0.5\cdot5+0.25\cdot5=8.75$ coins. The third term is paid only when the first two openings both fail.</p>
+<p><strong>Complexity.</strong> The recurrence takes $O(g_i)$ work for type $i$, giving $O(\sum_i g_i)$ time and $O(1)$ additional space. With at most $1{,}000$ types and $g_i\le100$, this is small. Floating-point arithmetic and twelve digits after the decimal point provide the precision requested by the statement.</p>
+<p><strong>Python solution.</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#24292e">sys</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">input</span> <span style="color:#0550ae">=</span> sys<span style="color:#0550ae">.</span>stdin<span style="color:#0550ae">.</span>buffer<span style="color:#0550ae">.</span>readline
+</span></span><span style="display:flex;"><span>n <span style="color:#0550ae">=</span> <span style="color:#6639ba">int</span><span style="color:#1f2328">(</span><span style="color:#6639ba">input</span><span style="color:#1f2328">())</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>answer <span style="color:#0550ae">=</span> <span style="color:#6639ba">float</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;inf&#34;</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">for</span> _ <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>n<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>    p<span style="color:#1f2328">,</span> r<span style="color:#1f2328">,</span> g <span style="color:#0550ae">=</span> <span style="color:#6639ba">input</span><span style="color:#1f2328">()</span><span style="color:#0550ae">.</span>split<span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span>    p <span style="color:#0550ae">=</span> <span style="color:#6639ba">int</span><span style="color:#1f2328">(</span>p<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    q <span style="color:#0550ae">=</span> <span style="color:#0550ae">1.0</span> <span style="color:#0550ae">-</span> <span style="color:#6639ba">float</span><span style="color:#1f2328">(</span>r<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    g <span style="color:#0550ae">=</span> <span style="color:#6639ba">int</span><span style="color:#1f2328">(</span>g<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    expected <span style="color:#0550ae">=</span> <span style="color:#0550ae">0.0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">for</span> _ <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span>g<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>        expected <span style="color:#0550ae">=</span> p <span style="color:#0550ae">+</span> q <span style="color:#0550ae">*</span> expected
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    answer <span style="color:#0550ae">=</span> <span style="color:#6639ba">min</span><span style="color:#1f2328">(</span>answer<span style="color:#1f2328">,</span> expected<span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">print</span><span style="color:#1f2328">(</span><span style="color:#0a3069">f</span><span style="color:#0a3069">&#34;</span><span style="color:#0a3069">{</span>answer<span style="color:#0a3069">:</span><span style="color:#0a3069">.12f</span><span style="color:#0a3069">}</span><span style="color:#0a3069">&#34;</span><span style="color:#1f2328">)</span>
+</span></span></code></pre></div><h2 id="problem-i-feelinlucky">Problem I — Feelin&rsquo; Lucky?</h2>
+<p><a href="https://open.kattis.com/problems/feelinlucky">Open the original problem on Kattis</a>
+.</p>
+<p><strong>Goal.</strong> A slot machine has four reels. Each reel may stop on any of its listed letters, and the machine may rearrange the reels. Decide whether some arrangement and choice of letters can display <code>ICPC</code>. We need to determine whether winning is possible, rather than calculate its probability.</p>
+<p><strong>Turn reel shuffling into a small assignment search.</strong> To win, the four reels must collectively supply one <code>I</code>, one <code>P</code>, and two <code>C</code>s, with each reel supplying exactly one letter. Instead of explicitly permuting the reels, keep the input reels in place and permute the letters we ask them to supply.</p>
+<p>For a candidate permutation, check whether its first letter exists on the first input reel, its second letter on the second reel, and so on. If all four checks pass, those chosen letters can be rearranged with their reels into <code>ICPC</code>.</p>
+<p><strong>Handle the repeated letter.</strong> <code>ICPC</code> has two copies of <code>C</code>, so it has $4!/2!=12$ distinct permutations. <code>itertools.permutations</code> generates $24$ positional permutations, and the <code>set</code> removes the duplicates. Sorting only gives a consistent iteration order; it is not needed for correctness.</p>
+<p>It is insufficient to check whether all required letters appear somewhere among the reels. Two distinct reels must supply the two <code>C</code>s, and using one reel for <code>I</code> prevents using that same reel for <code>P</code> or <code>C</code>.</p>
+<p><strong>Why the search is complete.</strong> If a checked permutation succeeds, each input reel can supply its assigned letter, and the reels can then be put into the winning order. Conversely, any winning spin assigns the multiset of letters <code>I</code>, <code>C</code>, <code>P</code>, <code>C</code> to the original four reels. That assignment is one of the twelve candidates, so the algorithm will find it.</p>
+<p>The code stops at the first successful assignment and prints <code>1</code>. If every assignment fails, it prints <code>0</code>.</p>
+<p><strong>Complexity.</strong> Let $L$ be the length of a reel&rsquo;s letter list. The program tests $12$ distinct assignments with four string-membership checks each, taking $O(L)$ time because the number of reels and assignments is fixed. Reading the four reels uses $O(L)$ space; the permutation collection has constant size.</p>
+<p><strong>Python solution.</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#cf222e">import</span> <span style="color:#24292e">itertools</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>lines <span style="color:#0550ae">=</span> <span style="color:#1f2328">[</span><span style="color:#6639ba">input</span><span style="color:#1f2328">()</span> <span style="color:#cf222e">for</span> _ <span style="color:#0550ae">in</span> <span style="color:#6639ba">range</span><span style="color:#1f2328">(</span><span style="color:#0550ae">4</span><span style="color:#1f2328">)]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>s <span style="color:#0550ae">=</span> <span style="color:#0a3069">&#34;ICPC&#34;</span>
+</span></span><span style="display:flex;"><span>unique_permutations <span style="color:#0550ae">=</span> <span style="color:#6639ba">sorted</span><span style="color:#1f2328">(</span><span style="color:#6639ba">set</span><span style="color:#1f2328">(</span><span style="color:#0a3069">&#34;&#34;</span><span style="color:#0550ae">.</span>join<span style="color:#1f2328">(</span>p<span style="color:#1f2328">)</span> <span style="color:#cf222e">for</span> p <span style="color:#0550ae">in</span> itertools<span style="color:#0550ae">.</span>permutations<span style="color:#1f2328">(</span>s<span style="color:#1f2328">)))</span>
+</span></span><span style="display:flex;"><span>result <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">for</span> perm <span style="color:#0550ae">in</span> unique_permutations<span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">match</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">True</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">for</span> i<span style="color:#1f2328">,</span> line <span style="color:#0550ae">in</span> <span style="color:#6639ba">enumerate</span><span style="color:#1f2328">(</span>lines<span style="color:#1f2328">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">if</span> perm<span style="color:#1f2328">[</span>i<span style="color:#1f2328">]</span> <span style="color:#0550ae">not</span> <span style="color:#0550ae">in</span> line<span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#cf222e">match</span> <span style="color:#0550ae">=</span> <span style="color:#cf222e">False</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#cf222e">break</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> <span style="color:#cf222e">match</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>        result <span style="color:#0550ae">=</span> <span style="color:#0550ae">1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#cf222e">break</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">print</span><span style="color:#1f2328">(</span>result<span style="color:#1f2328">)</span>
+</span></span></code></pre></div><h2 id="problem-j-snowmanyways">Problem J — Snow Many Ways</h2>
+<p><a href="https://open.kattis.com/problems/snowmanyways">Open the original problem on Kattis</a>
+.</p>
+<p><strong>Goal.</strong> A snowflake begins with one unfrozen crystal. In an expansion, every currently unfrozen crystal becomes frozen and produces $x&gt;1$ new unfrozen crystals. The multiplier $x$ is the same within one expansion but may change between expansions. Among processes ending with exactly $u$ unfrozen crystals, maximize the total number of frozen crystals.</p>
+<p><strong>Express a process as factors.</strong> If the expansion multipliers are $x_1,x_2,\ldots,x_t$, the final unfrozen count is their product:</p>
+<p>$$
+u=x_1x_2\cdots x_t.
+$$</p>
+<p>The frozen crystals created at each expansion are the unfrozen crystals that existed immediately before it. Their total is</p>
+<p>$$
+1+x_1+x_1x_2+\cdots+x_1x_2\cdots x_{t-1}.
+$$</p>
+<p>This turns the growth story into a factorization and ordering problem.</p>
+<p><strong>Use prime multipliers.</strong> Suppose one expansion multiplies by a composite number $ab$, with $a,b&gt;1$, and there are $M$ unfrozen crystals before it. The single expansion adds $M$ frozen crystals. Splitting it into an expansion by $a$ followed by one by $b$ adds $M+Ma$ frozen crystals and ends with the same $Mab$ unfrozen crystals. The extra $Ma$ is positive. Therefore, an optimal process splits every composite multiplier until all multipliers are prime.</p>
+<p><strong>Put larger primes first.</strong> Compare two neighboring multipliers $a$ and $b$, starting from $M$ unfrozen crystals. Their frozen contribution is $M+Ma$ in the order $a,b$, or $M+Mb$ in the order $b,a$. Everything after them sees the same $Mab$ unfrozen crystals. Thus putting the larger multiplier first never decreases the answer. Repeated swaps give the optimal order: prime factors from largest to smallest.</p>
+<p><strong>Why does the code divide out the smallest primes first?</strong> It reconstructs that optimal process backward. Start from the final count $u$. The last forward multiplier is the smallest remaining prime $p$, so before that expansion there were $u/p$ unfrozen crystals. Those are exactly the crystals frozen by the last expansion: divide by $p$ and add the quotient. Repeat to account for the preceding expansions in reverse order.</p>
+<p>Repeated prime factors must be removed one at a time because each occurrence represents a separate expansion. Once trial division finishes, a remaining value greater than $1$ is prime. Removing this last factor would leave the original single crystal, so it contributes $1$.</p>
+<p><strong>Example.</strong> For the official sample $u=6$, expand first by $3$ and then by $2$. The two expansions freeze $1$ and $3$ crystals, for a total of $4$. Reversing the multipliers would freeze only $1+2=3$, and using a single multiplier of $6$ would freeze only $1$. The code divides $6$ by $2$, adds $3$, then accounts for the remaining prime factor by adding $1$.</p>
+<p><strong>Complexity.</strong> Trial division takes $O(\sqrt{u})$ time in the worst case and $O(1)$ additional space. As factors are removed, the remaining value shrinks, so the loop can stop when <code>p * p &gt; n</code>.</p>
+<p><strong>Python solution.</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>n <span style="color:#0550ae">=</span> <span style="color:#6639ba">int</span><span style="color:#1f2328">(</span><span style="color:#6639ba">input</span><span style="color:#1f2328">())</span>
+</span></span><span style="display:flex;"><span>answer <span style="color:#0550ae">=</span> <span style="color:#0550ae">0</span>
+</span></span><span style="display:flex;"><span>p <span style="color:#0550ae">=</span> <span style="color:#0550ae">2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">while</span> p <span style="color:#0550ae">*</span> p <span style="color:#0550ae">&lt;=</span> n<span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">while</span> n <span style="color:#0550ae">%</span> p <span style="color:#0550ae">==</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>        n <span style="color:#0550ae">//=</span> p
+</span></span><span style="display:flex;"><span>        answer <span style="color:#0550ae">+=</span> n
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    p <span style="color:#0550ae">+=</span> <span style="color:#0550ae">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">if</span> n <span style="color:#0550ae">&gt;</span> <span style="color:#0550ae">1</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>    answer <span style="color:#0550ae">+=</span> <span style="color:#0550ae">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">print</span><span style="color:#1f2328">(</span>answer<span style="color:#1f2328">)</span>
+</span></span></code></pre></div><h2 id="problem-l-volleyballscoring">Problem L — Volleyball Scoring</h2>
+<p><a href="https://open.kattis.com/problems/volleyballscoring">Open the original problem on Kattis</a>
+.</p>
+<p><strong>Goal.</strong> Each rally gives one point to its winner, who serves next. Before a serve, the caller announces only the last digits of the scores, with the <em>serving team&rsquo;s</em> digit first. The input gives the current server&rsquo;s score $a$ and the receiver&rsquo;s score $b$. Find the fewest future rallies needed to hear <code>6 7</code>. Play has no winning-score limit.</p>
+<p><strong>The order of the call matters.</strong> Reaching score digits $6$ and $7$ is not enough by itself: the team whose score ends in $6$ must be serving. For any positive number of future rallies, that team must win the final rally. This is the detail that creates the positive-increment checks in the code.</p>
+<p>If the current call is already <code>6 7</code>, the answer is $0$. Otherwise, consider which of the two original teams serves at the end.</p>
+<p><strong>Case 1: the original serving team serves at the end.</strong> Its score must end in $6$, and it must score at least once so it can win the final rally. The smallest positive number of points it needs is <code>(6 - a) % 10</code>, except that a result of zero must become $10$. The other team&rsquo;s score must end in $7$, and it is allowed to score zero points, so it needs <code>(7 - b) % 10</code> points. Adding these gives <code>first</code>.</p>
+<p><strong>Case 2: the original receiving team serves at the end.</strong> Now that team&rsquo;s score must end in $6$ and increase by at least one. Its required points are <code>(6 - b) % 10</code>, again replacing zero with $10$. The original server needs <code>(7 - a) % 10</code> points, possibly zero. Their sum is <code>second</code>.</p>
+<p><strong>Why these totals are achievable and optimal.</strong> In either case, every required point needs one rally, so the sum is a lower bound. It is also achievable: let the eventual receiver win all the rallies it needs, then let the eventual server win its required rallies. The latter has a positive point count, so it wins the final rally and serves next. These two cases cover every possible final server; take their minimum.</p>
+<p><strong>Example.</strong> In the official sample with scores <code>6 6</code>, giving one point to the receiver makes that team serve with digit $7$, so the call is <code>7 6</code>. To finish with the original server serving at digit $6$, it must gain $10$ points, while the other team gains $1$ to reach digit $7$. That takes $11$ rallies. Choosing the other final server also takes $11$, so the answer is $11$.</p>
+<p><strong>Complexity.</strong> A fixed number of modular-arithmetic operations takes $O(1)$ time and space.</p>
+<p><strong>Python solution.</strong></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>a<span style="color:#1f2328">,</span> b <span style="color:#0550ae">=</span> <span style="color:#6639ba">map</span><span style="color:#1f2328">(</span><span style="color:#6639ba">int</span><span style="color:#1f2328">,</span> <span style="color:#6639ba">input</span><span style="color:#1f2328">()</span><span style="color:#0550ae">.</span>split<span style="color:#1f2328">())</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">if</span> a <span style="color:#0550ae">%</span> <span style="color:#0550ae">10</span> <span style="color:#0550ae">==</span> <span style="color:#0550ae">6</span> <span style="color:#0550ae">and</span> b <span style="color:#0550ae">%</span> <span style="color:#0550ae">10</span> <span style="color:#0550ae">==</span> <span style="color:#0550ae">7</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6639ba">print</span><span style="color:#1f2328">(</span><span style="color:#0550ae">0</span><span style="color:#1f2328">)</span>
+</span></span><span style="display:flex;"><span>    exit<span style="color:#1f2328">()</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>a_to_six <span style="color:#0550ae">=</span> <span style="color:#1f2328">(</span><span style="color:#0550ae">6</span> <span style="color:#0550ae">-</span> a<span style="color:#1f2328">)</span> <span style="color:#0550ae">%</span> <span style="color:#0550ae">10</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">if</span> a_to_six <span style="color:#0550ae">==</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>    a_to_six <span style="color:#0550ae">=</span> <span style="color:#0550ae">10</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>b_to_six <span style="color:#0550ae">=</span> <span style="color:#1f2328">(</span><span style="color:#0550ae">6</span> <span style="color:#0550ae">-</span> b<span style="color:#1f2328">)</span> <span style="color:#0550ae">%</span> <span style="color:#0550ae">10</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">if</span> b_to_six <span style="color:#0550ae">==</span> <span style="color:#0550ae">0</span><span style="color:#1f2328">:</span>
+</span></span><span style="display:flex;"><span>    b_to_six <span style="color:#0550ae">=</span> <span style="color:#0550ae">10</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>first <span style="color:#0550ae">=</span> a_to_six <span style="color:#0550ae">+</span> <span style="color:#1f2328">(</span><span style="color:#0550ae">7</span> <span style="color:#0550ae">-</span> b<span style="color:#1f2328">)</span> <span style="color:#0550ae">%</span> <span style="color:#0550ae">10</span>
+</span></span><span style="display:flex;"><span>second <span style="color:#0550ae">=</span> <span style="color:#1f2328">(</span><span style="color:#0550ae">7</span> <span style="color:#0550ae">-</span> a<span style="color:#1f2328">)</span> <span style="color:#0550ae">%</span> <span style="color:#0550ae">10</span> <span style="color:#0550ae">+</span> b_to_six
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">print</span><span style="color:#1f2328">(</span><span style="color:#6639ba">min</span><span style="color:#1f2328">(</span>first<span style="color:#1f2328">,</span> second<span style="color:#1f2328">))</span>
+</span></span></code></pre></div><h2 id="back-to-the-contest">Back to the contest</h2>
+<p><a href="../seusa2026/">2026 Southeast Regional Contest</a>
+ · <a href="../seusa2025/">2025 Southeast Regional Contest</a>
+</p>
+</div></article></div></main><footer class="site-footer"><div class="wrap footer-inner"><div><strong>Ian Fang.</strong> &nbsp; Teaching, tools, and things worth sharing.</div><div class="footer-links"><a href="/notes/">Notes</a><a href="/teaching/">Teaching</a><a href="/competitive-programming/">Competitive Programming</a><a href="https://github.com/uwf-fang">GitHub ↗</a><span>Ian Fang</span></div></div></footer></body></html>
