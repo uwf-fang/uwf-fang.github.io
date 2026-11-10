@@ -1,18 +1,3 @@
-const menu = document.querySelector('.menu-toggle');
-const navigation = document.querySelector('.nav');
-menu?.addEventListener('click', () => {
-  const expanded = menu.getAttribute('aria-expanded') !== 'true';
-  menu.setAttribute('aria-expanded', String(expanded));
-  navigation.classList.toggle('open', expanded);
-  menu.textContent = expanded ? 'Close' : 'Menu';
-});
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape' && menu?.getAttribute('aria-expanded') === 'true') {
-    menu.click();
-    menu.focus();
-  }
-});
-
 const filters = document.querySelectorAll('[data-filter]');
 filters.forEach(button => button.addEventListener('click', () => {
   filters.forEach(filter => filter.setAttribute('aria-pressed', String(filter === button)));

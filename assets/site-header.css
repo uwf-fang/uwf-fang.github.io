@@ -1,0 +1,163 @@
+.site-header {
+  --header-blue:#163f73;
+  --header-line:#dce2e8;
+  position:relative;
+  z-index:10;
+  width:100%;
+  height:94px;
+  margin:0;
+  padding:0;
+  border:0;
+  border-bottom:1px solid var(--header-line);
+  background:#fff;
+  color:#242a32;
+  font:16px/1.65 Roboto,Arial,sans-serif
+}
+.site-header, .site-header * {
+  box-sizing:border-box
+}
+.site-header .header-inner {
+  width:min(1160px,calc(100% - 80px));
+  height:100%;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between
+}
+.site-header .brand {
+  display:flex;
+  align-items:center;
+  gap:11px;
+  color:inherit;
+  font:700 20px Montserrat,Arial,sans-serif;
+  letter-spacing:-.7px;
+  white-space:nowrap;
+  text-decoration:none
+}
+.site-header .brand-mark {
+  width:35px;
+  height:35px;
+  display:grid;
+  place-items:center;
+  border-radius:5px;
+  background:var(--header-blue);
+  color:#fff;
+  font-size:15px;
+  letter-spacing:-1px
+}
+.site-header .brand-dot {
+  color:var(--header-blue)
+}
+.site-header .nav {
+  display:flex;
+  align-items:center;
+  gap:clamp(12px,1.5vw,25px);
+  font-size:14px;
+  font-weight:500
+}
+.site-header .nav a {
+  position:relative;
+  padding:10px 0;
+  color:#535e69;
+  white-space:nowrap;
+  text-decoration:none
+}
+.site-header .nav a:hover, .site-header .nav a[aria-current] {
+  color:var(--header-blue)
+}
+.site-header .nav a[aria-current]::after {
+  content:'';
+  position:absolute;
+  bottom:1px;
+  left:0;
+  right:0;
+  height:2px;
+  background:var(--header-blue)
+}
+.site-header .nav .nav-github {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding-left:27px;
+  border-left:1px solid var(--header-line);
+  color:inherit
+}
+.site-header .menu-toggle {
+  display:none;
+  min-height:44px;
+  padding:6px 12px;
+  border:1px solid var(--header-line);
+  border-radius:5px;
+  background:#fff;
+  color:var(--header-blue);
+  font:inherit;
+  cursor:pointer
+}
+.site-header :is(a,button):focus-visible {
+  outline:3px solid var(--header-blue);
+  outline-offset:3px
+}
+
+@media(max-width:1000px) {
+  .site-header .header-inner {
+    width:calc(100% - 56px)
+  }
+}
+@media(max-width:840px) {
+  .site-header {
+    height:76px
+  }
+  .site-header .brand {
+    font-size:18px
+  }
+  .site-header .menu-toggle {
+    display:block
+  }
+  .site-header .nav {
+    display:none;
+    position:absolute;
+    inset:100% 0 auto;
+    max-height:calc(100dvh - 76px);
+    overflow:auto;
+    border-bottom:1px solid var(--header-line);
+    padding:20px;
+    background:#fff;
+    align-items:stretch;
+    gap:8px
+  }
+  .site-header .nav.open {
+    display:flex;
+    flex-direction:column
+  }
+  .site-header .nav a {
+    padding:10px
+  }
+  .site-header .nav .nav-github {
+    border:0;
+    padding-left:10px
+  }
+  .site-header .nav a[aria-current]::after {
+    display:none
+  }
+}
+@media(max-width:760px) {
+  .site-header .header-inner {
+    width:calc(100% - 40px)
+  }
+}
+
+/* Give the shared header the full width above each standalone lab layout. */
+body[data-site-lab] {
+  padding-top:0;
+  padding-inline:0
+}
+body[data-site-lab] > :is(.container,.wrap,.page) {
+  width:calc(100% - 48px);
+  margin-top:28px
+}
+@media(max-width:600px) {
+  body[data-site-lab] > :is(.container,.wrap,.page) {
+    width:calc(100% - 28px);
+    margin-top:18px
+  }
+}

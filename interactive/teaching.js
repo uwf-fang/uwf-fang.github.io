@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded',()=>{
   const path=location.pathname,entry=window.LabCatalog?.find(x=>path.endsWith('/'+x.file));if(!entry)return;
   const safe=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const header=document.querySelector('header')||document.querySelector('h1');if(!header)return;
+  const header=document.querySelector('header:not(.site-header)')||document.querySelector('h1');if(!header)return;
   const tools=document.createElement('div');tools.className='lesson-tools';tools.innerHTML='<button type="button" id="compactLesson" aria-pressed="false">Compact teaching view</button><button type="button" id="shareLesson">Link to input settings</button><button type="button" id="jumpChallenge">Try a challenge ↓</button>';
   header.after(tools);
   const activity=document.createElement('section');activity.className='learning-activity';activity.id='learningActivity';activity.setAttribute('aria-label','Questions and challenges');
