@@ -139,7 +139,7 @@ function pqHeap() {
 }
 
 /* ----- catalog ----- */
-const SEQ_NOTE = 'A step is one element read, written, shifted, compared, or one link followed.';
+const SEQ_NOTE = 'A counted step is one element access, shift, copy, comparison, or followed link. These model costs are not measured execution time.';
 const ADTS = [
   {
     id: 'list', name: 'List', icon: ICONS.list,
@@ -188,7 +188,7 @@ const ADTS = [
         facts: [['enqueue', 'Θ(1) amortized', 'write at the end'], ['dequeue', 'Θ(n)', 'shift all elements left'], ['peek / isEmpty', 'Θ(1)', 'inspect index 0 or size']] },
       { id: 'linked', name: 'Linked list', make: () => seqADT('queue', new LinkedSeq(false)), how: 'The front is the head and the rear is the tail. Both ends are reachable in one step.',
         facts: [['enqueue', 'Θ(1)', 'tail pointer'], ['dequeue', 'Θ(1)', 'move the head'], ['peek / isEmpty', 'Θ(1)', 'inspect head node or check null']] },
-      { id: 'circular', name: 'Circular partially filled array', make: () => circularQueue(), how: 'Front and rear indices wrap around with modulo arithmetic, so dequeue never shifts anything.',
+      { id: 'circular', name: 'Circular partially filled array', make: () => circularQueue(), how: 'This circular array starts with 6 slots and is resizable. Front and rear indices wrap with %, so dequeue never shifts elements. When full, the next enqueue doubles capacity and copies the existing FIFO sequence.',
         facts: [['enqueue / dequeue', 'Θ(1) amortized', 'advance modulo capacity'], ['peek / isEmpty', 'Θ(1)', 'inspect slots[front] or check size == 0'], ['when full', 'Θ(n)', 'doubling copies elements in order (rare)']] }
     ],
     use: ['Print jobs and customer service lines', 'Breadth-first search'],
@@ -207,7 +207,7 @@ const ADTS = [
     ],
     impls: [
       { id: 'array', name: 'Partially filled array', make: () => seqADT('deque', new ArraySeq(6)),
-        extra: { title: 'Design note: Circular array for Deque', html: 'A standard partially filled array is <b>not a good fit</b> for Deque because operations at the front require shifting all elements (Θ(n)). While a <b>doubly linked list</b> achieves Θ(1) for all four ends, an array-based alternative would be a <b>circular array</b> (with both front and back indices wrapping around via modulo arithmetic), achieving Θ(1) amortized time at both ends without shifting.' },
+        extra: { title: 'Design note: Circular array for Deque', html: 'A standard partially filled array is <b>not a good fit</b> for Deque because operations at the front require shifting all elements (Θ(n)). While a <b>doubly linked list</b> achieves Θ(1) for all four ends, an array-based alternative would be a <b>circular array</b> (with both front and back indices wrapping around via remainder arithmetic (`%`)), achieving Θ(1) amortized time at both ends without shifting.' },
         how: 'The front is index 0 and the back is the last used slot. Front operations must shift elements. (Note: A standard partially filled array is not a good fit for Deque; see note below.)',
         facts: [['enQueueBack / deQueueBack', 'Θ(1) amortized', 'work at the end'], ['enQueueFront / deQueueFront', 'Θ(n)', 'shift all elements'], ['isEmpty()', 'Θ(1)', 'check if size == 0']] },
       { id: 'linked', name: 'Doubly linked list', make: () => seqADT('deque', new LinkedSeq(true)), how: 'Nodes link both forward and backward, with head and tail pointers. All four operations touch only an end.',
@@ -225,7 +225,7 @@ const ADTS = [
     intNote: 'In this demo Map keys and values are <b>integers only</b> (no characters or strings). This keeps the hash function simple and concrete.',
     ops: [{ id: 'put', label: 'put(k, v)', use: 'ab' }, { id: 'get', label: 'get(k)', use: 'a' }, { id: 'remove', label: 'remove(k)', use: 'a' }, { id: 'isEmpty', label: 'isEmpty()', use: '' }],
     impls: [
-      { id: 'hash', name: 'Hash table', make: () => mapADT(new HashTable(7)), extra: { title: 'The hash function', html: 'There are <b>m = 7</b> buckets, numbered 0 to 6. The hash function is <b>hash(key) = key mod 7</b>, the remainder after dividing by 7.<br><br>Example: hash(23) = 23 mod 7 = 2, so key 23 goes to bucket 2. Negative keys use the mathematical remainder, so hash(-3) = 4.<br><br>Keys with the same remainder <b>collide</b>: for instance 9 and 16 both go to bucket 2, and are chained in that bucket.' }, how: 'The hash function hash(key) = key mod 7 turns an integer key into a bucket index. Keys that collide are chained in the same bucket.',
+      { id: 'hash', name: 'Hash table', make: () => mapADT(new HashTable(7)), extra: { title: 'The hash function', html: 'There are <b>m = 7</b> buckets, numbered 0 to 6. The hash function is <b>hash(key) = key % 7</b>, the remainder after dividing by 7.<br><br>Example: hash(23) = 23 % 7 = 2, so key 23 goes to bucket 2. Negative keys use the mathematical remainder, so hash(-3) = 4.<br><br>Keys with the same remainder <b>collide</b>: for instance 9 and 16 both go to bucket 2, and are chained in that bucket.' }, how: 'The hash function hash(key) = key % 7 turns an integer key into a bucket index. Keys that collide are chained in the same bucket.',
         facts: [['put / get / remove', 'Θ(1) average', 'hash straight to a bucket'], ['worst case (all collide)', 'Θ(n)', 'every key collides in one bucket chain'], ['isEmpty()', 'Θ(1)', 'check if total size == 0'], ['key order', 'none', 'scattered by the hash']] },
       { id: 'bst', name: 'Binary search tree', make: () => mapADT(new BST()), how: 'Smaller keys go left, larger keys go right. Each operation follows one path from the root.',
         facts: [['put / get / remove', 'Θ(h)', 'h is the tree height'], ['balanced tree', 'Θ(log n)', 'height is logarithmic'], ['sorted input, unbalanced', 'Θ(n)', 'the tree degenerates into a linear chain'], ['isEmpty()', 'Θ(1)', 'check if root == null'], ['key order', 'sorted', 'in-order traversal']] }
@@ -242,7 +242,7 @@ const ADTS = [
     intNote: 'In this demo Set elements are <b>integers only</b> (no characters or strings). This keeps the hash function simple and concrete.',
     ops: [{ id: 'add', label: 'add(v)', use: 'a' }, { id: 'remove', label: 'remove(v)', use: 'a' }, { id: 'contains', label: 'contains(v)', use: 'a' }, { id: 'isEmpty', label: 'isEmpty()', use: '' }],
     impls: [
-      { id: 'hash', name: 'Hash table', make: () => setADT(new HashTable(7)), extra: { title: 'The hash function', html: 'There are <b>m = 7</b> buckets, numbered 0 to 6. The hash function is <b>hash(key) = key mod 7</b>, the remainder after dividing by 7.<br><br>Example: hash(23) = 23 mod 7 = 2, so key 23 goes to bucket 2. Negative keys use the mathematical remainder, so hash(-3) = 4.<br><br>Keys with the same remainder <b>collide</b>: for instance 9 and 16 both go to bucket 2, and are chained in that bucket.' }, how: 'Each integer is hashed to a bucket with hash(v) = v mod 7. Duplicates are found by scanning one short chain.',
+      { id: 'hash', name: 'Hash table', make: () => setADT(new HashTable(7)), extra: { title: 'The hash function', html: 'There are <b>m = 7</b> buckets, numbered 0 to 6. The hash function is <b>hash(key) = key % 7</b>, the remainder after dividing by 7.<br><br>Example: hash(23) = 23 % 7 = 2, so key 23 goes to bucket 2. Negative keys use the mathematical remainder, so hash(-3) = 4.<br><br>Keys with the same remainder <b>collide</b>: for instance 9 and 16 both go to bucket 2, and are chained in that bucket.' }, how: 'Each integer is hashed to a bucket with hash(v) = v % 7. Duplicates are found by scanning one short chain.',
         facts: [['add / remove / contains', 'Θ(1) average', 'hash straight to a bucket'], ['worst case (all collide)', 'Θ(n)', 'many collisions in one chain'], ['isEmpty()', 'Θ(1)', 'check if total size == 0'], ['order', 'none', 'scattered by the hash']] },
       { id: 'bst', name: 'Binary search tree', make: () => setADT(new BST()), how: 'Values are kept in a search tree. A value is a duplicate if the search path ends on an equal value.',
         facts: [['add / remove / contains', 'Θ(h)', 'h is the tree height'], ['balanced tree', 'Θ(log n)', 'height is logarithmic'], ['isEmpty()', 'Θ(1)', 'check if root == null'], ['order', 'sorted', 'in-order traversal']] }

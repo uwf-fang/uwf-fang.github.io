@@ -86,13 +86,20 @@ function drawLearn() {
 function say(html, ok) { const o = stage.querySelector('#out'); o.className = 'out' + (ok ? '' : ' bad'); o.innerHTML = html; }
 
 /* ---------- Mode 2: Compare implementations ---------- */
+const compareText = (value) => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function operationLabel(adt, id, a = '', b = '') {
+  const op = adt.ops.find(o => o.id === id);
+  const args = id === 'insertBefore' ? [b, a] : [...op.use].map(field => field === 'a' ? a : b);
+  return `${id}(${args.join(', ')})`;
+}
 function drawCompare() {
   const adt = adtOf(current);
+  let selectedOperation = null;
   stage.innerHTML = `
     ${tabsHTML()}
     <h2>${adt.name}: same operations, different implementations</h2>
     <p class="tagline">Every implementation receives exactly the same operations. Compare the pictures and the step counts. ${SEQ_NOTE}</p>
-    ${adt.intNote ? `<p class="how" style="margin-bottom:8px">${adt.intNote} Hash table: <b>hash(key) = key mod 7</b> (7 buckets).</p>` : ''}
+    ${adt.intNote ? `<p class="how" style="margin-bottom:8px">${adt.intNote} Hash table: <b>hash(key) = key % 7</b> (7 buckets).</p>` : ''}
     <div class="controls">
       <label>${adt.fields.a}<input id="inA" autocomplete="off"></label>
       ${adt.fields.b ? `<label>${adt.fields.b}<input id="inB" autocomplete="off"></label>` : ''}
@@ -101,15 +108,23 @@ function drawCompare() {
     <div class="controls" style="margin-top:2px">
       <button class="btn" data-ui-role="step" id="run">Run workload</button>
       <button class="btn plain" id="reset">Reset all</button>
-      <span class="legend" style="margin:0">Workload: ${adt.workload.text}.</span>
+      <span class="legend" style="margin:0">Each run starts empty and resets the operation counts.</span>
     </div>
+    <section class="workload-plan" aria-label="Workload operations">
+      <h3>Workload, in order · ${adt.workload.ops.length} operations</h3>
+      <p>${compareText(adt.workload.text)}.</p>
+      <ol class="workload-ops">${adt.workload.ops.map(([id, a, b]) => `<li><code>${compareText(operationLabel(adt, id, a, b))}</code></li>`).join('')}</ol>
+      ${['list','stack','queue','deque','pq'].includes(adt.id) ? '<p class="growth-instructions">Array models that display capacity start with <strong>6 slots</strong> and double when full. A growth copies <strong>6 existing elements</strong>; an append/enqueue adds <strong>1 new write = 7 counted steps</strong>. An indexed or front insertion may also shift elements. Circular wraparound reuses slots without resizing or copying.</p>' : ''}
+      <p class="legend">Bars show counted operations, not measured execution time. Select a numbered bar to compare the saved explanation for that operation across implementations. Diagrams show the latest state.</p>
+    </section>
     <div class="panels" id="panels" style="grid-template-columns: repeat(${adt.impls.length}, minmax(0, 1fr))"></div>`;
   stage.querySelector('#tabs').onclick = (e) => { const b = e.target.closest('button'); if (b) { current = b.dataset.id; drawCompare(); } };
   const apply = (id, a, b) => adt.impls.forEach((impl) => {
     const w = inst('cmp', adt, impl), key = 'cmp' + adt.id + ':' + impl.id, t = totals[key] || (totals[key] = { total: 0, last: 0, hist: [] });
     const r = w.ops[id](a, b);
     t.total += r.steps; t.last = r.steps; t.msg = r.msg; t.ok = r.ok; t.hl = r.hl;
-    t.hist.push({ label: id + (a ? '(' + a + (b && !adt.ops.find((o) => o.id === id).use.startsWith('b') ? ',' + b : '') + ')' : ''), steps: r.steps, ok: r.ok });
+    t.hist.push({ label: operationLabel(adt, id, a, b), steps: r.steps, ok: r.ok, msg: r.msg, resized: /array was full|capacity doubled|growth copied/i.test(r.msg) });
+    selectedOperation = null;
   });
   stage.querySelector('#ops').onclick = (e) => {
     const bt = e.target.closest('button'); if (!bt) return;
@@ -118,8 +133,24 @@ function drawCompare() {
     if (op.use.includes('a') && !a) return;
     apply(op.id, a, b); panels();
   };
-  stage.querySelector('#run').onclick = () => { adt.workload.ops.forEach(([id, a, b]) => apply(id, a || '', b || '')); panels(); };
-  stage.querySelector('#reset').onclick = () => { resetStore('cmp', adt); panels(); };
+  stage.querySelector('#run').onclick = () => {
+    resetStore('cmp', adt);
+    adt.workload.ops.forEach(([id, a, b]) => apply(id, a ?? '', b ?? ''));
+    // Explain the first growth event immediately, rather than hiding it behind the final operation.
+    const histories = adt.impls.map(impl => totals['cmp' + adt.id + ':' + impl.id].hist);
+    const growthIndex = histories[0].findIndex((_, i) => histories.some(hist => hist[i].resized));
+    selectedOperation = growthIndex >= 0 ? growthIndex : null;
+    panels();
+  };
+  stage.querySelector('#reset').onclick = () => { resetStore('cmp', adt); selectedOperation = null; panels(); };
+  stage.querySelector('#panels').onclick = e => {
+    const bar = e.target.closest('[data-history-index]');
+    if (!bar) return;
+    selectedOperation = Number(bar.dataset.historyIndex);
+    const implementation = bar.dataset.implementation;
+    panels();
+    stage.querySelector(`[data-implementation="${implementation}"][data-history-index="${selectedOperation}"]`).focus({preventScroll:true});
+  };
   panels();
   function panels() {
     const ts = adt.impls.map((i) => totals['cmp' + adt.id + ':' + i.id]);
@@ -127,14 +158,18 @@ function drawCompare() {
     const maxT = Math.max(1, ...ts.map((t) => (t ? t.total : 0)));
     stage.querySelector('#panels').innerHTML = adt.impls.map((impl, k) => {
       const w = inst('cmp', adt, impl), t = ts[k] || { total: 0, last: 0, hist: [] };
+      const index = selectedOperation ?? t.hist.length - 1, inspected = t.hist[index];
       const best = ts.every((x) => x) && t.total === Math.min(...ts.map((x) => x.total)) && ts.some((x) => x.total !== t.total);
       return `<div class="panel"><h3>${impl.name}</h3>
         <div class="viz2">${w.render(t.hl === undefined ? null : t.hl)}</div>
         <div class="stat"><span>Last op <b>${t.last}</b></span><span>Total <b class="${best ? 'good' : ''}">${t.total}</b> steps</span></div>
         <div class="totbar"><i style="width:${(t.total / maxT) * 100}%"></i></div>
-        <div class="pmsg ${t.ok === false ? 'bad' : ''}">${t.msg || 'No operation yet.'}</div>
-        <div class="bars">${t.hist.map((h) => `<span class="bar${h.ok ? '' : ' err'}" title="${h.label}: ${h.steps} step(s)" style="height:${Math.max(3, (h.steps / maxS) * 44)}px"></span>`).join('')}</div>
-        <div class="barcap">${t.hist.length ? 'Steps per operation (hover for details)' : ''}</div></div>`;
+        <div class="operation-detail" role="status" aria-live="polite">
+          <p class="inspection-label">${inspected ? `Operation ${index + 1}: <code>${compareText(inspected.label)}</code> · <strong>${inspected.steps} counted step${inspected.steps === 1 ? '' : 's'}</strong>${inspected.resized ? ' · <span class="resize-label">Resize</span>' : ''}` : 'No operation yet.'}</p>
+          <div class="pmsg ${inspected?.ok === false ? 'bad' : ''}">${inspected?.msg || ''}</div>
+        </div>
+        <div class="bars" role="group" aria-label="${compareText(impl.name)} operation costs">${t.hist.map((h, i) => `<button type="button" class="cost-bar${h.ok ? '' : ' err'}${h.resized ? ' resized' : ''}" data-history-index="${i}" data-implementation="${impl.id}" aria-pressed="${i === index}" aria-label="Operation ${i+1}: ${compareText(h.label)}, ${h.steps} counted steps${h.resized ? ', resize' : ''}" title="${compareText(h.label)}: ${h.steps} counted steps${h.resized ? ' (resize)' : ''}"><span class="cost-value">${h.steps}</span><span class="cost-column" style="height:${Math.max(3, (h.steps / maxS) * 44)}px"></span><span class="cost-index">${i+1}</span></button>`).join('')}</div>
+        <div class="barcap">${t.hist.length ? 'Operation number below · counted cost above · orange = resize' : ''}</div></div>`;
     }).join('');
   }
 }
@@ -162,7 +197,7 @@ const QUIZ = [
   { q: 'A website wants to count how many distinct visitors came today.', opts: adtOpts, a: 'set', why: 'Only membership matters and duplicates must collapse.' },
   { q: 'A music app lets users reorder tracks and jump to the 5th track directly.', opts: adtOpts, a: 'list', why: 'Elements are ordered and accessed by position.' },
   { q: 'An algorithm checks a palindrome by comparing the first and last letters, then moving inward, removing from both ends.', opts: adtOpts, a: 'deque', why: 'It needs enQueueFront, enQueueBack, deQueueFront and deQueueBack style access at both ends.' },
-  { q: 'You implement a Queue with a fixed-size array and want dequeue to never shift elements.', opts: [['array', 'Partially filled array'], ['circular', 'Circular partially filled array'], ['linked', 'Linked list']], a: 'circular', why: 'A circular array only moves the front index, using modulo arithmetic.' },
+  { q: 'You implement a Queue with a fixed-size array and want dequeue to never shift elements.', opts: [['array', 'Partially filled array'], ['circular', 'Circular partially filled array'], ['linked', 'Linked list']], a: 'circular', why: 'A circular array only moves the front index, using remainder arithmetic (`%`).' },
   { q: 'A Map must support listing its keys in sorted order.', opts: [['hash', 'Hash table'], ['bst', 'Binary search tree']], a: 'bst', why: 'An in-order traversal of a search tree visits keys in sorted order. A hash table scatters them.' },
   { q: 'A Set needs the fastest average membership test and order does not matter.', opts: [['hash', 'Hash table'], ['bst', 'Binary search tree']], a: 'hash', why: 'A hash table averages Θ(1) for contains.' }
 ];

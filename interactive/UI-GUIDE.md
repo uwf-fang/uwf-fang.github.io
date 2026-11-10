@@ -75,3 +75,33 @@ These are interface and focused regression checks, not an exhaustive proof of ev
 - The bounds lab uses immediate parameter feedback instead of artificial playback. Finite sample checks and analytic asymptotic relationships are labeled separately.
 - The expanded hub has sixteen labs across seven topics: Foundations, Misc. data structures, Trees, Graphs, Sorting, Algorithm analysis, and Case studies; Browse labs includes every page, including from the nested ADT Explorer.
 - The six active additions have received source review; this batch has not undergone browser interaction or automated regression testing.
+
+## November 10, 2026 expansion verification
+
+The collection now has 25 active labs. DSA content emphasizes ADTs and algorithms. Priority-queue lessons do not imply a heap storage layout; heap-specific lessons retain synchronized tree/array views. Heights consistently count edges: empty −1 and leaf 0. Hash formulas use `%`; negative-key adjustment is explained separately.
+
+All labs have optional conceptual questions and challenges. New recorded lessons additionally present next-step prediction at relevant states. Questions never block stepping or autoplay. Compact view reduces setup space. Input links preserve configured values rather than arbitrary random/sandbox states.
+
+New algorithm regression checks cover LCS against independent subsequence enumeration; matrix-chain DP against exhaustive splits; N-Queens solution counts; recursion results; amortized accounting; both heap orders and sorting; lexer/parser/evaluation cases; packing against exhaustive assignments; and hash tombstones/rehashing. Syntax and catalog checks are included.
+
+Browser checks cover all 25 pages and shared activities; course/chapter filtering; new-lesson completion and Reset; LCS prediction/traceback; List ADT puzzle operations; hash search past a tombstone; Huffman encode/decode; bin-packing lower-bound/optimum comparison; heap/BST edge heights; BST Back; the four-rotation AVL deletion cascade; circular queue/deque models; and sorting replay. Representative new and old labs were checked at a 390-pixel viewport without page-wide horizontal overflow. These are focused checks, not an exhaustive accessibility, browser, or input proof.
+
+### ADT workload clarification
+
+Compare mode lists every supplied operation and its input values in numbered execution order before running. Each Run workload starts from empty implementations and resets the counters. Individual operation controls continue the current state. Every cost bar is a keyboard-operable button labeled by operation number and counted cost; selecting it shows the recorded result/explanation in all implementation panels while diagrams retain the latest state. Growth events are orange and labeled Resize.
+
+The circular queue starts at capacity 6 and doubles when full. In its sample workload, enqueue(7) copies six existing elements and writes the new item for seven counted steps. Ordinary wraparound reuses slots with no copying. Browser checks covered all seven ADT workloads, operation selection, repeat-run/reset behavior, and the narrow-screen comparison layout. Focused tests cover valid supplied workloads and FIFO preservation across wraparound and growth.
+
+### Problem statements, recursive arguments, and compact cost bars
+
+The packing example states the current problem above its answers for all five modes. All subsets satisfy the 5 kg weight limit; Decision requires at least $12, while Search requires at least $10 (inclusive). Enumeration/counting explicitly include the empty bag and impose no value minimum.
+
+Recursive search displays full signatures and arguments in pseudocode, call-stack entries, pending calls, and call-tree labels: `linearSearch(a, size, target, i)` and `binarySearch(a, size, target, lo, hi)`. Binary bounds are inclusive. ADT cost bars are narrower and frameless, retaining cost labels, operation numbers, resize color, selection underline, keyboard focus, and recorded explanations.
+
+### Playback access while scrolling
+
+All 21 playback lessons have a shared floating playback row. It appears at the bottom of the viewport when the original Play control scrolls above the viewport, and hides when the original row returns. It forwards Back, Step/Visit next, Play/Pause, and speed input to the existing controls; it does not maintain a second algorithm state. Enabled states, playback labels, speed, and status stay synchronized. Extra bottom space allows the final content to scroll clear of the row.
+
+Both rows display the keyboard hint: Left Arrow for Back, Right Arrow for Step, and Space for Play/Pause outside controls. Text inputs, textareas, selects, sliders, editable content, modified shortcuts, and native Space activation retain their normal behavior. BST resolves Step to the active operation or traversal action. Conceptual lessons and manual sandboxes receive no artificial playback row.
+
+Verification includes direct scroll jumps past the original row, a 390-pixel viewport, enabled-state synchronization on recorded LCS playback, heap Back/Step/Space play-pause and speed forwarding, and BST traversal dispatch. The shared scroll check handles jumps from below to above the viewport as well as ordinary scrolling; viewport observers alone can miss that case.

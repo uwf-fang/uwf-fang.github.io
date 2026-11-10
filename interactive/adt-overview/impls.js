@@ -45,10 +45,11 @@ class CircSeq {
     if (this.n === this.cap) {
       const old = [];
       for (let k = 0; k < this.n; k++) old.push(this.slots[(this.front + k) % this.cap]);
+      const previousCapacity = this.cap;
       this.cap *= 2; this.slots = new Array(this.cap).fill(null);
       old.forEach((x, k) => (this.slots[k] = x));
       this.front = 0; steps += this.n;
-      note += `Array was full: capacity doubled to ${this.cap} and elements copied in order. `;
+      note += `Array was full (${this.n}/${previousCapacity}): capacity doubled from ${previousCapacity} to ${this.cap}. Copied ${this.n} existing elements in queue order, then wrote the new item: ${this.n} copies + 1 write = ${this.n + 1} counted steps. `;
     }
     const idx = (this.front + this.n) % this.cap;
     this.slots[idx] = v; this.n++; steps += 1;
@@ -109,24 +110,24 @@ class LinkedSeq {
 class HashTable {
   constructor(m = 7) { this.m = m; this.b = Array.from({ length: m }, () => []); this.type = 'hash'; }
   size() { return this.b.reduce((n, c) => n + c.length, 0); }
-  h(k) { const m = this.m; return ((Number(k) % m) + m) % m; } // key mod m
+  h(k) { const m = this.m; return ((Number(k) % m) + m) % m; } // key % m
   find(k) {
     const i = this.h(k), ch = this.b[i]; let steps = 1;
     for (let j = 0; j < ch.length; j++) { steps++; if (ch[j].k === k) return { i, j, e: ch[j], steps }; }
     return { i, j: -1, e: null, steps };
   }
   put(k, v) {
-    const f = this.find(k), where = `hash(${k}) = ${k} mod ${this.m} = ${f.i}, so bucket ${f.i}. `;
+    const f = this.find(k), where = `hash(${k}) = ${k} % ${this.m} = ${f.i}, so bucket ${f.i}. `;
     const coll = !f.e && this.b[f.i].length ? `Collision: ${this.b[f.i].length} key(s) already chained there. ` : '';
     if (f.e) { f.e.v = v; return { found: true, steps: f.steps, note: where + 'Key found in the chain; value replaced. ' }; }
     this.b[f.i].push({ k, v });
     return { found: false, steps: f.steps + 1, note: where + coll };
   }
-  get(k) { const f = this.find(k); return { found: !!f.e, v: f.e && f.e.v, steps: f.steps, note: `hash(${k}) = ${k} mod ${this.m} = ${f.i}, so bucket ${f.i}. ` }; }
+  get(k) { const f = this.find(k); return { found: !!f.e, v: f.e && f.e.v, steps: f.steps, note: `hash(${k}) = ${k} % ${this.m} = ${f.i}, so bucket ${f.i}. ` }; }
   remove(k) {
     const f = this.find(k);
     if (f.e) this.b[f.i].splice(f.j, 1);
-    return { found: !!f.e, v: f.e && f.e.v, steps: f.steps, note: `hash(${k}) = ${k} mod ${this.m} = ${f.i}, so bucket ${f.i}. ` };
+    return { found: !!f.e, v: f.e && f.e.v, steps: f.steps, note: `hash(${k}) = ${k} % ${this.m} = ${f.i}, so bucket ${f.i}. ` };
   }
   keys() { return [].concat(...this.b).map((e) => e.k); }
   render(hl) {
@@ -134,7 +135,7 @@ class HashTable {
       const chain = ch.map((e) => `<span class="arrow">→</span><div class="cell${hl === e.k ? ' hl' : ''}">${e.k}${e.v !== null && e.v !== undefined ? `<small>${e.v}</small>` : ''}</div>`).join('');
       return `<div class="bkt"><div class="cell bidx">${i}</div>${chain}</div>`;
     });
-    return `<div class="buckets">${rows.join('')}</div><div class="meta">${this.size()} key(s) in ${this.m} buckets (hash(key) = key mod ${this.m})</div>`;
+    return `<div class="buckets">${rows.join('')}</div><div class="meta">${this.size()} key(s) in ${this.m} buckets (hash(key) = key % ${this.m})</div>`;
   }
 }
 

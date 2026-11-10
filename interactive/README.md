@@ -12,7 +12,7 @@ See [the interface review and control guide](UI-GUIDE.md) for button roles, play
 
 ## Browsing the lab
 
-Open `index.html` to browse sixteen demonstrations across Foundations, Misc. data structures, Trees, Graphs, Sorting, Algorithm analysis, and Case studies. Search and topic filters can be combined. Trees and graphs have dedicated groups; Misc. data structures currently covers hashing. Case studies groups Huffman coding, bin packing, and maximum subarray around the problems they solve. Asymptotic bounds and recurrence trees remain in Algorithm analysis. With JavaScript disabled, the hub still displays all demonstration links.
+Open `index.html` to browse twenty-five demonstrations across Foundations, Misc. data structures, Trees, Graphs, Sorting, Algorithm analysis, and Case studies. Search and topic filters can be combined. Trees and graphs have dedicated groups; Misc. data structures currently covers hashing. Case studies groups Huffman coding, bin packing, and maximum subarray around the problems they solve. Asymptotic bounds and recurrence trees remain in Algorithm analysis. With JavaScript disabled, the hub still displays all demonstration links.
 
 Every demonstration has an All demonstrations link and a compact Browse labs menu. The menu groups links by topic and supports keyboard navigation through the browser's native disclosure control.
 
@@ -125,4 +125,45 @@ The six active additions use the supplied white-background style, local shared c
 
 The algorithm controllers are inline in their HTML pages; `explorer.js` handles recorded-state playback and SVG presentation. They use no external JavaScript libraries and work as static files or through the same static server as the existing bundle. B-tree work is deferred.
 
-These additions received source review. Browser interaction and automated regression tests have not been run for this batch. The earlier verification record in `UI-GUIDE.md` describes the original ten labs only.
+The initial six-lab addition received source review. The November 10 expansion adds algorithm regression tests and browser interaction checks; see the current verification record in `UI-GUIDE.md`.
+
+## November 2026 teaching expansion
+
+The hub now contains **25 labs** with keyword, topic, course, and chapter filters. All labs include a learning objective, a conceptual question with feedback, an optional challenge, a compact teaching view, and input-settings links. Randomly generated states are not included in settings links. DSA lessons focus on ADTs, data structures, and algorithms; C++ memory, pointer, and ownership lessons are outside scope.
+
+| New lab | Main interaction |
+| --- | --- |
+| [Recursion Call Stack](recursion-explorer.html) | Recursive linear/binary search and Fibonacci; active calls, pending work, returns, and complete call tree |
+| [List ADT Sequence Puzzles](list-adt-puzzle.html) | Rotate, reverse, and interleave sequences using remove and insert operations |
+| [N-Queens Backtracking](n-queens.html) | Predict candidate safety, inspect conflicts, prune, backtrack, and enumerate solutions for N=3–6 |
+| [LCS & Traceback](lcs.html) | Naive recursion, memoization, tabulation, cell predictions, and subsequence reconstruction |
+| [Matrix-Chain Multiplication](matrix-chain.html) | Candidate split costs, triangular DP tables, and optimal parentheses/tree |
+| [Amortized Array Growth](amortized-array.html) | Actual/total costs, doubling versus fixed increments, and potential accounting |
+| [Heapify & Heapsort](heapify-heapsort.html) | Bottom-up heapify, repeated root removal, heap/array views, and construction-cost comparison |
+| [Calculator Lexer](lexer-explorer.html) | Character-level scanning, typed token spans, and lexical errors |
+| [Grammar, Parse Tree & AST](grammar-explorer.html) | Leftmost/rightmost derivations, precedence/associativity, and AST evaluation with variable bindings |
+
+Existing labs also gain targeted improvements: consistent edge-count heights (empty −1, leaf 0), a Priority Queue ADT presentation in Dijkstra, individual hash probes/search/deletion/tombstones/rehashing with `%` formulas, circular queue/deque models, sorting pseudocode and replay, named BST deletion cases, AVL rotation prediction and a deletion cascade, graph frontier questions, Huffman decoding, exact small-instance packing comparisons, and Kadane state/cost views.
+
+### Running and checking
+
+No package installation or build is required. Serve the bundle directly:
+
+```sh
+python3 -m http.server 8765 --bind 127.0.0.1
+```
+
+Then open `http://127.0.0.1:8765/`. For development:
+
+```sh
+node --test tests/*.test.cjs
+python3 scripts/sync_catalog.py
+```
+
+`catalog.json` owns titles, course/chapter mappings, objectives, questions, explanations, and challenges. The sync script refreshes the static hub/navigation and `lab-catalog.js`; users can still browse all links without JavaScript. `lesson-algorithms.js` contains deterministic models, `lesson-pages.js` renders the new lessons, and `legacy-lessons.js` extends existing diagrams. Keep the entire bundle together.
+
+Follow-up topics remain deferred: radix sort, MST, topological ordering, B-trees, Bellman–Ford/Floyd–Warshall, combinatorics, randomized trials, genetic algorithms, and dedicated LL(1)/LR parser traces. The old pointer-workbench draft remains withdrawn.
+
+### Playback without scrolling back to setup
+
+In playback lessons, Back, Step, Play/Pause, and speed float at the bottom when the original controls scroll out of view. The original and floating controls stay synchronized. A visible hint also documents **← Back**, **→ Step**, and **Space Play/Pause** outside form controls. Typing and native slider/button keys are preserved.
