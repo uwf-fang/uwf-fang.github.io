@@ -62,10 +62,15 @@
   white-space:nowrap;
   text-decoration:none
 }
-.site-header .nav a:hover, .site-header .nav a[aria-current] {
+.site-header .nav a:hover,
+.site-header .nav a[aria-current],
+.site-header .nav-projects > summary:hover,
+.site-header .nav-projects[open] > summary,
+.site-header .nav-projects:has(a[aria-current]) > summary {
   color:var(--header-blue)
 }
-.site-header .nav a[aria-current]::after {
+.site-header .nav > a[aria-current]::after,
+.site-header .nav-projects:has(a[aria-current]) > summary::before {
   content:'';
   position:absolute;
   bottom:1px;
@@ -73,6 +78,56 @@
   right:0;
   height:2px;
   background:var(--header-blue)
+}
+.site-header .nav-projects {
+  position:relative
+}
+.site-header .nav-projects > summary {
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 0;
+  color:#535e69;
+  cursor:pointer;
+  list-style:none
+}
+.site-header .nav-projects > summary::-webkit-details-marker {
+  display:none
+}
+.site-header .nav-projects > summary::after {
+  content:'';
+  width:6px;
+  height:6px;
+  border-right:1.5px solid;
+  border-bottom:1.5px solid;
+  transform:translateY(-2px) rotate(45deg)
+}
+.site-header .nav-projects[open] > summary::after {
+  transform:translateY(1px) rotate(225deg)
+}
+.site-header .nav-project-links {
+  position:absolute;
+  z-index:1;
+  top:100%;
+  left:0;
+  min-width:max-content;
+  padding:4px;
+  border:1px solid var(--header-line);
+  border-radius:5px;
+  background:#fff;
+  box-shadow:0 8px 20px rgba(22,63,115,.12)
+}
+.site-header .nav-project-links a {
+  display:block;
+  padding:10px 12px;
+  border-radius:3px
+}
+.site-header .nav-project-links a:first-child {
+  font-weight:700
+}
+.site-header .nav-project-links a:is(:hover,:focus-visible) {
+  background:#f4f7fa
 }
 .site-header .nav .nav-github {
   display:flex;
@@ -93,7 +148,7 @@
   font:inherit;
   cursor:pointer
 }
-.site-header :is(a,button):focus-visible {
+.site-header :is(a,button,summary):focus-visible {
   outline:3px solid var(--header-blue);
   outline-offset:3px
 }
@@ -129,14 +184,29 @@
     display:flex;
     flex-direction:column
   }
-  .site-header .nav a {
+  .site-header .nav > a,
+  .site-header .nav-projects > summary {
     padding:10px
+  }
+  .site-header .nav-project-links {
+    position:static;
+    min-width:0;
+    margin-left:10px;
+    padding:0 0 0 6px;
+    border:0;
+    border-left:1px solid var(--header-line);
+    border-radius:0;
+    box-shadow:none
+  }
+  .site-header .nav-project-links a {
+    white-space:normal
   }
   .site-header .nav .nav-github {
     border:0;
     padding-left:10px
   }
-  .site-header .nav a[aria-current]::after {
+  .site-header .nav > a[aria-current]::after,
+  .site-header .nav-projects:has(a[aria-current]) > summary::before {
     display:none
   }
 }
