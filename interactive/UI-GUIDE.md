@@ -11,8 +11,8 @@ The collection already shared a white background and educational diagram style. 
 | Step / Visit next / Next | Filled dark blue | Advance the current lesson by one explained action. Only available when that action is possible. |
 | Begin add/remove/search; Start traversal | Blue outline | Prepare an operation. Begin does not mutate the data; Step performs its first action. |
 | Play / Pause | Blue outline; tinted while playing | Continue the current operation automatically, or pause after its current action. No restart or data regeneration. |
-| Reset | Neutral outline | Return to the start using the same configured inputs. |
-| New deck / Generate random… / Load sample | Neutral outline | Create a new example. Deliberately distinct from Reset. |
+| Replay current run / Replay merges / Replay packing | Neutral outline | Return to the start using the applied data. Unapplied edits do not create a new dataset. |
+| New deck / Generate random… / Load example | Neutral outline | Create a new example. Deliberately distinct from Reset. |
 | Clear heap / Clear tree | Red outline | Remove all data from the current sandbox. |
 | Topic, mode, and implementation choices | Neutral or blue outline; blue tint and underline when selected | Change the view or mode. Selected state is also exposed through `aria-pressed`. |
 | Zoom / Fit | Compact outlined controls within the diagram panel | Change the view without changing the data or algorithm. |
@@ -25,7 +25,7 @@ Primary actions share the same dark blue, typography, border radius, and 44-pixe
 - Step advances one meaningful action. The granularity is stated in the page: a comparison or swap in sorting, one key insertion in hashing, one item placement in packing, one merge in Huffman, and one comparison or link change in a BST.
 - While Play is running, manual stepping is disabled and the button becomes Pause. At completion, both Step and Play are disabled. The visible playback state explains whether the lesson is ready, playing, completing an animation, or finished.
 - A paused asynchronous sorting action finishes safely. Reset and setup changes are temporarily unavailable during that action so an old animation cannot modify a newly reset deck.
-- Changing a dataset or algorithm starts a fresh run. Clear or generation may replace a pending sandbox operation. Begin buttons are unavailable during a pending heap/BST operation.
+- Apply and Load actions start a fresh run or replace data as labeled. An example picker alone does not replace the current dataset. Shared lesson forms block playback while edited inputs wait for Apply. Current-run algorithm/source changes may restart the same data when the surrounding group says so. Clear or generation may replace a pending sandbox operation. Begin buttons are unavailable during a pending heap/BST operation.
 - Invalid input receives visible feedback and disables progression. Huffman never silently substitutes its default dataset, and hashing never silently drops or truncates malformed keys.
 - Playback speed moves from slow on the left to fast on the right. Reset does not change it.
 - Results and errors use an appropriate live status region. The card workbench supports Enter/Space selection as well as mouse and drag interactions.
@@ -110,7 +110,7 @@ The cheat sheet includes suitability and costs; the quiz has 11 questions.
 Focused checks covered domain endpoints, duplicate addition, absent removal,
 maintained counts, invalid input, and agreement with a reference Set after every
 prepared and mixed operation. All 22 automated tests passed. Browser checks
-covered Learn/Load sample, absent-cell highlighting, three-way comparisons,
+covered Learn/Load example, absent-cell highlighting, three-way comparisons,
 unchanged panels after invalid inputs, repeat-run and Reset behavior, keyboard
 operation-bar selection, all seven ADT workloads, the cheat sheet, and an
 11-of-11 quiz run. The Set views were inspected at desktop and 390-pixel widths;
@@ -140,7 +140,7 @@ replacement in a separate group. State which actions replace existing data.
 A neighboring sample button must not look like the way to submit a typed value.
 
 All seven ADTs in Learn now place their argument fields with the operation
-buttons. **Replace current data** contains **Load sample** and an ADT-specific
+buttons. **Replace current data** contains **Load example** and an ADT-specific
 Clear button. Compare separates manual operations from its prepared workload.
 AVL, List puzzles, hashing, graph traversal, and maximum subarray also group
 custom inputs with their matching Build, Apply, or Prepare action. Example and
@@ -170,3 +170,58 @@ Browser checks covered incremental inspection and Play completion, lookup from
 keyboard selection, restart, directed neighbors, isolated vertices, invalid
 edges preserving the graph, and a 390-pixel layout. The combined lab suite
 passed all 22 tests before publication.
+
+
+### Collection-wide current-data audit — November 19, 2026
+
+All 25 labs were inspected for the distinction between editing current data,
+loading a new example, and replaying an applied run. Inputs stay with the action
+that consumes them. New-example and clearing controls have their own group and
+state what they replace. A preset selection alone does not replace mutable data.
+
+Dijkstra, Huffman, bin packing, and both card labs now separate custom/current
+operations from example creation. Huffman stores its applied frequency table;
+bin packing stores its applied sequence. Replay uses those snapshots even when
+input fields or example choices have changed. Invalid custom frequencies leave
+the current Huffman tree intact. The heap's order picker waits for Generate or
+Apply order and clear heap; Clear is grouped with replacement controls.
+
+AVL, maximum subarray, traversal graphs, and List puzzles now wait for their
+named Load, Generate, or Start action. Recurrence parameters use Apply parameters;
+loading a named recurrence is separate. The bounds lab explicitly remains a live
+plot, and its default-example loader is separated from parameter edits. The
+conceptual paradigm lab has no mutable dataset to replace. BST already separates
+setup and current operations.
+
+The eight shared lesson forms use Apply inputs. Editing a field or selection
+pauses playback, marks unapplied edits, and keeps the previous diagram until
+Apply. Replay and stepping remain unavailable while those edits are pending.
+This prevents a trace built from old inputs from being labeled with new choices.
+Input-settings links call the appropriate Apply or Load action when restored.
+
+Verification includes all 25 initial interfaces at desktop and 390-pixel widths,
+focused replacement/replay checks for the affected data labs, pending-edit and
+Apply checks in all eight shared lesson forms, and restored input-setting links
+for custom/preset Huffman, custom/preset packing, recurrence, and LCS. All 22
+existing automated tests passed. These checks cover the interaction contract;
+they do not exhaustively exercise every algorithm or input in each lab.
+
+
+### Uniform control groups and recovering from draft edits
+
+Older heap and BST control sections now use the same border, spacing, heading
+size, and field-label treatment as the other input groups. Their headings name
+replacement data, operations on current data, and the prepared run. Compact view
+keeps those group boundaries. Example loaders consistently say **Load example**;
+the surrounding group identifies the data that will be replaced.
+
+The eight shared lesson forms, hash-table setup, and recurrence parameters offer
+**Discard edits** beside Apply. Discard restores the applied field values and
+keeps the current step and diagram. Invalid Apply attempts in the shared forms
+and hash-table setup keep the existing run instead of clearing it. Playback can
+resume after the edits are discarded. Applying valid inputs still starts a new
+run, and Replay still returns to the beginning of that applied run.
+
+Browser checks verified step/diagram preservation for Discard in all eight
+shared forms, recovery after invalid matrix-chain and hash inputs, recurrence
+parameter restoration, and matching heap/BST groups in full and compact views.

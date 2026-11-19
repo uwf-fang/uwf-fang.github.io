@@ -52,7 +52,7 @@ function drawLearn() {
           <h3>Replace current data</h3>
           <p class="lab-input-note">Load a prepared example or empty this ADT. Both replace its contents and reset the counts.</p>
           <div class="lab-input-row">
-            <button class="btn plain" data-ui-role="setup" id="fill">Load sample</button>
+            <button class="btn plain" data-ui-role="setup" id="fill">Load example</button>
             <button class="btn plain" data-ui-role="clear" id="clear">Clear ${adt.name.toLowerCase()}</button>
           </div>
         </section>
@@ -126,8 +126,8 @@ function drawCompare() {
       <p>Run the fixed operations listed below. Starting a workload replaces the comparison data and resets all counts.</p>
     <div class="lab-input-row">
       <button class="btn" data-ui-role="step" id="run">Run workload</button>
-      <button class="btn plain" id="reset">Reset all</button>
-      <span class="legend" style="margin:0">Reset all empties the comparison structures.</span>
+      <button class="btn plain" id="reset" data-ui-role="clear">Clear comparison data</button>
+      <span class="legend" style="margin:0">Clear comparison data empties the comparison structures.</span>
     </div>
       <p>${compareText(adt.workload.text)}.</p>
       <ol class="workload-ops">${adt.workload.ops.map(([id, a, b]) => `<li><code>${compareText(operationLabel(adt, id, a, b))}</code></li>`).join('')}</ol>

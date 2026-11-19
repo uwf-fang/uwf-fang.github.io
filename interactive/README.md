@@ -167,3 +167,16 @@ Follow-up topics remain deferred: radix sort, MST, topological ordering, B-trees
 ### Playback without scrolling back to setup
 
 In playback lessons, Back, Step, Play/Pause, and speed float at the bottom when the original controls scroll out of view. The original and floating controls stay synchronized. A visible hint also documents **← Back**, **→ Step**, and **Space Play/Pause** outside form controls. Typing and native slider/button keys are preserved.
+
+
+### Current data, new examples, and replay
+
+Inputs sit with the action that consumes them. **Apply** uses edited values;
+**Load**, **Generate**, and **Start** replace data as labeled; **Replay** keeps
+the applied data. Selecting an example alone does not replace the current run.
+Live plot controls state when their changes take effect immediately.
+
+The collection-wide audit covers all 25 labs. The shared lesson forms show
+unapplied edits and pause playback until **Apply inputs** or **Discard edits**.
+Discard keeps the applied data and current step. See the current audit
+and verification scope in [the interface guide](UI-GUIDE.md).

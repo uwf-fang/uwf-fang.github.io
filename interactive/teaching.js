@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     const settings=JSON.parse(raw);
     const preset=document.getElementById('preset');if(entry.file==='huffman-coding.html'&&settings.preset==='custom'&&preset){preset.value='custom';preset.dispatchEvent(new Event('change',{bubbles:true}));}
     const current=controls();for(const control of current){if(!Object.hasOwn(settings,control.id))continue;const v=settings[control.id];if(control.type==='checkbox')control.checked=v===true;else if(typeof v==='string'&&v.length<=2000)control.value=v;}
-    const preferred={'dijkstra.html':'applyWeighted','bin-packing.html':preset?.value==='custom'?'applyPacking':null,'bst-traversal-visualizer.html':'loadBstExample','list-adt-puzzle.html':'newPuzzle'}[entry.file];
+    const preferred={'dijkstra.html':'applyWeighted','bin-packing.html':preset?.value==='custom'?'applyPacking':'loadPackingExample','huffman-coding.html':preset?.value==='custom'?'applyFrequencies':'loadFrequencyExample','recurrence-tree.html':'applyRecurrence','card-sort.html':'btnNew','movable-cards.html':'btnNew','bst-traversal-visualizer.html':'loadBstExample','list-adt-puzzle.html':'newPuzzle'}[entry.file];
     const apply=preferred?document.getElementById(preferred):document.querySelector('#prepare,#apply,#load');
     if(apply)apply.click();else if(entry.file==='huffman-coding.html')document.getElementById('reset').click();else if(entry.file==='bin-packing.html')preset.dispatchEvent(new Event('change',{bubbles:true}));
     else for(const control of current.filter(x=>['keys','method','threshold','function','growth','bound','lower','upper','n0','limit'].includes(x.id)))control.dispatchEvent(new Event(control.tagName==='SELECT'?'change':'input',{bubbles:true}));

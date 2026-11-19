@@ -259,7 +259,7 @@ const ADTS = [
         facts: [['put / get / remove', 'Θ(h)', 'h is the tree height'], ['balanced tree', 'Θ(log n)', 'height is logarithmic'], ['sorted input, unbalanced', 'Θ(n)', 'the tree degenerates into a linear chain'], ['isEmpty()', 'Θ(1)', 'check if root == null'], ['key order', 'sorted', 'in-order traversal']] }
     ],
     use: ['Student records by ID', 'Caches and word counts'],
-    tryIt: ['Load sample, then get(36): count the comparisons in the tree and the chain in the hash table.', 'put the same key twice: the value is replaced.', 'Challenge: on an empty map, put keys 10, 20, 30, 40, 50 in increasing order. The tree becomes a chain, its worst case.'],
+    tryIt: ['Load example, then get(36): count the comparisons in the tree and the chain in the hash table.', 'put the same key twice: the value is replaced.', 'Challenge: on an empty map, put keys 10, 20, 30, 40, 50 in increasing order. The tree becomes a chain, its worst case.'],
     workload: { text: 'put eight integer keys in a random-looking order (47, 21, 63, 8, 36, 52, 90, 15), then get(36)', ops: [['put', '47', '1'], ['put', '21', '2'], ['put', '63', '3'], ['put', '8', '4'], ['put', '36', '5'], ['put', '52', '6'], ['put', '90', '7'], ['put', '15', '8'], ['get', '36']] }
   },
   {

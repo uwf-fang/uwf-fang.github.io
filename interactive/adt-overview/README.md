@@ -15,7 +15,7 @@ http://127.0.0.1:8766/adt-overview/index.html.
 A *step* is one element read, written, shifted or compared, or one link followed. It is a teaching measure, not a timing benchmark.
 
 Operation arguments sit with the buttons that use them in **Use the current
-list/set/…**. **Replace current data** contains **Load sample** and the Clear
+list/set/…**. **Replace current data** contains **Load example** and the Clear
 button, with a note that they replace contents and reset counts. In Compare mode,
 manual arguments and operations form one group; the prepared workload and its
 replacement actions form a separate group.
@@ -63,7 +63,7 @@ Learn mode preserves the broader integer domain of hash table and BST. Compare
 mode restricts all three Sets to `0..15` and rejects invalid input before changing
 any implementation or its history. The 13-operation workload includes zero,
 collisions, a duplicate addition, deletion, a failed membership check, and
-`isEmpty()`. Its final members are `{0, 3, 5, 7, 8, 9, 12}`. Load sample runs only
+`isEmpty()`. Its final members are `{0, 3, 5, 7, 8, 9, 12}`. Load example runs only
 the insertion operations, so its eight members also include 14.
 
 The Boolean model counts one entry read for membership or a no-op, one read plus

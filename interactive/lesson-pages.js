@@ -15,9 +15,10 @@ document.addEventListener('DOMContentLoaded',()=>{
     grammar:{settings:field('expression','Calculator expression','x + y * z')+field('bindings','Variable bindings','x=2, y=3, z=4')+select('direction','Derivation order',[['left','Leftmost derivation'],['right','Rightmost derivation']]),compute:()=>{const bindings={};if($('bindings').value.trim())for(const part of $('bindings').value.split(',')){const m=part.trim().match(/^([a-z][a-z0-9]*)\s*=\s*(-?\d+(?:\.\d+)?)$/);if(!m||!Number.isFinite(+m[2]))throw Error('Use variable bindings such as x=2, y=3, z=4.');bindings[m[1]]=+m[2];}return A.grammar($('expression').value,$('direction').value,bindings);},note:'E → E + T | E − T | T; T → T * F | T / F | F; F → identifier | integer | ( E ). This fixed BNF grammar is left-recursive; token leaves display lexemes. Unary operators are excluded. Evaluation uses real-number division; division by zero is undefined. Unbound names can parse correctly but cannot yet be evaluated.'}
   };
   const config=configs[kind];if(!config)return;
-  $('settings').innerHTML=config.settings+'<button id="prepare" data-ui-role="setup">Apply example</button>';
+  $('settings').innerHTML='<div class="lab-input-group"><h3>Start a run from these inputs</h3><div class="lab-input-row">'+config.settings+'<button id="prepare" data-ui-role="setup">Apply inputs</button><button id="discardInputs" data-ui-role="reset" disabled>Discard edits</button></div><p class="lab-input-note" id="inputState" role="status">Apply inputs starts a fresh run. Replay current run returns to its beginning.</p></div>';
+  $('reset').textContent='Replay current run';
   $('modelNote').textContent=config.note;
-  let run=null,lastQuestion=null,selectedToken=-1;const player=new FramePlayer(render);
+  let run=null,lastQuestion=null,selectedToken=-1,appliedInputs=null;const player=new FramePlayer(render);
   function table(matrix,rowLabels,colLabels,s){return `<div class="scroll"><table class="data-table dp-grid"><thead><tr><th scope="col">prefix / interval</th>${colLabels.map(x=>`<th scope="col">${esc(x)}</th>`).join('')}</tr></thead><tbody>${matrix.map((row,i)=>`<tr><th scope="row">${esc(rowLabels[i])}</th>${row.map((v,j)=>{const equal=p=>p&&p[0]===i&&p[1]===j;return `<td class="${equal(s.active)?'active-cell':s.reads?.some(equal)?'dependency':s.path?.some(equal)?'path-cell':''}">${v===null?'·':esc(v)}</td>`;}).join('')}</tr>`).join('')}</tbody></table></div>`;}
   function outline(node,focus,computed){return `<li><span class="${node.id===focus?'current-node':''}">${esc(node.label)}${computed&&Object.hasOwn(computed,node.id)?' → '+esc(computed[node.id]):''}</span>${node.children?.length?`<ul>${node.children.map(x=>outline(x,focus,computed)).join('')}</ul>`:''}</li>`;}
   function array(a,focus=[],size=a.length){return `<div class="array-strip">${a.map((v,i)=>`<div class="array-cell ${focus.includes(i)?'current':i>=size?'best':''}">${esc(v)}<small>[${i}]</small></div>`).join('')}</div>`;}
@@ -52,8 +53,28 @@ for end = n−1 down to 1:
   }
   function stack(items){return items.length?`<div class="call-stack">${items.map(f=>`<div class="call-frame"><strong>${esc(f.label)}</strong>${f.args?`<small>${esc(f.args)}</small>`:''}${f.pending?`<small>Pending: ${esc(f.pending)}</small>`:''}</div>`).join('')}</div>`:'<p class="note">Empty</p>';}
   function callTree(nodes,active){function build(parent){return `<ul class="tree-outline">${nodes.filter(n=>n.parent===parent).map(n=>`<li><span class="${n.id===active?'current-node':''}">${esc(n.label)}${n.result===null?'':' → '+n.result}</span>${build(n.id)}</li>`).join('')}</ul>`;}return build(null);}
-  function prepare(){player.pause();try{run=config.compute();lastQuestion=null;$('prediction').innerHTML='';player.load(run.frames);}catch(e){$('status').textContent=e.message;$('trace').textContent=e.message;$('prediction').hidden=true;player.frames=[];$('visual').innerHTML='';$('detail').innerHTML='';$('metrics').innerHTML='';LabUI.playback({step:'step',play:'auto',ready:false,reason:'Correct the inputs and apply the example.'});$('prev').disabled=true;$('position').textContent='No active run';}}
-  $('prepare').onclick=prepare;for(const control of $('settings').querySelectorAll('select'))control.onchange=prepare;
+  function syncFields(){if(kind==='recursion'){const fib=$('method').value==='fib';$('values').disabled=$('target').disabled=fib;$('fibN').disabled=!fib;}}
+  function pending(){syncFields();player.pause(false);$('inputState').textContent='Unapplied edits. Apply inputs starts a fresh run; Discard edits returns to the applied inputs and current step.';LabUI.playback({step:'step',play:'auto',ready:false,reason:'Apply or discard the edited inputs first.'});$('prev').disabled=$('reset').disabled=true;$('discardInputs').disabled=!appliedInputs;}
+  function prepare(){
+    player.pause(false);
+    try{
+      const nextRun=config.compute();
+      appliedInputs=Array.from($('settings').querySelectorAll('input,select'),control=>[control.id,control.value]);
+      run=nextRun;lastQuestion=null;$('prediction').innerHTML='';$('reset').disabled=false;$('discardInputs').disabled=true;
+      player.load(run.frames);$('inputState').textContent='Applied inputs. Step and Play use this run; Replay current run returns to its beginning.';
+    }catch(e){
+      pending();$('status').textContent=e.message;
+      $('inputState').textContent=e.message+(run?' Current run kept. Correct the inputs or choose Discard edits.':' Correct the inputs, then choose Apply inputs.');
+      if(!run){$('trace').textContent=e.message;$('prediction').hidden=true;$('position').textContent='No active run';}
+    }
+  }
+  $('discardInputs').onclick=()=>{
+    if(!appliedInputs)return;
+    for(const [id,value] of appliedInputs)$(id).value=value;
+    syncFields();$('reset').disabled=false;$('discardInputs').disabled=true;player.paint();
+    $('inputState').textContent='Edits discarded. The applied run and current step are unchanged.';
+  };
+  $('prepare').onclick=prepare;for(const control of $('settings').querySelectorAll('input,select')){control.addEventListener('input',pending);control.addEventListener('change',pending);}
   const expression=new URL(location.href).searchParams.get('expression');if(expression!==null&&$('expression'))$('expression').value=expression;
   prepare();
 });

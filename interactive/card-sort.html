@@ -421,9 +421,9 @@
       font-weight: 500;
     }
   </style>
-<link rel="stylesheet" href="lab-ui.css?v=20261110-playback-dock-2">
+<link rel="stylesheet" href="lab-ui.css?v=20261119-uniform-controls-3">
 <script src="lab-ui.js?v=20261110-playback-dock-2"></script>
-<link rel="stylesheet" href="lessons.css"><script src="lab-catalog.js" defer></script><script src="teaching.js" defer></script><script src="lesson-algorithms.js" defer></script><script src="legacy-lessons.js" defer></script><link rel="stylesheet" href="/assets/site-header.css"><script src="/assets/site-header.js" defer></script></head>
+<link rel="stylesheet" href="lessons.css?v=20261119-uniform-controls-2"><script src="lab-catalog.js" defer></script><script src="teaching.js?v=20261119-uniform-controls-2" defer></script><script src="lesson-algorithms.js" defer></script><script src="legacy-lessons.js?v=20261119-uniform-controls-2" defer></script><link rel="stylesheet" href="/assets/site-header.css"><script src="/assets/site-header.js" defer></script></head>
 <body class="lab-page" data-site-lab><header class="site-header"><div class="header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button type="button" class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation"><a href="/">Home</a>
 
 
@@ -460,7 +460,7 @@
   </header>
 
   <div class="control-panel">
-    <div class="control-group">
+    <section class="lab-input-group" aria-label="Sort the current deck"><h3>Sort the current deck</h3><div class="lab-input-row"><div class="control-group">
       <label for="algoSelect">Algorithm</label>
       <select id="algoSelect" onchange="resetData()">
         <option value="selection">Selection Sort (Unstable)</option>
@@ -468,32 +468,23 @@
         <option value="merge">Merge Sort (Stable)</option>
         <option value="quick" selected>Quick Sort (Textbook / Unstable)</option>
       </select>
-    </div>
-
-    <div class="control-group">
-      <label for="arrayType">Array preset</label>
-      <select id="arrayType" onchange="resetData(true)">
-        <option value="random" selected>Random</option>
-        <option value="nearlySorted">Nearly Sorted</option>
-        <option value="reversed">Reversed</option>
-        <option value="duplicates">Many Duplicates (Stability Demo)</option>
-      </select>
-    </div>
-
-    <div class="control-group">
+    </div><div class="control-group">
       <label for="speedSlider">Playback speed</label>
       <div class="speed-container">
         <span class="speed-hint">Slow</span>
         <input type="range" id="speedSlider" min="300" max="1700" value="1050" step="50" oninput="updateSpeed()">
         <span class="speed-hint">Fast</span>
       </div>
-    </div>
-
-    <div class="btn-group">
-      
-      <button id="btnStep" class="primary" onclick="stepSort()" data-ui-role="step">Step</button>
-      <button id="btnAuto" onclick="toggleAutoPlay()" data-ui-role="play">Play</button><button id="btnShuffle" onclick="resetData()" data-ui-role="reset">Reset</button><button id="btnNew" data-ui-role="setup" onclick="resetData(true)">New deck</button><span class="lab-playback-state" id="playbackState" aria-live="off"></span>
-    </div>
+    </div><div class="btn-group"><button id="btnStep" class="primary" onclick="stepSort()" data-ui-role="step">Step</button><button id="btnAuto" onclick="toggleAutoPlay()" data-ui-role="play">Play</button><button id="btnShuffle" onclick="resetData()" data-ui-role="reset">Replay current deck</button><span class="lab-playback-state" id="playbackState" aria-live="off"></span></div></div><p class="lab-input-note">Changing the algorithm restarts this deck. Replay restores the same starting cards.</p></section>
+    <section class="lab-input-group" aria-label="Replace the deck"><h3>Replace the deck</h3><p class="lab-input-note">Choose a preset, then select New deck to replace all cards and clear progress.</p><div class="lab-input-row"><div class="control-group">
+      <label for="arrayType">Array preset</label>
+      <select id="arrayType">
+        <option value="random" selected>Random</option>
+        <option value="nearlySorted">Nearly Sorted</option>
+        <option value="reversed">Reversed</option>
+        <option value="duplicates">Many Duplicates (Stability Demo)</option>
+      </select>
+    </div><button id="btnNew" data-ui-role="setup" onclick="resetData(true)">New deck</button></div></section>
   </div>
 
   <div class="stats-bar">
@@ -1065,7 +1056,7 @@
       document.getElementById('bufferWrapper').style.display='none';
       if(newDeck||!initialDeck.length)initialDeck=generateData(document.getElementById('arrayType').value).map(card=>({...card}));
       cards=initialDeck.map(card=>({...card}));bufferCards=new Array(cards.length).fill(null);updateSpeed();render();syncControls();
-      document.getElementById('statusText').textContent='Deck ready. Step advances one algorithm action; Play continues automatically. Reset restores this deck.';
+      document.getElementById('statusText').textContent='Deck ready. Step advances one algorithm action; Play continues automatically. Replay current deck restores these starting cards.';
     }
 
     // Initial setup
