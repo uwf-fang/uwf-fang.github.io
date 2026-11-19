@@ -106,6 +106,31 @@ class LinkedSeq {
   }
 }
 
+/* ---------- Boolean Set: direct addressing in a fixed universe ---------- */
+const BOOLEAN_SET_DOMAIN = 16;
+class BooleanSet {
+  constructor() { this.data = new Array(BOOLEAN_SET_DOMAIN).fill(false); this.n = 0; }
+  size() { return this.n; }
+  contains(v) {
+    return { present: this.data[v], steps: 1, note: `Read slot [${v}]: <b>${this.data[v]}</b>. One Boolean read.` };
+  }
+  add(v) {
+    if (this.data[v]) return { present: true, steps: 1, note: `Read slot [${v}]: already true. One Boolean read; no write or count change.` };
+    this.data[v] = true; this.n++;
+    return { present: false, steps: 2, note: `Read slot [${v}]: false, then write true. One Boolean read + one Boolean write; increment the member count.` };
+  }
+  remove(v) {
+    if (!this.data[v]) return { present: false, steps: 1, note: `Read slot [${v}]: already false. One Boolean read; no write or count change.` };
+    this.data[v] = false; this.n--;
+    return { present: true, steps: 2, note: `Read slot [${v}]: true, then write false. One Boolean read + one Boolean write; decrement the member count.` };
+  }
+  render(hl) {
+    const cells = this.data.map((present, v) => `<div class="boolean-cell${present ? ' present' : ''}${hl === v ? ' addressed' : ''}"${hl === v ? ' aria-current="true"' : ''}><span class="boolean-index">[${v}]</span><strong>${present}</strong><span class="boolean-state">${hl === v ? 'Selected' : present ? 'Present' : 'Absent'}</span></div>`).join('');
+    const members = this.data.flatMap((present, v) => present ? [v] : []);
+    return `<div class="boolean-set"><p class="boolean-key">Index = value · true = present · false = absent</p><div class="boolean-grid" role="group" aria-label="Boolean membership array, values 0 to 15">${cells}</div><p class="boolean-summary">Members: {${members.join(', ')}}<br><b>n = ${this.n}</b> members · <b>U = ${BOOLEAN_SET_DOMAIN}</b> possible values</p></div>`;
+  }
+}
+
 /* ---------- Hash table with separate chaining ---------- */
 class HashTable {
   constructor(m = 7) { this.m = m; this.b = Array.from({ length: m }, () => []); this.type = 'hash'; }

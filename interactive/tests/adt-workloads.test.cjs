@@ -24,13 +24,15 @@ test('Circular queue wraparound reuses slots without copying; growth only occurs
   assert.deepEqual(Array.from(queue.toArray()),[4,5,6,7,8,9,10]);
 });
 
-test('Every supplied ADT workload uses valid operations and data; the queue growth spike is enqueue(7)',()=>{
+test('Every supplied ADT workload uses valid data, including deliberate Set no-ops; the queue growth spike is enqueue(7)',()=>{
   const {ADTS}=models();
   for(const adt of ADTS)for(const impl of adt.impls){
     const instance=impl.make();
-    for(const [id,a='',b=''] of adt.workload.ops){
+    for(const [index,[id,a='',b='']] of adt.workload.ops.entries()){
       const result=instance.ops[id](a,b);
-      assert.notEqual(result.ok,false,`${adt.name}/${impl.name}: ${id}: ${result.msg}`);
+      // The Set workload deliberately repeats add(7), then queries removed 14.
+      const expectedNoOp=adt.id==='set' && [9,11].includes(index);
+      assert.equal(result.ok,!expectedNoOp,`${adt.name}/${impl.name}: ${id}: ${result.msg}`);
       assert.ok(Number.isFinite(result.steps)&&result.steps>=0);
     }
   }

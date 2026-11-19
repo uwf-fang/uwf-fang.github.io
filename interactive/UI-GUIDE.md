@@ -12,7 +12,7 @@ The collection already shared a white background and educational diagram style. 
 | Begin add/remove/search; Start traversal | Blue outline | Prepare an operation. Begin does not mutate the data; Step performs its first action. |
 | Play / Pause | Blue outline; tinted while playing | Continue the current operation automatically, or pause after its current action. No restart or data regeneration. |
 | Reset | Neutral outline | Return to the start using the same configured inputs. |
-| New deck / Generate random… / Fill sample | Neutral outline | Create a new example. Deliberately distinct from Reset. |
+| New deck / Generate random… / Load sample | Neutral outline | Create a new example. Deliberately distinct from Reset. |
 | Clear heap / Clear tree | Red outline | Remove all data from the current sandbox. |
 | Topic, mode, and implementation choices | Neutral or blue outline; blue tint and underline when selected | Change the view or mode. Selected state is also exposed through `aria-pressed`. |
 | Zoom / Fit | Compact outlined controls within the diagram panel | Change the view without changing the data or algorithm. |
@@ -92,6 +92,31 @@ Compare mode lists every supplied operation and its input values in numbered exe
 
 The circular queue starts at capacity 6 and doubles when full. In its sample workload, enqueue(7) copies six existing elements and writes the new item for seven counted steps. Ordinary wraparound reuses slots with no copying. Browser checks covered all seven ADT workloads, operation selection, repeat-run/reset behavior, and the narrow-screen comparison layout. Focused tests cover valid supplied workloads and FIFO preservation across wraparound and growth.
 
+### Boolean-array Set
+
+The Set ADT now includes a Boolean array for the fixed universe `0..15`. Learn
+shows all 16 slots, their indices and Boolean values, current members, and the
+member count. A selected slot has both a text label and a distinct color,
+including for absent membership checks. Guidance explains suitable domains,
+Θ(U) storage and initialization, and the difference from packed bitsets.
+
+Compare uses the common domain `0..15` for all three implementations. Invalid
+values are rejected before dispatch, with a live error and no changes to panel
+state, counters, or histories. Initialization and rendering are excluded from
+the operation bars; the Boolean count convention is visible beside them.
+The bounded sample includes deliberate duplicate and absent-result operations.
+The cheat sheet includes suitability and costs; the quiz has 11 questions.
+
+Focused checks covered domain endpoints, duplicate addition, absent removal,
+maintained counts, invalid input, and agreement with a reference Set after every
+prepared and mixed operation. All 22 automated tests passed. Browser checks
+covered Learn/Load sample, absent-cell highlighting, three-way comparisons,
+unchanged panels after invalid inputs, repeat-run and Reset behavior, keyboard
+operation-bar selection, all seven ADT workloads, the cheat sheet, and an
+11-of-11 quiz run. The Set views were inspected at desktop and 390-pixel widths;
+the narrow view had no page-wide horizontal overflow. No browser errors or
+warnings were reported during these checks.
+
 ### Problem statements, recursive arguments, and compact cost bars
 
 The packing example states the current problem above its answers for all five modes. All subsets satisfy the 5 kg weight limit; Decision requires at least $12, while Search requires at least $10 (inclusive). Enumeration/counting explicitly include the empty bag and impose no value minimum.
@@ -105,3 +130,43 @@ All 21 playback lessons have a shared floating playback row. It appears at the b
 Both rows display the keyboard hint: Left Arrow for Back, Right Arrow for Step, and Space for Play/Pause outside controls. Text inputs, textareas, selects, sliders, editable content, modified shortcuts, and native Space activation retain their normal behavior. BST resolves Step to the active operation or traversal action. Conceptual lessons and manual sandboxes receive no artificial playback row.
 
 Verification includes direct scroll jumps past the original row, a 390-pixel viewport, enabled-state synchronization on recorded LCS playback, heap Back/Step/Space play-pause and speed forwarding, and BST traversal dispatch. The shared scroll check handles jumps from below to above the viewport as well as ordinary scrolling; viewport observers alone can miss that case.
+
+
+### Inputs and the operations that use them
+
+Keep each value, key, index, or dataset field in the same visible group as its
+operation button. Put example loading, random generation, clearing, and workload
+replacement in a separate group. State which actions replace existing data.
+A neighboring sample button must not look like the way to submit a typed value.
+
+All seven ADTs in Learn now place their argument fields with the operation
+buttons. **Replace current data** contains **Load sample** and an ADT-specific
+Clear button. Compare separates manual operations from its prepared workload.
+AVL, List puzzles, hashing, graph traversal, and maximum subarray also group
+custom inputs with their matching Build, Apply, or Prepare action. Example and
+restart controls have separate labels and replacement notes where applicable.
+The existing BST and binary-heap setup/operation groups remain in use.
+
+Browser checks covered a keyboard-activated manual operation and sample loading
+for every ADT; Boolean Set Learn and Compare; AVL custom builds and examples;
+List puzzle moves and restart; custom hash keys; maximum-subarray arrays and
+examples; and custom versus generated traversal graphs. The six revised views
+were checked at desktop and 390-pixel widths. Algorithm tests remain unchanged
+for this layout update.
+
+
+### Graph representation setup and experiments
+
+The Graph Representation Lab separates **Create an example graph** from
+**Experiment with this graph**. Preset generation and editable edges update the
+graph, matrix, and list together. The experiment names its edge lookup or
+neighbor scan above playback. Each representation shows its own inspection
+count and result; playback reads the graph without changing edges.
+
+Selecting a matrix cell or list entry prepares an edge lookup using native
+buttons. Neighbor scans hide the unused target field. The page owns these
+controls and does not load the older graph extension from `legacy-lessons.js`.
+Browser checks covered incremental inspection and Play completion, lookup from
+keyboard selection, restart, directed neighbors, isolated vertices, invalid
+edges preserving the graph, and a 390-pixel layout. The combined lab suite
+passed all 22 tests before publication.

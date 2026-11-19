@@ -98,6 +98,34 @@ function setADT(d) {
   return { ops, size: () => d.size(), render: (hl) => d.render(hl) };
 }
 
+const BOOLEAN_SET_RANGE = `Enter an integer from 0 to ${BOOLEAN_SET_DOMAIN - 1} (inclusive).`;
+function booleanSetValue(raw) {
+  const value = toInt(raw);
+  return value !== null && Number(value) >= 0 && Number(value) < BOOLEAN_SET_DOMAIN ? Number(value) : null;
+}
+function booleanSetADT() {
+  const d = new BooleanSet();
+  const access = (op, raw) => {
+    const v = booleanSetValue(raw);
+    if (v === null) return bad(`${BOOLEAN_SET_RANGE} The Boolean array has a fixed domain; no slots changed.`);
+    const r = d[op](v);
+    const msg = op === 'contains' ? `contains(${v}) is <b>${r.present}</b>.` : op === 'add' ? (r.present ? `<b>${v}</b> is already in the set: add changes nothing.` : `<b>${v}</b> added.`) : (r.present ? `<b>${v}</b> removed.` : `<b>${v}</b> is not in the set.`);
+    return R(`${msg} ${r.note}`, r.steps, v, op === 'add' ? !r.present : r.present);
+  };
+  return {
+    ops: {
+      add: raw => access('add', raw),
+      remove: raw => access('remove', raw),
+      contains: raw => access('contains', raw),
+      isEmpty: () => R(`isEmpty() is <b>${d.size() === 0}</b> (n = ${d.size()}). Read the maintained member count once; no array scan.`, 1, null)
+    },
+    size: () => d.size(), render: hl => d.render(hl)
+  };
+}
+
+const BOOLEAN_SET_SUITABILITY = 'A Boolean array works well when every possible value has a known index in a small, fixed domain, such as weekdays, seat numbers, or vertex IDs. Membership, insertion, and removal use direct array access. The array reserves a slot for every possible value, including values that are absent. A large, sparse, or changing domain can waste space or require a different representation.';
+const BOOLEAN_SET_COST_NOTE = 'U is the number of possible values; n is the number of members. Allocating and initializing U false entries costs Θ(U), excluded from the workload bars. Count Boolean entry reads/writes and one count read for isEmpty(); scalar count updates and diagram rendering are excluded. Clear and listing members scan all U entries: Θ(U). These are teaching counts, not timings or memory measurements.';
+
 /* ----- priority queues ----- */
 const parseP = (b) => { const p = parseFloat(b); return isNaN(p) ? null : p; };
 function pqUnsorted() {
@@ -231,7 +259,7 @@ const ADTS = [
         facts: [['put / get / remove', 'Θ(h)', 'h is the tree height'], ['balanced tree', 'Θ(log n)', 'height is logarithmic'], ['sorted input, unbalanced', 'Θ(n)', 'the tree degenerates into a linear chain'], ['isEmpty()', 'Θ(1)', 'check if root == null'], ['key order', 'sorted', 'in-order traversal']] }
     ],
     use: ['Student records by ID', 'Caches and word counts'],
-    tryIt: ['Fill sample, then get(36): count the comparisons in the tree and the chain in the hash table.', 'put the same key twice: the value is replaced.', 'Challenge: on an empty map, put keys 10, 20, 30, 40, 50 in increasing order. The tree becomes a chain, its worst case.'],
+    tryIt: ['Load sample, then get(36): count the comparisons in the tree and the chain in the hash table.', 'put the same key twice: the value is replaced.', 'Challenge: on an empty map, put keys 10, 20, 30, 40, 50 in increasing order. The tree becomes a chain, its worst case.'],
     workload: { text: 'put eight integer keys in a random-looking order (47, 21, 63, 8, 36, 52, 90, 15), then get(36)', ops: [['put', '47', '1'], ['put', '21', '2'], ['put', '63', '3'], ['put', '8', '4'], ['put', '36', '5'], ['put', '52', '6'], ['put', '90', '7'], ['put', '15', '8'], ['get', '36']] }
   },
   {
@@ -239,17 +267,26 @@ const ADTS = [
     tagline: 'A collection of distinct elements. Membership is the question.',
     rule: 'You name the value', analogy: 'A guest list. A name is either on it or not, and never twice.',
     fields: { a: 'value (integer)' },
-    intNote: 'In this demo Set elements are <b>integers only</b> (no characters or strings). This keeps the hash function simple and concrete.',
+    intNote: 'Set elements are <b>integers only</b>. Hash table and BST accept values beyond the Boolean array’s fixed domain. In Compare mode, all three use <b>0..15</b> so each operation has the same meaning.',
+    compareHint: 'Common domain: 0..15 (inclusive). Invalid input changes no implementation or operation history.',
+    validateCompare: raw => booleanSetValue(raw) === null ? `${BOOLEAN_SET_RANGE} Compare mode uses the Boolean array’s domain for all three implementations. No state or operation history changed.` : null,
     ops: [{ id: 'add', label: 'add(v)', use: 'a' }, { id: 'remove', label: 'remove(v)', use: 'a' }, { id: 'contains', label: 'contains(v)', use: 'a' }, { id: 'isEmpty', label: 'isEmpty()', use: '' }],
     impls: [
       { id: 'hash', name: 'Hash table', make: () => setADT(new HashTable(7)), extra: { title: 'The hash function', html: 'There are <b>m = 7</b> buckets, numbered 0 to 6. The hash function is <b>hash(key) = key % 7</b>, the remainder after dividing by 7.<br><br>Example: hash(23) = 23 % 7 = 2, so key 23 goes to bucket 2. Negative keys use the mathematical remainder, so hash(-3) = 4.<br><br>Keys with the same remainder <b>collide</b>: for instance 9 and 16 both go to bucket 2, and are chained in that bucket.' }, how: 'Each integer is hashed to a bucket with hash(v) = v % 7. Duplicates are found by scanning one short chain.',
         facts: [['add / remove / contains', 'Θ(1) average', 'hash straight to a bucket'], ['worst case (all collide)', 'Θ(n)', 'many collisions in one chain'], ['isEmpty()', 'Θ(1)', 'check if total size == 0'], ['order', 'none', 'scattered by the hash']] },
       { id: 'bst', name: 'Binary search tree', make: () => setADT(new BST()), how: 'Values are kept in a search tree. A value is a duplicate if the search path ends on an equal value.',
-        facts: [['add / remove / contains', 'Θ(h)', 'h is the tree height'], ['balanced tree', 'Θ(log n)', 'height is logarithmic'], ['isEmpty()', 'Θ(1)', 'check if root == null'], ['order', 'sorted', 'in-order traversal']] }
+        facts: [['add / remove / contains', 'Θ(h)', 'h is the tree height'], ['balanced tree', 'Θ(log n)', 'height is logarithmic'], ['isEmpty()', 'Θ(1)', 'check if root == null'], ['order', 'sorted', 'in-order traversal']] },
+      { id: 'boolean', name: 'Boolean array (bounded domain)', make: () => booleanSetADT(),
+        inputHint: 'Fixed domain: integers 0..15 (inclusive). Each value is its own array index.',
+        how: 'Allocate U = 16 Boolean slots for values 0..15. Slot [v] is true exactly when v is a member. This is direct addressing: no hash function, collisions, or tree search. A maintained count n makes isEmpty() constant time.',
+        suitability: BOOLEAN_SET_SUITABILITY,
+        costNote: BOOLEAN_SET_COST_NOTE,
+        extra: { title: 'Domain limits and storage', html: 'A small set need not have a small domain: {2, 1000000000} would need a huge array when indexed from zero. A fixed range can use index = value − lowerBound; strings and objects need a stable, collision-free mapping first.<br><br>This Boolean array does not pack entries into machine-word bits. Do not assume one physical bit per entry. Hashing can suit sparse or general domains; a BST supports ordered traversal. This array is not always faster or smaller.' },
+        facts: [['add / remove / contains', 'Θ(1) worst case', 'direct access for valid values'], ['isEmpty() / size', 'Θ(1)', 'maintained member count'], ['storage', 'Θ(U) entries', 'one Boolean per possible value, even when absent'], ['initialize / clear / list members', 'Θ(U)', 'visit every slot'], ['domain', '0..15 here', 'small, fixed universe with a known index mapping']] }
     ],
     use: ['Unique visitors', 'Removing duplicates and set algebra'],
-    tryIt: ['add 5 twice: the second add changes nothing.', 'Add 7, 14 and 21: all have remainder 0, so they collide in bucket 0.'],
-    workload: { text: 'add eight integers in a random-looking order (41, 17, 58, 9, 33, 72, 25, 64), then contains(25)', ops: [['add', '41'], ['add', '17'], ['add', '58'], ['add', '9'], ['add', '33'], ['add', '72'], ['add', '25'], ['add', '64'], ['contains', '25']] }
+    tryIt: ['Add 5 twice: the second add changes nothing. Remove it, then check contains(5).', 'Add 0, 7 and 14: they collide in hash bucket 0, but use three distinct Boolean slots.', 'In Learn mode, try add(16): the Boolean array rejects it, while hash table and BST can store it. A small set can still need a large domain.'],
+    workload: { text: 'add eight bounded integers, check membership, repeat an addition, remove a member, then check absence and emptiness', ops: [['add', '7'], ['add', '0'], ['add', '14'], ['add', '9'], ['add', '3'], ['add', '12'], ['add', '5'], ['add', '8'], ['contains', '5'], ['add', '7'], ['remove', '14'], ['contains', '14'], ['isEmpty']] }
   },
   {
     id: 'pq', name: 'Priority Queue', icon: ICONS.pq,

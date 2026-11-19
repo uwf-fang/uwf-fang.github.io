@@ -37,20 +37,32 @@ function drawLearn() {
         <div class="analogy">${adt.icon}<div><div class="lab2">Analogy</div><p>${adt.analogy}</p></div></div>
         <div class="chips" id="chips"><span class="chiplab">Implementation</span>${adt.impls.map((i) => `<button data-ui-role="choice" data-impl="${i.id}" class="${i.id === impl.id ? 'on' : ''}">${i.name}</button>`).join('')}</div>
         <div class="viz" id="viz">${w.render(null)}</div>
-        <div class="controls">
-          <label>${adt.fields.a}<input id="inA" autocomplete="off"></label>
-          ${adt.fields.b ? `<label>${adt.fields.b}<input id="inB" autocomplete="off"></label>` : ''}
-          <button class="btn plain" data-ui-role="setup" id="fill">Fill sample</button>
-          <button class="btn plain" data-ui-role="clear" id="clear">Clear</button>
-        </div>
-        <div class="ops" id="ops">${adt.ops.map((o) => `<button data-ui-role="start" data-op="${o.id}">${o.label}</button>`).join('')}</div>
-        <div class="out" id="out" role="status" aria-live="polite">Pick an operation to see what it does and what it costs.</div>
-        <div class="legend" id="tot">Total so far: ${t.total} steps. ${SEQ_NOTE}</div>
+        <section class="lab-input-group adt-operations" aria-label="Operations on the current ${adt.name}">
+          <h3>Use the current ${adt.name.toLowerCase()}</h3>
+          <div class="lab-input-row">
+            <label>${adt.fields.a}<input id="inA" autocomplete="off"${impl.inputHint ? ' aria-describedby="inputHint"' : ''}></label>
+            ${adt.fields.b ? `<label>${adt.fields.b}<input id="inB" autocomplete="off"></label>` : ''}
+            <div class="ops" id="ops">${adt.ops.map((o) => `<button data-ui-role="start" data-op="${o.id}">${o.label}</button>`).join('')}</div>
+          </div>
+          ${impl.inputHint ? `<p class="input-hint" id="inputHint">${impl.inputHint}</p>` : ''}
+          <div class="out" id="out" role="status" aria-live="polite">Enter the arguments for an operation, then choose its button. Operations without arguments use the current structure.</div>
+          <div class="legend" id="tot">Total so far: ${t.total} steps. ${SEQ_NOTE}</div>
+        </section>
+        <section class="lab-input-group" aria-label="Replace current ${adt.name} data">
+          <h3>Replace current data</h3>
+          <p class="lab-input-note">Load a prepared example or empty this ADT. Both replace its contents and reset the counts.</p>
+          <div class="lab-input-row">
+            <button class="btn plain" data-ui-role="setup" id="fill">Load sample</button>
+            <button class="btn plain" data-ui-role="clear" id="clear">Clear ${adt.name.toLowerCase()}</button>
+          </div>
+        </section>
       </div>
       <div>
         <div class="box"><h3>How it is stored</h3><p class="how">${impl.how}</p></div>
+        ${impl.suitability ? `<div class="box note"><h3>When it fits</h3><p class="how">${impl.suitability}</p></div>` : ''}
         <div class="box"><h3>Cost of the operations</h3>
           <table class="facts"><thead><tr><th>Operation</th><th>Cost</th><th>Why</th></tr></thead><tbody>${impl.facts.map((f) => `<tr><td>${f[0]}</td><td><b>${f[1]}</b></td><td>${f[2]}</td></tr>`).join('')}</tbody></table>
+          ${impl.costNote ? `<p class="input-hint">${impl.costNote}</p>` : ''}
         </div>
         ${adt.intNote ? `<div class="box note"><h3>Integers only</h3><p class="how">${adt.intNote}</p></div>` : ''}
         ${adt.insertNote ? `<div class="box note"><h3>Insertion Design</h3><p class="how">${adt.insertNote}</p></div>` : ''}
@@ -68,7 +80,7 @@ function drawLearn() {
     const op = adt.ops.find((o) => o.id === b.dataset.op);
     const a = stage.querySelector('#inA').value.trim();
     const bb = stage.querySelector('#inB') ? stage.querySelector('#inB').value.trim() : '';
-    if (op.use.includes('a') && !a) return say(`Enter a ${adt.fields.a} first.`, false);
+    if (op.use.includes('a') && !a) return say(impl.inputHint || `Enter a ${adt.fields.a} first.`, false);
     const r = w.ops[op.id](a, bb);
     const tt = totals[key] || (totals[key] = { total: 0 });
     tt.total += r.steps;
@@ -100,18 +112,23 @@ function drawCompare() {
     <h2>${adt.name}: same operations, different implementations</h2>
     <p class="tagline">Every implementation receives exactly the same operations. Compare the pictures and the step counts. ${SEQ_NOTE}</p>
     ${adt.intNote ? `<p class="how" style="margin-bottom:8px">${adt.intNote} Hash table: <b>hash(key) = key % 7</b> (7 buckets).</p>` : ''}
-    <div class="controls">
-      <label>${adt.fields.a}<input id="inA" autocomplete="off"></label>
+    <section class="lab-input-group adt-operations" aria-label="Manual operations">
+    <h3>Use your own values</h3>
+    <div class="lab-input-row">
+      <label>${adt.fields.a}<input id="inA" autocomplete="off"${adt.compareHint ? ' aria-describedby="compareHint compareError"' : ''}></label>
       ${adt.fields.b ? `<label>${adt.fields.b}<input id="inB" autocomplete="off"></label>` : ''}
       <div class="ops" id="ops" style="margin:0">${adt.ops.map((o) => `<button data-ui-role="start" data-op="${o.id}">${o.label}</button>`).join('')}</div>
     </div>
-    <div class="controls" style="margin-top:2px">
+    ${adt.compareHint ? `<p class="input-hint" id="compareHint">${adt.compareHint}</p><p class="compare-error" id="compareError" role="status" aria-live="polite"></p>` : ''}
+    </section>
+    <section class="workload-plan" aria-label="Prepared workload">
+      <h3>Prepared workload · ${adt.workload.ops.length} operations</h3>
+      <p>Run the fixed operations listed below. Starting a workload replaces the comparison data and resets all counts.</p>
+    <div class="lab-input-row">
       <button class="btn" data-ui-role="step" id="run">Run workload</button>
       <button class="btn plain" id="reset">Reset all</button>
-      <span class="legend" style="margin:0">Each run starts empty and resets the operation counts.</span>
+      <span class="legend" style="margin:0">Reset all empties the comparison structures.</span>
     </div>
-    <section class="workload-plan" aria-label="Workload operations">
-      <h3>Workload, in order · ${adt.workload.ops.length} operations</h3>
       <p>${compareText(adt.workload.text)}.</p>
       <ol class="workload-ops">${adt.workload.ops.map(([id, a, b]) => `<li><code>${compareText(operationLabel(adt, id, a, b))}</code></li>`).join('')}</ol>
       ${['list','stack','queue','deque','pq'].includes(adt.id) ? '<p class="growth-instructions">Array models that display capacity start with <strong>6 slots</strong> and double when full. A growth copies <strong>6 existing elements</strong>; an append/enqueue adds <strong>1 new write = 7 counted steps</strong>. An indexed or front insertion may also shift elements. Circular wraparound reuses slots without resizing or copying.</p>' : ''}
@@ -130,10 +147,22 @@ function drawCompare() {
     const bt = e.target.closest('button'); if (!bt) return;
     const op = adt.ops.find((o) => o.id === bt.dataset.op);
     const a = stage.querySelector('#inA').value.trim(), b = stage.querySelector('#inB') ? stage.querySelector('#inB').value.trim() : '';
-    if (op.use.includes('a') && !a) return;
+    if (op.use.includes('a') && adt.validateCompare) {
+      const error = adt.validateCompare(a);
+      stage.querySelector('#compareError').textContent = error || '';
+      stage.querySelector('#inA').setAttribute('aria-invalid', String(!!error));
+      if (error) return;
+    } else if (op.use.includes('a') && !a) return;
+    clearError();
     apply(op.id, a, b); panels();
   };
+  const clearError = () => {
+    const error = stage.querySelector('#compareError');
+    if (error) error.textContent = '';
+    stage.querySelector('#inA').removeAttribute('aria-invalid');
+  };
   stage.querySelector('#run').onclick = () => {
+    clearError();
     resetStore('cmp', adt);
     adt.workload.ops.forEach(([id, a, b]) => apply(id, a ?? '', b ?? ''));
     // Explain the first growth event immediately, rather than hiding it behind the final operation.
@@ -142,7 +171,7 @@ function drawCompare() {
     selectedOperation = growthIndex >= 0 ? growthIndex : null;
     panels();
   };
-  stage.querySelector('#reset').onclick = () => { resetStore('cmp', adt); selectedOperation = null; panels(); };
+  stage.querySelector('#reset').onclick = () => { clearError(); resetStore('cmp', adt); selectedOperation = null; panels(); };
   stage.querySelector('#panels').onclick = e => {
     const bar = e.target.closest('[data-history-index]');
     if (!bar) return;
@@ -161,7 +190,9 @@ function drawCompare() {
       const index = selectedOperation ?? t.hist.length - 1, inspected = t.hist[index];
       const best = ts.every((x) => x) && t.total === Math.min(...ts.map((x) => x.total)) && ts.some((x) => x.total !== t.total);
       return `<div class="panel"><h3>${impl.name}</h3>
+        ${impl.inputHint ? `<p class="input-hint">${impl.inputHint}</p>` : ''}
         <div class="viz2">${w.render(t.hl === undefined ? null : t.hl)}</div>
+        ${impl.costNote ? `<p class="input-hint">${impl.costNote}</p>` : ''}
         <div class="stat"><span>Last op <b>${t.last}</b></span><span>Total <b class="${best ? 'good' : ''}">${t.total}</b> steps</span></div>
         <div class="totbar"><i style="width:${(t.total / maxT) * 100}%"></i></div>
         <div class="operation-detail" role="status" aria-live="polite">
@@ -183,7 +214,7 @@ function drawCheat() {
       <thead><tr><th>ADT</th><th>Who decides what leaves</th><th>Operations</th><th>Implementation</th><th>Cost</th></tr></thead>
       <tbody>${ADTS.map((a) => a.impls.map((im, i) => `<tr class="${i === 0 ? 'first' : ''}">
         ${i === 0 ? `<td rowspan="${a.impls.length}" class="adtc"><b>${a.name}</b></td><td rowspan="${a.impls.length}">${a.rule}</td><td rowspan="${a.impls.length}" class="opsc">${a.ops.map((o) => o.label).join('<br>')}</td>` : ''}
-        <td><b>${im.name}</b></td><td>${im.facts.map((f) => `<span class="mono">${f[0]}</span>: ${f[1]}`).join('<br>')}</td></tr>`).join('')).join('')}</tbody>
+        <td><b>${im.name}</b>${im.suitability ? `<p class="input-hint">${im.suitability}</p>` : ''}</td><td>${im.facts.map((f) => `<span class="mono">${f[0]}</span>: ${f[1]}`).join('<br>')}${im.costNote ? `<p class="input-hint">${im.costNote}</p>` : ''}</td></tr>`).join('')).join('')}</tbody>
     </table>`;
 }
 
@@ -199,7 +230,8 @@ const QUIZ = [
   { q: 'An algorithm checks a palindrome by comparing the first and last letters, then moving inward, removing from both ends.', opts: adtOpts, a: 'deque', why: 'It needs enQueueFront, enQueueBack, deQueueFront and deQueueBack style access at both ends.' },
   { q: 'You implement a Queue with a fixed-size array and want dequeue to never shift elements.', opts: [['array', 'Partially filled array'], ['circular', 'Circular partially filled array'], ['linked', 'Linked list']], a: 'circular', why: 'A circular array only moves the front index, using remainder arithmetic (`%`).' },
   { q: 'A Map must support listing its keys in sorted order.', opts: [['hash', 'Hash table'], ['bst', 'Binary search tree']], a: 'bst', why: 'An in-order traversal of a search tree visits keys in sorted order. A hash table scatters them.' },
-  { q: 'A Set needs the fastest average membership test and order does not matter.', opts: [['hash', 'Hash table'], ['bst', 'Binary search tree']], a: 'hash', why: 'A hash table averages Θ(1) for contains.' }
+  { q: 'A Set stores a few integers from a very large, sparse domain. It needs fast average membership tests; order does not matter. Which implementation fits?', opts: [['hash', 'Hash table'], ['bst', 'Binary search tree'], ['boolean', 'Boolean array']], a: 'hash', why: 'A hash table can use space based on stored members rather than the full domain, with expected Θ(1) membership under appropriate hashing and load assumptions. A Boolean array reserves a slot for every possible value.' },
+  { q: 'A Set tracks occupied seats numbered 0..15. The domain is fixed, and membership is checked frequently. Which implementation uses the seat number directly as its index?', opts: [['hash', 'Hash table'], ['bst', 'Binary search tree'], ['boolean', 'Boolean array']], a: 'boolean', why: 'A Boolean array uses 16 slots: slot [v] is true when seat v is occupied. Direct access gives Θ(1) worst-case membership, insertion, and removal, but storage is Θ(U) for the whole domain. It fits this small, fixed universe.' }
 ];
 let qi = 0, score = 0, answered = false;
 const userAnswers = []; // records { chosen, ok }

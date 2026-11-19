@@ -1,8 +1,65 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Graph Representation Lab — DSA Interactive Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Montserrat:wght@600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="shared-nav.css?v=20261021-expanded"><link rel="stylesheet" href="explorer.css?v=20261021-expanded"><link rel="stylesheet" href="lab-ui.css?v=20261110-playback-dock-2"><script src="lab-ui.js?v=20261110-playback-dock-2"></script><script src="explorer.js?v=20261021-expanded"></script><link rel="stylesheet" href="lessons.css"><script src="lab-catalog.js" defer></script><script src="teaching.js" defer></script><script src="lesson-algorithms.js" defer></script><script src="legacy-lessons.js" defer></script><link rel="stylesheet" href="/assets/site-header.css"><script src="/assets/site-header.js" defer></script></head>
-<body class="lab-page" data-site-lab><header class="site-header"><div class="header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button type="button" class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation"><a href="/">Home</a>
+<link rel="stylesheet" href="shared-nav.css?v=20261021-expanded"><link rel="stylesheet" href="explorer.css?v=20261021-expanded"><link rel="stylesheet" href="lab-ui.css?v=20261110-playback-dock-2"><script src="lab-ui.js?v=20261110-playback-dock-2"></script><script src="explorer.js?v=20261021-expanded"></script><link rel="stylesheet" href="lessons.css"><script src="lab-catalog.js" defer></script><script src="teaching.js" defer></script><script src="lesson-algorithms.js" defer></script>
+<style>
+.graph-lab .lab-section{margin-top:24px}
+.graph-lab .section-intro{max-width:850px;margin:0 0 18px;color:#475569}
+.graph-lab .setup-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(260px,1fr);gap:24px;align-items:start}
+.graph-lab .setup-fields{min-width:0}
+.graph-lab .controls{border:0;border-radius:0;padding:0;margin:0;background:transparent}
+.graph-lab .controls .group label{font-size:14px;letter-spacing:0}
+.graph-lab .setup-options{margin-bottom:12px}
+.graph-lab .custom-edges{border-top:1px solid #d8dee4;margin-top:18px;padding-top:18px}
+.graph-lab .custom-edges .group{flex:1;min-width:180px}
+.graph-lab .field-help{font-size:14px;color:#475569;margin:8px 0 12px}
+.graph-lab .graph-preview{padding-left:24px;border-left:1px solid #d8dee4;min-width:0}
+.graph-lab #graph .diagram{display:block;width:100%;height:260px;min-width:0}
+.graph-lab #graph .vertex text{font-size:24px}
+.graph-lab #metrics{margin:8px 0 0;gap:6px}
+.graph-lab #metrics .badge{padding:4px 8px;font-size:14px}
+.graph-lab #graphError{color:#8b0000;margin-top:12px}
+.graph-lab #graphError:empty{display:none}
+.graph-lab .operation-controls{padding-bottom:18px;border-bottom:1px solid #d8dee4}
+.graph-lab .comparison-heading{margin:18px 0 6px;color:#003366;font-size:17px}
+.graph-lab .playback{margin:12px 0;align-items:center}
+.graph-lab .playback .group{margin-left:auto}
+.graph-lab .trace{min-height:72px;font-size:16px}
+.graph-lab .representation-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:22px}
+.graph-lab .representation{min-width:0}
+.graph-lab .representation+.representation{padding-left:24px;border-left:1px solid #d8dee4}
+.graph-lab .representation .stats{margin:10px 0}
+.graph-lab .representation .badge{font-size:14px}
+.graph-lab .representation .note{font-size:14px;margin-top:10px;color:#475569}
+.graph-lab #matrix th,.graph-lab #matrix td{padding:4px;text-align:center}
+.graph-lab #matrix button{min-height:32px;min-width:30px;padding:4px;border:0;font:inherit}
+.graph-lab #matrix .source-row>th{background:#eff6ff;color:#003366}
+.graph-lab .list-row{display:flex;align-items:baseline;gap:12px;padding:4px 8px;border-radius:6px}
+.graph-lab .list-row.source-row{background:#eff6ff}
+.graph-lab .list-row .chips{margin:2px 0;min-height:32px}
+.graph-lab #lists .chip{min-height:32px;padding:4px 10px;border-color:#cbd5e1;background:#fff;font-family:'Courier Prime',monospace}
+.graph-lab #lists .chip.active{background:#fff7ed;border-color:#b45309;outline:1px solid #b45309;color:#92400e}
+.graph-lab .found-entries{font-size:14px;margin-top:10px;min-height:24px;color:#003366}
+.graph-lab .inspection-key{display:inline-block;width:14px;height:14px;border:2px solid #b45309;vertical-align:-2px;margin-right:6px}
+.graph-lab .reference-note{font-size:14px;color:#475569;margin-top:12px}
+.graph-lab .status{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+@media(max-width:800px){
+  .graph-lab .setup-grid,.graph-lab .representation-grid{grid-template-columns:minmax(0,1fr)}
+  .graph-lab .graph-preview{padding:18px 0 0;border-left:0;border-top:1px solid #d8dee4}
+  .graph-lab .representation+.representation{padding:20px 0 0;border-left:0;border-top:1px solid #d8dee4}
+  .graph-lab #graph .diagram{height:210px}
+}
+@media(max-width:600px){
+  .graph-lab .playback .group{margin-left:0}
+  .graph-lab .playback .actions{width:100%}
+  .graph-lab .controls .group{width:auto;flex:1;min-width:100px}
+  .graph-lab .operation-controls .group:first-child{flex-basis:100%}
+  .graph-lab .controls select{width:100%}
+  .graph-lab .custom-edges .group{flex-basis:100%}
+}
+</style>
+<link rel="stylesheet" href="/assets/site-header.css"><script src="/assets/site-header.js" defer></script></head>
+<body class="lab-page graph-lab" data-site-lab><header class="site-header"><div class="header-inner"><a href="/" class="brand" aria-label="Ian Fang, home"><span class="brand-mark" aria-hidden="true">if</span><span>Ian Fang<span class="brand-dot">.</span></span></a><button type="button" class="menu-toggle" aria-controls="navigation" aria-expanded="false">Menu</button><nav class="nav" id="navigation" aria-label="Main navigation"><a href="/">Home</a>
 
 
 
@@ -23,16 +80,114 @@
 <a href="/competitive-programming/">Competitive Programming</a>
 <a href="/notes/">Notes</a>
 <a href="/about/">About</a>
-<a class="nav-github" href="https://github.com/uwf-fang">GitHub <span aria-hidden="true">↗</span></a></nav></div></header><main class="wrap"><nav class="course-nav" aria-label="Interactive Lab"><a class="nav-brand" href="index.html">Interactive Teaching Lab</a><div class="lab-nav-actions"><a class="hub-link" href="index.html">All demonstrations</a><details class="lab-browser"><summary>Browse labs <span aria-hidden="true">▾</span></summary><div class="lab-menu"><div class="lab-nav-group"><p>Foundations</p><a href="adt-overview/index.html">ADT Explorer</a><a href="problem-type-paradigm.html">Problem Types &amp; Paradigms</a><a href="recursion-explorer.html">Recursion Call Stack</a></div><div class="lab-nav-group"><p>Lists & hashing</p><a href="hash-table-lab.html">Hash Table Collision &amp; Load Factor Lab</a><a href="list-adt-puzzle.html">List ADT Sequence Puzzles</a></div><div class="lab-nav-group"><p>Trees</p><a href="binary-heap-visualizer.html">Binary Heap: Tree &amp; Array</a><a href="bst-traversal-visualizer.html">BST &amp; Tree Traversals</a><a href="avl-rotation.html">AVL Rotation Lab</a></div><div class="lab-nav-group"><p>Graphs</p><a href="graph-traversal.html">BFS &amp; DFS Graph Explorer</a><a href="graph-representations.html" aria-current="page" class="active">Graph Representation Lab</a><a href="dijkstra.html">Dijkstra’s Shortest Paths</a></div><div class="lab-nav-group"><p>Sorting</p><a href="card-sort.html">Card Sort Visualizer</a><a href="movable-cards.html">Card Sorting Workbench</a><a href="heapify-heapsort.html">Heapify &amp; Heapsort</a></div><div class="lab-nav-group"><p>Algorithm analysis</p><a href="asymptotic-bounds.html">Asymptotic Bounds Lab</a><a href="recurrence-tree.html">Divide &amp; Conquer Recurrence Tree</a><a href="amortized-array.html">Amortized Array Growth</a></div><div class="lab-nav-group"><p>Algorithm case studies</p><a href="huffman-coding.html">Huffman Coding</a><a href="bin-packing.html">Bin Packing</a><a href="maximum-subarray.html">Maximum Subarray Comparison Lab</a><a href="n-queens.html">N-Queens Backtracking</a><a href="lcs.html">LCS &amp; Traceback</a><a href="matrix-chain.html">Matrix-Chain Multiplication</a></div><div class="lab-nav-group"><p>Programming languages</p><a href="lexer-explorer.html">Calculator Lexer</a><a href="grammar-explorer.html">Grammar, Parse Tree &amp; AST</a></div></div></details></div></nav><header><span class="tag">Graphs · Matrix versus list</span><h1>Graph Representation Lab</h1><p class="lead">Represent the same simple graph as an adjacency matrix and an adjacency list. Compare sparse and dense presets, then step through an edge lookup or a neighbor scan to see where each representation spends its work.</p></header><section class="controls" aria-label="Graph settings"><div class="group"><label for="size">Vertices</label><select id="size"><option>5</option><option>6</option><option selected>8</option><option>10</option></select></div><div class="group"><label for="preset">Graph preset</label><select id="preset"><option value="sparse">Sparse</option><option value="dense">Dense</option><option value="disconnected">Disconnected</option><option value="cycle">Cycle</option><option value="isolated">Isolated last vertex</option></select></div><button id="generate" data-ui-role="setup">Generate graph</button><div class="group checkbox"><input id="directed" type="checkbox"><label for="directed">Directed edges</label></div><div class="group wide-input"><label for="edges">Edges (A-B, A-C; directed: A-B means A → B)</label><input id="edges" type="text"></div><button id="apply" data-ui-role="setup">Apply edges</button><div class="group"><label for="operation">Compare operation</label><select id="operation"><option value="edge">Does edge u → v exist?</option><option value="neighbors">Enumerate neighbors of u</option></select></div><div class="group"><label for="from">Vertex u</label><select id="from"></select></div><div class="group"><label for="to">Vertex v</label><select id="to"></select></div><p class="lab-help">Lists are sorted for reproducibility and scanned sequentially, without an early stop based on key order. Every Step advances each unfinished representation by one entry inspection.</p></section><section class="controls playback" aria-label="Playback controls"><div class="actions"><button id="prev" data-ui-role="reset">Back</button><button id="step" data-ui-role="step">Step</button><button id="auto" data-ui-role="play">Play</button><button id="reset" data-ui-role="reset">Reset</button></div><div class="group"><label for="speed">Playback speed · slow → fast</label><input id="speed" type="range" min="250" max="1200" value="750" step="50"></div><span id="position" class="step-position"></span><span id="playbackState" class="lab-playback-state" aria-live="off"></span></section><div class="stats" id="metrics"></div><section class="panel"><h2>Current comparison</h2><div class="trace" id="trace"></div><div class="stats"><span class="badge">Matrix inspections: <strong id="matrixCount">0</strong></span><span class="badge">List inspections: <strong id="listCount">0</strong></span></div></section><div class="columns equal" style="margin-top:16px"><section class="panel"><h2>Adjacency matrix</h2><div class="scroll" role="region" tabindex="0" aria-label="Adjacency matrix"><table id="matrix" class="data-table"></table></div><p class="note" id="matrixStorage"></p></section><section class="panel"><h2>Adjacency list</h2><div id="lists"></div><p class="note" id="listStorage"></p></section></div><div class="columns" style="margin-top:16px"><section class="panel"><h2>The same graph</h2><div id="graph"></div></section><section class="panel"><h2>Cost model</h2><div class="scroll"><table class="data-table"><thead><tr><th>Operation</th><th>Matrix</th><th>List</th></tr></thead><tbody><tr><td>Storage</td><td>Θ(V²)</td><td>Θ(V + E)</td></tr><tr><td>Edge lookup</td><td>Θ(1)</td><td>O(deg(u))</td></tr><tr><td>Scan neighbors</td><td>Θ(V)</td><td>Θ(deg(u))</td></tr></tbody></table></div><p class="note">Neighbor-scan costs count inspected entries; an empty list still has constant setup overhead. List lookup has worst-case Θ(deg(u)) for nonempty lists. Header and pointer overhead depends on implementation; displayed storage counts are logical slots, not bytes.</p><p class="note">For an undirected graph, each edge occupies two list entries. At high density both representations can use Θ(V²) storage. Constant-time matrix lookup can then be attractive, while sparse graphs save many slots with lists.</p></section></div><p class="status" id="status" role="status" aria-live="polite"></p></main><script>
+<a class="nav-github" href="https://github.com/uwf-fang">GitHub <span aria-hidden="true">↗</span></a></nav></div></header><main class="wrap"><nav class="course-nav" aria-label="Interactive Lab"><a class="nav-brand" href="index.html">Interactive Teaching Lab</a><div class="lab-nav-actions"><a class="hub-link" href="index.html">All demonstrations</a><details class="lab-browser"><summary>Browse labs <span aria-hidden="true">▾</span></summary><div class="lab-menu"><div class="lab-nav-group"><p>Foundations</p><a href="adt-overview/index.html">ADT Explorer</a><a href="problem-type-paradigm.html">Problem Types &amp; Paradigms</a><a href="recursion-explorer.html">Recursion Call Stack</a></div><div class="lab-nav-group"><p>Lists & hashing</p><a href="hash-table-lab.html">Hash Table Collision &amp; Load Factor Lab</a><a href="list-adt-puzzle.html">List ADT Sequence Puzzles</a></div><div class="lab-nav-group"><p>Trees</p><a href="binary-heap-visualizer.html">Binary Heap: Tree &amp; Array</a><a href="bst-traversal-visualizer.html">BST &amp; Tree Traversals</a><a href="avl-rotation.html">AVL Rotation Lab</a></div><div class="lab-nav-group"><p>Graphs</p><a href="graph-traversal.html">BFS &amp; DFS Graph Explorer</a><a href="graph-representations.html" aria-current="page" class="active">Graph Representation Lab</a><a href="dijkstra.html">Dijkstra’s Shortest Paths</a></div><div class="lab-nav-group"><p>Sorting</p><a href="card-sort.html">Card Sort Visualizer</a><a href="movable-cards.html">Card Sorting Workbench</a><a href="heapify-heapsort.html">Heapify &amp; Heapsort</a></div><div class="lab-nav-group"><p>Algorithm analysis</p><a href="asymptotic-bounds.html">Asymptotic Bounds Lab</a><a href="recurrence-tree.html">Divide &amp; Conquer Recurrence Tree</a><a href="amortized-array.html">Amortized Array Growth</a></div><div class="lab-nav-group"><p>Algorithm case studies</p><a href="huffman-coding.html">Huffman Coding</a><a href="bin-packing.html">Bin Packing</a><a href="maximum-subarray.html">Maximum Subarray Comparison Lab</a><a href="n-queens.html">N-Queens Backtracking</a><a href="lcs.html">LCS &amp; Traceback</a><a href="matrix-chain.html">Matrix-Chain Multiplication</a></div><div class="lab-nav-group"><p>Programming languages</p><a href="lexer-explorer.html">Calculator Lexer</a><a href="grammar-explorer.html">Grammar, Parse Tree &amp; AST</a></div></div></details></div></nav>
+<header>
+  <span class="tag">Graphs · Matrix versus list</span>
+  <h1>Graph Representation Lab</h1>
+  <p class="lead">Create a graph and see its adjacency matrix and adjacency list. Then compare an edge lookup or a neighbor scan, one inspection at a time.</p>
+</header>
+
+<section class="panel lab-section" aria-labelledby="setupHeading">
+  <h2 id="setupHeading">Create an example graph</h2>
+  <p class="section-intro">Generate a preset or edit its edges. The graph, matrix, and list update together whenever you apply a new example.</p>
+  <div class="setup-grid">
+    <div class="setup-fields">
+      <h3>Generate from a preset</h3>
+      <div class="controls setup-options">
+        <div class="group"><label for="size">Vertices</label><select id="size"><option>5</option><option>6</option><option selected>8</option><option>10</option></select></div>
+        <div class="group"><label for="preset">Graph preset</label><select id="preset"><option value="sparse">Sparse</option><option value="dense">Dense</option><option value="disconnected">Disconnected</option><option value="cycle">Cycle</option><option value="isolated">Isolated last vertex</option></select></div>
+        <div class="group checkbox"><input id="directed" type="checkbox"><label for="directed">Directed edges</label></div>
+      </div>
+      <button id="generate" data-ui-role="setup">Generate example graph</button>
+      <p class="field-help">Choose the settings above, then generate to replace the current graph.</p>
+      <div class="custom-edges">
+        <h3>Edit the example</h3>
+        <p class="field-help" id="edgeHelp">Add or remove edges below, then apply using the vertex count and direction above. Use A-B, A-C; with directed edges, A-B means A → B. Leave the field empty for no edges.</p>
+        <div class="controls">
+          <div class="group wide-input"><label for="edges">Edge list</label><input id="edges" type="text" aria-describedby="edgeHelp"></div>
+          <button id="apply" data-ui-role="setup">Apply edges</button>
+        </div>
+        <p id="graphError" role="alert"></p>
+      </div>
+    </div>
+    <div class="graph-preview">
+      <h3>Current graph</h3>
+      <div id="graph"></div>
+      <div class="stats" id="metrics"></div>
+    </div>
+  </div>
+</section>
+
+<section class="panel lab-section" aria-labelledby="experimentHeading">
+  <h2 id="experimentHeading">Experiment with this graph</h2>
+  <p class="section-intro">Choose an operation and its vertices. Step or Play shows how each representation reads the same graph. These operations do not change its edges.</p>
+  <div class="controls operation-controls" aria-label="Choose a comparison">
+    <div class="group"><label for="operation">Operation</label><select id="operation"><option value="edge">Check whether an edge exists</option><option value="neighbors">Find all neighbors of a vertex</option></select></div>
+    <div class="group"><label for="from">Source vertex u</label><select id="from"></select></div>
+    <div class="group" id="targetControl"><label for="to">Target vertex v</label><select id="to"></select></div>
+  </div>
+  <h3 id="comparisonHeading" class="comparison-heading"></h3>
+  <p class="field-help" id="playbackHelp">Each inspection step reads one entry per unfinished representation; the final step summarizes the results. Play advances automatically. Restart repeats this comparison.</p>
+  <div class="controls playback" role="group" aria-label="Step through the selected comparison" aria-describedby="comparisonHeading playbackHelp">
+    <div class="actions">
+      <button id="prev" data-ui-role="reset">Back</button>
+      <button id="step" data-ui-role="step">Step</button>
+      <button id="auto" data-ui-role="play">Play</button>
+      <button id="reset" data-ui-role="reset">Restart comparison</button>
+    </div>
+    <div class="group"><label for="speed">Speed · slow → fast</label><input id="speed" type="range" min="250" max="1200" value="750" step="50"></div>
+    <span id="position" class="step-position"></span>
+    <span id="playbackState" class="lab-playback-state" aria-live="off"></span>
+  </div>
+  <div class="trace" id="trace"></div>
+  <p class="field-help"><span class="inspection-key" aria-hidden="true"></span>Orange outlines mark inspected entries. Blue shading marks the source row. Changing the operation or vertices starts a new comparison.</p>
+
+  <div class="representation-grid">
+    <section class="representation" aria-labelledby="matrixHeading">
+      <h3 id="matrixHeading">Adjacency matrix</h3>
+      <div class="stats"><span class="badge">Entries inspected: <strong id="matrixCount">0</strong></span></div>
+      <div class="scroll" role="region" tabindex="0" aria-label="Adjacency matrix"><table id="matrix" class="data-table"></table></div>
+      <p class="found-entries" id="matrixResult"></p>
+      <p class="note">1 means an edge exists; 0 means no edge. Rows are sources and columns are targets.</p>
+      <p class="note" id="matrixStorage"></p>
+    </section>
+    <section class="representation" aria-labelledby="listHeading">
+      <h3 id="listHeading">Adjacency list</h3>
+      <div class="stats"><span class="badge">Entries inspected: <strong id="listCount">0</strong></span></div>
+      <div id="lists"></div>
+      <p class="found-entries" id="listResult"></p>
+      <p class="note">Each row contains only its neighbors. ∅ means the vertex has no neighbors.</p>
+      <p class="note" id="listStorage"></p>
+    </section>
+  </div>
+  <p class="reference-note">Select a matrix cell or a list entry to prepare that edge lookup. Lists are sorted for reproducibility and scanned sequentially, without an early stop based on key order.</p>
+</section>
+
+<section class="panel lab-section" aria-labelledby="costHeading">
+  <h2 id="costHeading">Compare storage and operation costs</h2>
+  <div class="scroll"><table class="data-table"><thead><tr><th scope="col">Operation</th><th scope="col">Matrix</th><th scope="col">List</th></tr></thead><tbody>
+    <tr><th scope="row">Storage</th><td>Θ(V²)</td><td>Θ(V + E)</td></tr>
+    <tr><th scope="row">Edge lookup</th><td>Θ(1)</td><td>O(deg(u))</td></tr>
+    <tr><th scope="row">Scan neighbors</th><td>Θ(V)</td><td>Θ(deg(u))</td></tr>
+  </tbody></table></div>
+  <p class="reference-note">Neighbor-scan costs count inspected entries; an empty list still has constant setup overhead. List lookup has worst-case Θ(deg(u)) for nonempty lists. Header and pointer overhead depends on implementation; displayed storage counts are logical slots, not bytes.</p>
+  <p class="reference-note">For an undirected graph, each edge occupies two list entries. At high density both representations can use Θ(V²) storage. Constant-time matrix lookup can then be attractive, while sparse graphs save many slots with lists.</p>
+</section>
+<p class="status" id="status" role="status" aria-live="polite"></p>
+</main>
+<script>
 
 let n=8,edges=[],directed=false;
-function makeGraph(){n=Number($('size').value);directed=$('directed').checked;edges=graphPreset(n,$('preset').value,directed);$('edges').value=edgeText(edges);configureGraph()}
-function applyGraph(){try{const count=Number($('size').value),dir=$('directed').checked;const parsed=parseGraph($('edges').value,count,dir);n=count;directed=dir;edges=parsed;configureGraph()}catch(e){$('status').textContent=e.message}}
-$('generate').onclick=makeGraph;$('apply').onclick=applyGraph;$('size').onchange=makeGraph;$('preset').onchange=makeGraph;$('directed').onchange=applyGraph;
+function makeGraph(){$('graphError').textContent='';$('edges').removeAttribute('aria-invalid');n=Number($('size').value);directed=$('directed').checked;edges=graphPreset(n,$('preset').value,directed);$('edges').value=edgeText(edges);configureGraph()}
+function applyGraph(){try{const count=Number($('size').value),dir=$('directed').checked;const parsed=parseGraph($('edges').value,count,dir);n=count;directed=dir;edges=parsed;$('graphError').textContent='';$('edges').removeAttribute('aria-invalid');configureGraph()}catch(e){$('graphError').textContent=e.message;$('edges').setAttribute('aria-invalid','true')}}
+$('generate').onclick=makeGraph;$('apply').onclick=applyGraph;
 
 function configureGraph(){graphSelectors(n,['from','to']);if($('from').value===$('to').value)$('to').value=String(Math.min(1,n-1));prepare()}
-function prepare(){const adj=adjacency(n,edges,directed),u=Number($('from').value),v=Number($('to').value),query=$('operation').value==='edge',neighbors=adj[u];let s={mc:0,lc:0,mchecked:[],lchecked:[],mout:[],lout:[],mfinished:false,lfinished:false,trace:`Ready to ${query?`look up ${vertex(u)} → ${vertex(v)}`:`enumerate neighbors of ${vertex(u)}`}. Orange outlines mark inspected entries.`};const frames=[clone(s)];let mi=0,li=0;while(!s.mfinished||!s.lfinished){let messages=[];if(!s.mfinished){const j=query?v:mi++;s.mc++;s.mchecked.push(j);if(neighbors.includes(j))s.mout.push(j);if(query||mi===n)s.mfinished=true;messages.push(`Matrix: inspect [${vertex(u)}, ${vertex(j)}] = ${neighbors.includes(j)?1:0}${s.mfinished?'; finished':''}.`)}if(!s.lfinished){if(li<neighbors.length){const w=neighbors[li];s.lchecked.push(li++);s.lc++;if(!query||w===v)s.lout.push(w);if((query&&w===v)||li===neighbors.length)s.lfinished=true;messages.push(`List: inspect neighbor ${vertex(w)}${s.lfinished?'; finished':''}.`)}else{s.lfinished=true;messages.push('List: the neighbor list is empty; no neighbor entry is inspected.')}}s.trace=messages.join(' ');frames.push(clone(s))}s.trace=`Comparison complete. Matrix inspected ${s.mc} entries; list inspected ${s.lc}. ${query?(neighbors.includes(v)?`Edge ${vertex(u)} → ${vertex(v)} exists.`:'That edge does not exist.'):`Neighbors: ${neighbors.map(vertex).join(', ')||'none'}.`}`;frames.push(clone(s));player.load(frames)}
-const player=new FramePlayer(s=>{const adj=adjacency(n,edges,directed),u=Number($('from').value),v=Number($('to').value),possible=directed?n*(n-1):n*(n-1)/2,entries=adj.reduce((sum,a)=>sum+a.length,0);$('trace').textContent=s.trace;$('status').textContent=s.trace;$('matrixCount').textContent=s.mc;$('listCount').textContent=s.lc;$('metrics').innerHTML=`<span class="badge">V = <strong>${n}</strong></span><span class="badge">E = <strong>${edges.length}</strong></span><span class="badge">Density: <strong>${(100*edges.length/possible).toFixed(1)}%</strong></span><span class="badge">${directed?'Directed':'Undirected'} · no self-loops</span>`;$('matrix').innerHTML=`<thead><tr><th>u \\ v</th>${adj.map((_,i)=>`<th>${vertex(i)}</th>`).join('')}</tr></thead><tbody>${adj.map((row,i)=>`<tr><th>${vertex(i)}</th>${adj.map((_,j)=>`<td class="${row.includes(j)?'one':'zero'} ${i===u&&s.mchecked.includes(j)?'checked':''}">${row.includes(j)?1:0}</td>`).join('')}</tr>`).join('')}</tbody>`;$('lists').innerHTML=adj.map((row,i)=>`<div style="display:flex;align-items:baseline;gap:12px;margin-bottom:6px"><strong class="inline-code">${vertex(i)} →</strong><div class="chips" style="margin:4px 0">${row.length?row.map((w,j)=>`<span class="chip ${i===u&&s.lchecked.includes(j)?'active':''}">${vertex(w)}</span>`).join(''):'<span class="note">∅</span>'}</div></div>`).join('');$('matrixStorage').textContent=`${n*n} matrix cells, including zero entries and the diagonal.`;$('listStorage').textContent=`${n} list headers + ${entries} neighbor entries = ${n+entries} logical slots.`;$('graph').innerHTML=graphSVG(n,edges,{directed,active:u,edge:$('operation').value==='edge'&&s.mc?[u,v]:null});$('to').disabled=$('operation').value==='neighbors'});
+function prepare(){const query=$('operation').value==='edge',u=Number($('from').value),v=Number($('to').value);$('targetControl').hidden=!query;$('to').disabled=!query;$('comparisonHeading').textContent=query?`Edge lookup: does ${vertex(u)} → ${vertex(v)} exist?`:`Neighbor scan: find all ${directed?'outgoing ':''}neighbors of ${vertex(u)}`;prepareFrames()}
+function prepareFrames(){const adj=adjacency(n,edges,directed),u=Number($('from').value),v=Number($('to').value),query=$('operation').value==='edge',neighbors=adj[u];let s={mc:0,lc:0,mchecked:[],lchecked:[],mout:[],lout:[],mfinished:false,lfinished:false,trace:`Ready to ${query?`look up ${vertex(u)} → ${vertex(v)}`:`enumerate neighbors of ${vertex(u)}`}. Use Step or Play to begin the comparison.`};const frames=[clone(s)];let mi=0,li=0;while(!s.mfinished||!s.lfinished){let messages=[];if(!s.mfinished){const j=query?v:mi++;s.mc++;s.mchecked.push(j);if(neighbors.includes(j))s.mout.push(j);if(query||mi===n)s.mfinished=true;messages.push(`Matrix: inspect [${vertex(u)}, ${vertex(j)}] = ${neighbors.includes(j)?1:0}${s.mfinished?'; finished':''}.`)}if(!s.lfinished){if(li<neighbors.length){const w=neighbors[li];s.lchecked.push(li++);s.lc++;if(!query||w===v)s.lout.push(w);if((query&&w===v)||li===neighbors.length)s.lfinished=true;messages.push(`List: inspect neighbor ${vertex(w)}${s.lfinished?'; finished':''}.`)}else{s.lfinished=true;messages.push('List: the neighbor list is empty; no neighbor entry is inspected.')}}s.trace=messages.join(' ');frames.push(clone(s))}s.trace=`Comparison complete. Matrix inspected ${s.mc} entries; list inspected ${s.lc}. ${query?(neighbors.includes(v)?`Edge ${vertex(u)} → ${vertex(v)} exists.`:'That edge does not exist.'):`Neighbors: ${neighbors.map(vertex).join(', ')||'none'}.`}`;frames.push(clone(s));player.load(frames)}
+const player=new FramePlayer(s=>{const adj=adjacency(n,edges,directed),u=Number($('from').value),v=Number($('to').value),possible=directed?n*(n-1):n*(n-1)/2,entries=adj.reduce((sum,a)=>sum+a.length,0);$('trace').textContent=s.trace;$('status').textContent=s.trace;$('matrixCount').textContent=s.mc;$('listCount').textContent=s.lc;$('metrics').innerHTML=`<span class="badge">V = <strong>${n}</strong></span><span class="badge">E = <strong>${edges.length}</strong></span><span class="badge">Density: <strong>${(100*edges.length/possible).toFixed(1)}%</strong></span><span class="badge">${directed?'Directed':'Undirected'} · no self-loops</span>`;$('matrix').innerHTML=`<thead><tr><th scope="col">u \\ v</th>${adj.map((_,i)=>`<th scope="col">${vertex(i)}</th>`).join('')}</tr></thead><tbody>${adj.map((row,i)=>`<tr class="${i===u?'source-row':''}"><th scope="row">${vertex(i)}</th>${adj.map((_,j)=>`<td class="${row.includes(j)?'one':'zero'} ${i===u&&s.mchecked.includes(j)?'checked':''}"><button type="button" data-from="${i}" data-to="${j}" aria-label="Compare edge ${vertex(i)} to ${vertex(j)}">${row.includes(j)?1:0}</button></td>`).join('')}</tr>`).join('')}</tbody>`;$('lists').innerHTML=adj.map((row,i)=>`<div class="list-row ${i===u?'source-row':''}"><strong class="inline-code">${vertex(i)} →</strong><div class="chips">${row.length?row.map((w,j)=>`<button type="button" class="chip ${i===u&&s.lchecked.includes(j)?'active':''}" data-from="${i}" data-to="${w}" aria-label="Compare edge ${vertex(i)} to ${vertex(w)}">${vertex(w)}</button>`).join(''):'<span class="note">∅</span>'}</div></div>`).join('');$('matrixStorage').textContent=`${n*n} matrix cells, including zero entries and the diagonal.`;$('listStorage').textContent=`${n} list headers + ${entries} neighbor entries = ${n+entries} logical slots.`;$('graph').innerHTML=graphSVG(n,edges,{directed,active:u,edge:$('operation').value==='edge'&&s.mc?[u,v]:null});const query=$('operation').value==='edge';for(const [id,found,finished] of [['matrixResult',s.mout,s.mfinished],['listResult',s.lout,s.lfinished]]){$(id).textContent=query?(finished?(found.length?'Result: edge exists.':'Result: edge does not exist.'):'Result: pending inspection.'):`Neighbors ${finished?'found':'found so far'}: ${found.map(vertex).join(', ')||(finished?'none':'—')}.`}});
+function chooseEdge(event){const button=event.target.closest('button[data-from][data-to]');if(!button)return;$('operation').value='edge';$('from').value=button.dataset.from;$('to').value=button.dataset.to;prepare()}
+$('matrix').addEventListener('click',chooseEdge);$('lists').addEventListener('click',chooseEdge);
 $('operation').onchange=prepare;$('from').onchange=prepare;$('to').onchange=prepare;makeGraph();
 
 </script></body></html>
